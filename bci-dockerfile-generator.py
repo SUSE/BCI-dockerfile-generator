@@ -8,40 +8,13 @@ from typing import Dict, List, Optional
 import jinja2
 
 
-DOCKERFILE_TEMPLATE = jinja2.Template(
-    """#!BuildTag: {{ image.build_tag }}
+with open(
+    os.path.join(os.path.dirname(__file__), "Dockerfile.j2"), "r"
+) as dockerfile_tmpl:
+    DOCKERFILE_TEMPLATE = jinja2.Template(dockerfile_tmpl.read(-1))
 
-FROM {% if image.from_image %}{{ image.from_image }}{% else %}suse/sle15:15.{{ sp_version }}{% endif %}
-
-MAINTAINER {{ image.maintainer }}
-
-# Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.{{ image.name }}
-PREFIXEDLABEL org.opencontainers.image.title="{{ image.title }}"
-PREFIXEDLABEL org.opencontainers.image.description="{{ image.description }}"
-PREFIXEDLABEL org.opencontainers.image.version="{{ image.version_label }}"
-PREFIXEDLABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
-PREFIXEDLABEL org.opencontainers.image.created="%BUILDTIME%"
-PREFIXEDLABEL org.opencontainers.image.vendor="SUSE LLC"
-PREFIXEDLABEL org.opensuse.reference="{{ image.reference }}"
-PREFIXEDLABEL org.openbuildservice.disturl="%DISTURL%"
-# endlabelprefix
-LABEL com.suse.techpreview="1"
-{% if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
-
-RUN zypper -n in --no-recommends {{ image.packages }} && zypper -n clean
-
-{{ image.env_lines }}
-{% if image.entrypoint -%}ENTRYPOINT {{ image.entrypoint }}{% endif %}
-{{ image.custom_end }}
-"""
-)
-
-_SERVICE = """<services>
-        <service mode="buildtime" name="kiwi_metainfo_helper"/>
-        <service mode="buildtime" name="docker_label_helper"/>
-</services>
-"""
+with open(os.path.join(os.path.dirname(__file__), "_service"), "r") as service:
+    _SERVICE = service.read(-1)
 
 
 @dataclass(frozen=True)
