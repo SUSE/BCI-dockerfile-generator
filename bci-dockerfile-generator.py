@@ -76,7 +76,7 @@ class BaseContainerImage:
 
     @property
     def build_tag(self) -> str:
-        return f"bci/{self.name}:{self.version}"
+        return f"bci/{self.name}:{self.version_label}"
 
     @property
     def reference(self) -> str:
