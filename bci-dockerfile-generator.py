@@ -176,6 +176,17 @@ RUBY_2_5 = BaseContainerImage(
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
         package_list=[f"go{ver}", "distribution-release"],
+        extra_files={
+            # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
+            "_constraints": """<constraints>
+  <hardware>
+    <disk>
+      <size unit="G">6</size>
+    </disk>
+  </hardware>
+</constraints>
+"""
+        },
     )
     for ver in ("1.16", "1.17")
 )
@@ -234,13 +245,18 @@ INIT = BaseContainerImage(
     },
 )
 
-MARIADB = BaseContainerImage(
-    name="mariadb",
-    maintainer="bruno.leon@suse.de",
-    pretty_name="MariaDB server",
-    package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
-    entrypoint='["docker-entrypoint.sh"]',
-    custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
+with open(
+    os.path.join(os.path.dirname(__file__), "mariadb-entrypoint.sh")
+) as entrypoint:
+    MARIADB = BaseContainerImage(
+        name="mariadb",
+        maintainer="bruno.leon@suse.de",
+        version="10.6",
+        pretty_name="MariaDB server",
+        package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
+        entrypoint='["docker-entrypoint.sh"]',
+        extra_files={"docker-entrypoint.sh": entrypoint.read(-1)},
+        custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
 
