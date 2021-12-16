@@ -3,7 +3,7 @@
 import os
 import glob
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import jinja2
 
@@ -57,6 +57,10 @@ class BaseContainerImage:
 
     #: the maintainer of this image, defaults to SUSE
     maintainer: str = "SUSE LLC (https://www.suse.com/)"
+
+    #: additional files that belong into this container-package
+    #: the key is the filename, the value are the file contents
+    extra_files: Dict[str, Union[str, bytes]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.package_list:
@@ -268,6 +272,11 @@ def write_template_to_dir(bci: BaseContainerImage, dest: str, sp_version: int) -
             os.path.join(dest, f"{bci.name}-{bci.version}-image.changes"), "w"
         ) as changesfile:
             changesfile.write("")
+
+    for fname, contents in bci.extra_files.items():
+        mode = "w" if isinstance(contents, str) else "b"
+        with open(os.path.join(dest, fname), mode) as f:
+            f.write(contents)
 
 
 if __name__ == "__main__":
