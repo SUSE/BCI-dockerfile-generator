@@ -67,6 +67,10 @@ class BaseContainerImage:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
 
     @property
+    def nvr(self) -> str:
+        return self.name + (f"-{self.version}" if self.version else "")
+
+    @property
     def version_label(self) -> str:
         return self.version if self.version else "%OS_VERSION_ID_SP%.%RELEASE%"
 
@@ -268,9 +272,7 @@ def write_template_to_dir(bci: BaseContainerImage, dest: str, sp_version: int) -
         service.write(_SERVICE)
 
     if not glob.glob(f"{dest}/*.changes"):
-        with open(
-            os.path.join(dest, f"{bci.name}-{bci.version}-image.changes"), "w"
-        ) as changesfile:
+        with open(os.path.join(dest, f"{bci.nvr}-image.changes"), "w") as changesfile:
             changesfile.write("")
 
     for fname, contents in bci.extra_files.items():
@@ -281,7 +283,7 @@ def write_template_to_dir(bci: BaseContainerImage, dest: str, sp_version: int) -
 
 if __name__ == "__main__":
     ALL_IMAGES = {
-        bci.name + (bci.version or ""): bci
+        bci.nvr: bci
         for bci in (
             GOLANG_1_17,
             GOLANG_1_16,
