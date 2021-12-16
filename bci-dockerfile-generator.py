@@ -278,6 +278,70 @@ RUN mkdir /run/mysql
 EXPOSE 3306
 CMD ["mariadbd"]
 """,
+    )
+
+with open(os.path.join(os.path.dirname(__file__), "rmt-entrypoint.sh")) as entrypoint:
+    RMT_CONTAINER = BaseContainerImage(
+        name="rmt-server",
+        maintainer="bruno.leon@suse.de",
+        pretty_name="RMT Server",
+        package_list=["rmt-server", "catatonit"],
+        entrypoint="/usr/local/bin/entrypoint.sh",
+        env={"RAILS_ENV": "production", "LANG": "en"},
+        extra_files={"entrypoint.sh": entrypoint.read(-1)},
+        custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
+""",
+    )
+
+
+THREE_EIGHT_NINE_DS = BaseContainerImage(
+    name="389-ds",
+    maintainer="wbrown@suse.de",
+    pretty_name="389 directory server",
+    package_list=["389-ds", "timezone", "openssl"],
+    version="1.4",
+    custom_end=r"""EXPOSE 3389 3636
+
+RUN mkdir -p /data/config && \
+    mkdir -p /data/ssca && \
+    mkdir -p /data/run && \
+    mkdir -p /var/run/dirsrv && \
+    ln -s /data/config /etc/dirsrv/slapd-localhost && \
+    ln -s /data/ssca /etc/dirsrv/ssca && \
+    ln -s /data/run /var/run/dirsrv
+
+VOLUME /data
+
+HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
+    CMD /usr/lib/dirsrv/dscontainer -H
+
+CMD [ "/usr/lib/dirsrv/dscontainer", "-r" ]
+""",
+)
+
+(PHP_7, PHP_8) = (
+    BaseContainerImage(
+        name=f"php",
+        pretty_name=f"PHP {ver}",
+        package_list=[
+            f"php{ver}",
+            f"php{ver}-composer",
+            f"php{ver}-zip",
+            f"php{ver}-zlib",
+            f"php{ver}-phar",
+            f"php{ver}-mbstring",
+            "curl",
+            "git-core",
+            "distribution-release",
+        ],
+        version=ver,
+        env={
+            "PHP_VERSION": {"7": "7.4.25", "8": "8.0.10"}[ver],
+            "COMPOSER_VERSION": "1.10.22",
+        },
+    )
+    for ver in ("7", "8")
 )
 
 
@@ -311,6 +375,11 @@ if __name__ == "__main__":
             PYTHON_3_6,
             PYTHON_3_9,
             RUBY_2_5,
+            PHP_7,
+            PHP_8,
+            THREE_EIGHT_NINE_DS,
+            MARIADB,
+            RMT_CONTAINER,
         )
     }
 
