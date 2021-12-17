@@ -285,6 +285,7 @@ with open(os.path.join(os.path.dirname(__file__), "rmt-entrypoint.sh")) as entry
         name="rmt-server",
         maintainer="bruno.leon@suse.de",
         pretty_name="RMT Server",
+        version="2.7",
         package_list=["rmt-server", "catatonit"],
         entrypoint="/usr/local/bin/entrypoint.sh",
         env={"RAILS_ENV": "production", "LANG": "en"},
