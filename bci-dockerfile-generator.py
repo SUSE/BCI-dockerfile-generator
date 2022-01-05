@@ -62,6 +62,11 @@ class BaseContainerImage:
     #: the key is the filename, the value are the file contents
     extra_files: Dict[str, Union[str, bytes]] = field(default_factory=dict)
 
+    #: by default the containers get the labelprefix
+    #: ``com.suse.bci.{self.name}``. If this value is not an empty string, then
+    #: it is used instead of the name after ``com.suse.bci.``.
+    custom_labelprefix_end: str = ""
+
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
@@ -101,6 +106,10 @@ class BaseContainerImage:
     @property
     def extra_label_lines(self) -> str:
         return "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
+
+    @property
+    def labelprefix(self) -> str:
+        return f"com.suse.bci.{self.custom_labelprefix_end or self.name}"
 
 
 PYTHON_3_6 = BaseContainerImage(
@@ -227,7 +236,8 @@ OPENJDK_11 = BaseContainerImage(
     env=JAVA_ENV,
 )
 OPENJDK_11_DEVEL = BaseContainerImage(
-    name="openjdk.devel",
+    name="openjdk-devel",
+    custom_labelprefix_end="openjdk.devel",
     pretty_name="OpenJDK 11 development",
     version="11",
     package_list=["java-11-openjdk-devel", "git-core", "maven"],
