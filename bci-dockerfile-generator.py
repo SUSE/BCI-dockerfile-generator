@@ -256,6 +256,50 @@ INIT = BaseContainerImage(
 )
 
 with open(
+    os.path.join(os.path.dirname(__file__), "postgres-entrypoint.sh")
+) as entrypoint:
+    POSTGRES_ENTRYPOINT = entrypoint.read(-1)
+
+with open(os.path.join(os.path.dirname(__file__), "postgres-LICENSE")) as license_file:
+    POSTGRES_LICENSE = license_file.read(-1)
+
+
+POSTGRES_14, POSTGRES_13, POSTGRES_12, POSTGRES_10 = (
+    BaseContainerImage(
+        name="postgres",
+        pretty_name=f"PostgreSQL {ver}",
+        package_list=[f"postgresql{ver}-server", "distribution-release"],
+        version=f"{ver}",
+        entrypoint='["docker-entrypoint.sh"]',
+        env={
+            "LANG": "en_US.utf8",
+            "PG_MAJOR": f"{ver}",
+            "PG_VERSION": f"{ver}.{minor_ver}",
+            "PGDATA": "/var/lib/postgresql/data",
+        },
+        extra_files={
+            "docker-entrypoint.sh": POSTGRES_ENTRYPOINT,
+            "LICENSE": POSTGRES_LICENSE,
+        },
+        custom_end=rf"""
+VOLUME /var/lib/postgresql/data
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    ln -s su /usr/bin/gosu && \
+    mkdir /docker-entrypoint-initdb.d && \
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
+
+STOPSIGNAL SIGINT
+EXPOSE 5432
+CMD ["postgres"]
+""",
+    )
+    for (ver, minor_ver) in ((14, 1), (13, 5), (12, 9), (10, 19))
+)
+
+
+with open(
     os.path.join(os.path.dirname(__file__), "mariadb-entrypoint.sh")
 ) as entrypoint:
     MARIADB = BaseContainerImage(
@@ -391,6 +435,10 @@ if __name__ == "__main__":
             THREE_EIGHT_NINE_DS,
             MARIADB,
             RMT_CONTAINER,
+            POSTGRES_14,
+            POSTGRES_13,
+            POSTGRES_12,
+            POSTGRES_10,
         )
     }
 
