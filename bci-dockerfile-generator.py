@@ -255,6 +255,54 @@ INIT = BaseContainerImage(
     },
 )
 
+# rmt-nginx
+NGINX_FILES = {}
+for filename in [
+    "docker-entrypoint.sh",
+    "LICENSE",
+    "10-listen-on-ipv6-by-default.sh",
+    "20-envsubst-on-templates.sh",
+    "30-tune-worker-processes.sh",
+    "index.html"]:
+    with open(
+        os.path.join(os.path.dirname(__file__), 'nginx', filename)
+    ) as cursor:
+        NGINX_FILES[filename] = cursor.read(-1)
+
+
+NGINX = (
+    BaseContainerImage(
+        name="rmt-nginx",
+        pretty_name="rmt-nginx",
+        version="1.19",
+        package_list=["nginx", "distribution-release"],
+        entrypoint='["/docker-entrypoint.sh"]',
+        extra_files=NGINX_FILES,
+        custom_end="""
+RUN mkdir /docker-entrypoint.d
+COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
+COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
+COPY 30-tune-worker-processes.sh /docker-entrypoint.d/
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+RUN chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
+RUN chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
+RUN chmod +x /docker-entrypoint.sh
+
+COPY index.html /srv/www/htdocs/
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+
+EXPOSE 80
+
+STOPSIGNAL SIGQUIT
+
+CMD ["nginx", "-g", "daemon off;"]
+""",
+    )
+)
+
 with open(
     os.path.join(os.path.dirname(__file__), "postgres-entrypoint.sh")
 ) as entrypoint:
@@ -439,6 +487,7 @@ if __name__ == "__main__":
             POSTGRES_13,
             POSTGRES_12,
             POSTGRES_10,
+            NGINX,
         )
     }
 
