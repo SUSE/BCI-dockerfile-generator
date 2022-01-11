@@ -1,4 +1,6 @@
-#!BuildTag: {{ image.build_tag }}
+{% for tag in image.build_tags -%}
+#!BuildTag: {{ tag }}
+{% endfor -%}
 
 FROM {% if image.from_image %}{{ image.from_image }}{% else %}suse/sle15:15.{{ sp_version }}{% endif %}
 

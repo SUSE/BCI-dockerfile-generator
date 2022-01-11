@@ -88,12 +88,19 @@ class BaseContainerImage:
         return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
 
     @property
-    def build_tag(self) -> str:
-        return f"bci/{self.name}:{self.version_label}"
+    def build_tags(self) -> List[str]:
+        if self.version:
+            return [f"bci/{self.name}:{self.version_label}"]
+        return [
+            f"bci/{self.name}:{self.version_label}",
+            f"bci/{self.name}:%OS_VERSION_ID_SP%",
+        ]
 
     @property
     def reference(self) -> str:
-        return f"registry.suse.com/{self.build_tag}"
+        return "registry.suse.com/" + (
+            self.build_tags[0] if self.version else self.build_tags[1]
+        )
 
     @property
     def description(self) -> str:
