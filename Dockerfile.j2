@@ -20,7 +20,7 @@ PREFIXEDLABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.techpreview="1"
 {% if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
-RUN zypper -n in --no-recommends {{ image.packages }} && zypper -n clean
+RUN zypper -n in --no-recommends {{ image.packages }} && zypper -n clean && rm -rf /var/log/*
 
 {{ image.env_lines }}
 {% if image.entrypoint -%}ENTRYPOINT {{ image.entrypoint }}{% endif %}
