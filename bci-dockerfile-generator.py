@@ -61,6 +61,12 @@ class BaseContainerImage(abc.ABC):
     #: the key is the filename, the value are the file contents
     extra_files: Dict[str, Union[str, bytes]] = field(default_factory=dict)
 
+    #: additional names under which this image should be published alongside
+    #: :py:attr:`~BaseContainerImage.name`.
+    #: These names are only inserted into the
+    #: :py:attr:`~BaseContainerImage.build_tags`
+    additional_names: List[str] = field(default_factory=list)
+
     #: by default the containers get the labelprefix
     #: ``com.suse.bci.{self.name}``. If this value is not an empty string, then
     #: it is used instead of the name after ``com.suse.bci.``.
@@ -142,12 +148,15 @@ class LanguageStackContainer(BaseContainerImage):
 
     @property
     def build_tags(self) -> List[str]:
-        return (
-            [f"bci/{self.name}:{self.version_label}"]
-            + ([f"bci/{self.name}:latest"] if self.latest else [])
-            + [f"bci/{self.name}:{self.version_label}-%RELEASE%"]
-            + [f"bci/{self.name}:{ver}" for ver in self.additional_versions]
-        )
+        tags = []
+        for name in [self.name] + self.additional_names:
+            tags += (
+                [f"bci/{name}:{self.version_label}"]
+                + ([f"bci/{name}:latest"] if self.latest else [])
+                + [f"bci/{name}:{self.version_label}-%RELEASE%"]
+                + [f"bci/{name}:{ver}" for ver in self.additional_versions]
+            )
+        return tags
 
     @property
     def reference(self) -> str:
@@ -166,10 +175,13 @@ class OsContainer(BaseContainerImage):
 
     @property
     def build_tags(self) -> List[str]:
-        return [
-            f"bci/{self.name}:{self.version_label}",
-            f"bci/{self.name}:%OS_VERSION_ID_SP%",
-        ]
+        tags = []
+        for name in [self.name] + self.additional_names:
+            tags += [
+                f"bci/{name}:{self.version_label}",
+                f"bci/{name}:%OS_VERSION_ID_SP%",
+            ]
+        return tags
 
     @property
     def reference(self) -> str:
@@ -272,6 +284,7 @@ NODE_VERSIONS = [12, 14]
 (NODEJS_12, NODEJS_14) = (
     LanguageStackContainer(
         name="nodejs",
+        additional_names=["node"],
         version=str(ver),
         pretty_name=f"Node.js {ver}",
         latest=ver == max(NODE_VERSIONS),
