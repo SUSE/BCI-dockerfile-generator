@@ -520,6 +520,23 @@ PHP_VERSIONS = [7, 8]
     )
     for ver in PHP_VERSIONS
 )
+
+
+RUST_VERSIONS = ["1.56", "1.57"]
+(RUST_1_56, RUST_1_57) = (
+    LanguageStackContainer(
+        name="rust",
+        pretty_name=f"Rust {rust_version}",
+        latest=rust_version == "1.57",
+        package_list=[
+            f"rust{rust_version}",
+            f"cargo{rust_version}",
+            "distribution-release",
+        ],
+        version=rust_version,
+        env={"RUST_VERSION": rust_version},
+    )
+    for rust_version in RUST_VERSIONS
 )
 
 
@@ -563,6 +580,8 @@ if __name__ == "__main__":
             POSTGRES_12,
             POSTGRES_10,
             NGINX,
+            RUST_1_56,
+            RUST_1_57,
         )
     }
 
