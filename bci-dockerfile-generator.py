@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import abc
 import os
 import glob
 from dataclasses import dataclass, field
@@ -27,15 +28,11 @@ class EnvironmentVariable:
 
 
 @dataclass
-class BaseContainerImage:
+class BaseContainerImage(abc.ABC):
     name: str
 
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
-
-    #: The version tag of this container.
-    #: If omitted, then the OS version will be used in the :file:`Dockerfile`
-    version: Optional[str] = None
 
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP``
@@ -45,7 +42,9 @@ class BaseContainerImage:
     entrypoint: Optional[str] = None
 
     #: Extra environment variables to be set in the container
-    env: Dict[str, str] = field(default_factory=dict)
+    env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
+        default_factory=dict
+    )
 
     #: additional labels that should be added to the image
     extra_labels: Dict[str, str] = field(default_factory=dict)
@@ -72,12 +71,14 @@ class BaseContainerImage:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
 
     @property
+    @abc.abstractmethod
     def nvr(self) -> str:
-        return self.name + (f"-{self.version}" if self.version else "")
+        pass
 
     @property
+    @abc.abstractmethod
     def version_label(self) -> str:
-        return self.version if self.version else "%OS_VERSION_ID_SP%.%RELEASE%"
+        pass
 
     @property
     def packages(self) -> str:
@@ -88,19 +89,14 @@ class BaseContainerImage:
         return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
 
     @property
+    @abc.abstractmethod
     def build_tags(self) -> List[str]:
-        if self.version:
-            return [f"bci/{self.name}:{self.version_label}"]
-        return [
-            f"bci/{self.name}:{self.version_label}",
-            f"bci/{self.name}:%OS_VERSION_ID_SP%",
-        ]
+        pass
 
     @property
+    @abc.abstractmethod
     def reference(self) -> str:
-        return "registry.suse.com/" + (
-            self.build_tags[0] if self.version else self.build_tags[1]
-        )
+        pass
 
     @property
     def description(self) -> str:
@@ -119,10 +115,72 @@ class BaseContainerImage:
         return f"com.suse.bci.{self.custom_labelprefix_end or self.name}"
 
 
-PYTHON_3_6 = BaseContainerImage(
+@dataclass
+class LanguageStackContainer(BaseContainerImage):
+    #: the primary version of the language or application inside this container
+    version: Union[str, int] = ""
+
+    #: indicates whether this is the latest version of this language or
+    #: application stack
+    latest: bool = True
+
+    #: additional versions that should be added as tags to this container
+    #: (e.g. ``latest``)
+    additional_versions: List[str] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not self.version:
+            raise ValueError("A language stack container requires a version")
+
+    @property
+    def version_label(self) -> str:
+        return str(self.version)
+
+    @property
+    def nvr(self) -> str:
+        return f"{self.name}-{self.version}"
+
+    @property
+    def build_tags(self) -> List[str]:
+        return (
+            [f"bci/{self.name}:{self.version_label}"]
+            + ([f"bci/{self.name}:latest"] if self.latest else [])
+            + [f"bci/{self.name}:{self.version_label}-%RELEASE%"]
+            + [f"bci/{self.name}:{ver}" for ver in self.additional_versions]
+        )
+
+    @property
+    def reference(self) -> str:
+        return f"registry.suse.com/{self.build_tags[0]}"
+
+
+@dataclass
+class OsContainer(BaseContainerImage):
+    @property
+    def nvr(self) -> str:
+        return self.name
+
+    @property
+    def version_label(self) -> str:
+        return "%OS_VERSION_ID_SP%.%RELEASE%"
+
+    @property
+    def build_tags(self) -> List[str]:
+        return [
+            f"bci/{self.name}:{self.version_label}",
+            f"bci/{self.name}:%OS_VERSION_ID_SP%",
+        ]
+
+    @property
+    def reference(self) -> str:
+        return f"registry.suse.com/{self.build_tags[1]}"
+
+
+PYTHON_3_6 = LanguageStackContainer(
     name="python",
     pretty_name="Python",
     version="3.6",
+    latest=False,
     env={
         "PYTHON_VERSION": "3.6.13",
         "PIP_VERSION": "20.0.2",
@@ -136,10 +194,11 @@ PYTHON_3_6 = BaseContainerImage(
     ],
 )
 
-PYTHON_3_9 = BaseContainerImage(
+PYTHON_3_9 = LanguageStackContainer(
     name="python",
     pretty_name="Python 3.9",
     version="3.9",
+    additional_versions=["3"],
     env={"PYTHON_VERSION": "3.9.6", "PIP_VERSION": "20.0.4"},
     package_list=[
         "python39",
@@ -153,10 +212,11 @@ PYTHON_3_9 = BaseContainerImage(
     ln -s /usr/bin/pip3.9 /usr/bin/pip""",
 )
 
-RUBY_2_5 = BaseContainerImage(
+RUBY_2_5 = LanguageStackContainer(
     name="ruby",
     pretty_name="Ruby 2.5",
     version="2.5",
+    additional_versions=["2"],
     env={
         "RUBY_VERSION": "2.5.9",
         "GEM_VERSION": "2.7.6.3",
@@ -183,15 +243,16 @@ RUBY_2_5 = BaseContainerImage(
 )
 
 (GOLANG_1_16, GOLANG_1_17) = (
-    BaseContainerImage(
+    LanguageStackContainer(
         name="golang",
         pretty_name=f"Golang {ver}",
         version=ver,
+        latest=ver == "1.17",
         env={
             "GOLANG_VERSION": ver,
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
-        package_list=[f"go{ver}", "distribution-release"],
+        package_list=[f"go{ver}", "distribution-release", "make"],
         extra_files={
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": """<constraints>
@@ -207,11 +268,13 @@ RUBY_2_5 = BaseContainerImage(
     for ver in ("1.16", "1.17")
 )
 
+NODE_VERSIONS = [12, 14]
 (NODEJS_12, NODEJS_14) = (
-    BaseContainerImage(
+    LanguageStackContainer(
         name="nodejs",
-        version=ver,
+        version=str(ver),
         pretty_name=f"Node.js {ver}",
+        latest=ver == max(NODE_VERSIONS),
         package_list=[
             f"nodejs{ver}",
             # devel dependencies:
@@ -226,7 +289,7 @@ RUBY_2_5 = BaseContainerImage(
             "NPM_VERSION": "6.14.14",
         },
     )
-    for ver in ("12", "14")
+    for ver in NODE_VERSIONS
 )
 
 JAVA_ENV = {
@@ -235,14 +298,14 @@ JAVA_ENV = {
     "JAVA_ROOT": "/usr/lib64/jvm/java",
     "JAVA_VERSION": "11",
 }
-OPENJDK_11 = BaseContainerImage(
+OPENJDK_11 = LanguageStackContainer(
     name="openjdk",
     pretty_name="OpenJDK 11",
     version="11",
     package_list=["java-11-openjdk"],
     env=JAVA_ENV,
 )
-OPENJDK_11_DEVEL = BaseContainerImage(
+OPENJDK_11_DEVEL = LanguageStackContainer(
     name="openjdk-devel",
     custom_labelprefix_end="openjdk.devel",
     pretty_name="OpenJDK 11 development",
@@ -253,7 +316,7 @@ OPENJDK_11_DEVEL = BaseContainerImage(
     env=JAVA_ENV,
 )
 
-INIT = BaseContainerImage(
+INIT = OsContainer(
     name="init",
     pretty_name="Systemd",
     package_list=["systemd"],
@@ -270,22 +333,20 @@ for filename in [
     "10-listen-on-ipv6-by-default.sh",
     "20-envsubst-on-templates.sh",
     "30-tune-worker-processes.sh",
-    "index.html"]:
-    with open(
-        os.path.join(os.path.dirname(__file__), 'nginx', filename)
-    ) as cursor:
+    "index.html",
+]:
+    with open(os.path.join(os.path.dirname(__file__), "nginx", filename)) as cursor:
         NGINX_FILES[filename] = cursor.read(-1)
 
 
-NGINX = (
-    BaseContainerImage(
-        name="rmt-nginx",
-        pretty_name="rmt-nginx",
-        version="1.19",
-        package_list=["nginx", "distribution-release"],
-        entrypoint='["/docker-entrypoint.sh"]',
-        extra_files=NGINX_FILES,
-        custom_end="""
+NGINX = LanguageStackContainer(
+    name="rmt-nginx",
+    pretty_name="rmt-nginx",
+    version="1.19",
+    package_list=["nginx", "distribution-release"],
+    entrypoint='["/docker-entrypoint.sh"]',
+    extra_files=NGINX_FILES,
+    custom_end="""
 RUN mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
@@ -307,7 +368,6 @@ STOPSIGNAL SIGQUIT
 
 CMD ["nginx", "-g", "daemon off;"]
 """,
-    )
 )
 
 with open(
@@ -319,12 +379,17 @@ with open(os.path.join(os.path.dirname(__file__), "postgres-LICENSE")) as licens
     POSTGRES_LICENSE = license_file.read(-1)
 
 
+POSTGRES_MAJOR_VERSIONS = [14, 13, 12, 10]
+POSTGRES_MINOR_VERSIONS = [1, 5, 9, 19]
+POSTGRES_VERSIONS = list(zip(POSTGRES_MAJOR_VERSIONS, POSTGRES_MINOR_VERSIONS))
 POSTGRES_14, POSTGRES_13, POSTGRES_12, POSTGRES_10 = (
-    BaseContainerImage(
+    LanguageStackContainer(
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         package_list=[f"postgresql{ver}-server", "distribution-release"],
-        version=f"{ver}",
+        version=ver,
+        additional_versions=[f"{ver}.{minor_ver}"],
+        latest=ver == max(POSTGRES_MAJOR_VERSIONS),
         entrypoint='["docker-entrypoint.sh"]',
         env={
             "LANG": "en_US.utf8",
@@ -350,14 +415,14 @@ EXPOSE 5432
 CMD ["postgres"]
 """,
     )
-    for (ver, minor_ver) in ((14, 1), (13, 5), (12, 9), (10, 19))
+    for (ver, minor_ver) in POSTGRES_VERSIONS
 )
 
 
 with open(
     os.path.join(os.path.dirname(__file__), "mariadb-entrypoint.sh")
 ) as entrypoint:
-    MARIADB = BaseContainerImage(
+    MARIADB = LanguageStackContainer(
         name="mariadb",
         maintainer="bruno.leon@suse.de",
         version="10.6",
@@ -390,7 +455,7 @@ CMD ["mariadbd"]
     )
 
 with open(os.path.join(os.path.dirname(__file__), "rmt-entrypoint.sh")) as entrypoint:
-    RMT_CONTAINER = BaseContainerImage(
+    RMT_CONTAINER = LanguageStackContainer(
         name="rmt-server",
         maintainer="bruno.leon@suse.de",
         pretty_name="RMT Server",
@@ -405,7 +470,7 @@ CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
     )
 
 
-THREE_EIGHT_NINE_DS = BaseContainerImage(
+THREE_EIGHT_NINE_DS = LanguageStackContainer(
     name="389-ds",
     maintainer="wbrown@suse.de",
     pretty_name="389 directory server",
@@ -430,9 +495,10 @@ CMD [ "/usr/lib/dirsrv/dscontainer", "-r" ]
 """,
 )
 
+PHP_VERSIONS = [7, 8]
 (PHP_7, PHP_8) = (
-    BaseContainerImage(
-        name=f"php",
+    LanguageStackContainer(
+        name="php",
         pretty_name=f"PHP {ver}",
         package_list=[
             f"php{ver}",
@@ -446,12 +512,14 @@ CMD [ "/usr/lib/dirsrv/dscontainer", "-r" ]
             "distribution-release",
         ],
         version=ver,
+        latest=ver == max(PHP_VERSIONS),
         env={
-            "PHP_VERSION": {"7": "7.4.25", "8": "8.0.10"}[ver],
+            "PHP_VERSION": {7: "7.4.25", 8: "8.0.10"}[ver],
             "COMPOSER_VERSION": "1.10.22",
         },
     )
-    for ver in ("7", "8")
+    for ver in PHP_VERSIONS
+)
 )
 
 
