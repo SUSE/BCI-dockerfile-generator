@@ -280,8 +280,8 @@ RUBY_2_5 = LanguageStackContainer(
     for ver in ("1.16", "1.17")
 )
 
-NODE_VERSIONS = [12, 14]
-(NODEJS_12, NODEJS_14) = (
+NODE_VERSIONS = [12, 14, 16]
+(NODEJS_12, NODEJS_14, NODEJS_16) = (
     LanguageStackContainer(
         name="nodejs",
         additional_names=["node"],
@@ -576,6 +576,7 @@ if __name__ == "__main__":
             GOLANG_1_17,
             GOLANG_1_16,
             INIT,
+            NODEJS_16,
             NODEJS_14,
             NODEJS_12,
             OPENJDK_11,
