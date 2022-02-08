@@ -936,3 +936,55 @@ RUST_CONTAINERS = [
     )
     for rust_version in ("1.56", "1.57")
 ]
+
+MICRO_CONTAINERS = [
+    OsContainer(
+        name="micro",
+        sp_version=sp_version,
+        ibs_package=ibs_package,
+        pretty_name="%OS_VERSION% Micro",
+        custom_description="Image containing a micro environment for containers based on the SLE Base Container Image.",
+        release_stage=release_stage,
+        from_image=None,
+        build_recipe_type=BuildType.KIWI,
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in (
+                "bash",
+                "ca-certificates-mozilla-prebuilt",
+                "distribution-release",
+            )
+        ],
+        config_sh_script="""
+""",
+    )
+    for sp_version, release_stage, ibs_package in (
+        (3, ReleaseStage.RELEASED, "micro"),
+        (4, ReleaseStage.BETA, "micro-image"),
+    )
+]
+
+MINIMAL_CONTAINERS = [
+    OsContainer(
+        name="minimal",
+        from_image="bci/bci-micro",
+        sp_version=sp_version,
+        ibs_package=ibs_package,
+        release_stage=release_stage,
+        build_recipe_type=BuildType.KIWI,
+        pretty_name="%OS_VERSION% Minimal",
+        custom_description="Image containing a minimal environment for containers based on the SLE Base Container Image.",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in ("rpm-ndb", "perl-base", "distribution-release")
+        ]
+        + [
+            Package(name, pkg_type=PackageType.DELETE)
+            for name in ("grep", "diffutils", "info", "fillup", "libzio1")
+        ],
+    )
+    for sp_version, release_stage, ibs_package in (
+        (3, ReleaseStage.RELEASED, "minimal"),
+        (4, ReleaseStage.BETA, "minimal-image"),
+    )
+]

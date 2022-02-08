@@ -10,6 +10,8 @@ from bci_build.package import (
     GOLANG_IMAGES,
     INIT_CONTAINERS,
     MARIADB_CONTAINERS,
+    MICRO_CONTAINERS,
+    MINIMAL_CONTAINERS,
     NGINX,
     NODE_CONTAINERS,
     OPENJDK_CONTAINERS,
@@ -137,6 +139,8 @@ if __name__ == "__main__":
             *INIT_CONTAINERS,
             *MARIADB_CONTAINERS,
             *POSTGRES_CONTAINERS,
+            *MINIMAL_CONTAINERS,
+            *MICRO_CONTAINERS,
         )
     }
 
