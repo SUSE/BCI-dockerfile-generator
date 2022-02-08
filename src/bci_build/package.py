@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 import abc
+import datetime
 from dataclasses import dataclass, field
 from itertools import product
 import enum
 import glob
 import os
-from typing import Dict, List, Literal, Optional, Union
+from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
 
 import aiofiles
 
 from bci_build.data import SUPPORTED_SLE_SERVICE_PACKS
-from bci_build.templates import DOCKERFILE_TEMPLATE, SERVICE_TEMPLATE
+from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
 
 
 @enum.unique
@@ -30,6 +31,34 @@ class ImageType(enum.Enum):
 
     def __str__(self) -> str:
         return self.value
+
+
+@enum.unique
+class BuildType(enum.Enum):
+    DOCKER = "docker"
+    KIWI = "kiwi"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@enum.unique
+class PackageType(enum.Enum):
+    DELETE = "delete"
+    BOOTSTRAP = "bootstrap"
+    IMAGE = "image"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@dataclass
+class Package:
+    name: str
+    pkg_type: PackageType = PackageType.IMAGE
+
+    def __str__(self) -> str:
+        return self.name
 
 
 @dataclass
@@ -70,8 +99,10 @@ class BaseContainerImage(abc.ABC):
     release_stage: ReleaseStage
 
     #: The container from which this one is derived. defaults to
-    #: ``suse/sle15:15.$SP``
-    from_image: Optional[str] = None
+    #: ``suse/sle15:15.$SP`` when an empty string is used.
+    #: When from image is None, then no ``FROM`` or ``derived from=""`` entry is
+    #: created in the image description.
+    from_image: Optional[str] = ""
 
     #: an optional entrypoint for the image, is omitted if empty or ``None``
     entrypoint: Optional[str] = None
@@ -89,10 +120,15 @@ class BaseContainerImage(abc.ABC):
     extra_labels: Dict[str, str] = field(default_factory=dict)
 
     #: Packages to be installed inside the container
-    package_list: List[str] = field(default_factory=list)
+    package_list: Union[List[str], List[Package]] = field(default_factory=list)
 
+    #: This string is appended to the automatically generated dockerfile and can
+    #: contain arbitrary instructions valid for a :file:`Dockerfile`
     custom_end: str = ""
 
+    #: A bash script that is put into :file:`config.sh` if a kiwi image is
+    #: created.
+    config_sh_script: str = ""
     #: the maintainer of this image, defaults to SUSE
     maintainer: str = "SUSE LLC (https://www.suse.com/)"
 
@@ -114,9 +150,20 @@ class BaseContainerImage(abc.ABC):
     #: Provide a custom description instead of the automatically generated one
     custom_description: str = ""
 
+    #: Define whether this container image is built using docker or kiwi
+    build_recipe_type: BuildType = BuildType.DOCKER
+
+    URL: ClassVar[str] = "https://www.suse.com/products/server/"
+
+    VENDOR: ClassVar[str] = "SUSE LLC"
+
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
+        if self.config_sh_script and self.custom_end:
+            raise ValueError(
+                "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."
+            )
 
     @property
     @abc.abstractmethod
@@ -133,12 +180,119 @@ class BaseContainerImage(abc.ABC):
         return f"SUSE:SLE-15-SP{self.sp_version}:Update:BCI"
 
     @property
+    def dockerfile_custom_end(self) -> str:
+        if self.custom_end:
+            return self.custom_end
+        if self.config_sh_script:
+            return f"RUN {self.config_sh_script}"
+        return ""
+
+    @property
+    def config_sh(self) -> str:
+        if not self.config_sh_script:
+            if self.custom_end:
+                raise ValueError(
+                    "This image cannot be build as a kiwi image, it has a `custom_end` set."
+                )
+            return ""
+        return f"""#!/bin/bash -e
+
+# Copyright (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+test -f /.kconfig && . /.kconfig
+test -f /.profile && . /.profile
+
+echo "Configure image: [$kiwi_iname]..."
+
+#======================================
+# Setup baseproduct link
+#--------------------------------------
+if [ ! -e /etc/products.d/baseproduct ]; then
+    suseSetupProduct
+fi
+
+#======================================
+# Import repositories' keys
+#--------------------------------------
+suseImportBuildKey
+
+{self.config_sh_script}
+
+exit 0
+"""
+
+    @property
     def packages(self) -> str:
-        return " ".join(self.package_list)
+        return " ".join(str(pkg) for pkg in self.package_list)
+
+    @property
+    def kiwi_packages(self) -> str:
+        def create_pkg_filter_func(
+            pkg_type: PackageType,
+        ) -> Callable[[Union[str, Package]], bool]:
+            def pkg_filter_func(p: Union[str, Package]) -> bool:
+                if isinstance(p, str):
+                    return pkg_type == PackageType.IMAGE
+                return p.pkg_type == pkg_type
+
+            return pkg_filter_func
+
+        PKG_TYPES = (
+            PackageType.DELETE,
+            PackageType.BOOTSTRAP,
+            PackageType.IMAGE,
+        )
+        delete_packages, bootstrap_packages, image_packages = (
+            list(filter(create_pkg_filter_func(pkg_type), self.package_list))
+            for pkg_type in PKG_TYPES
+        )
+
+        res = ""
+        for (pkg_list, pkg_type) in zip(
+            (delete_packages, bootstrap_packages, image_packages), PKG_TYPES
+        ):
+            if len(pkg_list) > 0:
+                res += (
+                    f"""  <packages type="{pkg_type}">
+    """
+                    + """
+    """.join(
+                        f'<package name="{pkg}"/>' for pkg in pkg_list
+                    )
+                    + """
+  </packages>
+"""
+                )
+        return res
 
     @property
     def env_lines(self) -> str:
         return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
+
+    @property
+    def kiwi_env_entry(self) -> str:
+        if not self.env:
+            return ""
+        return (
+            """        <environment>
+          """
+            + """
+          """.join(
+                f'<env name="{k}" value="{v}"/>' for k, v in self.env.items()
+            )
+            + """
+        </environment>
+"""
+        )
 
     @property
     @abc.abstractmethod
@@ -151,9 +305,8 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
-    @abc.abstractmethod
     def reference(self) -> str:
-        pass
+        return f"registry.suse.com/{self.build_tags[0]}"
 
     @property
     def description(self) -> str:
@@ -171,18 +324,50 @@ class BaseContainerImage(abc.ABC):
         return "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
 
     @property
+    def extra_label_xml_lines(self) -> str:
+        return "\n".join(
+            f'            <label name="{k}" value="{v}"/>'
+            for k, v in self.extra_labels.items()
+        )
+
+    @property
     def labelprefix(self) -> str:
         return f"com.suse.bci.{self.custom_labelprefix_end or self.name}"
 
+    @property
+    def kiwi_additional_tags(self) -> Optional[str]:
+        extra_tags = []
+        for buildtag in self.build_tags[1:]:
+            path, tag = buildtag.split(":")
+            if path.endswith(self.name):
+                extra_tags.append(tag)
+
+        return ",".join(extra_tags) if extra_tags else None
+
     async def write_files_to_folder(self, dest: str) -> List[str]:
-        async with aiofiles.open(os.path.join(dest, "Dockerfile"), "w") as dockerfile:
-            await dockerfile.write(
-                DOCKERFILE_TEMPLATE.render(image=self, sp_version=self.sp_version)
-            )
+        files = ["_service"]
+
+        if self.build_recipe_type == BuildType.DOCKER:
+            fname = "Dockerfile"
+            async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
+                await kiwi_file.write(DOCKERFILE_TEMPLATE.render(image=self))
+            files.append(fname)
+
+        elif self.build_recipe_type == BuildType.KIWI:
+            fname = f"{self.ibs_package}.kiwi"
+            async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
+                await kiwi_file.write(KIWI_TEMPLATE.render(image=self))
+            files.append(fname)
+
+            if self.config_sh:
+                async with aiofiles.open(
+                    os.path.join(dest, "config.sh"), "w"
+                ) as config_sh:
+                    await config_sh.write(self.config_sh)
+                files.append("config.sh")
+
         async with aiofiles.open(os.path.join(dest, "_service"), "w") as service:
             await service.write(SERVICE_TEMPLATE.render(image=self))
-
-        files = ["Dockerfile", "_service"]
 
         if not glob.glob(f"{dest}/*.changes"):
             changes_file_name = self.ibs_package + ".changes"
@@ -241,10 +426,6 @@ class LanguageStackContainer(BaseContainerImage):
             )
         return tags
 
-    @property
-    def reference(self) -> str:
-        return f"registry.suse.com/{self.build_tags[0]}"
-
 
 @dataclass
 class ApplicationStackContainer(LanguageStackContainer):
@@ -276,14 +457,10 @@ class OsContainer(BaseContainerImage):
         tags = []
         for name in [self.name] + self.additional_names:
             tags += [
-                f"bci/bci-{name}:{self.version_label}",
                 f"bci/bci-{name}:%OS_VERSION_ID_SP%",
+                f"bci/bci-{name}:{self.version_label}",
             ]
         return tags
-
-    @property
-    def reference(self) -> str:
-        return f"registry.suse.com/{self.build_tags[1]}"
 
 
 (PYTHON_3_6_SP3, PYTHON_3_6_SP4) = (
