@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from __future__ import annotations
 
 import abc
@@ -1009,3 +1010,57 @@ MINIMAL_CONTAINERS = [
         (4, ReleaseStage.BETA, "minimal-image"),
     )
 ]
+
+
+ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
+    f"{bci.nvr}-sp{bci.sp_version}": bci
+    for bci in (
+        PYTHON_3_6_SP3,
+        PYTHON_3_6_SP4,
+        PYTHON_3_9_SP3,
+        THREE_EIGHT_NINE_DS,
+        NGINX,
+        *RUST_CONTAINERS,
+        *GOLANG_IMAGES,
+        *RUBY_CONTAINERS,
+        *NODE_CONTAINERS,
+        *OPENJDK_CONTAINERS,
+        *INIT_CONTAINERS,
+        *MARIADB_CONTAINERS,
+        *POSTGRES_CONTAINERS,
+        *MINIMAL_CONTAINERS,
+        *MICRO_CONTAINERS,
+    )
+}
+
+
+if __name__ == "__main__":
+    import argparse
+    import asyncio
+
+    parser = argparse.ArgumentParser(
+        "Write the contents of a package directly to the filesystem"
+    )
+
+    parser.add_argument(
+        "image",
+        type=str,
+        nargs=1,
+        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
+        help="The BCI container image, which package contents should be written to the disk",
+    )
+    parser.add_argument(
+        "destination",
+        type=str,
+        nargs=1,
+        help="destination folder to which the files should be written",
+    )
+
+    args = parser.parse_args()
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(
+        ALL_CONTAINER_IMAGE_NAMES[args.image[0]].write_files_to_folder(
+            args.destination[0]
+        )
+    )

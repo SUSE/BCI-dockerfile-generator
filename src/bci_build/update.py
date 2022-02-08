@@ -6,24 +6,7 @@ from typing import Dict, Optional
 from asyncio import create_subprocess_shell
 import aiofiles.tempfile
 
-from bci_build.package import (
-    GOLANG_IMAGES,
-    INIT_CONTAINERS,
-    MARIADB_CONTAINERS,
-    MICRO_CONTAINERS,
-    MINIMAL_CONTAINERS,
-    NGINX,
-    NODE_CONTAINERS,
-    OPENJDK_CONTAINERS,
-    POSTGRES_CONTAINERS,
-    PYTHON_3_6_SP3,
-    PYTHON_3_6_SP4,
-    PYTHON_3_9_SP3,
-    RUBY_CONTAINERS,
-    RUST_CONTAINERS,
-    THREE_EIGHT_NINE_DS,
-    BaseContainerImage,
-)
+from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
 
 
 LOGGER = logging.getLogger(__name__)
@@ -123,32 +106,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Update the SLE BCI image description on IBS")
 
-    IMG_NAMES: Dict[str, BaseContainerImage] = {
-        f"{bci.nvr}-sp{bci.sp_version}": bci
-        for bci in (
-            PYTHON_3_6_SP3,
-            PYTHON_3_6_SP4,
-            PYTHON_3_9_SP3,
-            THREE_EIGHT_NINE_DS,
-            NGINX,
-            *RUST_CONTAINERS,
-            *GOLANG_IMAGES,
-            *RUBY_CONTAINERS,
-            *NODE_CONTAINERS,
-            *OPENJDK_CONTAINERS,
-            *INIT_CONTAINERS,
-            *MARIADB_CONTAINERS,
-            *POSTGRES_CONTAINERS,
-            *MINIMAL_CONTAINERS,
-            *MICRO_CONTAINERS,
-        )
-    }
-
     parser.add_argument(
         "images",
         type=str,
         nargs="+",
-        choices=list(IMG_NAMES.keys()),
+        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
         help="The BCI container image that should be updated",
     )
     parser.add_argument(
@@ -215,7 +177,7 @@ if __name__ == "__main__":
     for img in args.images:
         loop.run_until_complete(
             update_package(
-                IMG_NAMES[img],
+                ALL_CONTAINER_IMAGE_NAMES[img],
                 commit_msg=commit_msg,
                 target_pkg=args.target_pkg,
                 target_prj=args.target_prj,
