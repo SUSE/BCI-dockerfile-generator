@@ -465,16 +465,18 @@ class OsContainer(BaseContainerImage):
 
 (PYTHON_3_6_SP3, PYTHON_3_6_SP4) = (
     LanguageStackContainer(
-        release_stage=ReleaseStage.BETA,
         env={"PYTHON_VERSION": "%%py3_ver%%", "PIP_VERSION": "%%pip_ver%%"},
         replacements_via_service=[
             Replacement(regex_in_dockerfile="%%py3_ver%%", package_name="python3-base"),
             Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python3-pip"),
         ],
+        custom_description="Image containing the Python 3.6 development environment based on the SLE Base Container Image.",
         ibs_package=ibs_package,
+        build_recipe_type=build_type,
         sp_version=sp_version,
         name="python",
-        pretty_name="Python",
+        pretty_name="Python 3.6",
+        release_stage=release_stage,
         version="3.6",
         package_list=[
             "python3",
@@ -484,12 +486,16 @@ class OsContainer(BaseContainerImage):
             "git-core",
         ],
     )
-    for (sp_version, ibs_package) in ((3, "python-3.6"), (4, "python-3.6-image"))
+    for (sp_version, ibs_package, build_type, release_stage) in (
+        (3, "python-3.6", BuildType.KIWI, ReleaseStage.RELEASED),
+        (4, "python-3.6-image", BuildType.DOCKER, ReleaseStage.BETA),
+    )
 )
 
 _python_kwargs = {
     "name": "python",
     "pretty_name": "Python 3.9",
+    "custom_description": "Image containing the Python 3.9 development environment based on the SLE Base Container Image.",
     "version": "3.9",
     "env": {"PYTHON_VERSION": "%%py39_ver%%", "PIP_VERSION": "%%pip_ver%%"},
     "package_list": [
@@ -502,7 +508,7 @@ _python_kwargs = {
         Replacement(regex_in_dockerfile="%%py39_ver%%", package_name="python39-base"),
         Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python39-pip"),
     ],
-    "custom_end": r"""RUN rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
+    "config_sh_script": r"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
     ln -s /usr/bin/python3.9 /usr/bin/python3 && \
     ln -s /usr/bin/pip3.9 /usr/bin/pip3 && \
     ln -s /usr/bin/pip3.9 /usr/bin/pip""",
@@ -512,6 +518,7 @@ PYTHON_3_9_SP3 = LanguageStackContainer(
     release_stage=ReleaseStage.RELEASED,
     ibs_package="python-3.9",
     sp_version=3,
+    build_recipe_type=BuildType.KIWI,
     **_python_kwargs,
 )
 
@@ -551,11 +558,14 @@ _ruby_kwargs = {
     ],
     # as we only ship one ruby version, we want to make sure that binaries belonging
     # to our gems get installed as `bin` and not as `bin.ruby2.5`
-    "custom_end": "RUN sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
+    "config_sh_script": "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
 }
 RUBY_CONTAINERS = [
     LanguageStackContainer(
-        sp_version=3, release_stage=ReleaseStage.RELEASED, **_ruby_kwargs
+        sp_version=3,
+        release_stage=ReleaseStage.RELEASED,
+        build_recipe_type=BuildType.KIWI,
+        **_ruby_kwargs,
     ),
     LanguageStackContainer(
         sp_version=4, release_stage=ReleaseStage.BETA, **_ruby_kwargs
@@ -567,15 +577,20 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
     return {
         "sp_version": sp_version,
         "ibs_package": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
+        "custom_description": f"Image containing the Golang {ver} development environment based on the SLE Base Container Image.",
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "name": "golang",
         "pretty_name": f"Golang {ver}",
         "version": ver,
+        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "env": {
             "GOLANG_VERSION": ver,
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
-        "package_list": [f"go{ver}", "distribution-release", "make"],
+        "package_list": [
+            Package(name=name, pkg_type=PackageType.BOOTSTRAP)
+            for name in (f"go{ver}", "distribution-release", "make")
+        ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": """<constraints>
@@ -604,6 +619,8 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         if sp_version < 4
         else ReleaseStage.RELEASED,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
+        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
+        "custom_description": f"Image containing the Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
         "version": str(ver),
         "pretty_name": f"Node.js {ver}",
@@ -645,6 +662,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "version": 11,
         "sp_version": sp_version,
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
+        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
         + ("-devel" if devel else "")
         + ("-image" if sp_version >= 4 else ""),
@@ -655,7 +673,8 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
             **comon,
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
-            "pretty_name": "OpenJDK 11 development",
+            "pretty_name": "OpenJDK 11 Development",
+            "custom_description": "Image containing the Java 11 Development environment based on the SLE Base Container Image.",
             "package_list": ["java-11-openjdk-devel", "git-core", "maven"],
             "entrypoint": "jshell",
             "from_image": "bci/openjdk:11",
@@ -664,7 +683,8 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         return {
             **comon,
             "name": "openjdk",
-            "pretty_name": "OpenJDK 11",
+            "pretty_name": "OpenJDK 11 Runtime",
+            "custom_description": "Image containing the Java 11 runtime based on the SLE Base Container Image.",
             "package_list": ["java-11-openjdk"],
         }
 
@@ -707,19 +727,20 @@ INIT_CONTAINERS = [
     OsContainer(
         ibs_package=ibs_package,
         sp_version=sp_version,
-        custom_description="Image containing systemd based on the SLE Base Container Image.",
+        custom_description="Image containing a systemd environment for containers based on the SLE Base Container Image.",
         release_stage=release_stage,
+        build_recipe_type=build_recipe_type,
         name="init",
         pretty_name="Init",
-        package_list=["systemd"],
+        package_list=["systemd", "gzip"],
         entrypoint="/usr/lib/systemd/systemd",
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
     )
-    for (sp_version, release_stage, ibs_package) in (
-        (3, ReleaseStage.RELEASED, "init"),
-        (4, ReleaseStage.BETA, "init-image"),
+    for (sp_version, release_stage, ibs_package, build_recipe_type) in (
+        (3, ReleaseStage.RELEASED, "init", BuildType.KIWI),
+        (4, ReleaseStage.BETA, "init-image", BuildType.DOCKER),
     )
 ]
 
