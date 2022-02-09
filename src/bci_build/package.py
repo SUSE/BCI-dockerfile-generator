@@ -6,7 +6,6 @@ import datetime
 from dataclasses import dataclass, field
 from itertools import product
 import enum
-import glob
 import os
 from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
 
@@ -485,43 +484,61 @@ exit 0
         return ",".join(extra_tags) if extra_tags else None
 
     async def write_files_to_folder(self, dest: str) -> List[str]:
+        """Writes all files required to build this image into the destination folder and
+        returns the filenames (not full paths) that were written to the disk.
+
+        """
         files = ["_service"]
+        tasks = []
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
             async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
-                await kiwi_file.write(DOCKERFILE_TEMPLATE.render(image=self))
+                tasks.append(
+                    asyncio.ensure_future(
+                        kiwi_file.write(DOCKERFILE_TEMPLATE.render(image=self))
+                    )
+                )
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
             fname = f"{self.ibs_package}.kiwi"
             async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
-                await kiwi_file.write(KIWI_TEMPLATE.render(image=self))
+                tasks.append(
+                    asyncio.ensure_future(
+                        kiwi_file.write(KIWI_TEMPLATE.render(image=self))
+                    )
+                )
             files.append(fname)
 
             if self.config_sh:
                 async with aiofiles.open(
                     os.path.join(dest, "config.sh"), "w"
                 ) as config_sh:
-                    await config_sh.write(self.config_sh)
+                    tasks.append(asyncio.ensure_future(config_sh.write(self.config_sh)))
                 files.append("config.sh")
 
         async with aiofiles.open(os.path.join(dest, "_service"), "w") as service:
-            await service.write(SERVICE_TEMPLATE.render(image=self))
+            tasks.append(
+                asyncio.ensure_future(
+                    service.write(SERVICE_TEMPLATE.render(image=self))
+                )
+            )
 
-        if not glob.glob(f"{dest}/*.changes"):
-            changes_file_name = self.ibs_package + ".changes"
-            async with aiofiles.open(
-                os.path.join(dest, changes_file_name), "w"
-            ) as changesfile:
-                await changesfile.write("")
+        changes_file_name = self.ibs_package + ".changes"
+        changes_file_dest = os.path.join(dest, changes_file_name)
+        if not os.path.exists(changes_file_dest):
+            async with aiofiles.open(changes_file_dest, "w") as changesfile:
+                tasks.append(asyncio.ensure_future(changesfile.write("")))
             files.append(changes_file_name)
 
         for fname, contents in self.extra_files.items():
-            mode = "w" if isinstance(contents, str) else "b"
+            mode = "w" if isinstance(contents, str) else "bw"
             files.append(fname)
-            with open(os.path.join(dest, fname), mode) as f:
-                f.write(contents)
+            async with aiofiles.open(os.path.join(dest, fname), mode) as f:
+                tasks.append(asyncio.ensure_future(f.write(contents)))
+
+        await asyncio.gather(*tasks)
 
         return files
 
@@ -603,7 +620,7 @@ class OsContainer(BaseContainerImage):
         return tags
 
 
-(PYTHON_3_6_SP3, PYTHON_3_6_SP4) = (
+PYTHON_3_6_CONTAINERS = (
     LanguageStackContainer(
         env={"PYTHON_VERSION": "%%py3_ver%%", "PIP_VERSION": "%%pip_ver%%"},
         replacements_via_service=[
@@ -1154,8 +1171,7 @@ MINIMAL_CONTAINERS = [
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.nvr}-sp{bci.sp_version}": bci
     for bci in (
-        PYTHON_3_6_SP3,
-        PYTHON_3_6_SP4,
+        *PYTHON_3_6_CONTAINERS,
         PYTHON_3_9_SP3,
         THREE_EIGHT_NINE_DS,
         NGINX,
