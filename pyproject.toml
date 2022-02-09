@@ -4,14 +4,19 @@ version = "0.1.0"
 description = "Generator script for the Dockerfiles for the SLE BCI"
 authors = ["Dan Čermák <dcermak@suse.com>"]
 license = "GPL-3.0-or-later"
-
+packages = [
+    { include = "bci_build", from = "src" },
+]
 [tool.poetry.dependencies]
-python = ">=3.6.2,<4.0"
+python = ">=3.9,<4.0"
 Jinja2 = "^3.0"
-dataclasses = { version = ">=0.8", markers="python_version < '3.7'" } 
+aiohttp = "^3.8.1"
+rpm-vercmp = "^0.1.2"
+aiofiles = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
+Sphinx = ">=4.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
