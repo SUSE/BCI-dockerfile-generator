@@ -18,6 +18,8 @@ from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMP
 
 @enum.unique
 class ReleaseStage(enum.Enum):
+    """Values for the ``release-stage`` label of a BCI"""
+
     BETA = "beta"
     RELEASED = "released"
 
@@ -27,6 +29,8 @@ class ReleaseStage(enum.Enum):
 
 @enum.unique
 class ImageType(enum.Enum):
+    """Values of the ``image-type`` label of a BCI"""
+
     SLE_BCI = "sle-bci"
     APPLICATION = "application"
 
@@ -36,6 +40,11 @@ class ImageType(enum.Enum):
 
 @enum.unique
 class BuildType(enum.Enum):
+    """Options for how the image is build, either as a kiwi build or from a
+    :file:`Dockerfile`.
+
+    """
+
     DOCKER = "docker"
     KIWI = "kiwi"
 
@@ -45,6 +54,14 @@ class BuildType(enum.Enum):
 
 @enum.unique
 class PackageType(enum.Enum):
+    """Package types that are supported by kiwi, see
+    `<https://osinside.github.io/kiwi/concept_and_workflow/packages.html>`_ for
+    further details.
+
+    Note that these are only supported for kiwi builds.
+
+    """
+
     DELETE = "delete"
     BOOTSTRAP = "bootstrap"
     IMAGE = "image"
@@ -55,7 +72,16 @@ class PackageType(enum.Enum):
 
 @dataclass
 class Package:
+    """Representation of a package in a kiwi build, for Dockerfile based builds the
+    :py:attr:`~Package.pkg_type`.
+
+    """
+
+    #: The name of the package
     name: str
+
+    #: The package type. This parameter is only applicable for kiwi builds and
+    #: defines into which ``<packages>`` element this package is inserted.
     pkg_type: PackageType = PackageType.IMAGE
 
     def __str__(self) -> str:
@@ -76,7 +102,7 @@ class Replacement:
     package_name: str
 
     #: specify how the version should be formated, see
-    #: `https://github.com/openSUSE/obs-service-replace_using_package_version#usage`_
+    #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
     #: for further details
     parse_version: Optional[
         Literal["major", "minor", "patch", "patch_update", "offset"]
@@ -85,27 +111,31 @@ class Replacement:
 
 @dataclass
 class BaseContainerImage(abc.ABC):
+    """Base class for all Base Container Images."""
+
+    #: Name of this image. It is used to generate the build tags, i.e. it
+    #: defines under which name this image is published.
     name: str
 
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
 
-    #: the name of the package on IBS in ``SUSE:SLE-15-SP$ver:Update:BCI``
+    #: The name of the package on IBS in ``SUSE:SLE-15-SP$ver:Update:BCI``
     ibs_package: str
 
-    #: the SLE service pack to which this package belongs
+    #: The SLE service pack to which this package belongs
     sp_version: SUPPORTED_SLE_SERVICE_PACKS
 
-    #: this container images release stage
+    #: This container images release stage
     release_stage: ReleaseStage
 
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP`` when an empty string is used.
-    #: When from image is None, then no ``FROM`` or ``derived from=""`` entry is
-    #: created in the image description.
+    #: When from image is ``None``, then this image will not be based on
+    #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
 
-    #: an optional entrypoint for the image, is omitted if empty or ``None``
+    #: An optional entrypoint for the image, it is omitted if empty or ``None``
     entrypoint: Optional[str] = None
 
     #: Extra environment variables to be set in the container
@@ -113,37 +143,51 @@ class BaseContainerImage(abc.ABC):
         default_factory=dict
     )
 
+    #: Add any replacements via `obs-service-replace_using_package_version
+    #: <https://github.com/openSUSE/obs-service-replace_using_package_version>`_
+    #: that are used in this image into this list.
+    #: See also :py:class:`~Replacement`
     replacements_via_service: List[Replacement] = field(default_factory=list)
 
+    #: If true, then the label ``com.suse.techpreview`` is set to
+    #: ``"true"``. The label is omitted if this property is false.
     tech_preview: bool = True
 
-    #: additional labels that should be added to the image
+    #: Additional labels that should be added to the image. These are added into
+    #: the ``PREFIXEDLABEL`` section.
     extra_labels: Dict[str, str] = field(default_factory=dict)
 
-    #: Packages to be installed inside the container
+    #: Packages to be installed inside the container image
     package_list: Union[List[str], List[Package]] = field(default_factory=list)
 
     #: This string is appended to the automatically generated dockerfile and can
-    #: contain arbitrary instructions valid for a :file:`Dockerfile`
+    #: contain arbitrary instructions valid for a :file:`Dockerfile`.
+    #: **Caution** Setting both this property and
+    #: :py:attr:`~BaseContainerImage.config_sh_script` is not possible and will
+    #: result in an error.
     custom_end: str = ""
 
     #: A bash script that is put into :file:`config.sh` if a kiwi image is
-    #: created.
+    #: created. If a :file:`Dockerfile` based build is used then this script is
+    #: prependend with a ``RUN`` and added at the end of the ``Dockerfile``. It
+    #: must thus fit on a single line if you want to be able to build from a
+    #: kiwi and :file:`Dockerfile` at the same time!
     config_sh_script: str = ""
-    #: the maintainer of this image, defaults to SUSE
+
+    #: The maintainer of this image, defaults to SUSE
     maintainer: str = "SUSE LLC (https://www.suse.com/)"
 
-    #: additional files that belong into this container-package
-    #: the key is the filename, the value are the file contents
+    #: Additional files that belong into this container-package.
+    #: The key is the filename, the values are the file contents.
     extra_files: Dict[str, Union[str, bytes]] = field(default_factory=dict)
 
-    #: additional names under which this image should be published alongside
+    #: Additional names under which this image should be published alongside
     #: :py:attr:`~BaseContainerImage.name`.
     #: These names are only inserted into the
     #: :py:attr:`~BaseContainerImage.build_tags`
     additional_names: List[str] = field(default_factory=list)
 
-    #: by default the containers get the labelprefix
+    #: By default the containers get the labelprefix
     #: ``com.suse.bci.{self.name}``. If this value is not an empty string, then
     #: it is used instead of the name after ``com.suse.bci.``.
     custom_labelprefix_end: str = ""
@@ -154,8 +198,12 @@ class BaseContainerImage(abc.ABC):
     #: Define whether this container image is built using docker or kiwi
     build_recipe_type: BuildType = BuildType.DOCKER
 
+    #: The default url that is put into the ``org.opencontainers.image.url``
+    #: label
     URL: ClassVar[str] = "https://www.suse.com/products/server/"
 
+    #: The vendor that is put into the ``org.opencontainers.image.vendor``
+    #: label
     VENDOR: ClassVar[str] = "SUSE LLC"
 
     def __post_init__(self) -> None:
@@ -169,19 +217,36 @@ class BaseContainerImage(abc.ABC):
     @property
     @abc.abstractmethod
     def nvr(self) -> str:
+        """Name-version identifier used to uniquely identify this image."""
         pass
 
     @property
     @abc.abstractmethod
     def version_label(self) -> str:
+        """The "main" version label of this image.
+
+        It is added as the ``org.opencontainers.image.version`` label to the
+        container image and also added to the
+        :py:attr:`~BaseContainerImage.build_tags`.
+
+        """
         pass
 
     @property
     def ibs_project(self) -> str:
+        """The project on IBS where this Container Image is maintained."""
         return f"SUSE:SLE-15-SP{self.sp_version}:Update:BCI"
 
     @property
     def dockerfile_custom_end(self) -> str:
+        """This part is appended at the end of the :file:`Dockerfile`. It is either
+        generated from :py:attr:`BaseContainerImage.custom_end` or by prepending
+        ``RUN`` in front of :py:attr:`BaseContainerImage.config_sh_script`. The
+        later implies that the script in that variable fits on a single line or
+        newlines are escaped, e.g. via `ansi escapes
+        <https://stackoverflow.com/a/33439625>`_.
+
+        """
         if self.custom_end:
             return self.custom_end
         if self.config_sh_script:
@@ -190,6 +255,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def config_sh(self) -> str:
+        """The full :file:`config.sh` script required for kiwi builds."""
         if not self.config_sh_script:
             if self.custom_end:
                 raise ValueError(
@@ -233,10 +299,24 @@ exit 0
 
     @property
     def packages(self) -> str:
+        """The list of packages joined so that it can be appended to a
+        :command:`zypper in`.
+
+        """
+        for pkg in self.package_list:
+            if isinstance(pkg, Package) and pkg.pkg_type != PackageType.IMAGE:
+                raise ValueError(
+                    f"Cannot add a package of type {pkg.pkg_type} into a Dockerfile based build."
+                )
         return " ".join(str(pkg) for pkg in self.package_list)
 
     @property
     def kiwi_packages(self) -> str:
+        """The package list as xml elements that are inserted into a kiwi build
+        description file.
+
+        """
+
         def create_pkg_filter_func(
             pkg_type: PackageType,
         ) -> Callable[[Union[str, Package]], bool]:
@@ -277,10 +357,15 @@ exit 0
 
     @property
     def env_lines(self) -> str:
+        """Part of the :file:`Dockerfile` that sets every environment variable defined
+        in :py:attr:`~BaseContainerImage.env`.
+
+        """
         return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
 
     @property
     def kiwi_env_entry(self) -> str:
+        """Environment variable settings for a kiwi build recipe."""
         if not self.env:
             return ""
         return (
@@ -298,19 +383,37 @@ exit 0
     @property
     @abc.abstractmethod
     def image_type(self) -> ImageType:
+        """Define the value of the ``com.suse.image-type`` label."""
         pass
 
     @property
     @abc.abstractmethod
     def build_tags(self) -> List[str]:
+        """All build tags that will be added to this image. Note that build tags are
+        full paths on the registry and not just a tag.
+
+        """
         pass
 
     @property
     def reference(self) -> str:
+        """The primary URL via which this image can be pulled. It is used to set the
+        ``org.opensuse.reference`` label and defaults to
+        ``registry.suse.com/{self.build_tags[0]}``.
+
+        """
         return f"registry.suse.com/{self.build_tags[0]}"
 
     @property
     def description(self) -> str:
+        """The description of this image which is inserted into the
+        ``org.opencontainers.image.description`` label.
+
+        If :py:attr:`BaseContainerImage.custom_description` is set, then that
+        value is used. Otherwise it reuses
+        :py:attr:`BaseContainerImage.pretty_name` to generate a description.
+
+        """
         return (
             self.custom_description
             or f"Image containing {self.pretty_name} based on the SLE Base Container Image."
@@ -318,14 +421,29 @@ exit 0
 
     @property
     def title(self) -> str:
+        """The image title that is inserted into the ``org.opencontainers.image.title``
+        label.
+
+        It is generated from :py:attr:`BaseContainerImage.pretty_name` as
+        follows: ``"SLE BCI {self.pretty_name} Container Image"``.
+
+        """
         return f"SLE BCI {self.pretty_name} Container Image"
 
     @property
     def extra_label_lines(self) -> str:
+        """Lines for a :file:`Dockerfile` to set the additional labels defined in
+        :py:attr:`BaseContainerImage.extra_labels`.
+
+        """
         return "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
 
     @property
     def extra_label_xml_lines(self) -> str:
+        """XML Elements for a kiwi build description to set the additional labels
+        defined in :py:attr:`BaseContainerImage.extra_labels`.
+
+        """
         return "\n".join(
             f'            <label name="{k}" value="{v}"/>'
             for k, v in self.extra_labels.items()
@@ -333,10 +451,28 @@ exit 0
 
     @property
     def labelprefix(self) -> str:
+        """The label prefix used to duplicate the labels. See
+        `<https://en.opensuse.org/Building_derived_containers#Labels>`_ for
+        further information.
+
+        This value is by default ``com.suse.bci.{self.name}`` unless
+        :py:attr:`BaseContainerImage.custom_labelprefix_end` is set. In that
+        case it is ``"com.suse.bci.{self.custom_labelprefix_end}"``.
+
+        """
         return f"com.suse.bci.{self.custom_labelprefix_end or self.name}"
 
     @property
     def kiwi_additional_tags(self) -> Optional[str]:
+        """Entry for the ``additionaltags`` attribute in the kiwi build
+        description.
+
+        This attribute is used by kiwi to add additional tags to the image under
+        it's primary name. This string contains a coma separated list of all
+        build tags (except for the primary one) that have the **same** name as
+        the image itself.
+
+        """
         extra_tags = []
         for buildtag in self.build_tags[1:]:
             path, tag = buildtag.split(":")

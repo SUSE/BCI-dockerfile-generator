@@ -32,3 +32,12 @@ For example, to update the nodejs containers, run:
 .. code-block:: bash
 
    poetry run ./src/bci_build/update.py --commit-msg "Update according to $reason" nodejs-12-sp4 nodejs-14-sp4 nodejs-16-sp4
+
+
+If you do not want to interact with IBS at all, then you can also use the
+:file:`src/bci_build/package.py` script to just write the files of a single
+package into a directory:
+
+.. code-block:: bash
+
+   poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/

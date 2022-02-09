@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-from typing import Dict, Optional
+from typing import Optional
 
 from asyncio import create_subprocess_shell
 import aiofiles.tempfile
@@ -20,22 +20,16 @@ async def update_package(
     cleanup_on_error: bool = False,
     submit_package: bool = True,
     cleanup_on_no_change: bool = True,
-):
-    """Update the package of this .Net image on IBS:
+) -> None:
+    """Update the package of this BCI image on IBS:
 
     1. if ``target_pkg`` is ``None``, branch the image package, optionally
        into the supplied ``target_prj``
     2. checkout the branched package or ``target_pkg``
-    3. fetch the latest version of all rpm packages from
-       :py:attr:`DotnetImage.packages`
-    4. render the Dockerfile template and add it
-    5. add the :file:`_constraints`, :file:`_service`, :file:`LICENSE`,
-       :file:`prod.repo` and :file:`microsoft.asc` files
-    6. update the changelog, commit the changes and create a submitrequest
+    3. render the build recipe files from the ``bci`` Container Image
+    4. update the changelog, commit the changes and create a submitrequest
        (the SR is only created when ``submit_package`` is ``True``) if any
-       changes were made. By default we use `Update to $ver` as the commit,
-       changelog and SR message unless ``custom_commit_msg`` is not
-       ``None``, then that parameter is used instead.
+       changes were made.
 
     If ``cleanup_on_error`` is ``True``, then perform a :command:`osc
     rdelete` of the branched package or ``target_pkg`` if an error occurred
