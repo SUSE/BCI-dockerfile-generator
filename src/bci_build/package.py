@@ -63,6 +63,7 @@ class PackageType(enum.Enum):
     """
 
     DELETE = "delete"
+    UNINSTALL = "uninstall"
     BOOTSTRAP = "bootstrap"
     IMAGE = "image"
 
@@ -331,15 +332,17 @@ exit 0
             PackageType.DELETE,
             PackageType.BOOTSTRAP,
             PackageType.IMAGE,
+            PackageType.UNINSTALL,
         )
-        delete_packages, bootstrap_packages, image_packages = (
+        delete_packages, bootstrap_packages, image_packages, uninstall_packages = (
             list(filter(create_pkg_filter_func(pkg_type), self.package_list))
             for pkg_type in PKG_TYPES
         )
 
         res = ""
         for (pkg_list, pkg_type) in zip(
-            (delete_packages, bootstrap_packages, image_packages), PKG_TYPES
+            (delete_packages, bootstrap_packages, image_packages, uninstall_packages),
+            PKG_TYPES,
         ):
             if len(pkg_list) > 0:
                 res += (
