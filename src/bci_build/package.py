@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import abc
+import asyncio
 import datetime
 from dataclasses import dataclass, field
 from itertools import product
@@ -491,52 +492,52 @@ exit 0
         files = ["_service"]
         tasks = []
 
+        async def write_to_file(
+            fname: str, contents: Union[str, bytes], mode="w"
+        ) -> None:
+            async with aiofiles.open(os.path.join(dest, fname), mode) as f:
+                await f.write(contents)
+
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
-            async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
-                tasks.append(
-                    asyncio.ensure_future(
-                        kiwi_file.write(DOCKERFILE_TEMPLATE.render(image=self))
-                    )
+            tasks.append(
+                asyncio.ensure_future(
+                    write_to_file(fname, DOCKERFILE_TEMPLATE.render(image=self))
                 )
+            )
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
             fname = f"{self.ibs_package}.kiwi"
-            async with aiofiles.open(os.path.join(dest, fname), "w") as kiwi_file:
-                tasks.append(
-                    asyncio.ensure_future(
-                        kiwi_file.write(KIWI_TEMPLATE.render(image=self))
-                    )
+            tasks.append(
+                asyncio.ensure_future(
+                    write_to_file(fname, KIWI_TEMPLATE.render(image=self))
                 )
+            )
             files.append(fname)
 
             if self.config_sh:
-                async with aiofiles.open(
-                    os.path.join(dest, "config.sh"), "w"
-                ) as config_sh:
-                    tasks.append(asyncio.ensure_future(config_sh.write(self.config_sh)))
+                tasks.append(
+                    asyncio.ensure_future(write_to_file("config.sh", self.config_sh))
+                )
                 files.append("config.sh")
 
-        async with aiofiles.open(os.path.join(dest, "_service"), "w") as service:
-            tasks.append(
-                asyncio.ensure_future(
-                    service.write(SERVICE_TEMPLATE.render(image=self))
-                )
+        tasks.append(
+            asyncio.ensure_future(
+                write_to_file("_service", SERVICE_TEMPLATE.render(image=self))
             )
+        )
 
         changes_file_name = self.ibs_package + ".changes"
         changes_file_dest = os.path.join(dest, changes_file_name)
         if not os.path.exists(changes_file_dest):
-            async with aiofiles.open(changes_file_dest, "w") as changesfile:
-                tasks.append(asyncio.ensure_future(changesfile.write("")))
+            tasks.append(asyncio.ensure_future(write_to_file(changes_file_name, "")))
             files.append(changes_file_name)
 
         for fname, contents in self.extra_files.items():
             mode = "w" if isinstance(contents, str) else "bw"
             files.append(fname)
-            async with aiofiles.open(os.path.join(dest, fname), mode) as f:
-                tasks.append(asyncio.ensure_future(f.write(contents)))
+            tasks.append(asyncio.ensure_future(write_to_file(fname, contents, mode)))
 
         await asyncio.gather(*tasks)
 
@@ -1191,7 +1192,6 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
 
 if __name__ == "__main__":
     import argparse
-    import asyncio
 
     parser = argparse.ArgumentParser(
         "Write the contents of a package directly to the filesystem"
