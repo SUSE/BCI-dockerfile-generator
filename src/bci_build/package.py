@@ -136,6 +136,8 @@ class BaseContainerImage(abc.ABC):
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
 
+    is_latest: bool = False
+
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
     entrypoint: Optional[str] = None
 
@@ -576,6 +578,7 @@ class LanguageStackContainer(BaseContainerImage):
         for name in [self.name] + self.additional_names:
             tags += (
                 [f"{self._registry_prefix}/{name}:{self.version_label}"]
+                + ([f"{self._registry_prefix}/{name}:latest"] if self.is_latest else [])
                 + [f"{self._registry_prefix}/{name}:{self.version_label}-%RELEASE%"]
                 + [
                     f"{self._registry_prefix}/{name}:{ver}"
@@ -617,7 +620,7 @@ class OsContainer(BaseContainerImage):
             tags += [
                 f"bci/bci-{name}:%OS_VERSION_ID_SP%",
                 f"bci/bci-{name}:{self.version_label}",
-            ]
+            ] + ([f"bci/bci-{name}:latest"] if self.is_latest else [])
         return tags
 
 
@@ -675,6 +678,7 @@ _python_kwargs = {
 PYTHON_3_9_SP3 = LanguageStackContainer(
     release_stage=ReleaseStage.RELEASED,
     ibs_package="python-3.9",
+    is_latest=True,
     sp_version=3,
     build_recipe_type=BuildType.KIWI,
     **_python_kwargs,
@@ -723,6 +727,7 @@ RUBY_CONTAINERS = [
         sp_version=3,
         release_stage=ReleaseStage.RELEASED,
         build_recipe_type=BuildType.KIWI,
+        is_latest=True,
         **_ruby_kwargs,
     ),
     LanguageStackContainer(
@@ -739,6 +744,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "name": "golang",
         "pretty_name": f"Golang {ver}",
+        "is_latest": ver == "1.17" and sp_version == 3,
         "version": ver,
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "env": {
@@ -776,6 +782,7 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         "release_stage": ReleaseStage.RELEASED
         if sp_version < 4
         else ReleaseStage.RELEASED,
+        "is_latest": ver == 14 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "custom_description": f"Image containing the Node.js {ver} development environment based on the SLE Base Container Image.",
@@ -819,6 +826,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "env": JAVA_ENV,
         "version": 11,
         "sp_version": sp_version,
+        "is_latest": True,
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
@@ -857,6 +865,7 @@ THREE_EIGHT_NINE_DS = ApplicationStackContainer(
     release_stage=ReleaseStage.BETA,
     ibs_package="389-ds-container",
     sp_version=4,
+    is_latest=True,
     name="389-ds",
     maintainer="wbrown@suse.de",
     pretty_name="389 Directory Server",
@@ -887,6 +896,7 @@ INIT_CONTAINERS = [
         sp_version=sp_version,
         custom_description="Image containing a systemd environment for containers based on the SLE Base Container Image.",
         release_stage=release_stage,
+        is_latest=sp_version == 3,
         build_recipe_type=build_recipe_type,
         name="init",
         pretty_name="Init",
@@ -982,6 +992,7 @@ POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         ibs_package=f"postgres-{ver}-image",
         sp_version=4,
+        is_latest=ver == 14,
         release_stage=ReleaseStage.BETA,
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
@@ -1040,6 +1051,7 @@ for filename in (
 NGINX = ApplicationStackContainer(
     ibs_package="rmt-nginx-image",
     sp_version=4,
+    is_latest=True,
     release_stage=ReleaseStage.BETA,
     name="rmt-nginx",
     pretty_name="RMT Nginx",
@@ -1104,6 +1116,7 @@ RUST_CONTAINERS = [
         ibs_package="rust-{ver}-image",
         release_stage=ReleaseStage.BETA,
         sp_version=4,
+        is_latest=rust_version == "1.57",
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
@@ -1121,6 +1134,7 @@ MICRO_CONTAINERS = [
         name="micro",
         sp_version=sp_version,
         ibs_package=ibs_package,
+        is_latest=sp_version == 3,
         pretty_name="%OS_VERSION% Micro",
         custom_description="Image containing a micro environment for containers based on the SLE Base Container Image.",
         release_stage=release_stage,
@@ -1148,6 +1162,7 @@ MINIMAL_CONTAINERS = [
         name="minimal",
         from_image="bci/bci-micro",
         sp_version=sp_version,
+        is_latest=sp_version == 3,
         ibs_package=ibs_package,
         release_stage=release_stage,
         build_recipe_type=BuildType.KIWI,
@@ -1188,7 +1203,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MICRO_CONTAINERS,
     )
 }
-
+ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-16-sp3")
 
 if __name__ == "__main__":
     import argparse
