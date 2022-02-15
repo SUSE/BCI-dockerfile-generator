@@ -800,11 +800,7 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         ],
         "env": {
             "NODE_VERSION": ver,
-            "NPM_VERSION": "%%npm_ver%%",
         },
-        "replacements_via_service": [
-            Replacement(regex_in_dockerfile="%%npm_ver%%", package_name=f"npm{ver}"),
-        ],
     }
 
 
