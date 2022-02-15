@@ -2,7 +2,8 @@ import jinja2
 
 
 DOCKERFILE_TEMPLATE = jinja2.Template(
-    """{% for tag in image.build_tags -%}
+    """# SPDX-License-Identifier: MIT
+{% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
 
@@ -38,6 +39,7 @@ RUN zypper -n in --no-recommends {{ image.packages }} && zypper -n clean && rm -
 
 KIWI_TEMPLATE = jinja2.Template(
     """<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
 
 <!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
