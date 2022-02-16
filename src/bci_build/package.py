@@ -1184,6 +1184,28 @@ MINIMAL_CONTAINERS = [
     )
 ]
 
+BUSYBOX_CONTAINER = OsContainer(
+    name="busybox",
+    from_image=None,
+    sp_version=4,
+    release_stage=ReleaseStage.BETA,
+    pretty_name="Busybox",
+    ibs_package="busybox-image",
+    is_latest=True,
+    build_recipe_type=BuildType.KIWI,
+    custom_description="Image containing Busybox based on the SLE Base Container Image.",
+    entrypoint="/bin/sh",
+    package_list=[
+        Package(name, pkg_type=PackageType.BOOTSTRAP)
+        for name in (
+            "busybox",
+            "busybox-links",
+            "distribution-release",
+            "ca-certificates-mozilla-prebuilt",
+        )
+    ],
+)
+
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.nvr}-sp{bci.sp_version}": bci
@@ -1202,6 +1224,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *POSTGRES_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
+        BUSYBOX_CONTAINER,
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-16-sp3")
