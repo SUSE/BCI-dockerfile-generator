@@ -822,7 +822,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "env": JAVA_ENV,
         "version": 11,
         "sp_version": sp_version,
-        "is_latest": True,
+        "is_latest": sp_version == 3,
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
