@@ -1105,7 +1105,7 @@ NGINX_CONTAINERS = [
         release_stage=ReleaseStage.BETA if sp_version > 3 else ReleaseStage.RELEASED,
         name="rmt-nginx",
         pretty_name="RMT Nginx",
-        version="1.19",
+        version=version,
         package_list=["nginx", "distribution-release"],
         entrypoint='["/docker-entrypoint.sh"]',
         extra_files=_NGINX_FILES,
@@ -1134,7 +1134,7 @@ STOPSIGNAL SIGQUIT
 CMD ["nginx", "-g", "daemon off;"]
 """,
     )
-    for sp_version in (3, 4)
+    for sp_version, version in ((3, "1.19"), (4, "1.21"))
 ]
 
 
