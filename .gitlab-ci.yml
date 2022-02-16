@@ -1,0 +1,14 @@
+stages:
+  - test
+
+test generation stupidly:
+  image: docker.io/library/python:latest
+  before_script:
+    - pip install poetry
+    - poetry install
+  script:
+    - mkdir -p pkg_dest
+    - |
+      for pkg in $(poetry run ./src/bci_build/package.py --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
+          poetry run ./src/bci_build/package.py $pkg pkg_dest
+      done
