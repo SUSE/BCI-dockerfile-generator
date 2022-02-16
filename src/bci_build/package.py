@@ -934,13 +934,15 @@ with open(
     os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
 ) as entrypoint:
     MARIADB_CONTAINERS = [
-        LanguageStackContainer(
-            ibs_package="mariadb-image",
-            sp_version=4,
-            release_stage=ReleaseStage.BETA,
-            name="mariadb",
-            maintainer="bruno.leon@suse.de",
-            version="10.6",
+        ApplicationStackContainer(
+            ibs_package="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
+            sp_version=sp_version,
+            release_stage=ReleaseStage.RELEASED
+            if sp_version == 3
+            else ReleaseStage.BETA,
+            is_latest=sp_version == 3,
+            name="rmt-mariadb",
+            version=version,
             pretty_name="MariaDB Server",
             custom_description="Image containing MariaDB server for RMT, based on the SLE Base Container Image.",
             package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
@@ -969,28 +971,56 @@ EXPOSE 3306
 CMD ["mariadbd"]
 """,
         )
+        for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
     ]
+
+
+MARIADB_CLIENT_CONTAINERS = [
+    ApplicationStackContainer(
+        ibs_package="rmt-mariadb-client-image"
+        if sp_version > 3
+        else "rmt-mariadb-client-image",
+        sp_version=sp_version,
+        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
+        is_latest=sp_version == 3,
+        name="rmt-mariadb-client",
+        version=version,
+        pretty_name="MariaDB Client",
+        custom_description="Image containing MariaDB client for RMT, based on the SLE Base Container Image.",
+        package_list=["mariadb-client"],
+        custom_end=r"""CMD ["mariadbd"]
+""",
+    )
+    for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
+]
 
 
 with open(
     os.path.join(os.path.dirname(__file__), "rmt", "entrypoint.sh")
 ) as entrypoint:
-    RMT_CONTAINER = ApplicationStackContainer(
-        name="rmt-server",
-        ibs_package="suse-rmt-server-container",
-        sp_version=4,
-        release_stage=ReleaseStage.BETA,
-        maintainer="bruno.leon@suse.de",
-        pretty_name="RMT Server",
-        version="2.7",
-        package_list=["rmt-server", "catatonit"],
-        entrypoint="/usr/local/bin/entrypoint.sh",
-        env={"RAILS_ENV": "production", "LANG": "en"},
-        extra_files={"entrypoint.sh": entrypoint.read(-1)},
-        custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+    RMT_CONTAINERS = [
+        ApplicationStackContainer(
+            name="rmt-server",
+            ibs_package="rmt-server",
+            sp_version=sp_version,
+            custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
+            release_stage=ReleaseStage.RELEASED
+            if sp_version == 3
+            else ReleaseStage.BETA,
+            is_latest=sp_version == 3,
+            pretty_name="RMT Server",
+            version="2.7",
+            package_list=["rmt-server", "catatonit"],
+            entrypoint="/usr/local/bin/entrypoint.sh",
+            env={"RAILS_ENV": "production", "LANG": "en"},
+            extra_files={"entrypoint.sh": entrypoint.read(-1)},
+            custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 """,
-    )
+        )
+        for sp_version in (3, 4)
+    ]
 
 
 with open(
@@ -1065,18 +1095,19 @@ for filename in (
         _NGINX_FILES[filename] = cursor.read(-1)
 
 
-NGINX = ApplicationStackContainer(
-    ibs_package="rmt-nginx-image",
-    sp_version=4,
-    is_latest=True,
-    release_stage=ReleaseStage.BETA,
-    name="rmt-nginx",
-    pretty_name="RMT Nginx",
-    version="1.19",
-    package_list=["nginx", "distribution-release"],
-    entrypoint='["/docker-entrypoint.sh"]',
-    extra_files=_NGINX_FILES,
-    custom_end="""
+NGINX_CONTAINERS = [
+    ApplicationStackContainer(
+        ibs_package="rmt-nginx-image" if sp_version > 3 else "rmt-nginx",
+        sp_version=sp_version,
+        is_latest=sp_version == 3,
+        release_stage=ReleaseStage.BETA if sp_version > 3 else ReleaseStage.RELEASED,
+        name="rmt-nginx",
+        pretty_name="RMT Nginx",
+        version="1.19",
+        package_list=["nginx", "distribution-release"],
+        entrypoint='["/docker-entrypoint.sh"]',
+        extra_files=_NGINX_FILES,
+        custom_end="""
 RUN mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
@@ -1089,6 +1120,8 @@ RUN chmod +x /docker-entrypoint.sh
 
 COPY index.html /srv/www/htdocs/
 
+RUN mkdir /var/log/nginx
+RUN chown nginx:nginx /var/log/nginx
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
@@ -1098,7 +1131,9 @@ STOPSIGNAL SIGQUIT
 
 CMD ["nginx", "-g", "daemon off;"]
 """,
-)
+    )
+    for sp_version in (3, 4)
+]
 
 
 # PHP_VERSIONS = [7, 8]
@@ -1229,7 +1264,8 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_9_SP3,
         THREE_EIGHT_NINE_DS,
-        NGINX,
+        *NGINX_CONTAINERS,
+        *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GOLANG_IMAGES,
         *RUBY_CONTAINERS,
@@ -1237,6 +1273,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *OPENJDK_CONTAINERS,
         *INIT_CONTAINERS,
         *MARIADB_CONTAINERS,
+        *MARIADB_CLIENT_CONTAINERS,
         *POSTGRES_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
