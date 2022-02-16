@@ -694,6 +694,7 @@ _python_kwargs = {
 PYTHON_3_9_SP3 = LanguageStackContainer(
     release_stage=ReleaseStage.RELEASED,
     ibs_package="python-3.9",
+    additional_versions=["3"],
     is_latest=True,
     sp_version=3,
     build_recipe_type=BuildType.KIWI,
@@ -705,6 +706,7 @@ _ruby_kwargs = {
     "ibs_package": "ruby-2.5-image",
     "pretty_name": "Ruby 2.5",
     "version": "2.5",
+    "additional_versions": ["2"],
     "env": {
         # upstream does this
         "LANG": "C.UTF-8",
@@ -1103,7 +1105,7 @@ NGINX_CONTAINERS = [
         release_stage=ReleaseStage.BETA if sp_version > 3 else ReleaseStage.RELEASED,
         name="rmt-nginx",
         pretty_name="RMT Nginx",
-        version="1.19",
+        version=version,
         package_list=["nginx", "distribution-release"],
         entrypoint='["/docker-entrypoint.sh"]',
         extra_files=_NGINX_FILES,
@@ -1132,7 +1134,7 @@ STOPSIGNAL SIGQUIT
 CMD ["nginx", "-g", "daemon off;"]
 """,
     )
-    for sp_version in (3, 4)
+    for sp_version, version in ((3, "1.19"), (4, "1.21"))
 ]
 
 
