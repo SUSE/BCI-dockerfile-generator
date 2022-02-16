@@ -1,5 +1,7 @@
 stages:
   - test
+  - deploy
+
 image: docker.io/library/python:latest
 before_script:
   - pip install poetry
@@ -16,3 +18,24 @@ test generation stupidly:
       for pkg in $(poetry run ./src/bci_build/package.py --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
           poetry run ./src/bci_build/package.py $pkg pkg_dest
       done
+
+documentation:
+  script:
+    - poetry run sphinx-build -M html source build -W
+  artifacts:
+    paths:
+      - build/html/
+
+pages:
+  stage: deploy
+  before_script: []
+  dependencies:
+    - documentation
+  script:
+    - mkdir public
+    - mv build/html/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
