@@ -460,12 +460,24 @@ exit 0
         `<https://en.opensuse.org/Building_derived_containers#Labels>`_ for
         further information.
 
-        This value is by default ``com.suse.bci.{self.name}`` unless
+        This value is by default ``com.suse.bci.{self.name}`` for images of type
+        :py:attr:`ImageType.SLE_BCI` and ```com.suse.application.{self.name}``
+        for images of type :py:attr:`ImageType.APPLICATION` unless
         :py:attr:`BaseContainerImage.custom_labelprefix_end` is set. In that
-        case it is ``"com.suse.bci.{self.custom_labelprefix_end}"``.
+        case ``self.name`` is replaced by
+        :py:attr:`~BaseContainerImage.custom_labelprefix_end`.
 
         """
-        return f"com.suse.bci.{self.custom_labelprefix_end or self.name}"
+        return (
+            "com.suse."
+            + (
+                {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
+                    self.image_type
+                ]
+            )
+            + "."
+            + (self.custom_labelprefix_end or self.name)
+        )
 
     @property
     def kiwi_additional_tags(self) -> Optional[str]:
@@ -597,6 +609,10 @@ class ApplicationStackContainer(LanguageStackContainer):
     @property
     def image_type(self) -> ImageType:
         return ImageType.APPLICATION
+
+    @property
+    def title(self) -> str:
+        return f"SLE {self.pretty_name} Container Image"
 
 
 @dataclass
