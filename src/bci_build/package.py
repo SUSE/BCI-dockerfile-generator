@@ -752,7 +752,12 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
         "package_list": [
-            Package(name=name, pkg_type=PackageType.BOOTSTRAP)
+            Package(
+                name=name,
+                pkg_type=PackageType.BOOTSTRAP
+                if sp_version == 3
+                else PackageType.IMAGE,
+            )
             for name in (f"go{ver}", "distribution-release", "make")
         ],
         "extra_files": {
@@ -822,7 +827,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "env": JAVA_ENV,
         "version": 11,
         "sp_version": sp_version,
-        "is_latest": True,
+        "is_latest": sp_version == 3,
         "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
