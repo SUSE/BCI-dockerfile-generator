@@ -1,11 +1,15 @@
 stages:
   - test
+image: docker.io/library/python:latest
+before_script:
+  - pip install poetry
+  - poetry install
+
+formating:
+  script:
+    - poetry run black --check --diff .
 
 test generation stupidly:
-  image: docker.io/library/python:latest
-  before_script:
-    - pip install poetry
-    - poetry install
   script:
     - mkdir -p pkg_dest
     - |
