@@ -802,9 +802,9 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
     return {
         "name": "nodejs",
         "sp_version": sp_version,
-        "release_stage": ReleaseStage.RELEASED
-        if sp_version < 4
-        else ReleaseStage.RELEASED,
+        "release_stage": (
+            ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA
+        ),
         "is_latest": ver == 14 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
