@@ -93,6 +93,7 @@ async def update_package(
             LOGGER.error("failed to update %s, got %s", bci.name, exc)
             if cleanup_on_error:
                 await run_cmd(f"osc -A ibs rdelete {target_pkg} -m 'cleanup on error'")
+            raise exc
 
 
 if __name__ == "__main__":

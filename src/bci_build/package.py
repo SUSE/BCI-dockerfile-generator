@@ -1167,7 +1167,7 @@ CMD ["nginx", "-g", "daemon off;"]
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
-        ibs_package="rust-{ver}-image",
+        ibs_package=f"rust-{rust_version}-image",
         release_stage=ReleaseStage.BETA,
         sp_version=4,
         is_latest=rust_version == "1.57",
