@@ -935,22 +935,22 @@ INIT_CONTAINERS = [
 with open(
     os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
 ) as entrypoint:
-    MARIADB_CONTAINERS = [
-        ApplicationStackContainer(
-            ibs_package="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
-            sp_version=sp_version,
-            release_stage=ReleaseStage.RELEASED
-            if sp_version == 3
-            else ReleaseStage.BETA,
-            is_latest=sp_version == 3,
-            name="rmt-mariadb",
-            version=version,
-            pretty_name="MariaDB Server",
-            custom_description="Image containing MariaDB server for RMT, based on the SLE Base Container Image.",
-            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
-            entrypoint='["docker-entrypoint.sh"]',
-            extra_files={"docker-entrypoint.sh": entrypoint.read(-1)},
-            custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
+    _MARIAD_ENTRYPOINT = entrypoint.read(-1)
+
+MARIADB_CONTAINERS = [
+    ApplicationStackContainer(
+        ibs_package="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
+        sp_version=sp_version,
+        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
+        is_latest=sp_version == 3,
+        name="rmt-mariadb",
+        version=version,
+        pretty_name="MariaDB Server",
+        custom_description="Image containing MariaDB server for RMT, based on the SLE Base Container Image.",
+        package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
+        entrypoint='["docker-entrypoint.sh"]',
+        extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
+        custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
 
@@ -972,9 +972,9 @@ RUN mkdir /run/mysql
 EXPOSE 3306
 CMD ["mariadbd"]
 """,
-        )
-        for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
-    ]
+    )
+    for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
+]
 
 
 MARIADB_CLIENT_CONTAINERS = [
@@ -1000,29 +1000,29 @@ MARIADB_CLIENT_CONTAINERS = [
 with open(
     os.path.join(os.path.dirname(__file__), "rmt", "entrypoint.sh")
 ) as entrypoint:
-    RMT_CONTAINERS = [
-        ApplicationStackContainer(
-            name="rmt-server",
-            ibs_package="rmt-server",
-            sp_version=sp_version,
-            custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
-            release_stage=ReleaseStage.RELEASED
-            if sp_version == 3
-            else ReleaseStage.BETA,
-            is_latest=sp_version == 3,
-            pretty_name="RMT Server",
-            version="2.7",
-            package_list=["rmt-server", "catatonit"],
-            entrypoint="/usr/local/bin/entrypoint.sh",
-            env={"RAILS_ENV": "production", "LANG": "en"},
-            extra_files={"entrypoint.sh": entrypoint.read(-1)},
-            custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+    _RMT_ENTRYPOINT = entrypoint.read(-1)
+
+RMT_CONTAINERS = [
+    ApplicationStackContainer(
+        name="rmt-server",
+        ibs_package="rmt-server",
+        sp_version=sp_version,
+        custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
+        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
+        is_latest=sp_version == 3,
+        pretty_name="RMT Server",
+        version="2.7",
+        package_list=["rmt-server", "catatonit"],
+        entrypoint="/usr/local/bin/entrypoint.sh",
+        env={"RAILS_ENV": "production", "LANG": "en"},
+        extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
+        custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 """,
-        )
-        for sp_version in (3, 4)
-    ]
+    )
+    for sp_version in (3, 4)
+]
 
 
 with open(
