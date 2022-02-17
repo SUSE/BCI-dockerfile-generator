@@ -1283,6 +1283,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-16-sp3")
+ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-12-sp4")
 
 if __name__ == "__main__":
     import argparse
