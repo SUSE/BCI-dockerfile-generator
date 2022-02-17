@@ -86,7 +86,7 @@ async def update_package(
                     )
                 return
 
-            for cmd in ["vc", "ci"] + (["sr"] if submit_package else []):
+            for cmd in ["vc", "ci"] + (["sr --cleanup"] if submit_package else []):
                 await run_cmd(f'osc {cmd} -m "{commit_msg}"')
 
         except Exception as exc:
