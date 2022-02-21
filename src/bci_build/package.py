@@ -889,7 +889,7 @@ THREE_EIGHT_NINE_DS = ApplicationStackContainer(
     maintainer="wbrown@suse.de",
     pretty_name="389 Directory Server",
     package_list=["389-ds", "timezone", "openssl"],
-    version="1.4",
+    version="2.0",
     custom_end=r"""EXPOSE 3389 3636
 
 RUN mkdir -p /data/config && \
