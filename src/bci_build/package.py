@@ -1156,6 +1156,11 @@ OPENJDK_CONTAINERS = (
 )
 
 
+_389DS_FILES: Dict[str, str] = {}
+_fname = "nsswitch.conf"
+with open(os.path.join(os.path.dirname(__file__), "389-ds", _fname)) as nsswitch:
+    _389DS_FILES[_fname] = nsswitch.read(-1)
+
 THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
         package_name="389-ds-container",
@@ -1163,11 +1168,12 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         is_latest=True,
         version_in_uid=False,
         name="389-ds",
-        maintainer="wbrown@suse.de",
+        maintainer="william.brown@suse.com",
         pretty_name="389 Directory Server",
-        package_list=["389-ds", "timezone", "openssl"],
+        package_list=["389-ds", "timezone", "openssl", "nss_synth"],
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
         version="%%389ds_version%%",
+        extra_files=_389DS_FILES,
         replacements_via_service=[
             Replacement(
                 regex_in_dockerfile="%%389ds_version%%",
@@ -1176,6 +1182,8 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
             )
         ],
         custom_end=rf"""EXPOSE 3389 3636
+
+COPY nsswitch.conf /etc/nsswitch.conf
 
 {DOCKERFILE_RUN} mkdir -p /data/config; \
     mkdir -p /data/ssca; \
