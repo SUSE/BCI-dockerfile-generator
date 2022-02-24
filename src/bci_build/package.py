@@ -141,6 +141,9 @@ class BaseContainerImage(abc.ABC):
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
     entrypoint: Optional[str] = None
 
+    #: An optional CMD for the image, it is omitted if empty or ``None``
+    cmd: Optional[str] = None
+
     #: Extra environment variables to be set in the container
     env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
         default_factory=dict
