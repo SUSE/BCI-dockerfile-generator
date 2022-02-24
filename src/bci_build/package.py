@@ -1221,7 +1221,7 @@ MICRO_CONTAINERS = [
 MINIMAL_CONTAINERS = [
     OsContainer(
         name="minimal",
-        from_image="bci/bci-micro",
+        from_image=f"bci/bci-micro:15.{sp_version}",
         sp_version=sp_version,
         is_latest=sp_version == 3,
         ibs_package=ibs_package,
