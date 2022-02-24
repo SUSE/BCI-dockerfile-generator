@@ -141,6 +141,9 @@ class BaseContainerImage(abc.ABC):
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
     entrypoint: Optional[str] = None
 
+    #: An optional CMD for the image, it is omitted if empty or ``None``
+    cmd: Optional[str] = None
+
     #: Extra environment variables to be set in the container
     env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
         default_factory=dict
@@ -920,7 +923,11 @@ INIT_CONTAINERS = [
         name="init",
         pretty_name="Init",
         package_list=["systemd", "gzip"],
-        entrypoint="/usr/lib/systemd/systemd",
+        cmd=(
+            '["/usr/lib/systemd/systemd"]'
+            if build_recipe_type == BuildType.DOCKER
+            else "/usr/lib/systemd/systemd"
+        ),
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
