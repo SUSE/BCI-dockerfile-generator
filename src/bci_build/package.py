@@ -923,7 +923,11 @@ INIT_CONTAINERS = [
         name="init",
         pretty_name="Init",
         package_list=["systemd", "gzip"],
-        entrypoint="/usr/lib/systemd/systemd",
+        cmd=(
+            '["/usr/lib/systemd/systemd"]'
+            if build_recipe_type == BuildType.DOCKER
+            else "/usr/lib/systemd/systemd"
+        ),
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
