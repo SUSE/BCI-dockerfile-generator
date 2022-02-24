@@ -805,7 +805,7 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         "release_stage": (
             ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA
         ),
-        "is_latest": ver == 14 and sp_version == 3,
+        "is_latest": ver == 16 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "custom_description": f"Image containing the Node.js {ver} development environment based on the SLE Base Container Image.",
@@ -1282,7 +1282,6 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         BUSYBOX_CONTAINER,
     )
 }
-ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-16-sp3")
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-12-sp4")
 
 if __name__ == "__main__":
