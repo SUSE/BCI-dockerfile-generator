@@ -12,7 +12,7 @@ from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
 
 import aiofiles
 
-from bci_build.data import SUPPORTED_SLE_SERVICE_PACKS
+from bci_build.data import RELEASED_UNTIL_SLE_VERSION_SP, SUPPORTED_SLE_SERVICE_PACKS
 from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
 
 
@@ -127,9 +127,6 @@ class BaseContainerImage(abc.ABC):
     #: The SLE service pack to which this package belongs
     sp_version: SUPPORTED_SLE_SERVICE_PACKS
 
-    #: This container images release stage
-    release_stage: ReleaseStage
-
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP`` when an empty string is used.
     #: When from image is ``None``, then this image will not be based on
@@ -237,6 +234,21 @@ class BaseContainerImage(abc.ABC):
 
         """
         pass
+
+    @property
+    def release_stage(self) -> ReleaseStage:
+        """This container images' release stage.
+
+        It is :py:attr:`~ReleaseStage.RELEASED` if the container images service
+        pack is less or equal to the service pack version defined in
+        :py:const:`RELEASED_UNTIL_SLE_VERSION_SP`. Otherwise it is
+        :py:attr:`~ReleaseStage.BETA`.
+
+        """
+        if self.sp_version <= RELEASED_UNTIL_SLE_VERSION_SP:
+            return ReleaseStage.RELEASED
+
+        return ReleaseStage.BETA
 
     @property
     def ibs_project(self) -> str:
@@ -656,7 +668,6 @@ PYTHON_3_6_CONTAINERS = (
         sp_version=sp_version,
         name="python",
         pretty_name="Python 3.6",
-        release_stage=release_stage,
         version="3.6",
         package_list=[
             "python3",
@@ -666,9 +677,9 @@ PYTHON_3_6_CONTAINERS = (
             "git-core",
         ],
     )
-    for (sp_version, ibs_package, build_type, release_stage) in (
-        (3, "python-3.6", BuildType.KIWI, ReleaseStage.RELEASED),
-        (4, "python-3.6-image", BuildType.DOCKER, ReleaseStage.BETA),
+    for (sp_version, ibs_package, build_type) in (
+        (3, "python-3.6", BuildType.KIWI),
+        (4, "python-3.6-image", BuildType.DOCKER),
     )
 )
 
@@ -695,7 +706,6 @@ _python_kwargs = {
 }
 
 PYTHON_3_9_SP3 = LanguageStackContainer(
-    release_stage=ReleaseStage.RELEASED,
     ibs_package="python-3.9",
     additional_versions=["3"],
     is_latest=True,
@@ -746,14 +756,11 @@ _ruby_kwargs = {
 RUBY_CONTAINERS = [
     LanguageStackContainer(
         sp_version=3,
-        release_stage=ReleaseStage.RELEASED,
         build_recipe_type=BuildType.KIWI,
         is_latest=True,
         **_ruby_kwargs,
     ),
-    LanguageStackContainer(
-        sp_version=4, release_stage=ReleaseStage.BETA, **_ruby_kwargs
-    ),
+    LanguageStackContainer(sp_version=4, **_ruby_kwargs),
 ]
 
 
@@ -762,7 +769,6 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
         "sp_version": sp_version,
         "ibs_package": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
         "custom_description": f"Image containing the Golang {ver} development environment based on the SLE Base Container Image.",
-        "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "name": "golang",
         "pretty_name": f"Golang {ver}",
         "is_latest": ver == "1.17" and sp_version == 3,
@@ -805,9 +811,6 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
     return {
         "name": "nodejs",
         "sp_version": sp_version,
-        "release_stage": (
-            ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA
-        ),
         "is_latest": ver == 16 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
@@ -849,7 +852,6 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "version": 11,
         "sp_version": sp_version,
         "is_latest": sp_version == 3,
-        "release_stage": ReleaseStage.RELEASED if sp_version < 4 else ReleaseStage.BETA,
         "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
         + ("-devel" if devel else "")
@@ -884,7 +886,6 @@ OPENJDK_CONTAINERS = [
 
 
 THREE_EIGHT_NINE_DS = ApplicationStackContainer(
-    release_stage=ReleaseStage.BETA,
     ibs_package="389-ds-container",
     sp_version=4,
     is_latest=True,
@@ -917,7 +918,6 @@ INIT_CONTAINERS = [
         ibs_package=ibs_package,
         sp_version=sp_version,
         custom_description="Image containing a systemd environment for containers based on the SLE Base Container Image.",
-        release_stage=release_stage,
         is_latest=sp_version == 3,
         build_recipe_type=build_recipe_type,
         name="init",
@@ -932,9 +932,9 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
     )
-    for (sp_version, release_stage, ibs_package, build_recipe_type) in (
-        (3, ReleaseStage.RELEASED, "init", BuildType.KIWI),
-        (4, ReleaseStage.BETA, "init-image", BuildType.DOCKER),
+    for (sp_version, ibs_package, build_recipe_type) in (
+        (3, "init", BuildType.KIWI),
+        (4, "init-image", BuildType.DOCKER),
     )
 ]
 
@@ -948,7 +948,6 @@ MARIADB_CONTAINERS = [
     ApplicationStackContainer(
         ibs_package="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
         sp_version=sp_version,
-        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
         is_latest=sp_version == 3,
         name="rmt-mariadb",
         version=version,
@@ -990,7 +989,6 @@ MARIADB_CLIENT_CONTAINERS = [
         if sp_version > 3
         else "rmt-mariadb-client-image",
         sp_version=sp_version,
-        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
         is_latest=sp_version == 3,
         name="rmt-mariadb-client",
         version=version,
@@ -1015,7 +1013,6 @@ RMT_CONTAINERS = [
         ibs_package="rmt-server",
         sp_version=sp_version,
         custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
-        release_stage=ReleaseStage.RELEASED if sp_version == 3 else ReleaseStage.BETA,
         is_latest=sp_version == 3,
         pretty_name="RMT Server",
         version="2.7",
@@ -1049,7 +1046,6 @@ POSTGRES_CONTAINERS = [
         ibs_package=f"postgres-{ver}-image",
         sp_version=4,
         is_latest=ver == 14,
-        release_stage=ReleaseStage.BETA,
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         package_list=[f"postgresql{ver}-server", "distribution-release"],
@@ -1109,7 +1105,6 @@ NGINX_CONTAINERS = [
         ibs_package="rmt-nginx-image" if sp_version > 3 else "rmt-nginx",
         sp_version=sp_version,
         is_latest=sp_version == 3,
-        release_stage=ReleaseStage.BETA if sp_version > 3 else ReleaseStage.RELEASED,
         name="rmt-nginx",
         pretty_name="RMT Nginx",
         version=version,
@@ -1175,7 +1170,6 @@ RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
         ibs_package=f"rust-{rust_version}-image",
-        release_stage=ReleaseStage.BETA,
         sp_version=4,
         is_latest=rust_version == "1.57",
         pretty_name=f"Rust {rust_version}",
@@ -1198,7 +1192,6 @@ MICRO_CONTAINERS = [
         is_latest=sp_version == 3,
         pretty_name="%OS_VERSION% Micro",
         custom_description="Image containing a micro environment for containers based on the SLE Base Container Image.",
-        release_stage=release_stage,
         from_image=None,
         build_recipe_type=BuildType.KIWI,
         package_list=[
@@ -1212,9 +1205,9 @@ MICRO_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for sp_version, release_stage, ibs_package in (
-        (3, ReleaseStage.RELEASED, "micro"),
-        (4, ReleaseStage.BETA, "micro-image"),
+    for sp_version, ibs_package in (
+        (3, "micro"),
+        (4, "micro-image"),
     )
 ]
 
@@ -1225,7 +1218,6 @@ MINIMAL_CONTAINERS = [
         sp_version=sp_version,
         is_latest=sp_version == 3,
         ibs_package=ibs_package,
-        release_stage=release_stage,
         build_recipe_type=BuildType.KIWI,
         pretty_name="%OS_VERSION% Minimal",
         custom_description="Image containing a minimal environment for containers based on the SLE Base Container Image.",
@@ -1238,9 +1230,9 @@ MINIMAL_CONTAINERS = [
             for name in ("grep", "diffutils", "info", "fillup", "libzio1")
         ],
     )
-    for sp_version, release_stage, ibs_package in (
-        (3, ReleaseStage.RELEASED, "minimal"),
-        (4, ReleaseStage.BETA, "minimal-image"),
+    for sp_version, ibs_package in (
+        (3, "minimal"),
+        (4, "minimal-image"),
     )
 ]
 
@@ -1248,7 +1240,6 @@ BUSYBOX_CONTAINER = OsContainer(
     name="busybox",
     from_image=None,
     sp_version=4,
-    release_stage=ReleaseStage.BETA,
     pretty_name="Busybox",
     ibs_package="busybox-image",
     is_latest=True,
