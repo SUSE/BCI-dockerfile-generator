@@ -207,8 +207,9 @@ class BaseContainerImage(abc.ABC):
     #: Provide a custom description instead of the automatically generated one
     custom_description: str = ""
 
-    #: Define whether this container image is built using docker or kiwi
-    build_recipe_type: BuildType = BuildType.DOCKER
+    #: Define whether this container image is built using docker or kiwi.
+    #: If not set, then the build type will default to docker from SP4 onwards.
+    build_recipe_type: Optional[BuildType] = None
 
     #: The default url that is put into the ``org.opencontainers.image.url``
     #: label
@@ -224,6 +225,10 @@ class BaseContainerImage(abc.ABC):
         if self.config_sh_script and self.custom_end:
             raise ValueError(
                 "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."
+            )
+        if self.build_recipe_type is None:
+            self.build_recipe_type = (
+                BuildType.KIWI if self.sp_version == 3 else BuildType.DOCKER
             )
 
     @property
@@ -564,6 +569,11 @@ exit 0
                 )
                 files.append("config.sh")
 
+        else:
+            assert (
+                False
+            ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
+
         tasks.append(
             asyncio.ensure_future(
                 write_to_file("_service", SERVICE_TEMPLATE.render(image=self))
@@ -597,6 +607,7 @@ class LanguageStackContainer(BaseContainerImage):
     _registry_prefix: str = "bci"
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         if not self.version:
             raise ValueError("A language stack container requires a version")
 
@@ -677,7 +688,6 @@ PYTHON_3_6_CONTAINERS = (
         ],
         custom_description="Image containing the Python 3.6 development environment based on the SLE Base Container Image.",
         ibs_package=ibs_package,
-        build_recipe_type=build_type,
         sp_version=sp_version,
         name="python",
         pretty_name="Python 3.6",
@@ -690,9 +700,9 @@ PYTHON_3_6_CONTAINERS = (
             "git-core",
         ],
     )
-    for (sp_version, ibs_package, build_type) in (
-        (3, "python-3.6", BuildType.KIWI),
-        (4, "python-3.6-image", BuildType.DOCKER),
+    for (sp_version, ibs_package) in (
+        (3, "python-3.6"),
+        (4, "python-3.6-image"),
     )
 )
 
@@ -723,7 +733,6 @@ PYTHON_3_9_SP3 = LanguageStackContainer(
     additional_versions=["3"],
     is_latest=True,
     sp_version=3,
-    build_recipe_type=BuildType.KIWI,
     **_python_kwargs,
 )
 
@@ -769,7 +778,6 @@ _ruby_kwargs = {
 RUBY_CONTAINERS = [
     LanguageStackContainer(
         sp_version=3,
-        build_recipe_type=BuildType.KIWI,
         is_latest=True,
         **_ruby_kwargs,
     ),
@@ -786,7 +794,6 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
         "pretty_name": f"Golang {ver}",
         "is_latest": ver == "1.17" and sp_version == 3,
         "version": ver,
-        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "env": {
             "GOLANG_VERSION": ver,
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
@@ -826,7 +833,6 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         "sp_version": sp_version,
         "is_latest": ver == 16 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
-        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "custom_description": f"Image containing the Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
         "version": str(ver),
@@ -865,7 +871,6 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
         "version": 11,
         "sp_version": sp_version,
         "is_latest": sp_version == 3,
-        "build_recipe_type": BuildType.KIWI if sp_version == 3 else BuildType.DOCKER,
         "ibs_package": "openjdk-11"
         + ("-devel" if devel else "")
         + ("-image" if sp_version >= 4 else ""),
@@ -932,23 +937,19 @@ INIT_CONTAINERS = [
         sp_version=sp_version,
         custom_description="Image containing a systemd environment for containers based on the SLE Base Container Image.",
         is_latest=sp_version == 3,
-        build_recipe_type=build_recipe_type,
         name="init",
         pretty_name="Init",
         package_list=["systemd", "gzip"],
         cmd=(
             '["/usr/lib/systemd/systemd"]'
-            if build_recipe_type == BuildType.DOCKER
+            if sp_version == 4
             else "/usr/lib/systemd/systemd"
         ),
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
     )
-    for (sp_version, ibs_package, build_recipe_type) in (
-        (3, "init", BuildType.KIWI),
-        (4, "init-image", BuildType.DOCKER),
-    )
+    for (sp_version, ibs_package) in ((3, "init"), (4, "init-image"))
 ]
 
 
@@ -969,6 +970,7 @@ MARIADB_CONTAINERS = [
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
         entrypoint='["docker-entrypoint.sh"]',
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
+        build_recipe_type=BuildType.DOCKER,
         custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
@@ -1010,6 +1012,7 @@ MARIADB_CLIENT_CONTAINERS = [
         package_list=["mariadb-client"],
         custom_end=r"""CMD ["mariadbd"]
 """,
+        build_recipe_type=BuildType.DOCKER,
     )
     for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
 ]
@@ -1028,6 +1031,7 @@ RMT_CONTAINERS = [
         custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
         is_latest=sp_version == 3,
         pretty_name="RMT Server",
+        build_recipe_type=BuildType.DOCKER,
         version="2.7",
         package_list=["rmt-server", "catatonit"],
         entrypoint="/usr/local/bin/entrypoint.sh",
@@ -1123,6 +1127,7 @@ NGINX_CONTAINERS = [
         version=version,
         package_list=["nginx", "distribution-release"],
         entrypoint='["/docker-entrypoint.sh"]',
+        build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
         custom_end="""
 RUN mkdir /docker-entrypoint.d
