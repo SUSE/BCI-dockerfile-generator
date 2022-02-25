@@ -53,6 +53,19 @@ class BuildType(enum.Enum):
 
 
 @enum.unique
+class SupportLevel(enum.Enum):
+    """Potential values of the ``com.suse.supportlevel`` label."""
+
+    L2 = "l2"
+    L3 = "l3"
+    UNSUPPORTED = "unsupported"
+    TECHPREVIEW = "techpreview"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@enum.unique
 class PackageType(enum.Enum):
     """Package types that are supported by kiwi, see
     `<https://osinside.github.io/kiwi/concept_and_workflow/packages.html>`_ for
@@ -152,10 +165,6 @@ class BaseContainerImage(abc.ABC):
     #: See also :py:class:`~Replacement`
     replacements_via_service: List[Replacement] = field(default_factory=list)
 
-    #: If true, then the label ``com.suse.techpreview`` is set to
-    #: ``"true"``. The label is omitted if this property is false.
-    tech_preview: bool = True
-
     #: Additional labels that should be added to the image. These are added into
     #: the ``PREFIXEDLABEL`` section.
     extra_labels: Dict[str, str] = field(default_factory=dict)
@@ -236,12 +245,16 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
+    def support_level(self) -> SupportLevel:
+        return SupportLevel.TECHPREVIEW
+
+    @property
     def release_stage(self) -> ReleaseStage:
         """This container images' release stage.
 
         It is :py:attr:`~ReleaseStage.RELEASED` if the container images service
         pack is less or equal to the service pack version defined in
-        :py:const:`RELEASED_UNTIL_SLE_VERSION_SP`. Otherwise it is
+        :py:const:`~bci_build.data.RELEASED_UNTIL_SLE_VERSION_SP`. Otherwise it is
         :py:attr:`~ReleaseStage.BETA`.
 
         """
