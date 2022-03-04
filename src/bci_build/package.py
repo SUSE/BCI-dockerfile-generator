@@ -506,7 +506,7 @@ exit 0
         """
         return (
             self.custom_description
-            or f"Image containing {self.pretty_name} based on the SLE Base Container Image."
+            or f"{self.pretty_name} based on the SLE Base Container Image."
         )
 
     @property
@@ -738,7 +738,7 @@ PYTHON_3_6_CONTAINERS = (
             Replacement(regex_in_dockerfile="%%py3_ver%%", package_name="python3-base"),
             Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python3-pip"),
         ],
-        custom_description="Image containing the Python 3.6 development environment based on the SLE Base Container Image.",
+        custom_description="Python 3.6 development environment based on the SLE Base Container Image.",
         ibs_package=ibs_package,
         sp_version=sp_version,
         name="python",
@@ -761,7 +761,7 @@ PYTHON_3_6_CONTAINERS = (
 _python_kwargs = {
     "name": "python",
     "pretty_name": "Python 3.9",
-    "custom_description": "Image containing the Python 3.9 development environment based on the SLE Base Container Image.",
+    "custom_description": "Python 3.9 development environment based on the SLE Base Container Image.",
     "version": "3.9",
     "env": {"PYTHON_VERSION": "%%py39_ver%%", "PIP_VERSION": "%%pip_ver%%"},
     "package_list": [
@@ -841,7 +841,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
     return {
         "sp_version": sp_version,
         "ibs_package": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
-        "custom_description": f"Image containing the Golang {ver} development environment based on the SLE Base Container Image.",
+        "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
         "is_latest": ver == "1.17" and sp_version == 3,
@@ -885,7 +885,7 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         "sp_version": sp_version,
         "is_latest": ver == 16 and sp_version == 3,
         "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
-        "custom_description": f"Image containing the Node.js {ver} development environment based on the SLE Base Container Image.",
+        "custom_description": f"Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
         "version": str(ver),
         "pretty_name": f"Node.js {ver}",
@@ -934,7 +934,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
             "pretty_name": "OpenJDK 11 Development",
-            "custom_description": "Image containing the Java 11 Development environment based on the SLE Base Container Image.",
+            "custom_description": "Java 11 Development environment based on the SLE Base Container Image.",
             "package_list": ["java-11-openjdk-devel", "git-core", "maven"],
             "cmd": "jshell",
             "from_image": "bci/openjdk:11",
@@ -944,7 +944,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
             **comon,
             "name": "openjdk",
             "pretty_name": "OpenJDK 11 Runtime",
-            "custom_description": "Image containing the Java 11 runtime based on the SLE Base Container Image.",
+            "custom_description": "Java 11 runtime based on the SLE Base Container Image.",
             "package_list": ["java-11-openjdk"],
         }
 
@@ -1254,7 +1254,7 @@ MICRO_CONTAINERS = [
         ibs_package=ibs_package,
         is_latest=sp_version == 3,
         pretty_name="%OS_VERSION% Micro",
-        custom_description="Image containing a micro environment for containers based on the SLE Base Container Image.",
+        custom_description="A micro environment for containers based on the SLE Base Container Image.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
         package_list=[
@@ -1283,7 +1283,7 @@ MINIMAL_CONTAINERS = [
         ibs_package=ibs_package,
         build_recipe_type=BuildType.KIWI,
         pretty_name="%OS_VERSION% Minimal",
-        custom_description="Image containing a minimal environment for containers based on the SLE Base Container Image.",
+        custom_description="A minimal environment for containers based on the SLE Base Container Image.",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base", "distribution-release")
@@ -1307,7 +1307,7 @@ BUSYBOX_CONTAINER = OsContainer(
     ibs_package="busybox-image",
     is_latest=True,
     build_recipe_type=BuildType.KIWI,
-    custom_description="Image containing Busybox based on the SLE Base Container Image.",
+    custom_description="Busybox based on the SLE Base Container Image.",
     cmd="/bin/sh",
     package_list=[
         Package(name, pkg_type=PackageType.BOOTSTRAP)
