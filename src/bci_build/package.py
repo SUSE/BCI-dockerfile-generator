@@ -149,10 +149,15 @@ class BaseContainerImage(abc.ABC):
     is_latest: bool = False
 
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
-    entrypoint: Optional[str] = None
+    #: If you provide a string, then it will be included in the container build
+    #: recipe as is, i.e. it will be called via a shell as
+    #: :command:`sh -c "MY_CMD"`.
+    #: If your entrypoint must not be called through a shell, then pass the
+    #: binary and its parameters as a list
+    entrypoint: Optional[Union[str, List[str]]] = None
 
     #: An optional CMD for the image, it is omitted if empty or ``None``
-    cmd: Optional[str] = None
+    cmd: Optional[Union[str, List[str]]] = None
 
     #: Extra environment variables to be set in the container
     env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
@@ -288,6 +293,53 @@ class BaseContainerImage(abc.ABC):
         if self.config_sh_script:
             return f"RUN {self.config_sh_script}"
         return ""
+
+    @staticmethod
+    def _cmd_entrypoint_docker(
+        prefix: Literal["CMD", "ENTRYPOINT"], value: Optional[Union[str, List[str]]]
+    ) -> Optional[str]:
+        if not value:
+            return None
+        return prefix + " " + str(value)
+
+    @property
+    def entrypoint_docker(self) -> Optional[str]:
+        """The entrypoint line in a :file:`Dockerfile`."""
+        return self._cmd_entrypoint_docker("ENTRYPOINT", self.entrypoint)
+
+    @property
+    def cmd_docker(self) -> Optional[str]:
+        return self._cmd_entrypoint_docker("CMD", self.cmd)
+
+    @staticmethod
+    def _cmd_entrypoint_kiwi(
+        prefix: Literal["subcommand", "entrypoint"],
+        value: Optional[Union[str, List[str]]],
+    ) -> Optional[str]:
+        if not value:
+            return None
+        if isinstance(value, str) or len(value) == 1:
+            val = value if isinstance(value, str) else value[0]
+            return f'        <{prefix} execute="{val}"/>'
+        else:
+            return (
+                f"""        <{prefix} execute=\"{value[0]}\">
+"""
+                + "\n".join(
+                    (f'          <argument name="{arg}"/>' for arg in value[1:])
+                )
+                + f"""
+        </{prefix}>
+"""
+            )
+
+    @property
+    def entrypoint_kiwi(self) -> Optional[str]:
+        return self._cmd_entrypoint_kiwi("entrypoint", self.entrypoint)
+
+    @property
+    def cmd_kiwi(self) -> Optional[str]:
+        return self._cmd_entrypoint_kiwi("subcommand", self.cmd)
 
     @property
     def config_sh(self) -> str:
