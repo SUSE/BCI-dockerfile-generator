@@ -11,6 +11,10 @@ formating:
   script:
     - poetry run black --check --diff .
 
+unit tests:
+  script:
+    - poetry run pytest -vv
+
 test generation stupidly:
   script:
     - mkdir -p pkg_dest

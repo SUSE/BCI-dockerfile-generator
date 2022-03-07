@@ -32,8 +32,8 @@ PREFIXEDLABEL com.suse.release-stage="{{ image.release_stage }}"
 RUN zypper -n in --no-recommends {{ image.packages }} && zypper -n clean && rm -rf /var/log/*
 
 {{ image.env_lines }}
-{% if image.entrypoint -%}ENTRYPOINT {{ image.entrypoint }}{% endif %}
-{% if image.cmd -%}CMD {{ image.cmd }}{% endif %}
+{% if image.entrypoint_docker -%}{{ image.entrypoint_docker }}{% endif %}
+{% if image.cmd_docker -%}{{ image.cmd_docker }}{% endif %}
 {{ image.dockerfile_custom_end }}
 """
 )
@@ -77,8 +77,8 @@ KIWI_TEMPLATE = jinja2.Template(
 {{ image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
-{% if image.cmd %}        <subcommand execute="{{ image.cmd }}"/>{% endif %}
-{% if image.entrypoint %}        <entrypoint execute="{{ image.entrypoint }}"/>{% endif %}
+{% if image.cmd_kiwi %}{{ image.cmd_kiwi }}{% endif %}
+{% if image.entrypoint_kiwi %}{{ image.entrypoint_kiwi }}{% endif %}
 {{ image.kiwi_env_entry }}
       </containerconfig>
     </type>
