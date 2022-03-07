@@ -13,19 +13,19 @@ MAINTAINER {{ image.maintainer }}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
-PREFIXEDLABEL org.opencontainers.image.title="{{ image.title }}"
-PREFIXEDLABEL org.opencontainers.image.description="{{ image.description }}"
-PREFIXEDLABEL org.opencontainers.image.version="{{ image.version_label }}"
-PREFIXEDLABEL org.opencontainers.image.url="{{ image.URL }}"
-PREFIXEDLABEL org.opencontainers.image.created="%BUILDTIME%"
-PREFIXEDLABEL org.opencontainers.image.vendor="{{ image.VENDOR }}"
-PREFIXEDLABEL org.opensuse.reference="{{ image.reference }}"
-PREFIXEDLABEL org.openbuildservice.disturl="%DISTURL%"
-PREFIXEDLABEL com.suse.supportlevel="{{ image.support_level }}"
-PREFIXEDLABEL com.suse.eula="sle-bci"
-PREFIXEDLABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-PREFIXEDLABEL com.suse.image-type="{{ image.image_type }}"
-PREFIXEDLABEL com.suse.release-stage="{{ image.release_stage }}"
+LABEL org.opencontainers.image.title="{{ image.title }}"
+LABEL org.opencontainers.image.description="{{ image.description }}"
+LABEL org.opencontainers.image.version="{{ image.version_label }}"
+LABEL org.opencontainers.image.url="{{ image.URL }}"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="{{ image.VENDOR }}"
+LABEL org.opensuse.reference="{{ image.reference }}"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="{{ image.support_level }}"
+LABEL com.suse.eula="sle-bci"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.image-type="{{ image.image_type }}"
+LABEL com.suse.release-stage="{{ image.release_stage }}"
 # endlabelprefix
 {% if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
