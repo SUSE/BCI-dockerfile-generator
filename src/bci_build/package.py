@@ -936,7 +936,7 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
             "pretty_name": "OpenJDK 11 Development",
             "custom_description": "Image containing the Java 11 Development environment based on the SLE Base Container Image.",
             "package_list": ["java-11-openjdk-devel", "git-core", "maven"],
-            "entrypoint": "jshell",
+            "cmd": "jshell",
             "from_image": "bci/openjdk:11",
         }
     else:
@@ -963,6 +963,7 @@ THREE_EIGHT_NINE_DS = ApplicationStackContainer(
     maintainer="wbrown@suse.de",
     pretty_name="389 Directory Server",
     package_list=["389-ds", "timezone", "openssl"],
+    cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
     version="2.0",
     custom_end=r"""EXPOSE 3389 3636
 
@@ -978,8 +979,6 @@ VOLUME /data
 
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
-
-CMD [ "/usr/lib/dirsrv/dscontainer", "-r" ]
 """,
 )
 
@@ -992,11 +991,7 @@ INIT_CONTAINERS = [
         name="init",
         pretty_name="Init",
         package_list=["systemd", "gzip"],
-        cmd=(
-            '["/usr/lib/systemd/systemd"]'
-            if sp_version == 4
-            else "/usr/lib/systemd/systemd"
-        ),
+        cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
@@ -1020,9 +1015,10 @@ MARIADB_CONTAINERS = [
         pretty_name="MariaDB Server",
         custom_description="Image containing MariaDB server for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
-        entrypoint='["docker-entrypoint.sh"]',
+        entrypoint=["docker-entrypoint.sh"],
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
         build_recipe_type=BuildType.DOCKER,
+        cmd=["mariadbd"],
         custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
@@ -1043,7 +1039,6 @@ RUN sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 RUN mkdir /run/mysql
 
 EXPOSE 3306
-CMD ["mariadbd"]
 """,
     )
     for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
@@ -1062,9 +1057,8 @@ MARIADB_CLIENT_CONTAINERS = [
         pretty_name="MariaDB Client",
         custom_description="Image containing MariaDB client for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb-client"],
-        custom_end=r"""CMD ["mariadbd"]
-""",
         build_recipe_type=BuildType.DOCKER,
+        cmd=["mariadbd"],
     )
     for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
 ]
@@ -1086,12 +1080,12 @@ RMT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         version="2.7",
         package_list=["rmt-server", "catatonit"],
-        entrypoint="/usr/local/bin/entrypoint.sh",
+        entrypoint=["/usr/local/bin/entrypoint.sh"],
+        cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
         custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 """,
     )
     for sp_version in (3, 4)
@@ -1120,7 +1114,8 @@ POSTGRES_CONTAINERS = [
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
         additional_versions=[f"%%pg_version%%"],
-        entrypoint='["docker-entrypoint.sh"]',
+        entrypoint=["docker-entrypoint.sh"],
+        cmd=["postgres"],
         env={
             "LANG": "en_US.utf8",
             "PG_MAJOR": f"{ver}",
@@ -1149,7 +1144,6 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
 
 STOPSIGNAL SIGINT
 EXPOSE 5432
-CMD ["postgres"]
 """,
     )
     for ver in _POSTGRES_MAJOR_VERSIONS
@@ -1178,7 +1172,8 @@ NGINX_CONTAINERS = [
         pretty_name="RMT Nginx",
         version=version,
         package_list=["nginx", "distribution-release"],
-        entrypoint='["/docker-entrypoint.sh"]',
+        entrypoint=["/docker-entrypoint.sh"],
+        cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
         custom_end="""
@@ -1202,8 +1197,6 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 EXPOSE 80
 
 STOPSIGNAL SIGQUIT
-
-CMD ["nginx", "-g", "daemon off;"]
 """,
     )
     for sp_version, version in ((3, "1.19"), (4, "1.21"))
@@ -1315,7 +1308,7 @@ BUSYBOX_CONTAINER = OsContainer(
     is_latest=True,
     build_recipe_type=BuildType.KIWI,
     custom_description="Image containing Busybox based on the SLE Base Container Image.",
-    entrypoint="/bin/sh",
+    cmd="/bin/sh",
     package_list=[
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in (
