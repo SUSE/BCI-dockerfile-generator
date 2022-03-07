@@ -1047,9 +1047,9 @@ EXPOSE 3306
 
 MARIADB_CLIENT_CONTAINERS = [
     ApplicationStackContainer(
-        ibs_package="rmt-mariadb-client-image"
-        if sp_version > 3
-        else "rmt-mariadb-client-image",
+        ibs_package=(
+            "rmt-mariadb-client-image" if sp_version > 3 else "rmt-mariadb-client"
+        ),
         sp_version=sp_version,
         is_latest=sp_version == 3,
         name="rmt-mariadb-client",
@@ -1072,7 +1072,7 @@ with open(
 RMT_CONTAINERS = [
     ApplicationStackContainer(
         name="rmt-server",
-        ibs_package="rmt-server",
+        ibs_package="rmt-server" + ("" if sp_version == 3 else "-image"),
         sp_version=sp_version,
         custom_description="Image containing SUSE RMT Server based on the SLE Base Container Image.",
         is_latest=sp_version == 3,
