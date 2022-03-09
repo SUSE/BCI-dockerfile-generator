@@ -196,7 +196,9 @@ class BaseContainerImage(abc.ABC):
 
     #: Additional files that belong into this container-package.
     #: The key is the filename, the values are the file contents.
-    extra_files: Dict[str, Union[str, bytes]] = field(default_factory=dict)
+    extra_files: Union[
+        Dict[str, Union[str, bytes]], Dict[str, bytes], Dict[str, str]
+    ] = field(default_factory=dict)
 
     #: Additional names under which this image should be published alongside
     #: :py:attr:`~BaseContainerImage.name`.
