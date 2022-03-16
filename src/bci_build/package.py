@@ -1062,7 +1062,7 @@ MARIADB_CLIENT_CONTAINERS = [
         custom_description="MariaDB client for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb-client"],
         build_recipe_type=BuildType.DOCKER,
-        cmd=["mariadbd"],
+        cmd=["mariadb"],
     )
     for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
 ]
