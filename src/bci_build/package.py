@@ -302,6 +302,8 @@ class BaseContainerImage(abc.ABC):
     ) -> Optional[str]:
         if not value:
             return None
+        if isinstance(value, list):
+            return prefix + " " + str(value).replace("'", '"')
         return prefix + " " + str(value)
 
     @property
