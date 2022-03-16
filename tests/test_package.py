@@ -16,7 +16,7 @@ def test_entrypoint_docker_list(bci):
     cls, kwargs = bci
     c = cls(entrypoint=["/bin/foo", "-a"], **kwargs)
 
-    assert c.entrypoint_docker == "ENTRYPOINT ['/bin/foo', '-a']"
+    assert c.entrypoint_docker == 'ENTRYPOINT ["/bin/foo", "-a"]'
 
 
 def test_entrypoint_kiwi_none(bci):
