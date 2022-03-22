@@ -1,3 +1,5 @@
+.. _adding-and-modifying-container-images:
+
 Adding and Modifying Container Images
 =====================================
 
