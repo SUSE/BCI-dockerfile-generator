@@ -841,13 +841,14 @@ RUBY_CONTAINERS = [
 ]
 
 
-def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
+def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
     return {
         "sp_version": sp_version,
         "ibs_package": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
+        # XXX change this once we roll over to SP4
         "is_latest": ver == "1.17" and sp_version == 3,
         "version": ver,
         "env": {
@@ -880,7 +881,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17"], sp_version: int):
 GOLANG_IMAGES = [
     LanguageStackContainer(**_get_golang_kwargs(ver, sp_version))
     for ver, sp_version in product(("1.16", "1.17"), (3, 4))
-]
+] + [LanguageStackContainer(**_get_golang_kwargs(ver="1.18", sp_version=4))]
 
 
 def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE_PACKS):
