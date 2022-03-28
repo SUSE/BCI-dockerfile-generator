@@ -5,6 +5,7 @@
    :caption: Contents:
 
    adding_containers
+   creating_packages
 
    api
 
