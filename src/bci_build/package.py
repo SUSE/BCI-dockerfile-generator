@@ -915,20 +915,22 @@ NODE_CONTAINERS = [
 ]
 
 
-def _get_openjdk_kwargs(sp_version: int, devel: bool):
+def _get_openjdk_kwargs(
+    sp_version: int, devel: bool, java_version: Union[Literal[11], Literal[17]]
+):
     JAVA_ENV = {
         "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
         "JAVA_HOME": "/usr/lib64/jvm/java",
         "JAVA_ROOT": "/usr/lib64/jvm/java",
-        "JAVA_VERSION": "11",
+        "JAVA_VERSION": f"{java_version}",
     }
 
     comon = {
         "env": JAVA_ENV,
-        "version": 11,
+        "version": java_version,
         "sp_version": sp_version,
         "is_latest": sp_version == 3,
-        "ibs_package": "openjdk-11"
+        "ibs_package": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
         + ("-image" if sp_version >= 4 else ""),
     }
@@ -938,25 +940,32 @@ def _get_openjdk_kwargs(sp_version: int, devel: bool):
             **comon,
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
-            "pretty_name": "OpenJDK 11 Development",
-            "custom_description": "Java 11 Development environment based on the SLE Base Container Image.",
-            "package_list": ["java-11-openjdk-devel", "git-core", "maven"],
+            "pretty_name": f"OpenJDK {java_version} Development",
+            "custom_description": f"Java {java_version} Development environment based on the SLE Base Container Image.",
+            "package_list": [f"java-{java_version}-openjdk-devel", "git-core", "maven"],
             "cmd": "jshell",
-            "from_image": "bci/openjdk:11",
+            "from_image": f"bci/openjdk:{java_version}",
         }
     else:
         return {
             **comon,
             "name": "openjdk",
-            "pretty_name": "OpenJDK 11 Runtime",
-            "custom_description": "Java 11 runtime based on the SLE Base Container Image.",
-            "package_list": ["java-11-openjdk"],
+            "pretty_name": f"OpenJDK {java_version} Runtime",
+            "custom_description": f"Java {java_version} runtime based on the SLE Base Container Image.",
+            "package_list": [f"java-{java_version}-openjdk"],
         }
 
 
 OPENJDK_CONTAINERS = [
-    LanguageStackContainer(**_get_openjdk_kwargs(sp_version, devel))
+    LanguageStackContainer(**_get_openjdk_kwargs(sp_version, devel, 11))
     for sp_version, devel in product((3, 4), (True, False))
+] + [
+    LanguageStackContainer(
+        **_get_openjdk_kwargs(sp_version=4, devel=False, java_version=17)
+    ),
+    LanguageStackContainer(
+        **_get_openjdk_kwargs(sp_version=4, devel=True, java_version=17)
+    ),
 ]
 
 
