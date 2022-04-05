@@ -1248,7 +1248,7 @@ RUST_CONTAINERS = [
         name="rust",
         ibs_package=f"rust-{rust_version}-image",
         sp_version=4,
-        is_latest=rust_version == "1.58",
+        is_latest=rust_version == "1.59",
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
