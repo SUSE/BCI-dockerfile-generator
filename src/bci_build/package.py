@@ -16,6 +16,13 @@ from bci_build.data import RELEASED_UNTIL_SLE_VERSION_SP, SUPPORTED_SLE_SERVICE_
 from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
 
 
+_BASH_SET = "set -euo pipefail"
+
+#: a ``RUN`` command with a common set of bash flags applied to prevent errors
+#: from not being noticed
+DOCKERFILE_RUN = f"RUN {_BASH_SET} &&"
+
+
 @enum.unique
 class ReleaseStage(enum.Enum):
     """Values for the ``release-stage`` label of a BCI"""
@@ -186,9 +193,10 @@ class BaseContainerImage(abc.ABC):
 
     #: A bash script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
-    #: prependend with a ``RUN`` and added at the end of the ``Dockerfile``. It
-    #: must thus fit on a single line if you want to be able to build from a
-    #: kiwi and :file:`Dockerfile` at the same time!
+    #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
+    #: at the end of the ``Dockerfile``. It must thus fit on a single line if
+    #: you want to be able to build from a kiwi and :file:`Dockerfile` at the
+    #: same time!
     config_sh_script: str = ""
 
     #: The maintainer of this image, defaults to SUSE
@@ -293,7 +301,7 @@ class BaseContainerImage(abc.ABC):
         if self.custom_end:
             return self.custom_end
         if self.config_sh_script:
-            return f"RUN {self.config_sh_script}"
+            return f"{DOCKERFILE_RUN} {self.config_sh_script}"
         return ""
 
     @staticmethod
@@ -354,7 +362,7 @@ class BaseContainerImage(abc.ABC):
                     "This image cannot be build as a kiwi image, it has a `custom_end` set."
                 )
             return ""
-        return f"""#!/bin/bash -e
+        return f"""#!/bin/bash
 
 # Copyright (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC, Nuernberg, Germany.
 #
@@ -366,6 +374,8 @@ class BaseContainerImage(abc.ABC):
 # case the license is the MIT License). An "Open Source License" is a
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
+
+{_BASH_SET}
 
 test -f /.kconfig && . /.kconfig
 test -f /.profile && . /.profile
@@ -605,7 +615,12 @@ exit 0
             fname = "Dockerfile"
             tasks.append(
                 asyncio.ensure_future(
-                    write_to_file(fname, DOCKERFILE_TEMPLATE.render(image=self))
+                    write_to_file(
+                        fname,
+                        DOCKERFILE_TEMPLATE.render(
+                            image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
+                        ),
+                    )
                 )
             )
             files.append(fname)
@@ -979,9 +994,9 @@ THREE_EIGHT_NINE_DS = ApplicationStackContainer(
     package_list=["389-ds", "timezone", "openssl"],
     cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
     version="2.0",
-    custom_end=r"""EXPOSE 3389 3636
+    custom_end=rf"""EXPOSE 3389 3636
 
-RUN mkdir -p /data/config && \
+{DOCKERFILE_RUN} mkdir -p /data/config && \
     mkdir -p /data/ssca && \
     mkdir -p /data/run && \
     mkdir -p /var/run/dirsrv && \
@@ -1151,7 +1166,7 @@ POSTGRES_CONTAINERS = [
 VOLUME /var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh && \
     ln -s su /usr/bin/gosu && \
     mkdir /docker-entrypoint-initdb.d && \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
@@ -1279,6 +1294,7 @@ MICRO_CONTAINERS = [
                 "distribution-release",
             )
         ],
+        # intentionally empty
         config_sh_script="""
 """,
     )
