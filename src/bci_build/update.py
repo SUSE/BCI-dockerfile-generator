@@ -3,10 +3,10 @@ import asyncio
 import logging
 from typing import Optional
 
-from asyncio import create_subprocess_shell
 import aiofiles.tempfile
 
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
+from bci_build.util import run_cmd
 
 
 LOGGER = logging.getLogger(__name__)
@@ -44,55 +44,41 @@ async def update_package(
         LOGGER.info("Updating %s for SP%d", bci.ibs_package, bci.sp_version)
         LOGGER.debug("Running update in %s", tmp)
 
-        async def run_cmd(c: str) -> str:
-            LOGGER.debug("Running command %s", c)
-            p = await create_subprocess_shell(
-                c,
-                stderr=asyncio.subprocess.STDOUT,
-                stdout=asyncio.subprocess.PIPE,
-                cwd=tmp,
-            )
-            retcode = await p.wait()
-            stdout, _ = await p.communicate()
-            if retcode != 0:
-                raise RuntimeError(
-                    f"Commend {c} failed (exit code {retcode}) with: {stdout.decode()}"
-                )
-            return stdout.decode()
+        run = lambda c: run_cmd(c, cwd=tmp, logger=LOGGER)
 
         try:
             if not target_pkg:
                 cmd = f"osc -A ibs branch SUSE:SLE-15-SP{bci.sp_version}:Update:BCI {bci.ibs_package}"
                 if target_prj:
                     cmd += f" {target_prj}"
-                stdout = (await run_cmd(cmd)).split("\n")
+                stdout = (await run(cmd)).split("\n")
 
                 co_cmd = stdout[2]
                 target_pkg = co_cmd.split(" ")[-1]
 
-            await run_cmd(f"osc -A ibs co {target_pkg} -o {tmp}")
+            await run(f"osc -A ibs co {target_pkg} -o {tmp}")
 
             written_files = await bci.write_files_to_folder(tmp)
             for fname in written_files:
-                await run_cmd(f"osc add {fname}")
+                await run(f"osc add {fname}")
 
-            st_out = await run_cmd("osc st")
+            st_out = await run("osc st")
             # nothing changed => leave
             if st_out == "":
                 LOGGER.info("Nothing changed => no update available")
                 if cleanup_on_no_change:
-                    await run_cmd(
+                    await run(
                         f"osc -A ibs rdelete {target_pkg} -m 'cleanup as nothing changed'"
                     )
                 return
 
             for cmd in ["vc", "ci"] + (["sr --cleanup"] if submit_package else []):
-                await run_cmd(f'osc {cmd} -m "{commit_msg}"')
+                await run(f'osc {cmd} -m "{commit_msg}"')
 
         except Exception as exc:
             LOGGER.error("failed to update %s, got %s", bci.name, exc)
             if cleanup_on_error:
-                await run_cmd(f"osc -A ibs rdelete {target_pkg} -m 'cleanup on error'")
+                await run(f"osc -A ibs rdelete {target_pkg} -m 'cleanup on error'")
             raise exc
 
 

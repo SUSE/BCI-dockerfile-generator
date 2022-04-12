@@ -19,6 +19,7 @@ LABEL org.opencontainers.image.version="{{ image.version_label }}"
 LABEL org.opencontainers.image.url="{{ image.URL }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.VENDOR }}"
+LABEL org.opencontainers.image.revision="{{ git_commit_hash }}"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="{{ image.support_level }}"
@@ -66,6 +67,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.version" value="{{ image.version_label }}"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="{{ image.VENDOR }}"/>
+            <label name="org.opencontainers.image.revision" value="{{ git_commit_hash }}"/>
             <label name="org.opencontainers.image.url" value="{{ image.URL }}"/>
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>

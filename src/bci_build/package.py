@@ -14,6 +14,7 @@ import aiofiles
 
 from bci_build.data import RELEASED_UNTIL_SLE_VERSION_SP, SUPPORTED_SLE_SERVICE_PACKS
 from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
+from bci_build.util import run_cmd
 
 
 _BASH_SET = "set -euo pipefail"
@@ -605,6 +606,10 @@ exit 0
         files = ["_service"]
         tasks = []
 
+        git_commit_hash = await run_cmd(
+            "git log --pretty=format:'%H' -n 1 HEAD", cwd=os.path.dirname(__file__)
+        )
+
         async def write_to_file(
             fname: str, contents: Union[str, bytes], mode="w"
         ) -> None:
@@ -618,7 +623,9 @@ exit 0
                     write_to_file(
                         fname,
                         DOCKERFILE_TEMPLATE.render(
-                            image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
+                            image=self,
+                            DOCKERFILE_RUN=DOCKERFILE_RUN,
+                            git_commit_hash=git_commit_hash,
                         ),
                     )
                 )
@@ -629,7 +636,12 @@ exit 0
             fname = f"{self.ibs_package}.kiwi"
             tasks.append(
                 asyncio.ensure_future(
-                    write_to_file(fname, KIWI_TEMPLATE.render(image=self))
+                    write_to_file(
+                        fname,
+                        KIWI_TEMPLATE.render(
+                            image=self, git_commit_hash=git_commit_hash
+                        ),
+                    )
                 )
             )
             files.append(fname)
