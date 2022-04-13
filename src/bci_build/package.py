@@ -758,26 +758,43 @@ class OsContainer(BaseContainerImage):
         return tags
 
 
+def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
+    is_system_py = py3_ver == "3.6"
+    py3_ver_nodots = py3_ver.replace(".", "")
+
+    py3 = "python3" if is_system_py else "python" + py3_ver_nodots
+    py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
+    pip3 = f"{py3}-pip"
+    pip3_replacement = "%%pip_ver%%"
+    kwargs = {
+        "name": "python",
+        "pretty_name": f"Python {py3_ver}",
+        "custom_description": f"Python {py3_ver} development environment based on the SLE Base Container Image.",
+        "version": py3_ver,
+        "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
+        "package_list": [py3, pip3, "curl", "git-core"]
+        + ([f"{py3}-wheel"] if is_system_py else []),
+        "replacements_via_service": [
+            Replacement(
+                regex_in_dockerfile=py3_ver_replacement, package_name=f"{py3}-base"
+            ),
+            Replacement(regex_in_dockerfile=pip3_replacement, package_name=pip3),
+        ],
+    }
+    if not is_system_py:
+        kwargs[
+            "config_sh_script"
+        ] = rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
+    ln -s /usr/bin/python{py3_ver} /usr/bin/python3 && \
+    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip3 && \
+    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip && \
+    ln -s /usr/bin/pydoc{py3_ver} /usr/bin/pydoc"""
+    return kwargs
+
+
 PYTHON_3_6_CONTAINERS = (
     LanguageStackContainer(
-        env={"PYTHON_VERSION": "%%py3_ver%%", "PIP_VERSION": "%%pip_ver%%"},
-        replacements_via_service=[
-            Replacement(regex_in_dockerfile="%%py3_ver%%", package_name="python3-base"),
-            Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python3-pip"),
-        ],
-        custom_description="Python 3.6 development environment based on the SLE Base Container Image.",
-        package_name=package_name,
-        sp_version=sp_version,
-        name="python",
-        pretty_name="Python 3.6",
-        version="3.6",
-        package_list=[
-            "python3",
-            "python3-pip",
-            "python3-wheel",
-            "curl",
-            "git-core",
-        ],
+        **_get_python_kwargs("3.6"), sp_version=sp_version, package_name=package_name
     )
     for (sp_version, package_name) in (
         (3, "python-3.6"),
@@ -785,34 +802,20 @@ PYTHON_3_6_CONTAINERS = (
     )
 )
 
-_python_kwargs = {
-    "name": "python",
-    "pretty_name": "Python 3.9",
-    "custom_description": "Python 3.9 development environment based on the SLE Base Container Image.",
-    "version": "3.9",
-    "env": {"PYTHON_VERSION": "%%py39_ver%%", "PIP_VERSION": "%%pip_ver%%"},
-    "package_list": [
-        "python39",
-        "python39-pip",
-        "curl",
-        "git-core",
-    ],
-    "replacements_via_service": [
-        Replacement(regex_in_dockerfile="%%py39_ver%%", package_name="python39-base"),
-        Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python39-pip"),
-    ],
-    "config_sh_script": r"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
-    ln -s /usr/bin/python3.9 /usr/bin/python3 && \
-    ln -s /usr/bin/pip3.9 /usr/bin/pip3 && \
-    ln -s /usr/bin/pip3.9 /usr/bin/pip""",
-}
-
 PYTHON_3_9_SP3 = LanguageStackContainer(
     package_name="python-3.9",
     additional_versions=["3"],
     is_latest=True,
     sp_version=3,
-    **_python_kwargs,
+    **_get_python_kwargs("3.9"),
+)
+
+PYTHON_3_10_SP4 = LanguageStackContainer(
+    package_name="python-3.10-image",
+    additional_versions=["3"],
+    is_latest=False,
+    sp_version=4,
+    **_get_python_kwargs("3.10"),
 )
 
 _ruby_kwargs = {
@@ -1364,6 +1367,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     for bci in (
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_9_SP3,
+        PYTHON_3_10_SP4,
         THREE_EIGHT_NINE_DS,
         *NGINX_CONTAINERS,
         *RMT_CONTAINERS,
