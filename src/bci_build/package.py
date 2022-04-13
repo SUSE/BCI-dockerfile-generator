@@ -285,11 +285,6 @@ class BaseContainerImage(abc.ABC):
         return ReleaseStage.BETA
 
     @property
-    def ibs_project(self) -> str:
-        """The project on IBS where this Container Image is maintained."""
-        return f"SUSE:SLE-15-SP{self.sp_version}:Update:BCI"
-
-    @property
     def dockerfile_custom_end(self) -> str:
         """This part is appended at the end of the :file:`Dockerfile`. It is either
         generated from :py:attr:`BaseContainerImage.custom_end` or by prepending
