@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-from typing import Optional
+from typing import Literal, Optional
 
 import aiofiles.tempfile
 
@@ -20,8 +20,11 @@ async def update_package(
     cleanup_on_error: bool = False,
     submit_package: bool = True,
     cleanup_on_no_change: bool = True,
+    build_service_target: Literal["obs", "ibs"] = "obs",
 ) -> None:
-    """Update the package of this BCI image on IBS:
+    """Update the package of this BCI image on OBS or IBS (which one is chosen
+    depends on the parameter ``build_service_target``, with the default being
+    OBS):
 
     1. if ``target_pkg`` is ``None``, branch the image package, optionally
        into the supplied ``target_prj``
@@ -40,6 +43,18 @@ async def update_package(
         (target_pkg is not None) and (target_prj is not None)
     ), f"Both {target_pkg=} and {target_prj=} cannot be defined at the same time"
 
+    assert build_service_target in (
+        "obs",
+        "ibs",
+    ), f"got an invalid {build_service_target=}, expected 'obs' or 'ibs'"
+
+    if build_service_target == "obs":
+        osc = "osc"
+        src_prj = f"devel:BCI:SLE-15-SP{bci.sp_version}"
+    else:
+        osc = "osc -A ibs"
+        src_prj = f"SUSE:SLE-15-SP{bci.sp_version}:Update:BCI"
+
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
         LOGGER.info("Updating %s for SP%d", bci.package_name, bci.sp_version)
         LOGGER.debug("Running update in %s", tmp)
@@ -48,7 +63,7 @@ async def update_package(
 
         try:
             if not target_pkg:
-                cmd = f"osc -A ibs branch SUSE:SLE-15-SP{bci.sp_version}:Update:BCI {bci.ibs_package}"
+                cmd = f"{osc} branch {src_prj} {bci.package_name}"
                 if target_prj:
                     cmd += f" {target_prj}"
                 stdout = (await run(cmd)).split("\n")
@@ -56,7 +71,7 @@ async def update_package(
                 co_cmd = stdout[2]
                 target_pkg = co_cmd.split(" ")[-1]
 
-            await run(f"osc -A ibs co {target_pkg} -o {tmp}")
+            await run(f"{osc} co {target_pkg} -o {tmp}")
 
             written_files = await bci.write_files_to_folder(tmp)
             for fname in written_files:
@@ -68,7 +83,7 @@ async def update_package(
                 LOGGER.info("Nothing changed => no update available")
                 if cleanup_on_no_change:
                     await run(
-                        f"osc -A ibs rdelete {target_pkg} -m 'cleanup as nothing changed'"
+                        f"{osc} rdelete {target_pkg} -m 'cleanup as nothing changed'"
                     )
                 return
 
@@ -78,14 +93,16 @@ async def update_package(
         except Exception as exc:
             LOGGER.error("failed to update %s, got %s", bci.name, exc)
             if cleanup_on_error:
-                await run(f"osc -A ibs rdelete {target_pkg} -m 'cleanup on error'")
+                await run(f"{osc} rdelete {target_pkg} -m 'cleanup on error'")
             raise exc
 
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser("Update the SLE BCI image description on IBS")
+    parser = argparse.ArgumentParser(
+        "Update the SLE BCI image description on OBS or IBS"
+    )
 
     parser.add_argument(
         "images",
@@ -122,7 +139,7 @@ if __name__ == "__main__":
         type=str,
         nargs="?",
         default=None,
-        help="Don't branch the package on IBS, instead use the specified package to perform the update. When using this option, only one container image can be updated",
+        help="Don't branch the package on OBS/IBS, instead use the specified package to perform the update. When using this option, only one container image can be updated",
     )
     parser.add_argument(
         "--target-prj",
@@ -137,6 +154,14 @@ if __name__ == "__main__":
         action="count",
         default=0,
         help="Set the verbosity of the logger to stderr",
+    )
+    parser.add_argument(
+        "--build-service-target",
+        type=str,
+        nargs=1,
+        default=["obs"],
+        choices=["obs", "ibs"],
+        help="Specify whether the updater should target obs (build.opensuse.org) or ibs (build.suse.de)",
     )
 
     args = parser.parse_args()
@@ -165,5 +190,6 @@ if __name__ == "__main__":
                 cleanup_on_error=args.cleanup_on_error,
                 submit_package=not args.no_sr,
                 cleanup_on_no_change=not args.no_cleanup_on_no_change,
+                build_service_target=args.build_service_target[0],
             )
         )

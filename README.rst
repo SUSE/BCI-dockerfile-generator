@@ -10,10 +10,11 @@ Prerequisites
 
 You will need the following tools:
 
-- Python 3.6.2 or later
+- Python 3.9 or later
 - `poetry <https://python-poetry.org/>`_
-- `osc <https://github.com/openSUSE/osc/>`_ installed and configured with the
-  alias ``ibs`` for `<https://build.suse.de>`_.
+- `osc <https://github.com/openSUSE/osc/>`_ installed and configured to reach
+  build.opensuse.org by default. If you want to target IBS (build.suse.de)
+  directly, then add the alias ``ibs`` for `<https://build.suse.de>`_.
 
 To get started, clone this repository and run :command:`poetry install` in its
 root directory.

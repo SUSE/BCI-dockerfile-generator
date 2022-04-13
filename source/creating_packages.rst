@@ -2,15 +2,15 @@ Creating packages on IBS
 ========================
 
 The `./src/bci_build/update.py` script can automatically submit updates to
-existing packages on IBS, but it will fail to create new ones that have just
-been added as code.
+existing packages on OBS or IBS, but it will fail to create new ones that have
+just been added as code.
 
-If you want to create a new Container Image on IBS, then proceed as follows:
+If you want to create a new Container Image on OBS, then proceed as follows:
 
 1. Ensure that your Container Image has been created as code (see
    :ref:`adding-and-modifying-container-images`)
 
-2. Create a new project on IBS in which you will create the initial package
+2. Create a new project on OBS in which you will create the initial package
    version. Usually the easiest way how to achieve this, is to branch an
    existing package into your home project (we use busybox-image in below example),
    as that will ensure that the repositories have been setup correctly.
@@ -18,8 +18,8 @@ If you want to create a new Container Image on IBS, then proceed as follows:
 
 .. code-block:: console
 
-   $ osc -A ibs branch SUSE:SLE-15-SP4:Update:BCI busybox-image home:$my_user:new_pkg_proj
-   $ osc -A ibs co home:$my_user:new_pkg_proj
+   $ osc branch devel:BCI:SLE-15-SP4 busybox-image home:$my_user:new_pkg_proj
+   $ osc co home:$my_user:new_pkg_proj
 
 3. Create a new package in the checked out project. You **must** give it the
    same name as the parameter
@@ -28,7 +28,7 @@ If you want to create a new Container Image on IBS, then proceed as follows:
 
 .. code-block:: console
 
-   $ osc -A ibs mkpac $new_pkg_name
+   $ osc mkpac $new_pkg_name
 
 4. Run the script :command:`./src/bci_build/package.py` as follows:
 
@@ -51,11 +51,11 @@ If you want to create a new Container Image on IBS, then proceed as follows:
 
 5. Add a changelog entry mentioning the Jira ticket requesting this container,
    add all files, commit your changes and send a submit request back to the
-   ``Update:BCI`` project:
+   ``devel:BCI`` project:
 
 .. code-block:: console
 
    $ osc vc -m "Initial version of the ... Container, jsc#BCI-XXX"
    $ osc add *
    $ osc ci -m "Initial version of the ... Container, jsc#BCI-XXX"
-   $ osc sr -m "Initial version of the ... Container, jsc#BCI-XXX" SUSE:SLE-15-SP4:Update:BCI $new_pkg_name
+   $ osc sr -m "Initial version of the ... Container, jsc#BCI-XXX" devel:BCI:SLE-15-SP4 $new_pkg_name
