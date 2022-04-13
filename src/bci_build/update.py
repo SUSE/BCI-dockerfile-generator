@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-from typing import Optional
+from typing import List, Literal, Optional
 
 import aiofiles.tempfile
+from bci_build.data import SUPPORTED_SLE_SERVICE_PACKS
 
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
 from bci_build.util import run_cmd
@@ -20,8 +21,11 @@ async def update_package(
     cleanup_on_error: bool = False,
     submit_package: bool = True,
     cleanup_on_no_change: bool = True,
+    build_service_target: Literal["obs", "ibs"] = "obs",
 ) -> None:
-    """Update the package of this BCI image on IBS:
+    """Update the package of this BCI image on OBS or IBS (which one is chosen
+    depends on the parameter ``build_service_target``, with the default being
+    OBS):
 
     1. if ``target_pkg`` is ``None``, branch the image package, optionally
        into the supplied ``target_prj``
@@ -40,15 +44,27 @@ async def update_package(
         (target_pkg is not None) and (target_prj is not None)
     ), f"Both {target_pkg=} and {target_prj=} cannot be defined at the same time"
 
+    assert build_service_target in (
+        "obs",
+        "ibs",
+    ), f"got an invalid {build_service_target=}, expected 'obs' or 'ibs'"
+
+    if build_service_target == "obs":
+        osc = "osc"
+        src_prj = f"devel:BCI:SLE-15-SP{bci.sp_version}"
+    else:
+        osc = "osc -A ibs"
+        src_prj = f"SUSE:SLE-15-SP{bci.sp_version}:Update:BCI"
+
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
-        LOGGER.info("Updating %s for SP%d", bci.ibs_package, bci.sp_version)
+        LOGGER.info("Updating %s for SP%d", bci.package_name, bci.sp_version)
         LOGGER.debug("Running update in %s", tmp)
 
         run = lambda c: run_cmd(c, cwd=tmp, logger=LOGGER)
 
         try:
             if not target_pkg:
-                cmd = f"osc -A ibs branch SUSE:SLE-15-SP{bci.sp_version}:Update:BCI {bci.ibs_package}"
+                cmd = f"{osc} branch {src_prj} {bci.package_name}"
                 if target_prj:
                     cmd += f" {target_prj}"
                 stdout = (await run(cmd)).split("\n")
@@ -56,7 +72,7 @@ async def update_package(
                 co_cmd = stdout[2]
                 target_pkg = co_cmd.split(" ")[-1]
 
-            await run(f"osc -A ibs co {target_pkg} -o {tmp}")
+            await run(f"{osc} co {target_pkg} -o {tmp}")
 
             written_files = await bci.write_files_to_folder(tmp)
             for fname in written_files:
@@ -68,7 +84,7 @@ async def update_package(
                 LOGGER.info("Nothing changed => no update available")
                 if cleanup_on_no_change:
                     await run(
-                        f"osc -A ibs rdelete {target_pkg} -m 'cleanup as nothing changed'"
+                        f"{osc} rdelete {target_pkg} -m 'cleanup as nothing changed'"
                     )
                 return
 
@@ -78,21 +94,30 @@ async def update_package(
         except Exception as exc:
             LOGGER.error("failed to update %s, got %s", bci.name, exc)
             if cleanup_on_error:
-                await run(f"osc -A ibs rdelete {target_pkg} -m 'cleanup on error'")
+                await run(f"{osc} rdelete {target_pkg} -m 'cleanup on error'")
             raise exc
 
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser("Update the SLE BCI image description on IBS")
+    parser = argparse.ArgumentParser(
+        "Update the SLE BCI image description on OBS or IBS"
+    )
 
     parser.add_argument(
-        "images",
+        "--images",
         type=str,
-        nargs="+",
+        nargs="*",
         choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
-        help="The BCI container image that should be updated",
+        help="The BCI container image that should be updated. This option is mutually exclusive with --service-pack.",
+    )
+    parser.add_argument(
+        "--service-pack",
+        type=int,
+        choices=[3, 4],
+        nargs=1,
+        help="Do not update a single image, instead update all images of a single service pack. This option is mutually exclusive with supplying image names.",
     )
     parser.add_argument(
         "--commit-msg",
@@ -122,7 +147,7 @@ if __name__ == "__main__":
         type=str,
         nargs="?",
         default=None,
-        help="Don't branch the package on IBS, instead use the specified package to perform the update. When using this option, only one container image can be updated",
+        help="Don't branch the package on OBS/IBS, instead use the specified package to perform the update. When using this option, only one container image can be updated",
     )
     parser.add_argument(
         "--target-prj",
@@ -138,12 +163,25 @@ if __name__ == "__main__":
         default=0,
         help="Set the verbosity of the logger to stderr",
     )
+    parser.add_argument(
+        "--build-service-target",
+        type=str,
+        nargs=1,
+        default=["obs"],
+        choices=["obs", "ibs"],
+        help="Specify whether the updater should target obs (build.opensuse.org) or ibs (build.suse.de)",
+    )
 
     args = parser.parse_args()
 
     handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(message)s"))
     LOGGER.addHandler(handler)
+
+    if args.images and args.service_pack:
+        raise ValueError(
+            "Cannot set the service pack and specific images at the same time"
+        )
 
     commit_msg = args.commit_msg[0]
     if commit_msg is None:
@@ -155,7 +193,17 @@ if __name__ == "__main__":
         LOGGER.setLevel("ERROR")
 
     loop = asyncio.get_event_loop()
-    for img in args.images:
+    images: List[str] = (
+        args.images
+        if args.images
+        else [
+            k
+            for k, v in ALL_CONTAINER_IMAGE_NAMES.items()
+            if v.sp_version == args.service_pack[0]
+        ]
+    )
+
+    for img in images:
         loop.run_until_complete(
             update_package(
                 ALL_CONTAINER_IMAGE_NAMES[img],
@@ -165,5 +213,6 @@ if __name__ == "__main__":
                 cleanup_on_error=args.cleanup_on_error,
                 submit_package=not args.no_sr,
                 cleanup_on_no_change=not args.no_cleanup_on_no_change,
+                build_service_target=args.build_service_target[0],
             )
         )
