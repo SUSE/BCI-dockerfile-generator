@@ -16,7 +16,7 @@ BCI_CLASSES = [OsContainer, LanguageStackContainer, ApplicationStackContainer]
 KWARGS = {
     "name": "test",
     "pretty_name": "Test",
-    "ibs_package": "test-image",
+    "package_name": "test-image",
     "sp_version": 4,
     "package_list": ["cat"],
 }

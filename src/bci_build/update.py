@@ -41,7 +41,7 @@ async def update_package(
     ), f"Both {target_pkg=} and {target_prj=} cannot be defined at the same time"
 
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
-        LOGGER.info("Updating %s for SP%d", bci.ibs_package, bci.sp_version)
+        LOGGER.info("Updating %s for SP%d", bci.package_name, bci.sp_version)
         LOGGER.debug("Running update in %s", tmp)
 
         run = lambda c: run_cmd(c, cwd=tmp, logger=LOGGER)

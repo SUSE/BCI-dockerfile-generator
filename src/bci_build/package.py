@@ -142,8 +142,9 @@ class BaseContainerImage(abc.ABC):
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
 
-    #: The name of the package on IBS in ``SUSE:SLE-15-SP$ver:Update:BCI``
-    ibs_package: str
+    #: The name of the package on OBS or IBS in ``devel:BCI:SLE-15-SP$ver`` (on
+    #: OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
+    package_name: str
 
     #: The SLE service pack to which this package belongs
     sp_version: SUPPORTED_SLE_SERVICE_PACKS
@@ -628,7 +629,7 @@ exit 0
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
-            fname = f"{self.ibs_package}.kiwi"
+            fname = f"{self.package_name}.kiwi"
             tasks.append(
                 asyncio.ensure_future(
                     write_to_file(
@@ -658,7 +659,7 @@ exit 0
             )
         )
 
-        changes_file_name = self.ibs_package + ".changes"
+        changes_file_name = self.package_name + ".changes"
         changes_file_dest = os.path.join(dest, changes_file_name)
         if not os.path.exists(changes_file_dest):
             tasks.append(asyncio.ensure_future(write_to_file(changes_file_name, "")))
@@ -765,7 +766,7 @@ PYTHON_3_6_CONTAINERS = (
             Replacement(regex_in_dockerfile="%%pip_ver%%", package_name="python3-pip"),
         ],
         custom_description="Python 3.6 development environment based on the SLE Base Container Image.",
-        ibs_package=ibs_package,
+        package_name=package_name,
         sp_version=sp_version,
         name="python",
         pretty_name="Python 3.6",
@@ -778,7 +779,7 @@ PYTHON_3_6_CONTAINERS = (
             "git-core",
         ],
     )
-    for (sp_version, ibs_package) in (
+    for (sp_version, package_name) in (
         (3, "python-3.6"),
         (4, "python-3.6-image"),
     )
@@ -807,7 +808,7 @@ _python_kwargs = {
 }
 
 PYTHON_3_9_SP3 = LanguageStackContainer(
-    ibs_package="python-3.9",
+    package_name="python-3.9",
     additional_versions=["3"],
     is_latest=True,
     sp_version=3,
@@ -816,7 +817,7 @@ PYTHON_3_9_SP3 = LanguageStackContainer(
 
 _ruby_kwargs = {
     "name": "ruby",
-    "ibs_package": "ruby-2.5-image",
+    "package_name": "ruby-2.5-image",
     "pretty_name": "Ruby 2.5",
     "version": "2.5",
     "additional_versions": ["2"],
@@ -866,7 +867,7 @@ RUBY_CONTAINERS = [
 def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
     return {
         "sp_version": sp_version,
-        "ibs_package": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
+        "package_name": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
@@ -911,7 +912,7 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
         "name": "nodejs",
         "sp_version": sp_version,
         "is_latest": ver == 16 and sp_version == 3,
-        "ibs_package": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
+        "package_name": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
         "custom_description": f"Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
         "version": str(ver),
@@ -952,7 +953,7 @@ def _get_openjdk_kwargs(
         "version": java_version,
         "sp_version": sp_version,
         "is_latest": sp_version == 3,
-        "ibs_package": f"openjdk-{java_version}"
+        "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
         + ("-image" if sp_version >= 4 else ""),
     }
@@ -992,7 +993,7 @@ OPENJDK_CONTAINERS = [
 
 
 THREE_EIGHT_NINE_DS = ApplicationStackContainer(
-    ibs_package="389-ds-container",
+    package_name="389-ds-container",
     sp_version=4,
     is_latest=True,
     name="389-ds",
@@ -1020,7 +1021,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 
 INIT_CONTAINERS = [
     OsContainer(
-        ibs_package=ibs_package,
+        package_name=package_name,
         sp_version=sp_version,
         custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
         is_latest=sp_version == 3,
@@ -1032,7 +1033,7 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
     )
-    for (sp_version, ibs_package) in ((3, "init"), (4, "init-image"))
+    for (sp_version, package_name) in ((3, "init"), (4, "init-image"))
 ]
 
 
@@ -1043,7 +1044,7 @@ with open(
 
 MARIADB_CONTAINERS = [
     ApplicationStackContainer(
-        ibs_package="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
+        package_name="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
         sp_version=sp_version,
         is_latest=sp_version == 3,
         name="rmt-mariadb",
@@ -1083,7 +1084,7 @@ EXPOSE 3306
 
 MARIADB_CLIENT_CONTAINERS = [
     ApplicationStackContainer(
-        ibs_package=(
+        package_name=(
             "rmt-mariadb-client-image" if sp_version > 3 else "rmt-mariadb-client"
         ),
         sp_version=sp_version,
@@ -1108,7 +1109,7 @@ with open(
 RMT_CONTAINERS = [
     ApplicationStackContainer(
         name="rmt-server",
-        ibs_package="rmt-server" + ("" if sp_version == 3 else "-image"),
+        package_name="rmt-server" + ("" if sp_version == 3 else "-image"),
         sp_version=sp_version,
         custom_description="SUSE RMT Server based on the SLE Base Container Image.",
         is_latest=sp_version == 3,
@@ -1142,7 +1143,7 @@ with open(
 _POSTGRES_MAJOR_VERSIONS = [14, 13, 12, 10]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
-        ibs_package=f"postgres-{ver}-image",
+        package_name=f"postgres-{ver}-image",
         sp_version=4,
         is_latest=ver == 14,
         name="postgres",
@@ -1201,7 +1202,7 @@ for filename in (
 
 NGINX_CONTAINERS = [
     ApplicationStackContainer(
-        ibs_package="rmt-nginx-image" if sp_version > 3 else "rmt-nginx",
+        package_name="rmt-nginx-image" if sp_version > 3 else "rmt-nginx",
         sp_version=sp_version,
         is_latest=sp_version == 3,
         name="rmt-nginx",
@@ -1268,7 +1269,7 @@ STOPSIGNAL SIGQUIT
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
-        ibs_package=f"rust-{rust_version}-image",
+        package_name=f"rust-{rust_version}-image",
         sp_version=4,
         is_latest=rust_version == "1.59",
         pretty_name=f"Rust {rust_version}",
@@ -1287,7 +1288,7 @@ MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
         sp_version=sp_version,
-        ibs_package=ibs_package,
+        package_name=package_name,
         is_latest=sp_version == 3,
         pretty_name="%OS_VERSION% Micro",
         custom_description="A micro environment for containers based on the SLE Base Container Image.",
@@ -1305,7 +1306,7 @@ MICRO_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for sp_version, ibs_package in (
+    for sp_version, package_name in (
         (3, "micro"),
         (4, "micro-image"),
     )
@@ -1317,7 +1318,7 @@ MINIMAL_CONTAINERS = [
         from_image=f"bci/bci-micro:15.{sp_version}",
         sp_version=sp_version,
         is_latest=sp_version == 3,
-        ibs_package=ibs_package,
+        package_name=package_name,
         build_recipe_type=BuildType.KIWI,
         pretty_name="%OS_VERSION% Minimal",
         custom_description="A minimal environment for containers based on the SLE Base Container Image.",
@@ -1330,7 +1331,7 @@ MINIMAL_CONTAINERS = [
             for name in ("grep", "diffutils", "info", "fillup", "libzio1")
         ],
     )
-    for sp_version, ibs_package in (
+    for sp_version, package_name in (
         (3, "minimal"),
         (4, "minimal-image"),
     )
@@ -1341,7 +1342,7 @@ BUSYBOX_CONTAINER = OsContainer(
     from_image=None,
     sp_version=4,
     pretty_name="Busybox",
-    ibs_package="busybox-image",
+    package_name="busybox-image",
     is_latest=True,
     build_recipe_type=BuildType.KIWI,
     custom_description="Busybox based on the SLE Base Container Image.",

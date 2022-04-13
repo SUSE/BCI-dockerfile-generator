@@ -23,7 +23,7 @@ If you want to create a new Container Image on IBS, then proceed as follows:
 
 3. Create a new package in the checked out project. You **must** give it the
    same name as the parameter
-   :py:attr:`~bci_build.package.BaseContainerImage.ibs_package` in the
+   :py:attr:`~bci_build.package.BaseContainerImage.package_name` in the
    respective Container class, as otherwise the updater script will not work properly:
 
 .. code-block:: console
