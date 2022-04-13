@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 import aiofiles.tempfile
+from bci_build.data import SUPPORTED_SLE_SERVICE_PACKS
 
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
 from bci_build.util import run_cmd
@@ -105,11 +106,18 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "images",
+        "--images",
         type=str,
-        nargs="+",
+        nargs="*",
         choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
-        help="The BCI container image that should be updated",
+        help="The BCI container image that should be updated. This option is mutually exclusive with --service-pack.",
+    )
+    parser.add_argument(
+        "--service-pack",
+        type=int,
+        choices=[3, 4],
+        nargs=1,
+        help="Do not update a single image, instead update all images of a single service pack. This option is mutually exclusive with supplying image names.",
     )
     parser.add_argument(
         "--commit-msg",
@@ -170,6 +178,11 @@ if __name__ == "__main__":
     handler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(message)s"))
     LOGGER.addHandler(handler)
 
+    if args.images and args.service_pack:
+        raise ValueError(
+            "Cannot set the service pack and specific images at the same time"
+        )
+
     commit_msg = args.commit_msg[0]
     if commit_msg is None:
         raise ValueError("A commit message must be provided")
@@ -180,7 +193,17 @@ if __name__ == "__main__":
         LOGGER.setLevel("ERROR")
 
     loop = asyncio.get_event_loop()
-    for img in args.images:
+    images: List[str] = (
+        args.images
+        if args.images
+        else [
+            k
+            for k, v in ALL_CONTAINER_IMAGE_NAMES.items()
+            if v.sp_version == args.service_pack[0]
+        ]
+    )
+
+    for img in images:
         loop.run_until_complete(
             update_package(
                 ALL_CONTAINER_IMAGE_NAMES[img],
