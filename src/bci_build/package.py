@@ -868,6 +868,8 @@ RUBY_CONTAINERS = [
 
 
 def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
+    golang_version_regex = "%%golang_version%%"
+    go = f"go{ver}"
     return {
         "sp_version": sp_version,
         "package_name": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
@@ -878,10 +880,13 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
         "is_latest": ver == "1.18" and sp_version == 3,
         "version": ver,
         "env": {
-            "GOLANG_VERSION": ver,
+            "GOLANG_VERSION": golang_version_regex,
             "GOPATH": "/go",
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
+        "replacements_via_service": [
+            Replacement(regex_in_dockerfile=golang_version_regex, package_name=go)
+        ],
         "package_list": [
             Package(
                 name=name,
@@ -889,7 +894,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
                 if sp_version == 3
                 else PackageType.IMAGE,
             )
-            for name in (f"go{ver}", "distribution-release", "make")
+            for name in (go, "distribution-release", "make")
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
