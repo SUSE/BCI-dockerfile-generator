@@ -4,7 +4,6 @@ import logging
 from typing import List, Literal, Optional
 
 import aiofiles.tempfile
-from bci_build.data import SUPPORTED_SLE_SERVICE_PACKS
 
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
 from bci_build.util import run_cmd

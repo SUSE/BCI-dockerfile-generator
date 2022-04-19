@@ -24,6 +24,6 @@ async def run_cmd(
     stdout, _ = await p.communicate()
     if retcode != 0:
         raise RuntimeError(
-            f"Commend {cmd} failed (exit code {retcode}) with: {stdout.decode()}"
+            f"Command {cmd} failed (exit code {retcode}) with: {stdout.decode()}"
         )
     return stdout.decode()
