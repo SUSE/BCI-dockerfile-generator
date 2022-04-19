@@ -1382,7 +1382,7 @@ PCP_CONTAINERS = [
         name="pcp",
         pretty_name="Performance Co-Pilot (pcp) container",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
-        ibs_package="pcp-image",
+        package_name="pcp-image",
         from_image=f"bci/bci-init:15.{sp_version}",
         sp_version=sp_version,
         is_latest=sp_version == 3,
