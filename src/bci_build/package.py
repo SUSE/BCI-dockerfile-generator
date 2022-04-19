@@ -879,6 +879,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
         "version": ver,
         "env": {
             "GOLANG_VERSION": ver,
+            "GOPATH": "/go",
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
         "package_list": [
