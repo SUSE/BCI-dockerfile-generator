@@ -228,6 +228,10 @@ class BaseContainerImage(abc.ABC):
     #: If not set, then the build type will default to docker from SP4 onwards.
     build_recipe_type: Optional[BuildType] = None
 
+    #: A license string to be placed in a comment at the top of the Dockerfile
+    #: or kiwi build description file.
+    license: str = "MIT"
+
     #: The default url that is put into the ``org.opencontainers.image.url``
     #: label
     URL: ClassVar[str] = "https://www.suse.com/products/server/"
@@ -1361,6 +1365,59 @@ BUSYBOX_CONTAINER = OsContainer(
     ],
 )
 
+_PCP_FILES = {}
+for filename in (
+    "container-entrypoint",
+    "pmproxy.conf.template",
+    "10-host_mount.conf.template",
+    "pmcd",
+    "pmlogger",
+    "README.md",
+):
+    with open(os.path.join(os.path.dirname(__file__), "pcp", filename)) as cursor:
+        _PCP_FILES[filename] = cursor.read(-1)
+
+PCP_CONTAINERS = [
+    ApplicationStackContainer(
+        name="pcp",
+        pretty_name="Performance Co-Pilot (pcp) container",
+        custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
+        ibs_package="pcp-image",
+        from_image=f"bci/bci-init:15.{sp_version}",
+        sp_version=sp_version,
+        is_latest=sp_version == 3,
+        version=version,
+        license="(LGPL-2.1+ AND GPL-2.0+)",
+        package_list=[
+            "pcp",
+            "hostname",
+            "shadow",
+            "gettext-runtime",
+            "util-linux-systemd",
+        ],
+        entrypoint=["/usr/bin/container-entrypoint"],
+        cmd=["/usr/lib/systemd/systemd"],
+        build_recipe_type=BuildType.DOCKER,
+        extra_files=_PCP_FILES,
+        custom_end="""
+RUN mkdir -p /usr/share/container-scripts/pcp && mkdir -p /etc/sysconfig
+COPY container-entrypoint /usr/bin/
+RUN chmod +x /usr/bin/container-entrypoint
+COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
+COPY pmcd pmlogger /etc/sysconfig/
+
+# This can be removed after the pcp dependency on sysconfig is removed
+RUN systemctl disable wicked wickedd
+
+VOLUME ["/var/log/pcp/pmlogger"]
+EXPOSE 44321 44322 44323
+""",
+    )
+    for sp_version, version in (
+        (3, "5.2.2"),
+        (4, "5.2.2"),
+    )
+]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.nvr}-sp{bci.sp_version}": bci
@@ -1370,6 +1427,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         PYTHON_3_10_SP4,
         THREE_EIGHT_NINE_DS,
         *NGINX_CONTAINERS,
+        *PCP_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GOLANG_IMAGES,

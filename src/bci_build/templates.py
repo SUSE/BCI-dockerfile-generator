@@ -2,7 +2,7 @@ import jinja2
 
 
 DOCKERFILE_TEMPLATE = jinja2.Template(
-    """# SPDX-License-Identifier: MIT
+    """# SPDX-License-Identifier: {{ image.license }}
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
@@ -41,7 +41,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 
 KIWI_TEMPLATE = jinja2.Template(
     """<?xml version="1.0" encoding="utf-8"?>
-<!-- SPDX-License-Identifier: MIT -->
+<!-- SPDX-License-Identifier: {{ image.license }} -->
 
 <!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
