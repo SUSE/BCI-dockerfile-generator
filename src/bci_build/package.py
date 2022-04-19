@@ -787,12 +787,12 @@ def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
     }
     if not is_system_py:
         script = rf"""ln -s /usr/bin/python{py3_ver} /usr/bin/python3 && \
-    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip3 && \
-    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip && \
     ln -s /usr/bin/pydoc{py3_ver} /usr/bin/pydoc"""
         kwargs["config_sh_script"] = (
             (
                 rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
+    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip3 && \
+    ln -s /usr/bin/pip{py3_ver} /usr/bin/pip && \
     """
                 + script
             )
