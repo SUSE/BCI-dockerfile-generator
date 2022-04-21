@@ -759,6 +759,17 @@ class OsContainer(BaseContainerImage):
         return f"registry.suse.com/bci/bci-{self.name}:{self.version_label}"
 
 
+def _generate_disk_size_constraints(size_gb: int) -> str:
+    return f"""<constraints>
+  <hardware>
+    <disk>
+      <size unit="G">{size_gb}</size>
+    </disk>
+  </hardware>
+</constraints>
+"""
+
+
 def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
     is_system_py = py3_ver == "3.6"
     py3_ver_nodots = py3_ver.replace(".", "")
@@ -905,14 +916,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
-            "_constraints": """<constraints>
-  <hardware>
-    <disk>
-      <size unit="G">6</size>
-    </disk>
-  </hardware>
-</constraints>
-"""
+            "_constraints": _generate_disk_size_constraints(6)
         },
     }
 
@@ -972,6 +976,10 @@ def _get_openjdk_kwargs(
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
         + ("-image" if sp_version >= 4 else ""),
+        "extra_files": {
+            # prevent ftbfs on workers with a root partition with 4GB
+            "_constraints": _generate_disk_size_constraints(6)
+        },
     }
 
     if devel:
@@ -1296,6 +1304,10 @@ RUST_CONTAINERS = [
         ],
         version=rust_version,
         env={"RUST_VERSION": rust_version},
+        extra_files={
+            # prevent ftbfs on workers with a root partition with 4GB
+            "_constraints": _generate_disk_size_constraints(6)
+        },
     )
     for rust_version in ("1.56", "1.57", "1.58", "1.59")
 ]
