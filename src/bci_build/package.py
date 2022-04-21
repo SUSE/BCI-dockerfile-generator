@@ -501,13 +501,14 @@ exit 0
         pass
 
     @property
+    @abc.abstractmethod
     def reference(self) -> str:
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
         ``registry.suse.com/{self.build_tags[0]}``.
 
         """
-        return f"registry.suse.com/{self.build_tags[0]}"
+        pass
 
     @property
     def description(self) -> str:
@@ -721,6 +722,10 @@ class LanguageStackContainer(BaseContainerImage):
             )
         return tags
 
+    @property
+    def reference(self) -> str:
+        return f"registry.suse.com/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+
 
 @dataclass
 class ApplicationStackContainer(LanguageStackContainer):
@@ -760,6 +765,10 @@ class OsContainer(BaseContainerImage):
                 f"bci/bci-{name}:{self.version_label}",
             ] + ([f"bci/bci-{name}:latest"] if self.is_latest else [])
         return tags
+
+    @property
+    def reference(self) -> str:
+        return f"registry.suse.com/bci/bci-{self.name}:{self.version_label}"
 
 
 def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
