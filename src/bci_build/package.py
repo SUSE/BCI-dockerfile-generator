@@ -912,7 +912,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
                 if sp_version == 3
                 else PackageType.IMAGE,
             )
-            for name in (go, "distribution-release", "make")
+            for name in (go, "distribution-release", "make", "git-core")
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
