@@ -1299,7 +1299,7 @@ RUST_CONTAINERS = [
         name="rust",
         package_name=f"rust-{rust_version}-image",
         sp_version=4,
-        is_latest=rust_version == "1.59",
+        is_latest=rust_version == "1.60",
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
@@ -1309,7 +1309,7 @@ RUST_CONTAINERS = [
         version=rust_version,
         env={"RUST_VERSION": rust_version},
     )
-    for rust_version in ("1.56", "1.57", "1.58", "1.59")
+    for rust_version in ("1.56", "1.57", "1.58", "1.59", "1.60")
 ]
 
 MICRO_CONTAINERS = [
