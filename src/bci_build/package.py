@@ -383,13 +383,6 @@ test -f /.profile && . /.profile
 echo "Configure image: [$kiwi_iname]..."
 
 #======================================
-# Setup baseproduct link
-#--------------------------------------
-if [ ! -e /etc/products.d/baseproduct ]; then
-    suseSetupProduct
-fi
-
-#======================================
 # Import repositories' keys
 #--------------------------------------
 suseImportBuildKey
