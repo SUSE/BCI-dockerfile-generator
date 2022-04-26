@@ -382,10 +382,12 @@ test -f /.profile && . /.profile
 
 echo "Configure image: [$kiwi_iname]..."
 
-#======================================
-# Import repositories' keys
-#--------------------------------------
-suseImportBuildKey
+#============================================
+# Import repositories' keys if rpm is present
+#--------------------------------------------
+if command -v rpm > /dev/null; then
+    suseImportBuildKey
+fi
 
 {self.config_sh_script}
 
