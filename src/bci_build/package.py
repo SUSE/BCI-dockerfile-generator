@@ -1375,6 +1375,7 @@ BUSYBOX_CONTAINER = OsContainer(
             "ca-certificates-mozilla-prebuilt",
         )
     ],
+    config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
 )
 
 _PCP_FILES = {}
