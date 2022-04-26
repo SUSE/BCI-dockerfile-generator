@@ -192,13 +192,22 @@ class BaseContainerImage(abc.ABC):
     #: result in an error.
     custom_end: str = ""
 
-    #: A bash script that is put into :file:`config.sh` if a kiwi image is
+    #: A script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
     #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
     #: at the end of the ``Dockerfile``. It must thus fit on a single line if
     #: you want to be able to build from a kiwi and :file:`Dockerfile` at the
     #: same time!
     config_sh_script: str = ""
+
+    #: The interpreter of the :file:`config.sh` script that is executed by kiwi
+    #: during the image build.
+    #: It defaults to :file:`/bin/bash` and has no effect for :file:`Dockerfile`
+    #: based builds.
+    #: *Warning:* Using a different interpreter than :file:`/bin/bash` could
+    #: lead to unpredictable results as kiwi's internal functions are written
+    #: for bash and not for a different shell.
+    config_sh_interpreter: str = "/bin/bash"
 
     #: The maintainer of this image, defaults to SUSE
     maintainer: str = "SUSE LLC (https://www.suse.com/)"
@@ -362,7 +371,7 @@ class BaseContainerImage(abc.ABC):
                     "This image cannot be build as a kiwi image, it has a `custom_end` set."
                 )
             return ""
-        return f"""#!/bin/bash
+        return f"""#!{self.config_sh_interpreter}
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC
 
@@ -1376,6 +1385,7 @@ BUSYBOX_CONTAINER = OsContainer(
         )
     ],
     config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
+    config_sh_interpreter="/bin/sh",
 )
 
 _PCP_FILES = {}
