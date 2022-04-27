@@ -192,13 +192,22 @@ class BaseContainerImage(abc.ABC):
     #: result in an error.
     custom_end: str = ""
 
-    #: A bash script that is put into :file:`config.sh` if a kiwi image is
+    #: A script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
     #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
     #: at the end of the ``Dockerfile``. It must thus fit on a single line if
     #: you want to be able to build from a kiwi and :file:`Dockerfile` at the
     #: same time!
     config_sh_script: str = ""
+
+    #: The interpreter of the :file:`config.sh` script that is executed by kiwi
+    #: during the image build.
+    #: It defaults to :file:`/bin/bash` and has no effect for :file:`Dockerfile`
+    #: based builds.
+    #: *Warning:* Using a different interpreter than :file:`/bin/bash` could
+    #: lead to unpredictable results as kiwi's internal functions are written
+    #: for bash and not for a different shell.
+    config_sh_interpreter: str = "/bin/bash"
 
     #: The maintainer of this image, defaults to SUSE
     maintainer: str = "SUSE LLC (https://www.suse.com/)"
@@ -362,18 +371,9 @@ class BaseContainerImage(abc.ABC):
                     "This image cannot be build as a kiwi image, it has a `custom_end` set."
                 )
             return ""
-        return f"""#!/bin/bash
-
-# Copyright (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
+        return f"""#!{self.config_sh_interpreter}
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC
 
 {_BASH_SET}
 
@@ -382,17 +382,12 @@ test -f /.profile && . /.profile
 
 echo "Configure image: [$kiwi_iname]..."
 
-#======================================
-# Setup baseproduct link
-#--------------------------------------
-if [ ! -e /etc/products.d/baseproduct ]; then
-    suseSetupProduct
+#============================================
+# Import repositories' keys if rpm is present
+#--------------------------------------------
+if command -v rpm > /dev/null; then
+    suseImportBuildKey
 fi
-
-#======================================
-# Import repositories' keys
-#--------------------------------------
-suseImportBuildKey
 
 {self.config_sh_script}
 
@@ -1384,6 +1379,8 @@ BUSYBOX_CONTAINER = OsContainer(
             "ca-certificates-mozilla-prebuilt",
         )
     ],
+    config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
+    config_sh_interpreter="/bin/sh",
 )
 
 _PCP_FILES = {}
