@@ -50,13 +50,13 @@ async def update_package(
 
     if build_service_target == "obs":
         osc = "osc"
-        src_prj = f"devel:BCI:SLE-15-SP{bci.sp_version}"
+        src_prj = f"devel:BCI:SLE-15-SP{bci.os_version}"
     else:
         osc = "osc -A ibs"
-        src_prj = f"SUSE:SLE-15-SP{bci.sp_version}:Update:BCI"
+        src_prj = f"SUSE:SLE-15-SP{bci.os_version}:Update:BCI"
 
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
-        LOGGER.info("Updating %s for SP%d", bci.package_name, bci.sp_version)
+        LOGGER.info("Updating %s for SP%d", bci.package_name, bci.os_version)
         LOGGER.debug("Running update in %s", tmp)
 
         async def run_cmd(c: str) -> str:
@@ -212,7 +212,7 @@ if __name__ == "__main__":
         else [
             k
             for k, v in ALL_CONTAINER_IMAGE_NAMES.items()
-            if v.sp_version == args.service_pack[0]
+            if v.os_version == args.service_pack[0]
         ]
     )
 

@@ -17,7 +17,7 @@ KWARGS = {
     "name": "test",
     "pretty_name": "Test",
     "package_name": "test-image",
-    "sp_version": 4,
+    "os_version": 4,
     "package_list": ["cat"],
 }
 
