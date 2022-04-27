@@ -6,7 +6,12 @@ from typing import List, Literal, Optional
 from asyncio import create_subprocess_shell
 import aiofiles.tempfile
 
-from bci_build.package import ALL_CONTAINER_IMAGE_NAMES, BaseContainerImage
+from bci_build.package import (
+    ALL_CONTAINER_IMAGE_NAMES,
+    ALL_OS_VERSIONS,
+    BaseContainerImage,
+    OsVersion,
+)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -48,12 +53,19 @@ async def update_package(
         "ibs",
     ), f"got an invalid {build_service_target=}, expected 'obs' or 'ibs'"
 
+    prj_suffix = (
+        bci.os_version
+        if bci.os_version == OsVersion.TUMBLEWEED
+        else "SLE-15-SP" + str(bci.os_version)
+    )
     if build_service_target == "obs":
         osc = "osc"
-        src_prj = f"devel:BCI:SLE-15-SP{bci.os_version}"
+        src_prj = f"devel:BCI:{prj_suffix}"
     else:
+        if bci.os_version == OsVersion.TUMBLEWEED:
+            raise ValueError("A container image for Tumbleweed is not mirrored to IBS")
         osc = "osc -A ibs"
-        src_prj = f"SUSE:SLE-15-SP{bci.os_version}:Update:BCI"
+        src_prj = f"SUSE:{prj_suffix}:Update:BCI"
 
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
         LOGGER.info("Updating %s for SP%d", bci.package_name, bci.os_version)
@@ -128,7 +140,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--service-pack",
         type=int,
-        choices=[3, 4],
+        choices=(str(v) for v in ALL_OS_VERSIONS),
         nargs=1,
         help="Do not update a single image, instead update all images of a single service pack. This option is mutually exclusive with supplying image names.",
     )
@@ -212,7 +224,7 @@ if __name__ == "__main__":
         else [
             k
             for k, v in ALL_CONTAINER_IMAGE_NAMES.items()
-            if v.os_version == args.service_pack[0]
+            if str(v.os_version) == args.service_pack[0]
         ]
     )
 
