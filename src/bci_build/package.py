@@ -1172,7 +1172,7 @@ INIT_CONTAINERS = [
 ]
 
 
-_MARIAD_OS_VER_AND_VERSION = [
+_MARIADB_OS_VER_AND_VERSION = [
     (OsVersion.SP3, "10.5"),
     (OsVersion.SP4, "10.6"),
     (OsVersion.TUMBLEWEED, "10.7"),
@@ -1221,7 +1221,7 @@ RUN mkdir /run/mysql
 EXPOSE 3306
 """,
     )
-    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
+    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
 ]
 
 
@@ -1242,7 +1242,7 @@ MARIADB_CLIENT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
     )
-    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
+    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
 ]
 
 
