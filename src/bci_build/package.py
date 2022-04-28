@@ -1549,8 +1549,8 @@ PCP_CONTAINERS = [
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version=version,
-        additional_versions=["2.2", "2"],
+        version="5.2.2",
+        additional_versions=["5.2", "5"],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
             "pcp",
@@ -1577,11 +1577,7 @@ VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
 """,
     )
-    for os_version, version in (
-        (OsVersion.SP3, "5.2.2"),
-        (OsVersion.SP4, "5.2.2"),
-        (OsVersion.TUMBLEWEED, "5.2.2"),
-    )
+    for os_version in ALL_OS_VERSIONS
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
