@@ -1228,9 +1228,9 @@ EXPOSE 3306
 MARIADB_CLIENT_CONTAINERS = [
     ApplicationStackContainer(
         package_name=(
-            "rmt-mariadb-client-image"
+            "rmt-mariadb-client"
             if os_version == OsVersion.SP3
-            else "rmt-mariadb-client"
+            else "rmt-mariadb-client-image"
         ),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
