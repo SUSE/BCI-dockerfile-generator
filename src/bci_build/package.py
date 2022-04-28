@@ -388,12 +388,10 @@ class BaseContainerImage(abc.ABC):
     @property
     def config_sh(self) -> str:
         """The full :file:`config.sh` script required for kiwi builds."""
-        if not self.config_sh_script:
-            if self.custom_end:
-                raise ValueError(
-                    "This image cannot be build as a kiwi image, it has a `custom_end` set."
-                )
-            return ""
+        if not self.config_sh_script and self.custom_end:
+            raise ValueError(
+                "This image cannot be build as a kiwi image, it has a `custom_end` set."
+            )
         return f"""#!{self.config_sh_interpreter}
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC
@@ -413,6 +411,15 @@ if command -v rpm > /dev/null; then
 fi
 
 {self.config_sh_script}
+
+#=======================================
+# Clean up after zypper if it is present
+#---------------------------------------
+if command -v zypper > /dev/null; then
+    zypper -n clean
+fi
+
+rm -rf /var/log/zypp
 
 exit 0
 """
