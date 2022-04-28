@@ -12,7 +12,6 @@ from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
 
 import aiofiles
 
-from bci_build.data import RELEASED_UNTIL_SLE_VERSION_SP, SUPPORTED_SLE_SERVICE_PACKS
 from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
 
 
@@ -91,6 +90,30 @@ class PackageType(enum.Enum):
         return self.value
 
 
+@enum.unique
+class OsVersion(enum.Enum):
+    """Enumeration of the base operating system versions for BCI."""
+
+    #: SLE 15 Service Pack 4
+    SP4 = 4
+    #: SLE 15 Service Pack 3
+    SP3 = 3
+    #: openSUSE Tumbleweed
+    TUMBLEWEED = "Tumbleweed"
+
+    def __str__(self) -> str:
+        return str(self.value)
+
+
+#: Operating system versions that have the label ``com.suse.release-stage`` set
+#: to ``released``.
+RELEASED_OS_VERSIONS = [OsVersion.SP3]
+
+ALL_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
+
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP3, OsVersion.TUMBLEWEED]
+
+
 @dataclass
 class Package:
     """Representation of a package in a kiwi build, for Dockerfile based builds the
@@ -146,7 +169,7 @@ class BaseContainerImage(abc.ABC):
     package_name: str
 
     #: The SLE service pack to which this package belongs
-    sp_version: SUPPORTED_SLE_SERVICE_PACKS
+    os_version: OsVersion
 
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP`` when an empty string is used.
@@ -257,7 +280,7 @@ class BaseContainerImage(abc.ABC):
             )
         if self.build_recipe_type is None:
             self.build_recipe_type = (
-                BuildType.KIWI if self.sp_version == 3 else BuildType.DOCKER
+                BuildType.KIWI if self.os_version == 3 else BuildType.DOCKER
             )
 
     @property
@@ -286,13 +309,13 @@ class BaseContainerImage(abc.ABC):
     def release_stage(self) -> ReleaseStage:
         """This container images' release stage.
 
-        It is :py:attr:`~ReleaseStage.RELEASED` if the container images service
-        pack is less or equal to the service pack version defined in
-        :py:const:`~bci_build.data.RELEASED_UNTIL_SLE_VERSION_SP`. Otherwise it is
-        :py:attr:`~ReleaseStage.BETA`.
+        It is :py:attr:`~ReleaseStage.RELEASED` if the container images'
+        operating system version is in the list
+        :py:const:`~bci_build.package.RELEASED_OS_VERSIONS`. Otherwise it
+        is :py:attr:`~ReleaseStage.BETA`.
 
         """
-        if self.sp_version <= RELEASED_UNTIL_SLE_VERSION_SP:
+        if self.os_version in RELEASED_OS_VERSIONS:
             return ReleaseStage.RELEASED
 
         return ReleaseStage.BETA
@@ -393,6 +416,32 @@ fi
 
 exit 0
 """
+
+    @property
+    def _from_image(self) -> Optional[str]:
+        if self.from_image is None:
+            return None
+        if self.from_image:
+            return self.from_image
+
+        if self.os_version == OsVersion.TUMBLEWEED:
+            return "opensuse/tumbleweed:latest"
+        else:
+            return f"suse/sle15:15.{self.os_version}"
+
+    @property
+    def dockerfile_from_line(self) -> str:
+        if self._from_image is None:
+            return ""
+        return f"FROM {self._from_image}"
+
+    @property
+    def kiwi_derived_from_entry(self) -> str:
+        if self._from_image is None:
+            return ""
+        return (
+            f" derived_from=\"obsrepositories:/{self._from_image.replace(':', '#')}\""
+        )
 
     @property
     def packages(self) -> str:
@@ -727,6 +776,12 @@ class ApplicationStackContainer(LanguageStackContainer):
 
 @dataclass
 class OsContainer(BaseContainerImage):
+    @staticmethod
+    def version_to_container_os_version(os_version: OsVersion) -> str:
+        if os_version == OsVersion.TUMBLEWEED:
+            return "latest"
+        return f"15.{os_version}"
+
     @property
     def nvr(self) -> str:
         return self.name
@@ -765,11 +820,20 @@ def _generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
-def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
-    is_system_py = py3_ver == "3.6"
+def _get_python_kwargs(
+    py3_ver: Literal["3.6", "3.8", "3.9", "3.10"], os_version: OsVersion
+):
+    # FIXME: not correct for TW
+    is_system_py: bool = py3_ver == (
+        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.8"
+    )
     py3_ver_nodots = py3_ver.replace(".", "")
 
-    py3 = "python3" if is_system_py else "python" + py3_ver_nodots
+    py3 = (
+        "python3"
+        if is_system_py and os_version != OsVersion.TUMBLEWEED
+        else "python" + py3_ver_nodots
+    )
     py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
@@ -778,15 +842,21 @@ def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
         "pretty_name": f"Python {py3_ver}",
         "custom_description": f"Python {py3_ver} development environment based on the SLE Base Container Image.",
         "version": py3_ver,
+        "additional_versions": ["3"],
         "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
         "package_list": [py3, pip3, "curl", "git-core"]
-        + ([f"{py3}-wheel"] if is_system_py else []),
+        + (
+            [f"{py3}-wheel"]
+            if is_system_py or os_version == OsVersion.TUMBLEWEED
+            else []
+        ),
         "replacements_via_service": [
             Replacement(
                 regex_in_dockerfile=py3_ver_replacement, package_name=f"{py3}-base"
             ),
             Replacement(regex_in_dockerfile=pip3_replacement, package_name=pip3),
         ],
+        "os_version": os_version,
     }
     if not is_system_py:
         script = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3 && \
@@ -799,7 +869,7 @@ def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
     """
                 + script
             )
-            if py3_ver == "3.9"
+            if (py3_ver == "3.9" and os_version == OsVersion.SP3)
             else script
         )
     return kwargs
@@ -807,90 +877,116 @@ def _get_python_kwargs(py3_ver: Literal["3.6", "3.9", "3.10"]):
 
 PYTHON_3_6_CONTAINERS = (
     LanguageStackContainer(
-        **_get_python_kwargs("3.6"), sp_version=sp_version, package_name=package_name
+        **_get_python_kwargs("3.6", os_version), package_name=package_name
     )
-    for (sp_version, package_name) in (
-        (3, "python-3.6"),
-        (4, "python-3.6-image"),
+    for (os_version, package_name) in (
+        (OsVersion.SP3, "python-3.6"),
+        (OsVersion.SP4, "python-3.6-image"),
     )
 )
 
+PYTHON_3_8_TW = LanguageStackContainer(
+    package_name="python-3.8-image",
+    **_get_python_kwargs(
+        "3.8",
+        OsVersion.TUMBLEWEED,
+    ),
+)
 PYTHON_3_9_SP3 = LanguageStackContainer(
     package_name="python-3.9",
-    additional_versions=["3"],
     is_latest=True,
-    sp_version=3,
-    **_get_python_kwargs("3.9"),
+    **_get_python_kwargs("3.9", OsVersion.SP3),
+)
+PYTHON_3_9_TW = LanguageStackContainer(
+    package_name="python-3.9",
+    **_get_python_kwargs("3.9", OsVersion.TUMBLEWEED),
 )
 
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
-    additional_versions=["3"],
     is_latest=False,
-    sp_version=4,
-    **_get_python_kwargs("3.10"),
+    **_get_python_kwargs("3.10", OsVersion.SP4),
+)
+PYTHON_3_10_TW = LanguageStackContainer(
+    package_name="python-3.10-image",
+    is_latest=True,
+    **_get_python_kwargs(
+        "3.10",
+        os_version=OsVersion.TUMBLEWEED,
+    ),
 )
 
-_ruby_kwargs = {
-    "name": "ruby",
-    "package_name": "ruby-2.5-image",
-    "pretty_name": "Ruby 2.5",
-    "version": "2.5",
-    "additional_versions": ["2"],
-    "env": {
-        # upstream does this
-        "LANG": "C.UTF-8",
-        "RUBY_VERSION": "%%rb_ver%%",
-        "RUBY_MAJOR": "%%rb_maj%%",
-    },
-    "replacements_via_service": [
-        Replacement(regex_in_dockerfile="%%rb_ver%%", package_name="ruby2.5"),
-        Replacement(
-            regex_in_dockerfile="%%rb_maj%%",
-            package_name="ruby2.5",
-            parse_version="minor",
-        ),
-    ],
-    "package_list": [
-        "ruby2.5",
-        "ruby2.5-rubygem-bundler",
-        "ruby2.5-devel",
-        "curl",
-        "git-core",
-        "distribution-release",
-        # additional dependencies to build rails, ffi, sqlite3 gems -->
-        "gcc-c++",
-        "sqlite3-devel",
-        "make",
-        "awk",
-        # additional dependencies supplementing rails
-        "timezone",
-    ],
-    # as we only ship one ruby version, we want to make sure that binaries belonging
-    # to our gems get installed as `bin` and not as `bin.ruby2.5`
-    "config_sh_script": "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
-}
+
+def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.1"], os_version: OsVersion):
+    ruby = f"ruby{ruby_version}"
+    ruby_major = ruby_version.split(".")[0]
+
+    return {
+        "name": "ruby",
+        "package_name": f"ruby-{ruby_version}-image",
+        "pretty_name": f"Ruby {ruby_version}",
+        "version": ruby_version,
+        "additional_versions": [ruby_major],
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "os_version": os_version,
+        "env": {
+            # upstream does this
+            "LANG": "C.UTF-8",
+            "RUBY_VERSION": "%%rb_ver%%",
+            "RUBY_MAJOR": "%%rb_maj%%",
+        },
+        "replacements_via_service": [
+            Replacement(regex_in_dockerfile="%%rb_ver%%", package_name=ruby),
+            Replacement(
+                regex_in_dockerfile="%%rb_maj%%",
+                package_name=ruby,
+                parse_version="minor",
+            ),
+        ],
+        "package_list": [
+            ruby,
+            f"{ruby}-rubygem-bundler",
+            f"{ruby}-devel",
+            # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
+            "util-linux",
+            "curl",
+            "git-core",
+            "distribution-release",
+            # additional dependencies to build rails, ffi, sqlite3 gems -->
+            "gcc-c++",
+            "sqlite3-devel",
+            "make",
+            "awk",
+            # additional dependencies supplementing rails
+            "timezone",
+        ],
+        # as we only ship one ruby version, we want to make sure that binaries belonging
+        # to our gems get installed as `bin` and not as `bin.ruby$ruby_version`
+        "config_sh_script": "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
+    }
+
+
 RUBY_CONTAINERS = [
     LanguageStackContainer(
-        sp_version=3,
-        is_latest=True,
-        **_ruby_kwargs,
+        **_get_ruby_kwargs("2.5", OsVersion.SP3),
     ),
-    LanguageStackContainer(sp_version=4, **_ruby_kwargs),
+    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP3)),
+    LanguageStackContainer(**_get_ruby_kwargs("3.1", OsVersion.TUMBLEWEED)),
 ]
 
 
-def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
+def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersion):
     golang_version_regex = "%%golang_version%%"
     go = f"go{ver}"
     return {
-        "sp_version": sp_version,
-        "package_name": f"golang-{ver}" + ("-image" if sp_version == 4 else ""),
+        "os_version": os_version,
+        "package_name": f"golang-{ver}"
+        + ("-image" if os_version != OsVersion.SP3 else ""),
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
         # XXX change this once we roll over to SP4
-        "is_latest": ver == "1.18" and sp_version == 3,
+        "is_latest": ver == "1.18" and os_version in CAN_BE_LATEST_OS_VERSION,
         "version": ver,
         "env": {
             "GOLANG_VERSION": golang_version_regex,
@@ -904,7 +1000,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
             Package(
                 name=name,
                 pkg_type=PackageType.BOOTSTRAP
-                if sp_version == 3
+                if os_version == 3
                 else PackageType.IMAGE,
             )
             for name in (go, "distribution-release", "make", "git-core")
@@ -917,17 +1013,18 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], sp_version: int):
 
 
 GOLANG_IMAGES = [
-    LanguageStackContainer(**_get_golang_kwargs(ver, sp_version))
-    for ver, sp_version in product(("1.16", "1.17", "1.18"), (3, 4))
+    LanguageStackContainer(**_get_golang_kwargs(ver, os_version))
+    for ver, os_version in product(("1.16", "1.17", "1.18"), ALL_OS_VERSIONS)
 ]
 
 
-def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE_PACKS):
+def _get_node_kwargs(ver: Literal[12, 14, 16], os_version: OsVersion):
     return {
         "name": "nodejs",
-        "sp_version": sp_version,
-        "is_latest": ver == 16 and sp_version == 3,
-        "package_name": f"nodejs-{ver}" + ("-image" if sp_version == 4 else ""),
+        "os_version": os_version,
+        "is_latest": ver == 16 and os_version in CAN_BE_LATEST_OS_VERSION,
+        "package_name": f"nodejs-{ver}"
+        + ("-image" if os_version != OsVersion.SP3 else ""),
         "custom_description": f"Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
         "version": str(ver),
@@ -948,13 +1045,13 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], sp_version: SUPPORTED_SLE_SERVICE
 
 
 NODE_CONTAINERS = [
-    LanguageStackContainer(**_get_node_kwargs(ver, sp_version))
-    for ver, sp_version in product((12, 14, 16), (3, 4))
-]
+    LanguageStackContainer(**_get_node_kwargs(ver, os_version))
+    for ver, os_version in product((14, 16), ALL_OS_VERSIONS)
+] + [LanguageStackContainer(**_get_node_kwargs(12, OsVersion.SP3))]
 
 
 def _get_openjdk_kwargs(
-    sp_version: int, devel: bool, java_version: Union[Literal[11], Literal[17]]
+    os_version: int, devel: bool, java_version: Union[Literal[11], Literal[17]]
 ):
     JAVA_ENV = {
         "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
@@ -966,11 +1063,11 @@ def _get_openjdk_kwargs(
     comon = {
         "env": JAVA_ENV,
         "version": java_version,
-        "sp_version": sp_version,
-        "is_latest": sp_version == 3,
+        "os_version": os_version,
+        "is_latest": os_version == 3,
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
-        + ("-image" if sp_version >= 4 else ""),
+        + ("-image" if os_version >= 4 else ""),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": _generate_disk_size_constraints(6)
@@ -999,29 +1096,30 @@ def _get_openjdk_kwargs(
 
 
 OPENJDK_CONTAINERS = [
-    LanguageStackContainer(**_get_openjdk_kwargs(sp_version, devel, 11))
-    for sp_version, devel in product((3, 4), (True, False))
+    LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
+    for os_version, devel in product((3, 4), (True, False))
 ] + [
     LanguageStackContainer(
-        **_get_openjdk_kwargs(sp_version=4, devel=False, java_version=17)
+        **_get_openjdk_kwargs(os_version=4, devel=False, java_version=17)
     ),
     LanguageStackContainer(
-        **_get_openjdk_kwargs(sp_version=4, devel=True, java_version=17)
+        **_get_openjdk_kwargs(os_version=4, devel=True, java_version=17)
     ),
 ]
 
 
-THREE_EIGHT_NINE_DS = ApplicationStackContainer(
-    package_name="389-ds-container",
-    sp_version=4,
-    is_latest=True,
-    name="389-ds",
-    maintainer="wbrown@suse.de",
-    pretty_name="389 Directory Server",
-    package_list=["389-ds", "timezone", "openssl"],
-    cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
-    version="2.0",
-    custom_end=rf"""EXPOSE 3389 3636
+THREE_EIGHT_NINE_DS_CONTAINERS = [
+    ApplicationStackContainer(
+        package_name="389-ds-container",
+        os_version=os_version,
+        is_latest=True,
+        name="389-ds",
+        maintainer="wbrown@suse.de",
+        pretty_name="389 Directory Server",
+        package_list=["389-ds", "timezone", "openssl"],
+        cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
+        version="2.0",
+        custom_end=rf"""EXPOSE 3389 3636
 
 {DOCKERFILE_RUN} mkdir -p /data/config && \
     mkdir -p /data/ssca && \
@@ -1036,14 +1134,16 @@ VOLUME /data
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
 """,
-)
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
 
 INIT_CONTAINERS = [
     OsContainer(
         package_name=package_name,
-        sp_version=sp_version,
+        os_version=os_version,
         custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
-        is_latest=sp_version == 3,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="init",
         pretty_name="Init",
         package_list=["systemd", "gzip"],
@@ -1052,9 +1152,19 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
     )
-    for (sp_version, package_name) in ((3, "init"), (4, "init-image"))
+    for (os_version, package_name) in (
+        (OsVersion.SP3, "init"),
+        (OsVersion.SP4, "init-image"),
+        (OsVersion.TUMBLEWEED, "init-image"),
+    )
 ]
 
+
+_MARIAD_OS_VER_AND_VERSION = [
+    (OsVersion.SP3, "10.5"),
+    (OsVersion.SP4, "10.6"),
+    (OsVersion.TUMBLEWEED, "10.7"),
+]
 
 with open(
     os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
@@ -1063,9 +1173,11 @@ with open(
 
 MARIADB_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="rmt-mariadb-image" if sp_version > 3 else "rmt-mariadb",
-        sp_version=sp_version,
-        is_latest=sp_version == 3,
+        package_name=(
+            "rmt-mariadb" if os_version == OsVersion.SP3 else "rmt-mariadb-image"
+        ),
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-mariadb",
         version=version,
         pretty_name="MariaDB Server",
@@ -1097,17 +1209,19 @@ RUN mkdir /run/mysql
 EXPOSE 3306
 """,
     )
-    for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
+    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
 ]
 
 
 MARIADB_CLIENT_CONTAINERS = [
     ApplicationStackContainer(
         package_name=(
-            "rmt-mariadb-client-image" if sp_version > 3 else "rmt-mariadb-client"
+            "rmt-mariadb-client-image"
+            if os_version == OsVersion.SP3
+            else "rmt-mariadb-client"
         ),
-        sp_version=sp_version,
-        is_latest=sp_version == 3,
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-mariadb-client",
         version=version,
         pretty_name="MariaDB Client",
@@ -1116,7 +1230,7 @@ MARIADB_CLIENT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
     )
-    for (sp_version, version) in ((3, "10.5"), (4, "10.6"))
+    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
 ]
 
 
@@ -1128,10 +1242,10 @@ with open(
 RMT_CONTAINERS = [
     ApplicationStackContainer(
         name="rmt-server",
-        package_name="rmt-server" + ("" if sp_version == 3 else "-image"),
-        sp_version=sp_version,
+        package_name="rmt-server" + ("" if os_version == OsVersion.SP3 else "-image"),
+        os_version=os_version,
         custom_description="SUSE RMT Server based on the SLE Base Container Image.",
-        is_latest=sp_version == 3,
+        is_latest=os_version == 3,
         pretty_name="RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="2.7",
@@ -1144,7 +1258,7 @@ RMT_CONTAINERS = [
 RUN chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
-    for sp_version in (3, 4)
+    for os_version in ALL_OS_VERSIONS
 ]
 
 
@@ -1163,7 +1277,7 @@ _POSTGRES_MAJOR_VERSIONS = [14, 13, 12, 10]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         package_name=f"postgres-{ver}-image",
-        sp_version=4,
+        os_version=os_version,
         is_latest=ver == 14,
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
@@ -1202,7 +1316,9 @@ STOPSIGNAL SIGINT
 EXPOSE 5432
 """,
     )
-    for ver in _POSTGRES_MAJOR_VERSIONS
+    for ver, os_version in product(
+        _POSTGRES_MAJOR_VERSIONS, [OsVersion.SP4, OsVersion.TUMBLEWEED]
+    )
 ]
 
 
@@ -1221,9 +1337,9 @@ for filename in (
 
 NGINX_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="rmt-nginx-image" if sp_version > 3 else "rmt-nginx",
-        sp_version=sp_version,
-        is_latest=sp_version == 3,
+        package_name="rmt-nginx" if os_version == OsVersion.SP3 else "rmt-nginx-image",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-nginx",
         pretty_name="RMT Nginx",
         version=version,
@@ -1255,7 +1371,11 @@ EXPOSE 80
 STOPSIGNAL SIGQUIT
 """,
     )
-    for sp_version, version in ((3, "1.19"), (4, "1.21"))
+    for os_version, version in (
+        (OsVersion.SP3, "1.19"),
+        (OsVersion.SP4, "1.21"),
+        (OsVersion.TUMBLEWEED, "1.21"),
+    )
 ]
 
 
@@ -1289,7 +1409,7 @@ RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
         package_name=f"rust-{rust_version}-image",
-        sp_version=4,
+        os_version=os_version,
         is_latest=rust_version == "1.60",
         pretty_name=f"Rust {rust_version}",
         package_list=[
@@ -1304,15 +1424,17 @@ RUST_CONTAINERS = [
             "_constraints": _generate_disk_size_constraints(6)
         },
     )
-    for rust_version in ("1.56", "1.57", "1.58", "1.59", "1.60")
+    for rust_version, os_version in product(
+        ("1.56", "1.57", "1.58", "1.59", "1.60"), (OsVersion.SP4, OsVersion.TUMBLEWEED)
+    )
 ]
 
 MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
-        sp_version=sp_version,
+        os_version=os_version,
         package_name=package_name,
-        is_latest=sp_version == 3,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="%OS_VERSION% Micro",
         custom_description="A micro environment for containers based on the SLE Base Container Image.",
         from_image=None,
@@ -1322,6 +1444,8 @@ MICRO_CONTAINERS = [
             for name in (
                 "bash",
                 "ca-certificates-mozilla-prebuilt",
+                # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
+                "coreutils",
                 "distribution-release",
             )
         ],
@@ -1329,59 +1453,68 @@ MICRO_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for sp_version, package_name in (
-        (3, "micro"),
-        (4, "micro-image"),
+    for os_version, package_name in (
+        (OsVersion.SP3, "micro"),
+        (OsVersion.SP4, "micro-image"),
+        (OsVersion.TUMBLEWEED, "micro-image"),
     )
 ]
 
 MINIMAL_CONTAINERS = [
     OsContainer(
         name="minimal",
-        from_image=f"bci/bci-micro:15.{sp_version}",
-        sp_version=sp_version,
-        is_latest=sp_version == 3,
+        from_image=f"bci/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name=package_name,
         build_recipe_type=BuildType.KIWI,
         pretty_name="%OS_VERSION% Minimal",
         custom_description="A minimal environment for containers based on the SLE Base Container Image.",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in ("rpm-ndb", "perl-base", "distribution-release")
+            for name in (
+                "rpm" if os_version == OsVersion.TUMBLEWEED else "rpm-ndb",
+                "perl-base",
+                "distribution-release",
+            )
         ]
         + [
             Package(name, pkg_type=PackageType.DELETE)
             for name in ("grep", "diffutils", "info", "fillup", "libzio1")
         ],
     )
-    for sp_version, package_name in (
-        (3, "minimal"),
-        (4, "minimal-image"),
+    for os_version, package_name in (
+        (OsVersion.SP3, "minimal"),
+        (OsVersion.SP4, "minimal-image"),
+        (OsVersion.TUMBLEWEED, "minimal-image"),
     )
 ]
 
-BUSYBOX_CONTAINER = OsContainer(
-    name="busybox",
-    from_image=None,
-    sp_version=4,
-    pretty_name="Busybox",
-    package_name="busybox-image",
-    is_latest=True,
-    build_recipe_type=BuildType.KIWI,
-    custom_description="Busybox based on the SLE Base Container Image.",
-    cmd="/bin/sh",
-    package_list=[
-        Package(name, pkg_type=PackageType.BOOTSTRAP)
-        for name in (
-            "busybox",
-            "busybox-links",
-            "distribution-release",
-            "ca-certificates-mozilla-prebuilt",
-        )
-    ],
-    config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
-    config_sh_interpreter="/bin/sh",
-)
+BUSYBOX_CONTAINERS = [
+    OsContainer(
+        name="busybox",
+        from_image=None,
+        os_version=os_version,
+        pretty_name="Busybox",
+        package_name="busybox-image",
+        is_latest=True,
+        build_recipe_type=BuildType.KIWI,
+        custom_description="Busybox based on the SLE Base Container Image.",
+        cmd="/bin/sh",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in (
+                "busybox",
+                "busybox-links",
+                "distribution-release",
+                "ca-certificates-mozilla-prebuilt",
+            )
+        ],
+        config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
+        config_sh_interpreter="/bin/sh",
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
 
 _PCP_FILES = {}
 for filename in (
@@ -1401,10 +1534,11 @@ PCP_CONTAINERS = [
         pretty_name="Performance Co-Pilot (pcp) container",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
         package_name="pcp-image",
-        from_image=f"bci/bci-init:15.{sp_version}",
-        sp_version=sp_version,
-        is_latest=sp_version == 3,
+        from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version=version,
+        additional_versions=["2.2", "2"],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
             "pcp",
@@ -1431,19 +1565,23 @@ VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
 """,
     )
-    for sp_version, version in (
-        (3, "5.2.2"),
-        (4, "5.2.2"),
+    for os_version, version in (
+        (OsVersion.SP3, "5.2.2"),
+        (OsVersion.SP4, "5.2.2"),
+        (OsVersion.TUMBLEWEED, "5.2.2"),
     )
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
-    f"{bci.nvr}-sp{bci.sp_version}": bci
+    f"{bci.nvr}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
     for bci in (
         *PYTHON_3_6_CONTAINERS,
+        PYTHON_3_8_TW,
         PYTHON_3_9_SP3,
+        PYTHON_3_9_TW,
         PYTHON_3_10_SP4,
-        THREE_EIGHT_NINE_DS,
+        PYTHON_3_10_TW,
+        *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
         *PCP_CONTAINERS,
         *RMT_CONTAINERS,
@@ -1458,10 +1596,11 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *POSTGRES_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
-        BUSYBOX_CONTAINER,
+        *BUSYBOX_CONTAINERS,
     )
 }
-ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-12-sp4")
+ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
+ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.56-Tumbleweed")
 
 if __name__ == "__main__":
     import argparse

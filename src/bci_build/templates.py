@@ -7,7 +7,7 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 #!BuildTag: {{ tag }}
 {% endfor -%}
 
-{% if image.from_image is not none %}FROM {% if image.from_image %}{{ image.from_image }}{% else %}suse/sle15:15.{{ image.sp_version }}{% endif %}{% endif %}
+{{ image.dockerfile_from_line }}
 
 MAINTAINER {{ image.maintainer }}
 
@@ -52,7 +52,7 @@ KIWI_TEMPLATE = jinja2.Template(
     <specification>{{ image.title }}</specification>
   </description>
   <preferences>
-    <type image="docker"{% if image.from_image is not none %} derived_from="obsrepositories:/{% if image.from_image %}{{ image.from_image.replace(':', '#') }}{% else %}suse/sle15#15.{{ image.sp_version }}{% endif %}"{% endif %}>
+    <type image="docker"{{ image.kiwi_derived_from_entry }}>
       <containerconfig
           name="{{ image.build_tags[0].split(':')[0] }}"
           tag="{{ image.build_tags[0].split(':')[1] }}"
@@ -82,7 +82,7 @@ KIWI_TEMPLATE = jinja2.Template(
 {{ image.kiwi_env_entry }}
       </containerconfig>
     </type>
-    <version>15.{{ image.sp_version }}.0</version>
+    <version>15.{{ image.os_version }}.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
