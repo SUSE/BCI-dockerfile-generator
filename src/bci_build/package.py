@@ -1107,17 +1107,30 @@ def _get_openjdk_kwargs(
         }
 
 
-OPENJDK_CONTAINERS = [
-    LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
-    for os_version, devel in product((3, 4), (True, False))
-] + [
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version=4, devel=False, java_version=17)
-    ),
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version=4, devel=True, java_version=17)
-    ),
-]
+OPENJDK_CONTAINERS = (
+    [
+        LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
+        for os_version, devel in product(
+            (OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
+        )
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17)
+        )
+        for os_version, devel in product(
+            (OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
+        )
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(
+                os_version=OsVersion.TUMBLEWEED, devel=devel, java_version=java_version
+            )
+        )
+        for devel, java_version in product((True, False), (13, 15))
+    ]
+)
 
 
 THREE_EIGHT_NINE_DS_CONTAINERS = [
