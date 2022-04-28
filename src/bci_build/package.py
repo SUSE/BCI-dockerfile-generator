@@ -286,7 +286,7 @@ class BaseContainerImage(abc.ABC):
             )
         if self.build_recipe_type is None:
             self.build_recipe_type = (
-                BuildType.KIWI if self.os_version == 3 else BuildType.DOCKER
+                BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
     @property
@@ -1063,7 +1063,7 @@ NODE_CONTAINERS = [
 
 
 def _get_openjdk_kwargs(
-    os_version: int, devel: bool, java_version: Union[Literal[11], Literal[17]]
+    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
 ):
     JAVA_ENV = {
         "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
@@ -1076,10 +1076,10 @@ def _get_openjdk_kwargs(
         "env": JAVA_ENV,
         "version": java_version,
         "os_version": os_version,
-        "is_latest": os_version == 3,
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
-        + ("-image" if os_version >= 4 else ""),
+        + ("" if os_version == OsVersion.SP3 else "-image"),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": _generate_disk_size_constraints(6)
@@ -1107,17 +1107,30 @@ def _get_openjdk_kwargs(
         }
 
 
-OPENJDK_CONTAINERS = [
-    LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
-    for os_version, devel in product((3, 4), (True, False))
-] + [
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version=4, devel=False, java_version=17)
-    ),
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version=4, devel=True, java_version=17)
-    ),
-]
+OPENJDK_CONTAINERS = (
+    [
+        LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
+        for os_version, devel in product(
+            (OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
+        )
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17)
+        )
+        for os_version, devel in product(
+            (OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
+        )
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(
+                os_version=OsVersion.TUMBLEWEED, devel=devel, java_version=java_version
+            )
+        )
+        for devel, java_version in product((True, False), (13, 15))
+    ]
+)
 
 
 THREE_EIGHT_NINE_DS_CONTAINERS = [
@@ -1172,7 +1185,7 @@ INIT_CONTAINERS = [
 ]
 
 
-_MARIAD_OS_VER_AND_VERSION = [
+_MARIADB_OS_VER_AND_VERSION = [
     (OsVersion.SP3, "10.5"),
     (OsVersion.SP4, "10.6"),
     (OsVersion.TUMBLEWEED, "10.7"),
@@ -1221,16 +1234,16 @@ RUN mkdir /run/mysql
 EXPOSE 3306
 """,
     )
-    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
+    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
 ]
 
 
 MARIADB_CLIENT_CONTAINERS = [
     ApplicationStackContainer(
         package_name=(
-            "rmt-mariadb-client-image"
+            "rmt-mariadb-client"
             if os_version == OsVersion.SP3
-            else "rmt-mariadb-client"
+            else "rmt-mariadb-client-image"
         ),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -1242,7 +1255,7 @@ MARIADB_CLIENT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
     )
-    for (os_version, version) in _MARIAD_OS_VER_AND_VERSION
+    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
 ]
 
 
@@ -1549,8 +1562,8 @@ PCP_CONTAINERS = [
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version=version,
-        additional_versions=["2.2", "2"],
+        version="5.2.2",
+        additional_versions=["5.2", "5"],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
             "pcp",
@@ -1577,11 +1590,7 @@ VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
 """,
     )
-    for os_version, version in (
-        (OsVersion.SP3, "5.2.2"),
-        (OsVersion.SP4, "5.2.2"),
-        (OsVersion.TUMBLEWEED, "5.2.2"),
-    )
+    for os_version in ALL_OS_VERSIONS
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
