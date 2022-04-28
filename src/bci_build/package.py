@@ -1007,7 +1007,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersi
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(6)
+            "_constraints": _generate_disk_size_constraints(8)
         },
     }
 
