@@ -68,7 +68,7 @@ async def update_package(
         src_prj = f"SUSE:{prj_suffix}:Update:BCI"
 
     async with aiofiles.tempfile.TemporaryDirectory() as tmp:
-        LOGGER.info("Updating %s for SP%d", bci.package_name, bci.os_version)
+        LOGGER.info("Updating %s for %s", bci.package_name, bci.os_version.pretty_print)
         LOGGER.debug("Running update in %s", tmp)
 
         async def run_cmd(c: str) -> str:

@@ -104,6 +104,12 @@ class OsVersion(enum.Enum):
     def __str__(self) -> str:
         return str(self.value)
 
+    @property
+    def pretty_print(self) -> str:
+        if self.value == OsVersion.TUMBLEWEED.value:
+            return self.value
+        return f"SP{self.value}"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
@@ -388,12 +394,10 @@ class BaseContainerImage(abc.ABC):
     @property
     def config_sh(self) -> str:
         """The full :file:`config.sh` script required for kiwi builds."""
-        if not self.config_sh_script:
-            if self.custom_end:
-                raise ValueError(
-                    "This image cannot be build as a kiwi image, it has a `custom_end` set."
-                )
-            return ""
+        if not self.config_sh_script and self.custom_end:
+            raise ValueError(
+                "This image cannot be build as a kiwi image, it has a `custom_end` set."
+            )
         return f"""#!{self.config_sh_interpreter}
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC
@@ -413,6 +417,15 @@ if command -v rpm > /dev/null; then
 fi
 
 {self.config_sh_script}
+
+#=======================================
+# Clean up after zypper if it is present
+#---------------------------------------
+if command -v zypper > /dev/null; then
+    zypper -n clean
+fi
+
+rm -rf /var/log/zypp
 
 exit 0
 """
@@ -823,7 +836,6 @@ def _generate_disk_size_constraints(size_gb: int) -> str:
 def _get_python_kwargs(
     py3_ver: Literal["3.6", "3.8", "3.9", "3.10"], os_version: OsVersion
 ):
-    # FIXME: not correct for TW
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.8"
     )
