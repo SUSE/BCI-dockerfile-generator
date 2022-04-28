@@ -836,7 +836,6 @@ def _generate_disk_size_constraints(size_gb: int) -> str:
 def _get_python_kwargs(
     py3_ver: Literal["3.6", "3.8", "3.9", "3.10"], os_version: OsVersion
 ):
-    # FIXME: not correct for TW
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.8"
     )
