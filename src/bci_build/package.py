@@ -286,7 +286,7 @@ class BaseContainerImage(abc.ABC):
             )
         if self.build_recipe_type is None:
             self.build_recipe_type = (
-                BuildType.KIWI if self.os_version == 3 else BuildType.DOCKER
+                BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
     @property
@@ -1063,7 +1063,7 @@ NODE_CONTAINERS = [
 
 
 def _get_openjdk_kwargs(
-    os_version: int, devel: bool, java_version: Union[Literal[11], Literal[17]]
+    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
 ):
     JAVA_ENV = {
         "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
@@ -1076,10 +1076,10 @@ def _get_openjdk_kwargs(
         "env": JAVA_ENV,
         "version": java_version,
         "os_version": os_version,
-        "is_latest": os_version == 3,
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
-        + ("-image" if os_version >= 4 else ""),
+        + ("" if os_version == OsVersion.SP3 else "-image"),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": _generate_disk_size_constraints(6)
