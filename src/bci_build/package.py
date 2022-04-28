@@ -104,6 +104,12 @@ class OsVersion(enum.Enum):
     def __str__(self) -> str:
         return str(self.value)
 
+    @property
+    def pretty_print(self) -> str:
+        if self.value == OsVersion.TUMBLEWEED.value:
+            return self.value
+        return f"SP{self.value}"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
