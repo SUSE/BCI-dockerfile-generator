@@ -1270,7 +1270,7 @@ RMT_CONTAINERS = [
         package_name="rmt-server" + ("" if os_version == OsVersion.SP3 else "-image"),
         os_version=os_version,
         custom_description="SUSE RMT Server based on the SLE Base Container Image.",
-        is_latest=os_version == 3,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="2.7",
