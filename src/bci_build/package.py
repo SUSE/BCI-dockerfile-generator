@@ -911,7 +911,7 @@ PYTHON_3_9_SP3 = LanguageStackContainer(
     **_get_python_kwargs("3.9", OsVersion.SP3),
 )
 PYTHON_3_9_TW = LanguageStackContainer(
-    package_name="python-3.9",
+    package_name="python-3.9-image",
     **_get_python_kwargs("3.9", OsVersion.TUMBLEWEED),
 )
 
