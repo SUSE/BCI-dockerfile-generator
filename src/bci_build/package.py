@@ -871,19 +871,20 @@ def _get_python_kwargs(
         "os_version": os_version,
     }
     if not is_system_py:
-        script = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
+        symlink_py_and_pydoc = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
-        kwargs["config_sh_script"] = (
-            (
-                rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base; \
-    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3; \
+
+        # in SLE 15 SP3 python39-pip does not provide pip & pip3
+        if os_version == OsVersion.SP3:
+            kwargs[
+                "config_sh_script"
+            ] = rf"""ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3; \
     ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip; \
+    {symlink_py_and_pydoc}
     """
-                + script
-            )
-            if (py3_ver == "3.9" and os_version == OsVersion.SP3)
-            else script
-        )
+        else:
+            kwargs["config_sh_script"] = symlink_py_and_pydoc
+
     return kwargs
 
 
