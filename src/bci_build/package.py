@@ -1212,24 +1212,24 @@ MARIADB_CONTAINERS = [
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadbd"],
-        custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
+        custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+{DOCKERFILE_RUN} chmod 755 /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
-RUN sed -i 's#gosu mysql#su mysql -s /bin/bash -m#g' /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} sed -i 's#gosu mysql#su mysql -s /bin/bash -m#g' /usr/local/bin/docker-entrypoint.sh
 
 # Ensure all logs goes to stdout
-RUN sed -i 's/^log/#log/g' /etc/my.cnf
+{DOCKERFILE_RUN} sed -i 's/^log/#log/g' /etc/my.cnf
 
 # Disable binding to localhost only, doesn't make sense in a container
-RUN sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
+{DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
-RUN mkdir /run/mysql
+{DOCKERFILE_RUN} mkdir /run/mysql
 
 EXPOSE 3306
 """,
@@ -1279,8 +1279,8 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+        custom_end=f"""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
     for os_version in ALL_OS_VERSIONS
@@ -1373,23 +1373,22 @@ NGINX_CONTAINERS = [
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
-        custom_end="""
-RUN mkdir /docker-entrypoint.d
+        custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
 COPY 30-tune-worker-processes.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-RUN chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
-RUN chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
-RUN chmod +x /docker-entrypoint.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.sh
 
 COPY index.html /srv/www/htdocs/
 
-RUN mkdir /var/log/nginx
-RUN chown nginx:nginx /var/log/nginx
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+{DOCKERFILE_RUN} mkdir /var/log/nginx
+{DOCKERFILE_RUN} chown nginx:nginx /var/log/nginx
+{DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
+{DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
 
 EXPOSE 80
 
@@ -1576,15 +1575,15 @@ PCP_CONTAINERS = [
         cmd=["/usr/lib/systemd/systemd"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
-        custom_end="""
-RUN mkdir -p /usr/share/container-scripts/pcp && mkdir -p /etc/sysconfig
+        custom_end=f"""
+{DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp && mkdir -p /etc/sysconfig
 COPY container-entrypoint /usr/bin/
-RUN chmod +x /usr/bin/container-entrypoint
+{DOCKERFILE_RUN} chmod +x /usr/bin/container-entrypoint
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
 COPY pmcd pmlogger /etc/sysconfig/
 
 # This can be removed after the pcp dependency on sysconfig is removed
-RUN systemctl disable wicked wickedd
+{DOCKERFILE_RUN} systemctl disable wicked wickedd
 
 VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
