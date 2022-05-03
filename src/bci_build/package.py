@@ -19,7 +19,7 @@ _BASH_SET = "set -euo pipefail"
 
 #: a ``RUN`` command with a common set of bash flags applied to prevent errors
 #: from not being noticed
-DOCKERFILE_RUN = f"RUN {_BASH_SET} &&"
+DOCKERFILE_RUN = f"RUN {_BASH_SET};"
 
 
 @enum.unique
@@ -871,13 +871,13 @@ def _get_python_kwargs(
         "os_version": os_version,
     }
     if not is_system_py:
-        script = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3 && \
+        script = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
         kwargs["config_sh_script"] = (
             (
-                rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
-    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3 && \
-    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip && \
+                rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base; \
+    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3; \
+    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip; \
     """
                 + script
             )
@@ -1146,12 +1146,12 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         version="2.0",
         custom_end=rf"""EXPOSE 3389 3636
 
-{DOCKERFILE_RUN} mkdir -p /data/config && \
-    mkdir -p /data/ssca && \
-    mkdir -p /data/run && \
-    mkdir -p /var/run/dirsrv && \
-    ln -s /data/config /etc/dirsrv/slapd-localhost && \
-    ln -s /data/ssca /etc/dirsrv/ssca && \
+{DOCKERFILE_RUN} mkdir -p /data/config; \
+    mkdir -p /data/ssca; \
+    mkdir -p /data/run; \
+    mkdir -p /var/run/dirsrv; \
+    ln -s /data/config /etc/dirsrv/slapd-localhost; \
+    ln -s /data/ssca /etc/dirsrv/ssca; \
     ln -s /data/run /var/run/dirsrv
 
 VOLUME /data
@@ -1332,9 +1332,9 @@ POSTGRES_CONTAINERS = [
 VOLUME /var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /usr/local/bin/
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh && \
-    ln -s su /usr/bin/gosu && \
-    mkdir /docker-entrypoint-initdb.d && \
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
+    ln -s su /usr/bin/gosu; \
+    mkdir /docker-entrypoint-initdb.d; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
@@ -1576,7 +1576,7 @@ PCP_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
         custom_end=f"""
-{DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp && mkdir -p /etc/sysconfig
+{DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint /usr/bin/
 {DOCKERFILE_RUN} chmod +x /usr/bin/container-entrypoint
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
