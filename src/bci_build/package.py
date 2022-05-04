@@ -19,7 +19,7 @@ _BASH_SET = "set -euo pipefail"
 
 #: a ``RUN`` command with a common set of bash flags applied to prevent errors
 #: from not being noticed
-DOCKERFILE_RUN = f"RUN {_BASH_SET} &&"
+DOCKERFILE_RUN = f"RUN {_BASH_SET};"
 
 
 @enum.unique
@@ -871,19 +871,20 @@ def _get_python_kwargs(
         "os_version": os_version,
     }
     if not is_system_py:
-        script = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3 && \
+        symlink_py_and_pydoc = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
-        kwargs["config_sh_script"] = (
-            (
-                rf"""rpm -e --nodeps $(rpm -qa|grep libpython3_6) python3-base && \
-    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3 && \
-    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip && \
+
+        # in SLE 15 SP3 python39-pip does not provide pip & pip3
+        if os_version == OsVersion.SP3:
+            kwargs[
+                "config_sh_script"
+            ] = rf"""ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip3; \
+    ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip; \
+    {symlink_py_and_pydoc}
     """
-                + script
-            )
-            if (py3_ver == "3.9" and os_version == OsVersion.SP3)
-            else script
-        )
+        else:
+            kwargs["config_sh_script"] = symlink_py_and_pydoc
+
     return kwargs
 
 
@@ -910,7 +911,7 @@ PYTHON_3_9_SP3 = LanguageStackContainer(
     **_get_python_kwargs("3.9", OsVersion.SP3),
 )
 PYTHON_3_9_TW = LanguageStackContainer(
-    package_name="python-3.9",
+    package_name="python-3.9-image",
     **_get_python_kwargs("3.9", OsVersion.TUMBLEWEED),
 )
 
@@ -1146,12 +1147,12 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         version="2.0",
         custom_end=rf"""EXPOSE 3389 3636
 
-{DOCKERFILE_RUN} mkdir -p /data/config && \
-    mkdir -p /data/ssca && \
-    mkdir -p /data/run && \
-    mkdir -p /var/run/dirsrv && \
-    ln -s /data/config /etc/dirsrv/slapd-localhost && \
-    ln -s /data/ssca /etc/dirsrv/ssca && \
+{DOCKERFILE_RUN} mkdir -p /data/config; \
+    mkdir -p /data/ssca; \
+    mkdir -p /data/run; \
+    mkdir -p /var/run/dirsrv; \
+    ln -s /data/config /etc/dirsrv/slapd-localhost; \
+    ln -s /data/ssca /etc/dirsrv/ssca; \
     ln -s /data/run /var/run/dirsrv
 
 VOLUME /data
@@ -1212,24 +1213,24 @@ MARIADB_CONTAINERS = [
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadbd"],
-        custom_end=r"""RUN mkdir /docker-entrypoint-initdb.d
+        custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 VOLUME /var/lib/mysql
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+{DOCKERFILE_RUN} chmod 755 /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
-RUN sed -i 's#gosu mysql#su mysql -s /bin/bash -m#g' /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} sed -i 's#gosu mysql#su mysql -s /bin/bash -m#g' /usr/local/bin/docker-entrypoint.sh
 
 # Ensure all logs goes to stdout
-RUN sed -i 's/^log/#log/g' /etc/my.cnf
+{DOCKERFILE_RUN} sed -i 's/^log/#log/g' /etc/my.cnf
 
 # Disable binding to localhost only, doesn't make sense in a container
-RUN sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
+{DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
-RUN mkdir /run/mysql
+{DOCKERFILE_RUN} mkdir /run/mysql
 
 EXPOSE 3306
 """,
@@ -1279,8 +1280,8 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end="""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+        custom_end=f"""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
     for os_version in ALL_OS_VERSIONS
@@ -1332,9 +1333,9 @@ POSTGRES_CONTAINERS = [
 VOLUME /var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /usr/local/bin/
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh && \
-    ln -s su /usr/bin/gosu && \
-    mkdir /docker-entrypoint-initdb.d && \
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
+    ln -s su /usr/bin/gosu; \
+    mkdir /docker-entrypoint-initdb.d; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
@@ -1373,23 +1374,22 @@ NGINX_CONTAINERS = [
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
-        custom_end="""
-RUN mkdir /docker-entrypoint.d
+        custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
 COPY 30-tune-worker-processes.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-RUN chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
-RUN chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
-RUN chmod +x /docker-entrypoint.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.sh
 
 COPY index.html /srv/www/htdocs/
 
-RUN mkdir /var/log/nginx
-RUN chown nginx:nginx /var/log/nginx
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+{DOCKERFILE_RUN} mkdir /var/log/nginx
+{DOCKERFILE_RUN} chown nginx:nginx /var/log/nginx
+{DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
+{DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
 
 EXPOSE 80
 
@@ -1576,15 +1576,15 @@ PCP_CONTAINERS = [
         cmd=["/usr/lib/systemd/systemd"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
-        custom_end="""
-RUN mkdir -p /usr/share/container-scripts/pcp && mkdir -p /etc/sysconfig
+        custom_end=f"""
+{DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint /usr/bin/
-RUN chmod +x /usr/bin/container-entrypoint
+{DOCKERFILE_RUN} chmod +x /usr/bin/container-entrypoint
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
 COPY pmcd pmlogger /etc/sysconfig/
 
 # This can be removed after the pcp dependency on sysconfig is removed
-RUN systemctl disable wicked wickedd
+{DOCKERFILE_RUN} systemctl disable wicked wickedd
 
 VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
@@ -1623,6 +1623,11 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
 ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.56-Tumbleweed")
 
+SORTED_CONTAINER_IMAGE_NAMES = sorted(
+    ALL_CONTAINER_IMAGE_NAMES,
+    key=lambda bci: str(ALL_CONTAINER_IMAGE_NAMES[bci].os_version),
+)
+
 if __name__ == "__main__":
     import argparse
 
@@ -1634,7 +1639,7 @@ if __name__ == "__main__":
         "image",
         type=str,
         nargs=1,
-        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
+        choices=SORTED_CONTAINER_IMAGE_NAMES,
         help="The BCI container image, which package contents should be written to the disk",
     )
     parser.add_argument(

@@ -9,6 +9,7 @@ import aiofiles.tempfile
 from bci_build.package import (
     ALL_CONTAINER_IMAGE_NAMES,
     ALL_OS_VERSIONS,
+    SORTED_CONTAINER_IMAGE_NAMES,
     BaseContainerImage,
     OsVersion,
 )
@@ -134,13 +135,13 @@ if __name__ == "__main__":
         "--images",
         type=str,
         nargs="*",
-        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
+        choices=SORTED_CONTAINER_IMAGE_NAMES,
         help="The BCI container image that should be updated. This option is mutually exclusive with --service-pack.",
     )
     parser.add_argument(
         "--service-pack",
-        type=int,
-        choices=(str(v) for v in ALL_OS_VERSIONS),
+        type=str,
+        choices=[str(v) for v in ALL_OS_VERSIONS],
         nargs=1,
         help="Do not update a single image, instead update all images of a single service pack. This option is mutually exclusive with supplying image names.",
     )
