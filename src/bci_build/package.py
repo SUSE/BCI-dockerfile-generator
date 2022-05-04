@@ -1623,7 +1623,10 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
 ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.56-Tumbleweed")
 
-SORTED_CONTAINER_IMAGE_NAMES = sorted(ALL_CONTAINER_IMAGE_NAMES, key=lambda bci: str(ALL_CONTAINER_IMAGE_NAMES[bci].os_version))
+SORTED_CONTAINER_IMAGE_NAMES = sorted(
+    ALL_CONTAINER_IMAGE_NAMES,
+    key=lambda bci: str(ALL_CONTAINER_IMAGE_NAMES[bci].os_version),
+)
 
 if __name__ == "__main__":
     import argparse

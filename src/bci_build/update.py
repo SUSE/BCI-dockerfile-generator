@@ -140,8 +140,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--service-pack",
-        type=int,
         choices=(str(v) for v in ALL_OS_VERSIONS),
+        type=str,
         nargs=1,
         help="Do not update a single image, instead update all images of a single service pack. This option is mutually exclusive with supplying image names.",
     )
