@@ -1623,6 +1623,8 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
 ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.56-Tumbleweed")
 
+SORTED_CONTAINER_IMAGE_NAMES = sorted(ALL_CONTAINER_IMAGE_NAMES, key=lambda bci: str(ALL_CONTAINER_IMAGE_NAMES[bci].os_version))
+
 if __name__ == "__main__":
     import argparse
 
@@ -1634,7 +1636,7 @@ if __name__ == "__main__":
         "image",
         type=str,
         nargs=1,
-        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
+        choices=SORTED_CONTAINER_IMAGE_NAMES,
         help="The BCI container image, which package contents should be written to the disk",
     )
     parser.add_argument(

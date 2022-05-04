@@ -9,6 +9,7 @@ import aiofiles.tempfile
 from bci_build.package import (
     ALL_CONTAINER_IMAGE_NAMES,
     ALL_OS_VERSIONS,
+    SORTED_CONTAINER_IMAGE_NAMES,
     BaseContainerImage,
     OsVersion,
 )
@@ -134,7 +135,7 @@ if __name__ == "__main__":
         "--images",
         type=str,
         nargs="*",
-        choices=list(ALL_CONTAINER_IMAGE_NAMES.keys()),
+        choices=SORTED_CONTAINER_IMAGE_NAMES,
         help="The BCI container image that should be updated. This option is mutually exclusive with --service-pack.",
     )
     parser.add_argument(
