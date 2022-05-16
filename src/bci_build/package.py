@@ -1472,6 +1472,7 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
                 "distribution-release",
+                "skelcd-EULA-bci",
             )
         ],
         # intentionally empty
