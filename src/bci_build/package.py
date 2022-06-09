@@ -191,10 +191,10 @@ class BaseContainerImage(abc.ABC):
     #: :command:`sh -c "MY_CMD"`.
     #: If your entrypoint must not be called through a shell, then pass the
     #: binary and its parameters as a list
-    entrypoint: Optional[Union[str, List[str]]] = None
+    entrypoint: Optional[List[str]] = None
 
     #: An optional CMD for the image, it is omitted if empty or ``None``
-    cmd: Optional[Union[str, List[str]]] = None
+    cmd: Optional[List[str]] = None
 
     #: Extra environment variables to be set in the container
     env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
@@ -344,7 +344,7 @@ class BaseContainerImage(abc.ABC):
 
     @staticmethod
     def _cmd_entrypoint_docker(
-        prefix: Literal["CMD", "ENTRYPOINT"], value: Optional[Union[str, List[str]]]
+        prefix: Literal["CMD", "ENTRYPOINT"], value: Optional[List[str]]
     ) -> Optional[str]:
         if not value:
             return None
@@ -364,7 +364,7 @@ class BaseContainerImage(abc.ABC):
     @staticmethod
     def _cmd_entrypoint_kiwi(
         prefix: Literal["subcommand", "entrypoint"],
-        value: Optional[Union[str, List[str]]],
+        value: Optional[List[str]],
     ) -> Optional[str]:
         if not value:
             return None
@@ -1095,7 +1095,7 @@ def _get_openjdk_kwargs(
             "pretty_name": f"OpenJDK {java_version} Development",
             "custom_description": f"Java {java_version} Development environment based on the SLE Base Container Image.",
             "package_list": [f"java-{java_version}-openjdk-devel", "git-core", "maven"],
-            "cmd": "jshell",
+            "cmd": ["/usr/bin/jshell"],
             "from_image": f"bci/openjdk:{java_version}",
         }
     else:
@@ -1526,7 +1526,7 @@ BUSYBOX_CONTAINERS = [
         is_latest=True,
         build_recipe_type=BuildType.KIWI,
         custom_description="Busybox based on the SLE Base Container Image.",
-        cmd="/bin/sh",
+        cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in (
