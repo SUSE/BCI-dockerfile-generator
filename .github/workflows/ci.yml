@@ -1,0 +1,94 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  format:
+    name: Ensure code is properly formatted
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: |
+          poetry install
+          poetry run black --check --diff .
+
+  ci:
+    name: Run the unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python_version }}
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.tox
+          key: tox-${{ matrix.python_version }}-${{ hashFiles('poetry.lock') }}
+
+      - run: poetry install
+      - run: poetry run pytest -vv
+
+      - run: |
+          mkdir -p pkg_dest
+          for pkg in $(poetry run ./src/bci_build/package.py --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
+              poetry run ./src/bci_build/package.py $pkg pkg_dest
+          done
+
+
+  documentation:
+    name: Build the documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.tox
+          key: tox-${{ hashFiles('poetry.lock') }}
+
+      - run: poetry install
+      - run: poetry run sphinx-build -M html source build -W
+
+      - name: upload the build directory
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ./build/html
+
+  deploy:
+    name: deploy to the gh-pages branch
+    runs-on: ubuntu-latest
+    needs: documentation
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: ./build
+
+      - name: deploy to github pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build
