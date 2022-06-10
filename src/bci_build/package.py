@@ -1550,6 +1550,7 @@ for filename in (
     "pmcd",
     "pmlogger",
     "README.md",
+    "healthcheck",
 ):
     with open(os.path.join(os.path.dirname(__file__), "pcp", filename)) as cursor:
         _PCP_FILES[filename] = cursor.read(-1)
@@ -1573,19 +1574,22 @@ PCP_CONTAINERS = [
             "gettext-runtime",
             "util-linux-systemd",
         ],
-        entrypoint=["/usr/bin/container-entrypoint"],
+        entrypoint=["/usr/local/bin/container-entrypoint"],
         cmd=["/usr/lib/systemd/systemd"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
         custom_end=f"""
 {DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
-COPY container-entrypoint /usr/bin/
-{DOCKERFILE_RUN} chmod +x /usr/bin/container-entrypoint
+COPY container-entrypoint healthcheck /usr/local/bin/
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/container-entrypoint /usr/local/bin/healthcheck
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
 COPY pmcd pmlogger /etc/sysconfig/
 
 # This can be removed after the pcp dependency on sysconfig is removed
 {DOCKERFILE_RUN} systemctl disable wicked wickedd
+
+HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
+    CMD /usr/local/bin/healthcheck
 
 VOLUME ["/var/log/pcp/pmlogger"]
 EXPOSE 44321 44322 44323
