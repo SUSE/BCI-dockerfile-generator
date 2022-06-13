@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>BCI build recipe generator &#8212; bci-build-templates  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding and Modifying Container Images" href="adding_containers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="bci-build-recipe-generator">
+<h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this headline">¶</a></h1>
+<p>This is a very simple script that generates the necessary files to build our BCI
+containers in the Open Build Service.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>You will need the following tools:</p>
+<ul class="simple">
+<li><p>Python 3.9 or later</p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
+<li><p><a class="reference external" href="https://github.com/openSUSE/osc/">osc</a> installed and configured to reach
+build.opensuse.org by default. If you want to target IBS (build.suse.de)
+directly, then add the alias <code class="docutils literal notranslate"><span class="pre">ibs</span></code> for <a class="reference external" href="https://build.suse.de">https://build.suse.de</a>.</p></li>
+</ul>
+<p>To get started, clone this repository and run <strong class="command">poetry install</strong> in its
+root directory.</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The main entry point of this project is the <code class="file docutils literal notranslate"><span class="pre">src/bci_build/update.py</span></code>
+script. It will branch the package on IBS, check it out into a temporary
+directory, regenererate the build recipes from the templates and send a
+submitrequest back upstream.</p>
+<p>For example, to update the nodejs containers, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run ./src/bci_build/update.py --commit-msg <span class="s2">&quot;Update according to </span><span class="nv">$reason</span><span class="s2">&quot;</span> nodejs-12-sp4 nodejs-14-sp4 nodejs-16-sp4
+</pre></div>
+</div>
+<p>If you do not want to interact with IBS at all, then you can also use the
+<code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> script to just write the files of a single
+package into a directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="adding_containers.html#adding-files-to-the-image">Adding files to the Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adding_containers.html#automatic-package-version-substitution">Automatic Package Version Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adding_containers.html#installing-packages-into-the-container-image">Installing Packages into the Container Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on IBS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">bci-build-templates</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on IBS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="adding_containers.html" title="next chapter">Adding and Modifying Container Images</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Dan Čermák.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
