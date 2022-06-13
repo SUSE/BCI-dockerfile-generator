@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,11 +34,11 @@
           <div class="body" role="main">
             
   <section id="bci-build-recipe-generator">
-<h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this headline">¶</a></h1>
+<h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this heading">¶</a></h1>
 <p>This is a very simple script that generates the necessary files to build our BCI
 containers in the Open Build Service.</p>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
 <p>You will need the following tools:</p>
 <ul class="simple">
 <li><p>Python 3.9 or later</p></li>
@@ -50,7 +51,7 @@ directly, then add the alias <code class="docutils literal notranslate"><span cl
 root directory.</p>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
 <p>The main entry point of this project is the <code class="file docutils literal notranslate"><span class="pre">src/bci_build/update.py</span></code>
 script. It will branch the package on IBS, check it out into a temporary
 directory, regenererate the build recipes from the templates and send a
@@ -81,7 +82,7 @@ package into a directory:</p>
 </section>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -130,7 +131,7 @@ package into a directory:</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -147,7 +148,7 @@ package into a directory:</p>
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

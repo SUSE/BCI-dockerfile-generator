@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <section id="adding-and-modifying-container-images">
-<span id="id1"></span><h1>Adding and Modifying Container Images<a class="headerlink" href="#adding-and-modifying-container-images" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Adding and Modifying Container Images<a class="headerlink" href="#adding-and-modifying-container-images" title="Permalink to this heading">¶</a></h1>
 <p>All container images are defined in <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> as
 instances of the <a class="reference internal" href="api.html#bci_build.package.LanguageStackContainer" title="bci_build.package.LanguageStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LanguageStackContainer</span></code></a>,
 <a class="reference internal" href="api.html#bci_build.package.ApplicationStackContainer" title="bci_build.package.ApplicationStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationStackContainer</span></code></a> or
@@ -68,7 +69,7 @@ customize the package installation (or deletion) process. See <a class="referenc
 Packages into the Container Image</a> for further details.</p></li>
 </ul>
 <section id="adding-files-to-the-image">
-<h2>Adding files to the Image<a class="headerlink" href="#adding-files-to-the-image" title="Permalink to this headline">¶</a></h2>
+<h2>Adding files to the Image<a class="headerlink" href="#adding-files-to-the-image" title="Permalink to this heading">¶</a></h2>
 <p>The package on build.suse.de will by default only consist of the following
 files:</p>
 <ul class="simple">
@@ -87,7 +88,7 @@ additional file from an upstream source, then consider adding it to the script
 <code class="file docutils literal notranslate"><span class="pre">update-files.sh</span></code> as well.</p>
 </section>
 <section id="automatic-package-version-substitution">
-<h2>Automatic Package Version Substitution<a class="headerlink" href="#automatic-package-version-substitution" title="Permalink to this headline">¶</a></h2>
+<h2>Automatic Package Version Substitution<a class="headerlink" href="#automatic-package-version-substitution" title="Permalink to this heading">¶</a></h2>
 <p>Some Container Images ship with environment variables that include the version
 of a component in the container image. For example the PostgreSQL Container
 Image sets the environment variable <code class="docutils literal notranslate"><span class="pre">PG_VERSION</span></code> to the <cite>major.minor</cite> version
@@ -135,7 +136,7 @@ seen in the above code block, where we also set the
 attribute via this mechanism.</p>
 </section>
 <section id="installing-packages-into-the-container-image">
-<h2>Installing Packages into the Container Image<a class="headerlink" href="#installing-packages-into-the-container-image" title="Permalink to this headline">¶</a></h2>
+<h2>Installing Packages into the Container Image<a class="headerlink" href="#installing-packages-into-the-container-image" title="Permalink to this heading">¶</a></h2>
 <p>In most cases it sufficient to just set the
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.package_list" title="bci_build.package.BaseContainerImage.package_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_list</span></code></a> attribute to a
 list of package names as strings. This will yield a <code class="docutils literal notranslate"><span class="pre">RUN</span> <span class="pre">zypper</span> <span class="pre">-n</span> <span class="pre">in</span>
@@ -215,7 +216,7 @@ example:</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -232,7 +233,7 @@ example:</p>
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
