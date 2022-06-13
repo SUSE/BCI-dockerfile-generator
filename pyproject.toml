@@ -9,7 +9,7 @@ packages = [
 ]
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
-Jinja2 = "^3.0"
+Jinja2 = "^3.1"
 aiohttp = "^3.8.1"
 rpm-vercmp = "^0.1.2"
 aiofiles = "^0.8.0"
