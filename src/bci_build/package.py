@@ -1177,6 +1177,14 @@ INIT_CONTAINERS = [
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
+        # we cannot add HEALTHCHECK via kiwi: https://github.com/OSInside/kiwi/issues/1639
+        custom_end=(
+            ""
+            if os_version == OsVersion.SP3
+            else """HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
+    CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+"""
+        ),
     )
     for (os_version, package_name) in (
         (OsVersion.SP3, "init"),
