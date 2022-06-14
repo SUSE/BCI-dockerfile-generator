@@ -1443,7 +1443,7 @@ RUST_CONTAINERS = [
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
-        is_latest=rust_version == "1.60",
+        is_latest=rust_version == "1.61",
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
@@ -1458,7 +1458,7 @@ RUST_CONTAINERS = [
         },
     )
     for rust_version, os_version in product(
-        ("1.56", "1.57", "1.58", "1.59", "1.60"), (OsVersion.SP4, OsVersion.TUMBLEWEED)
+        ("1.56", "1.57", "1.58", "1.59", "1.60", "1.61"), (OsVersion.SP4, OsVersion.TUMBLEWEED)
     )
 ]
 
