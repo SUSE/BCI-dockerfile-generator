@@ -114,8 +114,15 @@ async def update_package(
                     )
                 return
 
-            for cmd in ["vc", "ci"] + (["sr --cleanup"] if submit_package else []):
+            for cmd in ["vc", "ci"]:
                 await run_cmd(f'osc {cmd} -m "{commit_msg}"')
+
+            # wait for any services to run before doing anything else
+            # target_pkg is $proj/$pkg => convert to `osc service wait $proj $pkg`
+            await run_cmd(f"osc service wait {target_pkg.replace('/', ' ')}")
+
+            if submit_package:
+                await run_cmd(f'osc sr --cleanup -m "{commit_msg}"')
 
         except Exception as exc:
             LOGGER.error("failed to update %s, got %s", bci.name, exc)

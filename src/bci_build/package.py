@@ -113,11 +113,11 @@ class OsVersion(enum.Enum):
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
-RELEASED_OS_VERSIONS = [OsVersion.SP3]
+RELEASED_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
 
 ALL_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP3, OsVersion.TUMBLEWEED]
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
 
 @dataclass
@@ -907,7 +907,7 @@ PYTHON_3_8_TW = LanguageStackContainer(
 )
 PYTHON_3_9_SP3 = LanguageStackContainer(
     package_name="python-3.9",
-    is_latest=True,
+    is_latest=False,
     **_get_python_kwargs("3.9", OsVersion.SP3),
 )
 PYTHON_3_9_TW = LanguageStackContainer(
@@ -917,7 +917,7 @@ PYTHON_3_9_TW = LanguageStackContainer(
 
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
-    is_latest=False,
+    is_latest=True,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
 PYTHON_3_10_TW = LanguageStackContainer(
@@ -983,7 +983,7 @@ RUBY_CONTAINERS = [
     LanguageStackContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP3),
     ),
-    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP3)),
+    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP4)),
     LanguageStackContainer(**_get_ruby_kwargs("3.1", OsVersion.TUMBLEWEED)),
 ]
 
@@ -1073,11 +1073,16 @@ def _get_openjdk_kwargs(
         "JAVA_VERSION": f"{java_version}",
     }
 
+    if os_version == OsVersion.TUMBLEWEED:
+        is_latest = java_version == 17
+    else:
+        is_latest = java_version == 11 and os_version in CAN_BE_LATEST_OS_VERSION
+
     comon = {
         "env": JAVA_ENV,
         "version": java_version,
         "os_version": os_version,
-        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": is_latest,
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
         + ("" if os_version == OsVersion.SP3 else "-image"),
