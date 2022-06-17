@@ -907,7 +907,7 @@ PYTHON_3_8_TW = LanguageStackContainer(
 )
 PYTHON_3_9_SP3 = LanguageStackContainer(
     package_name="python-3.9",
-    is_latest=True,
+    is_latest=False,
     **_get_python_kwargs("3.9", OsVersion.SP3),
 )
 PYTHON_3_9_TW = LanguageStackContainer(
@@ -917,7 +917,7 @@ PYTHON_3_9_TW = LanguageStackContainer(
 
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
-    is_latest=False,
+    is_latest=True,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
 PYTHON_3_10_TW = LanguageStackContainer(
