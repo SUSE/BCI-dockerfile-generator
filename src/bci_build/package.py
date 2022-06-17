@@ -117,7 +117,7 @@ RELEASED_OS_VERSIONS = [OsVersion.SP3]
 
 ALL_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP3, OsVersion.TUMBLEWEED]
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
 
 @dataclass
