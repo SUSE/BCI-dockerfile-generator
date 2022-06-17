@@ -1073,11 +1073,16 @@ def _get_openjdk_kwargs(
         "JAVA_VERSION": f"{java_version}",
     }
 
+    if os_version == OsVersion.TUMBLEWEED:
+        is_latest = java_version == 17
+    else:
+        is_latest = java_version == 11 and os_version in CAN_BE_LATEST_OS_VERSION
+
     comon = {
         "env": JAVA_ENV,
         "version": java_version,
         "os_version": os_version,
-        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": is_latest,
         "package_name": f"openjdk-{java_version}"
         + ("-devel" if devel else "")
         + ("" if os_version == OsVersion.SP3 else "-image"),
