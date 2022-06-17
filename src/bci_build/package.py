@@ -983,7 +983,7 @@ RUBY_CONTAINERS = [
     LanguageStackContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP3),
     ),
-    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP3)),
+    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP4)),
     LanguageStackContainer(**_get_ruby_kwargs("3.1", OsVersion.TUMBLEWEED)),
 ]
 
