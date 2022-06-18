@@ -1458,7 +1458,8 @@ RUST_CONTAINERS = [
         },
     )
     for rust_version, os_version in product(
-        ("1.56", "1.57", "1.58", "1.59", "1.60", "1.61"), (OsVersion.SP4, OsVersion.TUMBLEWEED)
+        ("1.56", "1.57", "1.58", "1.59", "1.60", "1.61"),
+        (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
 
