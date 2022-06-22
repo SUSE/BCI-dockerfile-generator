@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 import asyncio
+from dataclasses import dataclass, field
 import logging
 from typing import List, Literal, Optional
-
-from asyncio import create_subprocess_shell
-import aiofiles.tempfile
 
 from bci_build.package import (
     ALL_CONTAINER_IMAGE_NAMES,
@@ -13,15 +11,23 @@ from bci_build.package import (
     BaseContainerImage,
     OsVersion,
 )
+from obs_package_update import Updater, Package
 
 
 LOGGER = logging.getLogger(__name__)
 
 
+@dataclass
+class BciUpdater(Updater):
+    bci: BaseContainerImage = field(default=None)
+
+    async def add_files(self, destination: str) -> List[str]:
+        return await self.bci.write_files_to_folder(destination)
+
+
 async def update_package(
     bci: BaseContainerImage,
     commit_msg: str,
-    target_pkg: Optional[str] = None,
     target_prj: Optional[str] = None,
     cleanup_on_error: bool = False,
     submit_package: bool = True,
@@ -45,10 +51,6 @@ async def update_package(
     during the update.
 
     """
-    assert not (
-        (target_pkg is not None) and (target_prj is not None)
-    ), f"Both {target_pkg=} and {target_prj=} cannot be defined at the same time"
-
     assert build_service_target in (
         "obs",
         "ibs",
@@ -59,76 +61,27 @@ async def update_package(
         if bci.os_version == OsVersion.TUMBLEWEED
         else "SLE-15-SP" + str(bci.os_version)
     )
+
+    updater = BciUpdater(bci=bci, logger=LOGGER)
+
     if build_service_target == "obs":
-        osc = "osc"
+        updater.api_url = "https://api.opensuse.org"
         src_prj = f"devel:BCI:{prj_suffix}"
     else:
         if bci.os_version == OsVersion.TUMBLEWEED:
             raise ValueError("A container image for Tumbleweed is not mirrored to IBS")
-        osc = "osc -A ibs"
+        updater.api_url = "https://api.suse.de"
         src_prj = f"SUSE:{prj_suffix}:Update:BCI"
 
-    async with aiofiles.tempfile.TemporaryDirectory() as tmp:
-        LOGGER.info("Updating %s for %s", bci.package_name, bci.os_version.pretty_print)
-        LOGGER.debug("Running update in %s", tmp)
-
-        async def run_cmd(c: str) -> str:
-            LOGGER.debug("Running command %s", c)
-            p = await create_subprocess_shell(
-                c,
-                stderr=asyncio.subprocess.STDOUT,
-                stdout=asyncio.subprocess.PIPE,
-                cwd=tmp,
-            )
-            retcode = await p.wait()
-            stdout, _ = await p.communicate()
-            if retcode != 0:
-                raise RuntimeError(
-                    f"Command {c} failed (exit code {retcode}) with: {stdout.decode()}"
-                )
-            return stdout.decode()
-
-        try:
-            if not target_pkg:
-                cmd = f"{osc} branch {src_prj} {bci.package_name}"
-                if target_prj:
-                    cmd += f" {target_prj}"
-                stdout = (await run_cmd(cmd)).split("\n")
-
-                co_cmd = stdout[2]
-                target_pkg = co_cmd.split(" ")[-1]
-
-            await run_cmd(f"{osc} co {target_pkg} -o {tmp}")
-
-            written_files = await bci.write_files_to_folder(tmp)
-            for fname in written_files:
-                await run_cmd(f"osc add {fname}")
-
-            st_out = await run_cmd("osc st")
-            # nothing changed => leave
-            if st_out == "":
-                LOGGER.info("Nothing changed => no update available")
-                if cleanup_on_no_change:
-                    await run_cmd(
-                        f"{osc} rdelete {target_pkg} -m 'cleanup as nothing changed'"
-                    )
-                return
-
-            for cmd in ["vc", "ci"]:
-                await run_cmd(f'osc {cmd} -m "{commit_msg}"')
-
-            # wait for any services to run before doing anything else
-            # target_pkg is $proj/$pkg => convert to `osc service wait $proj $pkg`
-            await run_cmd(f"osc service wait {target_pkg.replace('/', ' ')}")
-
-            if submit_package:
-                await run_cmd(f'osc sr --cleanup -m "{commit_msg}"')
-
-        except Exception as exc:
-            LOGGER.error("failed to update %s, got %s", bci.name, exc)
-            if cleanup_on_error:
-                await run_cmd(f"{osc} rdelete {target_pkg} -m 'cleanup on error'")
-            raise exc
+    source_package = Package(project=src_prj, package=bci.package_name)
+    await updater.update_package(
+        source_package=source_package,
+        commit_msg=commit_msg,
+        target_project=target_prj,
+        cleanup_on_error=cleanup_on_error,
+        submit_package=submit_package,
+        cleanup_on_no_change=cleanup_on_no_change,
+    )
 
 
 if __name__ == "__main__":
@@ -176,18 +129,11 @@ if __name__ == "__main__":
         help="Don't send a submitrequest after the package has been updated",
     )
     parser.add_argument(
-        "--target-pkg",
-        type=str,
-        nargs="?",
-        default=None,
-        help="Don't branch the package on OBS/IBS, instead use the specified package to perform the update. When using this option, only one container image can be updated",
-    )
-    parser.add_argument(
         "--target-prj",
         type=str,
         nargs="?",
         default=None,
-        help="Don't branch into the default project, use the supplied one instead. This option is incompatible with the --target-pkg flag.",
+        help="Don't branch into the default project, use the supplied one instead.",
     )
     parser.add_argument(
         "--verbose",
@@ -241,7 +187,6 @@ if __name__ == "__main__":
             update_package(
                 ALL_CONTAINER_IMAGE_NAMES[img],
                 commit_msg=commit_msg,
-                target_pkg=args.target_pkg,
                 target_prj=args.target_prj,
                 cleanup_on_error=args.cleanup_on_error,
                 submit_package=not args.no_sr,
