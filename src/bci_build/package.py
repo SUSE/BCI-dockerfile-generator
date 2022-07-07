@@ -262,8 +262,8 @@ class BaseContainerImage(abc.ABC):
     #: for bash and not for a different shell.
     config_sh_interpreter: str = "/bin/bash"
 
-    #: The maintainer of this image, defaults to SUSE
-    maintainer: str = "SUSE LLC (https://www.suse.com/)"
+    #: The maintainer of this image, defaults to SUSE/openSUSE
+    maintainer: Optional[str] = None
 
     #: Additional files that belong into this container-package.
     #: The key is the filename, the values are the file contents.
@@ -293,14 +293,6 @@ class BaseContainerImage(abc.ABC):
     #: or kiwi build description file.
     license: str = "MIT"
 
-    #: The default url that is put into the ``org.opencontainers.image.url``
-    #: label
-    URL: ClassVar[str] = "https://www.suse.com/products/server/"
-
-    #: The vendor that is put into the ``org.opencontainers.image.vendor``
-    #: label
-    VENDOR: ClassVar[str] = "SUSE LLC"
-
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
@@ -316,6 +308,16 @@ class BaseContainerImage(abc.ABC):
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
+        if self.maintainer is None:
+            self.maintainer = (
+                "openSUSE (https://www.opensuse.org/)"
+                if self.is_opensuse
+                else "SUSE LLC (https://www.suse.com/)"
+            )
+
+    @property
+    def is_opensuse(self) -> bool:
+        return self.os_version == OsVersion.TUMBLEWEED
 
     @property
     @abc.abstractmethod
@@ -353,6 +355,36 @@ class BaseContainerImage(abc.ABC):
             return ReleaseStage.RELEASED
 
         return ReleaseStage.BETA
+
+    @property
+    def url(self) -> str:
+        """The default url that is put into the
+        ``org.opencontainers.image.url`` label
+
+        """
+        if self.is_opensuse:
+            return "https://www.opensuse.org/"
+
+        return "https://www.suse.com/products/server/"
+
+    @property
+    def vendor(self) -> str:
+        """The vendor that is put into the ``org.opencontainers.image.vendor``
+        label
+
+        """
+        if self.is_opensuse:
+            return "openSUSE Project"
+
+        return "SUSE LLC"
+
+    @property
+    def registry(self) -> str:
+        """The registry where the image is available on."""
+        if self.is_opensuse:
+            return "registry.opensuse.org"
+
+        return "registry.suse.com"
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -674,7 +706,7 @@ exit 0
     def reference(self) -> str:
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
-        ``registry.suse.com/{self.build_tags[0]}``.
+        ``{self.registry}/{self.build_tags[0]}``.
 
         """
         pass
@@ -689,10 +721,16 @@ exit 0
         :py:attr:`BaseContainerImage.pretty_name` to generate a description.
 
         """
-        return (
-            self.custom_description
-            or f"{self.pretty_name} based on the SLE Base Container Image."
-        )
+        if self.custom_description:
+            return self.custom_description
+
+        if self.is_opensuse:
+            return (
+                f"{self.pretty_name} based on the openSUSE Tumbleweed "
+                "Base Container Image"
+            )
+
+        return f"{self.pretty_name} based on the SLE Base Container Image."
 
     @property
     def title(self) -> str:
@@ -703,6 +741,9 @@ exit 0
         follows: ``"SLE BCI {self.pretty_name} Container Image"``.
 
         """
+        if self.is_opensuse:
+            return f"openSUSE Tumbleweed BCI {self.pretty_name} Container Image"
+
         return f"SLE BCI {self.pretty_name} Container Image"
 
     @property
@@ -748,7 +789,7 @@ exit 0
 
         """
         return (
-            "com.suse."
+            ("org.opensuse." if self.is_opensuse else "com.suse.")
             + (
                 {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
                     self.image_type
@@ -891,7 +932,7 @@ class LanguageStackContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"registry.suse.com/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+        return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
 
 
 @dataclass
@@ -941,7 +982,7 @@ class OsContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"registry.suse.com/bci/bci-{self.name}:{self.version_label}"
+        return f"{self.registry}/bci/bci-{self.name}:{self.version_label}"
 
 
 def _generate_disk_size_constraints(size_gb: int) -> str:

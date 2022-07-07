@@ -21,15 +21,15 @@ MAINTAINER {{ image.maintainer }}
 LABEL org.opencontainers.image.title="{{ image.title }}"
 LABEL org.opencontainers.image.description="{{ image.description }}"
 LABEL org.opencontainers.image.version="{{ image.version_label }}"
-LABEL org.opencontainers.image.url="{{ image.URL }}"
+LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="{{ image.VENDOR }}"
+LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="{{ image.support_level }}"
+{% if not image.is_opensuse %}LABEL com.suse.supportlevel="{{ image.support_level }}"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="{{ image.image_type }}"
+LABEL com.suse.image-type="{{ image.image_type }}"{% endif %}
 LABEL com.suse.release-stage="{{ image.release_stage }}"
 # endlabelprefix
 {%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
@@ -54,7 +54,7 @@ KIWI_TEMPLATE = jinja2.Template(
 
 <image schemaversion="6.5" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
-    <author>{{ image.VENDOR }}</author>
+    <author>{{ image.vendor }}</author>
     <contact>https://www.suse.com/</contact>
     <specification>{{ image.title }}</specification>
   </description>
@@ -72,15 +72,15 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
             <label name="org.opencontainers.image.version" value="{{ image.version_label }}"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
-            <label name="org.opencontainers.image.vendor" value="{{ image.VENDOR }}"/>
-            <label name="org.opencontainers.image.url" value="{{ image.URL }}"/>
+            <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
+            <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
-            <label name="com.suse.image-type" value="{{ image.image_type }}"/>
+{% if not image.is_opensuse %}            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
             <label name="com.suse.eula" value="sle-bci"/>
-            <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+            <label name="com.suse.image-type" value="{{ image.image_type }}"/>{% endif %}
+            <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
