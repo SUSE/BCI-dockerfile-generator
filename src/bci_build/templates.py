@@ -77,10 +77,10 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
 {% if not image.is_opensuse %}            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
-            <label name="com.suse.eula" value="sle-bci"/>
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
-            <label name="com.suse.image-type" value="{{ image.image_type }}"/>{% endif %}
-            <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>
+            <label name="com.suse.image-type" value="{{ image.image_type }}"/>
+            <label name="com.suse.eula" value="sle-bci"/>{% endif %}
+            <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>{% if not image.is_opensuse %}
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>{% endif %}
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
