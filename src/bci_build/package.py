@@ -176,6 +176,56 @@ class Replacement:
     ] = None
 
 
+@dataclass(frozen=True)
+class ImageProperties:
+    """Class storing the properties of the Base Container Images that differ
+    depending on the vendor.
+
+    """
+
+    #: maintainer of the image
+    maintainer: str
+
+    #: full vendor string as it will be included in the
+    #: ``org.opencontainers.image.vendor`` label
+    vendor: str
+
+    #: The name of the underlying distribution. It will be inserted into the
+    #: image's title as ``$distribution_base_name BCI $pretty_name Container
+    #: Image``.
+    distribution_base_name: str
+
+    #: The url to the registry of this vendor
+    registry: str
+
+    #: Url to the vendor's home page
+    url: str
+
+    #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
+    label_prefix: str
+
+
+#: Image properties for openSUSE Tumbleweed
+_OPENSUSE_IMAGE_PROPS = ImageProperties(
+    maintainer="openSUSE (https://www.opensuse.org/)",
+    vendor="openSUSE Project",
+    registry="registry.opensuse.org",
+    url="https://www.opensuse.org",
+    label_prefix="org.opensuse",
+    distribution_base_name="openSUSE Tumbleweed",
+)
+
+#: Image properties for SUSE Linux Enterprise
+_SLE_IMAGE_PROPS = ImageProperties(
+    maintainer="SUSE LLC (https://www.suse.com/)",
+    vendor="SUSE LLC",
+    registry="registry.suse.com",
+    url="https://www.suse.com/products/server/",
+    label_prefix="com.suse",
+    distribution_base_name="SLE",
+)
+
+
 @dataclass
 class BaseContainerImage(abc.ABC):
     """Base class for all Base Container Images."""
@@ -278,8 +328,8 @@ class BaseContainerImage(abc.ABC):
     additional_names: List[str] = field(default_factory=list)
 
     #: By default the containers get the labelprefix
-    #: ``com.suse.bci.{self.name}``. If this value is not an empty string, then
-    #: it is used instead of the name after ``com.suse.bci.``.
+    #: ``{label_prefix}.bci.{self.name}``. If this value is not an empty string,
+    #: then it is used instead of the name after ``com.suse.bci.``.
     custom_labelprefix_end: str = ""
 
     #: Provide a custom description instead of the automatically generated one
@@ -296,6 +346,8 @@ class BaseContainerImage(abc.ABC):
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
+    _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
+
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
@@ -308,12 +360,11 @@ class BaseContainerImage(abc.ABC):
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
-        if self.maintainer is None:
-            self.maintainer = (
-                "openSUSE (https://www.opensuse.org/)"
-                if self.is_opensuse
-                else "SUSE LLC (https://www.suse.com/)"
-            )
+        self._image_properties = (
+            _OPENSUSE_IMAGE_PROPS if self.is_opensuse else _SLE_IMAGE_PROPS
+        )
+        if not self.maintainer:
+            self.maintainer = self._image_properties.maintainer
 
     @property
     def is_opensuse(self) -> bool:
@@ -362,10 +413,7 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        if self.is_opensuse:
-            return "https://www.opensuse.org/"
-
-        return "https://www.suse.com/products/server/"
+        return self._image_properties.url
 
     @property
     def vendor(self) -> str:
@@ -373,18 +421,12 @@ class BaseContainerImage(abc.ABC):
         label
 
         """
-        if self.is_opensuse:
-            return "openSUSE Project"
-
-        return "SUSE LLC"
+        return self._image_properties.vendor
 
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        if self.is_opensuse:
-            return "registry.opensuse.org"
-
-        return "registry.suse.com"
+        return self._image_properties.registry
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -724,13 +766,10 @@ exit 0
         if self.custom_description:
             return self.custom_description
 
-        if self.is_opensuse:
-            return (
-                f"{self.pretty_name} based on the openSUSE Tumbleweed "
-                "Base Container Image"
-            )
-
-        return f"{self.pretty_name} based on the SLE Base Container Image."
+        return (
+            f"{self.pretty_name} based on the "
+            f"{self._image_properties.distribution_base_name} Base Container Image."
+        )
 
     @property
     def title(self) -> str:
@@ -738,13 +777,12 @@ exit 0
         label.
 
         It is generated from :py:attr:`BaseContainerImage.pretty_name` as
-        follows: ``"SLE BCI {self.pretty_name} Container Image"``.
+        follows: ``"{distribution_base_name} BCI {self.pretty_name} Container
+        Image"``, where ``distribution_base_name`` is taken from
+        :py:attr:`~ImageProperties.distribution_base_name`.
 
         """
-        if self.is_opensuse:
-            return f"openSUSE Tumbleweed BCI {self.pretty_name} Container Image"
-
-        return f"SLE BCI {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name} Container Image"
 
     @property
     def extra_label_lines(self) -> str:
@@ -789,7 +827,8 @@ exit 0
 
         """
         return (
-            ("org.opensuse." if self.is_opensuse else "com.suse.")
+            self._image_properties.label_prefix
+            + "."
             + (
                 {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
                     self.image_type
