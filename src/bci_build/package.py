@@ -1443,6 +1443,8 @@ STOPSIGNAL SIGQUIT
 # )
 
 
+_RUST_GCC_PATH = "/usr/local/bin/gcc"
+
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
@@ -1456,7 +1458,11 @@ RUST_CONTAINERS = [
             "distribution-release",
         ],
         version=rust_version,
-        env={"RUST_VERSION": "%%RUST_VERSION%%", "CARGO_VERSION": "%%CARGO_VERSION%%"},
+        env={
+            "RUST_VERSION": "%%RUST_VERSION%%",
+            "CARGO_VERSION": "%%CARGO_VERSION%%",
+            "CC": _RUST_GCC_PATH,
+        },
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": _generate_disk_size_constraints(6)
@@ -1471,6 +1477,12 @@ RUST_CONTAINERS = [
                 package_name=f"cargo{rust_version}",
             ),
         ],
+        custom_end=f"""# workaround for gcc only existing as /usr/bin/gcc-N
+RUN ln -sf $(ls /usr/bin/gcc-*|grep -P ".*gcc-[[:digit:]]+") {_RUST_GCC_PATH}
+# smoke test that gcc works
+RUN gcc --version
+RUN ${{CC}} --version
+""",
     )
     for rust_version, os_version in product(
         ("1.60", "1.61"),
