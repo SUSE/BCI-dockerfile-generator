@@ -1456,11 +1456,21 @@ RUST_CONTAINERS = [
             "distribution-release",
         ],
         version=rust_version,
-        env={"RUST_VERSION": rust_version},
+        env={"RUST_VERSION": "%%RUST_VERSION%%", "CARGO_VERSION": "%%CARGO_VERSION%%"},
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": _generate_disk_size_constraints(6)
         },
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%RUST_VERSION%%",
+                package_name=f"rust{rust_version}",
+            ),
+            Replacement(
+                regex_in_dockerfile="%%CARGO_VERSION%%",
+                package_name=f"cargo{rust_version}",
+            ),
+        ],
     )
     for rust_version, os_version in product(
         ("1.56", "1.57", "1.58", "1.59", "1.60", "1.61"),
