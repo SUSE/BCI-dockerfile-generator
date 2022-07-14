@@ -1473,7 +1473,7 @@ RUST_CONTAINERS = [
         ],
     )
     for rust_version, os_version in product(
-        ("1.56", "1.57", "1.58", "1.59", "1.60", "1.61"),
+        ("1.60", "1.61"),
         (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
@@ -1650,7 +1650,6 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
-ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.56-Tumbleweed")
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
