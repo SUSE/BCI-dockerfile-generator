@@ -1588,8 +1588,8 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
                 "distribution-release",
-                "skelcd-EULA-bci",
             )
+            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
         ],
         # intentionally empty
         config_sh_script="""
