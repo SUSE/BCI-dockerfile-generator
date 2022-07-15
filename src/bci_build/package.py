@@ -187,6 +187,13 @@ class ImageProperties:
     #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
     label_prefix: str
 
+    #: The prefix of the build tag for LanguageStackContainer and OsContainer Images.
+    #: The build tag is constructed as `$build_tag_prefix/$name`
+    build_tag_prefix: str
+
+    #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
+    application_container_build_tag_prefix: str
+
 
 #: Image properties for openSUSE Tumbleweed
 _OPENSUSE_IMAGE_PROPS = ImageProperties(
@@ -196,6 +203,8 @@ _OPENSUSE_IMAGE_PROPS = ImageProperties(
     url="https://www.opensuse.org",
     label_prefix="org.opensuse",
     distribution_base_name="openSUSE Tumbleweed",
+    build_tag_prefix="opensuse/bci",
+    application_container_build_tag_prefix="opensuse",
 )
 
 #: Image properties for SUSE Linux Enterprise
@@ -206,6 +215,8 @@ _SLE_IMAGE_PROPS = ImageProperties(
     url="https://www.suse.com/products/server/",
     label_prefix="com.suse",
     distribution_base_name="SLE",
+    build_tag_prefix="bci",
+    application_container_build_tag_prefix="suse",
 )
 
 
@@ -813,7 +824,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: additional versions that should be added as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
-    _registry_prefix: str = "bci"
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.build_tag_prefix
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -854,9 +867,9 @@ class LanguageStackContainer(BaseContainerImage):
 
 @dataclass
 class ApplicationStackContainer(LanguageStackContainer):
-    def __post_init__(self) -> None:
-        self._registry_prefix = "suse"
-        super().__post_init__()
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.application_container_build_tag_prefix
 
     @property
     def image_type(self) -> ImageType:
@@ -864,7 +877,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 
     @property
     def title(self) -> str:
-        return f"SLE {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} {self.pretty_name} Container Image"
 
 
 @dataclass
