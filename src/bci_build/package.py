@@ -176,6 +176,10 @@ class Replacement:
     ] = None
 
 
+def _build_tag_prefix(os_version: OsVersion) -> str:
+    return "opensuse/bci" if os_version == OsVersion.TUMBLEWEED else "bci"
+
+
 @dataclass(frozen=True)
 class ImageProperties:
     """Class storing the properties of the Base Container Images that differ
@@ -204,6 +208,13 @@ class ImageProperties:
     #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
     label_prefix: str
 
+    #: The prefix of the build tag for LanguageStackContainer and OsContainer Images.
+    #: The build tag is constructed as `$build_tag_prefix/$name`
+    build_tag_prefix: str
+
+    #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
+    application_container_build_tag_prefix: str
+
 
 #: Image properties for openSUSE Tumbleweed
 _OPENSUSE_IMAGE_PROPS = ImageProperties(
@@ -213,6 +224,8 @@ _OPENSUSE_IMAGE_PROPS = ImageProperties(
     url="https://www.opensuse.org",
     label_prefix="org.opensuse",
     distribution_base_name="openSUSE Tumbleweed",
+    build_tag_prefix=_build_tag_prefix(OsVersion.TUMBLEWEED),
+    application_container_build_tag_prefix="opensuse",
 )
 
 #: Image properties for SUSE Linux Enterprise
@@ -223,6 +236,8 @@ _SLE_IMAGE_PROPS = ImageProperties(
     url="https://www.suse.com/products/server/",
     label_prefix="com.suse",
     distribution_base_name="SLE",
+    build_tag_prefix=_build_tag_prefix(OsVersion.SP4),
+    application_container_build_tag_prefix="suse",
 )
 
 
@@ -443,6 +458,10 @@ class BaseContainerImage(abc.ABC):
         if self.config_sh_script:
             return f"{DOCKERFILE_RUN} {self.config_sh_script}"
         return ""
+
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.build_tag_prefix
 
     @staticmethod
     def _cmd_entrypoint_docker(
@@ -935,8 +954,6 @@ class LanguageStackContainer(BaseContainerImage):
     #: flag whether the version should be included in the uid
     version_in_uid: bool = True
 
-    _registry_prefix: str = "bci"
-
     def __post_init__(self) -> None:
         super().__post_init__()
         if not self.version:
@@ -976,9 +993,9 @@ class LanguageStackContainer(BaseContainerImage):
 
 @dataclass
 class ApplicationStackContainer(LanguageStackContainer):
-    def __post_init__(self) -> None:
-        self._registry_prefix = "suse"
-        super().__post_init__()
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.application_container_build_tag_prefix
 
     @property
     def image_type(self) -> ImageType:
@@ -986,7 +1003,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 
     @property
     def title(self) -> str:
-        return f"SLE {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} {self.pretty_name} Container Image"
 
 
 @dataclass
@@ -1014,9 +1031,11 @@ class OsContainer(BaseContainerImage):
         tags = []
         for name in [self.name] + self.additional_names:
             tags += [
-                f"bci/bci-{name}:%OS_VERSION_ID_SP%",
-                f"bci/bci-{name}:{self.version_label}",
-            ] + ([f"bci/bci-{name}:latest"] if self.is_latest else [])
+                f"{self._registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
+                f"{self._registry_prefix}/bci-{name}:{self.version_label}",
+            ] + (
+                [f"{self._registry_prefix}/bci-{name}:latest"] if self.is_latest else []
+            )
         return tags
 
     @property
@@ -1322,7 +1341,7 @@ def _get_openjdk_kwargs(
             "custom_description": f"Java {java_version} Development environment based on the SLE Base Container Image.",
             "package_list": [f"java-{java_version}-openjdk-devel", "git-core", "maven"],
             "cmd": ["/usr/bin/jshell"],
-            "from_image": f"bci/openjdk:{java_version}",
+            "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
         }
     else:
         return {
@@ -1861,7 +1880,7 @@ MICRO_CONTAINERS = [
 MINIMAL_CONTAINERS = [
     OsContainer(
         name="minimal",
-        from_image=f"bci/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -1935,7 +1954,7 @@ PCP_CONTAINERS = [
         pretty_name="Performance Co-Pilot (pcp)",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
         package_name="pcp-image",
-        from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%pcp_patch%%",
@@ -1986,7 +2005,7 @@ REGISTRY_CONTAINERS = [
         pretty_name="OCI Container Registry using the OCI Image Specification (Distribution)",
         custom_description="Open Source Registry implementation using the OCI Distribution Specification",
         package_name="distribution-image",
-        from_image=f"bci/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
