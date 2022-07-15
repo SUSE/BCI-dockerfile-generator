@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from itertools import product
 import enum
 import os
-from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
+from typing import Callable, Dict, List, Literal, Optional, Union
 
 import aiofiles
 
@@ -159,6 +159,67 @@ class Replacement:
     ] = None
 
 
+@dataclass(frozen=True)
+class ImageProperties:
+    """Class storing the properties of the Base Container Images that differ
+    depending on the vendor.
+
+    """
+
+    #: maintainer of the image
+    maintainer: str
+
+    #: full vendor string as it will be included in the
+    #: ``org.opencontainers.image.vendor`` label
+    vendor: str
+
+    #: The name of the underlying distribution. It will be inserted into the
+    #: image's title as ``$distribution_base_name BCI $pretty_name Container
+    #: Image``.
+    distribution_base_name: str
+
+    #: The url to the registry of this vendor
+    registry: str
+
+    #: Url to the vendor's home page
+    url: str
+
+    #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
+    label_prefix: str
+
+    #: The prefix of the build tag for LanguageStackContainer and OsContainer Images.
+    #: The build tag is constructed as `$build_tag_prefix/$name`
+    build_tag_prefix: str
+
+    #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
+    application_container_build_tag_prefix: str
+
+
+#: Image properties for openSUSE Tumbleweed
+_OPENSUSE_IMAGE_PROPS = ImageProperties(
+    maintainer="openSUSE (https://www.opensuse.org/)",
+    vendor="openSUSE Project",
+    registry="registry.opensuse.org",
+    url="https://www.opensuse.org",
+    label_prefix="org.opensuse",
+    distribution_base_name="openSUSE Tumbleweed",
+    build_tag_prefix="opensuse/bci",
+    application_container_build_tag_prefix="opensuse",
+)
+
+#: Image properties for SUSE Linux Enterprise
+_SLE_IMAGE_PROPS = ImageProperties(
+    maintainer="SUSE LLC (https://www.suse.com/)",
+    vendor="SUSE LLC",
+    registry="registry.suse.com",
+    url="https://www.suse.com/products/server/",
+    label_prefix="com.suse",
+    distribution_base_name="SLE",
+    build_tag_prefix="bci",
+    application_container_build_tag_prefix="suse",
+)
+
+
 @dataclass
 class BaseContainerImage(abc.ABC):
     """Base class for all Base Container Images."""
@@ -238,8 +299,8 @@ class BaseContainerImage(abc.ABC):
     #: for bash and not for a different shell.
     config_sh_interpreter: str = "/bin/bash"
 
-    #: The maintainer of this image, defaults to SUSE
-    maintainer: str = "SUSE LLC (https://www.suse.com/)"
+    #: The maintainer of this image, defaults to SUSE/openSUSE
+    maintainer: Optional[str] = None
 
     #: Additional files that belong into this container-package.
     #: The key is the filename, the values are the file contents.
@@ -254,8 +315,8 @@ class BaseContainerImage(abc.ABC):
     additional_names: List[str] = field(default_factory=list)
 
     #: By default the containers get the labelprefix
-    #: ``com.suse.bci.{self.name}``. If this value is not an empty string, then
-    #: it is used instead of the name after ``com.suse.bci.``.
+    #: ``{label_prefix}.bci.{self.name}``. If this value is not an empty string,
+    #: then it is used instead of the name after ``com.suse.bci.``.
     custom_labelprefix_end: str = ""
 
     #: Provide a custom description instead of the automatically generated one
@@ -269,13 +330,7 @@ class BaseContainerImage(abc.ABC):
     #: or kiwi build description file.
     license: str = "MIT"
 
-    #: The default url that is put into the ``org.opencontainers.image.url``
-    #: label
-    URL: ClassVar[str] = "https://www.suse.com/products/server/"
-
-    #: The vendor that is put into the ``org.opencontainers.image.vendor``
-    #: label
-    VENDOR: ClassVar[str] = "SUSE LLC"
+    _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
         if not self.package_list:
@@ -288,6 +343,15 @@ class BaseContainerImage(abc.ABC):
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
+        self._image_properties = (
+            _OPENSUSE_IMAGE_PROPS if self.is_opensuse else _SLE_IMAGE_PROPS
+        )
+        if not self.maintainer:
+            self.maintainer = self._image_properties.maintainer
+
+    @property
+    def is_opensuse(self) -> bool:
+        return self.os_version == OsVersion.TUMBLEWEED
 
     @property
     @abc.abstractmethod
@@ -325,6 +389,27 @@ class BaseContainerImage(abc.ABC):
             return ReleaseStage.RELEASED
 
         return ReleaseStage.BETA
+
+    @property
+    def url(self) -> str:
+        """The default url that is put into the
+        ``org.opencontainers.image.url`` label
+
+        """
+        return self._image_properties.url
+
+    @property
+    def vendor(self) -> str:
+        """The vendor that is put into the ``org.opencontainers.image.vendor``
+        label
+
+        """
+        return self._image_properties.vendor
+
+    @property
+    def registry(self) -> str:
+        """The registry where the image is available on."""
+        return self._image_properties.registry
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -561,7 +646,7 @@ exit 0
     def reference(self) -> str:
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
-        ``registry.suse.com/{self.build_tags[0]}``.
+        ``{self.registry}/{self.build_tags[0]}``.
 
         """
         pass
@@ -576,9 +661,12 @@ exit 0
         :py:attr:`BaseContainerImage.pretty_name` to generate a description.
 
         """
+        if self.custom_description:
+            return self.custom_description
+
         return (
-            self.custom_description
-            or f"{self.pretty_name} based on the SLE Base Container Image."
+            f"{self.pretty_name} based on the "
+            f"{self._image_properties.distribution_base_name} Base Container Image."
         )
 
     @property
@@ -587,10 +675,12 @@ exit 0
         label.
 
         It is generated from :py:attr:`BaseContainerImage.pretty_name` as
-        follows: ``"SLE BCI {self.pretty_name} Container Image"``.
+        follows: ``"{distribution_base_name} BCI {self.pretty_name} Container
+        Image"``, where ``distribution_base_name`` is taken from
+        :py:attr:`~ImageProperties.distribution_base_name`.
 
         """
-        return f"SLE BCI {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name} Container Image"
 
     @property
     def extra_label_lines(self) -> str:
@@ -626,7 +716,8 @@ exit 0
 
         """
         return (
-            "com.suse."
+            self._image_properties.label_prefix
+            + "."
             + (
                 {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
                     self.image_type
@@ -733,7 +824,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: additional versions that should be added as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
-    _registry_prefix: str = "bci"
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.build_tag_prefix
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -769,14 +862,14 @@ class LanguageStackContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"registry.suse.com/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+        return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
 
 
 @dataclass
 class ApplicationStackContainer(LanguageStackContainer):
-    def __post_init__(self) -> None:
-        self._registry_prefix = "suse"
-        super().__post_init__()
+    @property
+    def _registry_prefix(self) -> str:
+        return self._image_properties.application_container_build_tag_prefix
 
     @property
     def image_type(self) -> ImageType:
@@ -784,7 +877,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 
     @property
     def title(self) -> str:
-        return f"SLE {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} {self.pretty_name} Container Image"
 
 
 @dataclass
@@ -819,7 +912,7 @@ class OsContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"registry.suse.com/bci/bci-{self.name}:{self.version_label}"
+        return f"{self.registry}/bci/bci-{self.name}:{self.version_label}"
 
 
 def _generate_disk_size_constraints(size_gb: int) -> str:
@@ -1508,8 +1601,8 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
                 "distribution-release",
-                "skelcd-EULA-bci",
             )
+            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
         ],
         # intentionally empty
         config_sh_script="""
@@ -1594,7 +1687,7 @@ for filename in (
 PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
-        pretty_name="Performance Co-Pilot (pcp) container",
+        pretty_name="Performance Co-Pilot (pcp)",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
         package_name="pcp-image",
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
