@@ -1485,7 +1485,7 @@ RUN ${{CC}} --version
 """,
     )
     for rust_version, os_version in product(
-        ("1.60", "1.61"),
+        ("1.60", "1.61", "1.62"),
         (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
