@@ -308,6 +308,10 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
+    def build_version(self) -> Optional[str]:
+        return "15.4" if self.os_version == OsVersion.SP4 else None
+
+    @property
     def support_level(self) -> SupportLevel:
         return SupportLevel.TECHPREVIEW
 
