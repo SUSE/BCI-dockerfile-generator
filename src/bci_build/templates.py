@@ -6,7 +6,7 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
-
+{% if image.build_version %}#!BuildVersion: {{ image.build_version }}{% endif %}
 {{ image.dockerfile_from_line }}
 
 MAINTAINER {{ image.maintainer }}
