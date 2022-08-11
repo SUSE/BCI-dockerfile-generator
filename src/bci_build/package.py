@@ -1364,6 +1364,22 @@ EXPOSE 5432
     )
 ]
 
+PROMETHEUS_CONTAINERS = [
+    ApplicationStackContainer(
+        package_name="prometheus-image",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        name="prometheus",
+        pretty_name="Prometheus",
+        package_list=["golang-github-prometheus-prometheus"],
+        entrypoint=["/usr/bin/prometheus"],
+        custom_end="""
+VOLUME [ "/var/lib/prometheus" ]
+EXPOSE 9090
+""",
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
 
 _NGINX_FILES = {}
 for filename in (
@@ -1660,6 +1676,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MARIADB_CONTAINERS,
         *MARIADB_CLIENT_CONTAINERS,
         *POSTGRES_CONTAINERS,
+        *PROMETHEUS_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
