@@ -1372,6 +1372,7 @@ PROMETHEUS_CONTAINERS = [
         name="prometheus",
         pretty_name="Prometheus",
         package_list=["golang-github-prometheus-prometheus"],
+        version="2.32.1",
         entrypoint=["/usr/bin/prometheus"],
         custom_end="""
 VOLUME [ "/var/lib/prometheus" ]
