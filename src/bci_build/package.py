@@ -308,6 +308,10 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
+    def build_version(self) -> Optional[str]:
+        return "15.4" if self.os_version == OsVersion.SP4 else None
+
+    @property
     def support_level(self) -> SupportLevel:
         return SupportLevel.TECHPREVIEW
 
@@ -1485,7 +1489,7 @@ RUN ${{CC}} --version
 """,
     )
     for rust_version, os_version in product(
-        ("1.60", "1.61"),
+        ("1.60", "1.61", "1.62"),
         (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
