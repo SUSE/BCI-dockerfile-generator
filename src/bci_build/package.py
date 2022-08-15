@@ -1426,32 +1426,6 @@ STOPSIGNAL SIGQUIT
 ]
 
 
-# PHP_VERSIONS = [7, 8]
-# (PHP_7, PHP_8) = (
-#     LanguageStackContainer(
-#         name="php",
-#         pretty_name=f"PHP {ver}",
-#         package_list=[
-#             f"php{ver}",
-#             f"php{ver}-composer",
-#             f"php{ver}-zip",
-#             f"php{ver}-zlib",
-#             f"php{ver}-phar",
-#             f"php{ver}-mbstring",
-#             "curl",
-#             "git-core",
-#             "distribution-release",
-#         ],
-#         version=ver,
-#         env={
-#             "PHP_VERSION": {7: "7.4.25", 8: "8.0.10"}[ver],
-#             "COMPOSER_VERSION": "1.10.22",
-#         },
-#     )
-#     for ver in PHP_VERSIONS
-# )
-
-
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
