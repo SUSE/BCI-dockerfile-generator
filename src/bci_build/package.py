@@ -992,7 +992,11 @@ RUBY_CONTAINERS = [
 ]
 
 
-def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersion):
+_GO_VER_T = Literal["1.18", "1.19"]
+_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.18", "1.19"]
+
+
+def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
     golang_version_regex = "%%golang_version%%"
     go = f"go{ver}"
     return {
@@ -1002,8 +1006,9 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersi
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
-        # XXX change this once we roll over to SP4
-        "is_latest": ver == "1.18" and os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": (
+            (ver == _GOLANG_VERSIONS[-1]) and (os_version in CAN_BE_LATEST_OS_VERSION)
+        ),
         "version": ver,
         "env": {
             "GOLANG_VERSION": golang_version_regex,
@@ -1031,7 +1036,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersi
 
 GOLANG_IMAGES = [
     LanguageStackContainer(**_get_golang_kwargs(ver, os_version))
-    for ver, os_version in product(("1.16", "1.17", "1.18"), ALL_OS_VERSIONS)
+    for ver, os_version in product(_GOLANG_VERSIONS, ALL_OS_VERSIONS)
 ]
 
 
