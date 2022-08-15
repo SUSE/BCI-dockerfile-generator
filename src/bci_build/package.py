@@ -1454,12 +1454,18 @@ STOPSIGNAL SIGQUIT
 
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
+# ensure that the **latest** rust version is the last one!
+_RUST_VERSIONS = ["1.60", "1.61", "1.62"]
+
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
-        is_latest=rust_version == "1.61",
+        is_latest=(
+            rust_version == _RUST_VERSIONS[-1]
+            and os_version in CAN_BE_LATEST_OS_VERSION
+        ),
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
@@ -1494,7 +1500,7 @@ RUN ${{CC}} --version
 """,
     )
     for rust_version, os_version in product(
-        ("1.60", "1.61", "1.62"),
+        _RUST_VERSIONS,
         (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
