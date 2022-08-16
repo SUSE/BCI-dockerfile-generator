@@ -1583,7 +1583,7 @@ for filename in (
 PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
-        pretty_name="Performance Co-Pilot (pcp) container",
+        pretty_name="Performance Co-Pilot (pcp)",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
         package_name="pcp-image",
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
