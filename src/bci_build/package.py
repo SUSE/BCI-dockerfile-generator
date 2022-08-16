@@ -1364,6 +1364,7 @@ EXPOSE 5432
     )
 ]
 
+PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
 PROMETHEUS_CONTAINERS = [
     ApplicationStackContainer(
         package_name="prometheus-image",
@@ -1371,9 +1372,16 @@ PROMETHEUS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="prometheus",
         pretty_name="Prometheus",
-        package_list=["golang-github-prometheus-prometheus"],
-        version="2.32.1",
+        package_list=[PROMETHEUS_PACKAGE_NAME],
+        version="%%prometheus_version%%",
         entrypoint=["/usr/bin/prometheus"],
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%prometheus_version%%",
+                package_name=PROMETHEUS_PACKAGE_NAME,
+                parse_version="patch",
+            )
+        ],
         custom_end="""
 VOLUME [ "/var/lib/prometheus" ]
 EXPOSE 9090
