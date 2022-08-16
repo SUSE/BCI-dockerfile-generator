@@ -1651,6 +1651,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
+ALL_CONTAINER_IMAGE_NAMES.pop("golang-1.19-sp3")
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
