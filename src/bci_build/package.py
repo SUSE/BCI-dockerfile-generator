@@ -992,7 +992,11 @@ RUBY_CONTAINERS = [
 ]
 
 
-def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersion):
+_GO_VER_T = Literal["1.18", "1.19"]
+_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.18", "1.19"]
+
+
+def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
     golang_version_regex = "%%golang_version%%"
     go = f"go{ver}"
     return {
@@ -1002,8 +1006,9 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersi
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
         "pretty_name": f"Golang {ver}",
-        # XXX change this once we roll over to SP4
-        "is_latest": ver == "1.18" and os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": (
+            (ver == _GOLANG_VERSIONS[-1]) and (os_version in CAN_BE_LATEST_OS_VERSION)
+        ),
         "version": ver,
         "env": {
             "GOLANG_VERSION": golang_version_regex,
@@ -1031,7 +1036,7 @@ def _get_golang_kwargs(ver: Literal["1.16", "1.17", "1.18"], os_version: OsVersi
 
 GOLANG_IMAGES = [
     LanguageStackContainer(**_get_golang_kwargs(ver, os_version))
-    for ver, os_version in product(("1.16", "1.17", "1.18"), ALL_OS_VERSIONS)
+    for ver, os_version in product(_GOLANG_VERSIONS, ALL_OS_VERSIONS)
 ]
 
 
@@ -1180,7 +1185,7 @@ INIT_CONTAINERS = [
         custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="init",
-        pretty_name="%OS_VERSION% Init",
+        pretty_name="%OS_VERSION_NO_DASH% Init",
         package_list=["systemd", "gzip"],
         cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
@@ -1446,40 +1451,20 @@ STOPSIGNAL SIGQUIT
 ]
 
 
-# PHP_VERSIONS = [7, 8]
-# (PHP_7, PHP_8) = (
-#     LanguageStackContainer(
-#         name="php",
-#         pretty_name=f"PHP {ver}",
-#         package_list=[
-#             f"php{ver}",
-#             f"php{ver}-composer",
-#             f"php{ver}-zip",
-#             f"php{ver}-zlib",
-#             f"php{ver}-phar",
-#             f"php{ver}-mbstring",
-#             "curl",
-#             "git-core",
-#             "distribution-release",
-#         ],
-#         version=ver,
-#         env={
-#             "PHP_VERSION": {7: "7.4.25", 8: "8.0.10"}[ver],
-#             "COMPOSER_VERSION": "1.10.22",
-#         },
-#     )
-#     for ver in PHP_VERSIONS
-# )
-
-
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
+
+# ensure that the **latest** rust version is the last one!
+_RUST_VERSIONS = ["1.60", "1.61", "1.62"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
-        is_latest=rust_version == "1.61",
+        is_latest=(
+            rust_version == _RUST_VERSIONS[-1]
+            and os_version in CAN_BE_LATEST_OS_VERSION
+        ),
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",
@@ -1514,7 +1499,7 @@ RUN ${{CC}} --version
 """,
     )
     for rust_version, os_version in product(
-        ("1.60", "1.61", "1.62"),
+        _RUST_VERSIONS,
         (OsVersion.SP4, OsVersion.TUMBLEWEED),
     )
 ]
@@ -1525,7 +1510,7 @@ MICRO_CONTAINERS = [
         os_version=os_version,
         package_name=package_name,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        pretty_name="%OS_VERSION% Micro",
+        pretty_name="%OS_VERSION_NO_DASH% Micro",
         custom_description="A micro environment for containers based on the SLE Base Container Image.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
@@ -1559,7 +1544,7 @@ MINIMAL_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name=package_name,
         build_recipe_type=BuildType.KIWI,
-        pretty_name="%OS_VERSION% Minimal",
+        pretty_name="%OS_VERSION_NO_DASH% Minimal",
         custom_description="A minimal environment for containers based on the SLE Base Container Image.",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
@@ -1586,7 +1571,7 @@ BUSYBOX_CONTAINERS = [
         name="busybox",
         from_image=None,
         os_version=os_version,
-        pretty_name="%OS_VERSION% Busybox",
+        pretty_name="%OS_VERSION_NO_DASH% Busybox",
         package_name="busybox-image",
         is_latest=True,
         build_recipe_type=BuildType.KIWI,
@@ -1623,7 +1608,7 @@ for filename in (
 PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
-        pretty_name="Performance Co-Pilot (pcp) container",
+        pretty_name="Performance Co-Pilot (pcp)",
         custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
         package_name="pcp-image",
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
@@ -1692,6 +1677,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("nodejs-14-Tumbleweed")
+ALL_CONTAINER_IMAGE_NAMES.pop("golang-1.19-sp3")
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
