@@ -291,8 +291,8 @@ class BaseContainerImage(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def nvr(self) -> str:
-        """Name-version identifier used to uniquely identify this image."""
+    def uid(self) -> str:
+        """unique identifier of this image, either its name or ``$name-$version``."""
         pass
 
     @property
@@ -737,6 +737,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: additional versions that should be added as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
+    #: flag whether the version should be included in the uid
+    version_in_uid: bool = True
+
     _registry_prefix: str = "bci"
 
     def __post_init__(self) -> None:
@@ -753,8 +756,8 @@ class LanguageStackContainer(BaseContainerImage):
         return str(self.version)
 
     @property
-    def nvr(self) -> str:
-        return f"{self.name}-{self.version}"
+    def uid(self) -> str:
+        return f"{self.name}-{self.version}" if self.version_in_uid else self.name
 
     @property
     def build_tags(self) -> List[str]:
@@ -800,7 +803,7 @@ class OsContainer(BaseContainerImage):
         return f"15.{os_version}"
 
     @property
-    def nvr(self) -> str:
+    def uid(self) -> str:
         return self.name
 
     @property
@@ -1624,7 +1627,7 @@ EXPOSE 44321 44322 44323
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
-    f"{bci.nvr}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
+    f"{bci.uid}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
     for bci in (
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_8_TW,
