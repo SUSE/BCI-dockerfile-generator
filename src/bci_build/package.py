@@ -667,11 +667,17 @@ exit 0
         files = ["_service"]
         tasks = []
 
-        async def write_to_file(
-            fname: str, contents: Union[str, bytes], mode="w"
-        ) -> None:
-            async with aiofiles.open(os.path.join(dest, fname), mode) as f:
-                await f.write(contents)
+        async def write_to_file(fname: str, contents: Union[str, bytes]) -> None:
+            if isinstance(contents, str):
+                async with aiofiles.open(os.path.join(dest, fname), "w") as f:
+                    await f.write(contents)
+            elif isinstance(contents, bytes):
+                async with aiofiles.open(os.path.join(dest, fname), "bw") as f:
+                    await f.write(contents)
+            else:
+                raise TypeError(
+                    f"Invalid type of contents: {type(contents)}, expected string or bytes"
+                )
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
@@ -720,9 +726,8 @@ exit 0
             files.append(changes_file_name)
 
         for fname, contents in self.extra_files.items():
-            mode = "w" if isinstance(contents, str) else "bw"
             files.append(fname)
-            tasks.append(asyncio.ensure_future(write_to_file(fname, contents, mode)))
+            tasks.append(asyncio.ensure_future(write_to_file(fname, contents)))
 
         await asyncio.gather(*tasks)
 
