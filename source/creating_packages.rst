@@ -37,7 +37,7 @@ If you want to create a new Container Image on OBS, then proceed as follows:
       $ poetry run ./src/bci_build/package.py $new_container_nvr-$SP_ID path_to_checkout_of_new_pkg_name
 
    where ``$new_container_nvr`` is the value of the
-   :py:attr:`~bci_build.package.BaseContainerImage.nvr` property of your
+   :py:attr:`~bci_build.package.BaseContainerImage.uid` property of your
    container class (this one is either the
    :py:attr:`~bci_build.package.BaseContainerImage.name` property or
    :py:attr:`~bci_build.package.BaseContainerImage.name` ``-``
