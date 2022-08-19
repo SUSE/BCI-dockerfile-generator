@@ -1156,12 +1156,20 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         package_name="389-ds-container",
         os_version=os_version,
         is_latest=True,
+        version_in_uid=False,
         name="389-ds",
         maintainer="wbrown@suse.de",
         pretty_name="389 Directory Server",
         package_list=["389-ds", "timezone", "openssl"],
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
-        version="2.0",
+        version="%%389ds_version%%",
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%389ds_version%%",
+                package_name="389-ds",
+                parse_version="minor",
+            )
+        ],
         custom_end=rf"""EXPOSE 3389 3636
 
 {DOCKERFILE_RUN} mkdir -p /data/config; \
@@ -1211,12 +1219,6 @@ INIT_CONTAINERS = [
 ]
 
 
-_MARIADB_OS_VER_AND_VERSION = [
-    (OsVersion.SP3, "10.5"),
-    (OsVersion.SP4, "10.6"),
-    (OsVersion.TUMBLEWEED, "10.7"),
-]
-
 with open(
     os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
 ) as entrypoint:
@@ -1230,7 +1232,15 @@ MARIADB_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-mariadb",
-        version=version,
+        version="%%mariadb_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%mariadb_version%%",
+                package_name="mariadb",
+                parse_version="minor",
+            )
+        ],
         pretty_name="MariaDB Server",
         custom_description="MariaDB server for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
@@ -1260,7 +1270,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 EXPOSE 3306
 """,
     )
-    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
+    for os_version in ALL_OS_VERSIONS
 ]
 
 
@@ -1273,15 +1283,23 @@ MARIADB_CLIENT_CONTAINERS = [
         ),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version_in_uid=False,
         name="rmt-mariadb-client",
-        version=version,
+        version="%%mariadb_version%%",
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%mariadb_version%%",
+                package_name="mariadb-client",
+                parse_version="minor",
+            )
+        ],
         pretty_name="MariaDB Client",
         custom_description="MariaDB client for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb-client"],
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
     )
-    for (os_version, version) in _MARIADB_OS_VER_AND_VERSION
+    for os_version in ALL_OS_VERSIONS
 ]
 
 
@@ -1299,7 +1317,15 @@ RMT_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="RMT Server",
         build_recipe_type=BuildType.DOCKER,
-        version="2.8",
+        version="%%rmt_version%%",
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%rmt_version%%",
+                package_name="rmt-server",
+                parse_version="minor",
+            )
+        ],
+        version_in_uid=False,
         package_list=["rmt-server", "catatonit"],
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
@@ -1334,7 +1360,7 @@ POSTGRES_CONTAINERS = [
         pretty_name=f"PostgreSQL {ver}",
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
-        additional_versions=[f"%%pg_version%%"],
+        additional_versions=["%%pg_version%%"],
         entrypoint=["docker-entrypoint.sh"],
         cmd=["postgres"],
         env={
@@ -1393,7 +1419,15 @@ NGINX_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-nginx",
         pretty_name="RMT Nginx",
-        version=version,
+        version="%%nginx_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%nginx_version%%",
+                package_name="nginx",
+                parse_version="minor",
+            )
+        ],
         package_list=["nginx", "distribution-release"],
         entrypoint=["/docker-entrypoint.sh"],
         cmd=["nginx", "-g", "daemon off;"],
@@ -1421,11 +1455,7 @@ EXPOSE 80
 STOPSIGNAL SIGQUIT
 """,
     )
-    for os_version, version in (
-        (OsVersion.SP3, "1.19"),
-        (OsVersion.SP4, "1.21"),
-        (OsVersion.TUMBLEWEED, "1.21"),
-    )
+    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
 
@@ -1592,8 +1622,17 @@ PCP_CONTAINERS = [
         from_image=f"bci/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version="5.2.2",
-        additional_versions=["5.2", "5"],
+        version="%%pcp_patch%%",
+        version_in_uid=False,
+        additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile=f"%%pcp_{ver}%%",
+                package_name="pcp",
+                parse_version=ver,
+            )
+            for ver in ("major", "minor", "patch")
+        ],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
             "pcp",
