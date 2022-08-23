@@ -1413,6 +1413,7 @@ PROMETHEUS_CONTAINERS = [
         pretty_name="Prometheus",
         package_list=[PROMETHEUS_PACKAGE_NAME],
         version="%%prometheus_version%%",
+        version_in_uid=False,
         entrypoint=["/usr/bin/prometheus"],
         replacements_via_service=[
             Replacement(
