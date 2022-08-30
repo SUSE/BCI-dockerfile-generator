@@ -45,7 +45,7 @@ KIWI_TEMPLATE = jinja2.Template(
 <!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="6.5" name="{{ image.nvr }}-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="6.5" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>{{ image.VENDOR }}</author>
     <contact>https://www.suse.com/</contact>
