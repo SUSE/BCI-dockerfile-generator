@@ -1194,33 +1194,39 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
-INIT_CONTAINERS = [
-    OsContainer(
-        package_name=package_name,
-        os_version=os_version,
-        custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="init",
-        pretty_name="%OS_VERSION_NO_DASH% Init",
-        package_list=["systemd", "gzip"],
-        cmd=["/usr/lib/systemd/systemd"],
-        extra_labels={
+_DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
+
+
+def init_container_kwargs(os_version: OsVersion):
+    kwargs = {
+        "name": "init",
+        "os_version": os_version,
+        "custom_description": "Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "pretty_name": "%OS_VERSION_NO_DASH% Init",
+        "package_list": ["systemd", "gzip"],
+        "cmd": ["/usr/lib/systemd/systemd"],
+        "extra_labels": {
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
-        # we cannot add HEALTHCHECK via kiwi: https://github.com/OSInside/kiwi/issues/1639
-        custom_end=(
-            ""
-            if os_version == OsVersion.SP3
-            else """HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
+    }
+    if os_version == OsVersion.SP3:
+        kwargs["package_name"] = "init"
+        kwargs["config_sh_script"] = _DISABLE_GETTY_AT_TTY1_SERVICE
+    else:
+        kwargs["package_name"] = "init-image"
+        kwargs[
+            "custom_end"
+        ] = f"""RUN {_DISABLE_GETTY_AT_TTY1_SERVICE}
+HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
     CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
 """
-        ),
-    )
-    for (os_version, package_name) in (
-        (OsVersion.SP3, "init"),
-        (OsVersion.SP4, "init-image"),
-        (OsVersion.TUMBLEWEED, "init-image"),
-    )
+    return kwargs
+
+
+INIT_CONTAINERS = [
+    OsContainer(**init_container_kwargs(os_version))
+    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
 
