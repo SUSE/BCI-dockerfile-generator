@@ -1436,6 +1436,33 @@ EXPOSE 9090
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
+ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
+ALERTMANAGER_CONTAINERS = [
+    ApplicationStackContainer(
+        package_name="alertmanager-image",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        name="alertmanager",
+        pretty_name="Alertmanager",
+        package_list=[ALERTMANAGER_PACKAGE_NAME],
+        version="%%alertmanager_version%%",
+        version_in_uid=False,
+        entrypoint=["/usr/bin/alertmanager"],
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%alertmanager_version%%",
+                package_name=ALERTMANAGER_PACKAGE_NAME,
+                parse_version="patch",
+            )
+        ],
+        custom_end="""
+VOLUME [ "/var/lib/prometheus/alertmanager" ]
+EXPOSE 9093
+""",
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
+
 _NGINX_FILES = {}
 for filename in (
     "docker-entrypoint.sh",
@@ -1725,6 +1752,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MARIADB_CLIENT_CONTAINERS,
         *POSTGRES_CONTAINERS,
         *PROMETHEUS_CONTAINERS,
+        *ALERTMANAGER_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
