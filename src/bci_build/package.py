@@ -528,6 +528,40 @@ exit 0
         """The EXPOSES for this image as kiwi xml elements."""
         return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
 
+    @overload
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["EXPOSE"],
+        entries: Optional[List[int]],
+    ) -> str:
+        ...
+
+    @overload
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["VOLUME"],
+        entries: Optional[List[str]],
+    ) -> str:
+        ...
+
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["EXPOSE", "VOLUME"],
+        entries: Optional[Union[List[int], List[str]]],
+    ):
+        if not entries:
+            return ""
+
+        return f"{instruction} " + " ".join(str(e) for e in entries)
+
+    @property
+    def volume_dockerfile(self) -> str:
+        return self._dockerfile_volume_expose("VOLUME", self.volumes)
+
+    @property
+    def expose_dockerfile(self) -> str:
+        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+
     @property
     def kiwi_packages(self) -> str:
         """The package list as xml elements that are inserted into a kiwi build

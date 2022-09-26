@@ -99,3 +99,34 @@ def test_expose_port_kiwi(bci: BCI_FIXTURE_RET_T):
           <port number="80" />
         </expose>"""
     )
+
+
+def test_no_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert cls(**kwargs).expose_dockerfile == ""
+    assert cls(**kwargs, exposes_tcp=[]).expose_dockerfile == ""
+    assert cls(**kwargs, exposes_tcp=None).expose_dockerfile == ""
+
+
+def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert cls(**kwargs, exposes_tcp=[80, 443]).expose_dockerfile == "EXPOSE 80 443"
+
+
+def test_no_volume_dockerfile(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert cls(**kwargs).volume_dockerfile == ""
+    assert cls(**kwargs, volumes=[]).volume_dockerfile == ""
+    assert cls(**kwargs, volumes=None).volume_dockerfile == ""
+
+
+def test_volume_dockerfile(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert (
+        cls(**kwargs, volumes=["/var/log", "/sys/"]).volume_dockerfile
+        == "VOLUME /var/log /sys/"
+    )
