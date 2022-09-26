@@ -196,6 +196,12 @@ class BaseContainerImage(abc.ABC):
     #: An optional CMD for the image, it is omitted if empty or ``None``
     cmd: Optional[List[str]] = None
 
+    #: An optional list of volumes, it is omitted if empty or ``None``
+    volumes: Optional[List[str]] = None
+
+    #: An optional list of tcp port exposes, it is omitted if empty or ``None``
+    exposes_tcp: Optional[List[int]] = None
+
     #: Extra environment variables to be set in the container
     env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
         default_factory=dict
@@ -284,6 +290,7 @@ class BaseContainerImage(abc.ABC):
             raise ValueError(
                 "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."
             )
+
         if self.build_recipe_type is None:
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
@@ -374,10 +381,10 @@ class BaseContainerImage(abc.ABC):
             return None
         if isinstance(value, str) or len(value) == 1:
             val = value if isinstance(value, str) else value[0]
-            return f'        <{prefix} execute="{val}"/>'
+            return f'\n        <{prefix} execute="{val}"/>'
         else:
             return (
-                f"""        <{prefix} execute=\"{value[0]}\">
+                f"""\n        <{prefix} execute=\"{value[0]}\">
 """
                 + "\n".join(
                     (f'          <argument name="{arg}"/>' for arg in value[1:])
@@ -474,10 +481,35 @@ exit 0
         return " ".join(str(pkg) for pkg in self.package_list)
 
     @property
+    def volumes_kiwi(self) -> str:
+        """The volumes for this image as xml elements that are inserted into
+        a container.
+        """
+
+        res = ""
+        if self.volumes:
+            res += "\n" + " " * 8 + f"<volumes>\n"
+            for v in self.volumes:
+                res += " " * 10 + f"<volume name=\"{v}\" />\n"
+            res += " " * 8 + "</volumes>"
+        return res
+
+    @property
+    def exposes_kiwi(self) -> str:
+        """The EXPOSES for this image as kiwi xml elements.
+        """
+        res = ""
+        if self.exposes_tcp:
+            res += "\n" + " " * 8 + f"<expose>\n"
+            for p in self.exposes_tcp:
+                res += " " * 10 + f"<port number=\"{p}\" />\n"
+            res += " " * 8 + "</expose>"
+        return res
+
+    @property
     def kiwi_packages(self) -> str:
         """The package list as xml elements that are inserted into a kiwi build
         description file.
-
         """
 
         def create_pkg_filter_func(
@@ -534,7 +566,7 @@ exit 0
         if not self.env:
             return ""
         return (
-            """        <environment>
+            """\n        <environment>
           """
             + """
           """.join(
@@ -610,7 +642,11 @@ exit 0
         defined in :py:attr:`BaseContainerImage.extra_labels`.
 
         """
-        return "\n".join(
+
+        if not self.extra_labels:
+            return ''
+
+        return '\n' + "\n".join(
             f'            <label name="{k}" value="{v}"/>'
             for k, v in self.extra_labels.items()
         )
@@ -1737,6 +1773,38 @@ EXPOSE 44321 44322 44323
     for os_version in ALL_OS_VERSIONS
 ]
 
+REGISTRY_CONTAINERS = [
+    ApplicationStackContainer(
+        name="registry",
+        pretty_name="OCI Container Registry using the OCI Image Specification (Distribution)",
+        custom_description="Open Source Registry implementation using the OCI Distribution Specification",
+        package_name="distribution",
+        from_image=f"bci/bci-busybox:{OsContainer.version_to_container_os_version(os_version)}",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%registry_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_dockerfile="%%registry_version%%",
+                package_name="distribution-registry",
+                parse_version="minor",
+            )
+        ],
+        license="Apache-2.0",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in ("distribution-registry", "apache2-utils", "ca-certificates-mozilla")
+        ],
+        entrypoint=["/usr/bin/registry"],
+        cmd=["serve", "/etc/registry/config.yml"],
+        build_recipe_type=BuildType.KIWI,
+        volumes=["/var/lib/docker-registry"],
+        exposes_tcp=[5000]
+    )
+    for os_version in ALL_OS_VERSIONS
+]
+
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
     for bci in (
@@ -1749,6 +1817,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
         *PCP_CONTAINERS,
+        *REGISTRY_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GOLANG_IMAGES,
