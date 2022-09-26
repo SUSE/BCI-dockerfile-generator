@@ -12,7 +12,11 @@ def test_entrypoint_docker_list(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
     c = cls(entrypoint=["/bin/foo", "-a"], **kwargs)
 
-    assert c.entrypoint_docker == 'ENTRYPOINT ["/bin/foo", "-a"]'
+    assert (
+        c.entrypoint_docker
+        == """
+ENTRYPOINT ["/bin/foo", "-a"]"""
+    )
 
 
 def test_entrypoint_kiwi_none(bci: BCI_FIXTURE_RET_T):
@@ -112,7 +116,7 @@ def test_no_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
 def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
-    assert cls(**kwargs, exposes_tcp=[80, 443]).expose_dockerfile == "EXPOSE 80 443"
+    assert cls(**kwargs, exposes_tcp=[80, 443]).expose_dockerfile == "\nEXPOSE 80 443"
 
 
 def test_no_volume_dockerfile(bci: BCI_FIXTURE_RET_T):
@@ -128,5 +132,5 @@ def test_volume_dockerfile(bci: BCI_FIXTURE_RET_T):
 
     assert (
         cls(**kwargs, volumes=["/var/log", "/sys/"]).volume_dockerfile
-        == "VOLUME /var/log /sys/"
+        == "\nVOLUME /var/log /sys/"
     )

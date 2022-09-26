@@ -360,7 +360,7 @@ class BaseContainerImage(abc.ABC):
         if not value:
             return None
         if isinstance(value, list):
-            return prefix + " " + str(value).replace("'", '"')
+            return "\n" + prefix + " " + str(value).replace("'", '"')
         assert False, f"Unexpected type for {prefix}: {type(value)}"
 
     @property
@@ -552,7 +552,7 @@ exit 0
         if not entries:
             return ""
 
-        return f"{instruction} " + " ".join(str(e) for e in entries)
+        return "\n" + f"{instruction} " + " ".join(str(e) for e in entries)
 
     @property
     def volume_dockerfile(self) -> str:
@@ -614,7 +614,11 @@ exit 0
         in :py:attr:`~BaseContainerImage.env`.
 
         """
-        return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
+        return (
+            ""
+            if not self.env
+            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items()) + "\n"
+        )
 
     @property
     def kiwi_env_entry(self) -> str:
@@ -690,7 +694,12 @@ exit 0
         :py:attr:`BaseContainerImage.extra_labels`.
 
         """
-        return "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
+        return (
+            ""
+            if not self.extra_labels
+            else "\n"
+            + "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
+        )
 
     @property
     def extra_label_xml_lines(self) -> str:
@@ -773,16 +782,13 @@ exit 0
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
-            tasks.append(
-                asyncio.ensure_future(
-                    write_to_file(
-                        fname,
-                        DOCKERFILE_TEMPLATE.render(
-                            image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
-                        ),
-                    )
-                )
+            dockerfile = DOCKERFILE_TEMPLATE.render(
+                image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
             )
+            if dockerfile[-1] != "\n":
+                dockerfile += "\n"
+
+            tasks.append(asyncio.ensure_future(write_to_file(fname, dockerfile)))
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
