@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Creating packages on IBS" href="creating_packages.html" />
@@ -800,7 +801,26 @@ during the update.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on IBS</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.ApplicationStackContainer"><code class="docutils literal notranslate"><span class="pre">ApplicationStackContainer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.BaseContainerImage"><code class="docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.BuildType"><code class="docutils literal notranslate"><span class="pre">BuildType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.DOCKERFILE_RUN"><code class="docutils literal notranslate"><span class="pre">DOCKERFILE_RUN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.ImageType"><code class="docutils literal notranslate"><span class="pre">ImageType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.LanguageStackContainer"><code class="docutils literal notranslate"><span class="pre">LanguageStackContainer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.OsContainer"><code class="docutils literal notranslate"><span class="pre">OsContainer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.OsVersion"><code class="docutils literal notranslate"><span class="pre">OsVersion</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.Package"><code class="docutils literal notranslate"><span class="pre">Package</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.PackageType"><code class="docutils literal notranslate"><span class="pre">PackageType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.RELEASED_OS_VERSIONS"><code class="docutils literal notranslate"><span class="pre">RELEASED_OS_VERSIONS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.ReleaseStage"><code class="docutils literal notranslate"><span class="pre">ReleaseStage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.Replacement"><code class="docutils literal notranslate"><span class="pre">Replacement</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.SupportLevel"><code class="docutils literal notranslate"><span class="pre">SupportLevel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.package.init_container_kwargs"><code class="docutils literal notranslate"><span class="pre">init_container_kwargs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.update.BciUpdater"><code class="docutils literal notranslate"><span class="pre">BciUpdater</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bci_build.update.update_package"><code class="docutils literal notranslate"><span class="pre">update_package()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
@@ -837,7 +857,7 @@ during the update.</p>
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
