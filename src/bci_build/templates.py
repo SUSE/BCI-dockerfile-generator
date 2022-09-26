@@ -34,6 +34,8 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 {{ image.env_lines }}
 {% if image.entrypoint_docker -%}{{ image.entrypoint_docker }}{% endif %}
 {% if image.cmd_docker -%}{{ image.cmd_docker }}{% endif %}
+{% if image.volume_dockerfile -%}{{ image.volume_dockerfile }}{% endif %}
+{% if image.expose_dockerfile -%}{{ image.expose_dockerfile }}{% endif %}
 {{ image.dockerfile_custom_end }}
 """
 )
