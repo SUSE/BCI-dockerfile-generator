@@ -1273,8 +1273,9 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        custom_end=rf"""EXPOSE 3389 3636
-
+        exposes_tcp=[3389, 3636],
+        volumes=["/data"],
+        custom_end=rf"""
 COPY nsswitch.conf /etc/nsswitch.conf
 
 {DOCKERFILE_RUN} mkdir -p /data/config; \
@@ -1284,8 +1285,6 @@ COPY nsswitch.conf /etc/nsswitch.conf
     ln -s /data/config /etc/dirsrv/slapd-localhost; \
     ln -s /data/ssca /etc/dirsrv/ssca; \
     ln -s /data/run /var/run/dirsrv
-
-VOLUME /data
 
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
@@ -1359,9 +1358,9 @@ MARIADB_CONTAINERS = [
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadbd"],
+        volumes=["/var/lib/mysql"],
+        exposes_tcp=[3306],
         custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
-
-VOLUME /var/lib/mysql
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -1377,8 +1376,6 @@ COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
 {DOCKERFILE_RUN} mkdir /run/mysql
-
-EXPOSE 3306
 """,
     )
     for os_version in ALL_OS_VERSIONS
@@ -1491,17 +1488,15 @@ POSTGRES_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        custom_end=rf"""
-VOLUME /var/lib/postgresql/data
-
-COPY docker-entrypoint.sh /usr/local/bin/
+        volumes=["/var/lib/postgresql/data"],
+        exposes_tcp=[5432],
+        custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     ln -s su /usr/bin/gosu; \
     mkdir /docker-entrypoint-initdb.d; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
-EXPOSE 5432
 """,
     )
     for ver, os_version in product(
@@ -1528,10 +1523,8 @@ PROMETHEUS_CONTAINERS = [
                 parse_version="patch",
             )
         ],
-        custom_end="""
-VOLUME [ "/var/lib/prometheus" ]
-EXPOSE 9090
-""",
+        volumes=["/var/lib/prometheus"],
+        exposes_tcp=[9090],
     )
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
@@ -1555,10 +1548,8 @@ ALERTMANAGER_CONTAINERS = [
                 parse_version="patch",
             )
         ],
-        custom_end="""
-VOLUME [ "/var/lib/prometheus/alertmanager" ]
-EXPOSE 9093
-""",
+        volumes=["/var/lib/prometheus/alertmanager"],
+        exposes_tcp=[9093],
     )
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
@@ -1597,6 +1588,7 @@ NGINX_CONTAINERS = [
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
+        exposes_tcp=[80],
         custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
@@ -1613,8 +1605,6 @@ COPY index.html /srv/www/htdocs/
 {DOCKERFILE_RUN} chown nginx:nginx /var/log/nginx
 {DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
 {DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
-
-EXPOSE 80
 
 STOPSIGNAL SIGQUIT
 """,
@@ -1809,6 +1799,8 @@ PCP_CONTAINERS = [
         cmd=["/usr/lib/systemd/systemd"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
+        volumes=["/var/log/pcp/pmlogger"],
+        exposes_tcp=[44321, 44322, 44323],
         custom_end=f"""
 {DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint healthcheck /usr/local/bin/
@@ -1821,9 +1813,6 @@ COPY pmcd pmlogger /etc/sysconfig/
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
-
-VOLUME ["/var/log/pcp/pmlogger"]
-EXPOSE 44321 44322 44323
 """,
     )
     for os_version in ALL_OS_VERSIONS
