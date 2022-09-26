@@ -361,7 +361,7 @@ class BaseContainerImage(abc.ABC):
             return None
         if isinstance(value, list):
             return prefix + " " + str(value).replace("'", '"')
-        return prefix + " " + str(value)
+        assert False, f"Unexpected type for {prefix}: {type(value)}"
 
     @property
     def entrypoint_docker(self) -> Optional[str]:
@@ -379,7 +379,7 @@ class BaseContainerImage(abc.ABC):
     ) -> Optional[str]:
         if not value:
             return None
-        if isinstance(value, str) or len(value) == 1:
+        if len(value) == 1:
             val = value if isinstance(value, str) else value[0]
             return f'\n        <{prefix} execute="{val}"/>'
         else:
