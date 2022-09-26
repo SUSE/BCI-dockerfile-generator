@@ -44,3 +44,58 @@ def test_entrypoint_kiwi_list(bci: BCI_FIXTURE_RET_T):
         </entrypoint>
 """
     )
+
+
+def test_no_volumes_kiwi(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+    c = cls(**kwargs, volumes=[])
+
+    assert c.volumes_kiwi == ""
+
+
+def test_single_volume_kiwi(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+    c = cls(**kwargs, volumes=["/foo/bar"])
+
+    assert (
+        c.volumes_kiwi
+        == """
+        <volumes>
+          <volume name="/foo/bar" />
+        </volumes>"""
+    )
+
+
+def test_multiple_volumes_kiwi(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+    c = cls(**kwargs, volumes=["/foo/bar", "/proc/"])
+
+    assert (
+        c.volumes_kiwi
+        == """
+        <volumes>
+          <volume name="/foo/bar" />
+          <volume name="/proc/" />
+        </volumes>"""
+    )
+
+
+def test_no_expose_kiwi(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert cls(**kwargs, exposes_tcp=[]).exposes_kiwi == ""
+    assert cls(**kwargs).exposes_kiwi == ""
+    assert cls(**kwargs, exposes_tcp=None).exposes_kiwi == ""
+
+
+def test_expose_port_kiwi(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert (
+        cls(**kwargs, exposes_tcp=[443, 80]).exposes_kiwi
+        == """
+        <expose>
+          <port number="443" />
+          <port number="80" />
+        </expose>"""
+    )
