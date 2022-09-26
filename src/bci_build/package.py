@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from itertools import product
 import enum
 import os
-from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
+from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union, overload
 
 import aiofiles
 
@@ -480,30 +480,53 @@ exit 0
                 )
         return " ".join(str(pkg) for pkg in self.package_list)
 
+    @overload
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["volumes"],
+        entry_element: Literal["volume name"],
+        entries: Optional[List[str]],
+    ) -> str:
+        ...
+
+    @overload
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["expose"],
+        entry_element: Literal["port number"],
+        entries: Optional[List[int]],
+    ) -> str:
+        ...
+
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["volumes", "expose"],
+        entry_element: Literal["volume name", "port number"],
+        entries: Optional[Union[List[int], List[str]]],
+    ) -> str:
+        if not entries:
+            return ""
+
+        res = f"""
+        <{main_element}>
+"""
+        for entry in entries:
+            res += f"""          <{entry_element}="{entry}" />
+"""
+        res += f"""        </{main_element}>"""
+        return res
+
     @property
     def volumes_kiwi(self) -> str:
         """The volumes for this image as xml elements that are inserted into
         a container.
         """
-
-        res = ""
-        if self.volumes:
-            res += "\n" + " " * 8 + f"<volumes>\n"
-            for v in self.volumes:
-                res += " " * 10 + f'<volume name="{v}" />\n'
-            res += " " * 8 + "</volumes>"
-        return res
+        return self._kiwi_volumes_expose("volumes", "volume name", self.volumes)
 
     @property
     def exposes_kiwi(self) -> str:
         """The EXPOSES for this image as kiwi xml elements."""
-        res = ""
-        if self.exposes_tcp:
-            res += "\n" + " " * 8 + f"<expose>\n"
-            for p in self.exposes_tcp:
-                res += " " * 10 + f'<port number="{p}" />\n'
-            res += " " * 8 + "</expose>"
-        return res
+        return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
 
     @property
     def kiwi_packages(self) -> str:
