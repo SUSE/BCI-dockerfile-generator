@@ -171,6 +171,11 @@ if __name__ == "__main__":
     else:
         LOGGER.setLevel("ERROR")
 
+    if not args.images and not args.service_pack:
+        raise ValueError(
+            "No images supplied and no service pack set, nothing to update"
+        )
+
     loop = asyncio.get_event_loop()
     images: List[str] = (
         args.images
