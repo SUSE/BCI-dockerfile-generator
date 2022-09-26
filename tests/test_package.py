@@ -30,7 +30,7 @@ def test_entrypoint_kiwi_string(bci):
     cls, kwargs = bci
     c = cls(entrypoint="/bin/foo", **kwargs)
 
-    assert c.entrypoint_kiwi == '        <entrypoint execute="/bin/foo"/>'
+    assert c.entrypoint_kiwi.lstrip() == '<entrypoint execute="/bin/foo"/>'
 
 
 def test_entrypoint_kiwi_list(bci):
@@ -38,8 +38,8 @@ def test_entrypoint_kiwi_list(bci):
     c = cls(entrypoint=["/bin/foo", "-a", "-x", "/path/to/a/file"], **kwargs)
 
     assert (
-        c.entrypoint_kiwi
-        == """        <entrypoint execute="/bin/foo">
+        c.entrypoint_kiwi.lstrip()
+        == """<entrypoint execute="/bin/foo">
           <argument name="-a"/>
           <argument name="-x"/>
           <argument name="/path/to/a/file"/>

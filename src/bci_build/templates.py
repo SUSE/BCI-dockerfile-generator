@@ -74,12 +74,14 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
-{{ image.extra_label_xml_lines }}
+{{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
-{% if image.cmd_kiwi %}{{ image.cmd_kiwi }}{% endif %}
-{% if image.entrypoint_kiwi %}{{ image.entrypoint_kiwi }}{% endif %}
-{{ image.kiwi_env_entry }}
+{%- if image.cmd_kiwi %}{{ image.cmd_kiwi }}{% endif %}
+{%- if image.entrypoint_kiwi %}{{ image.entrypoint_kiwi }}{% endif %}
+{%- if image.volumes_kiwi %}{{ image.volumes_kiwi }}{% endif %}
+{%- if image.exposes_kiwi %}{{ image.exposes_kiwi }}{% endif %}
+{{- image.kiwi_env_entry }}
       </containerconfig>
     </type>
     <version>15.{{ image.os_version }}.0</version>
