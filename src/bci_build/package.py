@@ -1377,7 +1377,7 @@ POSTGRES_CONTAINERS = [
         env={
             "LANG": "en_US.utf8",
             "PG_MAJOR": f"{ver}",
-            "PG_VERSION": f"%%pg_version%%",
+            "PG_VERSION": "%%pg_version%%",
             "PGDATA": "/var/lib/postgresql/data",
         },
         extra_files={
