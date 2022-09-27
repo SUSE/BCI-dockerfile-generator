@@ -102,6 +102,13 @@ class OsVersion(enum.Enum):
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
 
+    @staticmethod
+    def parse(val: str) -> OsVersion:
+        try:
+            return OsVersion(int(val))
+        except ValueError:
+            return OsVersion(val)
+
     def __str__(self) -> str:
         return str(self.value)
 
