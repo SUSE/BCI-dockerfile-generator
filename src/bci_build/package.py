@@ -1830,7 +1830,7 @@ REGISTRY_CONTAINERS = [
         pretty_name="OCI Container Registry using the OCI Image Specification (Distribution)",
         custom_description="Open Source Registry implementation using the OCI Distribution Specification",
         package_name="distribution-image",
-        from_image=f"bci/bci-busybox:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"bci/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
@@ -1846,9 +1846,11 @@ REGISTRY_CONTAINERS = [
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in (
-                "distribution-registry",
                 "apache2-utils",
                 "ca-certificates-mozilla",
+                "distribution-registry",
+                "perl",
+                "util-linux",
             )
         ],
         entrypoint=["/usr/bin/registry"],
