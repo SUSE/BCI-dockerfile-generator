@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from itertools import product
 import enum
 import os
-from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union
+from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union, overload
 
 import aiofiles
 
@@ -360,8 +360,8 @@ class BaseContainerImage(abc.ABC):
         if not value:
             return None
         if isinstance(value, list):
-            return prefix + " " + str(value).replace("'", '"')
-        return prefix + " " + str(value)
+            return "\n" + prefix + " " + str(value).replace("'", '"')
+        assert False, f"Unexpected type for {prefix}: {type(value)}"
 
     @property
     def entrypoint_docker(self) -> Optional[str]:
@@ -379,7 +379,7 @@ class BaseContainerImage(abc.ABC):
     ) -> Optional[str]:
         if not value:
             return None
-        if isinstance(value, str) or len(value) == 1:
+        if len(value) == 1:
             val = value if isinstance(value, str) else value[0]
             return f'\n        <{prefix} execute="{val}"/>'
         else:
@@ -480,30 +480,87 @@ exit 0
                 )
         return " ".join(str(pkg) for pkg in self.package_list)
 
+    @overload
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["volumes"],
+        entry_element: Literal["volume name"],
+        entries: Optional[List[str]],
+    ) -> str:
+        ...
+
+    @overload
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["expose"],
+        entry_element: Literal["port number"],
+        entries: Optional[List[int]],
+    ) -> str:
+        ...
+
+    def _kiwi_volumes_expose(
+        self,
+        main_element: Literal["volumes", "expose"],
+        entry_element: Literal["volume name", "port number"],
+        entries: Optional[Union[List[int], List[str]]],
+    ) -> str:
+        if not entries:
+            return ""
+
+        res = f"""
+        <{main_element}>
+"""
+        for entry in entries:
+            res += f"""          <{entry_element}="{entry}" />
+"""
+        res += f"""        </{main_element}>"""
+        return res
+
     @property
     def volumes_kiwi(self) -> str:
         """The volumes for this image as xml elements that are inserted into
         a container.
         """
-
-        res = ""
-        if self.volumes:
-            res += "\n" + " " * 8 + f"<volumes>\n"
-            for v in self.volumes:
-                res += " " * 10 + f'<volume name="{v}" />\n'
-            res += " " * 8 + "</volumes>"
-        return res
+        return self._kiwi_volumes_expose("volumes", "volume name", self.volumes)
 
     @property
     def exposes_kiwi(self) -> str:
         """The EXPOSES for this image as kiwi xml elements."""
-        res = ""
-        if self.exposes_tcp:
-            res += "\n" + " " * 8 + f"<expose>\n"
-            for p in self.exposes_tcp:
-                res += " " * 10 + f'<port number="{p}" />\n'
-            res += " " * 8 + "</expose>"
-        return res
+        return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
+
+    @overload
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["EXPOSE"],
+        entries: Optional[List[int]],
+    ) -> str:
+        ...
+
+    @overload
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["VOLUME"],
+        entries: Optional[List[str]],
+    ) -> str:
+        ...
+
+    def _dockerfile_volume_expose(
+        self,
+        instruction: Literal["EXPOSE", "VOLUME"],
+        entries: Optional[Union[List[int], List[str]]],
+    ):
+        if not entries:
+            return ""
+
+        return "\n" + f"{instruction} " + " ".join(str(e) for e in entries)
+
+    @property
+    def volume_dockerfile(self) -> str:
+        return self._dockerfile_volume_expose("VOLUME", self.volumes)
+
+    @property
+    def expose_dockerfile(self) -> str:
+        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
 
     @property
     def kiwi_packages(self) -> str:
@@ -557,7 +614,11 @@ exit 0
         in :py:attr:`~BaseContainerImage.env`.
 
         """
-        return "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
+        return (
+            ""
+            if not self.env
+            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items()) + "\n"
+        )
 
     @property
     def kiwi_env_entry(self) -> str:
@@ -633,7 +694,12 @@ exit 0
         :py:attr:`BaseContainerImage.extra_labels`.
 
         """
-        return "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
+        return (
+            ""
+            if not self.extra_labels
+            else "\n"
+            + "\n".join(f'LABEL {k}="{v}"' for k, v in self.extra_labels.items())
+        )
 
     @property
     def extra_label_xml_lines(self) -> str:
@@ -716,16 +782,13 @@ exit 0
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
-            tasks.append(
-                asyncio.ensure_future(
-                    write_to_file(
-                        fname,
-                        DOCKERFILE_TEMPLATE.render(
-                            image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
-                        ),
-                    )
-                )
+            dockerfile = DOCKERFILE_TEMPLATE.render(
+                image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
             )
+            if dockerfile[-1] != "\n":
+                dockerfile += "\n"
+
+            tasks.append(asyncio.ensure_future(write_to_file(fname, dockerfile)))
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
@@ -1216,8 +1279,9 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        custom_end=rf"""EXPOSE 3389 3636
-
+        exposes_tcp=[3389, 3636],
+        volumes=["/data"],
+        custom_end=rf"""
 COPY nsswitch.conf /etc/nsswitch.conf
 
 {DOCKERFILE_RUN} mkdir -p /data/config; \
@@ -1227,8 +1291,6 @@ COPY nsswitch.conf /etc/nsswitch.conf
     ln -s /data/config /etc/dirsrv/slapd-localhost; \
     ln -s /data/ssca /etc/dirsrv/ssca; \
     ln -s /data/run /var/run/dirsrv
-
-VOLUME /data
 
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
@@ -1302,9 +1364,9 @@ MARIADB_CONTAINERS = [
         extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadbd"],
+        volumes=["/var/lib/mysql"],
+        exposes_tcp=[3306],
         custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
-
-VOLUME /var/lib/mysql
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -1320,8 +1382,6 @@ COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
 {DOCKERFILE_RUN} mkdir /run/mysql
-
-EXPOSE 3306
 """,
     )
     for os_version in ALL_OS_VERSIONS
@@ -1434,17 +1494,15 @@ POSTGRES_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        custom_end=rf"""
-VOLUME /var/lib/postgresql/data
-
-COPY docker-entrypoint.sh /usr/local/bin/
+        volumes=["/var/lib/postgresql/data"],
+        exposes_tcp=[5432],
+        custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     ln -s su /usr/bin/gosu; \
     mkdir /docker-entrypoint-initdb.d; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
-EXPOSE 5432
 """,
     )
     for ver, os_version in product(
@@ -1471,10 +1529,8 @@ PROMETHEUS_CONTAINERS = [
                 parse_version="patch",
             )
         ],
-        custom_end="""
-VOLUME [ "/var/lib/prometheus" ]
-EXPOSE 9090
-""",
+        volumes=["/var/lib/prometheus"],
+        exposes_tcp=[9090],
     )
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
@@ -1498,10 +1554,8 @@ ALERTMANAGER_CONTAINERS = [
                 parse_version="patch",
             )
         ],
-        custom_end="""
-VOLUME [ "/var/lib/prometheus/alertmanager" ]
-EXPOSE 9093
-""",
+        volumes=["/var/lib/prometheus/alertmanager"],
+        exposes_tcp=[9093],
     )
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
@@ -1540,6 +1594,7 @@ NGINX_CONTAINERS = [
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_NGINX_FILES,
+        exposes_tcp=[80],
         custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
@@ -1557,8 +1612,6 @@ COPY index.html /srv/www/htdocs/
 {DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
 {DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
 
-EXPOSE 80
-
 STOPSIGNAL SIGQUIT
 """,
     )
@@ -1569,7 +1622,7 @@ STOPSIGNAL SIGQUIT
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.60", "1.61", "1.62"]
+_RUST_VERSIONS = ["1.61", "1.62", "1.63"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
@@ -1752,6 +1805,8 @@ PCP_CONTAINERS = [
         cmd=["/usr/lib/systemd/systemd"],
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
+        volumes=["/var/log/pcp/pmlogger"],
+        exposes_tcp=[44321, 44322, 44323],
         custom_end=f"""
 {DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint healthcheck /usr/local/bin/
@@ -1764,9 +1819,6 @@ COPY pmcd pmlogger /etc/sysconfig/
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
-
-VOLUME ["/var/log/pcp/pmlogger"]
-EXPOSE 44321 44322 44323
 """,
     )
     for os_version in ALL_OS_VERSIONS

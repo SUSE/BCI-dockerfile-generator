@@ -27,14 +27,15 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.image-type="{{ image.image_type }}"
 LABEL com.suse.release-stage="{{ image.release_stage }}"
 # endlabelprefix
-{% if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
+{%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
 {{ DOCKERFILE_RUN }} zypper -n in --no-recommends {{ image.packages }}; zypper -n clean; rm -rf /var/log/*
-
-{{ image.env_lines }}
-{% if image.entrypoint_docker -%}{{ image.entrypoint_docker }}{% endif %}
-{% if image.cmd_docker -%}{{ image.cmd_docker }}{% endif %}
-{{ image.dockerfile_custom_end }}
+{%- if image.env_lines %}{{- image.env_lines }}{% endif %}
+{%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
+{%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}
+{%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
+{%- if image.expose_dockerfile %}{{ image.expose_dockerfile }}{% endif %}
+{% if image.dockerfile_custom_end %}{{ image.dockerfile_custom_end }}{% endif %}
 """
 )
 
@@ -101,14 +102,13 @@ SERVICE_TEMPLATE = jinja2.Template(
     """<services>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="{{ image.build_recipe_type }}_label_helper"/>
-{% for replacement in image.replacements_via_service -%}
+{%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">{% if (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>
     <param name="regex">{{ replacement.regex_in_dockerfile }}</param>
-    <param name="package">{{ replacement.package_name }}</param>
-{% if replacement.parse_version %}    <param name="parse-version">{{ replacement.parse_version }}</param>{% endif %}
-  </service>
-{% endfor %}
+    <param name="package">{{ replacement.package_name }}</param>{% if replacement.parse_version %}
+    <param name="parse-version">{{ replacement.parse_version }}</param>{% endif %}
+  </service>{% endfor %}
 </services>
 """
 )
