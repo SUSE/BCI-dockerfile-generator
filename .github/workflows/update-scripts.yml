@@ -18,6 +18,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           delete-branch: true
+          commit-message: "🤖: Update external files via ./update-files.sh"
           reviewers: dcermak,brunoleon
           assignees: dcermak
           title: "🤖: Update external files"
