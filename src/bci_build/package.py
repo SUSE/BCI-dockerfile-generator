@@ -1546,7 +1546,7 @@ ALERTMANAGER_CONTAINERS = [
         package_list=[ALERTMANAGER_PACKAGE_NAME],
         version="%%alertmanager_version%%",
         version_in_uid=False,
-        entrypoint=["/usr/bin/alertmanager"],
+        entrypoint=["/usr/bin/prometheus-alertmanager"],
         replacements_via_service=[
             Replacement(
                 regex_in_dockerfile="%%alertmanager_version%%",
