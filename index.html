@@ -36,7 +36,7 @@
             
   <section id="bci-build-recipe-generator">
 <h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this heading">¶</a></h1>
-<p>This is a very simple script that generates the necessary files to build our BCI
+<p>This is a simple script that generates the necessary files to build our BCI
 containers in the Open Build Service.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
@@ -45,8 +45,9 @@ containers in the Open Build Service.</p>
 <li><p>Python 3.9 or later</p></li>
 <li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
 <li><p><a class="reference external" href="https://github.com/openSUSE/osc/">osc</a> installed and configured to reach
-build.opensuse.org by default. If you want to target IBS (build.suse.de)
-directly, then add the alias <code class="docutils literal notranslate"><span class="pre">ibs</span></code> for <a class="reference external" href="https://build.suse.de">https://build.suse.de</a>.</p></li>
+<a class="reference external" href="https://build.opensuse.org/">OBS</a> by default. If you want to target IBS
+(build.suse.de) directly, then add the alias <code class="docutils literal notranslate"><span class="pre">ibs</span></code> for
+<a class="reference external" href="https://build.suse.de">https://build.suse.de</a>.</p></li>
 </ul>
 <p>To get started, clone this repository and run <strong class="command">poetry install</strong> in its
 root directory.</p>
@@ -58,13 +59,17 @@ script. It will branch the package on IBS, check it out into a temporary
 directory, regenererate the build recipes from the templates and send a
 submitrequest back upstream.</p>
 <p>For example, to update the nodejs containers, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run ./src/bci_build/update.py --commit-msg <span class="s2">&quot;Update according to </span><span class="nv">$reason</span><span class="s2">&quot;</span> nodejs-12-sp4 nodejs-14-sp4 nodejs-16-sp4
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/update.py --commit-msg &quot;Update according to $reason&quot; --images nodejs-12-sp4 nodejs-14-sp4 nodejs-16-sp4</span>
 </pre></div>
 </div>
-<p>If you do not want to interact with IBS at all, then you can also use the
+<p>Or to update all images for a service pack, run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/update.py --commit-msg &quot;Update according to $OtherReason&quot; --service-pack 4</span>
+</pre></div>
+</div>
+<p>If you do not want to interact with OBS at all, then you can also use the
 <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> script to just write the files of a single
 package into a directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/</span>
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
@@ -74,40 +79,27 @@ package into a directory:</p>
 <li class="toctree-l2"><a class="reference internal" href="adding_containers.html#adding-files-to-the-image">Adding files to the Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="adding_containers.html#automatic-package-version-substitution">Automatic Package Version Substitution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="adding_containers.html#installing-packages-into-the-container-image">Installing Packages into the Container Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adding_containers.html#applying-additional-changes-to-your-image">Applying additional changes to your Image</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on IBS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.ApplicationStackContainer"><code class="docutils literal notranslate"><span class="pre">ApplicationStackContainer</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.BaseContainerImage"><code class="docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.BuildType"><code class="docutils literal notranslate"><span class="pre">BuildType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.DOCKERFILE_RUN"><code class="docutils literal notranslate"><span class="pre">DOCKERFILE_RUN</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.ImageType"><code class="docutils literal notranslate"><span class="pre">ImageType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.LanguageStackContainer"><code class="docutils literal notranslate"><span class="pre">LanguageStackContainer</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.OsContainer"><code class="docutils literal notranslate"><span class="pre">OsContainer</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.OsVersion"><code class="docutils literal notranslate"><span class="pre">OsVersion</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.Package"><code class="docutils literal notranslate"><span class="pre">Package</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.PackageType"><code class="docutils literal notranslate"><span class="pre">PackageType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.RELEASED_OS_VERSIONS"><code class="docutils literal notranslate"><span class="pre">RELEASED_OS_VERSIONS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.ReleaseStage"><code class="docutils literal notranslate"><span class="pre">ReleaseStage</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.Replacement"><code class="docutils literal notranslate"><span class="pre">Replacement</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.SupportLevel"><code class="docutils literal notranslate"><span class="pre">SupportLevel</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.package.init_container_kwargs"><code class="docutils literal notranslate"><span class="pre">init_container_kwargs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.update.BciUpdater"><code class="docutils literal notranslate"><span class="pre">BciUpdater</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#bci_build.update.update_package"><code class="docutils literal notranslate"><span class="pre">update_package()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.update"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">templates</span></code> module</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
-</section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
 </section>
 
 
@@ -130,7 +122,7 @@ package into a directory:</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on IBS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
 

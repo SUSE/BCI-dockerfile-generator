@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating packages on IBS &#8212; bci-build-templates  documentation</title>
+    <title>Creating packages on OBS &#8212; bci-build-templates  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -35,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <section id="creating-packages-on-ibs">
-<h1>Creating packages on IBS<a class="headerlink" href="#creating-packages-on-ibs" title="Permalink to this heading">¶</a></h1>
-<p>The <cite>./src/bci_build/update.py</cite> script can automatically submit updates to
+  <section id="creating-packages-on-obs">
+<h1>Creating packages on OBS<a class="headerlink" href="#creating-packages-on-obs" title="Permalink to this heading">¶</a></h1>
+<p>The <code class="file docutils literal notranslate"><span class="pre">./src/bci_build/update.py</span></code> script can automatically submit updates to
 existing packages on OBS or IBS, but it will fail to create new ones that have
 just been added as code.</p>
 <p>If you want to create a new Container Image on OBS, then proceed as follows:</p>
@@ -46,7 +46,7 @@ just been added as code.</p>
 <a class="reference internal" href="adding_containers.html#adding-and-modifying-container-images"><span class="std std-ref">Adding and Modifying Container Images</span></a>)</p></li>
 <li><p>Create a new project on OBS in which you will create the initial package
 version. Usually the easiest way how to achieve this, is to branch an
-existing package into your home project (we use busybox-image in below example),
+existing package into your home project (we use <code class="docutils literal notranslate"><span class="pre">busybox-image</span></code> below),
 as that will ensure that the repositories have been setup correctly.
 Once you have created it, check it out to your file system:</p></li>
 </ol>
@@ -112,7 +112,7 @@ add all files, commit your changes and send a submit request back to the
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating packages on IBS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
 
