@@ -158,3 +158,27 @@ example:
            "distribution-release",
        )
    ]
+
+
+Applying additional changes to your Image
+-----------------------------------------
+
+Container Images can be tweaked extensively via a plethora of different keywords
+in :file:`Dockerfile`. To stay compatible with kiwi build descriptions and to
+avoid some common pitfalls when creating a :file:`Dockerfile`.
+
+For the following :file:`Dockerfile` settings, use the respective properties of
+:py:class:`~bci_build.package.BaseContainerImage`:
+
+- ``ENTRYPOINT``: :py:attr:`~bci_build.package.BaseContainerImage.entrypoint`
+- ``CMD``: :py:attr:`~bci_build.package.BaseContainerImage.cmd`
+- ``VOLUME``: :py:attr:`~bci_build.package.BaseContainerImage.volumes`
+- ``EXPOSE``: :py:attr:`~bci_build.package.BaseContainerImage.exposes_tcp`
+- ``ENV``: :py:attr:`~bci_build.package.BaseContainerImage.env`
+- ``LABEL``: :py:attr:`~bci_build.package.BaseContainerImage.extra_labels`
+- ``MAINTAINER``: :py:attr:`~bci_build.package.BaseContainerImage.maintainer`
+
+For additional settings that do not fit the existing attributes, either create
+an abstraction (if feasible and meaningful) or use
+:py:attr:`~bci_build.package.BaseContainerImage.custom_end` to write a raw
+:file:`Dockerfile` yourself.
