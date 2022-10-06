@@ -1,6 +1,12 @@
+"""This module contains the Jinja2 templates used to generate the build
+descriptions.
+
+"""
+
 import jinja2
 
 
+#: Jinja2 template used to generate :file:`Dockerfile`
 DOCKERFILE_TEMPLATE = jinja2.Template(
     """# SPDX-License-Identifier: {{ image.license }}
 {% for tag in image.build_tags -%}
@@ -39,6 +45,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 """
 )
 
+#: Jinja2 template used to generate :file:`$pkg_name.kiwi`
 KIWI_TEMPLATE = jinja2.Template(
     """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: {{ image.license }} -->
@@ -98,6 +105,7 @@ KIWI_TEMPLATE = jinja2.Template(
 """
 )
 
+#: Jinja2 template used to generate :file:`_service`.
 SERVICE_TEMPLATE = jinja2.Template(
     """<services>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
