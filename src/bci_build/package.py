@@ -183,6 +183,7 @@ class BaseContainerImage(abc.ABC):
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
 
+    #: Determines whether this image will have the ``latest`` tag.
     is_latest: bool = False
 
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
