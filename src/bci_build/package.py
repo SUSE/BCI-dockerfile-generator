@@ -145,8 +145,8 @@ class Replacement:
 
     """
 
-    #: regex to be replaced in the Dockerfile
-    regex_in_dockerfile: str
+    #: regex to be replaced in :file:`Dockerfile` or :file:`$pkg_name.kiwi`
+    regex_in_build_description: str
 
     #: package name to be queried for the version
     package_name: str
@@ -183,6 +183,7 @@ class BaseContainerImage(abc.ABC):
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
 
+    #: Determines whether this image will have the ``latest`` tag.
     is_latest: bool = False
 
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
@@ -974,9 +975,10 @@ def _get_python_kwargs(
         ),
         "replacements_via_service": [
             Replacement(
-                regex_in_dockerfile=py3_ver_replacement, package_name=f"{py3}-base"
+                regex_in_build_description=py3_ver_replacement,
+                package_name=f"{py3}-base",
             ),
-            Replacement(regex_in_dockerfile=pip3_replacement, package_name=pip3),
+            Replacement(regex_in_build_description=pip3_replacement, package_name=pip3),
         ],
         "os_version": os_version,
     }
@@ -1059,9 +1061,9 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.1"], os_version: OsVersion)
             "RUBY_MAJOR": "%%rb_maj%%",
         },
         "replacements_via_service": [
-            Replacement(regex_in_dockerfile="%%rb_ver%%", package_name=ruby),
+            Replacement(regex_in_build_description="%%rb_ver%%", package_name=ruby),
             Replacement(
-                regex_in_dockerfile="%%rb_maj%%",
+                regex_in_build_description="%%rb_maj%%",
                 package_name=ruby,
                 parse_version="minor",
             ),
@@ -1122,7 +1124,9 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
         "replacements_via_service": [
-            Replacement(regex_in_dockerfile=golang_version_regex, package_name=go)
+            Replacement(
+                regex_in_build_description=golang_version_regex, package_name=go
+            )
         ],
         "package_list": [
             Package(
@@ -1274,7 +1278,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         extra_files=_389DS_FILES,
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%389ds_version%%",
+                regex_in_build_description="%%389ds_version%%",
                 package_name="389-ds",
                 parse_version="minor",
             )
@@ -1352,7 +1356,7 @@ MARIADB_CONTAINERS = [
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%mariadb_version%%",
+                regex_in_build_description="%%mariadb_version%%",
                 package_name="mariadb",
                 parse_version="minor",
             )
@@ -1402,7 +1406,7 @@ MARIADB_CLIENT_CONTAINERS = [
         version="%%mariadb_version%%",
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%mariadb_version%%",
+                regex_in_build_description="%%mariadb_version%%",
                 package_name="mariadb-client",
                 parse_version="minor",
             )
@@ -1434,7 +1438,7 @@ RMT_CONTAINERS = [
         version="%%rmt_version%%",
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%rmt_version%%",
+                regex_in_build_description="%%rmt_version%%",
                 package_name="rmt-server",
                 parse_version="minor",
             )
@@ -1489,7 +1493,7 @@ POSTGRES_CONTAINERS = [
         },
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%pg_version%%",
+                regex_in_build_description="%%pg_version%%",
                 package_name=f"postgresql{ver}-server",
                 parse_version="minor",
             )
@@ -1524,7 +1528,7 @@ PROMETHEUS_CONTAINERS = [
         entrypoint=["/usr/bin/prometheus"],
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%prometheus_version%%",
+                regex_in_build_description="%%prometheus_version%%",
                 package_name=PROMETHEUS_PACKAGE_NAME,
                 parse_version="patch",
             )
@@ -1549,7 +1553,7 @@ ALERTMANAGER_CONTAINERS = [
         entrypoint=["/usr/bin/prometheus-alertmanager"],
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%alertmanager_version%%",
+                regex_in_build_description="%%alertmanager_version%%",
                 package_name=ALERTMANAGER_PACKAGE_NAME,
                 parse_version="patch",
             )
@@ -1584,7 +1588,7 @@ NGINX_CONTAINERS = [
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%nginx_version%%",
+                regex_in_build_description="%%nginx_version%%",
                 package_name="nginx",
                 parse_version="minor",
             )
@@ -1651,11 +1655,11 @@ RUST_CONTAINERS = [
         },
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%RUST_VERSION%%",
+                regex_in_build_description="%%RUST_VERSION%%",
                 package_name=f"rust{rust_version}",
             ),
             Replacement(
-                regex_in_dockerfile="%%CARGO_VERSION%%",
+                regex_in_build_description="%%CARGO_VERSION%%",
                 package_name=f"cargo{rust_version}",
             ),
         ],
@@ -1787,7 +1791,7 @@ PCP_CONTAINERS = [
         additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile=f"%%pcp_{ver}%%",
+                regex_in_build_description=f"%%pcp_{ver}%%",
                 package_name="pcp",
                 parse_version=ver,
             )
@@ -1837,7 +1841,7 @@ REGISTRY_CONTAINERS = [
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
-                regex_in_dockerfile="%%registry_version%%",
+                regex_in_build_description="%%registry_version%%",
                 package_name="distribution-registry",
                 parse_version="minor",
             )

@@ -1,6 +1,12 @@
+"""This module contains the Jinja2 templates used to generate the build
+descriptions.
+
+"""
+
 import jinja2
 
 
+#: Jinja2 template used to generate :file:`Dockerfile`
 DOCKERFILE_TEMPLATE = jinja2.Template(
     """# SPDX-License-Identifier: {{ image.license }}
 {% for tag in image.build_tags -%}
@@ -39,6 +45,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 """
 )
 
+#: Jinja2 template used to generate :file:`$pkg_name.kiwi`
 KIWI_TEMPLATE = jinja2.Template(
     """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: {{ image.license }} -->
@@ -98,6 +105,7 @@ KIWI_TEMPLATE = jinja2.Template(
 """
 )
 
+#: Jinja2 template used to generate :file:`_service`.
 SERVICE_TEMPLATE = jinja2.Template(
     """<services>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
@@ -105,7 +113,7 @@ SERVICE_TEMPLATE = jinja2.Template(
 {%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">{% if (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>
-    <param name="regex">{{ replacement.regex_in_dockerfile }}</param>
+    <param name="regex">{{ replacement.regex_in_build_description }}</param>
     <param name="package">{{ replacement.package_name }}</param>{% if replacement.parse_version %}
     <param name="parse-version">{{ replacement.parse_version }}</param>{% endif %}
   </service>{% endfor %}

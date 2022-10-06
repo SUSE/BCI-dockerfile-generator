@@ -86,11 +86,12 @@ jobs:
     needs: documentation
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
           name: build
           path: ./build
+
+      - run: touch ./build/.nojekyll
 
       - name: deploy to github pages
         uses: JamesIves/github-pages-deploy-action@v4
