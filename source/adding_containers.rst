@@ -87,8 +87,9 @@ your whole build description. For the PostgreSQL version we could for instance
 pick ``%%pg_version%%``. Then an instance of
 :py:class:`~bci_build.package.Replacement` needs to be added to the list
 :py:attr:`~bci_build.package.BaseContainerImage.replacements_via_service`, where
-the attribute :py:attr:`~bci_build.package.Replacement.regex_in_dockerfile` is
-set to the replacement string. Additionally the attribute
+the attribute
+:py:attr:`~bci_build.package.Replacement.regex_in_build_description` is set to
+the replacement string. Additionally the attribute
 :py:attr:`~bci_build.package.Replacement.package_name` has to be set to the
 **exact** name of the package which version we wish to extract. If only a part
 of the version is required, e.g. as with ``PG_VERSION`` where we only care about
@@ -107,7 +108,7 @@ Our PostgreSQL example would result in the following code:
        },
        replacements_via_service=[
            Replacement(
-               regex_in_dockerfile="%%pg_version%%",
+               regex_in_build_description="%%pg_version%%",
                package_name=f"postgresql14-server",
                parse_version="minor",
            )
