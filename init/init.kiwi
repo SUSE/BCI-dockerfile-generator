@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: bci/bci-init:%OS_VERSION_ID_SP% bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE% -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="init-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>SLE BCI %OS_VERSION_NO_DASH% Init Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.3">
+      <containerconfig
+          name="bci/bci-init"
+          tag="%OS_VERSION_ID_SP%"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
+        <labels>
+          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
+          <suse_label_helper:add_prefix prefix="com.suse.bci.init">
+            <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Init Container Image"/>
+            <label name="org.opencontainers.image.description" value="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman."/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+            <label name="usage" value="This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <subcommand execute="/usr/lib/systemd/systemd"/>
+      </containerconfig>
+    </type>
+    <version>15.3.0</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="image">
+    <package name="systemd"/>
+    <package name="gzip"/>
+  </packages>
+
+</image>

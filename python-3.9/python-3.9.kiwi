@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: bci/python:3.9 bci/python:3.9-%RELEASE% bci/python:3 -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="python-3.9-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>SLE BCI Python 3.9 Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.3">
+      <containerconfig
+          name="bci/python"
+          tag="3.9"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="3.9-%RELEASE%,3">
+        <labels>
+          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
+          <suse_label_helper:add_prefix prefix="com.suse.bci.python">
+            <label name="org.opencontainers.image.title" value="SLE BCI Python 3.9 Container Image"/>
+            <label name="org.opencontainers.image.description" value="Python 3.9 development environment based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.version" value="3.9"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/python:3.9-%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <environment>
+          <env name="PYTHON_VERSION" value="%%py39_ver%%"/>
+          <env name="PIP_VERSION" value="%%pip_ver%%"/>
+        </environment>
+
+      </containerconfig>
+    </type>
+    <version>15.3.0</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="image">
+    <package name="python39"/>
+    <package name="python39-pip"/>
+    <package name="curl"/>
+    <package name="git-core"/>
+  </packages>
+
+</image>

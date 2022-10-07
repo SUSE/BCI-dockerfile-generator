@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: bci/ruby:2.5 bci/ruby:2.5-%RELEASE% bci/ruby:2 -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="ruby-2.5-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>SLE BCI Ruby 2.5 Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.3">
+      <containerconfig
+          name="bci/ruby"
+          tag="2.5"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="2.5-%RELEASE%,2">
+        <labels>
+          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
+          <suse_label_helper:add_prefix prefix="com.suse.bci.ruby">
+            <label name="org.opencontainers.image.title" value="SLE BCI Ruby 2.5 Container Image"/>
+            <label name="org.opencontainers.image.description" value="Ruby 2.5 based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.version" value="2.5"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/ruby:2.5-%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <environment>
+          <env name="LANG" value="C.UTF-8"/>
+          <env name="RUBY_VERSION" value="%%rb_ver%%"/>
+          <env name="RUBY_MAJOR" value="%%rb_maj%%"/>
+        </environment>
+
+      </containerconfig>
+    </type>
+    <version>15.3.0</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="image">
+    <package name="ruby2.5"/>
+    <package name="ruby2.5-rubygem-bundler"/>
+    <package name="ruby2.5-devel"/>
+    <package name="util-linux"/>
+    <package name="curl"/>
+    <package name="git-core"/>
+    <package name="distribution-release"/>
+    <package name="gcc-c++"/>
+    <package name="sqlite3-devel"/>
+    <package name="make"/>
+    <package name="awk"/>
+    <package name="timezone"/>
+  </packages>
+
+</image>

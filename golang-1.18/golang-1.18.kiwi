@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: bci/golang:1.18 bci/golang:1.18-%RELEASE% -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="golang-1.18-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>SLE BCI Golang 1.18 Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.3">
+      <containerconfig
+          name="bci/golang"
+          tag="1.18"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="1.18-%RELEASE%">
+        <labels>
+          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
+          <suse_label_helper:add_prefix prefix="com.suse.bci.golang">
+            <label name="org.opencontainers.image.title" value="SLE BCI Golang 1.18 Container Image"/>
+            <label name="org.opencontainers.image.description" value="Golang 1.18 development environment based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.version" value="1.18"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/golang:1.18-%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <environment>
+          <env name="GOLANG_VERSION" value="%%golang_version%%"/>
+          <env name="GOPATH" value="/go"/>
+          <env name="PATH" value="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"/>
+        </environment>
+
+      </containerconfig>
+    </type>
+    <version>15.3.0</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="image">
+    <package name="go1.18"/>
+    <package name="distribution-release"/>
+    <package name="make"/>
+    <package name="git-core"/>
+  </packages>
+
+</image>
