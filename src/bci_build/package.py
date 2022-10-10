@@ -1581,6 +1581,47 @@ ALERTMANAGER_CONTAINERS = [
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
+with open(
+    os.path.join(os.path.dirname(__file__), "grafana", "run.sh")
+) as entrypoint:
+    _GRAFANA_ENTRYPOINT = entrypoint.read()
+
+GRAFANA_PACKAGE_NAME = "grafana"
+GRAFANA_CONTAINERS = [
+    ApplicationStackContainer(
+        package_name="grafana-image",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        name="grafana",
+        pretty_name="Grafana",
+        package_list=[GRAFANA_PACKAGE_NAME],
+        version="%%grafana_version%%",
+        version_in_uid=False,
+        entrypoint=["/run.sh"],
+        extra_files={ "run.sh": _GRAFANA_ENTRYPOINT },
+        env={
+            "GF_PATHS_DATA": "/var/lib/grafana",
+            "GF_PATHS_HOME": "/usr/share/grafana",
+            "GF_PATHS_LOGS": "/var/log/grafana",
+            "GF_PATHS_PLUGINS": "/var/lib/grafana/plugins",
+            "GF_PATHS_PROVISIONING": "/etc/grafana/provisioning"
+        },
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%grafana_version%%",
+                package_name=GRAFANA_PACKAGE_NAME,
+                parse_version="patch",
+            )
+        ],
+        volumes=["/var/lib/grafana"],
+        exposes_tcp=[3000],
+        custom_end=f"""COPY run.sh /run.sh
+            {DOCKERFILE_RUN} chmod +x /run.sh
+        """,
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
+
 _NGINX_FILES = {}
 for filename in (
     "docker-entrypoint.sh",
@@ -1912,6 +1953,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *POSTGRES_CONTAINERS,
         *PROMETHEUS_CONTAINERS,
         *ALERTMANAGER_CONTAINERS,
+        *GRAFANA_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
