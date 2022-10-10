@@ -1581,9 +1581,7 @@ ALERTMANAGER_CONTAINERS = [
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
-with open(
-    os.path.join(os.path.dirname(__file__), "grafana", "run.sh")
-) as entrypoint:
+with open(os.path.join(os.path.dirname(__file__), "grafana", "run.sh")) as entrypoint:
     _GRAFANA_ENTRYPOINT = entrypoint.read()
 
 GRAFANA_PACKAGE_NAME = "grafana"
@@ -1598,13 +1596,13 @@ GRAFANA_CONTAINERS = [
         version="%%grafana_version%%",
         version_in_uid=False,
         entrypoint=["/run.sh"],
-        extra_files={ "run.sh": _GRAFANA_ENTRYPOINT },
+        extra_files={"run.sh": _GRAFANA_ENTRYPOINT},
         env={
             "GF_PATHS_DATA": "/var/lib/grafana",
             "GF_PATHS_HOME": "/usr/share/grafana",
             "GF_PATHS_LOGS": "/var/log/grafana",
             "GF_PATHS_PLUGINS": "/var/lib/grafana/plugins",
-            "GF_PATHS_PROVISIONING": "/etc/grafana/provisioning"
+            "GF_PATHS_PROVISIONING": "/etc/grafana/provisioning",
         },
         replacements_via_service=[
             Replacement(
