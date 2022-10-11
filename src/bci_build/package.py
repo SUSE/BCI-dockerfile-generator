@@ -1626,7 +1626,7 @@ GRAFANA_CONTAINERS = [
         volumes=["/var/lib/grafana"],
         exposes_tcp=[3000],
         custom_end=f"""COPY run.sh /run.sh
-            {DOCKERFILE_RUN} chmod +x /run.sh
+{DOCKERFILE_RUN} chmod +x /run.sh
         """,
     )
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
