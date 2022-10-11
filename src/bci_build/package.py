@@ -1581,8 +1581,10 @@ ALERTMANAGER_CONTAINERS = [
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
-with open(os.path.join(os.path.dirname(__file__), "grafana", "run.sh")) as entrypoint:
-    _GRAFANA_ENTRYPOINT = entrypoint.read()
+GRAFANA_FILES = {}
+for filename in {"run.sh", "LICENSE"}:
+    with open(os.path.join(os.path.dirname(__file__), "grafana", filename)) as cursor:
+        GRAFANA_FILES[filename] = cursor.read()
 
 GRAFANA_PACKAGE_NAME = "grafana"
 GRAFANA_CONTAINERS = [
@@ -1592,11 +1594,12 @@ GRAFANA_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="grafana",
         pretty_name="Grafana",
+        license="Apache-2.0",
         package_list=[GRAFANA_PACKAGE_NAME],
         version="%%grafana_version%%",
         version_in_uid=False,
         entrypoint=["/run.sh"],
-        extra_files={"run.sh": _GRAFANA_ENTRYPOINT},
+        extra_files=GRAFANA_FILES,
         env={
             "GF_PATHS_DATA": "/var/lib/grafana",
             "GF_PATHS_HOME": "/usr/share/grafana",
