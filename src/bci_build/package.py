@@ -1161,7 +1161,7 @@ GOLANG_IMAGES = [
 ]
 
 
-def _get_node_kwargs(ver: Literal[12, 14, 16], os_version: OsVersion):
+def _get_node_kwargs(ver: Literal[14, 16], os_version: OsVersion):
     return {
         "name": "nodejs",
         "os_version": os_version,
@@ -1192,7 +1192,7 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
     )
     for ver, os_version in product((14, 16), ALL_OS_VERSIONS)
-] + [LanguageStackContainer(**_get_node_kwargs(12, OsVersion.SP3))]
+]
 
 
 def _get_openjdk_kwargs(
