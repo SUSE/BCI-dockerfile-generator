@@ -92,6 +92,8 @@ jobs:
           name: build
           path: ./build
 
+      - run: touch ./build/.nojekyll
+
       - name: deploy to github pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:

@@ -33,7 +33,9 @@ def test_service_with_replacement_kiwi():
                 **_BASE_KWARGS,
                 build_recipe_type=BuildType.KIWI,
                 replacements_via_service=[
-                    Replacement(regex_in_dockerfile="re", package_name="coreutils")
+                    Replacement(
+                        regex_in_build_description="re", package_name="coreutils"
+                    )
                 ]
             )
         )
@@ -56,9 +58,11 @@ def test_service_with_replacement_docker():
                 **_BASE_KWARGS,
                 build_recipe_type=BuildType.DOCKER,
                 replacements_via_service=[
-                    Replacement(regex_in_dockerfile="%%my_ver%%", package_name="sh"),
                     Replacement(
-                        regex_in_dockerfile="%%minor_ver%%",
+                        regex_in_build_description="%%my_ver%%", package_name="sh"
+                    ),
+                    Replacement(
+                        regex_in_build_description="%%minor_ver%%",
                         package_name="filesystem",
                         parse_version="minor",
                     ),
