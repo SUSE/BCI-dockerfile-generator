@@ -284,6 +284,9 @@ class BaseContainerImage(abc.ABC):
     #: label
     VENDOR: ClassVar[str] = "SUSE LLC"
 
+    #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
+    support_level: SupportLevel = SupportLevel.TECHPREVIEW
+
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
@@ -318,10 +321,6 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_version(self) -> Optional[str]:
         return "15.4" if self.os_version == OsVersion.SP4 else None
-
-    @property
-    def support_level(self) -> SupportLevel:
-        return SupportLevel.TECHPREVIEW
 
     @property
     def release_stage(self) -> ReleaseStage:
@@ -1002,7 +1001,9 @@ def _get_python_kwargs(
 
 PYTHON_3_6_CONTAINERS = (
     LanguageStackContainer(
-        **_get_python_kwargs("3.6", os_version), package_name=package_name
+        **_get_python_kwargs("3.6", os_version),
+        package_name=package_name,
+        support_level=SupportLevel.L3,
     )
     for (os_version, package_name) in (
         (OsVersion.SP3, "python-3.6"),
@@ -1029,6 +1030,7 @@ PYTHON_3_9_TW = LanguageStackContainer(
 
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
+    support_level=SupportLevel.L3,
     is_latest=True,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
@@ -1095,7 +1097,10 @@ RUBY_CONTAINERS = [
     LanguageStackContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP3),
     ),
-    LanguageStackContainer(**_get_ruby_kwargs("2.5", OsVersion.SP4)),
+    LanguageStackContainer(
+        **_get_ruby_kwargs("2.5", OsVersion.SP4),
+        support_level=SupportLevel.L3,
+    ),
     LanguageStackContainer(**_get_ruby_kwargs("3.1", OsVersion.TUMBLEWEED)),
 ]
 
@@ -1145,7 +1150,9 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
 
 
 GOLANG_IMAGES = [
-    LanguageStackContainer(**_get_golang_kwargs(ver, os_version))
+    LanguageStackContainer(
+        **_get_golang_kwargs(ver, os_version), support_level=SupportLevel.L3
+    )
     for ver, os_version in product(_GOLANG_VERSIONS, ALL_OS_VERSIONS)
 ]
 
@@ -1177,7 +1184,9 @@ def _get_node_kwargs(ver: Literal[12, 14, 16], os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
-    LanguageStackContainer(**_get_node_kwargs(ver, os_version))
+    LanguageStackContainer(
+        **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
+    )
     for ver, os_version in product((14, 16), ALL_OS_VERSIONS)
 ] + [LanguageStackContainer(**_get_node_kwargs(12, OsVersion.SP3))]
 
@@ -1234,14 +1243,17 @@ def _get_openjdk_kwargs(
 
 OPENJDK_CONTAINERS = (
     [
-        LanguageStackContainer(**_get_openjdk_kwargs(os_version, devel, 11))
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
+        )
         for os_version, devel in product(
             (OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
         )
     ]
     + [
         LanguageStackContainer(
-            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17)
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
+            support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
             (OsVersion.SP4, OsVersion.TUMBLEWEED), (True, False)
@@ -1310,6 +1322,7 @@ def init_container_kwargs(os_version: OsVersion):
     kwargs = {
         "name": "init",
         "os_version": os_version,
+        "support_level": SupportLevel.L3,
         "custom_description": "Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
         "pretty_name": "%OS_VERSION_NO_DASH% Init",
@@ -1633,6 +1646,7 @@ RUST_CONTAINERS = [
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
+        support_level=SupportLevel.L3,
         is_latest=(
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
@@ -1680,6 +1694,7 @@ MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
         os_version=os_version,
+        support_level=SupportLevel.L3,
         package_name=package_name,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="%OS_VERSION_NO_DASH% Micro",
@@ -1713,6 +1728,7 @@ MINIMAL_CONTAINERS = [
         name="minimal",
         from_image=f"bci/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
+        support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name=package_name,
         build_recipe_type=BuildType.KIWI,
@@ -1743,6 +1759,7 @@ BUSYBOX_CONTAINERS = [
         name="busybox",
         from_image=None,
         os_version=os_version,
+        support_level=SupportLevel.L3,
         pretty_name="%OS_VERSION_NO_DASH% Busybox",
         package_name="busybox-image",
         is_latest=True,
