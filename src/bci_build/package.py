@@ -1020,6 +1020,7 @@ PYTHON_3_8_TW = LanguageStackContainer(
 )
 PYTHON_3_9_SP3 = LanguageStackContainer(
     package_name="python-3.9",
+    support_level=SupportLevel.L3,
     is_latest=False,
     **_get_python_kwargs("3.9", OsVersion.SP3),
 )
