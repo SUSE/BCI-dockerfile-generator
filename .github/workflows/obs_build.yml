@@ -74,7 +74,12 @@ jobs:
 
       - name: commit the changes to a test branch and create a staging project on OBS
         run: |
-          poetry run ./scratch-build-bot.py --os-version ${{ matrix.os_version }} -vvvv scratch_build | tee info
+          poetry run ./scratch-build-bot.py \
+              --os-version ${{ matrix.os_version }} \
+              -vvvv \
+              scratch_build \
+                --commit-message='Test build for #${{ github.event.pull_request.number }}' \
+            | tee info
           if grep -q "No changes" info; then
               echo "no_change=true" >> $GITHUB_ENV
           else
