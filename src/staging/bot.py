@@ -586,8 +586,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             # no changes => nothing to do & bail
             # note: diff only checks for changes to *existing* packages, but not
             # if anything new got added => need to check if the repo is dirty
-            # for that (= is there any output with `git status`)
-            if not worktree.head.commit.diff() and not worktree.is_dirty():
+            # for that (= is there any output with `git status`) or there any
+            # untracked files
+            if (
+                not worktree.head.commit.diff()
+                and not worktree.is_dirty()
+                and not worktree.untracked_files
+            ):
                 LOGGER.info("Writing all build recipes resulted in no changes")
                 return None
 
