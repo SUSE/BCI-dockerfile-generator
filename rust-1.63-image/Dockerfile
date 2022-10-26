@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/rust:1.63
-#!BuildTag: bci/rust:latest
 #!BuildTag: bci/rust:1.63-%RELEASE%
 #!BuildVersion: 15.4
 FROM suse/sle15:15.4
@@ -17,7 +16,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opensuse.reference="registry.suse.com/bci/rust:1.63-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.image-type="sle-bci"
