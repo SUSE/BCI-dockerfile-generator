@@ -89,8 +89,18 @@ if __name__ == "__main__":
     subparsers = parser.add_subparsers(dest="action")
     subparsers.add_parser("rebuild", help="Force rebuild the BCI test project")
     subparsers.add_parser("create_project", help="Create the staging project on OBS")
-    subparsers.add_parser(
+    cleanup_parser = subparsers.add_parser(
         "cleanup", help="Remove the branch in git and the staging project in OBS"
+    )
+    cleanup_parser.add_argument(
+        "--no-cleanup-branch",
+        help="Don't delete the local & remote branch.",
+        action="store_true",
+    )
+    cleanup_parser.add_argument(
+        "--no-cleanup-project",
+        help="Don't delete the staging project on OBS.",
+        action="store_true",
     )
     subparsers.add_parser(
         "query_build_result",
@@ -191,7 +201,10 @@ if __name__ == "__main__":
             coro = _scratch()
 
         elif action == "cleanup":
-            coro = bot.cleanup_branch_and_project()
+            coro = bot.remote_cleanup(
+                branches=not args.no_cleanup_branch,
+                obs_project=not args.no_cleanup_project,
+            )
 
         elif action == "wait":
 
