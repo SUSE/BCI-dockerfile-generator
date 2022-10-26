@@ -28,7 +28,7 @@
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/golang:1.18-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.supportlevel" value="l3"/>
             <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="released"/>
