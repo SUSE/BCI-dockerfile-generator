@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 import asyncio
-from dataclasses import dataclass, field
 import logging
-from typing import List, Literal, Optional
+from dataclasses import dataclass
+from dataclasses import field
+from typing import List
+from typing import Literal
+from typing import Optional
 
-from bci_build.package import (
-    ALL_CONTAINER_IMAGE_NAMES,
-    ALL_OS_VERSIONS,
-    SORTED_CONTAINER_IMAGE_NAMES,
-    BaseContainerImage,
-    OsVersion,
-)
-from obs_package_update import Updater, Package
+from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
+from bci_build.package import ALL_OS_VERSIONS
+from bci_build.package import BaseContainerImage
+from bci_build.package import OsVersion
+from bci_build.package import SORTED_CONTAINER_IMAGE_NAMES
+from obs_package_update import Package
+from obs_package_update import Updater
 
 
 LOGGER = logging.getLogger(__name__)

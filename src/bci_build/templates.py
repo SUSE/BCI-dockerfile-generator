@@ -2,7 +2,6 @@
 descriptions.
 
 """
-
 import jinja2
 
 

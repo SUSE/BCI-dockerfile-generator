@@ -1,12 +1,10 @@
 import pytest
-from staging.build_result import (
-    Arch,
-    PackageBuildResult,
-    PackageStatusCode,
-    RepositoryBuildResult,
-    is_build_failed,
-    render_as_markdown,
-)
+from staging.build_result import Arch
+from staging.build_result import is_build_failed
+from staging.build_result import PackageBuildResult
+from staging.build_result import PackageStatusCode
+from staging.build_result import render_as_markdown
+from staging.build_result import RepositoryBuildResult
 
 
 def test_from_resultlist():

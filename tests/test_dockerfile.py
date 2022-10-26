@@ -1,4 +1,5 @@
-from bci_build.package import LanguageStackContainer, OsVersion
+from bci_build.package import LanguageStackContainer
+from bci_build.package import OsVersion
 from bci_build.templates import DOCKERFILE_TEMPLATE
 
 

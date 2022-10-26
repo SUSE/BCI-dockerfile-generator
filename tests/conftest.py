@@ -1,15 +1,18 @@
-from typing import List, Tuple, Type, Generator, TypedDict, Union
-from _pytest.python import Metafunc
-from _pytest.fixtures import SubRequest
-import pytest
+from typing import Generator
+from typing import List
+from typing import Tuple
+from typing import Type
+from typing import TypedDict
+from typing import Union
 
-from bci_build.package import (
-    ApplicationStackContainer,
-    BaseContainerImage,
-    LanguageStackContainer,
-    OsContainer,
-    OsVersion,
-)
+import pytest
+from _pytest.fixtures import SubRequest
+from _pytest.python import Metafunc
+from bci_build.package import ApplicationStackContainer
+from bci_build.package import BaseContainerImage
+from bci_build.package import LanguageStackContainer
+from bci_build.package import OsContainer
+from bci_build.package import OsVersion
 
 
 BCI_CLASSES = [OsContainer, LanguageStackContainer, ApplicationStackContainer]

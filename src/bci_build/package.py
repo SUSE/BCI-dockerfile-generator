@@ -4,15 +4,24 @@ from __future__ import annotations
 import abc
 import asyncio
 import datetime
-from dataclasses import dataclass, field
-from itertools import product
 import enum
 import os
-from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union, overload
+from dataclasses import dataclass
+from dataclasses import field
+from itertools import product
+from typing import Callable
+from typing import ClassVar
+from typing import Dict
+from typing import List
+from typing import Literal
+from typing import Optional
+from typing import overload
+from typing import Union
 
 import aiofiles
-
-from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
+from bci_build.templates import DOCKERFILE_TEMPLATE
+from bci_build.templates import KIWI_TEMPLATE
+from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
 
 
