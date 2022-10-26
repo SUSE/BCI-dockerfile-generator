@@ -17,7 +17,7 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Creating packages on OBS" href="creating_packages.html" />
+    <link rel="prev" title="Staging Bot" href="staging_bot.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -644,6 +644,11 @@ container image and also added to the
 <dd><p>openSUSE Tumbleweed</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="bci_build.package.OsVersion.parse">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></span></span><a class="headerlink" href="#bci_build.package.OsVersion.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="bci_build.package.OsVersion.pretty_print">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pretty_print</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#bci_build.package.OsVersion.pretty_print" title="Permalink to this definition">¶</a></dt>
@@ -801,6 +806,11 @@ the new package files and return the list of files that were added.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="bci_build.update.get_bci_project_name">
+<span class="sig-prename descclassname"><span class="pre">bci_build.update.</span></span><span class="sig-name descname"><span class="pre">get_bci_project_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">build_service_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'obs'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ibs'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'obs'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#bci_build.update.get_bci_project_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="bci_build.update.update_package">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bci_build.update.</span></span><span class="sig-name descname"><span class="pre">update_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bci</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><span class="pre">BaseContainerImage</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_prj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">submit_package</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_no_change</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">build_service_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'obs'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ibs'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'obs'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bci_build.update.update_package" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the package of this BCI image on OBS or IBS (which one is chosen
@@ -827,21 +837,457 @@ during the update.</p>
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f00ec438040&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600b58040&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f00ec43c040&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600b60040&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f00ec38e020&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600cadea0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
+
+</section>
+<section id="module-staging.bot">
+<span id="bot-module"></span><h2><a class="reference internal" href="#module-staging.bot" title="staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bot</span></code></a> module<a class="headerlink" href="#module-staging.bot" title="Permalink to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="staging.bot.OSC_PASSWORD_ENVVAR_NAME">
+<span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">OSC_PASSWORD_ENVVAR_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'OSC_PASSWORD'</span></em><a class="headerlink" href="#staging.bot.OSC_PASSWORD_ENVVAR_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>environment variable from which the password of the bot’s user is taken</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="staging.bot.OSC_USER_ENVVAR_NAME">
+<span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">OSC_USER_ENVVAR_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'OSC_USER'</span></em><a class="headerlink" href="#staging.bot.OSC_USER_ENVVAR_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>environment variable name from which the osc username for the bot is read</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.bot.StagingBot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">StagingBot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_version:</span> <span class="pre">~bci_build.package.OsVersion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">osc_username:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repositories:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_packages:</span> <span class="pre">~typing.Optional[list[str]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_osc_conf_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_xdg_state_home_dir:</span> <span class="pre">~typing.Optional[~tempfile.TemporaryDirectory]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_run_cmd:</span> <span class="pre">~obs_package_update.util.RunCommand</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.bot.StagingBot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bot that creates a staging project for the BCI images in the Open Build
+Service via the git scm bridge.</p>
+<p>This bot creates a new worktree based on the “deployment branch” (see
+<a class="reference internal" href="#staging.bot.StagingBot.deployment_branch_name" title="staging.bot.StagingBot.deployment_branch_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">deployment_branch_name</span></code></a>) and writes all build recipes into it. If
+this results in a change, then the changes are committed and pushed to
+github.</p>
+<p>A new staging project with the name <a class="reference internal" href="#staging.bot.StagingBot.project_name" title="staging.bot.StagingBot.project_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">project_name</span></code></a> is then created
+where all packages that were <strong>changed</strong> are inserted via the scm bridge.</p>
+<p>The bot needs to know the name of the user as whom it should act. The
+username has to be set via the attribute <a class="reference internal" href="#staging.bot.StagingBot.osc_username" title="staging.bot.StagingBot.osc_username"><code class="xref py py-attr docutils literal notranslate"><span class="pre">osc_username</span></code></a>. This is
+unfortunately necessary, as <strong class="command">osc</strong> does not provide a
+straightforward way how to get the default username…</p>
+<p>Additionally, the bot stores its current settings in an environment file
+(with the file name <a class="reference internal" href="#staging.bot.StagingBot.DOTENV_FILE_NAME" title="staging.bot.StagingBot.DOTENV_FILE_NAME"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DOTENV_FILE_NAME</span></code></a>), which can be either
+sourced directly in bash or used to create an instance of the bot via
+<a class="reference internal" href="#staging.bot.StagingBot.from_env_file" title="staging.bot.StagingBot.from_env_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">StagingBot.from_env_file()</span></code></a>.</p>
+<p>The bot supports running all actions as a user that is not configured in
+<strong class="command">osc</strong>’s configuration file. All you have to do is to set the
+environment variable <a class="reference internal" href="#staging.bot.OSC_PASSWORD_ENVVAR_NAME" title="staging.bot.OSC_PASSWORD_ENVVAR_NAME"><code class="xref py py-const docutils literal notranslate"><span class="pre">OSC_PASSWORD_ENVVAR_NAME</span></code></a> to the password of
+the user that is going to be used. The <a class="reference internal" href="#staging.bot.StagingBot.setup" title="staging.bot.StagingBot.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code></a> function will then
+create a temporary configuration file for <strong class="command">osc</strong> and also set
+<code class="docutils literal notranslate"><span class="pre">XDG_STATE_HOME</span></code> to a temporary directory so that your local osc cookiejar
+is not modified. Both files are cleaned up via <a class="reference internal" href="#staging.bot.StagingBot.teardown" title="staging.bot.StagingBot.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teardown()</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.DOTENV_FILE_NAME">
+<span class="sig-name descname"><span class="pre">DOTENV_FILE_NAME</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.10)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'test-build.env'</span></em><a class="headerlink" href="#staging.bot.StagingBot.DOTENV_FILE_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>filename of the environment file used to store the bot’s settings</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.MAX_WAIT_TIME_SEC">
+<span class="sig-name descname"><span class="pre">MAX_WAIT_TIME_SEC</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.10)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">21600</span></em><a class="headerlink" href="#staging.bot.StagingBot.MAX_WAIT_TIME_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum time to wait for a build to finish.
+github actions will run for 6h at most, no point in waiting longer</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.bcis">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bcis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.10)"><span class="pre">Generator</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><span class="pre">BaseContainerImage</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#staging.bot.StagingBot.bcis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator for creating an iterable yielding all
+<a class="reference internal" href="#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a> that are in the bot’s
+staging project.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.branch_name">
+<span class="sig-name descname"><span class="pre">branch_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#staging.bot.StagingBot.branch_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the branch to which the changes are pushed. If none is provided,
+then <a class="reference internal" href="#staging.bot.StagingBot.deployment_branch_name" title="staging.bot.StagingBot.deployment_branch_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">deployment_branch_name</span></code></a> is used with a few random
+ASCII characters appended.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.cleanup_branch_and_project">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cleanup_branch_and_project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.cleanup_branch_and_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the branch with the test commit locally and on the remote and
+removes the staging project.</p>
+<p>All performed actions are permitted to fail without raising an exception
+to ensure that a partially setup test run is cleaned up as much as
+possible.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.deployment_branch_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deployment_branch_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.deployment_branch_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the branch for this <a class="reference internal" href="#staging.bot.StagingBot.os_version" title="staging.bot.StagingBot.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a>
+where the build recipes are checked out by default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.fetch_build_results">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_build_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.RepositoryBuildResult" title="staging.build_result.RepositoryBuildResult"><span class="pre">staging.build_result.RepositoryBuildResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#staging.bot.StagingBot.fetch_build_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current build results of the staging project.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.force_rebuild">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">force_rebuild</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.force_rebuild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all binaries of the project on OBS and force rebuilds everything.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.from_env_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_env_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#staging.bot.StagingBot" title="staging.bot.StagingBot"><span class="pre">StagingBot</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.from_env_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.from_github_comment">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_github_comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">osc_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#staging.bot.StagingBot" title="staging.bot.StagingBot"><span class="pre">StagingBot</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.from_github_comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.os_version">
+<span class="sig-name descname"><span class="pre">os_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.os_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The operating system for which this instance has been created</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.osc_username">
+<span class="sig-name descname"><span class="pre">osc_username</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#staging.bot.StagingBot.osc_username" title="Permalink to this definition">¶</a></dt>
+<dd><p>username of the user that will be used to perform the actions by the bot.</p>
+<p>This value must be provided, otherwise the post initialization function
+raises an exception.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.package_names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">package_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.package_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the packages in the staging project or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the
+staging project has not been setup yet.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.project_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.project_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the staging project on OBS.</p>
+<p>It is constructed as follows:
+<code class="docutils literal notranslate"><span class="pre">home:$OSC_USER:BCI:Staging:$OS_VER:$BRANCH</span></code> where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OSC_USER</span></code>: <a class="reference internal" href="#staging.bot.StagingBot.osc_username" title="staging.bot.StagingBot.osc_username"><code class="xref py py-attr docutils literal notranslate"><span class="pre">osc_username</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OS_VER</span></code>: <a class="reference internal" href="#staging.bot.StagingBot.os_version" title="staging.bot.StagingBot.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BRANCH</span></code>: <a class="reference internal" href="#staging.bot.StagingBot.branch_name" title="staging.bot.StagingBot.branch_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">branch_name</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.project_url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.project_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL to the staging project.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.repositories">
+<span class="sig-name descname"><span class="pre">repositories</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#staging.bot.StagingBot.repositories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.scratch_build">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scratch_build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.scratch_build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.setup">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.teardown">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">teardown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.teardown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Local cleanup after the bot (nothing on OBS is removed and the git
+repository itself is left untouched).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.wait_for_build_to_finish">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait_for_build_to_finish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout_sec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.RepositoryBuildResult" title="staging.build_result.RepositoryBuildResult"><span class="pre">staging.build_result.RepositoryBuildResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#staging.bot.StagingBot.wait_for_build_to_finish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blocks until all builds in the staging project have finished and the
+repositories are no longer dirty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout_sec</strong> – Total time in seconds to block. Defaults to
+<a class="reference internal" href="#staging.bot.StagingBot.MAX_WAIT_TIME_SEC" title="staging.bot.StagingBot.MAX_WAIT_TIME_SEC"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MAX_WAIT_TIME_SEC</span></code></a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.TimeoutError" title="(in Python v3.10)"><strong>asyncio.TimeoutError</strong></a> – when build takes longer than the
+    specified timeout</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.10)"><strong>RuntimeError</strong></a> – when the staging project has no build
+    results (this is most likely an issue with OBS)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The last state of all packages in the staging project after the
+builds finished</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.write_all_build_recipes_to_branch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_all_build_recipes_to_branch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commit_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.write_all_build_recipes_to_branch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a worktree for the branch based on the deployment branch of
+this <a class="reference internal" href="#staging.bot.StagingBot.os_version" title="staging.bot.StagingBot.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a>, writes all image build recipes
+into it, commits and then pushes the changes. Afterwards the worktree is
+removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The hash of the commit including all changes by the writing the
+build recipes into the worktree. If no changes were made, then
+<code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.write_all_image_build_recipes">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_all_image_build_recipes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_prj_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.write_all_image_build_recipes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.write_env_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_env_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#staging.bot.StagingBot.write_env_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.write_pkg_configs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_pkg_configs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.write_pkg_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write all package configurations in the staging project for every
+package in <a class="reference internal" href="#staging.bot.StagingBot.package_names" title="staging.bot.StagingBot.package_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_names</span></code></a>.</p>
+<p>Each package is setup using the <cite>scmsync</cite> element to track the
+respective subdirectory in the branch <a class="reference internal" href="#staging.bot.StagingBot.branch_name" title="staging.bot.StagingBot.branch_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">branch_name</span></code></a>.</p>
+<p>Note: if no packages have been set yet, then this function does <strong>nothing</strong>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.write_test_project_configs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_test_project_configs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.write_test_project_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit the <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> and <code class="docutils literal notranslate"><span class="pre">meta</span></code> to the test project on OBS.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> is taken directly from the development project on OBS
+(<code class="docutils literal notranslate"><span class="pre">devel:BCI:*</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">meta</span></code> has to be modified slightly:</p>
+<ul class="simple">
+<li><p>we remove the <code class="docutils literal notranslate"><span class="pre">helmcharts</span></code> repository (we don’t create anything for
+that repo, so not worth creating it)</p></li>
+<li><p>change the path from <code class="docutils literal notranslate"><span class="pre">devel:BCI:*</span></code> to the staging project name</p></li>
+<li><p>add the bot user as the maintainer (otherwise you can’t do anything in
+the project anymore…)</p></li>
+</ul>
+<p>Then we send the <code class="docutils literal notranslate"><span class="pre">meta</span></code> and then the <code class="docutils literal notranslate"><span class="pre">prjconf</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-staging.build_result">
+<span id="build-result-module"></span><h2><a class="reference internal" href="#module-staging.build_result" title="staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">build_result</span></code></a> module<a class="headerlink" href="#module-staging.build_result" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.build_result.Arch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">Arch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.build_result.Arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Architectures of packages on OBS</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.Arch.AARCH64">
+<span class="sig-name descname"><span class="pre">AARCH64</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'aarch64'</span></em><a class="headerlink" href="#staging.build_result.Arch.AARCH64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.Arch.LOCAL">
+<span class="sig-name descname"><span class="pre">LOCAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'local'</span></em><a class="headerlink" href="#staging.build_result.Arch.LOCAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.Arch.PPC64LE">
+<span class="sig-name descname"><span class="pre">PPC64LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ppc64le'</span></em><a class="headerlink" href="#staging.build_result.Arch.PPC64LE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.Arch.S390X">
+<span class="sig-name descname"><span class="pre">S390X</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'s390x'</span></em><a class="headerlink" href="#staging.build_result.Arch.S390X" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.Arch.X86_64">
+<span class="sig-name descname"><span class="pre">X86_64</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'x86_64'</span></em><a class="headerlink" href="#staging.build_result.Arch.X86_64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.build_result.PackageBuildResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">PackageBuildResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#staging.build_result.PackageStatusCode" title="staging.build_result.PackageStatusCode"><span class="pre">PackageStatusCode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.build_result.PackageBuildResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>The build result of a single package.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageBuildResult.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#staging.build_result.PackageStatusCode" title="staging.build_result.PackageStatusCode"><span class="pre">PackageStatusCode</span></a></em><a class="headerlink" href="#staging.build_result.PackageBuildResult.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>build status of the package</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageBuildResult.detail_message">
+<span class="sig-name descname"><span class="pre">detail_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#staging.build_result.PackageBuildResult.detail_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>an optional message providing additional details, e.g. on which worker
+this package is being built or why it is not resolvable</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageBuildResult.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.build_result.PackageBuildResult.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The package name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">PackageStatusCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.build_result.PackageStatusCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Possible package states</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.BLOCKED">
+<span class="sig-name descname"><span class="pre">BLOCKED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'blocked'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.BLOCKED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.BUILDING">
+<span class="sig-name descname"><span class="pre">BUILDING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'building'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.BUILDING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.EXCLUDED">
+<span class="sig-name descname"><span class="pre">EXCLUDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'excluded'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.EXCLUDED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'failed'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.FINISHED">
+<span class="sig-name descname"><span class="pre">FINISHED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'finished'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.FINISHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.SCHEDULED">
+<span class="sig-name descname"><span class="pre">SCHEDULED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scheduled'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.SCHEDULED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.SIGNING">
+<span class="sig-name descname"><span class="pre">SIGNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'signing'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.SIGNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.SUCCEEDED">
+<span class="sig-name descname"><span class="pre">SUCCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'succeeded'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.SUCCEEDED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.UNRESOLVABLE">
+<span class="sig-name descname"><span class="pre">UNRESOLVABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unresolvable'</span></em><a class="headerlink" href="#staging.build_result.PackageStatusCode.UNRESOLVABLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.build_result.PackageStatusCode.pretty_print">
+<span class="sig-name descname"><span class="pre">pretty_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#staging.build_result.PackageStatusCode.pretty_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of this enum with an emoji visualizing the status.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">RepositoryBuildResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repository:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arch:</span> <span class="pre">~staging.build_result.Arch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages:</span> <span class="pre">list[staging.build_result.PackageBuildResult]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirty:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.build_result.RepositoryBuildResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>The build results of a repository for a specific architecture.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.arch">
+<span class="sig-name descname"><span class="pre">arch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#staging.build_result.Arch" title="staging.build_result.Arch"><span class="pre">Arch</span></a></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>repository architecture</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>status code (usually equals to <a class="reference internal" href="#staging.build_result.RepositoryBuildResult.state" title="staging.build_result.RepositoryBuildResult.state"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.dirty">
+<span class="sig-name descname"><span class="pre">dirty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.dirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a repository is dirty, then it is still processing build jobs and has
+not been fully published yet</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.from_resultlist">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_resultlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_api_reply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.RepositoryBuildResult" title="staging.build_result.RepositoryBuildResult"><span class="pre">staging.build_result.RepositoryBuildResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.from_resultlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of :py:class`RepositoryBuildResult` from the xml API reply
+received from OBS via <strong class="command">osc results --xml</strong>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.packages">
+<span class="sig-name descname"><span class="pre">packages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.PackageBuildResult" title="staging.build_result.PackageBuildResult"><span class="pre">staging.build_result.PackageBuildResult</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>state of all packages in this repository &amp; arch</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.project">
+<span class="sig-name descname"><span class="pre">project</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>name of the project to which this repository belongs</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.repository">
+<span class="sig-name descname"><span class="pre">repository</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>repository name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.build_result.RepositoryBuildResult.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.build_result.RepositoryBuildResult.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>repository status</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="staging.build_result.is_build_failed">
+<span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">is_build_failed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.RepositoryBuildResult" title="staging.build_result.RepositoryBuildResult"><span class="pre">staging.build_result.RepositoryBuildResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#staging.build_result.is_build_failed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if any package in the list of build results is either
+unresolvable or failed to build. The repositories must <strong>not</strong> be dirty,
+otherwise a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> is raised.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="staging.build_result.render_as_markdown">
+<span class="sig-prename descclassname"><span class="pre">staging.build_result.</span></span><span class="sig-name descname"><span class="pre">render_as_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#staging.build_result.RepositoryBuildResult" title="staging.build_result.RepositoryBuildResult"><span class="pre">staging.build_result.RepositoryBuildResult</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'https://build.opensuse.org/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#staging.build_result.render_as_markdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -867,10 +1313,13 @@ descriptions.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="staging_bot.html">Staging Bot</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bci_build.update"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">templates</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bot</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">build_result</span></code> module</a></li>
 </ul>
 </li>
 </ul>
@@ -879,7 +1328,7 @@ descriptions.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="creating_packages.html" title="previous chapter">Creating packages on OBS</a></li>
+      <li>Previous: <a href="staging_bot.html" title="previous chapter">Staging Bot</a></li>
   </ul></li>
 </ul>
 </div>

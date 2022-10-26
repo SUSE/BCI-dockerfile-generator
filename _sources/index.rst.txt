@@ -7,6 +7,8 @@
    adding_containers
    creating_packages
 
+   staging_bot
+
    api
 
 Indices and tables
