@@ -77,6 +77,8 @@ jobs:
           poetry run ./scratch-build-bot.py --os-version ${{ matrix.os_version }} -vvvv scratch_build | tee info
           if grep -q "No changes" info; then
               echo "no_change=true" >> $GITHUB_ENV
+          else
+              echo "DEPLOYMENT_COMMIT_HASH=$(cat info)" >> $GITHUB_ENV
           fi
           cat test-build.env >> $GITHUB_ENV
         env:
@@ -92,7 +94,7 @@ jobs:
           # !!! if you change the body, then you must adjust StagingBot.from_github_comment() !!!
           body: |
             Created a staging project on OBS for ${{ matrix.os_version }}: [${{ env.PROJECT_NAME }}](${{ env.PROJECT_URL }})
-            Changes pushed to branch [`${{ env.BRANCH_NAME }}`](https://github.com/SUSE/BCI-dockerfile-generator/tree/${{ env.BRANCH_NAME }})
+            Changes pushed to branch [`${{ env.BRANCH_NAME }}`](https://github.com/SUSE/BCI-dockerfile-generator/tree/${{ env.BRANCH_NAME }}) as commit [`${{ env.DEPLOYMENT_COMMIT_HASH }}`](https://github.com/SUSE/BCI-dockerfile-generator/commit/${{ env.DEPLOYMENT_COMMIT_HASH }})
 
       - name: wait for the build to finish
         run: poetry run ./scratch-build-bot.py -vvvv wait
