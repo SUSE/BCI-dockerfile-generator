@@ -1,4 +1,7 @@
-from bci_build.package import BuildType, LanguageStackContainer, OsVersion, Replacement
+from bci_build.package import BuildType
+from bci_build.package import LanguageStackContainer
+from bci_build.package import OsVersion
+from bci_build.package import Replacement
 from bci_build.templates import SERVICE_TEMPLATE
 
 

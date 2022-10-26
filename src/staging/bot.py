@@ -29,6 +29,7 @@ from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import RepositoryBuildResult
+from staging.util import ensure_absent
 from staging.util import get_obs_project_url
 
 _CONFIG_T = Literal["meta", "prjconf"]
@@ -255,7 +256,7 @@ class StagingBot:
         async with aiofiles.open(StagingBot.DOTENV_FILE_NAME, "r") as dot_env:
             env_file = await dot_env.read()
 
-        branch, os_version, osc_username, _, _, repos, pkgs = [
+        branch, os_version, _, osc_username, _, _, _, repos, pkgs = [
             line.split("=")[1] for line in env_file.strip().splitlines()
         ]
         packages: list[str] | None = None if pkgs == "None" else pkgs.split(",")
@@ -296,7 +297,9 @@ aliases = obs
             await dot_env.write(
                 f"""{BRANCH_NAME_ENVVAR_NAME}={self.branch_name}
 {OS_VERSION_ENVVAR_NAME}={self.os_version}
+OS_VERSION_PRETTY={self.os_version.pretty_print}
 {OSC_USER_ENVVAR_NAME}={self.osc_username}
+DEPLOYMENT_BRANCH_NAME={self.deployment_branch_name}
 PROJECT_NAME={self.project_name}
 PROJECT_URL={self.project_url}
 REPOSITORIES={','.join(self.repositories)}
@@ -313,10 +316,10 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             await aiofiles.os.remove(self._osc_conf_file)
 
             assert self._xdg_state_home_dir is not None
-            await aiofiles.os.remove(
+            await ensure_absent(
                 os.path.join(self._xdg_state_home_dir.name, "osc", "cookiejar")
             )
-            await aiofiles.os.rmdir(os.path.join(self._xdg_state_home_dir.name, "osc"))
+            await ensure_absent(os.path.join(self._xdg_state_home_dir.name, "osc"))
             self._xdg_state_home_dir.cleanup()
 
     @property
@@ -442,13 +445,21 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             + f" {self.project_name}"
         )
 
-    async def cleanup_branch_and_project(self) -> None:
+    async def remote_cleanup(
+        self, branches: bool = True, obs_project: bool = True
+    ) -> None:
         """Deletes the branch with the test commit locally and on the remote and
         removes the staging project.
 
         All performed actions are permitted to fail without raising an exception
         to ensure that a partially setup test run is cleaned up as much as
         possible.
+
+        Args:
+            branches: if ``True``, removes the branch locally and on the remote
+                (defaults to ``True``)
+            obs_project: if ``True``, removes the staging project on OBS
+                (defaults to ``True``)
 
         """
 
@@ -460,13 +471,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 f"git push origin -d {self.branch_name}", raise_on_error=False
             )
 
-        await asyncio.gather(
-            remove_branch(),
-            self._run_cmd(
-                f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.project_name}",
-                raise_on_error=False,
-            ),
-        )
+        tasks = []
+        if branches:
+            tasks.append(remove_branch())
+        if obs_project:
+            tasks.append(
+                self._run_cmd(
+                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.project_name}",
+                    raise_on_error=False,
+                )
+            )
+
+        await asyncio.gather(*tasks)
 
     async def write_pkg_configs(self) -> None:
         """Write all package configurations in the staging project for every
@@ -584,7 +600,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 await run_in_worktree("git show -s --pretty=format:%H HEAD")
             ).stdout.strip()
             LOGGER.info("Created commit %s given the current state", commit)
-            await run_in_worktree("git push origin HEAD")
+            await run_in_worktree("git push --force-with-lease origin HEAD")
 
         finally:
             await self._run_cmd(f"git worktree remove {self.branch_name}")
