@@ -837,19 +837,19 @@ during the update.</p>
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600b58040&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fc189ff4040&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600b60040&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fc189ffc100&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff600cadea0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fc18a1463b0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
@@ -923,16 +923,6 @@ then <a class="reference internal" href="#staging.bot.StagingBot.deployment_bran
 ASCII characters appended.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="staging.bot.StagingBot.cleanup_branch_and_project">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cleanup_branch_and_project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.cleanup_branch_and_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the branch with the test commit locally and on the remote and
-removes the staging project.</p>
-<p>All performed actions are permitted to fail without raising an exception
-to ensure that a partially setup test run is cleaned up as much as
-possible.</p>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="staging.bot.StagingBot.deployment_branch_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deployment_branch_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.deployment_branch_name" title="Permalink to this definition">¶</a></dt>
@@ -1000,6 +990,26 @@ staging project has not been setup yet.</p>
 <dt class="sig sig-object py" id="staging.bot.StagingBot.project_url">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#staging.bot.StagingBot.project_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>URL to the staging project.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.remote_cleanup">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remote_cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.remote_cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the branch with the test commit locally and on the remote and
+removes the staging project.</p>
+<p>All performed actions are permitted to fail without raising an exception
+to ensure that a partially setup test run is cleaned up as much as
+possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>branches</strong> – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, removes the branch locally and on the remote
+(defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+<li><p><strong>obs_project</strong> – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, removes the staging project on OBS
+(defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
