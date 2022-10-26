@@ -29,6 +29,7 @@ from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import RepositoryBuildResult
+from staging.util import ensure_absent
 from staging.util import get_obs_project_url
 
 _CONFIG_T = Literal["meta", "prjconf"]
@@ -313,10 +314,10 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             await aiofiles.os.remove(self._osc_conf_file)
 
             assert self._xdg_state_home_dir is not None
-            await aiofiles.os.remove(
+            await ensure_absent(
                 os.path.join(self._xdg_state_home_dir.name, "osc", "cookiejar")
             )
-            await aiofiles.os.rmdir(os.path.join(self._xdg_state_home_dir.name, "osc"))
+            await ensure_absent(os.path.join(self._xdg_state_home_dir.name, "osc"))
             self._xdg_state_home_dir.cleanup()
 
     @property
