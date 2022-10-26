@@ -84,6 +84,7 @@ if __name__ == "__main__":
             help="Optional commit message to be used instead of the default ('Test build')",
             nargs=1,
             type=str,
+            default=[""],
         )
 
     subparsers = parser.add_subparsers(dest="action")
@@ -181,9 +182,7 @@ if __name__ == "__main__":
             coro = bot.write_pkg_configs()
 
         elif action == "commit_state":
-            coro = bot.write_all_build_recipes_to_branch(
-                commit_msg="" if not args.commit_message else args.commit_message[0]
-            )
+            coro = bot.write_all_build_recipes_to_branch(args.commit_message[0])
 
         elif action == "query_build_result":
 
@@ -195,7 +194,7 @@ if __name__ == "__main__":
         elif action == "scratch_build":
 
             async def _scratch():
-                commit_or_none = await bot.scratch_build()
+                commit_or_none = await bot.scratch_build(args.commit_message[0])
                 return commit_or_none or "No changes"
 
             coro = _scratch()

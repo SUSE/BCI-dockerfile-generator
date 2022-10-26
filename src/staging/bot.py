@@ -646,9 +646,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         await self._run_cmd(f"{self._osc} rebuild --all {self.project_name}")
         return self._osc_fetch_results_cmd("--watch")
 
-    async def scratch_build(self) -> None | str:
+    async def scratch_build(self, commit_message: str = "") -> None | str:
         # no commit -> no changes -> no reason to build
-        if not (commit := await self.write_all_build_recipes_to_branch()):
+        if not (commit := await self.write_all_build_recipes_to_branch(commit_message)):
             return None
 
         self.package_names = self._get_changed_packages_by_commit(commit)
