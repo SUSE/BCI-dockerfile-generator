@@ -256,7 +256,7 @@ class StagingBot:
         async with aiofiles.open(StagingBot.DOTENV_FILE_NAME, "r") as dot_env:
             env_file = await dot_env.read()
 
-        branch, os_version, osc_username, _, _, repos, pkgs = [
+        branch, os_version, _, osc_username, _, _, _, repos, pkgs = [
             line.split("=")[1] for line in env_file.strip().splitlines()
         ]
         packages: list[str] | None = None if pkgs == "None" else pkgs.split(",")
@@ -297,7 +297,9 @@ aliases = obs
             await dot_env.write(
                 f"""{BRANCH_NAME_ENVVAR_NAME}={self.branch_name}
 {OS_VERSION_ENVVAR_NAME}={self.os_version}
+OS_VERSION_PRETTY={self.os_version.pretty_print}
 {OSC_USER_ENVVAR_NAME}={self.osc_username}
+DEPLOYMENT_BRANCH_NAME={self.deployment_branch_name}
 PROJECT_NAME={self.project_name}
 PROJECT_URL={self.project_url}
 REPOSITORIES={','.join(self.repositories)}
@@ -598,7 +600,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 await run_in_worktree("git show -s --pretty=format:%H HEAD")
             ).stdout.strip()
             LOGGER.info("Created commit %s given the current state", commit)
-            await run_in_worktree("git push origin HEAD")
+            await run_in_worktree("git push --force-with-lease origin HEAD")
 
         finally:
             await self._run_cmd(f"git worktree remove {self.branch_name}")
