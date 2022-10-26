@@ -16,6 +16,8 @@ from obs_package_update import Updater, Package
 
 LOGGER = logging.getLogger(__name__)
 
+OBS_TARGET_T = Literal["obs", "ibs"]
+
 
 @dataclass
 class BciUpdater(Updater):
@@ -23,6 +25,22 @@ class BciUpdater(Updater):
 
     async def add_files(self, destination: str) -> List[str]:
         return await self.bci.write_files_to_folder(destination)
+
+
+def get_bci_project_name(
+    os_version: OsVersion, build_service_target: OBS_TARGET_T = "obs"
+) -> str:
+    prj_suffix = (
+        os_version
+        if os_version == OsVersion.TUMBLEWEED
+        else "SLE-15-SP" + str(os_version)
+    )
+    if build_service_target == "obs":
+        return f"devel:BCI:{prj_suffix}"
+    else:
+        if os_version == OsVersion.TUMBLEWEED:
+            raise ValueError("A container image for Tumbleweed is not mirrored to IBS")
+        return f"SUSE:{prj_suffix}:Update:BCI"
 
 
 async def update_package(
@@ -56,22 +74,16 @@ async def update_package(
         "ibs",
     ), f"got an invalid {build_service_target=}, expected 'obs' or 'ibs'"
 
-    prj_suffix = (
-        bci.os_version
-        if bci.os_version == OsVersion.TUMBLEWEED
-        else "SLE-15-SP" + str(bci.os_version)
-    )
+    src_prj = get_bci_project_name(bci, build_service_target)
 
     updater = BciUpdater(bci=bci, logger=LOGGER)
 
     if build_service_target == "obs":
         updater.api_url = "https://api.opensuse.org"
-        src_prj = f"devel:BCI:{prj_suffix}"
     else:
         if bci.os_version == OsVersion.TUMBLEWEED:
             raise ValueError("A container image for Tumbleweed is not mirrored to IBS")
         updater.api_url = "https://api.suse.de"
-        src_prj = f"SUSE:{prj_suffix}:Update:BCI"
 
     source_package = Package(project=src_prj, package=bci.package_name)
     await updater.update_package(

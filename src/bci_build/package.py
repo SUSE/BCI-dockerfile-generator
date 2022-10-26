@@ -13,6 +13,7 @@ from typing import Callable, ClassVar, Dict, List, Literal, Optional, Union, ove
 import aiofiles
 
 from bci_build.templates import DOCKERFILE_TEMPLATE, KIWI_TEMPLATE, SERVICE_TEMPLATE
+from bci_build.util import write_to_file
 
 
 _BASH_SET = "set -euo pipefail"
@@ -100,6 +101,13 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
+
+    @staticmethod
+    def parse(val: str) -> OsVersion:
+        try:
+            return OsVersion(int(val))
+        except ValueError:
+            return OsVersion(val)
 
     def __str__(self) -> str:
         return str(self.value)
@@ -768,17 +776,8 @@ exit 0
         files = ["_service"]
         tasks = []
 
-        async def write_to_file(fname: str, contents: Union[str, bytes]) -> None:
-            if isinstance(contents, str):
-                async with aiofiles.open(os.path.join(dest, fname), "w") as f:
-                    await f.write(contents)
-            elif isinstance(contents, bytes):
-                async with aiofiles.open(os.path.join(dest, fname), "bw") as f:
-                    await f.write(contents)
-            else:
-                raise TypeError(
-                    f"Invalid type of contents: {type(contents)}, expected string or bytes"
-                )
+        async def write_file_to_dest(fname: str, contents: Union[str, bytes]) -> None:
+            await write_to_file(os.path.join(dest, fname), contents)
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
@@ -788,21 +787,23 @@ exit 0
             if dockerfile[-1] != "\n":
                 dockerfile += "\n"
 
-            tasks.append(asyncio.ensure_future(write_to_file(fname, dockerfile)))
+            tasks.append(asyncio.ensure_future(write_file_to_dest(fname, dockerfile)))
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
             fname = f"{self.package_name}.kiwi"
             tasks.append(
                 asyncio.ensure_future(
-                    write_to_file(fname, KIWI_TEMPLATE.render(image=self))
+                    write_file_to_dest(fname, KIWI_TEMPLATE.render(image=self))
                 )
             )
             files.append(fname)
 
             if self.config_sh:
                 tasks.append(
-                    asyncio.ensure_future(write_to_file("config.sh", self.config_sh))
+                    asyncio.ensure_future(
+                        write_file_to_dest("config.sh", self.config_sh)
+                    )
                 )
                 files.append("config.sh")
 
@@ -813,19 +814,21 @@ exit 0
 
         tasks.append(
             asyncio.ensure_future(
-                write_to_file("_service", SERVICE_TEMPLATE.render(image=self))
+                write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
             )
         )
 
         changes_file_name = self.package_name + ".changes"
         changes_file_dest = os.path.join(dest, changes_file_name)
         if not os.path.exists(changes_file_dest):
-            tasks.append(asyncio.ensure_future(write_to_file(changes_file_name, "")))
+            tasks.append(
+                asyncio.ensure_future(write_file_to_dest(changes_file_name, ""))
+            )
             files.append(changes_file_name)
 
         for fname, contents in self.extra_files.items():
             files.append(fname)
-            tasks.append(asyncio.ensure_future(write_to_file(fname, contents)))
+            tasks.append(asyncio.ensure_future(write_file_to_dest(fname, contents)))
 
         await asyncio.gather(*tasks)
 
@@ -1158,7 +1161,7 @@ GOLANG_IMAGES = [
 ]
 
 
-def _get_node_kwargs(ver: Literal[12, 14, 16], os_version: OsVersion):
+def _get_node_kwargs(ver: Literal[14, 16], os_version: OsVersion):
     return {
         "name": "nodejs",
         "os_version": os_version,
@@ -1189,7 +1192,7 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
     )
     for ver, os_version in product((14, 16), ALL_OS_VERSIONS)
-] + [LanguageStackContainer(**_get_node_kwargs(12, OsVersion.SP3))]
+]
 
 
 def _get_openjdk_kwargs(

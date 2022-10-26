@@ -1,0 +1,59 @@
+---
+name: Cleanup staging projects and branches
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-22.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os_version:
+          - 4
+          - 3
+          - Tumbleweed
+
+    steps:
+      # we need all branches for the build checks
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: |
+          . /etc/os-release
+          echo "deb http://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_$VERSION_ID/ /" | sudo tee /etc/apt/sources.list.d/openSUSE:Tools.list
+          curl -fsSL https://download.opensuse.org/repositories/openSUSE:Tools/xUbuntu_$VERSION_ID/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/openSUSE_Tools.gpg > /dev/null
+          sudo apt update
+          sudo apt install osc fish
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: find last comment made by the bot
+        uses: peter-evans/find-comment@v2
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: "Created a staging project on OBS for ${{ matrix.os_version }}: "
+          direction: last
+
+      - name: run the cleanup
+        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
+        shell: fish {0}
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"

@@ -1,0 +1,130 @@
+---
+name: OBS Scratch Build
+
+on:
+  pull_request:
+
+jobs:
+  obs-build:
+    name: build all images on OBS
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os_version:
+          - 4
+          - 3
+          - Tumbleweed
+
+    steps:
+      # we need all branches for the build checks
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: |
+          . /etc/os-release
+          echo "deb http://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_$VERSION_ID/ /" | sudo tee /etc/apt/sources.list.d/openSUSE:Tools.list
+          curl -fsSL https://download.opensuse.org/repositories/openSUSE:Tools/xUbuntu_$VERSION_ID/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/openSUSE_Tools.gpg > /dev/null
+          sudo apt update
+          sudo apt install osc fish
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: find the previous comment created by the bot
+        uses: peter-evans/find-comment@v2
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: "Created a staging project on OBS for ${{ matrix.os_version }}"
+          direction: last
+
+      - name: cleanup the previously created staging project & branch
+        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
+        shell: fish {0}
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+        if: steps.find_comment.outputs.comment-id != ''
+
+      - name: update the comment with the previous build explaining that it has been deleted
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          body: "⚠️⚠️ Project and Branch have been deleted ⚠️⚠️"
+          edit-mode: append
+        if: steps.find_comment.outputs.comment-id != ''
+
+      - name: configure git user
+        run: |
+          username="${{ github.actor }}"
+          full_name=$(curl https://api.github.com/users/$username 2>/dev/null|jq '.name'|sed 's|"||g')
+          git config user.name "$full_name"
+          git config user.email "$username@users.noreply.github.com"
+
+      - name: commit the changes to a test branch and create a staging project on OBS
+        run: |
+          poetry run ./scratch-build-bot.py --os-version ${{ matrix.os_version }} -vvvv scratch_build | tee info
+          if grep -q "No changes" info; then
+              echo "no_change=true" >> $GITHUB_ENV
+          fi
+          cat test-build.env >> $GITHUB_ENV
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+
+      - name: create a comment with a link to the staging project
+        if: env.no_change != 'true'
+        uses: peter-evans/create-or-update-comment@v2
+        id: create_comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          # !!! if you change the body, then you must adjust StagingBot.from_github_comment() !!!
+          body: |
+            Created a staging project on OBS for ${{ matrix.os_version }}: [${{ env.PROJECT_NAME }}](${{ env.PROJECT_URL }})
+            Changes pushed to branch [`${{ env.BRANCH_NAME }}`](https://github.com/SUSE/BCI-dockerfile-generator/tree/${{ env.BRANCH_NAME }})
+
+      - name: wait for the build to finish
+        run: poetry run ./scratch-build-bot.py -vvvv wait
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+        if: env.no_change != 'true'
+
+      - name: wait for the build to finish
+        run: |
+          echo "build_res<<EOF" >> $GITHUB_ENV
+          poetry run ./scratch-build-bot.py query_build_result >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        id: query_build_result
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+        if: env.no_change != 'true'
+
+      - name: report the finished build
+        if: env.no_change != 'true'
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ steps.create_comment.outputs.comment-id }}
+          body: ${{ env.build_res }}
+          edit-mode: append
+          reactions: rocket
+
+      - name: fail the job if the builds failed
+        run: poetry run ./scratch-build-bot.py get_build_quality
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+        if: env.no_change != 'true'
