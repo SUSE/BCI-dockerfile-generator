@@ -273,7 +273,9 @@ class BaseContainerImage(abc.ABC):
     os_version: OsVersion
 
     #: The container from which this one is derived. defaults to
-    #: ``suse/sle15:15.$SP`` when an empty string is used.
+    #: ``suse/sle15:15.$SP`` (for SLE) or ``opensuse/tumbleweed:latest`` (for
+    #: Tumbleweed) when an empty string is used.
+    #:
     #: When from image is ``None``, then this image will not be based on
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
