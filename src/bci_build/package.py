@@ -18,7 +18,6 @@ from typing import Optional
 from typing import overload
 from typing import Union
 
-import aiofiles
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
@@ -1068,7 +1067,11 @@ class OsContainer(BaseContainerImage):
         return f"{self.registry}/bci/bci-{self.name}:{self.version_label}"
 
 
-def _generate_disk_size_constraints(size_gb: int) -> str:
+def generate_disk_size_constraints(size_gb: int) -> str:
+    """Creates the contents of a :file:`_constraints` file for OBS to require
+    workers with at least ``size_gb`` GB of disk space.
+
+    """
     return f"""<constraints>
   <hardware>
     <disk>
@@ -1281,7 +1284,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(8)
+            "_constraints": generate_disk_size_constraints(8)
         },
     }
 
@@ -1355,7 +1358,7 @@ def _get_openjdk_kwargs(
         + ("" if os_version == OsVersion.SP3 else "-image"),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(6)
+            "_constraints": generate_disk_size_constraints(6)
         },
     }
 
@@ -1870,7 +1873,7 @@ RUST_CONTAINERS = [
         },
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(6)
+            "_constraints": generate_disk_size_constraints(6)
         },
         replacements_via_service=[
             Replacement(
