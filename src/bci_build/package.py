@@ -279,6 +279,12 @@ class BaseContainerImage(abc.ABC):
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
 
+    #: Architectures of this image.
+    #:
+    #: If supplied, then this image will be restricted to only build on the
+    #: supplied architectures. By default, there is no restriction
+    exclusive_arch: list[Arch] | None = None
+
     #: Determines whether this image will have the ``latest`` tag.
     is_latest: bool = False
 
@@ -383,6 +389,8 @@ class BaseContainerImage(abc.ABC):
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
+        if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
+            raise ValueError(f"{Arch.LOCAL} must not appear in {self.exclusive_arch=}")
         if self.config_sh_script and self.custom_end:
             raise ValueError(
                 "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."

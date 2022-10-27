@@ -7,7 +7,8 @@ import jinja2
 
 #: Jinja2 template used to generate :file:`Dockerfile`
 DOCKERFILE_TEMPLATE = jinja2.Template(
-    """# SPDX-License-Identifier: {{ image.license }}
+    """{% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}
+{% endif %}# SPDX-License-Identifier: {{ image.license }}
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
