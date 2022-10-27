@@ -11,13 +11,10 @@ jobs:
   format:
     name: Ensure code is properly formatted
     runs-on: ubuntu-latest
+    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - uses: Gr1N/setup-poetry@v7
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -31,24 +28,21 @@ jobs:
   ci:
     name: Run the unit tests
     runs-on: ubuntu-latest
+    container: ghcr.io/dcermak/bci-ci:latest
+
     strategy:
       fail-fast: false
-      matrix:
-        python_version: ["3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python_version }}
-      - uses: Gr1N/setup-poetry@v7
       - uses: actions/cache@v3
         with:
           path: ~/.tox
           key: tox-${{ matrix.python_version }}-${{ hashFiles('poetry.lock') }}
 
-      - run: poetry install
-      - run: poetry run pytest -vv
+      - run: |
+          poetry install
+          poetry run pytest -vv
 
       - run: |
           mkdir -p pkg_dest
@@ -60,20 +54,20 @@ jobs:
   documentation:
     name: Build the documentation
     runs-on: ubuntu-latest
+    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - uses: Gr1N/setup-poetry@v7
+      - name: install dependencies
+        run: poetry install
+
       - uses: actions/cache@v3
         with:
           path: ~/.tox
           key: tox-${{ hashFiles('poetry.lock') }}
 
-      - run: poetry install
-      - run: poetry run sphinx-build -M html source build -W
+      - name: build the documentation with sphinx
+        run: poetry run sphinx-build -M html source build -W
 
       - name: upload the build directory
         uses: actions/upload-artifact@v3
