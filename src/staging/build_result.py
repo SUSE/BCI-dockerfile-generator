@@ -3,21 +3,8 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from dataclasses import field
 
+from bci_build.package import Arch
 from staging.util import get_obs_project_url
-
-
-@enum.unique
-class Arch(enum.Enum):
-    """Architectures of packages on OBS"""
-
-    X86_64 = "x86_64"
-    AARCH64 = "aarch64"
-    PPC64LE = "ppc64le"
-    S390X = "s390x"
-    LOCAL = "local"
-
-    def __str__(self) -> str:
-        return self.value
 
 
 @enum.unique

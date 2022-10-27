@@ -33,6 +33,20 @@ DOCKERFILE_RUN = f"RUN {_BASH_SET};"
 
 
 @enum.unique
+class Arch(enum.Enum):
+    """Architectures of packages on OBS"""
+
+    X86_64 = "x86_64"
+    AARCH64 = "aarch64"
+    PPC64LE = "ppc64le"
+    S390X = "s390x"
+    LOCAL = "local"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@enum.unique
 class ReleaseStage(enum.Enum):
     """Values for the ``release-stage`` label of a BCI"""
 
