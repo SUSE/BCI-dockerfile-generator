@@ -223,6 +223,9 @@ def test_is_build_failed(build_res: list[RepositoryBuildResult], is_failed: bool
             ],
             """
 Build succeeded ✅
+<details>
+<summary>Build Results</summary>
+
 Repository `containerfile` in [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL) for `aarch64`: current state: published
 Build results:
 package name | status | build log
@@ -230,6 +233,8 @@ package name | status | build log
 init | ✅ succeeded | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/init/containerfile/aarch64)
 micro | ⛔ excluded | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/micro/containerfile/aarch64)
 
+
+</details>
 
 Build succeeded ✅
 """,
@@ -255,6 +260,9 @@ Build succeeded ✅
             ],
             """
 Still building 🛻
+<details>
+<summary>Build Results</summary>
+
 Repository `containerfile` in [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL) for `aarch64`: current state: building (repository is **dirty**)
 Build results:
 package name | status | detail | build log
@@ -262,6 +270,8 @@ package name | status | detail | build log
 init | ❌ failed | | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/init/containerfile/aarch64)
 micro | 🚫 unresolvable | Nothing provides gcc | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/micro/containerfile/aarch64)
 
+
+</details>
 
 Still building 🛻
 """,
@@ -286,6 +296,9 @@ Still building 🛻
             ],
             """
 Build failed ❌
+<details>
+<summary>Build Results</summary>
+
 Repository `containerfile` in [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL) for `aarch64`: current state: published
 Build results:
 package name | status | detail | build log
@@ -293,6 +306,8 @@ package name | status | detail | build log
 init | ❌ failed | | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/init/containerfile/aarch64)
 micro | 🚫 unresolvable | Nothing provides rust | [live log](https://build.opensuse.org/package/live_build_log/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-NBdNL/micro/containerfile/aarch64)
 
+
+</details>
 
 Build failed ❌
 """,

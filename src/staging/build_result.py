@@ -199,7 +199,12 @@ def render_as_markdown(
     except ValueError:
         build_res = "Still building 🛻"
 
-    res = "\n" + build_res + "\n"
+    res = f"""
+{build_res}
+<details>
+<summary>Build Results</summary>
+
+"""
 
     for repo_res in results:
         res += (
@@ -237,4 +242,11 @@ package name | status {'' if no_detail else '| detail '}| build log
                 )
         res += "\n"
 
-    return res + "\n" + build_res + "\n"
+    return (
+        res
+        + f"""
+</details>
+
+{build_res}
+"""
+    )
