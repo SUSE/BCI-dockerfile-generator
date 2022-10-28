@@ -74,6 +74,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.ImageType.APPLICATION">APPLICATION (bci_build.package.ImageType attribute)</a>
 </li>
+      <li><a href="api.html#bci_build.package.ImageProperties.application_container_build_tag_prefix">application_container_build_tag_prefix (bci_build.package.ImageProperties attribute)</a>
+</li>
       <li><a href="api.html#bci_build.package.ApplicationStackContainer">ApplicationStackContainer (class in bci_build.package)</a>
 </li>
       <li><a href="api.html#staging.build_result.Arch">Arch (class in staging.build_result)</a>
@@ -115,10 +117,10 @@
 </li>
       <li><a href="api.html#bci_build.update.BciUpdater">BciUpdater (class in bci_build.update)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.ReleaseStage.BETA">BETA (bci_build.package.ReleaseStage attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#staging.build_result.PackageStatusCode.BLOCKED">BLOCKED (staging.build_result.PackageStatusCode attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.PackageType.BOOTSTRAP">BOOTSTRAP (bci_build.package.PackageType attribute)</a>
@@ -126,6 +128,8 @@
       <li><a href="api.html#staging.bot.StagingBot.branch_name">branch_name (staging.bot.StagingBot attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.build_recipe_type">build_recipe_type (bci_build.package.BaseContainerImage attribute)</a>
+</li>
+      <li><a href="api.html#bci_build.package.ImageProperties.build_tag_prefix">build_tag_prefix (bci_build.package.ImageProperties attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.build_tags">build_tags (bci_build.package.BaseContainerImage property)</a>
 
@@ -188,6 +192,8 @@
       <li><a href="api.html#staging.build_result.PackageBuildResult.detail_message">detail_message (staging.build_result.PackageBuildResult attribute)</a>
 </li>
       <li><a href="api.html#staging.build_result.RepositoryBuildResult.dirty">dirty (staging.build_result.RepositoryBuildResult attribute)</a>
+</li>
+      <li><a href="api.html#bci_build.package.ImageProperties.distribution_base_name">distribution_base_name (bci_build.package.ImageProperties attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -289,6 +295,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#bci_build.package.ImageProperties">ImageProperties (class in bci_build.package)</a>
+</li>
       <li><a href="api.html#bci_build.package.ImageType">ImageType (class in bci_build.package)</a>
 </li>
       <li><a href="api.html#bci_build.package.init_container_kwargs">init_container_kwargs() (in module bci_build.package)</a>
@@ -296,6 +304,8 @@
       <li><a href="api.html#staging.build_result.is_build_failed">is_build_failed() (in module staging.build_result)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.is_latest">is_latest (bci_build.package.BaseContainerImage attribute)</a>
+</li>
+      <li><a href="api.html#bci_build.package.BaseContainerImage.is_opensuse">is_opensuse (bci_build.package.BaseContainerImage property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -327,10 +337,12 @@
 </li>
       <li><a href="api.html#bci_build.package.SupportLevel.L3">L3 (bci_build.package.SupportLevel attribute)</a>
 </li>
-      <li><a href="api.html#bci_build.package.BaseContainerImage.labelprefix">labelprefix (bci_build.package.BaseContainerImage property)</a>
+      <li><a href="api.html#bci_build.package.ImageProperties.label_prefix">label_prefix (bci_build.package.ImageProperties attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#bci_build.package.BaseContainerImage.labelprefix">labelprefix (bci_build.package.BaseContainerImage property)</a>
+</li>
       <li><a href="api.html#bci_build.package.LanguageStackContainer">LanguageStackContainer (class in bci_build.package)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.license">license (bci_build.package.BaseContainerImage attribute)</a>
@@ -344,7 +356,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.BaseContainerImage.maintainer">maintainer (bci_build.package.BaseContainerImage attribute)</a>
+
+      <ul>
+        <li><a href="api.html#bci_build.package.ImageProperties.maintainer">(bci_build.package.ImageProperties attribute)</a>
 </li>
+      </ul></li>
       <li><a href="api.html#staging.bot.StagingBot.MAX_WAIT_TIME_SEC">MAX_WAIT_TIME_SEC (staging.bot.StagingBot attribute)</a>
 </li>
       <li>
@@ -468,14 +484,20 @@
       </ul></li>
       <li><a href="api.html#bci_build.package.Replacement.regex_in_build_description">regex_in_build_description (bci_build.package.Replacement attribute)</a>
 </li>
+      <li><a href="api.html#bci_build.package.BaseContainerImage.registry">registry (bci_build.package.BaseContainerImage property)</a>
+
+      <ul>
+        <li><a href="api.html#bci_build.package.ImageProperties.registry">(bci_build.package.ImageProperties attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.release_stage">release_stage (bci_build.package.BaseContainerImage property)</a>
 </li>
       <li><a href="api.html#bci_build.package.ReleaseStage.RELEASED">RELEASED (bci_build.package.ReleaseStage attribute)</a>
 </li>
-      <li><a href="api.html#bci_build.package.RELEASED_OS_VERSIONS">RELEASED_OS_VERSIONS (in module bci_build.package)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#bci_build.package.RELEASED_OS_VERSIONS">RELEASED_OS_VERSIONS (in module bci_build.package)</a>
+</li>
       <li><a href="api.html#bci_build.package.ReleaseStage">ReleaseStage (class in bci_build.package)</a>
 </li>
       <li><a href="api.html#staging.bot.StagingBot.remote_cleanup">remote_cleanup() (staging.bot.StagingBot method)</a>
@@ -586,16 +608,24 @@
 </li>
       <li><a href="api.html#bci_build.update.update_package">update_package() (in module bci_build.update)</a>
 </li>
-      <li><a href="api.html#bci_build.package.BaseContainerImage.URL">URL (bci_build.package.BaseContainerImage attribute)</a>
+      <li><a href="api.html#bci_build.package.BaseContainerImage.url">url (bci_build.package.BaseContainerImage property)</a>
+
+      <ul>
+        <li><a href="api.html#bci_build.package.ImageProperties.url">(bci_build.package.ImageProperties attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#bci_build.package.BaseContainerImage.VENDOR">VENDOR (bci_build.package.BaseContainerImage attribute)</a>
+      <li><a href="api.html#bci_build.package.BaseContainerImage.vendor">vendor (bci_build.package.BaseContainerImage property)</a>
+
+      <ul>
+        <li><a href="api.html#bci_build.package.ImageProperties.vendor">(bci_build.package.ImageProperties attribute)</a>
 </li>
+      </ul></li>
       <li><a href="api.html#bci_build.package.LanguageStackContainer.version">version (bci_build.package.LanguageStackContainer attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.LanguageStackContainer.version_in_uid">version_in_uid (bci_build.package.LanguageStackContainer attribute)</a>
