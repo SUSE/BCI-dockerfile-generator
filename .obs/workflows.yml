@@ -1,0 +1,7 @@
+---
+workflow:
+  steps:
+    - branch_package:
+        source_project: home:dancermak:BCI:Tumbleweed
+        source_package: 389-ds-container
+        target_project: home:dancermak:BCI:Tumbleweed:Staging
