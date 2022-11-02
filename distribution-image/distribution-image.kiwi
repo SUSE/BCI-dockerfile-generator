@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-<!-- OBS-AddTag: suse/registry:%%registry_version%% suse/registry:latest suse/registry:%%registry_version%%-%RELEASE% -->
+<!-- OBS-AddTag: opensuse/registry:%%registry_version%% opensuse/registry:latest opensuse/registry:%%registry_version%%-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="registry-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
-    <author>SUSE LLC</author>
+    <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE OCI Container Registry using the OCI Image Specification (Distribution) Container Image</specification>
+    <specification>openSUSE Tumbleweed OCI Container Registry using the OCI Image Specification (Distribution) Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#latest">
+    <type image="docker" derived_from="obsrepositories:/opensuse/bci/bci-micro#latest">
       <containerconfig
-          name="suse/registry"
+          name="opensuse/registry"
           tag="%%registry_version%%"
-          maintainer="SUSE LLC (https://www.suse.com/)"
+          maintainer="openSUSE (https://www.opensuse.org/)"
           additionaltags="latest,%%registry_version%%-%RELEASE%">
         <labels>
           <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
-          <suse_label_helper:add_prefix prefix="com.suse.application.registry">
-            <label name="org.opencontainers.image.title" value="SLE OCI Container Registry using the OCI Image Specification (Distribution) Container Image"/>
+          <suse_label_helper:add_prefix prefix="org.opensuse.application.registry">
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed OCI Container Registry using the OCI Image Specification (Distribution) Container Image"/>
             <label name="org.opencontainers.image.description" value="Open Source Registry implementation using the OCI Distribution Specification"/>
             <label name="org.opencontainers.image.version" value="%%registry_version%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
-            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
-            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/suse/registry:%%registry_version%%-%RELEASE%"/>
+            <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
+            <label name="org.opencontainers.image.url" value="https://www.opensuse.org"/>
+            <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/registry:%%registry_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="techpreview"/>
-            <label name="com.suse.image-type" value="application"/>
-            <label name="com.suse.eula" value="sle-bci"/>
+
             <label name="com.suse.release-stage" value="released"/>
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
         </labels>
         <subcommand execute="serve">

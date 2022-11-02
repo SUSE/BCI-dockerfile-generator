@@ -1,27 +1,24 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: bci/ruby:3.1
-#!BuildTag: bci/ruby:latest
-#!BuildTag: bci/ruby:3.1-%RELEASE%
-#!BuildTag: bci/ruby:3
+#!BuildTag: opensuse/bci/ruby:3.1
+#!BuildTag: opensuse/bci/ruby:latest
+#!BuildTag: opensuse/bci/ruby:3.1-%RELEASE%
+#!BuildTag: opensuse/bci/ruby:3
 
 FROM opensuse/tumbleweed:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.ruby
-LABEL org.opencontainers.image.title="SLE BCI Ruby 3.1 Container Image"
-LABEL org.opencontainers.image.description="Ruby 3.1 based on the SLE Base Container Image."
+# labelprefix=org.opensuse.bci.ruby
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Ruby 3.1 Container Image"
+LABEL org.opencontainers.image.description="Ruby 3.1 based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="3.1"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/bci/ruby:3.1-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/ruby:3.1-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="sle-bci"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 

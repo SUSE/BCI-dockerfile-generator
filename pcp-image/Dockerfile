@@ -1,28 +1,25 @@
 # SPDX-License-Identifier: (LGPL-2.1+ AND GPL-2.0+)
-#!BuildTag: suse/pcp:%%pcp_patch%%
-#!BuildTag: suse/pcp:latest
-#!BuildTag: suse/pcp:%%pcp_patch%%-%RELEASE%
-#!BuildTag: suse/pcp:%%pcp_minor%%
-#!BuildTag: suse/pcp:%%pcp_major%%
+#!BuildTag: opensuse/pcp:%%pcp_patch%%
+#!BuildTag: opensuse/pcp:latest
+#!BuildTag: opensuse/pcp:%%pcp_patch%%-%RELEASE%
+#!BuildTag: opensuse/pcp:%%pcp_minor%%
+#!BuildTag: opensuse/pcp:%%pcp_major%%
 
-FROM bci/bci-init:latest
+FROM opensuse/bci/bci-init:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.pcp
-LABEL org.opencontainers.image.title="SLE Performance Co-Pilot (pcp) Container Image"
+# labelprefix=org.opensuse.application.pcp
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Performance Co-Pilot (pcp) Container Image"
 LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman."
 LABEL org.opencontainers.image.version="%%pcp_patch%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/suse/pcp:%%pcp_patch%%-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/pcp:%%pcp_patch%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="application"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
