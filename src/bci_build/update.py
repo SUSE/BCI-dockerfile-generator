@@ -76,7 +76,7 @@ async def update_package(
         "ibs",
     ), f"got an invalid {build_service_target=}, expected 'obs' or 'ibs'"
 
-    src_prj = get_bci_project_name(bci, build_service_target)
+    src_prj = get_bci_project_name(bci.os_version, build_service_target)
 
     updater = BciUpdater(bci=bci, logger=LOGGER)
 
