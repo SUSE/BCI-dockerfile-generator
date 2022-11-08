@@ -40,9 +40,6 @@ jobs:
           sudo apt update
           sudo apt install osc fish
 
-      - name: install python dependencies
-        run: poetry install
-
       - name: find last comment made by the bot
         uses: peter-evans/find-comment@v2
         id: find_comment
@@ -52,8 +49,11 @@ jobs:
           direction: last
 
       - name: run the cleanup
-        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
+        run: |
+          poetry install
+          echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
         shell: fish {0}
+        if: steps.find_comment.outputs.comment-id != ''
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"

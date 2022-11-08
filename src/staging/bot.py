@@ -13,7 +13,9 @@ from datetime import timedelta
 from functools import reduce
 from typing import ClassVar
 from typing import Generator
+from typing import Iterable
 from typing import Literal
+from typing import TypedDict
 
 import aiofiles.os
 import aiofiles.tempfile
@@ -63,6 +65,11 @@ async def _fetch_bci_devel_project_config(
             return await response.text()
 
 
+class _ProjectConfigs(TypedDict):
+    meta: ET.Element
+    prjconf: str
+
+
 @dataclass
 class StagingBot:
     """Bot that creates a staging project for the BCI images in the Open Build
@@ -73,8 +80,9 @@ class StagingBot:
     this results in a change, then the changes are committed and pushed to
     github.
 
-    A new staging project with the name :py:attr:`project_name` is then created
-    where all packages that were **changed** are inserted via the scm bridge.
+    A new staging project with the name :py:attr:`staging_project_name` is then
+    created where all packages that were **changed** are inserted via the scm
+    bridge.
 
     The bot needs to know the name of the user as whom it should act. The
     username has to be set via the attribute :py:attr:`osc_username`. This is
@@ -91,8 +99,9 @@ class StagingBot:
     environment variable :py:const:`OSC_PASSWORD_ENVVAR_NAME` to the password of
     the user that is going to be used. The :py:meth:`setup` function will then
     create a temporary configuration file for :command:`osc` and also set
-    ``XDG_STATE_HOME`` to a temporary directory so that your local osc cookiejar
-    is not modified. Both files are cleaned up via :py:meth:`teardown`
+    ``XDG_STATE_HOME`` to a temporary directory so that your local osc
+    :file:`cookiejar` is not modified. Both files are cleaned up via
+    :py:meth:`teardown`
 
     """
 
@@ -140,14 +149,34 @@ class StagingBot:
 
     @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
+        """Generator yielding all
+        :py:class:`~bci_build.package.BaseContainerImage` that have the same
+        :py:attr:`~bci_build.package.BaseContainerImage.os_version` as this bot
+        instance.
+
+        """
         return (
             bci
             for bci in ALL_CONTAINER_IMAGE_NAMES.values()
             if bci.os_version == self.os_version
         )
 
+    def _generate_project_name(self, prefix: str) -> str:
+        assert self.osc_username
+        res = f"home:{self.osc_username}:{prefix}:"
+        if self.os_version == OsVersion.TUMBLEWEED:
+            res += str(self.os_version)
+        else:
+            res += f"SLE-15-SP{str(self.os_version)}"
+        return res
+
     @property
-    def project_name(self) -> str:
+    def continuous_rebuild_project_name(self) -> str:
+        """The name of the continuous rebuild project on OBS."""
+        return self._generate_project_name("BCI:CR")
+
+    @property
+    def staging_project_name(self) -> str:
         """The name of the staging project on OBS.
 
         It is constructed as follows:
@@ -158,18 +187,12 @@ class StagingBot:
         - ``BRANCH``: :py:attr:`branch_name`
 
         """
-        assert self.osc_username
-        res = f"home:{self.osc_username}:BCI:Staging:"
-        if self.os_version == OsVersion.TUMBLEWEED:
-            res += str(self.os_version)
-        else:
-            res += f"SLE-15-SP{str(self.os_version)}"
-        return res + ":" + self.branch_name
+        return self._generate_project_name("BCI:Staging") + ":" + self.branch_name
 
     @property
-    def project_url(self) -> str:
+    def staging_project_url(self) -> str:
         """URL to the staging project."""
-        return get_obs_project_url(self.project_name)
+        return get_obs_project_url(self.staging_project_name)
 
     @property
     def deployment_branch_name(self) -> str:
@@ -223,6 +246,8 @@ class StagingBot:
 
     @staticmethod
     def from_github_comment(comment_text: str, osc_username: str) -> "StagingBot":
+        if comment_text == "":
+            raise ValueError("Received empty github comment, cannot create the bot")
         # comment_text looks like this:
         # Created a staging project on OBS for 4: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-HsmtR](url/to/proj)
         # Changes pushed to branch [`sle15-sp4-HsmtR`](url/to/branch)
@@ -246,13 +271,18 @@ class StagingBot:
             osc_username=osc_username,
         )
 
-        assert bot.project_name == (
+        assert bot.staging_project_name == (
             prj := prj_markdown_link.split("]")[0].replace("[", "")
-        ), f"Mismatch between the constructed project name ({bot.project_name}) and the project name from the comment ({prj})"
+        ), f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
         return bot
 
     @staticmethod
     async def from_env_file() -> "StagingBot":
+        """Read the last saved settings from the environment file
+        (:py:attr:`~StagingBot.DOTENV_FILE_NAME`) in the current working
+        directory and create a :py:class:`StagingBot` from them.
+
+        """
         async with aiofiles.open(StagingBot.DOTENV_FILE_NAME, "r") as dot_env:
             env_file = await dot_env.read()
 
@@ -269,6 +299,27 @@ class StagingBot:
 
         stg_bot.package_names = packages
         return stg_bot
+
+    @property
+    def obs_workflows_yml(self) -> str:
+        """The contents of :file:`.obs/workflows.yml` for branching each package
+        from the continuous rebuild project
+        (:py:attr:`~StagingBot.continuous_rebuild_project_name`) to the staging
+        sub-project.
+
+        """
+        workflows = """---
+workflow:
+  steps:
+"""
+        source_project = self.continuous_rebuild_project_name
+        for bci in self._bcis:
+            workflows += f"""    - branch_package:
+        source_project: {source_project}
+        source_package: {bci.package_name}
+        target_project: {source_project}:Staging
+"""
+        return workflows
 
     async def setup(self) -> None:
         if pw := os.getenv(OSC_PASSWORD_ENVVAR_NAME):
@@ -300,8 +351,8 @@ aliases = obs
 OS_VERSION_PRETTY={self.os_version.pretty_print}
 {OSC_USER_ENVVAR_NAME}={self.osc_username}
 DEPLOYMENT_BRANCH_NAME={self.deployment_branch_name}
-PROJECT_NAME={self.project_name}
-PROJECT_URL={self.project_url}
+PROJECT_NAME={self.staging_project_name}
+PROJECT_URL={self.staging_project_url}
 REPOSITORIES={','.join(self.repositories)}
 PACKAGES={','.join(self.package_names) if self.package_names else None}
 """
@@ -329,7 +380,120 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             "osc" if not self._osc_conf_file else f"osc --config={self._osc_conf_file}"
         )
 
-    async def write_test_project_configs(self) -> None:
+    async def _generate_test_project_meta(self, target_project_name: str) -> ET.Element:
+        bci_devel_meta = ET.fromstring(
+            await _fetch_bci_devel_project_config(self.os_version, "meta")
+        )
+
+        # write the same project meta as devel:BCI, but replace the 'devel:BCI:*'
+        # with the target project name in the main element and in all repository
+        # path entries
+        bci_devel_meta.attrib["name"] = target_project_name
+
+        # we will remove the helmchartsrepo as we do not need it
+        repo_names = []
+        repos_to_remove = []
+
+        # ppc64le & s390x are mostly busted on TW and just cause pointless
+        # build failures, so we don't build them
+        # Also, we don't use the local architecture, so drop that one always
+        arches_to_drop = [str(Arch.LOCAL)]
+        arches_to_drop.extend(
+            [str(Arch.PPC64LE), str(Arch.S390X)]
+            if self.os_version == OsVersion.TUMBLEWEED
+            else []
+        )
+
+        for elem in bci_devel_meta:
+            if elem.tag == "repository":
+                if "name" in elem.attrib:
+                    if (name := elem.attrib["name"]) in ("helmcharts", "standard"):
+                        if name == "helmcharts":
+                            repos_to_remove.append(elem)
+                        continue
+
+                    repo_names.append(name)
+                else:
+                    raise ValueError(
+                        f"Invalid <repository> element, missing 'name' attribute: {ET.tostring(elem).decode()}"
+                    )
+
+                for repo_elem in elem.iter(tag="path"):
+                    if (
+                        "project" in repo_elem.attrib
+                        and "devel:BCI:" in repo_elem.attrib["project"]
+                    ):
+                        repo_elem.attrib["project"] = target_project_name
+
+                arch_entries = list(elem.iter(tag="arch"))
+                for arch_entry in arch_entries:
+                    if arch_entry.text in arches_to_drop:
+                        elem.remove(arch_entry)
+
+        self.repositories = repo_names
+        for repo_to_remove in repos_to_remove:
+            bci_devel_meta.remove(repo_to_remove)
+
+        person = ET.Element(
+            "person", {"userid": self.osc_username, "role": "maintainer"}
+        )
+        bci_devel_meta.append(person)
+
+        return bci_devel_meta
+
+    async def _write_project_configs(self, target_project_name: str) -> None:
+        """Generate and submit the :file:`prjconf` and :file:`meta` to the
+        project with the name ``target_project_name``.
+
+        The :file:`prjconf` is taken from ``devel:BCI:*``, the :file:`meta` is
+        generated via :py:meth:`_generate_test_project_meta`.
+
+        """
+        confs: _ProjectConfigs = {}
+
+        async def _fetch_prjconf():
+            confs["prjconf"] = await _fetch_bci_devel_project_config(
+                self.os_version, "prjconf"
+            )
+
+        async def _fetch_prj():
+            confs["meta"] = await self._generate_test_project_meta(target_project_name)
+
+        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
+
+        # First set the project meta! This will create the project if it does not
+        # exist already, if we do it asynchronously, then the prjconf might be
+        # written before the project exists, which fails
+        async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
+            await tmp_meta.write(ET.tostring(confs["meta"]))
+            await tmp_meta.flush()
+
+            async def _send_prj_meta():
+                await self._run_cmd(
+                    f"{self._osc} meta prj --file={tmp_meta.name} {target_project_name}"
+                )
+
+            # obs sometimes dies setting the project meta with SQL errors 🤯
+            # so we just try again…
+            await retry_async_run_cmd(_send_prj_meta)
+
+        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
+            await tmp_prjconf.write(confs["prjconf"])
+            await tmp_prjconf.flush()
+            await self._run_cmd(
+                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {target_project_name}"
+            )
+
+    async def write_cr_project_configs(self) -> None:
+        """"""
+        await self._write_project_configs(self.continuous_rebuild_project_name)
+        await self.write_pkg_configs(
+            self._bcis,
+            git_branch_name=self.deployment_branch_name,
+            target_obs_project=self.continuous_rebuild_project_name,
+        )
+
+    async def write_staging_project_configs(self) -> None:
         """Submit the ``prjconf`` and ``meta`` to the test project on OBS.
 
         The ``prjconf`` is taken directly from the development project on OBS
@@ -345,104 +509,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         Then we send the ``meta`` and then the ``prjconf``.
         """
-        confs: dict[_CONFIG_T, str] = {}
-
-        async def _fetch_prjconf():
-            confs["prjconf"] = await _fetch_bci_devel_project_config(
-                self.os_version, "prjconf"
-            )
-
-        async def _fetch_prj():
-            confs["meta"] = await _fetch_bci_devel_project_config(
-                self.os_version, "meta"
-            )
-
-        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
-
-        bci_devel_meta = ET.fromstring(confs["meta"])
-
-        # First set the project meta! This will create the project if it does not
-        # exist already, if we do it asynchronously, then the prjconf might be
-        # written before the project exists, which fails
-
-        # write the same project meta as devel:BCI, but replace the 'devel:BCI:*'
-        # with the actual project name in the main element and in all repository
-        # path entries
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
-            bci_devel_meta.attrib["name"] = self.project_name
-
-            repo_names = []
-            repos_to_remove = []
-
-            # ppc64le & s390x are mostly busted on TW and just cause pointless
-            # build failures, so we don't build them
-            # Also, we don't use the local architecture, so drop that one always
-            arches_to_drop = [str(Arch.LOCAL)]
-            arches_to_drop.extend(
-                [str(Arch.PPC64LE), str(Arch.S390X)]
-                if self.os_version == OsVersion.TUMBLEWEED
-                else []
-            )
-
-            for elem in bci_devel_meta:
-                if elem.tag == "repository":
-                    if "name" in elem.attrib:
-                        if (name := elem.attrib["name"]) in ("helmcharts", "standard"):
-                            if name == "helmcharts":
-                                repos_to_remove.append(elem)
-                            continue
-
-                        repo_names.append(name)
-                    else:
-                        raise ValueError(
-                            f"Invalid <repository> element, missing 'name' attribute: {ET.tostring(elem).decode()}"
-                        )
-
-                    for repo_elem in elem.iter(tag="path"):
-                        if (
-                            "project" in repo_elem.attrib
-                            and "devel:BCI:" in repo_elem.attrib["project"]
-                        ):
-                            repo_elem.attrib["project"] = self.project_name
-
-                    arch_entries = list(elem.iter(tag="arch"))
-                    for arch_entry in arch_entries:
-                        if arch_entry.text in arches_to_drop:
-                            elem.remove(arch_entry)
-
-            self.repositories = repo_names
-            for repo_to_remove in repos_to_remove:
-                bci_devel_meta.remove(repo_to_remove)
-
-            person = ET.Element(
-                "person", {"userid": self.osc_username, "role": "maintainer"}
-            )
-            bci_devel_meta.append(person)
-
-            await tmp_meta.write(ET.tostring(bci_devel_meta))
-            await tmp_meta.flush()
-
-            async def _send_prj_meta():
-                await self._run_cmd(
-                    f"{self._osc} meta prj --file={tmp_meta.name} {self.project_name}"
-                )
-
-            # obs sometimes dies setting the project meta with SQL errors 🤯
-            # so we just try again…
-            await retry_async_run_cmd(_send_prj_meta)
-
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
-            await tmp_prjconf.write(confs["prjconf"])
-            await tmp_prjconf.flush()
-            await self._run_cmd(
-                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.project_name}"
-            )
+        await self._write_project_configs(self.staging_project_name)
 
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
             f"{self._osc} results --xml {extra_osc_flags} "
             + " ".join("--repo=" + repo_name for repo_name in self.repositories)
-            + f" {self.project_name}"
+            + f" {self.staging_project_name}"
         )
 
     async def remote_cleanup(
@@ -477,26 +550,34 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         if obs_project:
             tasks.append(
                 self._run_cmd(
-                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.project_name}",
+                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.staging_project_name}",
                     raise_on_error=False,
                 )
             )
 
         await asyncio.gather(*tasks)
 
-    async def write_pkg_configs(self) -> None:
-        """Write all package configurations in the staging project for every
-        package in :py:attr:`package_names`.
+    async def write_pkg_configs(
+        self,
+        packages: Iterable[BaseContainerImage],
+        git_branch_name: str,
+        target_obs_project: str,
+    ) -> None:
+        """Write all package configurations (= :file:`_meta`) for every package
+        in ``packages`` to the project `target_obs_project` so that the package
+        is fetched via the scm bridge from the branch `git_branch_name`.
 
-        Each package is setup using the `scmsync` element to track the
-        respective subdirectory in the branch :py:attr:`branch_name`.
-
-        Note: if no packages have been set yet, then this function does **nothing**.
+        Args:
+            packages: the BCI packages that should be added
+            git_branch_name: the name of the git branch from which the sources
+                will be retrieved
+            target_obs_project: name of the project on OBS to which the packages
+                will be added
 
         """
         tasks = []
 
-        for bci in self.bcis:
+        for bci in packages:
 
             async def write_pkg_conf(bci_pkg: BaseContainerImage):
                 (pkg_conf := ET.Element("package")).attrib[
@@ -507,7 +588,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 (descr := ET.Element("description")).text = bci_pkg.description
                 (
                     scmsync := ET.Element("scmsync")
-                ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{self.branch_name}"
+                ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
 
                 for elem in (title, descr, scmsync):
                     pkg_conf.append(elem)
@@ -518,7 +599,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                     await tmp_pkg_conf.write(ET.tostring(pkg_conf).decode())
                     await tmp_pkg_conf.flush()
                     await self._run_cmd(
-                        f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {self.project_name} {bci_pkg.package_name}"
+                        f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
                     )
 
             tasks.append(write_pkg_conf(bci))
@@ -554,7 +635,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                     packages.append(b_path[0])
 
         res = list(set(packages))
-        assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res))
+
+        # it can happen that we only update a non-BCI package file,
+        # e.g. .obs/workflows.yml, then we will have a commit, but the diff will
+        # not touch any BCI and thus `res` will be an empty list
+        # => give reduce an initial value (last parameter) as it will otherwise
+        #    fail
+        assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res), True)
         return res
 
     async def write_all_build_recipes_to_branch(
@@ -578,7 +665,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         worktree_dir = os.path.join(os.getcwd(), self.branch_name)
 
         try:
-            await self.write_all_image_build_recipes(worktree_dir)
+            files = await self.write_all_image_build_recipes(worktree_dir)
 
             run_in_worktree = RunCommand(cwd=worktree_dir, logger=LOGGER)
 
@@ -596,7 +683,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 LOGGER.info("Writing all build recipes resulted in no changes")
                 return None
 
-            await run_in_worktree("git add *")
+            await run_in_worktree("git add " + " ".join(files))
             await run_in_worktree(
                 f"git commit -m '{commit_msg or 'Test build'}'",
             )
@@ -612,14 +699,27 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         return commit
 
-    async def write_all_image_build_recipes(self, destination_prj_folder: str) -> None:
+    async def write_all_image_build_recipes(
+        self, destination_prj_folder: str
+    ) -> list[str]:
+        """Writes all build recipes into the folder
+        :file:`destination_prj_folder` and returns a list of files that were
+        written.
+
+        Returns:
+            A list of all files that were written to
+            :file:`destination_prj_folder`. The files are listed relative to
+            :file:`destination_prj_folder` and don't contain any leading path
+            components.
+
+        """
         tasks = []
 
         await aiofiles.os.makedirs(destination_prj_folder, exist_ok=True)
 
         for bci in self.bcis:
 
-            async def write_files(bci_pkg: BaseContainerImage, dest: str):
+            async def write_files(bci_pkg: BaseContainerImage, dest: str) -> list[str]:
                 await aiofiles.os.makedirs(dest, exist_ok=True)
 
                 # remove everything *but* the changes file (.changes is not
@@ -632,12 +732,30 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
                 await asyncio.gather(*to_remove)
 
-                await bci_pkg.write_files_to_folder(dest)
+                return [
+                    f"{bci_pkg.package_name}/{fname}"
+                    for fname in await bci_pkg.write_files_to_folder(dest)
+                ]
 
             img_dest_dir = os.path.join(destination_prj_folder, bci.package_name)
             tasks.append(write_files(bci, img_dest_dir))
 
-        await asyncio.gather(*tasks)
+        async def write_obs_workflows_yml():
+            await aiofiles.os.makedirs(
+                (dot_obs := os.path.join(destination_prj_folder, ".obs")), exist_ok=True
+            )
+            async with aiofiles.open(
+                os.path.join(dot_obs, "workflows.yml"), "w"
+            ) as workflows_file:
+                await workflows_file.write(self.obs_workflows_yml)
+            return [".obs/workflows.yml"]
+
+        tasks.append(write_obs_workflows_yml())
+        files = await asyncio.gather(*tasks)
+        flattened_file_list = []
+        for file_list in files:
+            flattened_file_list.extend(file_list)
+        return flattened_file_list
 
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
@@ -647,8 +765,10 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
     async def force_rebuild(self) -> str:
         """Deletes all binaries of the project on OBS and force rebuilds everything."""
-        await self._run_cmd(f"{self._osc} wipebinaries --all {self.project_name}")
-        await self._run_cmd(f"{self._osc} rebuild --all {self.project_name}")
+        await self._run_cmd(
+            f"{self._osc} wipebinaries --all {self.staging_project_name}"
+        )
+        await self._run_cmd(f"{self._osc} rebuild --all {self.staging_project_name}")
         return self._osc_fetch_results_cmd("--watch")
 
     async def scratch_build(self, commit_message: str = "") -> None | str:
@@ -657,13 +777,20 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             return None
 
         self.package_names = self._get_changed_packages_by_commit(commit)
+        if not self.package_names:
+            return None
+
         LOGGER.debug(
             "packages that were changed by %s: %s",
             commit,
             ", ".join(self.package_names),
         )
-        await self.write_test_project_configs()
-        await self.write_pkg_configs()
+        await self.write_staging_project_configs()
+        await self.write_pkg_configs(
+            self.bcis,
+            git_branch_name=self.branch_name,
+            target_obs_project=self.staging_project_name,
+        )
         await self._wait_for_all_pkg_service_runs()
 
         # "encourage" OBS to rebuild, in case this project existed before
@@ -683,7 +810,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
             async def wait_for_service(bci_pkg_name: str) -> None:
                 await self._run_cmd(
-                    f"{self._osc} service wait {self.project_name} {bci_pkg_name}"
+                    f"{self._osc} service wait {self.staging_project_name} {bci_pkg_name}"
                 )
 
             service_wait_tasks.append(wait_for_service(pkg_name))
@@ -793,7 +920,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         if get_number_of_packages_with_results(build_res) == 0:
             raise RuntimeError(
-                f"{self.project_name} has no packages with build results, something is broken ⚡"
+                f"{self.staging_project_name} has no packages with build results, something is broken ⚡"
             )
 
         return build_res
