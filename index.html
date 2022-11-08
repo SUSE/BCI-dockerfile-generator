@@ -42,7 +42,7 @@ containers in the Open Build Service.</p>
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
 <p>You will need the following tools:</p>
 <ul class="simple">
-<li><p>Python 3.9 or later</p></li>
+<li><p>Python 3.10 or later</p></li>
 <li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
 <li><p><a class="reference external" href="https://github.com/openSUSE/osc/">osc</a> installed and configured to reach
 <a class="reference external" href="https://build.opensuse.org/">OBS</a> by default. If you want to target IBS
@@ -70,6 +70,20 @@ submitrequest back upstream.</p>
 <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> script to just write the files of a single
 package into a directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/</span>
+</pre></div>
+</div>
+</section>
+<section id="use-the-dev-container">
+<h2>Use the dev-container<a class="headerlink" href="#use-the-dev-container" title="Permalink to this heading">¶</a></h2>
+<p>You can use the dockerfile generator via a development container published as
+<cite>ghcr.io/suse/bci-dockerfile-generator</cite>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">podman run --rm ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py --help</span>
+</pre></div>
+</div>
+<p>Some commands of the dockerfile-generator use <strong class="command">osc</strong> and require access
+to a valid <code class="file docutils literal notranslate"><span class="pre">~/.config/osc/oscrc</span></code>. You can expose your own to the container
+via a volume as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">podman run --rm -v ~/.config/osc/:/root/.config/osc/:Z ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py $additional_args</span>
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
