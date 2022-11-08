@@ -635,7 +635,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                     packages.append(b_path[0])
 
         res = list(set(packages))
-        assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res))
+
+        # it can happen that we only update a non-BCI package file,
+        # e.g. .obs/workflows.yml, then we will have a commit, but the diff will
+        # not touch any BCI and thus `res` will be an empty list
+        # => give reduce an initial value (last parameter) as it will otherwise
+        #    fail
+        assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res), True)
         return res
 
     async def write_all_build_recipes_to_branch(
@@ -771,6 +777,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             return None
 
         self.package_names = self._get_changed_packages_by_commit(commit)
+        if not self.package_names:
+            return None
+
         LOGGER.debug(
             "packages that were changed by %s: %s",
             commit,
