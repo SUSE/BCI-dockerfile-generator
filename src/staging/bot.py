@@ -597,7 +597,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         worktree_dir = os.path.join(os.getcwd(), self.branch_name)
 
         try:
-            await self.write_all_image_build_recipes(worktree_dir)
+            files = await self.write_all_image_build_recipes(worktree_dir)
 
             run_in_worktree = RunCommand(cwd=worktree_dir, logger=LOGGER)
 
@@ -615,7 +615,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 LOGGER.info("Writing all build recipes resulted in no changes")
                 return None
 
-            await run_in_worktree("git add *")
+            await run_in_worktree("git add " + " ".join(files))
             await run_in_worktree(
                 f"git commit -m '{commit_msg or 'Test build'}'",
             )
@@ -631,14 +631,27 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         return commit
 
-    async def write_all_image_build_recipes(self, destination_prj_folder: str) -> None:
+    async def write_all_image_build_recipes(
+        self, destination_prj_folder: str
+    ) -> list[str]:
+        """Writes all build recipes into the folder
+        :file:`destination_prj_folder` and returns a list of files that were
+        written.
+
+        Returns:
+            A list of all files that were written to
+            :file:`destination_prj_folder`. The files are listed relative to
+            :file:`destination_prj_folder` and don't contain any leading path
+            components.
+
+        """
         tasks = []
 
         await aiofiles.os.makedirs(destination_prj_folder, exist_ok=True)
 
         for bci in self.bcis:
 
-            async def write_files(bci_pkg: BaseContainerImage, dest: str):
+            async def write_files(bci_pkg: BaseContainerImage, dest: str) -> list[str]:
                 await aiofiles.os.makedirs(dest, exist_ok=True)
 
                 # remove everything *but* the changes file (.changes is not
@@ -651,12 +664,19 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
                 await asyncio.gather(*to_remove)
 
-                await bci_pkg.write_files_to_folder(dest)
+                return [
+                    f"{bci_pkg.package_name}/{fname}"
+                    for fname in await bci_pkg.write_files_to_folder(dest)
+                ]
 
             img_dest_dir = os.path.join(destination_prj_folder, bci.package_name)
             tasks.append(write_files(bci, img_dest_dir))
 
-        await asyncio.gather(*tasks)
+        files = await asyncio.gather(*tasks)
+        flattened_file_list = []
+        for file_list in files:
+            flattened_file_list.extend(file_list)
+        return flattened_file_list
 
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
