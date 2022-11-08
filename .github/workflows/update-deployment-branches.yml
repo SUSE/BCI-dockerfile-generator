@@ -43,6 +43,12 @@ jobs:
       - name: install python dependencies
         run: poetry install
 
+      - name: setup the continuous rebuild project
+        run: poetry run ./scratch-build-bot.py --os-version ${{ matrix.os_version }} create_cr_project
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+
       - name: configure git user
         run: |
           username="${{ github.actor }}"
