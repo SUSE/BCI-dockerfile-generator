@@ -289,6 +289,27 @@ class StagingBot:
         stg_bot.package_names = packages
         return stg_bot
 
+    @property
+    def obs_workflows_yml(self) -> str:
+        """The contents of :file:`.obs/workflows.yml` for branching each package
+        from the continuous rebuild project
+        (:py:attr:`~StagingBot.continuous_rebuild_project_name`) to the staging
+        sub-project.
+
+        """
+        workflows = """---
+workflow:
+  steps:
+"""
+        source_project = self.continuous_rebuild_project_name
+        for bci in self._bcis:
+            workflows += f"""    - branch_package:
+        source_project: {source_project}
+        source_package: {bci.package_name}
+        target_project: {source_project}:Staging
+"""
+        return workflows
+
     async def setup(self) -> None:
         if pw := os.getenv(OSC_PASSWORD_ENVVAR_NAME):
             osc_conf = tempfile.NamedTemporaryFile("w", delete=False)
@@ -672,6 +693,17 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             img_dest_dir = os.path.join(destination_prj_folder, bci.package_name)
             tasks.append(write_files(bci, img_dest_dir))
 
+        async def write_obs_workflows_yml():
+            await aiofiles.os.makedirs(
+                (dot_obs := os.path.join(destination_prj_folder, ".obs")), exist_ok=True
+            )
+            async with aiofiles.open(
+                os.path.join(dot_obs, "workflows.yml"), "w"
+            ) as workflows_file:
+                await workflows_file.write(self.obs_workflows_yml)
+            return [".obs/workflows.yml"]
+
+        tasks.append(write_obs_workflows_yml())
         files = await asyncio.gather(*tasks)
         flattened_file_list = []
         for file_list in files:
