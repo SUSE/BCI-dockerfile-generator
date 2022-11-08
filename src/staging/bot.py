@@ -524,19 +524,27 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         await asyncio.gather(*tasks)
 
-    async def write_pkg_configs(self) -> None:
-        """Write all package configurations in the staging project for every
-        package in :py:attr:`package_names`.
+    async def write_pkg_configs(
+        self,
+        packages: Iterable[BaseContainerImage],
+        git_branch_name: str,
+        target_obs_project: str,
+    ) -> None:
+        """Write all package configurations (= :file:`_meta`) for every package
+        in ``packages`` to the project `target_obs_project` so that the package
+        is fetched via the scm bridge from the branch `git_branch_name`.
 
-        Each package is setup using the `scmsync` element to track the
-        respective subdirectory in the branch :py:attr:`branch_name`.
-
-        Note: if no packages have been set yet, then this function does **nothing**.
+        Args:
+            packages: the BCI packages that should be added
+            git_branch_name: the name of the git branch from which the sources
+                will be retrieved
+            target_obs_project: name of the project on OBS to which the packages
+                will be added
 
         """
         tasks = []
 
-        for bci in self.bcis:
+        for bci in packages:
 
             async def write_pkg_conf(bci_pkg: BaseContainerImage):
                 (pkg_conf := ET.Element("package")).attrib[
@@ -736,7 +744,11 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             ", ".join(self.package_names),
         )
         await self.write_test_project_configs()
-        await self.write_pkg_configs()
+        await self.write_pkg_configs(
+            self.bcis,
+            git_branch_name=self.branch_name,
+            target_obs_project=self.staging_project_name,
+        )
         await self._wait_for_all_pkg_service_runs()
 
         # "encourage" OBS to rebuild, in case this project existed before
