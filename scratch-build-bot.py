@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     ACTION_T = Literal[
         "rebuild",
-        "create_project",
+        "create_staging_project",
         "query_build_result",
         "commit_state",
         "scratch_build",
@@ -90,7 +90,9 @@ if __name__ == "__main__":
 
     subparsers = parser.add_subparsers(dest="action")
     subparsers.add_parser("rebuild", help="Force rebuild the BCI test project")
-    subparsers.add_parser("create_project", help="Create the staging project on OBS")
+    subparsers.add_parser(
+        "create_staging_project", help="Create the staging project on OBS"
+    )
     cleanup_parser = subparsers.add_parser(
         "cleanup", help="Remove the branch in git and the staging project in OBS"
     )
@@ -183,8 +185,17 @@ if __name__ == "__main__":
         if action == "rebuild":
             coro = bot.force_rebuild()
 
-        elif action == "create_project":
-            coro = bot.write_pkg_configs()
+        elif action == "create_staging_project":
+
+            async def _create_staging_proj():
+                await bot.write_staging_project_configs()
+                await bot.write_pkg_configs(
+                    bot.bcis,
+                    git_branch_name=bot.branch_name,
+                    target_obs_project=bot.staging_project_name,
+                )
+
+            coro = _create_staging_proj()
 
         elif action == "commit_state":
             coro = bot.write_all_build_recipes_to_branch(args.commit_message[0])
