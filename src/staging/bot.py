@@ -140,6 +140,12 @@ class StagingBot:
 
     @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
+        """Generator yielding all
+        :py:class:`~bci_build.package.BaseContainerImage` that have the same
+        :py:attr:`~bci_build.package.BaseContainerImage.os_version` as this bot
+        instance.
+
+        """
         return (
             bci
             for bci in ALL_CONTAINER_IMAGE_NAMES.values()
@@ -253,6 +259,11 @@ class StagingBot:
 
     @staticmethod
     async def from_env_file() -> "StagingBot":
+        """Read the last saved settings from the environment file
+        (:py:attr:`~StagingBot.DOTENV_FILE_NAME`) in the current working
+        directory and create a :py:class:`StagingBot` from them.
+
+        """
         async with aiofiles.open(StagingBot.DOTENV_FILE_NAME, "r") as dot_env:
             env_file = await dot_env.read()
 
