@@ -31,6 +31,7 @@ if __name__ == "__main__":
         "cleanup",
         "wait",
         "get_build_quality",
+        "create_cr_project",
     ]
 
     parser = argparse.ArgumentParser()
@@ -134,6 +135,10 @@ if __name__ == "__main__":
     subparsers.add_parser(
         "get_build_quality", help="Return 0 if the build succeeded or 1 if it failed"
     )
+    subparsers.add_parser(
+        "create_cr_project",
+        help="Create the continuous rebuild project on OBS and write the _config file into the current working directory",
+    )
 
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
@@ -223,6 +228,9 @@ if __name__ == "__main__":
                 return "Build succeded"
 
             coro = _quality()
+
+        elif action == "create_cr_project":
+            coro = bot.write_cr_project_configs()
         else:
             assert False, f"invalid action: {action}"
 
