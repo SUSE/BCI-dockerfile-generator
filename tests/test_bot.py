@@ -77,3 +77,12 @@ def test_from_github_comment(comment: str, bot: StagingBot):
     assert bot == StagingBot.from_github_comment(
         comment_text=comment, osc_username=_osc_user
     )
+
+
+def test_from_empty_github_comment():
+    with pytest.raises(ValueError) as val_err_ctx:
+        StagingBot.from_github_comment("", "irrelevant")
+
+    assert "Received empty github comment, cannot create the bot" in str(
+        val_err_ctx.value
+    )
