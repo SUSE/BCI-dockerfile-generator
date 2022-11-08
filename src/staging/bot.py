@@ -152,8 +152,22 @@ class StagingBot:
             if bci.os_version == self.os_version
         )
 
+    def _generate_project_name(self, prefix: str) -> str:
+        assert self.osc_username
+        res = f"home:{self.osc_username}:{prefix}:"
+        if self.os_version == OsVersion.TUMBLEWEED:
+            res += str(self.os_version)
+        else:
+            res += f"SLE-15-SP{str(self.os_version)}"
+        return res
+
     @property
-    def project_name(self) -> str:
+    def continuous_rebuild_project_name(self) -> str:
+        """The name of the continuous rebuild project on OBS."""
+        return self._generate_project_name("BCI:CR")
+
+    @property
+    def staging_project_name(self) -> str:
         """The name of the staging project on OBS.
 
         It is constructed as follows:
@@ -164,18 +178,12 @@ class StagingBot:
         - ``BRANCH``: :py:attr:`branch_name`
 
         """
-        assert self.osc_username
-        res = f"home:{self.osc_username}:BCI:Staging:"
-        if self.os_version == OsVersion.TUMBLEWEED:
-            res += str(self.os_version)
-        else:
-            res += f"SLE-15-SP{str(self.os_version)}"
-        return res + ":" + self.branch_name
+        return self._generate_project_name("BCI:Staging") + ":" + self.branch_name
 
     @property
-    def project_url(self) -> str:
+    def staging_project_url(self) -> str:
         """URL to the staging project."""
-        return get_obs_project_url(self.project_name)
+        return get_obs_project_url(self.staging_project_name)
 
     @property
     def deployment_branch_name(self) -> str:
@@ -252,9 +260,9 @@ class StagingBot:
             osc_username=osc_username,
         )
 
-        assert bot.project_name == (
+        assert bot.staging_project_name == (
             prj := prj_markdown_link.split("]")[0].replace("[", "")
-        ), f"Mismatch between the constructed project name ({bot.project_name}) and the project name from the comment ({prj})"
+        ), f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
         return bot
 
     @staticmethod
@@ -311,8 +319,8 @@ aliases = obs
 OS_VERSION_PRETTY={self.os_version.pretty_print}
 {OSC_USER_ENVVAR_NAME}={self.osc_username}
 DEPLOYMENT_BRANCH_NAME={self.deployment_branch_name}
-PROJECT_NAME={self.project_name}
-PROJECT_URL={self.project_url}
+PROJECT_NAME={self.staging_project_name}
+PROJECT_URL={self.staging_project_url}
 REPOSITORIES={','.join(self.repositories)}
 PACKAGES={','.join(self.package_names) if self.package_names else None}
 """
@@ -453,7 +461,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         return (
             f"{self._osc} results --xml {extra_osc_flags} "
             + " ".join("--repo=" + repo_name for repo_name in self.repositories)
-            + f" {self.project_name}"
+            + f" {self.staging_project_name}"
         )
 
     async def remote_cleanup(
@@ -488,7 +496,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         if obs_project:
             tasks.append(
                 self._run_cmd(
-                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.project_name}",
+                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.staging_project_name}",
                     raise_on_error=False,
                 )
             )
@@ -658,8 +666,10 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
     async def force_rebuild(self) -> str:
         """Deletes all binaries of the project on OBS and force rebuilds everything."""
-        await self._run_cmd(f"{self._osc} wipebinaries --all {self.project_name}")
-        await self._run_cmd(f"{self._osc} rebuild --all {self.project_name}")
+        await self._run_cmd(
+            f"{self._osc} wipebinaries --all {self.staging_project_name}"
+        )
+        await self._run_cmd(f"{self._osc} rebuild --all {self.staging_project_name}")
         return self._osc_fetch_results_cmd("--watch")
 
     async def scratch_build(self, commit_message: str = "") -> None | str:
@@ -694,7 +704,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
             async def wait_for_service(bci_pkg_name: str) -> None:
                 await self._run_cmd(
-                    f"{self._osc} service wait {self.project_name} {bci_pkg_name}"
+                    f"{self._osc} service wait {self.staging_project_name} {bci_pkg_name}"
                 )
 
             service_wait_tasks.append(wait_for_service(pkg_name))
@@ -804,7 +814,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         if get_number_of_packages_with_results(build_res) == 0:
             raise RuntimeError(
-                f"{self.project_name} has no packages with build results, something is broken ⚡"
+                f"{self.staging_project_name} has no packages with build results, something is broken ⚡"
             )
 
         return build_res
