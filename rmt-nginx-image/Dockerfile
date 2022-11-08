@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: suse/rmt-nginx:%%nginx_version%%
-#!BuildTag: suse/rmt-nginx:latest
-#!BuildTag: suse/rmt-nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: opensuse/rmt-nginx:%%nginx_version%%
+#!BuildTag: opensuse/rmt-nginx:latest
+#!BuildTag: opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.rmt-nginx
-LABEL org.opencontainers.image.title="SLE RMT Nginx Container Image"
-LABEL org.opencontainers.image.description="RMT Nginx based on the SLE Base Container Image."
+# labelprefix=org.opensuse.application.rmt-nginx
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed RMT Nginx Container Image"
+LABEL org.opencontainers.image.description="RMT Nginx based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%nginx_version%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/suse/rmt-nginx:%%nginx_version%%-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="application"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 

@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: bci/openjdk:17
-#!BuildTag: bci/openjdk:latest
-#!BuildTag: bci/openjdk:17-%RELEASE%
+#!BuildTag: opensuse/bci/openjdk:17
+#!BuildTag: opensuse/bci/openjdk:latest
+#!BuildTag: opensuse/bci/openjdk:17-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.openjdk
-LABEL org.opencontainers.image.title="SLE BCI OpenJDK 17 Runtime Container Image"
+# labelprefix=org.opensuse.bci.openjdk
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 17 Runtime Container Image"
 LABEL org.opencontainers.image.description="Java 17 runtime based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="17"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:17-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/openjdk:17-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="l3"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="sle-bci"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 

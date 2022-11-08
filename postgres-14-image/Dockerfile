@@ -1,27 +1,24 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: suse/postgres:14
-#!BuildTag: suse/postgres:latest
-#!BuildTag: suse/postgres:14-%RELEASE%
-#!BuildTag: suse/postgres:%%pg_version%%
+#!BuildTag: opensuse/postgres:14
+#!BuildTag: opensuse/postgres:latest
+#!BuildTag: opensuse/postgres:14-%RELEASE%
+#!BuildTag: opensuse/postgres:%%pg_version%%
 
 FROM opensuse/tumbleweed:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.postgres
-LABEL org.opencontainers.image.title="SLE PostgreSQL 14 Container Image"
-LABEL org.opencontainers.image.description="PostgreSQL 14 based on the SLE Base Container Image."
+# labelprefix=org.opensuse.application.postgres
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed PostgreSQL 14 Container Image"
+LABEL org.opencontainers.image.description="PostgreSQL 14 based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="14"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/suse/postgres:14-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/postgres:14-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="application"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 

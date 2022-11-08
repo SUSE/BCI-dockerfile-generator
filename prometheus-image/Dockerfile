@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: suse/prometheus:%%prometheus_version%%
-#!BuildTag: suse/prometheus:latest
-#!BuildTag: suse/prometheus:%%prometheus_version%%-%RELEASE%
+#!BuildTag: opensuse/prometheus:%%prometheus_version%%
+#!BuildTag: opensuse/prometheus:latest
+#!BuildTag: opensuse/prometheus:%%prometheus_version%%-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
+MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.prometheus
-LABEL org.opencontainers.image.title="SLE Prometheus Container Image"
-LABEL org.opencontainers.image.description="Prometheus based on the SLE Base Container Image."
+# labelprefix=org.opensuse.application.prometheus
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Prometheus Container Image"
+LABEL org.opencontainers.image.description="Prometheus based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%prometheus_version%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/suse/prometheus:%%prometheus_version%%-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/prometheus:%%prometheus_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="application"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
