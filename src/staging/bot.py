@@ -30,6 +30,7 @@ from obs_package_update.util import retry_async_run_cmd
 from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
+from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
 from staging.util import ensure_absent
 from staging.util import get_obs_project_url
@@ -845,21 +846,37 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         start = datetime.now()
 
         # OBS can be sometimes a bit slow with figuring out that there are
-        # packages to be build
+        # packages to be build or with starting some builds that need to fetch
+        # remote assets
         # It will then just give us an empty list of packages for all repos if
-        # we call the `/results/` route fast enough after project setup
-        # If that happens (=> Σ packages == 0), when we wait for 10s and try
+        # we call the `/results/` route fast enough after project setup or even
+        # worse, it will figure out that our problematic packages are excluded
+        # in some repos, but have not been added to others. I.e. we have to
+        # remove excluded packages from our list as well
+        #
+        # If that happens (=> Σ packages == 0), when we wait for 60s and try
         # again (and repeat this up to 10 times). If OBS hasn't managed to do
         # *anything* by then, just bail…
-        def get_number_of_packages_with_results(
+        def _get_number_of_packages_with_results(
             build_result_list: list[RepositoryBuildResult],
         ) -> int:
-            all_pkg_results: list[PackageBuildResult] = list(
-                itertools.chain.from_iterable(
+            all_pkg_results: list[PackageBuildResult] = [
+                pkg_res
+                for pkg_res in itertools.chain.from_iterable(
                     result.packages for result in build_result_list
                 )
-            )
+                if pkg_res.code
+                not in (PackageStatusCode.EXCLUDED, PackageStatusCode.SCHEDULED)
+            ]
             return len(all_pkg_results)
+
+        def _dirty_repos_present(
+            build_result_list: Iterable[RepositoryBuildResult],
+        ) -> bool:
+            for build_res in build_result_list:
+                if build_res.dirty:
+                    return True
+            return False
 
         build_res: list[RepositoryBuildResult] = []
         retries = 0
@@ -911,16 +928,24 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                         raise
 
             build_res = await self.fetch_build_results()
-            if get_number_of_packages_with_results(build_res) == 0 and retries < 10:
-                LOGGER.debug("got 0 packages with build results, sleeping and retrying")
+            if (
+                _get_number_of_packages_with_results(build_res) == 0
+                or _dirty_repos_present(build_res)
+            ) and retries < 10:
+                LOGGER.debug(
+                    "got 0 packages with build results or a dirty repository, sleeping and retrying"
+                )
                 retries += 1
-                await asyncio.sleep(10)
+                await asyncio.sleep(60)
             else:
                 break
 
-        if get_number_of_packages_with_results(build_res) == 0:
+        if _get_number_of_packages_with_results(build_res) == 0:
             raise RuntimeError(
                 f"{self.staging_project_name} has no packages with build results, something is broken ⚡"
             )
+
+        if _dirty_repos_present(build_res):
+            raise RuntimeError(f"{self.staging_project_name} is still dirty!")
 
         return build_res
