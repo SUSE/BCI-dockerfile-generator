@@ -241,7 +241,7 @@ if __name__ == "__main__":
             coro = _quality()
 
         elif action == "create_cr_project":
-            coro = bot.write_cr_project_configs()
+            coro = bot.write_cr_project_config()
         else:
             assert False, f"invalid action: {action}"
 
