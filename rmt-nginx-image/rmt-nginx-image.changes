@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Fri Jul 15 11:06:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Increase compatibility with openSUSE
+
+-------------------------------------------------------------------
+Tue May  3 09:03:21 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures

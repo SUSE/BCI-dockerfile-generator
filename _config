@@ -1,0 +1,25 @@
+%if "%_repository" == "images"
+Type: kiwi
+Repotype: none
+Patterntype: none
+
+# needed for busybox image building (at minimum)
+ExpandFlags: kiwi-nobasepackages
+
+%else
+%if %_repository == "containerfile"
+Type: docker
+BuildEngine: podman
+
+%else
+Type: spec
+Repotype: none
+Patterntype: none
+%endif
+%endif
+
+# for some reason we have a choice on aarch64 for libicu
+Prefer: libicu71
+
+# don't rebuild with every release:
+# Substitute: distribution-release openSUSE-release-mini
