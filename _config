@@ -1,0 +1,42 @@
+%if "%_repository" == "images"
+Type: kiwi
+Repotype: none
+Patterntype: none
+
+Prefer: -libcurl4-mini
+Prefer: -systemd-mini
+Prefer: -libsystemd0-mini
+Prefer: -libudev-mini1
+Prefer: -udev-mini
+Prefer: kiwi-boot-requires
+Prefer: sles-release
+Prefer: sles-release-MINI
+Prefer: python3-kiwi
+
+Preinstall: !rpm rpm-ndb
+Substitute: rpm rpm-ndb
+Binarytype: rpm
+%else
+%if %_repository == "containerfile"
+Type: docker
+Prefer: sles-release
+%else
+%if %_repository == "helmcharts"
+Type: helm
+PreInstall: release-compare perl-YAML-LibYAML
+%else
+Type: spec
+Repotype: none
+Patterntype: none
+%endif
+%endif
+%endif
+#
+# OBS specific settings
+#
+# libodbc2 from unixODBC is for some reason also present as a 64bit variant on aarch64...
+Prefer: -libodbc2-64bit
+Prefer: -container:suse_sle15:15.3
+Prefer: -container:bci_bci-init:15.3
+Prefer: -container:bci_openjdk:11
+Prefer: -container:bci_bci-micro:15.3
