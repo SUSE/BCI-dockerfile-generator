@@ -11,7 +11,9 @@ from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
 from functools import reduce
+from typing import Any
 from typing import ClassVar
+from typing import Coroutine
 from typing import Generator
 from typing import Iterable
 from typing import Literal
@@ -442,31 +444,15 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         return bci_devel_meta
 
-    async def _write_project_configs(self, target_project_name: str) -> None:
-        """Generate and submit the :file:`prjconf` and :file:`meta` to the
-        project with the name ``target_project_name``.
-
-        The :file:`prjconf` is taken from ``devel:BCI:*``, the :file:`meta` is
-        generated via :py:meth:`_generate_test_project_meta`.
+    async def _send_prj_meta(
+        self, target_project_name: str, prj_meta: ET.Element
+    ) -> None:
+        """Set the meta of the project on OBS with the name
+        ``target_project_name`` to the config ``prj_meta``.
 
         """
-        confs: _ProjectConfigs = {}
-
-        async def _fetch_prjconf():
-            confs["prjconf"] = await _fetch_bci_devel_project_config(
-                self.os_version, "prjconf"
-            )
-
-        async def _fetch_prj():
-            confs["meta"] = await self._generate_test_project_meta(target_project_name)
-
-        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
-
-        # First set the project meta! This will create the project if it does not
-        # exist already, if we do it asynchronously, then the prjconf might be
-        # written before the project exists, which fails
         async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
-            await tmp_meta.write(ET.tostring(confs["meta"]))
+            await tmp_meta.write(ET.tostring(prj_meta))
             await tmp_meta.flush()
 
             async def _send_prj_meta():
@@ -478,21 +464,21 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             # so we just try again…
             await retry_async_run_cmd(_send_prj_meta)
 
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
-            await tmp_prjconf.write(confs["prjconf"])
-            await tmp_prjconf.flush()
-            await self._run_cmd(
-                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {target_project_name}"
-            )
+    async def write_cr_project_config(self) -> None:
+        """Send the configuration of the continuous rebuild project to OBS.
 
-    async def write_cr_project_configs(self) -> None:
-        """"""
-        await self._write_project_configs(self.continuous_rebuild_project_name)
-        await self.write_pkg_configs(
-            self._bcis,
-            git_branch_name=self.deployment_branch_name,
-            target_obs_project=self.continuous_rebuild_project_name,
+        This will create the project if it did not exist already. If it exists,
+        then its configuration (= ``meta`` in OBS jargon) will be updated.
+
+        """
+        meta = await self._generate_test_project_meta(
+            self.continuous_rebuild_project_name
         )
+        (
+            scmsync := ET.Element("scmsync")
+        ).text = f"https://github.com/SUSE/bci-dockerfile-generator#{self.deployment_branch_name}"
+        meta.append(scmsync)
+        await self._send_prj_meta(self.continuous_rebuild_project_name, meta)
 
     async def write_staging_project_configs(self) -> None:
         """Submit the ``prjconf`` and ``meta`` to the test project on OBS.
@@ -510,7 +496,31 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         Then we send the ``meta`` and then the ``prjconf``.
         """
-        await self._write_project_configs(self.staging_project_name)
+        confs: _ProjectConfigs = {}
+
+        async def _fetch_prjconf():
+            confs["prjconf"] = await _fetch_bci_devel_project_config(
+                self.os_version, "prjconf"
+            )
+
+        async def _fetch_prj():
+            confs["meta"] = await self._generate_test_project_meta(
+                self.staging_project_name
+            )
+
+        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
+
+        # First set the project meta! This will create the project if it does not
+        # exist already, if we do it asynchronously, then the prjconf might be
+        # written before the project exists, which fails
+        await self._send_prj_meta(self.staging_project_name, confs["meta"])
+
+        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
+            await tmp_prjconf.write(confs["prjconf"])
+            await tmp_prjconf.flush()
+            await self._run_cmd(
+                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
+            )
 
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
@@ -714,7 +724,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             components.
 
         """
-        tasks = []
+        tasks: list[Coroutine[None, None, list[str]]] = []
 
         await aiofiles.os.makedirs(destination_prj_folder, exist_ok=True)
 
@@ -741,7 +751,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             img_dest_dir = os.path.join(destination_prj_folder, bci.package_name)
             tasks.append(write_files(bci, img_dest_dir))
 
-        async def write_obs_workflows_yml():
+        async def write_obs_workflows_yml() -> list[str]:
             await aiofiles.os.makedirs(
                 (dot_obs := os.path.join(destination_prj_folder, ".obs")), exist_ok=True
             )
@@ -751,7 +761,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 await workflows_file.write(self.obs_workflows_yml)
             return [".obs/workflows.yml"]
 
+        async def write_underscore_config() -> list[str]:
+            prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
+            async with aiofiles.open(
+                os.path.join(destination_prj_folder, "_config"), "w"
+            ) as conf:
+                await conf.write(prjconf)
+
+            return ["_config"]
+
         tasks.append(write_obs_workflows_yml())
+        tasks.append(write_underscore_config())
+
         files = await asyncio.gather(*tasks)
         flattened_file_list = []
         for file_list in files:
