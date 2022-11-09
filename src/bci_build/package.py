@@ -1691,6 +1691,30 @@ ALERTMANAGER_CONTAINERS = [
     for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
 ]
 
+BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
+BLACKBOX_EXPORTER_CONTAINERS = [
+    ApplicationStackContainer(
+        package_name="blackbox_exporter-image",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        name="blackbox_exporter",
+        pretty_name="Blackbox Exporter",
+        package_list=[BLACKBOX_EXPORTER_PACKAGE_NAME],
+        version="%%blackbox_exporter_version%%",
+        version_in_uid=False,
+        entrypoint=["/usr/bin/blackbox_exporter"],
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%blackbox_exporter_version%%",
+                package_name=BLACKBOX_EXPORTER_PACKAGE_NAME,
+                parse_version="patch",
+            )
+        ],
+        exposes_tcp=[9115],
+    )
+    for os_version in (OsVersion.SP4, OsVersion.TUMBLEWEED)
+]
+
 GRAFANA_FILES = {}
 for filename in {"run.sh", "LICENSE"}:
     with open(os.path.join(os.path.dirname(__file__), "grafana", filename)) as cursor:
@@ -2064,6 +2088,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *POSTGRES_CONTAINERS,
         *PROMETHEUS_CONTAINERS,
         *ALERTMANAGER_CONTAINERS,
+        *BLACKBOX_EXPORTER_CONTAINERS,
         *GRAFANA_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
