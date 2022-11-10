@@ -204,7 +204,7 @@ class StagingBot:
 
         """
         return (
-            str(self.os_version).lower()
+            str(self.os_version)
             if self.os_version == OsVersion.TUMBLEWEED
             else f"sle15-sp{str(self.os_version)}"
         )
