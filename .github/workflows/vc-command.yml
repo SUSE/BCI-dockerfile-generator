@@ -1,0 +1,52 @@
+---
+name: Changelog Command
+on:
+  repository_dispatch:
+    types: [vc-command]
+
+jobs:
+  append-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the necessary variables from the command
+        id: vars
+        run: |
+          branch=${{ github.event.client_payload.pull_request.head.label }}
+          if [[ -z "$branch" ]]; then echo "No branch set!"; exit 1; fi
+          # fail if the origin branch is wrong
+          [[ "$branch" =~ ^for-deploy- ]]
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+
+          user=${{ github.event.client_payload.slash_command.args.named.user }}
+          if [[ -z "$user" ]]; then echo "Missing user parameter!"; exit 1; fi
+          echo "user=$user" >> $GITHUB_OUTPUT
+
+          entry=${{ github.event.client_payload.slash_command.args.named.entry }}
+          if [[ -z "$entry" ]]; then echo "Missing entry parameter!"; exit 1; fi
+          echo "entry=$entry" >> $GITHUB_OUTPUT
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: |
+          . /etc/os-release
+          echo "deb http://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_$VERSION_ID/ /" | sudo tee /etc/apt/sources.list.d/openSUSE:Tools.list
+          curl -fsSL https://download.opensuse.org/repositories/openSUSE:Tools/xUbuntu_$VERSION_ID/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/openSUSE_Tools.gpg > /dev/null
+          sudo apt update
+          sudo apt install osc fish
+
+      - name: install python dependencies
+        run: poetry install
+
+
+      - name: add the changelog entries
+        run: poetry run ./scratch-build-bot.py -vvvv --os-version ${branch/for-deploy-/} add_changelog_entry

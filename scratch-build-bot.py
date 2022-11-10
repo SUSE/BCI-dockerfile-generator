@@ -32,6 +32,7 @@ if __name__ == "__main__":
         "wait",
         "get_build_quality",
         "create_cr_project",
+        "add_changelog_entry",
     ]
 
     parser = argparse.ArgumentParser()
@@ -141,6 +142,10 @@ if __name__ == "__main__":
         "create_cr_project",
         help="Create the continuous rebuild project on OBS and write the _config file into the current working directory",
     )
+    subparsers.add_parser(
+        "add_changelog_entry",
+        help="Add a changelog entry to the specified packages to the for-deploy-$deploment_branch branch",
+    )
 
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
@@ -242,6 +247,21 @@ if __name__ == "__main__":
 
         elif action == "create_cr_project":
             coro = bot.write_cr_project_config()
+        elif action == "add_changelog_entry":
+
+            async def _add_changelog():
+                if not (entry := os.getenv("entry")):
+                    raise RuntimeError("Environment variable 'entry' is not set")
+                if not (username := os.getenv("user")):
+                    raise RuntimeError("Environment variable 'user' is not set")
+                pkg_names = None
+                if packages := os.getenv("packages"):
+                    pkg_names = packages.split(",")
+                await bot.add_changelog_entry(
+                    entry=entry, username=username, package_names=pkg_names
+                )
+
+            coro = _add_changelog()
         else:
             assert False, f"invalid action: {action}"
 

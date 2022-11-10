@@ -11,7 +11,7 @@ from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
 from functools import reduce
-from typing import Any
+from typing import Callable
 from typing import ClassVar
 from typing import Coroutine
 from typing import Generator
@@ -28,12 +28,14 @@ from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from bci_build.update import get_bci_project_name
 from obs_package_update.util import CommandError
+from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
 from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
+from staging.user import User
 from staging.util import ensure_absent
 from staging.util import get_obs_project_url
 
@@ -617,8 +619,11 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         await asyncio.gather(*tasks)
 
-    def _get_changed_packages_by_commit(self, commit: str) -> list[str]:
-        repo = git.Repo(".")
+    def _get_changed_packages_by_commit(self, commit: str | git.Commit) -> list[str]:
+        git_commit = (
+            commit if isinstance(commit, git.Commit) else git.Repo(".").commit(commit)
+        )
+
         bci_pkg_names = [bci.package_name for bci in self.bcis]
         packages = []
 
@@ -626,7 +631,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         # => list of changed files
         #    each file's first path element is the package name -> save that in
         #    `packages`
-        for diff in repo.commit(commit).diff(f"origin/{self.deployment_branch_name}"):
+        for diff in git_commit.diff(f"origin/{self.deployment_branch_name}"):
             # no idea how this could happen, but in theory the diff mode can be
             # `C` for conflict => abort if that's the case
             assert (
@@ -655,6 +660,23 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res), True)
         return res
 
+    async def _run_git_action_in_worktree(
+        self,
+        new_branch_name: str,
+        origin_branch_name: str,
+        action: Callable[[str], Coroutine[None, None, str | None]],
+    ) -> str | None:
+        await self._run_cmd(
+            f"git worktree add -B {new_branch_name} {new_branch_name} {origin_branch_name}"
+        )
+        worktree_dir = os.path.join(os.getcwd(), new_branch_name)
+        try:
+            commit = await action(worktree_dir)
+        finally:
+            await self._run_cmd(f"git worktree remove {new_branch_name}")
+
+        return commit
+
     async def write_all_build_recipes_to_branch(
         self, commit_msg: str = ""
     ) -> str | None:
@@ -669,13 +691,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             ``None`` is returned.
 
         """
-        await self._run_cmd(
-            f"git worktree add -B {self.branch_name} {self.branch_name} "
-            f"origin/{self.deployment_branch_name}"
-        )
-        worktree_dir = os.path.join(os.getcwd(), self.branch_name)
 
-        try:
+        async def _write_build_recipes_in_worktree(worktree_dir: str) -> str | None:
             files = await self.write_all_image_build_recipes(worktree_dir)
 
             run_in_worktree = RunCommand(cwd=worktree_dir, logger=LOGGER)
@@ -704,11 +721,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             ).stdout.strip()
             LOGGER.info("Created commit %s given the current state", commit)
             await run_in_worktree("git push --force-with-lease origin HEAD")
+            return commit
 
-        finally:
-            await self._run_cmd(f"git worktree remove {self.branch_name}")
-
-        return commit
+        return await self._run_git_action_in_worktree(
+            self.branch_name,
+            f"origin/{self.deployment_branch_name}",
+            _write_build_recipes_in_worktree,
+        )
 
     async def write_all_image_build_recipes(
         self, destination_prj_folder: str
@@ -970,3 +989,99 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             raise RuntimeError(f"{self.staging_project_name} is still dirty!")
 
         return build_res
+
+    async def _fetch_user(self, username: str) -> User:
+        return User.from_xml(
+            (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
+        )
+
+    def _get_commit_range_to_deployment_branch(
+        self, branch_name: str
+    ) -> list[git.Commit]:
+        repo = git.Repo(".")
+        deployment_head = repo.commit(self.deployment_branch_name)
+        branch_head = repo.commit(branch_name)
+
+        def _recurse_search_for_ancestor(
+            commit: git.Commit, ancestor: git.Commit
+        ) -> list[git.Commit] | None:
+            for parent in commit.parents:
+                if parent == ancestor:
+                    return [parent]
+
+                if hist := _recurse_search_for_ancestor(parent, ancestor):
+                    return [parent] + hist
+
+            return None
+
+        commits = _recurse_search_for_ancestor(branch_head, deployment_head)
+        if not commits:
+            raise RuntimeError(
+                f"Could not find a path from {branch_name} to {self.deployment_branch_name}"
+            )
+        return [branch_head] + commits
+
+    async def add_changelog_entry(
+        self, entry: str, username: str, package_names: list[str] | None
+    ) -> str:
+        target_branch_name = f"for-deploy-{self.deployment_branch_name}"
+
+        user = await self._fetch_user(username)
+
+        if not package_names:
+            commits = self._get_commit_range_to_deployment_branch(
+                f"origin/{target_branch_name}"
+            )
+            package_names = []
+            for commit in commits:
+                package_names.extend(self._get_changed_packages_by_commit(commit))
+
+            package_names = list(set(package_names))
+
+        if not package_names:
+            raise ValueError(
+                "No package names were supplied or no packages were changed between "
+                f"origin/{target_branch_name} and origin/{self.deployment_branch_name}"
+            )
+
+        async def _add_changelog_in_worktree(worktree_dir: str) -> str:
+            run_in_worktree = RunCommand(
+                cwd=worktree_dir,
+                logger=LOGGER,
+            )
+            tasks: list[Coroutine[None, None, CommandResult]] = []
+            files = []
+            for package_name in package_names:
+                fname = f"{package_name}/{package_name}.changes"
+                tasks.append(
+                    run_in_worktree(
+                        f"/usr/lib/build/vc -m '{entry}' {fname}",
+                        env={"VC_REALNAME": user.realname, "VC_MAILADDR": user.email},
+                    )
+                )
+                files.append(fname)
+
+            await asyncio.gather(*tasks)
+            await run_in_worktree("git add " + " ".join(files))
+            await run_in_worktree(
+                f"git commit -m 'Update changelog for {' '.join(package_names)}'",
+                env={
+                    "GIT_AUTHOR_NAME": user.realname,
+                    "GIT_AUTHOR_EMAIL": user.email,
+                    "GIT_COMMITTER_NAME": "SUSE Update Bot",
+                    "GIT_COMMITTER_EMAIL": "noreply@suse.com",
+                },
+            )
+            commit = (
+                await run_in_worktree("git show -s --pretty=format:%H HEAD")
+            ).stdout.strip()
+            await run_in_worktree("git push --force-with-lease origin HEAD")
+            return commit
+
+        commit = await self._run_git_action_in_worktree(
+            new_branch_name=target_branch_name,
+            origin_branch_name=f"origin/{target_branch_name}",
+            action=_add_changelog_in_worktree,
+        )
+        assert commit
+        return commit
