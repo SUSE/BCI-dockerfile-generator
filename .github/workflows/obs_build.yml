@@ -74,6 +74,7 @@ jobs:
 
       - name: commit the changes to a test branch and create a staging project on OBS
         run: |
+          set -eux pipefail
           poetry run ./scratch-build-bot.py \
               --os-version ${{ matrix.os_version }} \
               -vvvv \
@@ -110,6 +111,7 @@ jobs:
 
       - name: wait for the build to finish
         run: |
+          set -eux pipefail
           echo "build_res<<EOF" >> $GITHUB_ENV
           poetry run ./scratch-build-bot.py query_build_result >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
