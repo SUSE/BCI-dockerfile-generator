@@ -656,6 +656,23 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res), True)
         return res
 
+    async def _run_git_action_in_worktree(
+        self,
+        new_branch_name: str,
+        origin_branch_name: str,
+        action: Callable[[str], Coroutine[None, None, str | None]],
+    ) -> str | None:
+        await self._run_cmd(
+            f"git worktree add -B {new_branch_name} {new_branch_name} {origin_branch_name}"
+        )
+        worktree_dir = os.path.join(os.getcwd(), new_branch_name)
+        try:
+            commit = await action(worktree_dir)
+        finally:
+            await self._run_cmd(f"git worktree remove {new_branch_name}")
+
+        return commit
+
     async def write_all_build_recipes_to_branch(
         self, commit_msg: str = ""
     ) -> str | None:
@@ -670,13 +687,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             ``None`` is returned.
 
         """
-        await self._run_cmd(
-            f"git worktree add -B {self.branch_name} {self.branch_name} "
-            f"origin/{self.deployment_branch_name}"
-        )
-        worktree_dir = os.path.join(os.getcwd(), self.branch_name)
 
-        try:
+        async def _write_build_recipes_in_worktree(worktree_dir: str) -> str | None:
             files = await self.write_all_image_build_recipes(worktree_dir)
 
             run_in_worktree = RunCommand(cwd=worktree_dir, logger=LOGGER)
@@ -705,11 +717,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             ).stdout.strip()
             LOGGER.info("Created commit %s given the current state", commit)
             await run_in_worktree("git push --force-with-lease origin HEAD")
+            return commit
 
-        finally:
-            await self._run_cmd(f"git worktree remove {self.branch_name}")
-
-        return commit
+        return await self._run_git_action_in_worktree(
+            self.branch_name,
+            f"origin/{self.deployment_branch_name}",
+            _write_build_recipes_in_worktree,
+        )
 
     async def write_all_image_build_recipes(
         self, destination_prj_folder: str
