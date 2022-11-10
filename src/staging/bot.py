@@ -34,6 +34,7 @@ from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
+from staging.user import User
 from staging.util import ensure_absent
 from staging.util import get_obs_project_url
 
@@ -970,3 +971,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             raise RuntimeError(f"{self.staging_project_name} is still dirty!")
 
         return build_res
+
+    async def _fetch_user(self, username: str) -> User:
+        return User.from_xml(
+            (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
+        )
+
