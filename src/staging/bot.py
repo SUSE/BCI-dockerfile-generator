@@ -11,7 +11,7 @@ from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
 from functools import reduce
-from typing import Any
+from typing import Callable
 from typing import ClassVar
 from typing import Coroutine
 from typing import Generator
@@ -28,6 +28,7 @@ from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from bci_build.update import get_bci_project_name
 from obs_package_update.util import CommandError
+from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
 from obs_package_update.util import RunCommand
 from staging.build_result import Arch
@@ -994,3 +995,93 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
         )
 
+    def _get_commit_range_to_deployment_branch(
+        self, branch_name: str
+    ) -> list[git.Commit]:
+        repo = git.Repo(".")
+        deployment_head = repo.commit(self.deployment_branch_name)
+        branch_head = repo.commit(branch_name)
+
+        def _recurse_search_for_ancestor(
+            commit: git.Commit, ancestor: git.Commit
+        ) -> list[git.Commit] | None:
+            for parent in commit.parents:
+                if parent == ancestor:
+                    return [parent]
+
+                if hist := _recurse_search_for_ancestor(parent, ancestor):
+                    return [parent] + hist
+
+            return None
+
+        commits = _recurse_search_for_ancestor(branch_head, deployment_head)
+        if not commits:
+            raise RuntimeError(
+                f"Could not find a path from {branch_name} to {self.deployment_branch_name}"
+            )
+        return [branch_head] + commits
+
+    async def add_changelog_entry(
+        self, entry: str, username: str, package_names: list[str] | None
+    ) -> str:
+        target_branch_name = f"for-deploy-{self.deployment_branch_name}"
+
+        user = await self._fetch_user(username)
+
+        if not package_names:
+            commits = self._get_commit_range_to_deployment_branch(
+                f"origin/{target_branch_name}"
+            )
+            package_names = []
+            for commit in commits:
+                package_names.extend(self._get_changed_packages_by_commit(commit))
+
+            package_names = list(set(package_names))
+
+        if not package_names:
+            raise ValueError(
+                "No package names were supplied or no packages were changed between "
+                f"origin/{target_branch_name} and origin/{self.deployment_branch_name}"
+            )
+
+        async def _add_changelog_in_worktree(worktree_dir: str) -> str:
+            run_in_worktree = RunCommand(
+                cwd=worktree_dir,
+                logger=LOGGER,
+            )
+            tasks: list[Coroutine[None, None, CommandResult]] = []
+            files = []
+            for package_name in package_names:
+                fname = f"{package_name}/{package_name}.changes"
+                tasks.append(
+                    run_in_worktree(
+                        f"/usr/lib/build/vc -m '{entry}' {fname}",
+                        env={"VC_REALNAME": user.realname, "VC_MAILADDR": user.email},
+                    )
+                )
+                files.append(fname)
+
+            await asyncio.gather(*tasks)
+            await run_in_worktree("git add " + " ".join(files))
+            await run_in_worktree(
+                f"git commit -m 'Update changelog for {' '.join(package_names)}'",
+                env={
+                    "GIT_AUTHOR_NAME": user.realname,
+                    "GIT_AUTHOR_EMAIL": user.email,
+                    "GIT_COMMITTER_NAME": "SUSE Update Bot",
+                    "GIT_COMMITTER_EMAIL": "noreply@suse.com",
+                },
+            )
+            commit = (
+                await run_in_worktree("git show -s --pretty=format:%H HEAD")
+            ).stdout.strip()
+            await run_in_worktree("git push --force-with-lease origin HEAD")
+            return commit
+
+        commit = await self._run_git_action_in_worktree(
+            new_branch_name=target_branch_name,
+            origin_branch_name=f"origin/{target_branch_name}",
+            action=_add_changelog_in_worktree,
+        )
+        assert commit
+        return commit
