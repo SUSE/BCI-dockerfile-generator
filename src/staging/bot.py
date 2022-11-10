@@ -618,8 +618,11 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         await asyncio.gather(*tasks)
 
-    def _get_changed_packages_by_commit(self, commit: str) -> list[str]:
-        repo = git.Repo(".")
+    def _get_changed_packages_by_commit(self, commit: str | git.Commit) -> list[str]:
+        git_commit = (
+            commit if isinstance(commit, git.Commit) else git.Repo(".").commit(commit)
+        )
+
         bci_pkg_names = [bci.package_name for bci in self.bcis]
         packages = []
 
@@ -627,7 +630,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         # => list of changed files
         #    each file's first path element is the package name -> save that in
         #    `packages`
-        for diff in repo.commit(commit).diff(f"origin/{self.deployment_branch_name}"):
+        for diff in git_commit.diff(f"origin/{self.deployment_branch_name}"):
             # no idea how this could happen, but in theory the diff mode can be
             # `C` for conflict => abort if that's the case
             assert (
