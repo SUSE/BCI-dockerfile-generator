@@ -52,7 +52,8 @@ jobs:
         run: |
           packages="${{ github.event.client_payload.slash_command.args.named.packages }}"
           if [[ -z "$packages" ]]; then unset packages; fi
-          poetry run ./scratch-build-bot.py -vvvv --os-version ${{ env.os_version }} add_changelog_entry
+          poetry run ./scratch-build-bot.py -vvvv add_changelog_entry
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
+          OS_VERSION: ${{ env.os_version }}
