@@ -116,6 +116,8 @@ class PackageType(enum.Enum):
 class OsVersion(enum.Enum):
     """Enumeration of the base operating system versions for BCI."""
 
+    #: SLE 15 Service Pack 5
+    SP5 = 5
     #: SLE 15 Service Pack 4
     SP4 = 4
     #: SLE 15 Service Pack 3
@@ -144,7 +146,7 @@ class OsVersion(enum.Enum):
 #: to ``released``.
 RELEASED_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
 
-ALL_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.TUMBLEWEED]
+ALL_OS_VERSIONS = [OsVersion.SP3, OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
