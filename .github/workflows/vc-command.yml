@@ -11,17 +11,18 @@ jobs:
       - name: Get the necessary variables from the command
         id: vars
         run: |
-          branch=${{ github.event.client_payload.pull_request.head.label }}
+          # this returns SUSE:$branch_name
+          branch="${{ github.event.client_payload.pull_request.head.label }}"
           if [[ -z "$branch" ]]; then echo "No branch set!"; exit 1; fi
           # fail if the origin branch is wrong
           [[ "$branch" =~ ^for-deploy- ]]
           echo "branch=$branch" >> $GITHUB_OUTPUT
 
-          user=${{ github.event.client_payload.slash_command.args.named.user }}
+          user="${{ github.event.client_payload.slash_command.args.named.user }}"
           if [[ -z "$user" ]]; then echo "Missing user parameter!"; exit 1; fi
           echo "user=$user" >> $GITHUB_OUTPUT
 
-          entry=${{ github.event.client_payload.slash_command.args.named.entry }}
+          entry="${{ github.event.client_payload.slash_command.args.named.entry }}"
           if [[ -z "$entry" ]]; then echo "Missing entry parameter!"; exit 1; fi
           echo "entry=$entry" >> $GITHUB_OUTPUT
 
