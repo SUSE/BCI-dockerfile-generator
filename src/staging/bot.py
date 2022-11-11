@@ -1024,7 +1024,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
     async def add_changelog_entry(
         self, entry: str, username: str, package_names: list[str] | None
     ) -> str:
-        target_branch_name = f"for-deploy-{self.deployment_branch_name}"
+        target_branch_name = f"for-deploy-{self.os_version}"
 
         user = await self._fetch_user(username)
 
