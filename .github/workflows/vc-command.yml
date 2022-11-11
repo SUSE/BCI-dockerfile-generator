@@ -48,10 +48,18 @@ jobs:
           if [[ -z "$entry" ]]; then echo "No changelog entry provided!"; exit 1; fi
           export entry
 
-          packages="${{ github.event.client_payload.slash_command.args.named.packages }}"
-          if [[ -z "$packages" ]]; then unset packages; fi
+          PACKAGES="${{ github.event.client_payload.slash_command.args.named.packages }}"
+          if [[ -z "$PACKAGES" ]]; then
+              unset PACKAGES
+          else
+              export PACKAGES
+          fi
 
-          poetry run ./scratch-build-bot.py -vvvv add_changelog_entry
+          poetry run ./scratch-build-bot.py \
+              -vvvv --os-version $OS_VERSION \
+                add_changelog_entry \
+                --user $user \
+                $entry
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"

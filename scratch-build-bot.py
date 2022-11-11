@@ -142,9 +142,35 @@ if __name__ == "__main__":
         "create_cr_project",
         help="Create the continuous rebuild project on OBS and write the _config file into the current working directory",
     )
-    subparsers.add_parser(
+    changelog_parser = subparsers.add_parser(
         "add_changelog_entry",
-        help="Add a changelog entry to the specified packages to the for-deploy-$deploment_branch branch",
+        help="Add a changelog entry to the specified packages to the 'for-deploy-$deploment_branch' branch",
+    )
+    changelog_parser.add_argument(
+        "--user",
+        nargs=1,
+        type=str,
+        help="The OBS user as who the changelog entry shall be made",
+    )
+    _PACKAGES_ARG_ENV_VAR = "PACKAGES"
+    changelog_parser.add_argument(
+        "--packages",
+        nargs="*",
+        type=str,
+        default=[os.getenv(_PACKAGES_ARG_ENV_VAR)],
+        help=f"""The packages to which the changelog entry will be added. If not
+provided, then all packages that were changed between the for-deploy-* branch
+and the deployment branch will be updated.
+
+The package list can be provided either as individual parameters or as a
+comma-separated list. The package list is taken from the environment variable
+{_PACKAGES_ARG_ENV_VAR} if it is not provided via CLI flags.""",
+    )
+    changelog_parser.add_argument(
+        "entry",
+        nargs="+",
+        type=str,
+        help="The actual changelog entry that shall be made",
     )
 
     loop = asyncio.get_event_loop()
@@ -248,20 +274,18 @@ if __name__ == "__main__":
         elif action == "create_cr_project":
             coro = bot.write_cr_project_config()
         elif action == "add_changelog_entry":
+            changelog_entry = " ".join(args.entry)
+            username = args.user[0]
+            pkg_names = None
+            if (packages_len := len(args.packages)) == 1:
+                if pkgs_csv := args.packages[0]:
+                    pkg_names = pkgs_csv.split(",")
+            elif packages_len > 1:
+                pkg_names = args.packages
 
-            async def _add_changelog():
-                if not (entry := os.getenv("entry")):
-                    raise RuntimeError("Environment variable 'entry' is not set")
-                if not (username := os.getenv("user")):
-                    raise RuntimeError("Environment variable 'user' is not set")
-                pkg_names = None
-                if packages := os.getenv("packages"):
-                    pkg_names = packages.split(",")
-                await bot.add_changelog_entry(
-                    entry=entry, username=username, package_names=pkg_names
-                )
-
-            coro = _add_changelog()
+            coro = bot.add_changelog_entry(
+                entry=changelog_entry, username=username, package_names=pkg_names
+            )
         else:
             assert False, f"invalid action: {action}"
 
