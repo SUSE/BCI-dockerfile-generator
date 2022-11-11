@@ -999,7 +999,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         self, branch_name: str
     ) -> list[git.Commit]:
         repo = git.Repo(".")
-        deployment_head = repo.commit(self.deployment_branch_name)
+        deployment_head = repo.commit(f"origin/{self.deployment_branch_name}")
         branch_head = repo.commit(branch_name)
 
         def _recurse_search_for_ancestor(
