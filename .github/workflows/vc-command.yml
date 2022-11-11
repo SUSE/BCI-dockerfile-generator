@@ -15,8 +15,8 @@ jobs:
           branch="${{ github.event.client_payload.pull_request.head.label }}"
           if [[ -z "$branch" ]]; then echo "No branch set!"; exit 1; fi
           # fail if the origin branch is wrong
-          [[ "$branch" =~ ^for-deploy- ]]
-          echo "branch=$branch" >> $GITHUB_OUTPUT
+          [[ "$branch" =~ ^SUSE:for-deploy- ]]
+          echo "os_version=${branch/SUSE:for-deploy-/}" >> $GITHUB_OUTPUT
 
           user="${{ github.event.client_payload.slash_command.args.named.user }}"
           if [[ -z "$user" ]]; then echo "Missing user parameter!"; exit 1; fi
@@ -50,7 +50,8 @@ jobs:
 
 
       - name: add the changelog entries
-        run: poetry run ./scratch-build-bot.py -vvvv --os-version ${branch/for-deploy-/} add_changelog_entry
+        run: |
+          poetry run ./scratch-build-bot.py -vvvv --os-version ${{ env.os_version }} add_changelog_entry
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
