@@ -22,8 +22,8 @@ jobs:
           if [[ -z "$user" ]]; then echo "Missing user parameter!"; exit 1; fi
           echo "user=$user" >> $GITHUB_OUTPUT
 
-          entry="${{ github.event.client_payload.slash_command.args.named.entry }}"
-          if [[ -z "$entry" ]]; then echo "Missing entry parameter!"; exit 1; fi
+          entry="${{ github.event.client_payload.slash_command.args.unnamed.all }}"
+          if [[ -z "$entry" ]]; then echo "No changelog entry provided!"; exit 1; fi
           echo "entry=$entry" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v3
