@@ -51,3 +51,6 @@ jobs:
 
       - name: add the changelog entries
         run: poetry run ./scratch-build-bot.py -vvvv --os-version ${branch/for-deploy-/} add_changelog_entry
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
