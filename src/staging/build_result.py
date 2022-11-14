@@ -33,6 +33,7 @@ class PackageStatusCode(enum.Enum):
     SCHEDULED = "scheduled"
     SIGNING = "signing"
     BLOCKED = "blocked"
+    BROKEN = "broken"
 
     def __str__(self) -> str:
         return self.value
@@ -49,6 +50,7 @@ class PackageStatusCode(enum.Enum):
             PackageStatusCode.SCHEDULED: "⏱",
             PackageStatusCode.SIGNING: "🔑",
             PackageStatusCode.BLOCKED: "✋",
+            PackageStatusCode.BROKEN: "💥",
         }
         return f"{_emoji[self]} {self}"
 
