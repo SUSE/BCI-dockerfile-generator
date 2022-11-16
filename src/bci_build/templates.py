@@ -36,6 +36,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 
 {{ DOCKERFILE_RUN }} zypper -n in --no-recommends {{ image.packages }}; zypper -n clean; rm -rf /var/log/*
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
+{%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
 {%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}
 {%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
@@ -64,6 +65,9 @@ KIWI_TEMPLATE = jinja2.Template(
           name="{{ image.build_tags[0].split(':')[0] }}"
           tag="{{ image.build_tags[0].split(':')[1] }}"
           maintainer="{{ image.maintainer }}"{% if image.kiwi_additional_tags %}
+{%- if image.entrypoint_user  %}
+          user="{{ image.entrypoint_user }}"
+{%- endif %}
           additionaltags="{{ image.kiwi_additional_tags }}"{% endif %}>
         <labels>
           <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
