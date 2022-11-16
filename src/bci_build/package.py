@@ -2058,6 +2058,7 @@ REGISTRY_CONTAINERS = [
             )
         ],
         entrypoint=["/usr/bin/registry"],
+        entrypoint_user="registry",
         cmd=["serve", "/etc/registry/config.yml"],
         build_recipe_type=BuildType.KIWI,
         volumes=["/var/lib/docker-registry"],
