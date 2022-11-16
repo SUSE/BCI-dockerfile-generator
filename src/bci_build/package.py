@@ -276,6 +276,9 @@ class BaseContainerImage(abc.ABC):
     #: binary and its parameters as a list
     entrypoint: Optional[List[str]] = None
 
+    # The user to use for entrypoint service
+    entrypoint_user: Optional[str] = ""
+
     #: An optional CMD for the image, it is omitted if empty or ``None``
     cmd: Optional[List[str]] = None
 
@@ -2055,6 +2058,7 @@ REGISTRY_CONTAINERS = [
             )
         ],
         entrypoint=["/usr/bin/registry"],
+        entrypoint_user="registry",
         cmd=["serve", "/etc/registry/config.yml"],
         build_recipe_type=BuildType.KIWI,
         volumes=["/var/lib/docker-registry"],
