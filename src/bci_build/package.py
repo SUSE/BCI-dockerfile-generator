@@ -18,7 +18,6 @@ from typing import Optional
 from typing import overload
 from typing import Union
 
-import aiofiles
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
@@ -30,6 +29,20 @@ _BASH_SET = "set -euo pipefail"
 #: a ``RUN`` command with a common set of bash flags applied to prevent errors
 #: from not being noticed
 DOCKERFILE_RUN = f"RUN {_BASH_SET};"
+
+
+@enum.unique
+class Arch(enum.Enum):
+    """Architectures of packages on OBS"""
+
+    X86_64 = "x86_64"
+    AARCH64 = "aarch64"
+    PPC64LE = "ppc64le"
+    S390X = "s390x"
+    LOCAL = "local"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 @enum.unique
@@ -260,10 +273,18 @@ class BaseContainerImage(abc.ABC):
     os_version: OsVersion
 
     #: The container from which this one is derived. defaults to
-    #: ``suse/sle15:15.$SP`` when an empty string is used.
+    #: ``suse/sle15:15.$SP`` (for SLE) or ``opensuse/tumbleweed:latest`` (for
+    #: Tumbleweed) when an empty string is used.
+    #:
     #: When from image is ``None``, then this image will not be based on
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: Optional[str] = ""
+
+    #: Architectures of this image.
+    #:
+    #: If supplied, then this image will be restricted to only build on the
+    #: supplied architectures. By default, there is no restriction
+    exclusive_arch: list[Arch] | None = None
 
     #: Determines whether this image will have the ``latest`` tag.
     is_latest: bool = False
@@ -369,6 +390,8 @@ class BaseContainerImage(abc.ABC):
     def __post_init__(self) -> None:
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
+        if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
+            raise ValueError(f"{Arch.LOCAL} must not appear in {self.exclusive_arch=}")
         if self.config_sh_script and self.custom_end:
             raise ValueError(
                 "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."
@@ -1046,7 +1069,11 @@ class OsContainer(BaseContainerImage):
         return f"{self.registry}/bci/bci-{self.name}:{self.version_label}"
 
 
-def _generate_disk_size_constraints(size_gb: int) -> str:
+def generate_disk_size_constraints(size_gb: int) -> str:
+    """Creates the contents of a :file:`_constraints` file for OBS to require
+    workers with at least ``size_gb`` GB of disk space.
+
+    """
     return f"""<constraints>
   <hardware>
     <disk>
@@ -1259,7 +1286,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
         ],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(8)
+            "_constraints": generate_disk_size_constraints(8)
         },
     }
 
@@ -1333,7 +1360,7 @@ def _get_openjdk_kwargs(
         + ("" if os_version == OsVersion.SP3 else "-image"),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(6)
+            "_constraints": generate_disk_size_constraints(6)
         },
     }
 
@@ -1848,7 +1875,7 @@ RUST_CONTAINERS = [
         },
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
-            "_constraints": _generate_disk_size_constraints(6)
+            "_constraints": generate_disk_size_constraints(6)
         },
         replacements_via_service=[
             Replacement(

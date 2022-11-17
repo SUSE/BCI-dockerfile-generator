@@ -7,7 +7,8 @@ import jinja2
 
 #: Jinja2 template used to generate :file:`Dockerfile`
 DOCKERFILE_TEMPLATE = jinja2.Template(
-    """# SPDX-License-Identifier: {{ image.license }}
+    """{% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}
+{% endif %}# SPDX-License-Identifier: {{ image.license }}
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
@@ -34,7 +35,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 # endlabelprefix
 {%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
-{{ DOCKERFILE_RUN }} zypper -n in --no-recommends {{ image.packages }}; zypper -n clean; rm -rf /var/log/*
+{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in --no-recommends {{ image.packages }}; zypper -n clean; rm -rf /var/log/*{% endif %}
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
 {%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
