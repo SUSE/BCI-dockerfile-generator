@@ -372,9 +372,17 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             await aiofiles.os.remove(self._osc_conf_file)
 
             assert self._xdg_state_home_dir is not None
-            await ensure_absent(
-                os.path.join(self._xdg_state_home_dir.name, "osc", "cookiejar")
-            )
+
+            tasks = []
+            for suffix in ("", ".lock"):
+                tasks.append(
+                    ensure_absent(
+                        os.path.join(
+                            self._xdg_state_home_dir.name, "osc", f"cookiejar{suffix}"
+                        )
+                    )
+                )
+            await asyncio.gather(*tasks)
             await ensure_absent(os.path.join(self._xdg_state_home_dir.name, "osc"))
             self._xdg_state_home_dir.cleanup()
 
