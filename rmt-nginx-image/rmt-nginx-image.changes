@@ -1,0 +1,69 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:08 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Mon Sep 26 07:50:24 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Improve logging in nginx scripts
+
+-------------------------------------------------------------------
+Fri Aug 19 10:36:27 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Tue Aug  9 09:57:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 12:59:12 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Fri Jun 17 08:59:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue May  3 09:23:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:13:14 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:12:12 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:57:54 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Wed Mar 16 13:08:52 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix quotes in CMD and ENTRYPOINT
+
+-------------------------------------------------------------------
+Tue Mar  8 07:33:00 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:50:06 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Wed Feb 16 12:19:21 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the RMT Nginx container image

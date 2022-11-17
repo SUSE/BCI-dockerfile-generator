@@ -1,0 +1,84 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Aug 19 10:36:43 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Tue Aug  9 09:57:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 12:59:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Fri Jun 17 08:59:23 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Fri Jun 10 13:46:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New version 2.8
+
+-------------------------------------------------------------------
+Tue May  3 09:23:45 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:13:33 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:12:32 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:58:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Mon Mar 28 07:52:33 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Use doublequotes in Dockerfile
+
+-------------------------------------------------------------------
+Tue Mar  8 14:00:14 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:55:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Wed Feb 16 12:27:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Rename package to rmt-server-image
+
+-------------------------------------------------------------------
+Thu Jan 20 11:36:29 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add latest & version-release tags
+
+-------------------------------------------------------------------
+Tue Jan 11 16:38:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log
+
+-------------------------------------------------------------------
+Thu Dec 16 09:58:00 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the SUSE RMT Server Container

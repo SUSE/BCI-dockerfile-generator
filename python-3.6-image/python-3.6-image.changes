@@ -1,0 +1,79 @@
+-------------------------------------------------------------------
+Wed Oct 19 13:41:48 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:51:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug  9 09:56:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 12:58:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Tue May  3 09:23:08 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:46 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:11:43 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Wed Apr 13 09:15:59 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Sync the variable names with the generator
+
+-------------------------------------------------------------------
+Tue Apr 12 08:57:37 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:32:37 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:49:47 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 09:57:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Tue Feb  8 16:01:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Thu Jan 20 11:35:36 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add version-release tag
+
+-------------------------------------------------------------------
+Tue Jan 11 16:37:10 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log
+
+-------------------------------------------------------------------
+Wed Dec  1 10:59:39 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- First version of the python 3.6 language stack container

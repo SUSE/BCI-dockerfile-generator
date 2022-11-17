@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:54:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Wed Aug 24 09:22:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the prometheus container

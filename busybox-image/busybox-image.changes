@@ -1,0 +1,71 @@
+-------------------------------------------------------------------
+Wed Oct 19 11:16:23 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:54:32 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug 16 10:09:08 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use %OS_VERSION_NO_DASH% for proper branding
+
+-------------------------------------------------------------------
+Thu Jul  7 14:53:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Tue Jul  5 10:18:40 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Fri Jun 17 13:03:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Thu Apr 28 10:22:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- fix default shell of root to sh instead of bash
+
+-------------------------------------------------------------------
+Fri Apr 22 08:17:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:15:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 09:01:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:36:11 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:53:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 13:29:54 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update image description to use the latest state from SLE
+- Update the labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Mon Oct 25 13:17:11 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- First version of the busybox BCI container
+

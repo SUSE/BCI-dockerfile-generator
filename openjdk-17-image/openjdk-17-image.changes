@@ -1,0 +1,45 @@
+-------------------------------------------------------------------
+Wed Oct 19 13:13:53 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:53:32 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug  9 09:58:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 13:01:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Tue May  3 09:25:33 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:15:42 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+- add _constraints file to request enough disk space
+
+-------------------------------------------------------------------
+Wed Apr 20 14:14:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:59:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Mon Mar 28 16:24:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the OpenJDK 17 image, jsc#BCI-100

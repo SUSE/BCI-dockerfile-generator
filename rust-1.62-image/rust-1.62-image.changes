@@ -1,0 +1,14 @@
+-------------------------------------------------------------------
+Wed Nov  9 11:01:57 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- fix wrong latest tag
+
+-------------------------------------------------------------------
+Mon Sep 26 14:52:39 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Thu Aug 11 09:39:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the Rust 1.62 image

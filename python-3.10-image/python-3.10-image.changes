@@ -1,0 +1,49 @@
+-------------------------------------------------------------------
+Wed Oct 19 13:42:57 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:51:55 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug  9 09:56:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 12:58:57 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Fri Jun 17 08:58:53 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue May  3 09:23:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:55 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:11:52 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Wed Apr 20 09:04:56 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Do not remove python 3.6 packages that are not installed; don't symlink pip & pip3; symlink into /usr/local/bin
+
+-------------------------------------------------------------------
+Wed Apr 13 09:19:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the Python 3.10 Container

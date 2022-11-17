@@ -1,0 +1,29 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:33 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Thu Aug 11 09:36:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest to Rust 1.62
+
+-------------------------------------------------------------------
+Tue Aug  9 09:57:27 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Thu Jul 14 14:33:20 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- provide a symlink for gcc and set CC environment variable to point to it
+
+-------------------------------------------------------------------
+Wed Jul 13 12:28:05 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add environment variables CARGO_VERSION and RUST_VERSION via obs-service-replace_using_package_version
+
+-------------------------------------------------------------------
+Tue Jun 21 07:13:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the rust 1.61 container image
