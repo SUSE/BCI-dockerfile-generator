@@ -1,0 +1,75 @@
+-------------------------------------------------------------------
+Wed Oct 19 13:13:29 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:53:21 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug  9 09:58:20 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 13:01:24 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Tue May  3 09:25:20 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:15:31 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+- add _constraints file to request enough disk space
+
+-------------------------------------------------------------------
+Wed Apr 20 14:14:06 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:59:36 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:34:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:51:23 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 15:48:24 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Tue Feb  8 16:02:43 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Thu Jan 20 11:34:48 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add latest & version-release tags
+
+-------------------------------------------------------------------
+Tue Jan 11 16:31:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log
+
+-------------------------------------------------------------------
+Thu Dec 16 09:54:17 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the openjdk BCI

@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Tue Oct  4 11:40:39 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- add more dependencies for the SLE build of the container 
+
+-------------------------------------------------------------------
+Tue Sep 27 06:20:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the distribution container image

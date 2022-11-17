@@ -1,0 +1,89 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:53:42 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Aug 19 10:36:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Tue Aug  9 09:58:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion to 15.4
+
+-------------------------------------------------------------------
+Fri Jun 17 13:02:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the release-stage label to released
+
+-------------------------------------------------------------------
+Fri Jun 17 09:00:53 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue May  3 09:25:46 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:16:09 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:14:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 09:00:07 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Wed Mar 16 13:09:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix quotes in CMD and ENTRYPOINT
+
+-------------------------------------------------------------------
+Tue Mar  8 07:35:06 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42), Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:51:40 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Wed Feb 16 12:23:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Rename package to rmt-mariadb-image
+
+-------------------------------------------------------------------
+Tue Feb 15 09:58:53 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Tue Feb  8 16:02:59 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Thu Jan 20 11:33:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add latest & version-release tags
+
+-------------------------------------------------------------------
+Tue Jan 11 16:30:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log
+
+-------------------------------------------------------------------
+Thu Dec 16 09:57:11 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the mariadb BCI

@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Fri Sep 30 08:27:20 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Fix entrypoint
+
+-------------------------------------------------------------------
+Mon Sep 26 16:14:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the alertmanager container image
