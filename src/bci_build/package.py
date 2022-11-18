@@ -1647,6 +1647,8 @@ POSTGRES_CONTAINERS = [
         extra_files={
             "docker-entrypoint.sh": _POSTGRES_ENTRYPOINT,
             "LICENSE": _POSTGRES_LICENSE,
+            # prevent ftbfs on workers with a root partition with 4GB
+            "_constraints": generate_disk_size_constraints(8),
         },
         replacements_via_service=[
             Replacement(
