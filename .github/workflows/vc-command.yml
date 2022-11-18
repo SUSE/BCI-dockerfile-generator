@@ -6,26 +6,20 @@ on:
 
 jobs:
   append-changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container: ghcr.io/dcermak/bci-ci:latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - uses: Gr1N/setup-poetry@v7
+
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
 
-      - run: |
-          . /etc/os-release
-          echo "deb http://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_$VERSION_ID/ /" | sudo tee /etc/apt/sources.list.d/openSUSE:Tools.list
-          curl -fsSL https://download.opensuse.org/repositories/openSUSE:Tools/xUbuntu_$VERSION_ID/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/openSUSE_Tools.gpg > /dev/null
-          sudo apt update
-          sudo apt install osc fish
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
         run: poetry install
