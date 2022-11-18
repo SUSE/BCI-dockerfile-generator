@@ -58,6 +58,11 @@ OS_VERSION_ENVVAR_NAME = "OS_VERSION"
 #: environment variable from which the password of the bot's user is taken
 OSC_PASSWORD_ENVVAR_NAME = "OSC_PASSWORD"
 
+_GIT_COMMIT_ENV = {
+    "GIT_COMMITTER_NAME": "SUSE Update Bot",
+    "GIT_COMMITTER_EMAIL": "noreply@suse.com",
+}
+
 
 async def _fetch_bci_devel_project_config(
     os_version: OsVersion, config_type: _CONFIG_T = "prjconf"
@@ -673,14 +678,32 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         self,
         new_branch_name: str,
         origin_branch_name: str,
-        action: Callable[[str], Coroutine[None, None, str | None]],
+        action: Callable[[str], Coroutine[None, None, bool]],
     ) -> str | None:
+        assert not origin_branch_name.startswith("origin/")
         await self._run_cmd(
-            f"git worktree add -B {new_branch_name} {new_branch_name} {origin_branch_name}"
+            f"git worktree add -B {new_branch_name} {new_branch_name} origin/{origin_branch_name}"
         )
         worktree_dir = os.path.join(os.getcwd(), new_branch_name)
+        commit = None
         try:
-            commit = await action(worktree_dir)
+            if await action(worktree_dir):
+                commit = (
+                    await self._run_cmd(
+                        "git show -s --pretty=format:%H HEAD", cwd=worktree_dir
+                    )
+                ).stdout.strip()
+                LOGGER.info("Created commit %s given the current state", commit)
+
+                await self._run_cmd(
+                    f"git pull --rebase origin {origin_branch_name}",
+                    cwd=worktree_dir,
+                    env={**_GIT_COMMIT_ENV, **os.environ},
+                )
+                await self._run_cmd(
+                    "git push --force-with-lease origin HEAD", cwd=worktree_dir
+                )
+
         finally:
             await self._run_cmd(f"git worktree remove {new_branch_name}")
 
@@ -701,7 +724,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         """
 
-        async def _write_build_recipes_in_worktree(worktree_dir: str) -> str | None:
+        async def _write_build_recipes_in_worktree(worktree_dir: str) -> bool:
             files = await self.write_all_image_build_recipes(worktree_dir)
 
             run_in_worktree = RunCommand(cwd=worktree_dir, logger=LOGGER)
@@ -718,23 +741,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 and not worktree.untracked_files
             ):
                 LOGGER.info("Writing all build recipes resulted in no changes")
-                return None
+                return False
 
             await run_in_worktree("git add " + " ".join(files))
             await run_in_worktree(
                 f"git commit -m '{commit_msg or 'Test build'}'",
+                env={**_GIT_COMMIT_ENV, **os.environ},
             )
-
-            commit = (
-                await run_in_worktree("git show -s --pretty=format:%H HEAD")
-            ).stdout.strip()
-            LOGGER.info("Created commit %s given the current state", commit)
-            await run_in_worktree("git push --force-with-lease origin HEAD")
-            return commit
+            return True
 
         return await self._run_git_action_in_worktree(
             self.branch_name,
-            f"origin/{self.deployment_branch_name}",
+            self.deployment_branch_name,
             _write_build_recipes_in_worktree,
         )
 
@@ -1056,7 +1074,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 f"origin/{target_branch_name} and origin/{self.deployment_branch_name}"
             )
 
-        async def _add_changelog_in_worktree(worktree_dir: str) -> str:
+        async def _add_changelog_in_worktree(worktree_dir: str) -> bool:
             run_in_worktree = RunCommand(
                 cwd=worktree_dir,
                 logger=LOGGER,
@@ -1078,21 +1096,17 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             await run_in_worktree(
                 f"git commit -m 'Update changelog for {' '.join(package_names)}'",
                 env={
+                    **_GIT_COMMIT_ENV,
                     "GIT_AUTHOR_NAME": user.realname,
                     "GIT_AUTHOR_EMAIL": user.email,
-                    "GIT_COMMITTER_NAME": "SUSE Update Bot",
-                    "GIT_COMMITTER_EMAIL": "noreply@suse.com",
+                    **os.environ,
                 },
             )
-            commit = (
-                await run_in_worktree("git show -s --pretty=format:%H HEAD")
-            ).stdout.strip()
-            await run_in_worktree("git push --force-with-lease origin HEAD")
-            return commit
+            return True
 
         commit = await self._run_git_action_in_worktree(
             new_branch_name=target_branch_name,
-            origin_branch_name=f"origin/{target_branch_name}",
+            origin_branch_name=target_branch_name,
             action=_add_changelog_in_worktree,
         )
         assert commit
