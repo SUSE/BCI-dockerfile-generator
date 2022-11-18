@@ -7,6 +7,7 @@ from typing import ClassVar
 from typing import Literal
 
 import dnf
+from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
@@ -326,7 +327,7 @@ class DotNetBCI(LanguageStackContainer):
 
         return DotNetBCI._sle_bci_base[self.os_version][arch]
 
-    def _get_latest_libicu_per_arch(self, arch: Arch):
+    def _get_latest_libicu_per_arch(self, arch: Arch) -> str:
         bci_base = self._get_bci_base(arch)
         return sorted(
             bci_base.sack.query().available().filter(provides="libicu", arch=str(arch)),
@@ -349,100 +350,95 @@ _DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["3.1", "6.0", "7.0"]
 _LATEST_DOTNET_VERSION = "7.0"
 
 
-def _is_latest_dotnet(version: _DOTNET_VERSION_T) -> bool:
-    return version == _LATEST_DOTNET_VERSION
+def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool:
+    return version == _LATEST_DOTNET_VERSION and os_version in CAN_BE_LATEST_OS_VERSION
 
 
-_sdk = []
-for ver in _DOTNET_VERSIONS:
-    package_list: list[Package | str] = [
-        "dotnet-host",
-        Package(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
-    ]
+DOTNET_IMAGES: list[DotNetBCI] = []
 
-    for pkg in (
-        "dotnet-targeting-pack",
-        "dotnet-hostfxr",
-        "dotnet-runtime-deps",
-        "dotnet-runtime",
-        "dotnet-apphost-pack",
-        "aspnetcore-targeting-pack",
-        "aspnetcore-runtime",
-        "dotnet-sdk",
-    ):
-        package_list.append(f"{pkg}-{ver}")
+# FIXME: once we start publishing the SP5 SLE_BCI repo, enable SP5
+for os_version in (OsVersion.SP4,):
 
-    _sdk.append(
-        DotNetBCI(
-            os_version=OsVersion.SP4,
-            version=ver,
-            name="dotnet-sdk",
-            pretty_name=f".Net {ver} SDK",
-            is_sdk=True,
-            is_latest=_is_latest_dotnet(ver),
-            package_name=f"dotnet-{ver}",
-            package_list=package_list,
+    for ver in _DOTNET_VERSIONS:
+        package_list: list[Package | str] = [
+            "dotnet-host",
+            Package(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
+        ]
+
+        for pkg in (
+            "dotnet-targeting-pack",
+            "dotnet-hostfxr",
+            "dotnet-runtime-deps",
+            "dotnet-runtime",
+            "dotnet-apphost-pack",
+            "aspnetcore-targeting-pack",
+            "aspnetcore-runtime",
+            "dotnet-sdk",
+        ):
+            package_list.append(f"{pkg}-{ver}")
+
+        DOTNET_IMAGES.append(
+            DotNetBCI(
+                os_version=os_version,
+                version=ver,
+                name="dotnet-sdk",
+                pretty_name=f".Net {ver} SDK",
+                is_sdk=True,
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"dotnet-{ver}",
+                package_list=package_list,
+            )
         )
-    )
-[DOTNET_SDK_3_1, DOTNET_SDK_6_0, DOTNET_SDK_7_0] = _sdk
 
-[DOTNET_RUNTIME_3_1, DOTNET_RUNTIME_6_0, DOTNET_RUNTIME_7_0] = [
-    DotNetBCI(
-        os_version=OsVersion.SP4,
-        version=ver,
-        name="dotnet-runtime",
-        is_sdk=False,
-        pretty_name=f".NET {ver} Runtime",
-        is_latest=_is_latest_dotnet(ver),
-        package_name=f"dotnet-runtime-{ver}",
-        package_list=["dotnet-host"]
-        + [
-            f"{pkg}-{ver}"
-            for pkg in (
-                "dotnet-hostfxr",
-                "dotnet-runtime-deps",
-                "dotnet-runtime",
+    DOTNET_IMAGES.extend(
+        [
+            DotNetBCI(
+                os_version=os_version,
+                version=ver,
+                name="dotnet-runtime",
+                is_sdk=False,
+                pretty_name=f".NET {ver} Runtime",
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"dotnet-runtime-{ver}",
+                package_list=["dotnet-host"]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                    )
+                ],
             )
-        ],
+            for ver in _DOTNET_VERSIONS
+        ]
     )
-    for ver in _DOTNET_VERSIONS
-]
 
-[ASPNET_RUNTIME_3_1, ASPNET_RUNTIME_6_0, ASPNET_RUNTIME_7_0] = [
-    DotNetBCI(
-        version=ver,
-        os_version=OsVersion.SP4,
-        name="dotnet-aspnet",
-        is_sdk=False,
-        pretty_name=f"ASP.NET {ver} Runtime",
-        is_latest=_is_latest_dotnet(ver),
-        package_name=f"aspnet-runtime-{ver}",
-        package_list=["dotnet-host"]
-        + [
-            f"{pkg}-{ver}"
-            for pkg in (
-                "dotnet-hostfxr",
-                "dotnet-runtime-deps",
-                "dotnet-runtime",
-                "aspnetcore-runtime",
+    DOTNET_IMAGES.extend(
+        [
+            DotNetBCI(
+                version=ver,
+                os_version=os_version,
+                name="dotnet-aspnet",
+                is_sdk=False,
+                pretty_name=f"ASP.NET {ver} Runtime",
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"aspnet-runtime-{ver}",
+                package_list=["dotnet-host"]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                        "aspnetcore-runtime",
+                    )
+                ],
             )
-        ],
+            for ver in _DOTNET_VERSIONS
+        ]
     )
-    for ver in _DOTNET_VERSIONS
-]
 
 # FIXME: re-enable this once MS release security fixes for aarch64
 # for dotnet_6_pkg in [DOTNET_RUNTIME_6_0, ASPNET_RUNTIME_6_0, DOTNET_SDK_6_0]:
 #     dotnet_6_pkg.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
-
-DOTNET_IMAGES = [
-    DOTNET_RUNTIME_3_1,
-    DOTNET_RUNTIME_6_0,
-    DOTNET_RUNTIME_7_0,
-    DOTNET_SDK_3_1,
-    DOTNET_SDK_6_0,
-    DOTNET_SDK_7_0,
-    ASPNET_RUNTIME_3_1,
-    ASPNET_RUNTIME_6_0,
-    ASPNET_RUNTIME_7_0,
-]
