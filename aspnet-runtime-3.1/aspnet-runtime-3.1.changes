@@ -1,0 +1,141 @@
+-------------------------------------------------------------------
+Thu Oct 13 01:08:20 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.30
+
+-------------------------------------------------------------------
+Tue Oct 11 06:40:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.30
+
+-------------------------------------------------------------------
+Tue Sep 20 12:33:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Simplify Dockerfile by copying all rpms into /tmp/x86_64/
+
+-------------------------------------------------------------------
+Thu Sep 15 01:05:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.29
+
+-------------------------------------------------------------------
+Tue Sep 13 08:10:47 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.28
+
+-------------------------------------------------------------------
+Mon Sep 12 13:59:43 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add RemoteAssetUrl for future remote asset support in obs-build
+
+-------------------------------------------------------------------
+Wed Aug 10 01:07:48 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.28
+
+-------------------------------------------------------------------
+Tue Aug  9 01:07:56 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.27
+
+-------------------------------------------------------------------
+Wed Jul 13 01:05:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.27
+
+-------------------------------------------------------------------
+Tue Jul 12 01:05:23 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.26
+
+-------------------------------------------------------------------
+Fri Jun 17 13:02:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15 SP4 & set release-stage to released
+
+-------------------------------------------------------------------
+Wed Jun 15 14:17:12 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.26
+
+-------------------------------------------------------------------
+Wed May 11 01:05:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.25
+
+-------------------------------------------------------------------
+Fri Apr 22 10:33:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains %RELEASE%
+
+-------------------------------------------------------------------
+Thu Apr 21 11:42:12 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 13 09:25:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.24
+- Specify the libicu version to prevent 'have choice for'
+- Drop vim (not required in a container)
+
+-------------------------------------------------------------------
+Tue Apr 12 09:05:41 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Wed Mar 30 08:09:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update description & add README according to jsc#BCI-37
+
+-------------------------------------------------------------------
+Wed Mar  9 01:06:37 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.23
+
+-------------------------------------------------------------------
+Tue Mar  8 07:28:39 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Removed unnecessary text as per jsc#BCI-42, Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 10:56:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview to supportlevel label
+
+-------------------------------------------------------------------
+Tue Feb 15 09:57:05 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier to the Dockerfile
+
+-------------------------------------------------------------------
+Mon Feb  7 16:25:48 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Fri Jan 21 07:38:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add additional build tags according to the new naming schema
+
+-------------------------------------------------------------------
+Wed Jan 12 13:33:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Lock dotnet-host to prevent it from upgrading to the latest .Net version
+
+-------------------------------------------------------------------
+Tue Jan 11 16:24:54 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log
+
+-------------------------------------------------------------------
+Thu Dec 16 14:28:35 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.22
+
+-------------------------------------------------------------------
+Fri Dec  3 06:49:02 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- New release 3.1.21
