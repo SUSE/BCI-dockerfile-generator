@@ -1,8 +1,10 @@
 BCI build recipe generator
 ==========================
 
-This is a simple script that generates the necessary files to build our BCI
-containers in the Open Build Service.
+This repository contains the scripts to generate the build recipes (Dockerfiles
+or `kiwi <https://github.com/OSInside/kiwi>`_ build descriptions) to build the
+BCI development project in the `Open Build Service
+<https://build.opensuse.org/project/subprojects/devel:BCI>`_.
 
 
 Prerequisites
@@ -11,11 +13,13 @@ Prerequisites
 You will need the following tools:
 
 - Python 3.10 or later
-- `poetry <https://python-poetry.org/>`_
+- `poetry <https://python-poetry.org/>`_ 1.2.0 or later
 - `osc <https://github.com/openSUSE/osc/>`_ installed and configured to reach
   `OBS <https://build.opensuse.org/>`_ by default. If you want to target IBS
   (build.suse.de) directly, then add the alias ``ibs`` for
   `<https://build.suse.de>`_.
+- ``python-dnf`` installed via your system's package manager (if you want to
+  touch the .Net images)
 
 To get started, clone this repository and run :command:`poetry install` in its
 root directory.

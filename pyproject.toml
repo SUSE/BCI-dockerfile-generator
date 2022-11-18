@@ -7,6 +7,7 @@ license = "GPL-3.0-or-later"
 packages = [
     { include = "bci_build", from = "src" },
     { include = "staging", from = "src" },
+    { include = "dotnet", from = "src" },
 ]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"

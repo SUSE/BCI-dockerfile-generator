@@ -27,6 +27,8 @@ from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from bci_build.update import get_bci_project_name
+from dotnet.updater import DOTNET_IMAGES
+from dotnet.updater import DotNetBCI
 from obs_package_update.util import CommandError
 from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
@@ -162,7 +164,7 @@ class StagingBot:
         """
         return (
             bci
-            for bci in ALL_CONTAINER_IMAGE_NAMES.values()
+            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
             if bci.os_version == self.os_version
         )
 
@@ -240,9 +242,8 @@ class StagingBot:
         """
         return (
             bci
-            for bci in ALL_CONTAINER_IMAGE_NAMES.values()
-            if bci.os_version == self.os_version
-            and (
+            for bci in self._bcis
+            if (
                 bci.package_name in self._packages
                 if self._packages is not None
                 else True
@@ -769,6 +770,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                     to_remove.append(aiofiles.os.remove(os.path.join(dest, fname)))
 
                 await asyncio.gather(*to_remove)
+
+                if isinstance(bci_pkg, DotNetBCI):
+                    bci_pkg.generate_custom_end()
 
                 return [
                     f"{bci_pkg.package_name}/{fname}"
