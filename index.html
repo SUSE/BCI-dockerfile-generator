@@ -36,18 +36,21 @@
             
   <section id="bci-build-recipe-generator">
 <h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this heading">¶</a></h1>
-<p>This is a simple script that generates the necessary files to build our BCI
-containers in the Open Build Service.</p>
+<p>This repository contains the scripts to generate the build recipes (Dockerfiles
+or <a class="reference external" href="https://github.com/OSInside/kiwi">kiwi</a> build descriptions) to build the
+BCI development project in the <a class="reference external" href="https://build.opensuse.org/project/subprojects/devel:BCI">Open Build Service</a>.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
 <p>You will need the following tools:</p>
 <ul class="simple">
 <li><p>Python 3.10 or later</p></li>
-<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a> 1.2.0 or later</p></li>
 <li><p><a class="reference external" href="https://github.com/openSUSE/osc/">osc</a> installed and configured to reach
 <a class="reference external" href="https://build.opensuse.org/">OBS</a> by default. If you want to target IBS
 (build.suse.de) directly, then add the alias <code class="docutils literal notranslate"><span class="pre">ibs</span></code> for
 <a class="reference external" href="https://build.suse.de">https://build.suse.de</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python-dnf</span></code> installed via your system’s package manager (if you want to
+touch the .Net images)</p></li>
 </ul>
 <p>To get started, clone this repository and run <strong class="command">poetry install</strong> in its
 root directory.</p>
