@@ -750,9 +750,37 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             )
             return True
 
+        # we do not want to overwrite any existing changes from the origin which
+        # could have been pushed there already
+
+        # is there a origin/self.branch_name?
+        branch_commit_hash_on_remote: str | None = None
+        try:
+            branch_commit_hash_on_remote = (
+                git.Repo(".").commit(f"origin/{self.branch_name}").hexsha
+            )
+        except git.BadName:
+            pass
+
+        # yes => check if it is newer than the deployment branch
+        commit_range = None
+        if branch_commit_hash_on_remote:
+            try:
+                commit_range = self._get_commit_range_between_refs(
+                    branch_commit_hash_on_remote,
+                    f"origin/{self.deployment_branch_name}",
+                )
+            except RecursionError:
+                pass
+
+        # it is newer? => base our work on origin/branch_name and not the
+        # deployment_branch
+        origin_branch = (
+            self.deployment_branch_name if not commit_range else self.branch_name
+        )
         return await self._run_git_action_in_worktree(
             self.branch_name,
-            self.deployment_branch_name,
+            origin_branch,
             _write_build_recipes_in_worktree,
         )
 
