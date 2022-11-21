@@ -1025,12 +1025,12 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
         )
 
-    def _get_commit_range_to_deployment_branch(
-        self, branch_name: str
-    ) -> list[git.Commit]:
+    def _get_commit_range_between_refs(
+        self, child_ref: str, ancestor_ref: str
+    ) -> list[git.Commit] | None:
         repo = git.Repo(".")
-        deployment_head = repo.commit(f"origin/{self.deployment_branch_name}")
-        branch_head = repo.commit(branch_name)
+        ancestor_commit = repo.commit(ancestor_ref)
+        child_commit = repo.commit(child_ref)
 
         def _recurse_search_for_ancestor(
             commit: git.Commit, ancestor: git.Commit
@@ -1044,12 +1044,10 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
             return None
 
-        commits = _recurse_search_for_ancestor(branch_head, deployment_head)
+        commits = _recurse_search_for_ancestor(child_commit, ancestor_commit)
         if not commits:
-            raise RuntimeError(
-                f"Could not find a path from {branch_name} to {self.deployment_branch_name}"
-            )
-        return [branch_head] + commits
+            return None
+        return [child_commit] + commits
 
     async def add_changelog_entry(
         self, entry: str, username: str, package_names: list[str] | None
@@ -1059,9 +1057,16 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         user = await self._fetch_user(username)
 
         if not package_names:
-            commits = self._get_commit_range_to_deployment_branch(
-                f"origin/{target_branch_name}"
+            commits = self._get_commit_range_between_refs(
+                f"origin/{target_branch_name}", f"origin/{self.deployment_branch_name}"
             )
+            if not commits:
+                raise RuntimeError(
+                    "Could not determine commit range from "
+                    f"origin/{target_branch_name} to "
+                    f"origin/{self.deployment_branch_name} and no package names "
+                    "provided, don't know where to add a changelog."
+                )
             package_names = []
             for commit in commits:
                 package_names.extend(self._get_changed_packages_by_commit(commit))
