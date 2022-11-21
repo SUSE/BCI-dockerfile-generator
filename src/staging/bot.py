@@ -1151,3 +1151,43 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         )
         assert commit
         return commit
+
+    def get_packages_without_changelog_addition(
+        self, base_ref: str, change_ref: str
+    ) -> list[str]:
+        """Runs a simple heuristic whether a packages' changelog has had an
+        addition between ``base_ref`` and ``change_ref``.
+
+        Returns:
+            The list of packages without a commit in the range ``base_ref`` and
+            ``change_ref`` that added at least four lines (= minimum length of a
+            one line :command:`osc vc` entry).
+
+        """
+        commit_range = self._get_commit_range_between_refs(change_ref, base_ref)
+        if not commit_range:
+            raise RuntimeError(f"{base_ref} is not an ancestor of {change_ref}!")
+
+        packages: set[str] = set()
+        for commit in commit_range:
+            packages.update(self._get_changed_packages_by_commit(commit))
+
+        package_changelog_appended: dict[str, bool] = {
+            package: False for package in packages
+        }
+
+        for commit in commit_range:
+            for package_name, changelog_appended in package_changelog_appended.items():
+                if changelog_appended:
+                    continue
+                if changes_entry := commit.stats.files.get(
+                    f"{package_name}/{package_name}.changes"
+                ):
+                    if changes_entry["insertions"] >= changes_entry["deletions"] + 4:
+                        package_changelog_appended[package_name] = True
+
+        return [
+            pkg_name
+            for pkg_name, changelog_updated in package_changelog_appended.items()
+            if not changelog_updated
+        ]
