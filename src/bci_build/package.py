@@ -1858,7 +1858,9 @@ RUST_CONTAINERS = [
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
-        support_level=SupportLevel.L3,
+        support_level=(
+            SupportLevel.L3 if rust_version != "1.62" else SupportLevel.TECHPREVIEW
+        ),
         is_latest=(
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
