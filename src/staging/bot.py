@@ -1081,6 +1081,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         self, entry: str, username: str, package_names: list[str] | None
     ) -> str:
         target_branch_name = f"for-deploy-{self.os_version}"
+        entry = entry.replace('"', r"\"")
 
         user = await self._fetch_user(username)
 
@@ -1118,7 +1119,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 fname = f"{package_name}/{package_name}.changes"
                 tasks.append(
                     run_in_worktree(
-                        f"/usr/lib/build/vc -m '{entry}' {fname}",
+                        f'/usr/lib/build/vc -m "{entry}" {fname}',
                         env={"VC_REALNAME": user.realname, "VC_MAILADDR": user.email},
                     )
                 )
