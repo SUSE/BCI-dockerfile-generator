@@ -57,3 +57,23 @@ jobs:
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
+
+      - name: Add reaction to the original comment on success
+        if: ${{ success() }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.PAT }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: "+1"
+
+      - name: generate the url to this workflow run
+        run: echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+
+      - name: Add reaction and a link to the error to the original comment on failure
+        if: ${{ failure() || cancelled() }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.PAT }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: "-1"
+          body: Failed to update the changelog, see the [workflow run](${{ env.run_url }}) for further details.
