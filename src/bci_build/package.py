@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from dataclasses import field
 from itertools import product
 from typing import Callable
-from typing import ClassVar
 from typing import Dict
 from typing import List
 from typing import Literal
@@ -1851,7 +1850,7 @@ STOPSIGNAL SIGQUIT
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.62", "1.63", "1.64"]
+_RUST_VERSIONS = ["1.61", "1.62", "1.63", "1.64"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
@@ -1859,7 +1858,9 @@ RUST_CONTAINERS = [
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
         support_level=(
-            SupportLevel.L3 if rust_version != "1.62" else SupportLevel.TECHPREVIEW
+            SupportLevel.L3
+            if rust_version not in ("1.61", "1.62")
+            else SupportLevel.TECHPREVIEW
         ),
         is_latest=(
             rust_version == _RUST_VERSIONS[-1]
@@ -2131,6 +2132,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     )
 }
 ALL_CONTAINER_IMAGE_NAMES.pop("golang-1.19-sp3")
+ALL_CONTAINER_IMAGE_NAMES.pop("rust-1.61-Tumbleweed")
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
