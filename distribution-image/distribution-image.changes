@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 21 09:48:33 UTC 2022 - Dirk Mueller <dmueller@suse.com>
+
+- Use the unprivileged user 'registry' to run the container's entrypoint
+
+-------------------------------------------------------------------
 Tue Oct  4 11:40:39 UTC 2022 - Dirk Müller <dmueller@suse.com>
 
 - add more dependencies for the SLE build of the container 
