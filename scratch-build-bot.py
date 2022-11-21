@@ -33,6 +33,7 @@ if __name__ == "__main__":
         "get_build_quality",
         "create_cr_project",
         "add_changelog_entry",
+        "changelog_check",
     ]
 
     parser = argparse.ArgumentParser()
@@ -173,6 +174,25 @@ comma-separated list. The package list is taken from the environment variable
         help="The actual changelog entry that shall be made",
     )
 
+    changelog_check_parser = subparsers.add_parser(
+        "changelog_check",
+        help="Check that all packages that were touched in a commit range have a changelog entry",
+    )
+    changelog_check_parser.add_argument(
+        "--base-ref",
+        nargs=1,
+        required=True,
+        type=str,
+        help="Base reference from which we start checking",
+    )
+    changelog_check_parser.add_argument(
+        "--head-ref",
+        nargs=1,
+        type=str,
+        default=["HEAD"],
+        help="Commit to which the check is run (defaults to HEAD)",
+    )
+
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
 
@@ -286,6 +306,22 @@ comma-separated list. The package list is taken from the environment variable
             coro = bot.add_changelog_entry(
                 entry=changelog_entry, username=username, package_names=pkg_names
             )
+        elif action == "changelog_check":
+            base_ref = args.base_ref[0]
+            change_ref = args.head_ref[0]
+
+            async def _error_on_pkg_without_changes():
+                packages_without_changes = bot.get_packages_without_changelog_addition(
+                    base_ref, change_ref
+                )
+                if packages_without_changes:
+                    raise RuntimeError(
+                        "Changelog check failed! The following packages are "
+                        f"missing a changelog entry between {base_ref} and "
+                        f"{change_ref}: {', '.join(packages_without_changes)}"
+                    )
+
+            coro = _error_on_pkg_without_changes()
         else:
             assert False, f"invalid action: {action}"
 
