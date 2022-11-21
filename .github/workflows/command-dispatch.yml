@@ -11,5 +11,7 @@ jobs:
         uses: peter-evans/slash-command-dispatch@v3
         with:
           token: ${{ secrets.PAT }}
-          commands: vc
+          commands: |
+            vc
+            help
           issue-type: pull-request
