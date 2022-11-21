@@ -332,6 +332,55 @@ workflow:
 """
         return workflows
 
+    @property
+    def changelog_check_github_action(self) -> str:
+        return (
+            r"""---
+name: Check the changelogs
+
+on:
+  pull_request:
+
+jobs:
+  changelog-check:
+    name: changelog check
+    runs-on: ubuntu-22.04
+    container: ghcr.io/dcermak/bci-ci:latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: fetch all branches
+        run: git fetch
+
+      - name: check the changelog
+        run: |
+          poetry run ./scratch-build-bot.py \
+              --os-version """
+            + str(self.os_version)
+            + r""" -vvvv \
+              changelog_check \
+                  --base-ref origin/${{ github.base_ref }} \
+                  --head-ref ${{ github.event.pull_request.head.sha }}
+        env:
+          OSC_USER: "irrelevant"
+"""
+        )
+
     async def setup(self) -> None:
         if pw := os.getenv(OSC_PASSWORD_ENVVAR_NAME):
             osc_conf = tempfile.NamedTemporaryFile("w", delete=False)
@@ -838,6 +887,21 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 await workflows_file.write(self.obs_workflows_yml)
             return [".obs/workflows.yml"]
 
+        async def write_changelog_checker_yml() -> list[str]:
+            await aiofiles.os.makedirs(
+                (
+                    github_workflows := os.path.join(
+                        destination_prj_folder, ".github", "workflows"
+                    )
+                ),
+                exist_ok=True,
+            )
+            async with aiofiles.open(
+                os.path.join(github_workflows, "changelog_checker.yml"), "w"
+            ) as workflows_file:
+                await workflows_file.write(self.changelog_check_github_action)
+            return [".github/workflows/changelog_checker.yml"]
+
         async def write_underscore_config() -> list[str]:
             prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
             async with aiofiles.open(
@@ -849,6 +913,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         tasks.append(write_obs_workflows_yml())
         tasks.append(write_underscore_config())
+        tasks.append(write_changelog_checker_yml())
 
         files = await asyncio.gather(*tasks)
         flattened_file_list = []
