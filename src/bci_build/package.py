@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from dataclasses import field
 from itertools import product
 from typing import Callable
-from typing import ClassVar
 from typing import Dict
 from typing import List
 from typing import Literal
