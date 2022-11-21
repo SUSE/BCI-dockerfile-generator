@@ -1109,10 +1109,16 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             )
             return True
 
-        commit = await self._run_git_action_in_worktree(
-            new_branch_name=target_branch_name,
-            origin_branch_name=target_branch_name,
-            action=_add_changelog_in_worktree,
+        # Just retry appending the changelog multiple times in case there is a
+        # push in the mean time
+        # Not super elegant, but prevents us from pull & rebase + push a bunch
+        # of times manually
+        commit = await retry_async_run_cmd(
+            lambda: self._run_git_action_in_worktree(
+                new_branch_name=target_branch_name,
+                origin_branch_name=target_branch_name,
+                action=_add_changelog_in_worktree,
+            )
         )
         assert commit
         return commit
