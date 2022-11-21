@@ -31,6 +31,10 @@ workflow:
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: rust-1.61-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
         source_package: rust-1.62-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
