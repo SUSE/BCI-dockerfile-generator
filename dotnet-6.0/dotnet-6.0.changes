@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 21 09:20:40 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New release 6.0.11 and stop building for aarch64
+
+-------------------------------------------------------------------
 Tue Sep 20 12:32:09 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add support for building .Net on aarch64
