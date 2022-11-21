@@ -178,6 +178,7 @@ For the following :file:`Dockerfile` settings, use the respective properties of
 - ``ENV``: :py:attr:`~bci_build.package.BaseContainerImage.env`
 - ``LABEL``: :py:attr:`~bci_build.package.BaseContainerImage.extra_labels`
 - ``MAINTAINER``: :py:attr:`~bci_build.package.BaseContainerImage.maintainer`
+- ``USER``: :py:attr:`~bci_build.package.BaseContainerImage.entrypoint_user`
 
 For additional settings that do not fit the existing attributes, either create
 an abstraction (if feasible and meaningful) or use
