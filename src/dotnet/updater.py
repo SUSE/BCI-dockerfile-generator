@@ -368,7 +368,7 @@ for ver in _DOTNET_VERSIONS:
         DotNetBCI(
             os_version=OsVersion.SP4,
             version=ver,
-            name="sdk",
+            name="dotnet-sdk",
             pretty_name=f".Net {ver} SDK",
             is_sdk=True,
             is_latest=_is_latest_dotnet(ver),
@@ -382,7 +382,7 @@ for ver in _DOTNET_VERSIONS:
     DotNetBCI(
         os_version=OsVersion.SP4,
         version=ver,
-        name="runtime",
+        name="dotnet-runtime",
         is_sdk=False,
         pretty_name=f".NET {ver} Runtime",
         is_latest=_is_latest_dotnet(ver),
@@ -404,7 +404,7 @@ for ver in _DOTNET_VERSIONS:
     DotNetBCI(
         version=ver,
         os_version=OsVersion.SP4,
-        name="aspnet",
+        name="dotnet-aspnet",
         is_sdk=False,
         pretty_name=f"ASP.NET {ver} Runtime",
         is_latest=_is_latest_dotnet(ver),
