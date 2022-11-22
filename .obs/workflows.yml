@@ -47,6 +47,10 @@ workflow:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: rust-1.65-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: golang-1.18-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
