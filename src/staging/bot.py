@@ -1174,6 +1174,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             )
 
         async def _add_changelog_in_worktree(worktree_dir: str) -> bool:
+            assert package_names
             run_in_worktree = RunCommand(
                 cwd=worktree_dir,
                 logger=LOGGER,
@@ -1192,8 +1193,14 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
             await asyncio.gather(*tasks)
             await run_in_worktree("git add " + " ".join(files))
+
+            commit_msg = (
+                f"Update changelog for {package_names[0]}"
+                if len(package_names) == 1
+                else f"Update changelogs for {', '.join(package_names)}"
+            )
             await run_in_worktree(
-                f"git commit -m 'Update changelog for {' '.join(package_names)}'",
+                f"git commit -m '{commit_msg}'",
                 env={
                     **_GIT_COMMIT_ENV,
                     "GIT_AUTHOR_NAME": user.realname,
