@@ -1087,14 +1087,14 @@ def _get_python_kwargs(
     py3_ver: Literal["3.6", "3.8", "3.9", "3.10"], os_version: OsVersion
 ):
     is_system_py: bool = py3_ver == (
-        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.8"
+        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.10"
     )
     py3_ver_nodots = py3_ver.replace(".", "")
 
     py3 = (
         "python3"
         if is_system_py and os_version != OsVersion.TUMBLEWEED
-        else "python" + py3_ver_nodots
+        else f"python{py3_ver_nodots}"
     )
     py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
     pip3 = f"{py3}-pip"
@@ -1106,7 +1106,7 @@ def _get_python_kwargs(
         "version": py3_ver,
         "additional_versions": ["3"],
         "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
-        "package_list": [py3, pip3, "curl", "git-core"]
+        "package_list": [f"{py3}-devel", pip3, "curl", "git-core"]
         + (
             [f"{py3}-wheel"]
             if is_system_py or os_version == OsVersion.TUMBLEWEED
