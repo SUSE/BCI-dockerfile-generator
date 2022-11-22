@@ -178,8 +178,24 @@ For the following :file:`Dockerfile` settings, use the respective properties of
 - ``ENV``: :py:attr:`~bci_build.package.BaseContainerImage.env`
 - ``LABEL``: :py:attr:`~bci_build.package.BaseContainerImage.extra_labels`
 - ``MAINTAINER``: :py:attr:`~bci_build.package.BaseContainerImage.maintainer`
+- ``USER``: :py:attr:`~bci_build.package.BaseContainerImage.entrypoint_user`
 
 For additional settings that do not fit the existing attributes, either create
 an abstraction (if feasible and meaningful) or use
 :py:attr:`~bci_build.package.BaseContainerImage.custom_end` to write a raw
 :file:`Dockerfile` yourself.
+
+
+New Package Checklist
+---------------------
+
+- [ ] Merge the pull request creating the container into ``main``
+
+- [ ] Review the automatically created pull request against the deployment
+  branches and add a changelog entry
+
+- [ ] Create the package on `devel:BCI:` with a `<scmsync>` entry so that it is
+  pulled from git
+
+- [ ] Set up branch protection rules for the deployment branches including the
+  newly added package for the OBS SCM builds

@@ -185,11 +185,24 @@ avoid some common pitfalls when creating a <code class="file docutils literal no
 <li><p><code class="docutils literal notranslate"><span class="pre">ENV</span></code>: <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.env" title="bci_build.package.BaseContainerImage.env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LABEL</span></code>: <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.extra_labels" title="bci_build.package.BaseContainerImage.extra_labels"><code class="xref py py-attr docutils literal notranslate"><span class="pre">extra_labels</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MAINTAINER</span></code>: <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.maintainer" title="bci_build.package.BaseContainerImage.maintainer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">maintainer</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">USER</span></code>: <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.entrypoint_user" title="bci_build.package.BaseContainerImage.entrypoint_user"><code class="xref py py-attr docutils literal notranslate"><span class="pre">entrypoint_user</span></code></a></p></li>
 </ul>
 <p>For additional settings that do not fit the existing attributes, either create
 an abstraction (if feasible and meaningful) or use
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.custom_end" title="bci_build.package.BaseContainerImage.custom_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">custom_end</span></code></a> to write a raw
 <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> yourself.</p>
+</section>
+<section id="new-package-checklist">
+<h2>New Package Checklist<a class="headerlink" href="#new-package-checklist" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>[ ] Merge the pull request creating the container into <code class="docutils literal notranslate"><span class="pre">main</span></code></p></li>
+<li><p>[ ] Review the automatically created pull request against the deployment
+branches and add a changelog entry</p></li>
+<li><p>[ ] Create the package on <cite>devel:BCI:</cite> with a <cite>&lt;scmsync&gt;</cite> entry so that it is
+pulled from git</p></li>
+<li><p>[ ] Set up branch protection rules for the deployment branches including the
+newly added package for the OBS SCM builds</p></li>
+</ul>
 </section>
 </section>
 
@@ -217,6 +230,7 @@ an abstraction (if feasible and meaningful) or use
 <li class="toctree-l2"><a class="reference internal" href="#automatic-package-version-substitution">Automatic Package Version Substitution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-packages-into-the-container-image">Installing Packages into the Container Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#applying-additional-changes-to-your-image">Applying additional changes to your Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-package-checklist">New Package Checklist</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
