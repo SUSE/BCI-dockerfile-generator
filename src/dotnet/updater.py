@@ -293,6 +293,12 @@ class DotNetBCI(LanguageStackContainer):
 
         pkgs = self._fetch_packages()
 
+        if new_version := self._guess_version_from_pkglist(pkgs):
+            assert (
+                not self.additional_versions
+            ), f"additional_versions property must be unset, but got {self.additional_versions}"
+            self.additional_versions = [new_version, f"{new_version}-%RELEASE%"]
+
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
