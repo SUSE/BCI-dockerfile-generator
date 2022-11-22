@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 17:13:18 UTC 2022 - Dirk Mueller <dmueller@suse.com>
+
+- Add the devel package into the container to prevent dependency issues on updates and stop symlinking python3.10 to python3 (it's the system python)
+
+-------------------------------------------------------------------
 Fri Jul 15 11:06:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE
