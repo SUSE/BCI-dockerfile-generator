@@ -155,6 +155,8 @@ class DotNetBCI(LanguageStackContainer):
             "_constraints": generate_disk_size_constraints(8),
         }
 
+        self.custom_labelprefix_end = self.name.replace("-", ".")
+
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
         stores it in the target folder `dest`. The target folder must exist.
@@ -291,6 +293,12 @@ class DotNetBCI(LanguageStackContainer):
 
         pkgs = self._fetch_packages()
 
+        if new_version := self._guess_version_from_pkglist(pkgs):
+            assert (
+                not self.additional_versions
+            ), f"additional_versions property must be unset, but got {self.additional_versions}"
+            self.additional_versions = [new_version, f"{new_version}-%RELEASE%"]
+
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
@@ -368,7 +376,7 @@ for ver in _DOTNET_VERSIONS:
         DotNetBCI(
             os_version=OsVersion.SP4,
             version=ver,
-            name="sdk",
+            name="dotnet-sdk",
             pretty_name=f".Net {ver} SDK",
             is_sdk=True,
             is_latest=_is_latest_dotnet(ver),
@@ -382,7 +390,7 @@ for ver in _DOTNET_VERSIONS:
     DotNetBCI(
         os_version=OsVersion.SP4,
         version=ver,
-        name="runtime",
+        name="dotnet-runtime",
         is_sdk=False,
         pretty_name=f".NET {ver} Runtime",
         is_latest=_is_latest_dotnet(ver),
@@ -404,7 +412,7 @@ for ver in _DOTNET_VERSIONS:
     DotNetBCI(
         version=ver,
         os_version=OsVersion.SP4,
-        name="aspnet",
+        name="dotnet-aspnet",
         is_sdk=False,
         pretty_name=f"ASP.NET {ver} Runtime",
         is_latest=_is_latest_dotnet(ver),
