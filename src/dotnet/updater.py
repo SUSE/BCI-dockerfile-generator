@@ -155,6 +155,8 @@ class DotNetBCI(LanguageStackContainer):
             "_constraints": generate_disk_size_constraints(8),
         }
 
+        self.custom_labelprefix_end = self.name.replace("-", ".")
+
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
         stores it in the target folder `dest`. The target folder must exist.
