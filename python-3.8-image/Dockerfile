@@ -21,7 +21,9 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends python38 python38-pip curl git-core python38-wheel; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends python38-devel python38-pip curl git-core python38-wheel; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py38_ver%%"
 ENV PIP_VERSION="%%pip_ver%%"
 
+RUN set -euo pipefail; ln -s /usr/bin/python3.8 /usr/local/bin/python3; \
+    ln -s /usr/bin/pydoc3.8 /usr/local/bin/pydoc
