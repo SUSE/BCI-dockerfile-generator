@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 21 09:20:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Update 20-envsubst-on-templates.sh and docker-entrypoint.sh from upstream
+
+-------------------------------------------------------------------
 Mon Sep 26 14:52:08 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Apply buildrecipe templates

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 07:49:00 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to Rust 1.65
+
+-------------------------------------------------------------------
 Wed Nov  2 11:11:28 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - First version of the Rust 1.64 container
