@@ -1,0 +1,103 @@
+-------------------------------------------------------------------
+Wed Oct 19 12:26:13 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:53:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug 16 10:12:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use %OS_VERSION_NO_DASH% for proper branding
+
+-------------------------------------------------------------------
+Thu Jul  7 14:52:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Tue Jul  5 10:20:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Fri Jun 17 09:20:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Wed May 25 13:21:19 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Add BCI EULA to bci-micro
+
+-------------------------------------------------------------------
+Tue May  3 09:29:07 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add coreutils package to prevent dependency resolution errors
+- Run suseImportBuildKey only if rpm is present
+- Remove nop suseSetupProduct
+- cleanup after zypper if zypper is installed
+- ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:15:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:09:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:46:59 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:31:28 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+
+-------------------------------------------------------------------
+Fri Feb 25 14:31:10 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 09:43:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Thu Feb 10 15:07:25 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Tue Feb  8 16:22:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Mon Feb  7 13:10:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Tue Dec  7 11:37:14 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix title & description labels
+
+-------------------------------------------------------------------
+Mon Oct 18 12:11:08 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Ensure ca-certificates-mozilla-prebuilt is installed
+
+-------------------------------------------------------------------
+Mon Sep 20 09:34:03 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the BCI micro container

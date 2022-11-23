@@ -1,0 +1,80 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:46 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Jun 17 09:19:42 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Fri Jun 10 13:49:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use exec form instead of shell form for CMD
+
+-------------------------------------------------------------------
+Thu Apr 28 11:43:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:14:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+- add _constraints file to request enough disk space
+
+-------------------------------------------------------------------
+Wed Apr 20 14:08:41 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:46:13 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:30:33 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+
+-------------------------------------------------------------------
+Fri Feb 25 14:30:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 09:42:49 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Thu Feb 10 15:06:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Tue Feb  8 16:21:45 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Mon Feb  7 14:28:37 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Tue Jan  4 08:53:57 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix description
+
+-------------------------------------------------------------------
+Tue Dec  7 11:42:07 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix title & description labels
+
+-------------------------------------------------------------------
+Mon Sep 20 11:26:06 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix container labels
