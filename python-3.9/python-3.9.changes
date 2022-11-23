@@ -2,3 +2,104 @@
 Tue Nov 22 11:34:49 UTC 2022 - Dirk Mueller <dmueller@suse.com>
 
 - Add the devel package into the container to prevent dependency issues on maintenance updates
+
+-------------------------------------------------------------------
+Tue Oct 25 09:32:22 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:51:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Jun 17 09:18:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue May  3 09:33:59 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures, do not uninstall python3-base
+
+-------------------------------------------------------------------
+Thu Apr 28 11:41:41 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:07:17 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Wed Apr 20 09:05:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Symlink into /usr/local/bin
+
+-------------------------------------------------------------------
+Wed Apr 13 09:16:43 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Symlink remaining binaries in /usr/bin/
+
+-------------------------------------------------------------------
+Tue Apr 12 08:44:54 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:29:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+
+-------------------------------------------------------------------
+Fri Feb 25 14:28:28 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+- Add additional tag '3'
+
+-------------------------------------------------------------------
+Tue Feb 15 09:42:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Thu Feb 10 15:06:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Tue Feb  8 16:20:57 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Mon Feb  7 14:15:27 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Tue Dec  7 11:44:37 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix title & description labels
+
+-------------------------------------------------------------------
+Mon Sep 20 10:33:24 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix container labels
+
+-------------------------------------------------------------------
+Thu Sep 16 13:12:05 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Add monkey patch of python3 & pip3 to work around bsc#1190568
+
+-------------------------------------------------------------------
+Wed Sep 15 08:10:11 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- First version of the python 3.9 language stack container

@@ -1,0 +1,101 @@
+-------------------------------------------------------------------
+Wed Oct 19 12:24:33 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Set Support Level to l3
+
+-------------------------------------------------------------------
+Mon Sep 26 14:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Tue Aug 30 12:52:14 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Disable getty@tty1.service, fixes bsc#1198102
+
+-------------------------------------------------------------------
+Tue Aug 16 10:12:17 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use %OS_VERSION_NO_DASH% for proper branding
+
+-------------------------------------------------------------------
+Thu Jul  7 14:52:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Tue Jul  5 10:21:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix image name
+
+-------------------------------------------------------------------
+Fri Jun 17 09:19:59 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Thu Apr 28 11:43:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:14:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:08:56 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:46:29 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 14:19:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+- Include statement about only supporting podman
+
+-------------------------------------------------------------------
+Fri Feb 25 14:30:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 09:43:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier
+
+-------------------------------------------------------------------
+Thu Feb 10 15:07:07 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Tue Feb  8 16:22:00 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Mon Feb  7 13:13:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Tue Dec  7 11:33:18 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix title & description labels
+- Add gzip as an explicit dependency to allow building with ExpandFlags: kiwi-nobasepackages
+
+-------------------------------------------------------------------
+Mon Sep 20 11:18:46 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix container labels
+
+-------------------------------------------------------------------
+Fri Sep 17 09:13:23 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Initial version of the BCI init container

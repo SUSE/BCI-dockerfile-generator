@@ -1,0 +1,59 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:51:57 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Mon Sep 26 07:53:05 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Improve logging in nginx scripts
+
+-------------------------------------------------------------------
+Fri Aug 19 10:24:42 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Fri Jun 17 09:18:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue May  3 09:27:47 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:07:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:45:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Wed Mar 16 13:12:15 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix quotes in CMD and ENTRYPOINT
+
+-------------------------------------------------------------------
+Tue Mar  8 07:29:11 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+
+-------------------------------------------------------------------
+Fri Feb 25 14:36:46 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Wed Feb 16 10:29:48 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier & correct labelprefix

@@ -1,0 +1,76 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:39 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Thu Apr 28 11:42:55 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:13:36 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:08:18 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:45:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Mar  8 07:30:00 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+
+-------------------------------------------------------------------
+Fri Feb 25 14:29:12 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Tue Feb 15 09:47:36 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier and remove NPM_VERSION env variable
+
+-------------------------------------------------------------------
+Tue Feb  8 16:21:30 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Recreate build recipes from the build templates
+
+-------------------------------------------------------------------
+Mon Feb  7 13:24:32 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Adjust labels according to jsc#BCI-33
+
+-------------------------------------------------------------------
+Wed Jan  5 12:56:22 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix NPM version
+
+-------------------------------------------------------------------
+Tue Dec  7 11:41:16 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix title & description labels
+- remove suse-build-key as a direct dependency, it will be pulled in indirectly anyway
+- add update-alternatives package to allow building with ExpandFlags: kiwi-nobasepackages
+
+-------------------------------------------------------------------
+Mon Sep 20 10:31:41 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix container labels
+
+-------------------------------------------------------------------
+Thu Sep 16 07:50:39 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- Fix environment variables
+
+-------------------------------------------------------------------
+Tue Sep 14 13:21:48 UTC 2021 - Dan Čermák <dcermak@suse.com>
+
+- First version of the NodeJS 12 container

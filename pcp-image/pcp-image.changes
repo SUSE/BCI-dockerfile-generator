@@ -1,0 +1,49 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:05 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Aug 19 10:24:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Fri Jul 15 11:09:10 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Correct org.opencontainers.image.title label
+
+-------------------------------------------------------------------
+Fri Jun 17 09:18:38 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Tue Jun 14 10:10:50 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add HEALTHCHECK
+
+-------------------------------------------------------------------
+Tue May  3 09:27:55 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Thu Apr 28 12:00:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add additional version tags 5 and 5.2
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:45 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:07:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Wed Apr 20 09:06:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the PCP container (jsc#SMO-91)

@@ -1,0 +1,50 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:16 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Jun 17 09:19:06 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Wed May  4 07:41:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Remove accidentally added Dockerfile
+
+-------------------------------------------------------------------
+Thu Apr 28 11:42:27 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Thu Apr 28 10:00:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Increase disk constraints to 8GB
+
+-------------------------------------------------------------------
+Fri Apr 22 08:13:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+- add git-core to the container image
+
+-------------------------------------------------------------------
+Wed Apr 20 14:08:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 19 11:31:29 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add GOPATH environment variable and fix GOLANG_VERSION (fixes bsc#1198386)
+
+-------------------------------------------------------------------
+Tue Apr 12 08:45:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Tue Apr  5 10:24:07 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- First version of the Go 1.18 image, jsc#BCI-94

@@ -1,0 +1,73 @@
+-------------------------------------------------------------------
+Mon Sep 26 14:52:11 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Apply buildrecipe templates
+
+-------------------------------------------------------------------
+Fri Aug 19 10:24:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use obs-service-replace_using_package_version for the container version
+
+-------------------------------------------------------------------
+Fri Jun 17 09:18:46 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to 15SP4
+
+-------------------------------------------------------------------
+Mon May 23 13:38:02 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Update rmt-server to 2.8
+
+-------------------------------------------------------------------
+Tue May  3 09:28:02 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Use set -euo pipefail in every RUN command, use ; instead of && to prevent masking failures
+
+-------------------------------------------------------------------
+Thu Apr 28 11:42:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that /var/log/zypp is absent
+
+-------------------------------------------------------------------
+Fri Apr 22 08:12:53 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- remove org.opencontainers.image.revision label
+
+-------------------------------------------------------------------
+Wed Apr 20 14:07:42 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Ensure that the reference contains the %RELEASE%
+
+-------------------------------------------------------------------
+Tue Apr 12 08:45:11 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add set -euo pipefail where applicable && Add the current git HEAD hash as the org.opencontainers.image.revision OCI label
+
+-------------------------------------------------------------------
+Wed Mar 16 13:12:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix quotes in CMD and ENTRYPOINT
+
+-------------------------------------------------------------------
+Tue Mar  8 07:29:19 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Shorten description (jsc#BCI-42)
+- Switch from PREFIXEDLABEL to LABEL now that the label helper can handle this
+
+-------------------------------------------------------------------
+Fri Feb 25 14:28:36 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch from the techpreview label to supportlevel
+
+-------------------------------------------------------------------
+Wed Feb 16 14:07:07 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add SPDX license identifier & correct build tags
+
+-------------------------------------------------------------------
+Tue Feb 15 10:31:25 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
+
+- Ensure entrypoint as executable bit set
+- Fix labelprefix
+- Initial version using Dockerfile instead of kiwi
+-
