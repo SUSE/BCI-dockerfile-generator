@@ -21,7 +21,7 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends python39 python39-pip curl git-core python39-wheel; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends python39-devel python39-pip curl git-core python39-wheel; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py39_ver%%"
 ENV PIP_VERSION="%%pip_ver%%"
 
