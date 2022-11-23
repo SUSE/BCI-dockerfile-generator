@@ -12,8 +12,10 @@ if __name__ == "__main__":
     from typing import Coroutine
     from typing import Literal
 
+    from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
     from bci_build.package import ALL_OS_VERSIONS
     from bci_build.package import OsVersion
+    from dotnet.updater import DOTNET_IMAGES
     from staging.bot import BRANCH_NAME_ENVVAR_NAME
     from staging.bot import LOGGER
     from staging.bot import OS_VERSION_ENVVAR_NAME
@@ -34,6 +36,7 @@ if __name__ == "__main__":
         "create_cr_project",
         "add_changelog_entry",
         "changelog_check",
+        "setup_obs_package",
     ]
 
     parser = argparse.ArgumentParser()
@@ -193,6 +196,22 @@ comma-separated list. The package list is taken from the environment variable
         help="Commit to which the check is run (defaults to HEAD)",
     )
 
+    setup_pkg_parser = subparsers.add_parser(
+        "setup_obs_package",
+        help="Create or reconfigure a package in `devel:BCI:*` on OBS",
+    )
+    setup_pkg_parser.add_argument(
+        "--package-name",
+        nargs="+",
+        required=True,
+        type=str,
+        help="Name of the package to configure on OBS",
+        choices=list(
+            set(bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values())
+        )
+        + [dotnet_img.package_name for dotnet_img in DOTNET_IMAGES],
+    )
+
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
 
@@ -322,6 +341,15 @@ comma-separated list. The package list is taken from the environment variable
                     )
 
             coro = _error_on_pkg_without_changes()
+        elif action == "setup_obs_package":
+
+            async def _setup_pkg_meta():
+                tasks = []
+                for pkg_name in args.package_name:
+                    tasks.append(bot.configure_devel_bci_package(pkg_name))
+                await asyncio.gather(*tasks)
+
+            coro = _setup_pkg_meta()
         else:
             assert False, f"invalid action: {action}"
 
