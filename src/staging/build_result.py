@@ -21,6 +21,7 @@ class PackageStatusCode(enum.Enum):
     SIGNING = "signing"
     BLOCKED = "blocked"
     BROKEN = "broken"
+    DISABLED = "disabled"
 
     def __str__(self) -> str:
         return self.value
@@ -38,6 +39,7 @@ class PackageStatusCode(enum.Enum):
             PackageStatusCode.SIGNING: "🔑",
             PackageStatusCode.BLOCKED: "✋",
             PackageStatusCode.BROKEN: "💥",
+            PackageStatusCode.DISABLED: "➖",
         }
         return f"{_emoji[self]} {self}"
 
@@ -166,6 +168,7 @@ def is_build_failed(build_results: list[RepositoryBuildResult]) -> bool:
                 PackageStatusCode.FAILED,
                 PackageStatusCode.SUCCEEDED,
                 PackageStatusCode.UNRESOLVABLE,
+                PackageStatusCode.DISABLED,
             ), f"package {pkg_res.name} (from repository {build_res.repository} for {build_res.project} and {build_res.arch}) has unfinished state {pkg_res.code}"
 
             if pkg_res.code in (
