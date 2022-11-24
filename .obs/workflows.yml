@@ -35,14 +35,6 @@ workflow:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rust-1.62-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rust-1.63-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: rust-1.64-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
