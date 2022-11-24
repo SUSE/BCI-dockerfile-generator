@@ -105,7 +105,7 @@ jobs:
           OSC_USER: "defolos"
         if: env.no_change != 'true'
 
-      - name: wait for the build to finish
+      - name: retrieve the build result
         run: |
           set -eux pipefail
           echo "build_res<<EOF" >> $GITHUB_ENV
