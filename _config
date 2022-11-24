@@ -1,0 +1,57 @@
+FileProvides: /bin/login util-linux
+FileProvides: /usr/bin/perl perl-base
+FileProvides: /usr/bin/sed sed
+
+%if "%_repository" == "images"
+Type: kiwi
+Repotype: none
+Patterntype: none
+
+Prefer: -libcurl4-mini
+Prefer: -systemd-mini
+Prefer: -libsystemd0-mini
+Prefer: -libudev-mini1
+Prefer: -udev-mini
+Prefer: kiwi-boot-requires
+Prefer: sles-release
+Prefer: sles-release-MINI
+Prefer: python3-kiwi
+
+# needed for busybox image building (at minimum)
+ExpandFlags: kiwi-nobasepackages
+
+# needed for micro image
+Prefer: -busybox-coreutils
+
+Preinstall: !rpm rpm-ndb
+Substitute: rpm rpm-ndb
+Binarytype: rpm
+%else
+%if %_repository == "containerfile"
+Type: docker
+Prefer: sles-release
+PreInstall: release-compare
+
+%else
+%if %_repository == "helmcharts"
+Type: helm
+#Prefer: sles-release
+PreInstall: release-compare perl-YAML-LibYAML
+%else
+Type: spec
+Repotype: none
+Patterntype: none
+%endif
+%endif
+%endif
+
+#
+# OBS specific settings
+#
+# temporary workaround until we can drop the SUSE:Registry repository path
+#Prefer: -container:bci_openjdk:11
+#Prefer: -container:bci_bci-micro:15.4
+#Prefer: -container:bci_openjdk:17
+#Prefer: -container:bci_bci-init:15.4
+#Prefer: -container:bci_bci-busybox:15.4
+#Prefer: -container:suse_sle15:15.4
