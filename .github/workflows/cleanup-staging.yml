@@ -32,6 +32,9 @@ jobs:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
 
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
       - name: install python dependencies
         run: poetry install
 
