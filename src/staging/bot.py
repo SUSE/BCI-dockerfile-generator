@@ -633,6 +633,32 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         await asyncio.gather(*tasks)
 
+    async def _write_pkg_meta(
+        self, bci_pkg: BaseContainerImage, target_obs_project: str, git_branch_name
+    ) -> None:
+        """Write the package ``_meta`` of the package with the name of the
+        ``bci_pkg`` in the ``target_obs_project`` to be synced from the git
+        branch ``git_branch_name``.
+
+        """
+        (pkg_conf := ET.Element("package")).attrib["name"] = bci_pkg.package_name
+
+        (title := ET.Element("title")).text = bci_pkg.title
+        (descr := ET.Element("description")).text = bci_pkg.description
+        (
+            scmsync := ET.Element("scmsync")
+        ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
+
+        for elem in (title, descr, scmsync):
+            pkg_conf.append(elem)
+
+        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_pkg_conf:
+            await tmp_pkg_conf.write(ET.tostring(pkg_conf).decode())
+            await tmp_pkg_conf.flush()
+            await self._run_cmd(
+                f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
+            )
+
     async def write_pkg_configs(
         self,
         packages: Iterable[BaseContainerImage],
@@ -654,31 +680,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         tasks = []
 
         for bci in packages:
-
-            async def write_pkg_conf(bci_pkg: BaseContainerImage):
-                (pkg_conf := ET.Element("package")).attrib[
-                    "name"
-                ] = bci_pkg.package_name
-
-                (title := ET.Element("title")).text = bci_pkg.title
-                (descr := ET.Element("description")).text = bci_pkg.description
-                (
-                    scmsync := ET.Element("scmsync")
-                ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
-
-                for elem in (title, descr, scmsync):
-                    pkg_conf.append(elem)
-
-                async with aiofiles.tempfile.NamedTemporaryFile(
-                    mode="w"
-                ) as tmp_pkg_conf:
-                    await tmp_pkg_conf.write(ET.tostring(pkg_conf).decode())
-                    await tmp_pkg_conf.flush()
-                    await self._run_cmd(
-                        f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
-                    )
-
-            tasks.append(write_pkg_conf(bci))
+            tasks.append(
+                self._write_pkg_meta(
+                    bci,
+                    git_branch_name=git_branch_name,
+                    target_obs_project=target_obs_project,
+                )
+            )
 
         await asyncio.gather(*tasks)
 
@@ -1263,3 +1271,23 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             for pkg_name, changelog_updated in package_changelog_appended.items()
             if not changelog_updated
         ]
+
+    async def configure_devel_bci_package(self, package_name: str) -> None:
+        bci = [b for b in self._bcis if b.package_name == package_name]
+
+        if not bci:
+            raise ValueError(
+                f"{package_name} is not a valid package name for "
+                f"{self.os_version.pretty_print}, expected one of "
+                + (", ".join(b.package_name for b in self._bcis))
+            )
+
+        assert (
+            len(bci) == 1
+        ), f"Got {len(bci)} packages with the name {package_name}: {bci}"
+
+        await self._write_pkg_meta(
+            bci[0],
+            target_obs_project=get_bci_project_name(self.os_version),
+            git_branch_name=self.deployment_branch_name,
+        )
