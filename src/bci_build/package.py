@@ -1108,7 +1108,7 @@ def _get_python_kwargs(
         "version": py3_ver,
         "additional_versions": ["3"],
         "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
-        "package_list": [f"{py3}-devel", pip3, "curl", "git-core"]
+        "package_list": [f"{py3}-devel", py3, pip3, "curl", "git-core"]
         + (
             [f"{py3}-wheel"]
             if is_system_py or os_version == OsVersion.TUMBLEWEED
