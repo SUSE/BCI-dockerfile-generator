@@ -52,6 +52,7 @@
   </repository>
   <packages type="image">
     <package name="python3-devel"/>
+    <package name="python3"/>
     <package name="python3-pip"/>
     <package name="curl"/>
     <package name="git-core"/>
