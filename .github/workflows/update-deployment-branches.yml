@@ -79,4 +79,5 @@ jobs:
           PULL_REQUEST_BRANCH: ${{ env.DEPLOYMENT_BRANCH_NAME }}
           PULL_REQUEST_TITLE: "🤖: Update build recipes for ${{ env.OS_VERSION_PRETTY }}"
           PULL_REQUEST_UPDATE: 1
+          PULL_REQUEST_REVIEWERS: "fcrozat ZerwasMOD dirkmueller"
         if: env.no_change != 'true'
