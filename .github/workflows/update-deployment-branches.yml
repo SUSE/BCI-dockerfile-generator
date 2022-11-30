@@ -73,10 +73,20 @@ jobs:
 
       - name: create a pull request
         uses: vsoch/pull-request-action@master
+        id: create-pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_FROM_BRANCH: ${{ env.BRANCH_NAME }}
           PULL_REQUEST_BRANCH: ${{ env.DEPLOYMENT_BRANCH_NAME }}
           PULL_REQUEST_TITLE: "🤖: Update build recipes for ${{ env.OS_VERSION_PRETTY }}"
           PULL_REQUEST_UPDATE: 1
+          PULL_REQUEST_REVIEWERS: "fcrozat ZerwasMOD dirkmueller"
         if: env.no_change != 'true'
+
+        # see https://github.com/vsoch/pull-request-action/issues/30 for context
+      - name: Close and reopen the PR to trigger github actions
+        uses: dogmatic69/actions/automations/pr-toggle@master
+        env:
+          PULL_REQUEST_NUMBER: |
+            ${{ steps.create-pr.outputs.pull_request_number }}
+          GITHUB_TOKEN: '${{ secrets.PAT }}'
