@@ -1,5 +1,5 @@
 ---
-workflow:
+staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
@@ -125,3 +125,105 @@ workflow:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+  filters:
+    event: pull_request
+
+refresh_devel_BCI:
+  steps:
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: python-3.6-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: 389-ds-container
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rmt-nginx-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: pcp-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: distribution-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rmt-server-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rust-1.64-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rust-1.65-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: golang-1.18-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: golang-1.19-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: ruby-2.5-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: nodejs-14-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: nodejs-16-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: openjdk-11-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: openjdk-11-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: openjdk-17-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: init-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rmt-mariadb-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: rmt-mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: postgres-14-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: postgres-13-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: postgres-12-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: postgres-10-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: prometheus-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: alertmanager-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: blackbox_exporter-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: grafana-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: minimal-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: micro-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: busybox-image
+  filters:
+    branches:
+      only:
+        - sle15-sp5
