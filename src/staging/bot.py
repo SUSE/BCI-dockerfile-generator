@@ -320,7 +320,7 @@ class StagingBot:
 
         """
         workflows = """---
-workflow:
+staging_build:
   steps:
 """
         source_project = self.continuous_rebuild_project_name
@@ -329,6 +329,24 @@ workflow:
         source_project: {source_project}
         source_package: {bci.package_name}
         target_project: {source_project}:Staging
+"""
+        workflows += """  filters:
+    event: pull_request
+
+refresh_devel_BCI:
+  steps:
+"""
+        devel_prj = get_bci_project_name(self.os_version)
+        for bci in self._bcis:
+            workflows += f"""    - trigger_services:
+        project: {devel_prj}
+        package: {bci.package_name}
+"""
+
+        workflows += f"""  filters:
+    branches:
+      only:
+        - {self.deployment_branch_name}
 """
         return workflows
 
