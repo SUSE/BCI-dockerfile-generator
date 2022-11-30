@@ -11,6 +11,7 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
+from bci_build.package import SupportLevel
 from jinja2 import Template
 from staging.build_result import Arch
 
@@ -157,6 +158,8 @@ class DotNetBCI(LanguageStackContainer):
         }
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
+
+        self.support_level = SupportLevel.L3
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
