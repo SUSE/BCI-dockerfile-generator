@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 29 12:34:23 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add main python package to include bundled modules (fixes bsc#1205850)
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4

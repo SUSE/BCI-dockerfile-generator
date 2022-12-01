@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 30 14:40:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set supportlevel to l3
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4
