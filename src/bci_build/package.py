@@ -1346,10 +1346,11 @@ NODE_CONTAINERS = [
 def _get_openjdk_kwargs(
     os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
 ):
+    JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
-        "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
-        "JAVA_HOME": "/usr/lib64/jvm/java",
-        "JAVA_ROOT": "/usr/lib64/jvm/java",
+        "JAVA_BINDIR": os.path.join(JAVA_HOME, "bin"),
+        "JAVA_HOME": JAVA_HOME,
+        "JAVA_ROOT": JAVA_HOME,
         "JAVA_VERSION": f"{java_version}",
     }
 
