@@ -1346,17 +1346,15 @@ NODE_CONTAINERS = [
 def _get_openjdk_kwargs(
     os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
 ):
+    JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
-        "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
-        "JAVA_HOME": "/usr/lib64/jvm/java",
-        "JAVA_ROOT": "/usr/lib64/jvm/java",
+        "JAVA_BINDIR": os.path.join(JAVA_HOME, "bin"),
+        "JAVA_HOME": JAVA_HOME,
+        "JAVA_ROOT": JAVA_HOME,
         "JAVA_VERSION": f"{java_version}",
     }
 
-    if os_version == OsVersion.TUMBLEWEED:
-        is_latest = java_version == 17
-    else:
-        is_latest = java_version == 11 and os_version in CAN_BE_LATEST_OS_VERSION
+    is_latest = java_version == 17 and os_version in CAN_BE_LATEST_OS_VERSION
 
     comon = {
         "env": JAVA_ENV,
@@ -1371,6 +1369,13 @@ def _get_openjdk_kwargs(
             "_constraints": generate_disk_size_constraints(6)
         },
     }
+
+    # we can only smoke test container environment variables in Dockerfile based
+    # builds (i.e. everything newer than 15 SP3)
+    if os_version != OsVersion.SP3:
+        comon[
+            "custom_end"
+        ] = f"""{DOCKERFILE_RUN} [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]"""
 
     if devel:
         return {
