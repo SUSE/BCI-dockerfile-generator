@@ -1370,6 +1370,13 @@ def _get_openjdk_kwargs(
         },
     }
 
+    # we can only smoke test container environment variables in Dockerfile based
+    # builds (i.e. everything newer than 15 SP3)
+    if os_version != OsVersion.SP3:
+        comon[
+            "custom_end"
+        ] = f"""{DOCKERFILE_RUN} [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]"""
+
     if devel:
         return {
             **comon,
