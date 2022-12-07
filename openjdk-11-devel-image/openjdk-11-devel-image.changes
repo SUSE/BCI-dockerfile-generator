@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 15:05:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest to java 17 and fix environment variables (bsc#1206128)
+
+-------------------------------------------------------------------
 Wed Oct 19 13:13:38 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
 
 - Set Support Level to l3
