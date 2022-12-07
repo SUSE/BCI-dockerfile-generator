@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 15:13:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix environment variables (bsc#1206128)
+
+-------------------------------------------------------------------
 Wed Nov 23 10:10:18 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Set supportlevel to l3
