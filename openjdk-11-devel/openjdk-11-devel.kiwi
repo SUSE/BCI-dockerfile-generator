@@ -37,9 +37,9 @@
         </labels>
         <subcommand execute="/usr/bin/jshell"/>
         <environment>
-          <env name="JAVA_BINDIR" value="/usr/lib64/jvm/java/bin"/>
-          <env name="JAVA_HOME" value="/usr/lib64/jvm/java"/>
-          <env name="JAVA_ROOT" value="/usr/lib64/jvm/java"/>
+          <env name="JAVA_BINDIR" value="/usr/lib64/jvm/java-11-openjdk-11/bin"/>
+          <env name="JAVA_HOME" value="/usr/lib64/jvm/java-11-openjdk-11"/>
+          <env name="JAVA_ROOT" value="/usr/lib64/jvm/java-11-openjdk-11"/>
           <env name="JAVA_VERSION" value="11"/>
         </environment>
 
