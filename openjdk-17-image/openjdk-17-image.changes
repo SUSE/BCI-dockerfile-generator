@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 15:14:20 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest to java 17 and fix environment variables (bsc#1206128)
+
+-------------------------------------------------------------------
 Fri Jul 15 11:07:44 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE
