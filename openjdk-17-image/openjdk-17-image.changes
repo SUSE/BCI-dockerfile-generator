@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 15:07:09 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Fix environment variables (bsc#1206128)
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4
