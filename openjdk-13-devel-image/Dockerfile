@@ -21,9 +21,10 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends java-13-openjdk-devel git-core maven; zypper -n clean; rm -rf /var/log/*
-ENV JAVA_BINDIR="/usr/lib64/jvm/java/bin"
-ENV JAVA_HOME="/usr/lib64/jvm/java"
-ENV JAVA_ROOT="/usr/lib64/jvm/java"
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-13-openjdk-13/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-13-openjdk-13"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-13-openjdk-13"
 ENV JAVA_VERSION="13"
 
 CMD ["/usr/bin/jshell"]
+RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]
