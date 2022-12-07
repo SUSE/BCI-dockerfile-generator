@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 29 12:27:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add main python package to include bundled modules (fixes bsc#1205850)
+
+-------------------------------------------------------------------
 Fri Jul 15 11:05:56 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE

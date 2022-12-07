@@ -1,5 +1,5 @@
 ---
-workflow:
+staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -149,3 +149,123 @@ workflow:
         source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+  filters:
+    event: pull_request
+
+refresh_devel_BCI:
+  steps:
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: python-3.8-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: python-3.9-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: python-3.10-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: 389-ds-container
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rmt-nginx-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: pcp-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: distribution-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rmt-server-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rust-1.64-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rust-1.65-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: golang-1.18-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: golang-1.19-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: ruby-3.1-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: nodejs-18-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: nodejs-19-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-11-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-11-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-17-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-13-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-15-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-13-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-15-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: init-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rmt-mariadb-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rmt-mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-14-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-13-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-12-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-10-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: prometheus-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: alertmanager-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: blackbox_exporter-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: grafana-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: minimal-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: micro-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: busybox-image
+  filters:
+    branches:
+      only:
+        - Tumbleweed
