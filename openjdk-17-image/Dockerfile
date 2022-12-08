@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/openjdk:17
+#!BuildTag: bci/openjdk:latest
 #!BuildTag: bci/openjdk:17-%RELEASE%
 #!BuildVersion: 15.4
 FROM suse/sle15:15.4
@@ -24,8 +25,9 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends java-17-openjdk; zypper -n clean; rm -rf /var/log/*
-ENV JAVA_BINDIR="/usr/lib64/jvm/java/bin"
-ENV JAVA_HOME="/usr/lib64/jvm/java"
-ENV JAVA_ROOT="/usr/lib64/jvm/java"
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-17-openjdk-17/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-17-openjdk-17"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-17-openjdk-17"
 ENV JAVA_VERSION="17"
 
+RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]
