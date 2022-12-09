@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Dec  9 14:50:41 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Set the supportlevel back to techpreview
+
+-------------------------------------------------------------------
 Wed Nov 30 14:37:52 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Set supportlevel to l3
