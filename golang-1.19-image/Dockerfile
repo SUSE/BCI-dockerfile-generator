@@ -2,7 +2,7 @@
 #!BuildTag: bci/golang:1.19
 #!BuildTag: bci/golang:latest
 #!BuildTag: bci/golang:1.19-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.1.19
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -3,7 +3,7 @@
 #!BuildTag: bci/ruby:latest
 #!BuildTag: bci/ruby:2.5-%RELEASE%
 #!BuildTag: bci/ruby:2
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.2.5
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -4,7 +4,7 @@
 #!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:6.0.11
 #!BuildTag: bci/dotnet-runtime:6.0.11-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.6.0
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -34,12 +34,12 @@ COPY microsoft.asc /tmp
 
 RUN mkdir -p /tmp/x86_64
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-6.0.11-x64.rpm
-COPY dotnet-host-6.0.11-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-6.0.11-x64.rpm
-COPY dotnet-hostfxr-6.0.11-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-6.0.11-sles.12-x64.rpm
-COPY dotnet-runtime-deps-6.0.11-sles.12-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-6.0.12-x64.rpm
+COPY dotnet-host-6.0.12-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-6.0.12-x64.rpm
+COPY dotnet-hostfxr-6.0.12-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-6.0.12-sles.12-x64.rpm
+COPY dotnet-runtime-deps-6.0.12-sles.12-x64.rpm /tmp/x86_64
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-6.0.11-x64.rpm
 COPY dotnet-runtime-6.0.11-x64.rpm /tmp/x86_64
 

@@ -3,7 +3,7 @@
 #!BuildTag: bci/nodejs:14-%RELEASE%
 #!BuildTag: bci/node:14
 #!BuildTag: bci/node:14-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.14
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

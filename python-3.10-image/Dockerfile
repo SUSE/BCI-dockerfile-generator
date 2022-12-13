@@ -3,7 +3,7 @@
 #!BuildTag: bci/python:latest
 #!BuildTag: bci/python:3.10-%RELEASE%
 #!BuildTag: bci/python:3
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.3.10
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

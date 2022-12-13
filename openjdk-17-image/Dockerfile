@@ -2,7 +2,7 @@
 #!BuildTag: bci/openjdk:17
 #!BuildTag: bci/openjdk:latest
 #!BuildTag: bci/openjdk:17-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.17
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
