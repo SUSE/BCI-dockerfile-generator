@@ -128,13 +128,15 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             """#!ExclusiveArch: x86_64 s390x
 # SPDX-License-Identifier: BSD
 #!BuildTag: bci/test:28.2
-#!BuildTag: bci/test:latest
 #!BuildTag: bci/test:28.2-%RELEASE%
 #!BuildTag: bci/test:28
+#!BuildTag: bci/test:28-%RELEASE%
+#!BuildTag: bci/test:latest
 #!BuildTag: bci/emacs:28.2
-#!BuildTag: bci/emacs:latest
 #!BuildTag: bci/emacs:28.2-%RELEASE%
 #!BuildTag: bci/emacs:28
+#!BuildTag: bci/emacs:28-%RELEASE%
+#!BuildTag: bci/emacs:latest
 #!BuildVersion: 15.4.28.2
 FROM suse/base:18
 
