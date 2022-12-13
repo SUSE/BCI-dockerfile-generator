@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 13 16:56:26 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- New version 6.0.12 and append version to BuildVersion
+
+-------------------------------------------------------------------
 Fri Dec  9 14:50:41 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Set the supportlevel back to techpreview
