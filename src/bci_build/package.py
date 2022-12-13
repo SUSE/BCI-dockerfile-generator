@@ -21,6 +21,7 @@ from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
+from packaging import version
 
 
 _BASH_SET = "set -euo pipefail"
@@ -1016,6 +1017,20 @@ class LanguageStackContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+
+    @property
+    def build_version(self) -> Optional[str]:
+        build_ver = super().build_version
+        if build_ver:
+            # if self.version is a numeric version and not a macro, then
+            # version.parse() returns a `Version` object => then we concatenate
+            # it with the existing build_version
+            # for non PEP440 versions, we'll get a LegacyVersion and just return
+            # the parent's classes build_version
+            if isinstance(version.parse(str(self.version)), version.Version):
+                return f"{build_ver}.{self.version}"
+            return build_ver
+        return None
 
 
 @dataclass

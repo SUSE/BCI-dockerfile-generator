@@ -12,7 +12,7 @@ from bci_build.templates import DOCKERFILE_TEMPLATE
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.28
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -52,9 +52,46 @@ RUN emacs -Q --batch test.el
         ),
         (
             """# SPDX-License-Identifier: MIT
+#!BuildTag: bci/test:%%emacs_ver%%
+#!BuildTag: bci/test:%%emacs_ver%%-%RELEASE%
+#!BuildVersion: 15.4
+FROM suse/sle15:15.4
+
+MAINTAINER SUSE LLC (https://www.suse.com/)
+
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=com.suse.bci.test
+LABEL org.opencontainers.image.title="SLE BCI Test Container Image"
+LABEL org.opencontainers.image.description="Test based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%emacs_ver%%"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.eula="sle-bci"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.image-type="sle-bci"
+LABEL com.suse.release-stage="released"
+# endlabelprefix
+
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
+""",
+            LanguageStackContainer(
+                name="test",
+                pretty_name="Test",
+                package_list=["gcc", "emacs"],
+                package_name="test-image",
+                os_version=OsVersion.SP4,
+                version="%%emacs_ver%%",
+            ),
+        ),
+        (
+            """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.28
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -98,7 +135,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
 #!BuildTag: bci/emacs:latest
 #!BuildTag: bci/emacs:28.2-%RELEASE%
 #!BuildTag: bci/emacs:28
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.28.2
 FROM suse/base:18
 
 MAINTAINER invalid@suse.com
