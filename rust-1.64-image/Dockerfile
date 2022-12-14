@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/rust:1.64
 #!BuildTag: bci/rust:1.64-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.1.64
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/golang:1.18
 #!BuildTag: bci/golang:1.18-%RELEASE%
-#!BuildVersion: 15.4
+#!BuildVersion: 15.4.1.18
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

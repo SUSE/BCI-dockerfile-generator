@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 13 17:00:28 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Add version to BuildVersion
+
+-------------------------------------------------------------------
 Wed Oct 19 13:05:13 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
 
 - Set Support Level to l3
