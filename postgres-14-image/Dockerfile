@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/postgres:14
-#!BuildTag: suse/postgres:latest
 #!BuildTag: suse/postgres:14-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_version%%
+#!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
+#!BuildTag: suse/postgres:latest
 
 FROM suse/sle15:15.5
 
