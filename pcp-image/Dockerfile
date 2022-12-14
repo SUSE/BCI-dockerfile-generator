@@ -2,7 +2,9 @@
 #!BuildTag: suse/pcp:%%pcp_patch%%
 #!BuildTag: suse/pcp:%%pcp_patch%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_minor%%
+#!BuildTag: suse/pcp:%%pcp_minor%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_major%%
+#!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
 
 FROM bci/bci-init:15.3
 

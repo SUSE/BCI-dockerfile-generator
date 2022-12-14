@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 
-<!-- OBS-AddTag: bci/python:3.9 bci/python:3.9-%RELEASE% bci/python:3 -->
+<!-- OBS-AddTag: bci/python:3.9 bci/python:3.9-%RELEASE% bci/python:3 bci/python:3-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="python-3.9-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -16,7 +16,7 @@
           name="bci/python"
           tag="3.9"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="3.9-%RELEASE%,3">
+          additionaltags="3.9-%RELEASE%,3,3-%RELEASE%">
         <labels>
           <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
           <suse_label_helper:add_prefix prefix="com.suse.bci.python">
