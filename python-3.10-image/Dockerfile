@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/python:3.10
-#!BuildTag: bci/python:latest
 #!BuildTag: bci/python:3.10-%RELEASE%
 #!BuildTag: bci/python:3
+#!BuildTag: bci/python:3-%RELEASE%
+#!BuildTag: bci/python:latest
 #!BuildVersion: 15.4.3.10
 FROM suse/sle15:15.4
 

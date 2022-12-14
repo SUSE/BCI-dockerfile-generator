@@ -1,10 +1,10 @@
 #!ExclusiveArch: x86_64
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-aspnet:7.0
-#!BuildTag: bci/dotnet-aspnet:latest
 #!BuildTag: bci/dotnet-aspnet:7.0-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:7.0.1
 #!BuildTag: bci/dotnet-aspnet:7.0.1-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:latest
 #!BuildVersion: 15.4.7.0
 FROM suse/sle15:15.4
 
