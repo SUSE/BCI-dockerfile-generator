@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/ruby:3.1
-#!BuildTag: opensuse/bci/ruby:latest
 #!BuildTag: opensuse/bci/ruby:3.1-%RELEASE%
 #!BuildTag: opensuse/bci/ruby:3
+#!BuildTag: opensuse/bci/ruby:3-%RELEASE%
+#!BuildTag: opensuse/bci/ruby:latest
 
 FROM opensuse/tumbleweed:latest
 

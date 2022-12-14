@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: (LGPL-2.1+ AND GPL-2.0+)
 #!BuildTag: opensuse/pcp:%%pcp_patch%%
-#!BuildTag: opensuse/pcp:latest
 #!BuildTag: opensuse/pcp:%%pcp_patch%%-%RELEASE%
 #!BuildTag: opensuse/pcp:%%pcp_minor%%
+#!BuildTag: opensuse/pcp:%%pcp_minor%%-%RELEASE%
 #!BuildTag: opensuse/pcp:%%pcp_major%%
+#!BuildTag: opensuse/pcp:%%pcp_major%%-%RELEASE%
+#!BuildTag: opensuse/pcp:latest
 
 FROM opensuse/bci/bci-init:latest
 

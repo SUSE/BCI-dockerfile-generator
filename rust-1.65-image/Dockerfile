@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/rust:1.65
-#!BuildTag: opensuse/bci/rust:latest
 #!BuildTag: opensuse/bci/rust:1.65-%RELEASE%
+#!BuildTag: opensuse/bci/rust:latest
 
 FROM opensuse/tumbleweed:latest
 

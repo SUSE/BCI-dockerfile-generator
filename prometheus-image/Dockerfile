@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/prometheus:%%prometheus_version%%
-#!BuildTag: opensuse/prometheus:latest
 #!BuildTag: opensuse/prometheus:%%prometheus_version%%-%RELEASE%
+#!BuildTag: opensuse/prometheus:latest
 
 FROM opensuse/tumbleweed:latest
 

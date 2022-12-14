@@ -2,6 +2,7 @@
 #!BuildTag: opensuse/postgres:10
 #!BuildTag: opensuse/postgres:10-%RELEASE%
 #!BuildTag: opensuse/postgres:%%pg_version%%
+#!BuildTag: opensuse/postgres:%%pg_version%%-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 

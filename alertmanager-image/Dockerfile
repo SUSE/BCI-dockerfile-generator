@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/alertmanager:%%alertmanager_version%%
-#!BuildTag: opensuse/alertmanager:latest
 #!BuildTag: opensuse/alertmanager:%%alertmanager_version%%-%RELEASE%
+#!BuildTag: opensuse/alertmanager:latest
 
 FROM opensuse/tumbleweed:latest
 

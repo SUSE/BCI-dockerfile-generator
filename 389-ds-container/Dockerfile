@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/389-ds:%%389ds_version%%
-#!BuildTag: opensuse/389-ds:latest
 #!BuildTag: opensuse/389-ds:%%389ds_version%%-%RELEASE%
+#!BuildTag: opensuse/389-ds:latest
 
 FROM opensuse/tumbleweed:latest
 

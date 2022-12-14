@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/postgres:14
-#!BuildTag: opensuse/postgres:latest
 #!BuildTag: opensuse/postgres:14-%RELEASE%
 #!BuildTag: opensuse/postgres:%%pg_version%%
+#!BuildTag: opensuse/postgres:%%pg_version%%-%RELEASE%
+#!BuildTag: opensuse/postgres:latest
 
 FROM opensuse/tumbleweed:latest
 

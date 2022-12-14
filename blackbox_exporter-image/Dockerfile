@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/blackbox_exporter:%%blackbox_exporter_version%%
-#!BuildTag: opensuse/blackbox_exporter:latest
 #!BuildTag: opensuse/blackbox_exporter:%%blackbox_exporter_version%%-%RELEASE%
+#!BuildTag: opensuse/blackbox_exporter:latest
 
 FROM opensuse/tumbleweed:latest
 
