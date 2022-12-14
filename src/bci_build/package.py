@@ -1003,15 +1003,12 @@ class LanguageStackContainer(BaseContainerImage):
     def build_tags(self) -> List[str]:
         tags = []
         for name in [self.name] + self.additional_names:
-            tags += (
-                [f"{self._registry_prefix}/{name}:{self.version_label}"]
-                + ([f"{self._registry_prefix}/{name}:latest"] if self.is_latest else [])
-                + [f"{self._registry_prefix}/{name}:{self.version_label}-%RELEASE%"]
-                + [
-                    f"{self._registry_prefix}/{name}:{ver}"
-                    for ver in self.additional_versions
+            for ver_label in [self.version_label] + self.additional_versions:
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
+                    f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
                 ]
-            )
+            if self.is_latest:
+                tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
 
     @property

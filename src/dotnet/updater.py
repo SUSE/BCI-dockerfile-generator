@@ -11,7 +11,6 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
-from bci_build.package import SupportLevel
 from jinja2 import Template
 from staging.build_result import Arch
 
@@ -299,7 +298,7 @@ class DotNetBCI(LanguageStackContainer):
             assert (
                 not self.additional_versions
             ), f"additional_versions property must be unset, but got {self.additional_versions}"
-            self.additional_versions = [new_version, f"{new_version}-%RELEASE%"]
+            self.additional_versions = [new_version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
