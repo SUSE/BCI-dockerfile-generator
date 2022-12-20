@@ -21,6 +21,7 @@ from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
+from packaging import version
 
 
 _BASH_SET = "set -euo pipefail"
@@ -1002,20 +1003,31 @@ class LanguageStackContainer(BaseContainerImage):
     def build_tags(self) -> List[str]:
         tags = []
         for name in [self.name] + self.additional_names:
-            tags += (
-                [f"{self._registry_prefix}/{name}:{self.version_label}"]
-                + ([f"{self._registry_prefix}/{name}:latest"] if self.is_latest else [])
-                + [f"{self._registry_prefix}/{name}:{self.version_label}-%RELEASE%"]
-                + [
-                    f"{self._registry_prefix}/{name}:{ver}"
-                    for ver in self.additional_versions
+            for ver_label in [self.version_label] + self.additional_versions:
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
+                    f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
                 ]
-            )
+            if self.is_latest:
+                tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
 
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+
+    @property
+    def build_version(self) -> Optional[str]:
+        build_ver = super().build_version
+        if build_ver:
+            # if self.version is a numeric version and not a macro, then
+            # version.parse() returns a `Version` object => then we concatenate
+            # it with the existing build_version
+            # for non PEP440 versions, we'll get a LegacyVersion and just return
+            # the parent's classes build_version
+            if isinstance(version.parse(str(self.version)), version.Version):
+                return f"{build_ver}.{self.version}"
+            return build_ver
+        return None
 
 
 @dataclass
