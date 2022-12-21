@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:05:29 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Tue Nov 22 07:50:04 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - First version of the Rust 1.65 container

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:05:35 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Mon Nov 21 13:47:17 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add _constraints to prevent FTBFS with small worker root partitions
