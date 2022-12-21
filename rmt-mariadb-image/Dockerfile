@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/rmt-mariadb:%%mariadb_version%%
-#!BuildTag: opensuse/rmt-mariadb:latest
 #!BuildTag: opensuse/rmt-mariadb:%%mariadb_version%%-%RELEASE%
+#!BuildTag: opensuse/rmt-mariadb:latest
 
 FROM opensuse/tumbleweed:latest
 

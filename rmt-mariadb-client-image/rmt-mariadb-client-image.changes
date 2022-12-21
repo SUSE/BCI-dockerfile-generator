@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:05:29 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Fri Jul 15 11:08:31 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE

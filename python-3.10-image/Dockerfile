@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/python:3.10
-#!BuildTag: opensuse/bci/python:latest
 #!BuildTag: opensuse/bci/python:3.10-%RELEASE%
 #!BuildTag: opensuse/bci/python:3
+#!BuildTag: opensuse/bci/python:3-%RELEASE%
+#!BuildTag: opensuse/bci/python:latest
 
 FROM opensuse/tumbleweed:latest
 

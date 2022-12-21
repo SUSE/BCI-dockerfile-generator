@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/openjdk-devel:17
-#!BuildTag: opensuse/bci/openjdk-devel:latest
 #!BuildTag: opensuse/bci/openjdk-devel:17-%RELEASE%
+#!BuildTag: opensuse/bci/openjdk-devel:latest
 
 FROM opensuse/bci/openjdk:17
 

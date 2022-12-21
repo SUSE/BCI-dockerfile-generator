@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #!BuildTag: opensuse/grafana:%%grafana_version%%
-#!BuildTag: opensuse/grafana:latest
 #!BuildTag: opensuse/grafana:%%grafana_version%%-%RELEASE%
+#!BuildTag: opensuse/grafana:latest
 
 FROM opensuse/tumbleweed:latest
 

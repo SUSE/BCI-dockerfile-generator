@@ -2,6 +2,7 @@
 #!BuildTag: opensuse/bci/python:3.8
 #!BuildTag: opensuse/bci/python:3.8-%RELEASE%
 #!BuildTag: opensuse/bci/python:3
+#!BuildTag: opensuse/bci/python:3-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/nodejs:19
-#!BuildTag: opensuse/bci/nodejs:latest
 #!BuildTag: opensuse/bci/nodejs:19-%RELEASE%
+#!BuildTag: opensuse/bci/nodejs:latest
 #!BuildTag: opensuse/bci/node:19
-#!BuildTag: opensuse/bci/node:latest
 #!BuildTag: opensuse/bci/node:19-%RELEASE%
+#!BuildTag: opensuse/bci/node:latest
 
 FROM opensuse/tumbleweed:latest
 

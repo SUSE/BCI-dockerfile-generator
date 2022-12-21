@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/rmt-nginx:%%nginx_version%%
-#!BuildTag: opensuse/rmt-nginx:latest
 #!BuildTag: opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: opensuse/rmt-nginx:latest
 
 FROM opensuse/tumbleweed:latest
 
