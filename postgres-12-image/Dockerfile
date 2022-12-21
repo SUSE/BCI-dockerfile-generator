@@ -2,6 +2,7 @@
 #!BuildTag: suse/postgres:12
 #!BuildTag: suse/postgres:12-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_version%%
+#!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
 
 FROM suse/sle15:15.5
 

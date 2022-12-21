@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/389-ds:%%389ds_version%%
-#!BuildTag: suse/389-ds:latest
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
+#!BuildTag: suse/389-ds:latest
 
 FROM suse/sle15:15.5
 

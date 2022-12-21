@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 16:17:30 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Wed Nov 30 14:40:51 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Set supportlevel to l3

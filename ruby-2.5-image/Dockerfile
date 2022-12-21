@@ -2,6 +2,7 @@
 #!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2.5-%RELEASE%
 #!BuildTag: bci/ruby:2
+#!BuildTag: bci/ruby:2-%RELEASE%
 
 FROM suse/sle15:15.5
 

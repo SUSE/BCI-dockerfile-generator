@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 16:17:27 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4

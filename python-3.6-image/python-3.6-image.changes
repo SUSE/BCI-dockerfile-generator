@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 16:17:31 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Tue Nov 29 12:34:23 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add main python package to include bundled modules (fixes bsc#1205850)
