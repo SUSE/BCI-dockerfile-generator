@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:19:39 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Mon Nov 21 09:48:33 UTC 2022 - Dirk Mueller <dmueller@suse.com>
 
 - Use the unprivileged user 'registry' to run the container's entrypoint

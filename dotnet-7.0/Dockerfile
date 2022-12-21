@@ -1,10 +1,10 @@
 #!ExclusiveArch: x86_64
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-sdk:7.0
-#!BuildTag: bci/dotnet-sdk:latest
 #!BuildTag: bci/dotnet-sdk:7.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:7.0.1
 #!BuildTag: bci/dotnet-sdk:7.0.1-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:latest
 #!BuildVersion: 15.4.7.0
 FROM suse/sle15:15.4
 

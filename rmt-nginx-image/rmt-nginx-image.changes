@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:19:36 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Mon Nov 21 09:20:35 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Update 20-envsubst-on-templates.sh and docker-entrypoint.sh from upstream

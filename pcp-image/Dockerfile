@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: (LGPL-2.1+ AND GPL-2.0+)
 #!BuildTag: suse/pcp:%%pcp_patch%%
-#!BuildTag: suse/pcp:latest
 #!BuildTag: suse/pcp:%%pcp_patch%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_minor%%
+#!BuildTag: suse/pcp:%%pcp_minor%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_major%%
+#!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
+#!BuildTag: suse/pcp:latest
 #!BuildVersion: 15.4
 FROM bci/bci-init:15.4
 

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:19:39 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Wed Nov  2 11:28:15 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
 - The first version of the Grafana container image

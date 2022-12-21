@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/prometheus:%%prometheus_version%%
-#!BuildTag: suse/prometheus:latest
 #!BuildTag: suse/prometheus:%%prometheus_version%%-%RELEASE%
+#!BuildTag: suse/prometheus:latest
 #!BuildVersion: 15.4
 FROM suse/sle15:15.4
 

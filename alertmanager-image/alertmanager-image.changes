@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:19:41 UTC 2022 - Dirk Müller <dmueller@suse.com>
+
+- BuildTag sorting and consistency fixes
+
+-------------------------------------------------------------------
 Fri Sep 30 08:27:20 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Fix entrypoint
