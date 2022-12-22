@@ -298,7 +298,7 @@ class DotNetBCI(LanguageStackContainer):
             assert (
                 not self.additional_versions
             ), f"additional_versions property must be unset, but got {self.additional_versions}"
-            self.additional_versions = [new_version, f"{new_version}-%RELEASE%"]
+            self.additional_versions = [new_version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,

@@ -21,6 +21,7 @@ from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
+from packaging import version
 
 
 _BASH_SET = "set -euo pipefail"
@@ -1002,20 +1003,31 @@ class LanguageStackContainer(BaseContainerImage):
     def build_tags(self) -> List[str]:
         tags = []
         for name in [self.name] + self.additional_names:
-            tags += (
-                [f"{self._registry_prefix}/{name}:{self.version_label}"]
-                + ([f"{self._registry_prefix}/{name}:latest"] if self.is_latest else [])
-                + [f"{self._registry_prefix}/{name}:{self.version_label}-%RELEASE%"]
-                + [
-                    f"{self._registry_prefix}/{name}:{ver}"
-                    for ver in self.additional_versions
+            for ver_label in [self.version_label] + self.additional_versions:
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
+                    f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
                 ]
-            )
+            if self.is_latest:
+                tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
 
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+
+    @property
+    def build_version(self) -> Optional[str]:
+        build_ver = super().build_version
+        if build_ver:
+            # if self.version is a numeric version and not a macro, then
+            # version.parse() returns a `Version` object => then we concatenate
+            # it with the existing build_version
+            # for non PEP440 versions, we'll get a LegacyVersion and just return
+            # the parent's classes build_version
+            if isinstance(version.parse(str(self.version)), version.Version):
+                return f"{build_ver}.{self.version}"
+            return build_ver
+        return None
 
 
 @dataclass
@@ -1346,17 +1358,15 @@ NODE_CONTAINERS = [
 def _get_openjdk_kwargs(
     os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
 ):
+    JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
-        "JAVA_BINDIR": "/usr/lib64/jvm/java/bin",
-        "JAVA_HOME": "/usr/lib64/jvm/java",
-        "JAVA_ROOT": "/usr/lib64/jvm/java",
+        "JAVA_BINDIR": os.path.join(JAVA_HOME, "bin"),
+        "JAVA_HOME": JAVA_HOME,
+        "JAVA_ROOT": JAVA_HOME,
         "JAVA_VERSION": f"{java_version}",
     }
 
-    if os_version == OsVersion.TUMBLEWEED:
-        is_latest = java_version == 17
-    else:
-        is_latest = java_version == 11 and os_version in CAN_BE_LATEST_OS_VERSION
+    is_latest = java_version == 17 and os_version in CAN_BE_LATEST_OS_VERSION
 
     comon = {
         "env": JAVA_ENV,
@@ -1371,6 +1381,13 @@ def _get_openjdk_kwargs(
             "_constraints": generate_disk_size_constraints(6)
         },
     }
+
+    # we can only smoke test container environment variables in Dockerfile based
+    # builds (i.e. everything newer than 15 SP3)
+    if os_version != OsVersion.SP3:
+        comon[
+            "custom_end"
+        ] = f"""{DOCKERFILE_RUN} [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]"""
 
     if devel:
         return {
@@ -1435,6 +1452,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         is_latest=True,
         version_in_uid=False,
         name="389-ds",
+        support_level=SupportLevel.L3,
         maintainer="william.brown@suse.com",
         pretty_name="389 Directory Server",
         package_list=["389-ds", "timezone", "openssl", "nss_synth"],
@@ -1641,6 +1659,7 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == 14,
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
+        support_level=SupportLevel.L3,
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
         additional_versions=["%%pg_version%%"],
@@ -1859,7 +1878,7 @@ STOPSIGNAL SIGQUIT
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.64", "1.65"]
+_RUST_VERSIONS = ["1.65", "1.66"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
@@ -2062,7 +2081,7 @@ COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scri
 COPY pmcd pmlogger /etc/sysconfig/
 
 # This can be removed after the pcp dependency on sysconfig is removed
-{DOCKERFILE_RUN} systemctl disable wicked wickedd
+{DOCKERFILE_RUN} systemctl disable wicked wickedd || :
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
