@@ -11,7 +11,6 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
-from bci_build.package import SupportLevel
 from jinja2 import Template
 from staging.build_result import Arch
 
@@ -159,8 +158,6 @@ class DotNetBCI(LanguageStackContainer):
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
 
-        self.support_level = SupportLevel.L3
-
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
         stores it in the target folder `dest`. The target folder must exist.
@@ -301,7 +298,7 @@ class DotNetBCI(LanguageStackContainer):
             assert (
                 not self.additional_versions
             ), f"additional_versions property must be unset, but got {self.additional_versions}"
-            self.additional_versions = [new_version, f"{new_version}-%RELEASE%"]
+            self.additional_versions = [new_version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
