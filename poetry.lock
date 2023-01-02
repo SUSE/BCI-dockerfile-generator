@@ -273,7 +273,7 @@ aiofiles = "^22.1"
 type = "git"
 url = "https://github.com/dcermak/obs-package-update"
 reference = "main"
-resolved_reference = "bd9686b3be012d656a1b46b3a9a4163b4b04d7a1"
+resolved_reference = "ebdd04c2e5d9fa3be29ba50c8514a4b8bfa6bf6b"
 
 [[package]]
 name = "packaging"
