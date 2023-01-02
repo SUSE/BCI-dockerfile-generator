@@ -549,7 +549,7 @@ class BaseContainerImage(abc.ABC):
             )
         return f"""#!{self.config_sh_interpreter}
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: (c) {datetime.datetime.now().date().strftime("%Y")} SUSE LLC
+# SPDX-FileCopyrightText: (c) 2022-{datetime.datetime.now().date().strftime("%Y")} SUSE LLC
 
 {_BASH_SET}
 
