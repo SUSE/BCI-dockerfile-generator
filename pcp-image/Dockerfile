@@ -2,7 +2,9 @@
 #!BuildTag: suse/pcp:%%pcp_patch%%
 #!BuildTag: suse/pcp:%%pcp_patch%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_minor%%
+#!BuildTag: suse/pcp:%%pcp_minor%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_major%%
+#!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
 
 FROM bci/bci-init:15.3
 
@@ -38,6 +40,6 @@ COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scri
 COPY pmcd pmlogger /etc/sysconfig/
 
 # This can be removed after the pcp dependency on sysconfig is removed
-RUN set -euo pipefail; systemctl disable wicked wickedd
+RUN set -euo pipefail; systemctl disable wicked wickedd || :
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3     CMD /usr/local/bin/healthcheck
