@@ -780,7 +780,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 )
 
         finally:
-            await self._run_cmd(f"git worktree remove {new_branch_name}")
+            await self._run_cmd(f"git worktree remove --force {new_branch_name}")
 
         return commit
 

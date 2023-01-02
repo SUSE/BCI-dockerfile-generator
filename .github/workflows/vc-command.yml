@@ -67,6 +67,7 @@ jobs:
           reaction-type: "+1"
 
       - name: generate the url to this workflow run
+        if: ${{ failure() || cancelled() }}
         run: echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
 
       - name: Add reaction and a link to the error to the original comment on failure
