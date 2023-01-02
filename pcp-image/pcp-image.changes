@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan  2 13:57:46 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add additional -%RELEASE% build tags and handle non-existent wicked gracefully
+
+-------------------------------------------------------------------
 Mon Sep 26 14:52:05 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Apply buildrecipe templates

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan  2 13:42:31 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Bump copyright year
+
+-------------------------------------------------------------------
 Wed Dec  7 15:13:03 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Fix environment variables (bsc#1206128)

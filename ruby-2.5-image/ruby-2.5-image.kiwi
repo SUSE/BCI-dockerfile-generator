@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 
-<!-- OBS-AddTag: bci/ruby:2.5 bci/ruby:2.5-%RELEASE% bci/ruby:2 -->
+<!-- OBS-AddTag: bci/ruby:2.5 bci/ruby:2.5-%RELEASE% bci/ruby:2 bci/ruby:2-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="ruby-2.5-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -16,7 +16,7 @@
           name="bci/ruby"
           tag="2.5"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="2.5-%RELEASE%,2">
+          additionaltags="2.5-%RELEASE%,2,2-%RELEASE%">
         <labels>
           <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
           <suse_label_helper:add_prefix prefix="com.suse.bci.ruby">

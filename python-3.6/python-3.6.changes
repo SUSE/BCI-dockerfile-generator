@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan  2 13:59:40 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Bump copyright year & add -%RELEASE% build tags
+
+-------------------------------------------------------------------
 Tue Nov 29 12:33:21 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add main python package to include bundled modules (fixes bsc#1205850)
