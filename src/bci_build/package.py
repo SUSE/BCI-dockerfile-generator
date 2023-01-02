@@ -1022,11 +1022,13 @@ class LanguageStackContainer(BaseContainerImage):
             # if self.version is a numeric version and not a macro, then
             # version.parse() returns a `Version` object => then we concatenate
             # it with the existing build_version
-            # for non PEP440 versions, we'll get a LegacyVersion and just return
+            # for non PEP440 versions, we'll get an exception and just return
             # the parent's classes build_version
-            if isinstance(version.parse(str(self.version)), version.Version):
+            try:
+                version.parse(str(self.version))
                 return f"{build_ver}.{self.version}"
-            return build_ver
+            except version.InvalidVersion:
+                return build_ver
         return None
 
 
