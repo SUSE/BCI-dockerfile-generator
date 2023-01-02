@@ -53,7 +53,7 @@ jobs:
               -vvvv --os-version $OS_VERSION \
                 add_changelog_entry \
                 --user $user \
-                $entry
+                "$entry"
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
