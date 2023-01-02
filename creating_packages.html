@@ -10,9 +10,6 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -50,8 +47,8 @@ existing package into your home project (we use <code class="docutils literal no
 as that will ensure that the repositories have been setup correctly.
 Once you have created it, check it out to your file system:</p></li>
 </ol>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc branch devel:BCI:SLE-15-SP4 busybox-image home:<span class="nv">$my_user</span>:new_pkg_proj
-<span class="gp">$ </span>osc co home:<span class="nv">$my_user</span>:new_pkg_proj
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc<span class="w"> </span>branch<span class="w"> </span>devel:BCI:SLE-15-SP4<span class="w"> </span>busybox-image<span class="w"> </span>home:<span class="nv">$my_user</span>:new_pkg_proj
+<span class="gp">$ </span>osc<span class="w"> </span>co<span class="w"> </span>home:<span class="nv">$my_user</span>:new_pkg_proj
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
@@ -60,12 +57,12 @@ same name as the parameter
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.package_name" title="bci_build.package.BaseContainerImage.package_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_name</span></code></a> in the
 respective Container class, as otherwise the updater script will not work properly:</p></li>
 </ol>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc mkpac <span class="nv">$new_pkg_name</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc<span class="w"> </span>mkpac<span class="w"> </span><span class="nv">$new_pkg_name</span>
 </pre></div>
 </div>
 <ol class="arabic" start="4">
 <li><p>Run the script <strong class="command">./src/bci_build/package.py</strong> as follows:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>poetry run ./src/bci_build/package.py <span class="nv">$new_container_nvr</span>-<span class="nv">$SP_ID</span> path_to_checkout_of_new_pkg_name
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>poetry<span class="w"> </span>run<span class="w"> </span>./src/bci_build/package.py<span class="w"> </span><span class="nv">$new_container_nvr</span>-<span class="nv">$SP_ID</span><span class="w"> </span>path_to_checkout_of_new_pkg_name
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">$new_container_nvr</span></code> is the value of the
@@ -84,10 +81,10 @@ the <em>package</em> <code class="docutils literal notranslate"><span class="pre
 add all files, commit your changes and send a submit request back to the
 <code class="docutils literal notranslate"><span class="pre">devel:BCI</span></code> project:</p></li>
 </ol>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc vc -m <span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span>
-<span class="gp">$ </span>osc add *
-<span class="gp">$ </span>osc ci -m <span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span>
-<span class="gp">$ </span>osc sr -m <span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span> devel:BCI:SLE-15-SP4 <span class="nv">$new_pkg_name</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>osc<span class="w"> </span>vc<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span>
+<span class="gp">$ </span>osc<span class="w"> </span>add<span class="w"> </span>*
+<span class="gp">$ </span>osc<span class="w"> </span>ci<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span>
+<span class="gp">$ </span>osc<span class="w"> </span>sr<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial version of the ... Container, jsc#BCI-XXX&quot;</span><span class="w"> </span>devel:BCI:SLE-15-SP4<span class="w"> </span><span class="nv">$new_pkg_name</span>
 </pre></div>
 </div>
 </section>
@@ -152,7 +149,7 @@ add all files, commit your changes and send a submit request back to the
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.0.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
