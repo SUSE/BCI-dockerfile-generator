@@ -6,6 +6,7 @@ import asyncio
 import datetime
 import enum
 import os
+import textwrap
 from dataclasses import dataclass
 from dataclasses import field
 from itertools import product
@@ -1468,10 +1469,15 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
         package_name="init-image",
-        custom_end=f"""RUN {_DISABLE_GETTY_AT_TTY1_SERVICE}
-HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
-    CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
-""",
+        custom_end=textwrap.dedent(
+            f"""
+            RUN mkdir -p /etc/systemd/system.conf.d/ && \\
+                printf "[Manager]\\nLogColor=no" > \\
+                    /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
+            RUN {_DISABLE_GETTY_AT_TTY1_SERVICE}
+            HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+            """
+        ),
     )
     for os_version in ALL_OS_VERSIONS
 ]
