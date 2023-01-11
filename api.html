@@ -834,7 +834,7 @@ further details.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.package.RELEASED_OS_VERSIONS">
-<span class="sig-prename descclassname"><span class="pre">bci_build.package.</span></span><span class="sig-name descname"><span class="pre">RELEASED_OS_VERSIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;OsVersion.SP3:</span> <span class="pre">3&gt;,</span> <span class="pre">&lt;OsVersion.SP4:</span> <span class="pre">4&gt;,</span> <span class="pre">&lt;OsVersion.TUMBLEWEED:</span> <span class="pre">'Tumbleweed'&gt;]</span></em><a class="headerlink" href="#bci_build.package.RELEASED_OS_VERSIONS" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.package.</span></span><span class="sig-name descname"><span class="pre">RELEASED_OS_VERSIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;OsVersion.SP4:</span> <span class="pre">4&gt;,</span> <span class="pre">&lt;OsVersion.TUMBLEWEED:</span> <span class="pre">'Tumbleweed'&gt;]</span></em><a class="headerlink" href="#bci_build.package.RELEASED_OS_VERSIONS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Operating system versions that have the label <code class="docutils literal notranslate"><span class="pre">com.suse.release-stage</span></code> set
 to <code class="docutils literal notranslate"><span class="pre">released</span></code>.</p>
 </dd></dl>
@@ -914,11 +914,6 @@ for further details</p>
 workers with at least <code class="docutils literal notranslate"><span class="pre">size_gb</span></code> GB of disk space.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="bci_build.package.init_container_kwargs">
-<span class="sig-prename descclassname"><span class="pre">bci_build.package.</span></span><span class="sig-name descname"><span class="pre">init_container_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bci_build.package.init_container_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </section>
 <section id="module-bci_build.update">
 <span id="update-module"></span><h2><a class="reference internal" href="#module-bci_build.update" title="bci_build.update"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span></code></a> module<a class="headerlink" href="#module-bci_build.update" title="Permalink to this heading">¶</a></h2>
@@ -971,19 +966,19 @@ during the update.</p>
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f156ada7fd0&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8701f83e90&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f156e63fd90&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8704068b90&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f156adb10d0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8703f9d250&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
