@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-aspnet:7.0
 #!BuildTag: bci/dotnet-aspnet:7.0-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:7.0.1
-#!BuildTag: bci/dotnet-aspnet:7.0.1-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:7.0.2
+#!BuildTag: bci/dotnet-aspnet:7.0.2-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:latest
 #!BuildVersion: 15.4.7.0
 FROM suse/sle15:15.4
@@ -35,16 +35,16 @@ COPY microsoft.asc /tmp
 
 RUN mkdir -p /tmp/x86_64
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-7.0.1-x64.rpm
-COPY dotnet-host-7.0.1-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-7.0.1-x64.rpm
-COPY dotnet-hostfxr-7.0.1-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-7.0.1-sles.12-x64.rpm
-COPY dotnet-runtime-deps-7.0.1-sles.12-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-7.0.1-x64.rpm
-COPY dotnet-runtime-7.0.1-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/aspnetcore-runtime-7.0.1-x64.rpm
-COPY aspnetcore-runtime-7.0.1-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-7.0.2-x64.rpm
+COPY dotnet-host-7.0.2-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-7.0.2-x64.rpm
+COPY dotnet-hostfxr-7.0.2-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-7.0.2-sles.12-x64.rpm
+COPY dotnet-runtime-deps-7.0.2-sles.12-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-7.0.2-x64.rpm
+COPY dotnet-runtime-7.0.2-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/aspnetcore-runtime-7.0.2-x64.rpm
+COPY aspnetcore-runtime-7.0.2-x64.rpm /tmp/x86_64
 
 COPY prod.repo /tmp
 
