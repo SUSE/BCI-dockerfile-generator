@@ -18,7 +18,6 @@ jobs:
         os_version:
           - 5
           - 4
-          - 3
           - Tumbleweed
 
     steps:
