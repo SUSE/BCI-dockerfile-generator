@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 12 07:50:16 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Disable systemd colors
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4
