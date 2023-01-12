@@ -24,5 +24,9 @@ LABEL usage="This container should only be used to build containers for daemons.
 
 RUN set -euo pipefail; zypper -n in --no-recommends systemd gzip; zypper -n clean; rm -rf /var/log/*
 CMD ["/usr/lib/systemd/systemd"]
+
+RUN mkdir -p /etc/systemd/system.conf.d/ && \
+    printf "[Manager]\nLogColor=no" > \
+        /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
 RUN systemctl disable getty@tty1.service
-HEALTHCHECK --interval=5s --timeout=5s --retries=5     CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
