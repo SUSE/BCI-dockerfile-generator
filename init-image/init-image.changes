@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 12 07:49:55 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Disable systemd colors
+
+-------------------------------------------------------------------
 Wed Oct 19 12:20:53 UTC 2022 - Bruno Leon <bruno.leon@suse.com>
 
 - Set Support Level to l3
