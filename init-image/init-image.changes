@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 12 07:50:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Disable systemd colors
+
+-------------------------------------------------------------------
 Fri Jul 15 11:08:17 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE
