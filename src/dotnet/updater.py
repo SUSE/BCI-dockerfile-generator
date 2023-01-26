@@ -82,11 +82,11 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1{% endif %}
 # The MS GPG keys
 COPY microsoft.asc /tmp
 
-RUN mkdir -p {% for arch in image.exclusive_arch %}/tmp/{{ arch }}{{ " " if not loop.last }}{% endfor %}
+RUN mkdir -p /tmp/
 
 {% for pkg in dotnet_packages -%}
 #!RemoteAssetUrl: {{ pkg.url }}
-COPY {{ pkg.name }} /tmp/{{ pkg.arch }}
+COPY {{ pkg.name }} /tmp/
 {% endfor %}
 COPY prod.repo /tmp
 
@@ -96,13 +96,7 @@ RUN zypper --non-interactive install --no-recommends sles-release
 # Importing MS GPG keys
 RUN rpm --import /tmp/microsoft.asc
 
-# Use the package for ICU offered by SLES
-{% for arch, icu_pkg in libicu_pkg.items() %}
-#!ArchExclusiveLine {{ arch }}
-RUN if [ $(uname -m) = "{{ arch }}" ]; then zypper --non-interactive install --no-recommends {{ icu_pkg }}; fi
-{% endfor %}
-
-RUN zypper --non-interactive install --no-recommends /tmp/$(uname -m)/*rpm
+RUN zypper --non-interactive install --no-recommends libicu /tmp/*rpm
 
 RUN cp /tmp/prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 
@@ -127,12 +121,13 @@ class RpmPackage(Package):
     url: str
 
 
+_DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64]
+
+
 @dataclass
 class DotNetBCI(LanguageStackContainer):
     #: Specifies whether this package contains the full .Net SDK
     is_sdk: bool = False
-
-    exclusive_arch: list[Arch] = field(default_factory=lambda: [Arch.X86_64])
 
     package_list: list[str | Package] | list[str] = field(default_factory=list)
 
@@ -157,6 +152,8 @@ class DotNetBCI(LanguageStackContainer):
         }
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
+
+        self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
@@ -303,44 +300,8 @@ class DotNetBCI(LanguageStackContainer):
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
-            libicu_pkg=self.get_latest_libicu_pkg_version(),
         )
         self.package_list = []
-
-    def _get_bci_base(self, arch: Arch) -> dnf.Base:
-        if self.os_version not in DotNetBCI._sle_bci_base:
-            DotNetBCI._sle_bci_base[self.os_version] = {}
-
-        # base_for_os_ver = DotNetBCI._sle_bci_base[self.os_version]
-        if arch not in DotNetBCI._sle_bci_base[self.os_version]:
-            base = dnf.Base()
-            base.conf.arch = str(arch)
-            base.repos.add_new_repo(
-                repoid="SLE_BCI",
-                conf=base.conf,
-                baseurl=(
-                    f"https://updates.suse.com/SUSE/Products/SLE-BCI/15-SP{self.os_version}/{str(arch)}/product/",
-                ),
-            )
-            base.fill_sack()
-            DotNetBCI._sle_bci_base[self.os_version][arch] = base
-
-        return DotNetBCI._sle_bci_base[self.os_version][arch]
-
-    def _get_latest_libicu_per_arch(self, arch: Arch) -> str:
-        bci_base = self._get_bci_base(arch)
-        return sorted(
-            bci_base.sack.query().available().filter(provides="libicu", arch=str(arch)),
-            key=cmp_to_key(lambda p1, p2: p1.evr_cmp(p2)),
-        )[-1].name
-
-    def get_latest_libicu_pkg_version(self) -> dict[Arch, str]:
-        pkg_per_arch = {}
-        assert self.exclusive_arch
-        for arch in self.exclusive_arch:
-            pkg_per_arch[arch] = self._get_latest_libicu_per_arch(arch)
-
-        return pkg_per_arch
 
 
 _DOTNET_VERSION_T = Literal["3.1", "6.0", "7.0"]
@@ -356,8 +317,7 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
 
 DOTNET_IMAGES: list[DotNetBCI] = []
 
-# FIXME: once we start publishing the SP5 SLE_BCI repo, enable SP5
-for os_version in (OsVersion.SP4,):
+for os_version in (OsVersion.SP4, OsVersion.SP5):
 
     for ver in _DOTNET_VERSIONS:
         package_list: list[Package | str] = [
@@ -438,7 +398,3 @@ for os_version in (OsVersion.SP4,):
             for ver in _DOTNET_VERSIONS
         ]
     )
-
-# FIXME: re-enable this once MS release security fixes for aarch64
-# for dotnet_6_pkg in [DOTNET_RUNTIME_6_0, ASPNET_RUNTIME_6_0, DOTNET_SDK_6_0]:
-#     dotnet_6_pkg.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
