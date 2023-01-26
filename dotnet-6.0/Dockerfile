@@ -33,28 +33,28 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # The MS GPG keys
 COPY microsoft.asc /tmp
 
-RUN mkdir -p /tmp/x86_64
+RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-6.0.13-x64.rpm
-COPY dotnet-host-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/netstandard-targeting-pack-2.1.0-x64.rpm
-COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-targeting-pack-6.0.13-x64.rpm
-COPY dotnet-targeting-pack-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-6.0.13-x64.rpm
-COPY dotnet-hostfxr-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-6.0.13-sles.12-x64.rpm
-COPY dotnet-runtime-deps-6.0.13-sles.12-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-6.0.13-x64.rpm
-COPY dotnet-runtime-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-apphost-pack-6.0.13-x64.rpm
-COPY dotnet-apphost-pack-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/aspnetcore-targeting-pack-6.0.13-x64.rpm
-COPY aspnetcore-targeting-pack-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/aspnetcore-runtime-6.0.13-x64.rpm
-COPY aspnetcore-runtime-6.0.13-x64.rpm /tmp/x86_64
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-sdk-6.0.405-x64.rpm
-COPY dotnet-sdk-6.0.405-x64.rpm /tmp/x86_64
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.13-x64.rpm
+COPY Packages/d/dotnet-host-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
+COPY Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-6.0.13-x64.rpm
+COPY Packages/d/dotnet-targeting-pack-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0.13-x64.rpm
+COPY Packages/d/dotnet-hostfxr-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0.13-sles.12-x64.rpm
+COPY Packages/d/dotnet-runtime-deps-6.0.13-sles.12-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0.13-x64.rpm
+COPY Packages/d/dotnet-runtime-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-6.0.13-x64.rpm
+COPY Packages/d/dotnet-apphost-pack-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-6.0.13-x64.rpm
+COPY Packages/a/aspnetcore-targeting-pack-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-6.0.13-x64.rpm
+COPY Packages/a/aspnetcore-runtime-6.0.13-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-6.0.405-x64.rpm
+COPY Packages/d/dotnet-sdk-6.0.405-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
@@ -64,13 +64,7 @@ RUN zypper --non-interactive install --no-recommends sles-release
 # Importing MS GPG keys
 RUN rpm --import /tmp/microsoft.asc
 
-# Use the package for ICU offered by SLES
-
-#!ArchExclusiveLine x86_64
-RUN if [ $(uname -m) = "x86_64" ]; then zypper --non-interactive install --no-recommends libicu69; fi
-
-
-RUN zypper --non-interactive install --no-recommends /tmp/$(uname -m)/*rpm
+RUN zypper --non-interactive install --no-recommends libicu /tmp/*rpm
 
 RUN cp /tmp/prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 
