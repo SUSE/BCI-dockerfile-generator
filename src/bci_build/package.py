@@ -729,7 +729,7 @@ exit 0
         )
 
         res = ""
-        for (pkg_list, pkg_type) in zip(
+        for pkg_list, pkg_type in zip(
             (delete_packages, bootstrap_packages, image_packages, uninstall_packages),
             PKG_TYPES,
         ):
