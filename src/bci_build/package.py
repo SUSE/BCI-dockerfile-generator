@@ -1833,7 +1833,7 @@ STOPSIGNAL SIGQUIT
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.65", "1.66"]
+_RUST_VERSIONS = ["1.66", "1.67"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
