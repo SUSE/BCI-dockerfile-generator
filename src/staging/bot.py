@@ -1211,8 +1211,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 fname = f"{package_name}/{package_name}.changes"
                 tasks.append(
                     run_in_worktree(
-                        f'/usr/lib/build/vc -m "{entry}" {fname}',
+                        f'/usr/lib/build/vc -m "{entry}" {package_name}.changes',
                         env={"VC_REALNAME": user.realname, "VC_MAILADDR": user.email},
+                        cwd=os.path.join(worktree_dir, package_name),
                     )
                 )
                 files.append(fname)
