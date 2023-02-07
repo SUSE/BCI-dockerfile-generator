@@ -125,6 +125,42 @@ staging_build:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-3.1
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-7.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-runtime-3.1
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-runtime-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: dotnet-runtime-7.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: aspnet-runtime-3.1
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: aspnet-runtime-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: aspnet-runtime-7.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
   filters:
     event: pull_request
 
@@ -223,6 +259,33 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: busybox-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-3.1
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-7.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-runtime-3.1
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-runtime-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: dotnet-runtime-7.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: aspnet-runtime-3.1
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: aspnet-runtime-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: aspnet-runtime-7.0
   filters:
     branches:
       only:
