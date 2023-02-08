@@ -12,12 +12,12 @@ if __name__ == "__main__":
     from typing import Coroutine
     from typing import Literal
 
+    from bci_build.logger import LOGGER
     from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
     from bci_build.package import ALL_OS_VERSIONS
     from bci_build.package import OsVersion
     from dotnet.updater import DOTNET_IMAGES
     from staging.bot import BRANCH_NAME_ENVVAR_NAME
-    from staging.bot import LOGGER
     from staging.bot import OS_VERSION_ENVVAR_NAME
     from staging.bot import OSC_USER_ENVVAR_NAME
     from staging.bot import StagingBot
@@ -240,7 +240,6 @@ comma-separated list. The package list is taken from the environment variable
     handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(message)s"))
 
-    LOGGER.addHandler(handler)
     if args.verbose > 0:
         LOGGER.setLevel((3 - min(args.verbose, 2)) * 10)
     else:

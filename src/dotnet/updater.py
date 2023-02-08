@@ -7,6 +7,7 @@ from typing import ClassVar
 from typing import Literal
 
 import dnf
+from bci_build.logger import LOGGER
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
@@ -134,7 +135,7 @@ class DotNetBCI(LanguageStackContainer):
     _base: ClassVar[dnf.Base | None] = None
     _sle_bci_base: ClassVar[dict[OsVersion, dict[Arch, dnf.Base]]] = {}
 
-    _logger: ClassVar[logging.Logger] = logging.getLogger(__name__)
+    _logger: ClassVar[logging.Logger] = LOGGER
 
     def __post_init__(self):
         if OsVersion.TUMBLEWEED == self.os_version:
