@@ -35,15 +35,15 @@ COPY microsoft.asc /tmp
 RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.13-x64.rpm
-COPY Packages/d/dotnet-host-6.0.13-x64.rpm /tmp/
+COPY dotnet-host-6.0.13-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0.13-x64.rpm
-COPY Packages/d/dotnet-hostfxr-6.0.13-x64.rpm /tmp/
+COPY dotnet-hostfxr-6.0.13-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0.13-sles.12-x64.rpm
-COPY Packages/d/dotnet-runtime-deps-6.0.13-sles.12-x64.rpm /tmp/
+COPY dotnet-runtime-deps-6.0.13-sles.12-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0.13-x64.rpm
-COPY Packages/d/dotnet-runtime-6.0.13-x64.rpm /tmp/
+COPY dotnet-runtime-6.0.13-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-6.0.13-x64.rpm
-COPY Packages/a/aspnetcore-runtime-6.0.13-x64.rpm /tmp/
+COPY aspnetcore-runtime-6.0.13-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
