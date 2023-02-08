@@ -1026,8 +1026,17 @@ class LanguageStackContainer(BaseContainerImage):
             # for non PEP440 versions, we'll get an exception and just return
             # the parent's classes build_version
             try:
-                version.parse(str(self.version))
-                return f"{build_ver}.{self.version}"
+                # more fun!
+                # if the language stack version has a higher version that
+                # build_version, then we must put the stack version first and
+                # append the build version, so that it will order as newer than
+                # previously published images without buildversion
+                stack_version = version.parse(str(self.version))
+                build_version = version.parse(build_ver)
+                if stack_version >= build_version:
+                    return f"{self.version}.{build_ver}"
+                else:
+                    return f"{build_ver}.{self.version}"
             except version.InvalidVersion:
                 return build_ver
         return None

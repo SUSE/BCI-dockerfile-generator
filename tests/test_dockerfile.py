@@ -12,7 +12,7 @@ from bci_build.templates import DOCKERFILE_TEMPLATE
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
-#!BuildVersion: 15.4.28
+#!BuildVersion: 28.15.4
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -91,7 +91,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
-#!BuildVersion: 15.4.28
+#!BuildVersion: 28.15.4
 FROM suse/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -137,7 +137,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
 #!BuildTag: bci/emacs:28
 #!BuildTag: bci/emacs:28-%RELEASE%
 #!BuildTag: bci/emacs:latest
-#!BuildVersion: 15.4.28.2
+#!BuildVersion: 28.2.15.4
 FROM suse/base:18
 
 MAINTAINER invalid@suse.com
@@ -197,3 +197,25 @@ RUN emacs -Q --batch""",
 )
 def test_dockerfile_template(dockerfile: str, image: LanguageStackContainer):
     assert DOCKERFILE_TEMPLATE.render(DOCKERFILE_RUN="RUN", image=image) == dockerfile
+
+
+_kwargs = {
+    "name": "test",
+    "pretty_name": "Test",
+    "os_version": OsVersion.SP4,
+    "package_name": "test",
+    "package_list": ["foo"],
+}
+
+
+@pytest.mark.parametrize(
+    "image,build_version",
+    [
+        (LanguageStackContainer(**_kwargs, version="16"), "16.15.4"),
+        (LanguageStackContainer(**_kwargs, version="14.6"), "15.4.14.6"),
+    ],
+)
+def test_build_version(image: LanguageStackContainer, build_version: str):
+    assert f"#!BuildVersion: {build_version}" in DOCKERFILE_TEMPLATE.render(
+        DOCKERFILE_RUN="RUN", image=image
+    )
