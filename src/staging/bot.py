@@ -1,6 +1,5 @@
 import asyncio
 import itertools
-import logging
 import os
 import random
 import string
@@ -23,6 +22,7 @@ import aiofiles.os
 import aiofiles.tempfile
 import aiohttp
 import git
+from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
@@ -44,7 +44,6 @@ from staging.util import get_obs_project_url
 _CONFIG_T = Literal["meta", "prjconf"]
 _CONF_TO_ROUTE: dict[_CONFIG_T, str] = {"meta": "_meta", "prjconf": "_config"}
 
-LOGGER = logging.getLogger(__name__)
 
 _DEFAULT_REPOS = ["images", "containerfile"]
 
