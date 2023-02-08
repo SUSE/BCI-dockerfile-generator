@@ -36,25 +36,25 @@ COPY microsoft.asc /tmp
 RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.2-x64.rpm
-COPY Packages/d/dotnet-host-7.0.2-x64.rpm /tmp/
+COPY dotnet-host-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
-COPY Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
+COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-7.0.2-x64.rpm
-COPY Packages/d/dotnet-targeting-pack-7.0.2-x64.rpm /tmp/
+COPY dotnet-targeting-pack-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0.2-x64.rpm
-COPY Packages/d/dotnet-hostfxr-7.0.2-x64.rpm /tmp/
+COPY dotnet-hostfxr-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0.2-sles.12-x64.rpm
-COPY Packages/d/dotnet-runtime-deps-7.0.2-sles.12-x64.rpm /tmp/
+COPY dotnet-runtime-deps-7.0.2-sles.12-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.2-x64.rpm
-COPY Packages/d/dotnet-runtime-7.0.2-x64.rpm /tmp/
+COPY dotnet-runtime-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-7.0.2-x64.rpm
-COPY Packages/d/dotnet-apphost-pack-7.0.2-x64.rpm /tmp/
+COPY dotnet-apphost-pack-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-7.0.2-x64.rpm
-COPY Packages/a/aspnetcore-targeting-pack-7.0.2-x64.rpm /tmp/
+COPY aspnetcore-targeting-pack-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0.2-x64.rpm
-COPY Packages/a/aspnetcore-runtime-7.0.2-x64.rpm /tmp/
+COPY aspnetcore-runtime-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-7.0.102-x64.rpm
-COPY Packages/d/dotnet-sdk-7.0.102-x64.rpm /tmp/
+COPY dotnet-sdk-7.0.102-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 

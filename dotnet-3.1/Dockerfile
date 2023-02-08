@@ -36,25 +36,25 @@ COPY microsoft.asc /tmp
 RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-3.1.32-x64.rpm
-COPY Packages/d/dotnet-host-3.1.32-x64.rpm /tmp/
+COPY dotnet-host-3.1.32-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
-COPY Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
+COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-3.1.0-x64.rpm
-COPY Packages/d/dotnet-targeting-pack-3.1.0-x64.rpm /tmp/
+COPY dotnet-targeting-pack-3.1.0-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-3.1.32-x64.rpm
-COPY Packages/d/dotnet-hostfxr-3.1.32-x64.rpm /tmp/
+COPY dotnet-hostfxr-3.1.32-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-3.1.32-sles.12-x64.rpm
-COPY Packages/d/dotnet-runtime-deps-3.1.32-sles.12-x64.rpm /tmp/
+COPY dotnet-runtime-deps-3.1.32-sles.12-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-3.1.32-x64.rpm
-COPY Packages/d/dotnet-runtime-3.1.32-x64.rpm /tmp/
+COPY dotnet-runtime-3.1.32-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-3.1.32-x64.rpm
-COPY Packages/d/dotnet-apphost-pack-3.1.32-x64.rpm /tmp/
+COPY dotnet-apphost-pack-3.1.32-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-3.1.10.rpm
-COPY Packages/a/aspnetcore-targeting-pack-3.1.10.rpm /tmp/
+COPY aspnetcore-targeting-pack-3.1.10.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-3.1.32-x64.rpm
-COPY Packages/a/aspnetcore-runtime-3.1.32-x64.rpm /tmp/
+COPY aspnetcore-runtime-3.1.32-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-3.1.426-x64.rpm
-COPY Packages/d/dotnet-sdk-3.1.426-x64.rpm /tmp/
+COPY dotnet-sdk-3.1.426-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
