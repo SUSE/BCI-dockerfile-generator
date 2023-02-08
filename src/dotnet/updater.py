@@ -3,8 +3,10 @@ import re
 from dataclasses import dataclass
 from dataclasses import field
 from functools import cmp_to_key
+from os.path import basename
 from typing import ClassVar
 from typing import Literal
+from urllib.parse import urlparse
 
 import dnf
 from bci_build.logger import LOGGER
@@ -36,9 +38,11 @@ NdCFTW7wY0Fb1fWJ+/KTsC4=
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
-MS_REPO = """[packages-microsoft-com-prod]
+MS_REPO_BASEURL = "https://packages.microsoft.com/sles/15/prod/"
+
+MS_REPO = f"""[packages-microsoft-com-prod]
 name=packages-microsoft-com-prod
-baseurl=https://packages.microsoft.com/sles/15/prod/
+baseurl={MS_REPO_BASEURL}
 enabled=1
 gpgcheck=1
 gpgkey=https://packages.microsoft.com/keys/microsoft.asc
@@ -121,6 +125,14 @@ class Package:
 class RpmPackage(Package):
     url: str
 
+    @staticmethod
+    def from_dnf_package(pkg: dnf.package.Package, arch: Arch) -> "RpmPackage":
+        return RpmPackage(
+            arch=arch,
+            url=(url := pkg.remote_location()),
+            name=basename(urlparse(url).path),
+        )
+
 
 _DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64]
 
@@ -182,13 +194,7 @@ class DotNetBCI(LanguageStackContainer):
                     f"Repository contains {len(pkgs_for_arch)} packages with name='{pkg_name}' for {str(arch)}"
                 )
 
-            pkgs.append(
-                RpmPackage(
-                    name=pkgs_for_arch[0].location,
-                    arch=arch,
-                    url=pkgs_for_arch[0].remote_location(),
-                )
-            )
+            pkgs.append(RpmPackage.from_dnf_package(pkg=pkgs_for_arch[0], arch=arch))
 
         if isinstance(pkg, str):
             assert len(pkgs) == len(
@@ -233,13 +239,7 @@ class DotNetBCI(LanguageStackContainer):
                 matching_pkg, key=cmp_to_key(lambda p1, p2: p1.evr_cmp(p2))
             )[-1]
             self._logger.debug("latest package versions: %s", latest_pkg)
-            pkgs.append(
-                RpmPackage(
-                    name=latest_pkg.location,
-                    arch=arch,
-                    url=latest_pkg.remote_location(),
-                )
-            )
+            pkgs.append(RpmPackage.from_dnf_package(latest_pkg, arch))
 
         return pkgs
 
@@ -248,15 +248,24 @@ class DotNetBCI(LanguageStackContainer):
         them in the target folder `dest` and returns the list of files.
 
         """
-        rpm_pkgs = []
+        assert self.exclusive_arch
+        rpm_pkgs: list[RpmPackage] = []
         for pkg in self.package_list:
             if pkg == "dotnet-host":
                 rpm_pkgs.extend(self._fetch_dotnet_host())
             else:
                 rpm_pkgs.extend(self._fetch_ordinary_package(pkg))
+
+        for pkg in rpm_pkgs:
+            assert (
+                pkg.arch in self.exclusive_arch
+                and "/" not in pkg.name
+                and pkg.url.startswith(MS_REPO_BASEURL)
+            )
         return rpm_pkgs
 
     def _guess_version_from_pkglist(self, pkg_list: list[RpmPackage]) -> str | None:
+        assert self.exclusive_arch
         versions: dict[Arch, str] = {}
         for arch in self.exclusive_arch:
             for pkg in pkg_list:
@@ -286,7 +295,7 @@ class DotNetBCI(LanguageStackContainer):
             DotNetBCI._base.repos.add_new_repo(
                 repoid="packages-microsoft-com-prod",
                 conf=DotNetBCI._base.conf,
-                baseurl=("https://packages.microsoft.com/sles/15/prod/",),
+                baseurl=(MS_REPO_BASEURL,),
             )
             DotNetBCI._base.fill_sack()
 
