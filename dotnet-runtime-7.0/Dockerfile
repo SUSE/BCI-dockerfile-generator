@@ -36,13 +36,13 @@ COPY microsoft.asc /tmp
 RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.2-x64.rpm
-COPY Packages/d/dotnet-host-7.0.2-x64.rpm /tmp/
+COPY dotnet-host-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0.2-x64.rpm
-COPY Packages/d/dotnet-hostfxr-7.0.2-x64.rpm /tmp/
+COPY dotnet-hostfxr-7.0.2-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0.2-sles.12-x64.rpm
-COPY Packages/d/dotnet-runtime-deps-7.0.2-sles.12-x64.rpm /tmp/
+COPY dotnet-runtime-deps-7.0.2-sles.12-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.2-x64.rpm
-COPY Packages/d/dotnet-runtime-7.0.2-x64.rpm /tmp/
+COPY dotnet-runtime-7.0.2-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
