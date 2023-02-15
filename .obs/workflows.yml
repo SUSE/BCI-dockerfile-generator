@@ -55,6 +55,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: nodejs-18-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: openjdk-11-devel-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
@@ -205,6 +209,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: nodejs-16-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: nodejs-18-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: openjdk-11-devel-image
