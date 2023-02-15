@@ -958,8 +958,25 @@ exit 0
         changes_file_name = self.package_name + ".changes"
         changes_file_dest = os.path.join(dest, changes_file_name)
         if not os.path.exists(changes_file_dest):
+            name_to_include = self.pretty_name
+            if "%" in name_to_include:
+                name_to_include = self.name.capitalize()
+
+            if hasattr(self, "version"):
+                ver = getattr(self, "version")
+                if str(ver) not in name_to_include:
+                    name_to_include += f" {ver}"
             tasks.append(
-                asyncio.ensure_future(write_file_to_dest(changes_file_name, ""))
+                asyncio.ensure_future(
+                    write_file_to_dest(
+                        changes_file_name,
+                        f"""-------------------------------------------------------------------
+{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <noreply@suse.com>
+
+- First version of the {name_to_include} BCI
+""",
+                    )
+                )
             )
             files.append(changes_file_name)
 
