@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/nodejs:16
 #!BuildTag: bci/nodejs:16-%RELEASE%
-#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:16
 #!BuildTag: bci/node:16-%RELEASE%
-#!BuildTag: bci/node:latest
 #!BuildVersion: 15.4.16
 FROM suse/sle15:15.4
 
