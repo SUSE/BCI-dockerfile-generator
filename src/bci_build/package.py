@@ -1311,7 +1311,7 @@ def _get_node_kwargs(ver: Literal[14, 16, 18, 19], os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         "is_latest": (
-            (ver == 16 and os_version == OsVersion.SP4)
+            (ver == 18 and os_version == OsVersion.SP4)
             or (ver == 19 and os_version == OsVersion.TUMBLEWEED)
         ),
         "package_name": f"nodejs-{ver}-image",
@@ -1338,7 +1338,7 @@ NODE_CONTAINERS = [
     LanguageStackContainer(
         **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
     )
-    for ver, os_version in list(product((14, 16), (OsVersion.SP4, OsVersion.SP5)))
+    for ver, os_version in list(product((14, 16, 18), (OsVersion.SP4, OsVersion.SP5)))
     + [(18, OsVersion.TUMBLEWEED), (19, OsVersion.TUMBLEWEED)]
 ]
 
