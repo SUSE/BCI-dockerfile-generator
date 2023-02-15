@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 15 13:25:10 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 7.0.3
+
+-------------------------------------------------------------------
 Tue Feb  7 10:08:17 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - First version of the .Net Runtime 7.0 container
