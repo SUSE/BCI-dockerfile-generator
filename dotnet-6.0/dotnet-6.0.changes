@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 15 13:25:20 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.14
+
+-------------------------------------------------------------------
 Tue Feb  7 10:07:46 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - First version of the .Net 6.0 container
