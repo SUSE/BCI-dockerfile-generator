@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 15 13:24:51 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Correct package urls
+
+-------------------------------------------------------------------
 Tue Feb  7 10:07:33 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - First version of the .Net 3.1 container

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 15 13:24:56 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Correct package urls
+
+-------------------------------------------------------------------
 Tue Feb  7 10:09:31 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - First version of the ASP.Net Runtime 3.1 container
