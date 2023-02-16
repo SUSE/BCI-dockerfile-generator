@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 15 13:16:55 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.14
+
+-------------------------------------------------------------------
 Tue Feb  7 09:44:25 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Simplify Dockerfile: stop moving rpms into /tmp/x86_64 subdir, we are only building for x86_64
