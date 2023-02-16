@@ -37,6 +37,7 @@ if __name__ == "__main__":
         "add_changelog_entry",
         "changelog_check",
         "setup_obs_package",
+        "find_missing_packages",
     ]
 
     parser = argparse.ArgumentParser()
@@ -212,6 +213,11 @@ comma-separated list. The package list is taken from the environment variable
         + [dotnet_img.package_name for dotnet_img in DOTNET_IMAGES],
     )
 
+    subparsers.add_parser(
+        "find_missing_packages",
+        help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
+    )
+
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
 
@@ -311,6 +317,7 @@ comma-separated list. The package list is taken from the environment variable
 
         elif action == "create_cr_project":
             coro = bot.write_cr_project_config()
+
         elif action == "add_changelog_entry":
             changelog_entry = " ".join(args.entry)
             username = args.user[0]
@@ -324,6 +331,7 @@ comma-separated list. The package list is taken from the environment variable
             coro = bot.add_changelog_entry(
                 entry=changelog_entry, username=username, package_names=pkg_names
             )
+
         elif action == "changelog_check":
             base_ref = args.base_ref[0]
             change_ref = args.head_ref[0]
@@ -349,6 +357,14 @@ comma-separated list. The package list is taken from the environment variable
                 await asyncio.gather(*tasks)
 
             coro = _setup_pkg_meta()
+
+        elif action == "find_missing_packages":
+
+            async def _pkgs_as_str() -> str:
+                return ", ".join(await bot.find_missing_packages_on_obs())
+
+            coro = _pkgs_as_str()
+
         else:
             assert False, f"invalid action: {action}"
 

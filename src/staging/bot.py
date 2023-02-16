@@ -1309,3 +1309,23 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             target_obs_project=get_bci_project_name(self.os_version),
             git_branch_name=self.deployment_branch_name,
         )
+
+    async def find_missing_packages_on_obs(self) -> list[str]:
+        """Returns the name of all packages that are currently in a git
+        deployment branch, but have not been setup on OBS.
+
+        """
+        repo = git.Repo(".")
+        deployment_branch_head = repo.commit(f"origin/{self.deployment_branch_name}")
+        pkgs_in_deployment_branch = set(
+            tree.name for tree in deployment_branch_head.tree
+        ) - set((".obs", ".github", "_config"))
+        pkgs_on_obs = set(
+            (
+                await self._run_cmd(
+                    f"{self._osc} ls {get_bci_project_name(self.os_version, 'obs')}"
+                )
+            ).stdout.splitlines()
+        )
+
+        return list(pkgs_in_deployment_branch - pkgs_on_obs)
