@@ -2,6 +2,7 @@ import os
 import pathlib
 
 import pytest
+import yaml
 from bci_build.package import ALL_OS_VERSIONS
 from bci_build.package import OsVersion
 from staging.bot import StagingBot
@@ -86,3 +87,13 @@ def test_from_empty_github_comment():
     assert "Received empty github comment, cannot create the bot" in str(
         val_err_ctx.value
     )
+
+
+_bot = StagingBot(os_version=OsVersion.SP5, osc_username=_osc_user)
+
+
+@pytest.mark.parametrize(
+    "action", [_bot.changelog_check_github_action, _bot.find_missing_packages_action]
+)
+def test_github_actions_valid_yaml(action: str) -> None:
+    assert yaml.safe_load(action)

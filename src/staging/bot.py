@@ -398,6 +398,73 @@ jobs:
 """
         )
 
+    @property
+    def find_missing_packages_action(self) -> str:
+        return (
+            r"""---
+name: Check whether packages are missing on OBS
+
+on:
+  push:
+    branches:
+      - '"""
+            + self.deployment_branch_name
+            + """'
+
+jobs:
+  create-issues-for-dan:
+    name: create an issue for Dan to create the packages in devel:BCI
+    runs-on: ubuntu-latest
+    container: ghcr.io/dcermak/bci-ci:latest
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      # we need all branches for the build checks
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ secrets.CHECKOUT_TOKEN }}
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: find the packages that are missing
+        run: |
+          pkgs=$(poetry run ./scratch-build-bot.py --os-version """
+            + str(self.os_version)
+            + """ find_missing_packages)
+          if [[ ${pkgs} = "" ]]; then
+              echo "missing_pkgs=false" >> $GITHUB_ENV
+          else
+              echo "missing_pkgs=true" >> $GITHUB_ENV
+              echo "pkgs=${pkgs}" >> $GITHUB_ENV
+          fi
+          cat test-build.env >> $GITHUB_ENV
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          filename: ".github/create-package.md"
+        if: env.missing_pkgs == 'true'
+"""
+        )
+
     async def setup(self) -> None:
         if pw := os.getenv(OSC_PASSWORD_ENVVAR_NAME):
             osc_conf = tempfile.NamedTemporaryFile("w", delete=False)
@@ -912,7 +979,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 await workflows_file.write(self.obs_workflows_yml)
             return [".obs/workflows.yml"]
 
-        async def write_changelog_checker_yml() -> list[str]:
+        async def write_github_actions() -> list[str]:
             await aiofiles.os.makedirs(
                 (
                     github_workflows := os.path.join(
@@ -921,11 +988,35 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 ),
                 exist_ok=True,
             )
+
+            actions = []
+            for fname, contents in (
+                ("changelog_checker.yml", self.changelog_check_github_action),
+                ("find-missing-packages.yml", self.find_missing_packages_action),
+            ):
+                async with aiofiles.open(
+                    os.path.join(github_workflows, fname), "w"
+                ) as workflows_file:
+                    await workflows_file.write(contents)
+                actions.append(fname)
+
             async with aiofiles.open(
-                os.path.join(github_workflows, "changelog_checker.yml"), "w"
-            ) as workflows_file:
-                await workflows_file.write(self.changelog_check_github_action)
-            return [".github/workflows/changelog_checker.yml"]
+                os.path.join(destination_prj_folder, ".github", "dependabot.yml"), "w"
+            ) as dependabot_yml:
+                await dependabot_yml.write(
+                    """---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+"""
+                )
+
+            return [f".github/workflows/{fname}" for fname in actions] + [
+                ".github/dependabot.yml"
+            ]
 
         async def write_underscore_config() -> list[str]:
             prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
@@ -938,7 +1029,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         tasks.append(write_obs_workflows_yml())
         tasks.append(write_underscore_config())
-        tasks.append(write_changelog_checker_yml())
+        tasks.append(write_github_actions())
 
         files = await asyncio.gather(*tasks)
         flattened_file_list = []
