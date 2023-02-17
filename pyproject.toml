@@ -25,6 +25,7 @@ pytest = ">=7.1"
 types-aiofiles = ">=22.1"
 reorder-python-imports = ">=3.8"
 pytest-asyncio = ">=0.20"
+pyyaml = ">=6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
