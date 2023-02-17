@@ -1001,10 +1001,22 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 actions.append(fname)
 
             async with aiofiles.open(
-                os.path.join(github_workflows, "changelog_checker.yml"), "w"
-            ) as workflows_file:
-                await workflows_file.write(self.changelog_check_github_action)
-            return [".github/workflows/changelog_checker.yml"]
+                os.path.join(destination_prj_folder, ".github", "dependabot.yml"), "w"
+            ) as dependabot_yml:
+                await dependabot_yml.write(
+                    """---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+"""
+                )
+
+            return [f".github/workflows/{fname}" for fname in actions] + [
+                ".github/dependabot.yml"
+            ]
 
         async def write_underscore_config() -> list[str]:
             prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
