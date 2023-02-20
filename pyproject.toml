@@ -8,6 +8,7 @@ packages = [
     { include = "bci_build", from = "src" },
     { include = "staging", from = "src" },
     { include = "dotnet", from = "src" },
+    { include = "php", from = "src" },
 ]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -17,6 +18,7 @@ rpm-vercmp = "^0.1"
 aiofiles = "^22.1"
 obs-package-update = { git = "https://github.com/dcermak/obs-package-update", branch = "main" }
 GitPython = "^3.1"
+python-gnupg = "^0.5.0"
 
 [tool.poetry.dev-dependencies]
 black = ">=22.6"

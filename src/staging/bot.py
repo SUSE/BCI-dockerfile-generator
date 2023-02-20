@@ -33,6 +33,7 @@ from obs_package_update.util import CommandError
 from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
 from obs_package_update.util import RunCommand
+from php.image import PHP_IMAGES
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
@@ -168,7 +169,9 @@ class StagingBot:
         """
         return (
             bci
-            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
+            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values())
+            + DOTNET_IMAGES
+            + PHP_IMAGES
             if bci.os_version == self.os_version
         )
 
