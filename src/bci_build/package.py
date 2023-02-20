@@ -913,11 +913,24 @@ exit 0
 
         return ",".join(extra_tags) if extra_tags else None
 
+    async def late_init(self) -> None:
+        """Optional costly initialization function that can be implemented in
+        child-classes.
+
+        This function is called before writing the build recipes in
+        :py:func:`write_files_to_folder` and can be used for long running
+        operations that should not block other operations.
+
+        """
+        pass
+
     async def write_files_to_folder(self, dest: str) -> List[str]:
         """Writes all files required to build this image into the destination folder and
         returns the filenames (not full paths) that were written to the disk.
 
         """
+        await self.late_init()
+
         files = ["_service"]
         tasks = []
 
