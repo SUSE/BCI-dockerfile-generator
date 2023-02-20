@@ -1021,6 +1021,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: flag whether the version should be included in the uid
     version_in_uid: bool = True
 
+    #: flag to not include ``$name-$version_label`` in :py:attr:`build_tags`
+    _no_default_version: bool = False
+
     def __post_init__(self) -> None:
         super().__post_init__()
         if not self.version:
@@ -1042,7 +1045,9 @@ class LanguageStackContainer(BaseContainerImage):
     def build_tags(self) -> List[str]:
         tags = []
         for name in [self.name] + self.additional_names:
-            for ver_label in [self.version_label] + self.additional_versions:
+            for ver_label in (
+                [self.version_label] if not self._no_default_version else []
+            ) + self.additional_versions:
                 tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
                     f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
                 ]
