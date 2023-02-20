@@ -390,8 +390,12 @@ class BaseContainerImage(abc.ABC):
 
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
+    #: don't add the packages from :py:attr:`package_list` to the dockerfile or
+    #: kiwi xml
+    _no_default_packages: bool = False
+
     def __post_init__(self) -> None:
-        if not self.package_list:
+        if not self.package_list and not self._no_default_packages:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
         if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
             raise ValueError(f"{Arch.LOCAL} must not appear in {self.exclusive_arch=}")
@@ -612,6 +616,8 @@ exit 0
         :command:`zypper in`.
 
         """
+        if self._no_default_packages:
+            return ""
         for pkg in self.package_list:
             if isinstance(pkg, Package) and pkg.pkg_type != PackageType.IMAGE:
                 raise ValueError(
@@ -706,6 +712,8 @@ exit 0
         """The package list as xml elements that are inserted into a kiwi build
         description file.
         """
+        if self._no_default_packages:
+            return ""
 
         def create_pkg_filter_func(
             pkg_type: PackageType,
