@@ -1,0 +1,57 @@
+---
+name: Check whether packages are missing on OBS
+
+on:
+  push:
+    branches:
+      - 'sle15-sp5'
+
+jobs:
+  create-issues-for-dan:
+    name: create an issue for Dan to create the packages in devel:BCI
+    runs-on: ubuntu-latest
+    container: ghcr.io/dcermak/bci-ci:latest
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      # we need all branches for the build checks
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ secrets.CHECKOUT_TOKEN }}
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: find the packages that are missing
+        run: |
+          pkgs=$(poetry run ./scratch-build-bot.py --os-version 5 find_missing_packages)
+          if [[ ${pkgs} = "" ]]; then
+              echo "missing_pkgs=false" >> $GITHUB_ENV
+          else
+              echo "missing_pkgs=true" >> $GITHUB_ENV
+              echo "pkgs=${pkgs}" >> $GITHUB_ENV
+          fi
+          cat test-build.env >> $GITHUB_ENV
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          filename: ".github/create-package.md"
+        if: env.missing_pkgs == 'true'
