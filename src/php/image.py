@@ -34,6 +34,7 @@ from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from obs_package_update.util import RunCommand
+from osc_helper.runner import OscRunner
 from php.static import DOCKER_PHP_EXT_ENABLE
 from php.templates import DOCKER_PHP_ENTRYPOINT
 from php.templates import DOCKER_PHP_EXT_CONFIGURE
@@ -75,7 +76,9 @@ class PhpPackage:
     _parsed_spec: str = ""
 
 
-async def build_refreshed_bci_base(os_version: OsVersion) -> str:
+async def build_refreshed_bci_base(
+    os_version: OsVersion, extra_buildah_flags: str
+) -> str:
     image_name = f"bci/bci-base-refreshed:15.{os_version}"
     async with aiofiles.tempfile.TemporaryDirectory() as tmp_dir:
 
@@ -83,20 +86,26 @@ async def build_refreshed_bci_base(os_version: OsVersion) -> str:
             return await run_cmd(cmd, cwd=tmp_dir)
 
         container_name = (
-            await run(f"buildah from registry.suse.com/bci/bci-base:15.{os_version}")
+            await run(
+                f"buildah {extra_buildah_flags} from registry.suse.com/bci/bci-base:15.{os_version}"
+            )
         ).stdout.strip()
-        await run(f"buildah run {container_name} /bin/sh -c 'zypper -n ref'")
-        await run(f"buildah commit {container_name} {image_name}")
+        await run(
+            f"buildah {extra_buildah_flags} run {container_name} /bin/sh -c 'zypper -n ref'"
+        )
+        await run(f"buildah {extra_buildah_flags} commit {container_name} {image_name}")
     return image_name
 
 
 async def build_php_devel_container(
+    osc_runner: OscRunner,
     php_major_version: _PHP_MAJOR_VERSION_T,
     php_checkout_dest: str,
     os_version: OsVersion,
+    extra_buildah_flags: str,
 ) -> PhpPackage:
-    await run_cmd(
-        f"osc co SUSE:SLE-15-SP{os_version}:Update/php{php_major_version} -o {php_checkout_dest}"
+    await osc_runner.run(
+        f"co SUSE:SLE-15-SP{os_version}:Update/php{php_major_version} -o {php_checkout_dest}"
     )
     await run_cmd(
         f"sed -i 's/@BUILD_FLAVOR@%{{nil}}/%{{nil}}/' {php_checkout_dest}/php{php_major_version}.spec"
@@ -134,11 +143,11 @@ async def build_php_devel_container(
 
     container = (
         await run_cmd(
-            f"buildah from registry.opensuse.org/opensuse/leap-dnf:15.{os_version}"
+            f"buildah {extra_buildah_flags} from registry.opensuse.org/opensuse/leap-dnf:15.{os_version}"
         )
     ).stdout.strip()
     await run_cmd(
-        f"buildah run {container} /bin/sh -c 'dnf -y install rpmdevtools && rpmdev-setuptree'"
+        f"buildah {extra_buildah_flags} run {container} /bin/sh -c 'dnf -y install rpmdevtools && rpmdev-setuptree'"
     )
     await run_cmd(f"buildah config --workingdir /root/rpmbuild/SOURCES {container}")
 
@@ -154,7 +163,7 @@ async def build_php_devel_container(
     # in a dictionary
     patches = (
         await run_cmd(
-            f"buildah run {container} /bin/sh -c 'rpmspec -q --srpm php{php_major_version}.spec --qf"
+            f"buildah {extra_buildah_flags} run {container} /bin/sh -c 'rpmspec -q --srpm php{php_major_version}.spec --qf"
             + r' "[%{PATCH}\n]"'
             + "'"
         )
@@ -165,7 +174,7 @@ async def build_php_devel_container(
     async def parse_spec():
         return (
             await run_cmd(
-                f"buildah run {container} /bin/sh -c 'rpmspec -P php{php_major_version}.spec'"
+                f"buildah {extra_buildah_flags} run {container} /bin/sh -c 'rpmspec -P php{php_major_version}.spec'"
             )
         ).stdout.strip()
 
@@ -196,9 +205,15 @@ async def build_php_devel_container(
 
 
 async def extract_properties(
-    php_major_version: _PHP_MAJOR_VERSION_T, tmpdir: str, os_version: OsVersion
+    osc_runner: OscRunner,
+    php_major_version: _PHP_MAJOR_VERSION_T,
+    tmpdir: str,
+    os_version: OsVersion,
+    extra_buildah_flags: str,
 ) -> PhpPackage:
-    php_package = await build_php_devel_container(php_major_version, tmpdir, os_version)
+    php_package = await build_php_devel_container(
+        osc_runner, php_major_version, tmpdir, os_version, extra_buildah_flags
+    )
 
     flags = {"CFLAGS": "", "CXXFLAGS": "", "LDFLAGS": ""}
     for flag in flags:
@@ -273,9 +288,13 @@ async def extract_properties(
 
 @dataclass
 class PhpBCI(LanguageStackContainer):
+    osc_runner: OscRunner = field(default_factory=lambda: OscRunner(""))
+
     php_major_version: _PHP_MAJOR_VERSION_T = 8
 
     package_variant: _PHP_FLAVOR_T = "cli"
+
+    _extra_buildah_options: str = "--isolation=chroot"
 
     @staticmethod
     def create_php_bci(
@@ -311,8 +330,13 @@ class PhpBCI(LanguageStackContainer):
 
         async with aiofiles.tempfile.TemporaryDirectory() as tmpdir:
             tasks = []
+
             pkg = await extract_properties(
-                self.php_major_version, tmpdir, self.os_version
+                self.osc_runner,
+                self.php_major_version,
+                tmpdir,
+                self.os_version,
+                extra_buildah_flags=self._extra_buildah_options,
             )
             for to_add in list(pkg.patches.values()) + ["README.macros"]:
 
