@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 22 13:46:42 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Remove wrongly added latest tag
+
+-------------------------------------------------------------------
 Wed Dec 21 16:17:30 UTC 2022 - Dirk Müller <dmueller@suse.com>
 
 - BuildTag sorting and consistency fixes
