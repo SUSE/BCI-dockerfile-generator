@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 
-<!-- OBS-AddTag: bci/bci-busybox:%OS_VERSION_ID_SP% bci/bci-busybox:%OS_VERSION_ID_SP%.%RELEASE% bci/bci-busybox:latest -->
+<!-- OBS-AddTag: bci/bci-busybox:%OS_VERSION_ID_SP% bci/bci-busybox:%OS_VERSION_ID_SP%.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="busybox-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -16,7 +16,7 @@
           name="bci/bci-busybox"
           tag="%OS_VERSION_ID_SP%"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
         <labels>
           <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
           <suse_label_helper:add_prefix prefix="com.suse.bci.busybox">
