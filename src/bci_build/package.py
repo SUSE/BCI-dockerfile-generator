@@ -1432,7 +1432,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
         package_name="389-ds-container",
         os_version=os_version,
-        is_latest=True,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version_in_uid=False,
         name="389-ds",
         support_level=SupportLevel.L3,
@@ -1969,7 +1969,7 @@ BUSYBOX_CONTAINERS = [
         support_level=SupportLevel.L3,
         pretty_name="%OS_VERSION_NO_DASH% Busybox",
         package_name="busybox-image",
-        is_latest=True,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
         custom_description="Busybox based on the SLE Base Container Image.",
         cmd=["/bin/sh"],
