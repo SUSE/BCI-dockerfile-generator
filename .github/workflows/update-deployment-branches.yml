@@ -12,7 +12,9 @@ jobs:
   create-pull-requests:
     name: create pull requests if the build recipes changed
     runs-on: ubuntu-22.04
-    container: ghcr.io/dcermak/bci-ci:latest
+    container:
+      image: ghcr.io/dcermak/bci-ci:latest
+      options: "--privileged"
 
     strategy:
       fail-fast: false
