@@ -69,6 +69,7 @@ jobs:
           cat test-build.env >> $GITHUB_ENV
         env:
           OSC_USER: "defolos"
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
 
       - name: create a pull request
         uses: vsoch/pull-request-action@master
