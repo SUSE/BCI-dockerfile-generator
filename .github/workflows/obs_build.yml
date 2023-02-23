@@ -71,7 +71,7 @@ jobs:
 
       - name: commit the changes to a test branch and create a staging project on OBS
         run: |
-          set -eux pipefail
+          set -euo pipefail
           poetry run ./scratch-build-bot.py \
               --os-version ${{ matrix.os_version }} \
               -vvvv \
@@ -108,7 +108,7 @@ jobs:
 
       - name: retrieve the build result
         run: |
-          set -eux pipefail
+          set -euo pipefail
           echo "build_res<<EOF" >> $GITHUB_ENV
           poetry run ./scratch-build-bot.py query_build_result >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -136,9 +136,7 @@ jobs:
         if: env.no_change != 'true'
 
       - name: cleanup the branches if no functional changes were commited or the build failed or was cancelled
-        run: |
-          set -eux pipefail
-          poetry run ./scratch-build-bot.py -vvvv -l cleanup
+        run: poetry run ./scratch-build-bot.py -vvvv -l cleanup
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
