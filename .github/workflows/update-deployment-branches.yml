@@ -53,7 +53,7 @@ jobs:
 
       - name: commit the changes to a test branch
         run: |
-          set -eux pipefail
+          set -euo pipefail
           poetry run ./scratch-build-bot.py \
               --os-version ${{ matrix.os_version }} \
               -vvvv \
