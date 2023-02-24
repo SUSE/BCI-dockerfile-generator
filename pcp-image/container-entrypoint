@@ -35,5 +35,7 @@ touch /etc/pcp/pmieconf/dm/metadata_high_util
 mkdir -p /etc/pcp/pmieconf/zeroconf
 touch /etc/pcp/pmieconf/zeroconf/all_threads
 
+chown pcp:pcp /var/log/pcp/pmlogger
+
 echo Starting systemd...
 exec "$@"
