@@ -114,8 +114,8 @@ KIWI_TEMPLATE = jinja2.Template(
 #: Jinja2 template used to generate :file:`_service`.
 SERVICE_TEMPLATE = jinja2.Template(
     """<services>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="{{ image.build_recipe_type }}_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
 {%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">{% if (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>
