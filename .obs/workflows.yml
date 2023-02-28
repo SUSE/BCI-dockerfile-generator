@@ -301,6 +301,7 @@ refresh_devel_BCI:
         project: devel:BCI:SLE-15-SP4
         package: aspnet-runtime-7.0
   filters:
+    event: push
     branches:
       only:
         - sle15-sp4
