@@ -338,6 +338,7 @@ refresh_devel_BCI:
 """
 
         workflows += f"""  filters:
+    event: push
     branches:
       only:
         - {self.deployment_branch_name}
