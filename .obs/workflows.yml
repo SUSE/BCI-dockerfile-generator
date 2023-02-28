@@ -266,6 +266,7 @@ refresh_devel_BCI:
         project: devel:BCI:Tumbleweed
         package: busybox-image
   filters:
+    event: push
     branches:
       only:
         - Tumbleweed
