@@ -25,6 +25,7 @@ LABEL org.opencontainers.image.version="28"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -54,8 +55,8 @@ RUN emacs -Q --batch test.el
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildTag: bci/test:%%emacs_ver%%-%RELEASE%
-#!BuildVersion: 15.4
-FROM suse/sle15:15.4
+
+FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -67,13 +68,14 @@ LABEL org.opencontainers.image.version="%%emacs_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="released"
+LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
@@ -83,7 +85,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
-                os_version=OsVersion.SP4,
+                os_version=OsVersion.SP5,
                 version="%%emacs_ver%%",
             ),
         ),
@@ -104,6 +106,7 @@ LABEL org.opencontainers.image.version="28"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -119,7 +122,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
                 name="test",
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
-                package_name="test-image",
+                package_name="emacs-image",
                 os_version=OsVersion.SP4,
                 version="28",
             ),
@@ -127,35 +130,33 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
         (
             """#!ExclusiveArch: x86_64 s390x
 # SPDX-License-Identifier: BSD
-#!BuildTag: bci/test:28.2
-#!BuildTag: bci/test:28.2-%RELEASE%
-#!BuildTag: bci/test:28
-#!BuildTag: bci/test:28-%RELEASE%
-#!BuildTag: bci/test:latest
-#!BuildTag: bci/emacs:28.2
-#!BuildTag: bci/emacs:28.2-%RELEASE%
-#!BuildTag: bci/emacs:28
-#!BuildTag: bci/emacs:28-%RELEASE%
-#!BuildTag: bci/emacs:latest
-#!BuildVersion: 15.4.28.2
+#!BuildTag: opensuse/bci/test:28.2
+#!BuildTag: opensuse/bci/test:28.2-%RELEASE%
+#!BuildTag: opensuse/bci/test:28
+#!BuildTag: opensuse/bci/test:28-%RELEASE%
+#!BuildTag: opensuse/bci/test:latest
+#!BuildTag: opensuse/bci/emacs:28.2
+#!BuildTag: opensuse/bci/emacs:28.2-%RELEASE%
+#!BuildTag: opensuse/bci/emacs:28
+#!BuildTag: opensuse/bci/emacs:28-%RELEASE%
+#!BuildTag: opensuse/bci/emacs:latest
+
 FROM suse/base:18
 
 MAINTAINER invalid@suse.com
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.title="SLE BCI Test Container Image"
-LABEL org.opencontainers.image.description="Test based on the SLE Base Container Image."
+# labelprefix=org.opensuse.bci.test
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Test Container Image"
+LABEL org.opencontainers.image.description="Test based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="28.2"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="SUSE LLC"
-LABEL org.opensuse.reference="registry.suse.com/bci/test:28.2-%RELEASE%"
+LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="sle-bci"
+
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL emacs_version="28"
@@ -176,7 +177,7 @@ RUN emacs -Q --batch""",
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
-                os_version=OsVersion.SP4,
+                os_version=OsVersion.TUMBLEWEED,
                 is_latest=True,
                 from_image="suse/base:18",
                 entrypoint=["/usr/bin/emacs"],
