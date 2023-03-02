@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 28 11:25:35 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Bump dotnet-sdk to 7.0.201
+
+-------------------------------------------------------------------
 Wed Feb 15 13:18:04 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - New upstream release 7.0.3
