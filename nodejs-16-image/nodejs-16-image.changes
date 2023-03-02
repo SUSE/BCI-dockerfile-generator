@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Wed Feb 15 15:01:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Switch latest tag to nodejs 18

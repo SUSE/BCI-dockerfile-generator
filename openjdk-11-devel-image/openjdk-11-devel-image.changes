@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Tue Dec 13 17:00:28 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add version to BuildVersion

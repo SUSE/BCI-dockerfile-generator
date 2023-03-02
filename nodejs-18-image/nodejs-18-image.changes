@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Wed Feb 15 14:57:51 UTC 2023 - SUSE Update Bot <noreply@suse.com>
 
 - First version of the Node.js 18 BCI

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Fri Feb 24 13:14:44 UTC 2023 - Darragh O'Reilly <doreilly@suse.com>
 
 - The pmlogger_daily.service was failing silently because it runs as user pcp which did not have permissions on /var/log/pcp/pmlogger. Normally pcp running on the host creates /var/log/pcp/pmlogger and also does chown pcp:pcp /var/log/pcp/pmlogger if it does not exist. But VOLUME /var/log/pcp/pmlogger in the Dockerfile causes the directory to exist
