@@ -14,7 +14,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "bci-build-templates"
-copyright = "SUSE LLC"
+copyright = "2022, Dan Čermák"
 author = "Dan Čermák"
 
 

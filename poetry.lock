@@ -271,7 +271,7 @@ aiofiles = "^22.1"
 type = "git"
 url = "https://github.com/dcermak/obs-package-update"
 reference = "main"
-resolved_reference = "1c798bcb15d7fa3daf3bc80b00ea299a96cb75b4"
+resolved_reference = "744d67b1c315a5fc0234fb97985779f8c3f0cc3e"
 
 [[package]]
 name = "packaging"
@@ -358,14 +358,6 @@ pytest = ">=6.1.0"
 [package.extras]
 docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
 testing = ["coverage (>=6.2)", "flaky (>=3.5.0)", "hypothesis (>=5.7.1)", "mypy (>=0.931)", "pytest-trio (>=0.7.0)"]
-
-[[package]]
-name = "python-gnupg"
-version = "0.5.0"
-description = "A wrapper for the Gnu Privacy Guard (GPG or GnuPG)"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "pytz"
@@ -582,7 +574,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "2df16bf2e0aaf0d97e340a6f720a0d36b7b2db5d864169a8d5054f7f000469d1"
+content-hash = "653387b66dd8acc45785164f6fd9a9cf0924886361366533f23de228aa425e66"
 
 [metadata.files]
 aiofiles = [
@@ -1099,10 +1091,6 @@ pytest = [
 pytest-asyncio = [
     {file = "pytest-asyncio-0.20.3.tar.gz", hash = "sha256:83cbf01169ce3e8eb71c6c278ccb0574d1a7a3bb8eaaf5e50e0ad342afb33b36"},
     {file = "pytest_asyncio-0.20.3-py3-none-any.whl", hash = "sha256:f129998b209d04fcc65c96fc85c11e5316738358909a8399e93be553d7656442"},
-]
-python-gnupg = [
-    {file = "python-gnupg-0.5.0.tar.gz", hash = "sha256:70758e387fc0e0c4badbcb394f61acbe68b34970a8fed7e0f7c89469fe17912a"},
-    {file = "python_gnupg-0.5.0-py2.py3-none-any.whl", hash = "sha256:345723a03e67b82aba0ea8ae2328b2e4a3906fbe2c18c4082285c3b01068f270"},
 ]
 pytz = [
     {file = "pytz-2022.7.1-py2.py3-none-any.whl", hash = "sha256:78f4f37d8198e0627c5f1143240bb0206b8691d8d7ac6d78fee88b78733f8c4a"},

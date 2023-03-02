@@ -8,9 +8,7 @@ jobs:
   obs-build:
     name: build all images on OBS
     runs-on: ubuntu-22.04
-    container:
-      image: ghcr.io/dcermak/bci-ci:latest
-      options: "--privileged"
+    container: ghcr.io/dcermak/bci-ci:latest
     strategy:
       fail-fast: false
       matrix:

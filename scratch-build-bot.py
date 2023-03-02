@@ -23,7 +23,6 @@ if __name__ == "__main__":
     from staging.bot import StagingBot
     from staging.build_result import is_build_failed
     from staging.build_result import render_as_markdown
-    from osc_helper.runner import OscRunner
 
     ACTION_T = Literal[
         "rebuild",
@@ -241,7 +240,7 @@ comma-separated list. The package list is taken from the environment variable
         bot = StagingBot(
             os_version=os_version,
             branch_name=args.branch_name[0],
-            osc_runner=OscRunner(args.osc_user[0]),
+            osc_username=args.osc_user[0],
         )
 
     handler = logging.StreamHandler()

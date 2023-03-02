@@ -3,6 +3,7 @@ import itertools
 import os
 import random
 import string
+import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from dataclasses import field
@@ -32,14 +33,12 @@ from obs_package_update.util import CommandError
 from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
 from obs_package_update.util import RunCommand
-from osc_helper.runner import OSC_USER_ENVVAR_NAME
-from osc_helper.runner import OscRunner
-from php.image import PHP_IMAGES
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
 from staging.user import User
+from staging.util import ensure_absent
 from staging.util import get_obs_project_url
 
 _CONFIG_T = Literal["meta", "prjconf"]
@@ -48,11 +47,15 @@ _CONF_TO_ROUTE: dict[_CONFIG_T, str] = {"meta": "_meta", "prjconf": "_config"}
 
 _DEFAULT_REPOS = ["images", "containerfile"]
 
+#: environment variable name from which the osc username for the bot is read
+OSC_USER_ENVVAR_NAME = "OSC_USER"
 
 BRANCH_NAME_ENVVAR_NAME = "BRANCH_NAME"
 
 OS_VERSION_ENVVAR_NAME = "OS_VERSION"
 
+#: environment variable from which the password of the bot's user is taken
+OSC_PASSWORD_ENVVAR_NAME = "OSC_PASSWORD"
 
 _GIT_COMMIT_ENV = {
     "GIT_COMMITTER_NAME": "SUSE Update Bot",
@@ -104,28 +107,36 @@ class StagingBot:
 
     The bot supports running all actions as a user that is not configured in
     :command:`osc`'s configuration file. All you have to do is to set the
-    environment variable :py:const:`~osc_helper.runner.OSC_PASSWORD_ENVVAR_NAME`
-    to the password of the user that is going to be used. The :py:meth:`setup`
-    function will then create a temporary configuration file for :command:`osc`
-    and also set ``XDG_STATE_HOME`` to a temporary directory so that your local
-    osc :file:`cookiejar` is not modified. Both files are cleaned up via
-    :py:meth:`teardown`.
+    environment variable :py:const:`OSC_PASSWORD_ENVVAR_NAME` to the password of
+    the user that is going to be used. The :py:meth:`setup` function will then
+    create a temporary configuration file for :command:`osc` and also set
+    ``XDG_STATE_HOME`` to a temporary directory so that your local osc
+    :file:`cookiejar` is not modified. Both files are cleaned up via
+    :py:meth:`teardown`
 
     """
 
     #: The operating system for which this instance has been created
     os_version: OsVersion
 
-    osc_runner: OscRunner
-
     #: Name of the branch to which the changes are pushed. If none is provided,
     #: then :py:attr:`deployment_branch_name` is used with a few random
     #: ASCII characters appended.
     branch_name: str = ""
 
+    #: username of the user that will be used to perform the actions by the bot.
+    #:
+    #: This value must be provided, otherwise the post initialization function
+    #: raises an exception.
+    osc_username: str = ""
+
     repositories: list[str] = field(default_factory=lambda: _DEFAULT_REPOS)
 
     _packages: list[str] | None = None
+
+    _osc_conf_file: str = ""
+
+    _xdg_state_home_dir: tempfile.TemporaryDirectory | None = None
 
     #: Maximum time to wait for a build to finish.
     #: github actions will run for 6h at most, no point in waiting longer
@@ -148,10 +159,6 @@ class StagingBot:
             raise RuntimeError("osc_username is not set, cannot continue")
 
     @property
-    def osc_username(self) -> str:
-        return self.osc_runner.osc_username
-
-    @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
         """Generator yielding all
         :py:class:`~bci_build.package.BaseContainerImage` that have the same
@@ -161,9 +168,7 @@ class StagingBot:
         """
         return (
             bci
-            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values())
-            + DOTNET_IMAGES
-            + PHP_IMAGES
+            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
             if bci.os_version == self.os_version
         )
 
@@ -273,7 +278,7 @@ class StagingBot:
         bot = StagingBot(
             os_version=OsVersion.parse(os_ver),
             branch_name=branch,
-            osc_runner=OscRunner(osc_username),
+            osc_username=osc_username,
         )
 
         assert bot.staging_project_name == (
@@ -297,7 +302,7 @@ class StagingBot:
         packages: list[str] | None = None if pkgs == "None" else pkgs.split(",")
         stg_bot = StagingBot(
             os_version=OsVersion.parse(os_version),
-            osc_runner=OscRunner(osc_username),
+            osc_username=osc_username,
             branch_name=branch,
             repositories=repos.split(","),
         )
@@ -462,10 +467,26 @@ jobs:
         )
 
     async def setup(self) -> None:
-        await asyncio.gather(self.osc_runner.setup(), self.write_env_file())
-        # this
-        for php_img in PHP_IMAGES:
-            php_img.osc_runner = self.osc_runner
+        if pw := os.getenv(OSC_PASSWORD_ENVVAR_NAME):
+            osc_conf = tempfile.NamedTemporaryFile("w", delete=False)
+            osc_conf.write(
+                f"""[general]
+apiurl = https://api.opensuse.org
+[https://api.opensuse.org]
+user = {self.osc_username}
+pass = {pw}
+aliases = obs
+"""
+            )
+            osc_conf.flush()
+            self._osc_conf_file = osc_conf.name
+
+            self._xdg_state_home_dir = tempfile.TemporaryDirectory()
+            self._run_cmd = RunCommand(
+                logger=LOGGER, env={"XDG_STATE_HOME": self._xdg_state_home_dir.name}
+            )
+
+        await self.write_env_file()
 
     async def write_env_file(self):
         async with aiofiles.open(self.DOTENV_FILE_NAME, "w") as dot_env:
@@ -487,7 +508,30 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         repository itself is left untouched).
 
         """
-        await self.osc_runner.teardown()
+        if self._osc_conf_file:
+            await aiofiles.os.remove(self._osc_conf_file)
+
+            assert self._xdg_state_home_dir is not None
+
+            tasks = []
+            for suffix in ("", ".lock"):
+                tasks.append(
+                    ensure_absent(
+                        os.path.join(
+                            self._xdg_state_home_dir.name, "osc", f"cookiejar{suffix}"
+                        )
+                    )
+                )
+            await asyncio.gather(*tasks)
+            await ensure_absent(os.path.join(self._xdg_state_home_dir.name, "osc"))
+            self._xdg_state_home_dir.cleanup()
+
+    @property
+    def _osc(self) -> str:
+        """command to invoke osc (may include a CLI flag for the custom config file)"""
+        return (
+            "osc" if not self._osc_conf_file else f"osc --config={self._osc_conf_file}"
+        )
 
     async def _generate_test_project_meta(self, target_project_name: str) -> ET.Element:
         bci_devel_meta = ET.fromstring(
@@ -562,8 +606,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             await tmp_meta.flush()
 
             async def _send_prj_meta():
-                await self.osc_runner.run(
-                    f"meta prj --file={tmp_meta.name} {target_project_name}"
+                await self._run_cmd(
+                    f"{self._osc} meta prj --file={tmp_meta.name} {target_project_name}"
                 )
 
             # obs sometimes dies setting the project meta with SQL errors 🤯
@@ -624,13 +668,13 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
             await tmp_prjconf.write(confs["prjconf"])
             await tmp_prjconf.flush()
-            await self.osc_runner.run(
-                f"meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
+            await self._run_cmd(
+                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
             )
 
-    def _osc_fetch_results_subcmd(self, extra_osc_flags: str = "") -> str:
+    def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
-            f"results --xml {extra_osc_flags} "
+            f"{self._osc} results --xml {extra_osc_flags} "
             + " ".join("--repo=" + repo_name for repo_name in self.repositories)
             + f" {self.staging_project_name}"
         )
@@ -666,8 +710,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             tasks.append(remove_branch())
         if obs_project:
             tasks.append(
-                self.osc_runner.run(
-                    f"rdelete -m 'cleanup' --recursive --force {self.staging_project_name}",
+                self._run_cmd(
+                    f"{self._osc} rdelete -m 'cleanup' --recursive --force {self.staging_project_name}",
                     raise_on_error=False,
                 )
             )
@@ -696,8 +740,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_pkg_conf:
             await tmp_pkg_conf.write(ET.tostring(pkg_conf).decode())
             await tmp_pkg_conf.flush()
-            await self.osc_runner.run(
-                f"meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
+            await self._run_cmd(
+                f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
             )
 
     async def write_pkg_configs(
@@ -997,14 +1041,16 @@ updates:
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
         return RepositoryBuildResult.from_resultlist(
-            (await self.osc_runner.run(self._osc_fetch_results_subcmd())).stdout
+            (await self._run_cmd(self._osc_fetch_results_cmd())).stdout
         )
 
     async def force_rebuild(self) -> str:
         """Deletes all binaries of the project on OBS and force rebuilds everything."""
-        await self.osc_runner.run(f"wipebinaries --all {self.staging_project_name}")
-        await self.osc_runner.run(f"rebuild --all {self.staging_project_name}")
-        return self._osc_fetch_results_subcmd("--watch")
+        await self._run_cmd(
+            f"{self._osc} wipebinaries --all {self.staging_project_name}"
+        )
+        await self._run_cmd(f"{self._osc} rebuild --all {self.staging_project_name}")
+        return self._osc_fetch_results_cmd("--watch")
 
     async def scratch_build(self, commit_message: str = "") -> None | str:
         # no commit -> no changes -> no reason to build
@@ -1044,8 +1090,8 @@ updates:
         for pkg_name in self.package_names:
 
             async def wait_for_service(bci_pkg_name: str) -> None:
-                await self.osc_runner.run(
-                    f"service wait {self.staging_project_name} {bci_pkg_name}"
+                await self._run_cmd(
+                    f"{self._osc} service wait {self.staging_project_name} {bci_pkg_name}"
                 )
 
             service_wait_tasks.append(wait_for_service(pkg_name))
@@ -1140,8 +1186,8 @@ updates:
                         "will watch the repository for results for %s",
                         timeout.total_seconds(),
                     )
-                    await self.osc_runner.run(
-                        self._osc_fetch_results_subcmd("--watch"), timeout=timeout
+                    await self._run_cmd(
+                        self._osc_fetch_results_cmd("--watch"), timeout=timeout
                     )
                     # if we got here, then osc result --watch successfully
                     # finished
@@ -1186,7 +1232,7 @@ updates:
 
     async def _fetch_user(self, username: str) -> User:
         return User.from_xml(
-            (await self.osc_runner.run(f"api /person/{username}")).stdout
+            (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
         )
 
     def _get_commit_range_between_refs(
@@ -1368,8 +1414,8 @@ updates:
         ) - set((".obs", ".github", "_config"))
         pkgs_on_obs = set(
             (
-                await self.osc_runner.run(
-                    f"ls {get_bci_project_name(self.os_version, 'obs')}"
+                await self._run_cmd(
+                    f"{self._osc} ls {get_bci_project_name(self.os_version, 'obs')}"
                 )
             ).stdout.splitlines()
         )
