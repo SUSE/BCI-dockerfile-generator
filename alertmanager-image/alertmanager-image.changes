@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Thu Nov 24 10:52:58 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Branch container from SLE 15 SP4

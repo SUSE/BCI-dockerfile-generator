@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Tue Feb 28 11:24:50 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Bump dotnet-sdk to 7.0.201

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Thu Jan 12 07:50:16 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Disable systemd colors
