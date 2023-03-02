@@ -25,6 +25,7 @@ LABEL org.opencontainers.image.version="{{ image.version_label }}"
 LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 {% if not image.is_opensuse %}LABEL com.suse.supportlevel="{{ image.support_level }}"
@@ -78,6 +79,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.version" value="{{ image.version_label }}"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
@@ -112,8 +114,8 @@ KIWI_TEMPLATE = jinja2.Template(
 #: Jinja2 template used to generate :file:`_service`.
 SERVICE_TEMPLATE = jinja2.Template(
     """<services>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="{{ image.build_recipe_type }}_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
 {%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">{% if (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>

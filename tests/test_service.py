@@ -23,8 +23,8 @@ def test_service_without_replacement_kiwi():
             )
         )
         == """<services>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="kiwi_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
 </services>"""
     )
 
@@ -43,8 +43,8 @@ def test_service_with_replacement_kiwi():
             )
         )
         == """<services>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="kiwi_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">test-image.kiwi</param>
     <param name="regex">re</param>
@@ -73,8 +73,8 @@ def test_service_with_replacement_docker():
             )
         )
         == """<services>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service mode="buildtime" name="docker_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">Dockerfile</param>
     <param name="regex">%%my_ver%%</param>

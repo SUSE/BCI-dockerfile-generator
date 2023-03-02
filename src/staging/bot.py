@@ -1084,19 +1084,14 @@ updates:
         project.
 
         """
-        service_wait_tasks = []
         if self.package_names is None:
             raise RuntimeError("No packages have been set yet, cannot continue")
+        # we wait for the service sequentially here. if we wait for all of them
+        # in parallel, we can easily grab all wait slots that obs has
         for pkg_name in self.package_names:
-
-            async def wait_for_service(bci_pkg_name: str) -> None:
-                await self._run_cmd(
-                    f"{self._osc} service wait {self.staging_project_name} {bci_pkg_name}"
-                )
-
-            service_wait_tasks.append(wait_for_service(pkg_name))
-
-        await asyncio.gather(*service_wait_tasks)
+            await self._run_cmd(
+                f"{self._osc} service wait {self.staging_project_name} {pkg_name}"
+            )
 
     async def wait_for_build_to_finish(
         self, timeout_sec: int | None = None
