@@ -16,6 +16,7 @@ LABEL org.opencontainers.image.version="3.9"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/python:3.9-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 

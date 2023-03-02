@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Fri Jul 15 11:07:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Increase compatibility with openSUSE

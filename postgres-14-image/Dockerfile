@@ -17,6 +17,7 @@ LABEL org.opencontainers.image.version="14"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/postgres:14-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 

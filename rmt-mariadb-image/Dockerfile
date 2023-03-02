@@ -15,6 +15,7 @@ LABEL org.opencontainers.image.version="%%mariadb_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/rmt-mariadb:%%mariadb_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 

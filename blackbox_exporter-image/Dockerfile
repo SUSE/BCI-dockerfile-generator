@@ -15,6 +15,7 @@ LABEL org.opencontainers.image.version="%%blackbox_exporter_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/blackbox_exporter:%%blackbox_exporter_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 
