@@ -39,11 +39,3 @@ API Documentation
 .. automodule:: staging.build_result
    :members:
    :undoc-members:
-
-
-:py:mod:`~osc_helper.runner` module
------------------------------------
-
-.. automodule:: osc_helper.runner
-   :members:
-   :undoc-members:
