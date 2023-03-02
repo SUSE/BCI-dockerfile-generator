@@ -388,6 +388,10 @@ class BaseContainerImage(abc.ABC):
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
+    #: flag whether to not install recommended packages in the call to
+    #: :command:`zypper` in :file:`Dockerfile`
+    no_recommends: bool = True
+
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
