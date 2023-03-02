@@ -5,7 +5,6 @@ import pytest
 import yaml
 from bci_build.package import ALL_OS_VERSIONS
 from bci_build.package import OsVersion
-from osc_helper.runner import OscRunner
 from staging.bot import StagingBot
 
 
@@ -30,26 +29,17 @@ async def test_load_from_env(
     packages: list[str] | None,
     repositories: list[str] | None,
 ):
-    kwargs = {
-        "os_version": os_version,
-        "osc_runner": OscRunner("foobar"),
-        "branch_name": branch,
-    }
+    kwargs = {"os_version": os_version, "osc_username": "foobar", "branch_name": branch}
     if repositories:
         kwargs["repositories"] = repositories
     bot = StagingBot(**kwargs)
     bot.package_names = packages
     await bot.setup()
 
-    bot_from_env = await StagingBot.from_env_file()
-    # we need to use the same osc_runner as their individual setup() causes them
-    # to be different
-    bot.osc_runner = bot_from_env.osc_runner
-
     assert await StagingBot.from_env_file() == bot
 
 
-_osc_runner = OscRunner("defolos")
+_osc_user = "defolos"
 
 
 @pytest.mark.parametrize(
@@ -61,7 +51,7 @@ Changes pushed to branch [`sle15-sp4-AVeMj`](https://github.com/SUSE/BCI-dockerf
             StagingBot(
                 os_version=OsVersion.SP4,
                 branch_name="sle15-sp4-AVeMj",
-                osc_runner=_osc_runner,
+                osc_username=_osc_user,
             ),
         ),
         (
@@ -70,7 +60,7 @@ Changes pushed to branch [`tumbleweed-EqgiS`](https://github.com/SUSE/BCI-docker
             StagingBot(
                 os_version=OsVersion.TUMBLEWEED,
                 branch_name="tumbleweed-EqgiS",
-                osc_runner=_osc_runner,
+                osc_username=_osc_user,
             ),
         ),
         (
@@ -79,14 +69,14 @@ Changes pushed to branch [`sle15-sp3-OZGYa`](https://github.com/SUSE/BCI-dockerf
             StagingBot(
                 os_version=OsVersion.SP3,
                 branch_name="sle15-sp3-OZGYa",
-                osc_runner=_osc_runner,
+                osc_username=_osc_user,
             ),
         ),
     ],
 )
 def test_from_github_comment(comment: str, bot: StagingBot):
     assert bot == StagingBot.from_github_comment(
-        comment_text=comment, osc_username=_osc_runner.osc_username
+        comment_text=comment, osc_username=_osc_user
     )
 
 
@@ -99,7 +89,7 @@ def test_from_empty_github_comment():
     )
 
 
-_bot = StagingBot(os_version=OsVersion.SP5, osc_runner=_osc_runner)
+_bot = StagingBot(os_version=OsVersion.SP5, osc_username=_osc_user)
 
 
 @pytest.mark.parametrize(

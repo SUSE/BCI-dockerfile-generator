@@ -2,7 +2,7 @@ import pathlib
 
 import aiofiles.os
 import pytest
-from osc_helper.runner import ensure_absent
+from staging.util import ensure_absent
 
 
 @pytest.mark.asyncio
