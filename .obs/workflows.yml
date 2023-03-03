@@ -79,6 +79,18 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: php8-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: php-apache8-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: php-fpm8-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
         source_package: init-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
@@ -231,6 +243,15 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP4
+        package: php8-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP4
+        package: php-apache8-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP4
+        package: php-fpm8-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: init-image

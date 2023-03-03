@@ -1,0 +1,3 @@
+#!/bin/sh
+set -euo pipefail
+zypper -n in php8-$1
