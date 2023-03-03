@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Wed Feb 15 13:25:06 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - New upstream release 7.0.3

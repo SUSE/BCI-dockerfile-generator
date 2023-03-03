@@ -26,6 +26,7 @@
             <label name="org.opencontainers.image.version" value="%%registry_version%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
             <label name="org.opensuse.reference" value="registry.suse.com/suse/registry:%%registry_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>

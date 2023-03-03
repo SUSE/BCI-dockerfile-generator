@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Fri Dec 23 08:03:11 UTC 2022 - Dirk Müller <dmueller@suse.com>
 
 - Update entrypoint scripts from upstream
