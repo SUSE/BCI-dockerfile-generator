@@ -388,6 +388,10 @@ class BaseContainerImage(abc.ABC):
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
+    #: flag whether to not install recommended packages in the call to
+    #: :command:`zypper` in :file:`Dockerfile`
+    no_recommends: bool = True
+
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
@@ -982,7 +986,7 @@ exit 0
 
         for fname, contents in self.extra_files.items():
             files.append(fname)
-            tasks.append(asyncio.ensure_future(write_file_to_dest(fname, contents)))
+            tasks.append(write_file_to_dest(fname, contents))
 
         await asyncio.gather(*tasks)
 
@@ -1421,6 +1425,171 @@ OPENJDK_CONTAINERS = (
         for devel, java_version in product((True, False), (13, 15))
     ]
 )
+
+
+@enum.unique
+class PhpVariant(enum.Enum):
+    cli = "php"
+    apache = "php-apache"
+    fpm = "php-fpm"
+
+    def __str__(self) -> str:
+        return str(self.value)
+
+
+def _php_entrypoint(variant: PhpVariant) -> str:
+    cmd: str = {
+        PhpVariant.cli: "php",
+        PhpVariant.apache: "apache2-foreground",
+        PhpVariant.fpm: "php-fpm",
+    }[variant]
+    return f"""#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${{1#-}}" != "$1" ]; then
+	set -- {cmd} "$@"
+fi
+
+exec "$@"
+"""
+
+
+_EMPTY_SCRIPT = """#!/bin/sh
+echo "This script is not required in the PHP SLE BCI."
+"""
+
+
+def _create_php_bci(
+    os_version: OsVersion, php_variant: PhpVariant, php_version: int
+) -> LanguageStackContainer:
+    common_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-php-*
+"""
+
+    if php_variant == PhpVariant.apache:
+        extra_pkgs = [f"apache2-mod_php{php_version}"]
+        extra_env = {
+            "APACHE_CONFDIR": "/etc/apache2",
+            "APACHE_ENVVARS": "/usr/sbin/envvars",
+        }
+        cmd = ["apache2-foreground"]
+        custom_end = (
+            common_end
+            + """
+STOPSIGNAL SIGWINCH
+
+# create our own apache2-foreground from the systemd startup script
+RUN sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /usr/sbin/start_apache2 > /usr/local/bin/apache2-foreground
+RUN chmod +x /usr/local/bin/apache2-foreground
+
+# apache fails to start without its log folder
+RUN mkdir -p /var/log/apache2
+
+WORKDIR /srv/www/htdocs
+
+EXPOSE 80
+"""
+        )
+    elif php_variant == PhpVariant.fpm:
+        extra_pkgs = [f"php{php_version}-fpm"]
+        extra_env = {}
+        cmd = ["php-fpm"]
+        custom_end = (
+            common_end
+            + """WORKDIR /srv/www/htdocs
+
+"""
+            + DOCKERFILE_RUN
+            + r""" \
+	cd /etc/php8/fpm/; \
+        cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
+        cp php-fpm.conf.default php-fpm.conf; \
+	{ \
+		echo '[global]'; \
+		echo 'error_log = /proc/self/fd/2'; \
+		echo; echo '; https://github.com/docker-library/php/pull/725#issuecomment-443540114'; echo 'log_limit = 8192'; \
+		echo; \
+		echo '[www]'; \
+		echo '; if we send this to /proc/self/fd/1, it never appears'; \
+		echo 'access.log = /proc/self/fd/2'; \
+		echo; \
+		echo 'clear_env = no'; \
+		echo; \
+		echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
+		echo 'catch_workers_output = yes'; \
+		echo 'decorate_workers_output = no'; \
+	} | tee php-fpm.d/docker.conf; \
+	{ \
+		echo '[global]'; \
+		echo 'daemonize = no'; \
+	} | tee php-fpm.d/zz-docker.conf
+
+# Override stop signal to stop process gracefully
+# https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
+STOPSIGNAL SIGQUIT
+
+EXPOSE 9000
+"""
+        )
+    else:
+        extra_pkgs = []
+        extra_env = {}
+        cmd = ["php", "-a"]
+        custom_end = common_end
+
+    return LanguageStackContainer(
+        name=str(php_variant),
+        no_recommends=False,
+        version=php_version,
+        pretty_name=f"{str(php_variant).upper()} {php_version}",
+        package_name=f"{php_variant}{php_version}-image",
+        os_version=os_version,
+        package_list=[
+            f"php{php_version}",
+            f"php{php_version}-cli",
+            "php-composer",
+            f"php{php_version}-curl",
+            f"php{php_version}-zip",
+            f"php{php_version}-zlib",
+            f"php{php_version}-phar",
+            f"php{php_version}-mbstring",
+        ]
+        + extra_pkgs,
+        replacements_via_service=[
+            Replacement("%%composer_version%%", package_name="php-composer2"),
+            Replacement("%%php_version%%", package_name=f"php{php_version}"),
+        ],
+        cmd=cmd,
+        entrypoint=["docker-php-entrypoint"],
+        env={
+            "PHP_VERSION": "%%php_version%%",
+            "PHP_INI_DIR": f"/etc/php{php_version}/",
+            "PHPIZE_DEPS": f"php{php_version}-devel",
+            "COMPOSER_VERSION": "%%composer_version%%",
+            **extra_env,
+        },
+        extra_files={
+            "docker-php-entrypoint": _php_entrypoint(php_variant),
+            "docker-php-source": _EMPTY_SCRIPT,
+            "docker-php-ext-configure": _EMPTY_SCRIPT,
+            "docker-php-ext-enable": _EMPTY_SCRIPT,
+            "docker-php-ext-install": f"""#!/bin/sh
+{_BASH_SET}
+zypper -n in php{php_version}-$1
+""",
+        },
+        custom_end=custom_end,
+    )
+
+
+PHP_CONTAINERS = [
+    _create_php_bci(os_version, variant, 8)
+    for os_version, variant in product(
+        (OsVersion.SP4, OsVersion.SP5),
+        (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
+    )
+]
 
 
 _389DS_FILES: Dict[str, str] = {}
@@ -2109,6 +2278,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *RUBY_CONTAINERS,
         *NODE_CONTAINERS,
         *OPENJDK_CONTAINERS,
+        *PHP_CONTAINERS,
         *INIT_CONTAINERS,
         *MARIADB_CONTAINERS,
         *MARIADB_CLIENT_CONTAINERS,
