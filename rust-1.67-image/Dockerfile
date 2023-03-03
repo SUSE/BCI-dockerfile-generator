@@ -15,6 +15,7 @@ LABEL org.opencontainers.image.version="1.67"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/rust:1.67-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 

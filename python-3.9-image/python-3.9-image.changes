@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
 Tue Nov 29 12:27:01 UTC 2022 - Dan Čermák <dcermak@suse.com>
 
 - Add main python package to include bundled modules (fixes bsc#1205850)
