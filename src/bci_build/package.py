@@ -975,7 +975,7 @@ exit 0
                     write_file_to_dest(
                         changes_file_name,
                         f"""-------------------------------------------------------------------
-{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <noreply@suse.com>
+{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <dcermak@suse.com>
 
 - First version of the {name_to_include} BCI
 """,
