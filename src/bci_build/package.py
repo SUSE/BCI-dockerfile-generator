@@ -1574,9 +1574,16 @@ EXPOSE 9000
             "docker-php-source": _EMPTY_SCRIPT,
             "docker-php-ext-configure": _EMPTY_SCRIPT,
             "docker-php-ext-enable": _EMPTY_SCRIPT,
-            "docker-php-ext-install": f"""#!/bin/sh
+            "docker-php-ext-install": f"""#!/bin/bash
 {_BASH_SET}
-zypper -n in php{php_version}-$1
+
+extensions=()
+
+for ext in $@; do
+    [[ "$ext" =~ ^- ]] || extensions+=("php{php_version}-$ext")
+done
+
+zypper -n in ${{extensions[*]}}
 """,
         },
         custom_end=custom_end,
