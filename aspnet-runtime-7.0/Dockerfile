@@ -36,15 +36,15 @@ COPY microsoft.asc /tmp
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-host-7.0.3-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.3-x64.rpm
 COPY dotnet-host-7.0.3-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-hostfxr-7.0.3-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0.3-x64.rpm
 COPY dotnet-hostfxr-7.0.3-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-deps-7.0.3-sles.12-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0.3-sles.12-x64.rpm
 COPY dotnet-runtime-deps-7.0.3-sles.12-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/dotnet-runtime-7.0.3-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.3-x64.rpm
 COPY dotnet-runtime-7.0.3-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/aspnetcore-runtime-7.0.3-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0.3-x64.rpm
 COPY aspnetcore-runtime-7.0.3-x64.rpm /tmp/
 
 COPY prod.repo /tmp
