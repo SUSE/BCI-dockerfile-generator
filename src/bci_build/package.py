@@ -975,7 +975,7 @@ exit 0
                     write_file_to_dest(
                         changes_file_name,
                         f"""-------------------------------------------------------------------
-{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <dcermak@suse.com>
+{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the {name_to_include} BCI
 """,
@@ -1565,7 +1565,7 @@ EXPOSE 9000
         env={
             "PHP_VERSION": "%%php_version%%",
             "PHP_INI_DIR": f"/etc/php{php_version}/",
-            "PHPIZE_DEPS": f"php{php_version}-devel",
+            "PHPIZE_DEPS": f"php{php_version}-devel awk make",
             "COMPOSER_VERSION": "%%composer_version%%",
             **extra_env,
         },
@@ -1574,9 +1574,16 @@ EXPOSE 9000
             "docker-php-source": _EMPTY_SCRIPT,
             "docker-php-ext-configure": _EMPTY_SCRIPT,
             "docker-php-ext-enable": _EMPTY_SCRIPT,
-            "docker-php-ext-install": f"""#!/bin/sh
+            "docker-php-ext-install": f"""#!/bin/bash
 {_BASH_SET}
-zypper -n in php{php_version}-$1
+
+extensions=()
+
+for ext in $@; do
+    [[ "$ext" =~ ^- ]] || extensions+=("php{php_version}-$ext")
+done
+
+zypper -n in ${{extensions[*]}}
 """,
         },
         custom_end=custom_end,

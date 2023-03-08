@@ -59,7 +59,7 @@ OSC_PASSWORD_ENVVAR_NAME = "OSC_PASSWORD"
 
 _GIT_COMMIT_ENV = {
     "GIT_COMMITTER_NAME": "SUSE Update Bot",
-    "GIT_COMMITTER_EMAIL": "dcermak@suse.com",
+    "GIT_COMMITTER_EMAIL": "bci-internal@suse.de",
 }
 
 
