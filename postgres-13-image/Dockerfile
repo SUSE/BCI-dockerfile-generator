@@ -32,7 +32,7 @@ ENV PG_MAJOR="13"
 ENV PG_VERSION="%%pg_version%%"
 ENV PGDATA="/var/lib/postgresql/data"
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
 VOLUME /var/lib/postgresql/data
 EXPOSE 5432
