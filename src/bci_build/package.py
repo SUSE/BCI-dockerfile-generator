@@ -1811,7 +1811,7 @@ POSTGRES_CONTAINERS = [
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
         additional_versions=["%%pg_version%%"],
-        entrypoint=["docker-entrypoint.sh"],
+        entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
         cmd=["postgres"],
         env={
             "LANG": "en_US.utf8",
