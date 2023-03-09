@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  8 10:59:42 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Update package download URLs
+
+-------------------------------------------------------------------
 Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
