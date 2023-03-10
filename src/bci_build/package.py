@@ -1841,6 +1841,8 @@ POSTGRES_CONTAINERS = [
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
+HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
+    CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
     for ver, os_version in product(
