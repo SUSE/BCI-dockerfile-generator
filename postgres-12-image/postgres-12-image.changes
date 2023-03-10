@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  9 16:27:16 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Specify the full path to the entrypoint, fixes bsc#1208521
+
+-------------------------------------------------------------------
 Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
