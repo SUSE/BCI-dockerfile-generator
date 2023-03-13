@@ -1799,12 +1799,12 @@ with open(
     _POSTGRES_LICENSE = license_file.read(-1)
 
 
-_POSTGRES_MAJOR_VERSIONS = [14, 13, 12, 10]
+_POSTGRES_MAJOR_VERSIONS = [15, 14, 13, 12, 10]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         package_name=f"postgres-{ver}-image",
         os_version=os_version,
-        is_latest=ver == 14,
+        is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.L3,
