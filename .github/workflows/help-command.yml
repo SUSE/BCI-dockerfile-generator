@@ -17,3 +17,4 @@ jobs:
             > --- | ---
             > /help | Print this message
             > /vc user=$user [packages=$pkg] $changelog_entry | Appends the given changelog entry as the provided user to the packages in the current branch.
+            > /tests os_version=$os_ver [env=$tox-environments] [branch=$bci-tests-branch] | Runs the tests

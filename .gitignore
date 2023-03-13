@@ -2,3 +2,4 @@
 /dist/
 /test-build.env
 **/__pycache__/
+/BCI-tests/
