@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 13 16:06:11 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to postgres 15
+
+-------------------------------------------------------------------
 Mon Mar 13 11:25:48 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add Healthcheck
