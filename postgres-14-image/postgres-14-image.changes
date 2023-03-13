@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 13 11:25:27 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add Healthcheck
+
+-------------------------------------------------------------------
 Thu Mar  9 16:28:37 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Specify the full path to the entrypoint, fixes bsc#1208521
