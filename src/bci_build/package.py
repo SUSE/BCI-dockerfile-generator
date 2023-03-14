@@ -1838,7 +1838,8 @@ POSTGRES_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     ln -s su /usr/bin/gosu; \
     mkdir /docker-entrypoint-initdb.d; \
-    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample; \
+    mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA"
 
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
