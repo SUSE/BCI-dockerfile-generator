@@ -1267,8 +1267,8 @@ RUBY_CONTAINERS = [
 ]
 
 
-_GO_VER_T = Literal["1.18", "1.19"]
-_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.18", "1.19"]
+_GO_VER_T = Literal["1.19", "1.20"]
+_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
 
 
 def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
