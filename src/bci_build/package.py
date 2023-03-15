@@ -1814,7 +1814,7 @@ POSTGRES_CONTAINERS = [
             "LANG": "en_US.utf8",
             "PG_MAJOR": f"{ver}",
             "PG_VERSION": "%%pg_version%%",
-            "PGDATA": "/var/lib/postgresql/data",
+            "PGDATA": "/var/lib/pgsql/data",
         },
         extra_files={
             "docker-entrypoint.sh": _POSTGRES_ENTRYPOINT,
@@ -1829,7 +1829,7 @@ POSTGRES_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        volumes=["/var/lib/postgresql/data"],
+        volumes=["$PGDATA"],
         exposes_tcp=[5432],
         custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
