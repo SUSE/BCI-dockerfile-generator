@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 16 07:29:37 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest to go 1.20
+
+-------------------------------------------------------------------
 Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
