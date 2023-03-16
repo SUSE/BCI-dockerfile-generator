@@ -1833,7 +1833,7 @@ POSTGRES_CONTAINERS = [
         exposes_tcp=[5432],
         custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
-    ln -s su /usr/bin/gosu; \
+    sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
