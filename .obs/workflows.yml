@@ -127,10 +127,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: postgres-10-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: prometheus-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -255,9 +251,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postgres-12-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: postgres-10-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: prometheus-image

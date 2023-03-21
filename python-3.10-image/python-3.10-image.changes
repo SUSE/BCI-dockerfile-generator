@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 21 10:35:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Switch latest to Python 3.11
+
+-------------------------------------------------------------------
 Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
