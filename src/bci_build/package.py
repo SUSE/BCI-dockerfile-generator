@@ -1122,7 +1122,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 
 
 def _get_python_kwargs(
-    py3_ver: Literal["3.6", "3.8", "3.9", "3.10"], os_version: OsVersion
+    py3_ver: Literal["3.6", "3.8", "3.9", "3.10", "3.11"], os_version: OsVersion
 ):
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.10"
@@ -1195,11 +1195,28 @@ PYTHON_3_10_SP4 = LanguageStackContainer(
     is_latest=True,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
+
+PYTHON_3_11_SP5 = LanguageStackContainer(
+    package_name="python-3.11-image",
+    support_level=SupportLevel.TECHPREVIEW,
+    is_latest=False,
+    **_get_python_kwargs("3.11", OsVersion.SP5),
+)
+
 PYTHON_3_10_TW = LanguageStackContainer(
     package_name="python-3.10-image",
     is_latest=True,
     **_get_python_kwargs(
         "3.10",
+        os_version=OsVersion.TUMBLEWEED,
+    ),
+)
+
+PYTHON_3_11_TW = LanguageStackContainer(
+    package_name="python-3.11-image",
+    is_latest=True,
+    **_get_python_kwargs(
+        "3.11",
         os_version=OsVersion.TUMBLEWEED,
     ),
 )
@@ -2276,7 +2293,9 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         PYTHON_3_8_TW,
         PYTHON_3_9_TW,
         PYTHON_3_10_SP4,
+        PYTHON_3_11_SP5,
         PYTHON_3_10_TW,
+        PYTHON_3_11_TW,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
         *PCP_CONTAINERS,
