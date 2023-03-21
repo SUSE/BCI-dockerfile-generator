@@ -1842,9 +1842,10 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
-    for ver, os_version in product(
-        _POSTGRES_MAJOR_VERSIONS, [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+    for ver, os_version in list(
+        product([15, 14], [OsVersion.SP5, OsVersion.TUMBLEWEED])
     )
+    + [(pg_ver, OsVersion.SP4) for pg_ver in _POSTGRES_MAJOR_VERSIONS]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
