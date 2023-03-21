@@ -1177,16 +1177,14 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP4, OsVersion.SP5)
 )
 
-PYTHON_3_8_TW = LanguageStackContainer(
-    package_name="python-3.8-image",
-    **_get_python_kwargs(
-        "3.8",
-        OsVersion.TUMBLEWEED,
-    ),
-)
-PYTHON_3_9_TW = LanguageStackContainer(
-    package_name="python-3.9-image",
-    **_get_python_kwargs("3.9", OsVersion.TUMBLEWEED),
+_PYTHON_TW_VERSIONS = ("3.8", "3.9", "3.10", "3.11")
+PYTHON_TW_CONTAINERS = (
+    LanguageStackContainer(
+        **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
+        is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
+        package_name=f"python-{pyver}-image",
+    )
+    for pyver in _PYTHON_TW_VERSIONS
 )
 
 PYTHON_3_10_SP4 = LanguageStackContainer(
@@ -1201,24 +1199,6 @@ PYTHON_3_11_SP5 = LanguageStackContainer(
     support_level=SupportLevel.TECHPREVIEW,
     is_latest=False,
     **_get_python_kwargs("3.11", OsVersion.SP5),
-)
-
-PYTHON_3_10_TW = LanguageStackContainer(
-    package_name="python-3.10-image",
-    is_latest=True,
-    **_get_python_kwargs(
-        "3.10",
-        os_version=OsVersion.TUMBLEWEED,
-    ),
-)
-
-PYTHON_3_11_TW = LanguageStackContainer(
-    package_name="python-3.11-image",
-    is_latest=True,
-    **_get_python_kwargs(
-        "3.11",
-        os_version=OsVersion.TUMBLEWEED,
-    ),
 )
 
 
@@ -2290,12 +2270,9 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
     for bci in (
         *PYTHON_3_6_CONTAINERS,
-        PYTHON_3_8_TW,
-        PYTHON_3_9_TW,
         PYTHON_3_10_SP4,
         PYTHON_3_11_SP5,
-        PYTHON_3_10_TW,
-        PYTHON_3_11_TW,
+        *PYTHON_TW_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
         *PCP_CONTAINERS,
