@@ -62,10 +62,17 @@ jobs:
 
       - name: configure git user
         run: |
+          set -xuo pipefail
           username="${{ github.event.pull_request.user.login }}"
+          set +e
           full_name=$(curl https://api.github.com/users/$username 2>/dev/null|jq '.name'|sed 's|"||g')
-          git config user.name "$full_name"
-          git config user.email "$username@users.noreply.github.com"
+          if [[ $? -ne 0 ]]; then
+              git config user.name "SUSE Update Bot"
+              git config user.email "bci-internal@suse.de"
+          else
+              git config user.name "$full_name"
+              git config user.email "$username@users.noreply.github.com"
+          fi
 
       - name: commit the changes to a test branch and create a staging project on OBS
         run: |
