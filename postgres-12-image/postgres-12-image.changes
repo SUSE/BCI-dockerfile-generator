@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 29 13:35:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Correct file permissions for chmod calls in docker-entrypoint.sh
+
+-------------------------------------------------------------------
 Mon Mar 13 11:25:48 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add Healthcheck
