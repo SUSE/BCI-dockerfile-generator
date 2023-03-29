@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 29 13:35:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Correct file permissions for chmod calls in docker-entrypoint.sh
+
+-------------------------------------------------------------------
 Mon Mar 13 15:23:11 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the PostgreSQL 15 BCI
