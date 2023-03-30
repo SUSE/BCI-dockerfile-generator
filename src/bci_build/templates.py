@@ -41,9 +41,9 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"
 {%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
 {%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}
-{%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
 {%- if image.expose_dockerfile %}{{ image.expose_dockerfile }}{% endif %}
 {% if image.dockerfile_custom_end %}{{ image.dockerfile_custom_end }}{% endif %}
+{%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
 """
 )
 

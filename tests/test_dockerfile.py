@@ -168,9 +168,9 @@ ENV GPP_path="/usr/bin/g++"
 
 ENTRYPOINT ["/usr/bin/emacs"]
 CMD ["/usr/bin/gcc"]
-VOLUME /bin/ /usr/bin/
 EXPOSE 22 1111
-RUN emacs -Q --batch""",
+RUN emacs -Q --batch
+VOLUME /bin/ /usr/bin/""",
             LanguageStackContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",
