@@ -27,18 +27,20 @@ RUN set -euo pipefail; zypper -n in --no-recommends postgresql12-server distribu
 ENV LANG="en_US.utf8"
 ENV PG_MAJOR="12"
 ENV PG_VERSION="%%pg_version%%"
-ENV PGDATA="/var/lib/postgresql/data"
+ENV PGDATA="/var/lib/pgsql/data"
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
-VOLUME /var/lib/postgresql/data
 EXPOSE 5432
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
-    ln -s su /usr/bin/gosu; \
+    sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
+    install -d -m 0700 -o postgres -g postgres $PGDATA; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql12/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${POSTGRES_USER:-postgres} -h localhost -p 5432
+
+VOLUME $PGDATA

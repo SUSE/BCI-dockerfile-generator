@@ -24,5 +24,6 @@ LABEL com.suse.release-stage="released"
 
 RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-prometheus; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["/usr/bin/prometheus"]
-VOLUME /var/lib/prometheus
 EXPOSE 9090
+
+VOLUME /var/lib/prometheus

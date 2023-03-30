@@ -29,7 +29,6 @@ LABEL com.suse.release-stage="released"
 RUN set -euo pipefail; zypper -n in --no-recommends pcp hostname shadow gettext-runtime util-linux-systemd; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["/usr/local/bin/container-entrypoint"]
 CMD ["/usr/lib/systemd/systemd"]
-VOLUME /var/log/pcp/pmlogger
 EXPOSE 44321 44322 44323
 
 RUN set -euo pipefail; mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
@@ -42,3 +41,5 @@ COPY pmcd pmlogger /etc/sysconfig/
 RUN set -euo pipefail; systemctl disable wicked wickedd || :
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3     CMD /usr/local/bin/healthcheck
+
+VOLUME /var/log/pcp/pmlogger
