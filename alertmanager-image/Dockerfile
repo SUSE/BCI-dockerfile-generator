@@ -24,5 +24,6 @@ LABEL com.suse.release-stage="released"
 
 RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-alertmanager; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["/usr/bin/prometheus-alertmanager"]
-VOLUME /var/lib/prometheus/alertmanager
 EXPOSE 9093
+
+VOLUME /var/lib/prometheus/alertmanager
