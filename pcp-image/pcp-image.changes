@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 30 15:12:51 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Put VOLUME statements last
+
+-------------------------------------------------------------------
 Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%

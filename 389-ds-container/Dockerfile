@@ -26,7 +26,6 @@ LABEL com.suse.release-stage="beta"
 
 RUN set -euo pipefail; zypper -n in --no-recommends 389-ds timezone openssl nss_synth; zypper -n clean; rm -rf /var/log/*
 CMD ["/usr/lib/dirsrv/dscontainer", "-r"]
-VOLUME /data
 EXPOSE 3389 3636
 
 COPY nsswitch.conf /etc/nsswitch.conf
@@ -41,3 +40,5 @@ RUN set -euo pipefail; mkdir -p /data/config; \
 
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
+
+VOLUME /data

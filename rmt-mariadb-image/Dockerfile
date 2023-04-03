@@ -27,7 +27,6 @@ LABEL com.suse.release-stage="beta"
 RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
-VOLUME /var/lib/mysql
 EXPOSE 3306
 RUN set -euo pipefail; mkdir /docker-entrypoint-initdb.d
 
@@ -45,3 +44,5 @@ RUN set -euo pipefail; sed -i 's/^log/#log/g' /etc/my.cnf
 RUN set -euo pipefail; sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
 RUN set -euo pipefail; mkdir /run/mysql
+
+VOLUME /var/lib/mysql
