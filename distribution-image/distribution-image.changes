@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  5 16:55:49 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Shorten descriptions
+
+-------------------------------------------------------------------
 Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
