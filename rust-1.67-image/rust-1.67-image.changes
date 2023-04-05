@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  5 08:02:54 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Move latest tag to Rust 1.68
+
+-------------------------------------------------------------------
 Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
