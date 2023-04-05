@@ -31,6 +31,7 @@ Binarytype: rpm
 Type: docker
 Prefer: sles-release
 PreInstall: release-compare
+BuildFlags: sbom:cyclonedx
 
 %else
 %if %_repository == "helmcharts"
@@ -48,6 +49,14 @@ Patterntype: none
 #
 # OBS specific settings
 #
+
+# SBOM CHANGES
+BuildFlags: sbom:spdx
+PublishFlags: withsbom
+Substitute: system-packages:podman kmod kernel-default podman buildah createrepo_c umoci skopeo 
+Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-default createrepo_c umoci skopeo 
+# END SBOM CHANGES
+
 # temporary workaround until we can drop the SUSE:Registry repository path
 Prefer: -container:bci_openjdk:11
 #Prefer: -container:bci_bci-micro:15.4
