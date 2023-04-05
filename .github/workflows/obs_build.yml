@@ -52,7 +52,7 @@ jobs:
         if: steps.find_comment.outputs.comment-id != ''
 
       - name: update the comment with the previous build explaining that it has been deleted
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
@@ -95,7 +95,7 @@ jobs:
 
       - name: create a comment with a link to the staging project
         if: env.no_change != 'true'
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         id: create_comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -125,7 +125,7 @@ jobs:
 
       - name: report the finished build
         if: env.no_change != 'true'
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-id: ${{ steps.create_comment.outputs.comment-id }}
