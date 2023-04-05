@@ -31,11 +31,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
-        source_package: rust-1.66-image
+        source_package: rust-1.67-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
-        source_package: rust-1.67-image
+        source_package: rust-1.68-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
@@ -213,10 +213,10 @@ refresh_devel_BCI:
         package: rmt-server-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
-        package: rust-1.66-image
+        package: rust-1.67-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
-        package: rust-1.67-image
+        package: rust-1.68-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: golang-1.19-image
