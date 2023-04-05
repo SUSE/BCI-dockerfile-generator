@@ -2028,18 +2028,14 @@ STOPSIGNAL SIGQUIT
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.66", "1.67"]
+_RUST_VERSIONS = ["1.67", "1.68"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
         package_name=f"rust-{rust_version}-image",
         os_version=os_version,
-        support_level=(
-            SupportLevel.L3
-            if rust_version not in ("1.61", "1.62")
-            else SupportLevel.TECHPREVIEW
-        ),
+        support_level=SupportLevel.L3,
         is_latest=(
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
