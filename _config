@@ -31,7 +31,6 @@ Binarytype: rpm
 Type: docker
 Prefer: sles-release
 PreInstall: release-compare
-BuildFlags: sbom:cyclonedx
 
 %else
 %if %_repository == "helmcharts"
@@ -51,6 +50,7 @@ Patterntype: none
 #
 
 # SBOM CHANGES
+BuildFlags: sbom:cyclonedx
 BuildFlags: sbom:spdx
 PublishFlags: withsbom
 Substitute: system-packages:podman kmod kernel-default podman buildah createrepo_c umoci skopeo 
@@ -59,8 +59,8 @@ Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-defa
 
 # temporary workaround until we can drop the SUSE:Registry repository path
 Prefer: -container:bci_openjdk:11
-#Prefer: -container:bci_bci-micro:15.4
 Prefer: -container:bci_openjdk:17
-#Prefer: -container:bci_bci-init:15.4
-#Prefer: -container:bci_bci-busybox:15.4
-#Prefer: -container:suse_sle15:15.4
+Prefer: -container:bci_bci-busybox:15.5
+Prefer: -container:bci_bci-init:15.5
+Prefer: -container:bci_bci-micro:15.5
+Prefer: -container:suse_sle15:15.5
