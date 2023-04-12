@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-runtime:6.0
 #!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:6.0.15
-#!BuildTag: bci/dotnet-runtime:6.0.15-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:6.0.16
+#!BuildTag: bci/dotnet-runtime:6.0.16-%RELEASE%
 #!BuildVersion: 15.4.6.0
 FROM suse/sle15:15.4
 
@@ -41,8 +41,8 @@ COPY dotnet-host-6.0.16-x64.rpm /tmp/
 COPY dotnet-hostfxr-6.0.16-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0.16-sles.12-x64.rpm
 COPY dotnet-runtime-deps-6.0.16-sles.12-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0.15-x64.rpm
-COPY dotnet-runtime-6.0.15-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0.16-x64.rpm
+COPY dotnet-runtime-6.0.16-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
