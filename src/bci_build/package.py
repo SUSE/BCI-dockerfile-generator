@@ -2261,6 +2261,7 @@ REGISTRY_CONTAINERS = [
         build_recipe_type=BuildType.KIWI,
         volumes=["/var/lib/docker-registry"],
         exposes_tcp=[5000],
+        support_level=SupportLevel.L3,
     )
     for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
 ]
