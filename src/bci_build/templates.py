@@ -98,7 +98,7 @@ KIWI_TEMPLATE = jinja2.Template(
 {{- image.kiwi_env_entry }}
       </containerconfig>
     </type>
-    <version>15.{{ image.os_version }}.0</version>
+    <version>{{ image.kiwi_version }}</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>

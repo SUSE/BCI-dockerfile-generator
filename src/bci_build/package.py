@@ -891,6 +891,12 @@ exit 0
         )
 
     @property
+    def kiwi_version(self) -> str:
+        if self.os_version in (OsVersion.TUMBLEWEED,):
+            return str(datetime.datetime.now().year)
+        return f"15.{int(self.os_version.value)}.0"
+
+    @property
     def kiwi_additional_tags(self) -> Optional[str]:
         """Entry for the ``additionaltags`` attribute in the kiwi build
         description.
