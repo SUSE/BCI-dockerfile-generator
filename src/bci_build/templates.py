@@ -72,7 +72,6 @@ KIWI_TEMPLATE = jinja2.Template(
 {%- endif %}
           additionaltags="{{ image.kiwi_additional_tags }}"{% endif %}>
         <labels>
-          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
           <suse_label_helper:add_prefix prefix="{{ image.labelprefix }}">
             <label name="org.opencontainers.image.title" value="{{ image.title }}"/>
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
