@@ -34,7 +34,7 @@ def get_bci_project_name(
 ) -> str:
     prj_suffix = (
         os_version
-        if os_version == OsVersion.TUMBLEWEED
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
         else "SLE-15-SP" + str(os_version)
     )
     if build_service_target == "obs":

@@ -130,6 +130,8 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
+    #: Adaptable Linux Platform, Basalt project
+    BASALT = "Basalt"
 
     @staticmethod
     def parse(val: str) -> OsVersion:
@@ -143,7 +145,7 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value == OsVersion.TUMBLEWEED.value:
+        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value):
             return self.value
         return f"SP{self.value}"
 
@@ -151,6 +153,8 @@ class OsVersion(enum.Enum):
     def pretty_os_version_no_dash(self) -> str:
         if self.value == OsVersion.TUMBLEWEED.value:
             return f"openSUSE {self.value}"
+        if self.value == OsVersion.BASALT.value:
+            return "Adaptable Linux Platform"
 
         return f"15 SP{self.value}"
 
@@ -163,12 +167,17 @@ RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 # For which versions to create Base Container Images?
-ALL_BASE_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+ALL_BASE_OS_VERSIONS = [
+    OsVersion.SP4,
+    OsVersion.SP5,
+    OsVersion.TUMBLEWEED,
+    OsVersion.BASALT,
+]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED, OsVersion.BASALT]
 
 
 # End of General Support Dates
@@ -218,7 +227,11 @@ class Replacement:
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
-    return "opensuse/bci" if os_version == OsVersion.TUMBLEWEED else "bci"
+    if os_version == OsVersion.TUMBLEWEED:
+        return "opensuse/bci"
+    if os_version == OsVersion.BASALT:
+        return "alp/bci"
+    return "bci"
 
 
 @dataclass(frozen=True)
@@ -259,6 +272,9 @@ class ImageProperties:
     #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
     application_container_build_tag_prefix: str
 
+    #:
+    based_on_container_description: Optional[str] = None
+
 
 #: Image properties for openSUSE Tumbleweed
 _OPENSUSE_IMAGE_PROPS = ImageProperties(
@@ -284,6 +300,19 @@ _SLE_IMAGE_PROPS = ImageProperties(
     distribution_base_name="SLE",
     build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
     application_container_build_tag_prefix="suse",
+)
+
+_BASALT_IMAGE_PROPS = ImageProperties(
+    maintainer="SUSE LLC (https://www.suse.com/)",
+    vendor="SUSE LLC",
+    registry="registry.suse.com",
+    url="https://susealp.io/",
+    lifecycle_url="https://www.suse.com/lifecycle",
+    label_prefix="com.suse.basalt",
+    distribution_base_name="Basalt Project",
+    build_tag_prefix=_build_tag_prefix(OsVersion.BASALT),
+    application_container_build_tag_prefix="suse",
+    based_on_container_description="based on the SUSE Adaptable Linux Platform (ALP)",
 )
 
 
@@ -442,9 +471,14 @@ class BaseContainerImage(abc.ABC):
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
-        self._image_properties = (
-            _OPENSUSE_IMAGE_PROPS if self.is_opensuse else _SLE_IMAGE_PROPS
-        )
+
+        if self.is_opensuse:
+            self._image_properties = _OPENSUSE_IMAGE_PROPS
+        elif self.os_version == OsVersion.BASALT:
+            self._image_properties = _BASALT_IMAGE_PROPS
+        else:
+            self._image_properties = _SLE_IMAGE_PROPS
+
         if not self.maintainer:
             self.maintainer = self._image_properties.maintainer
 
@@ -633,8 +667,10 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        else:
-            return f"suse/sle15:15.{self.os_version}"
+        if self.os_version == OsVersion.BASALT:
+            return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
+
+        return f"suse/sle15:15.{self.os_version}"
 
     @property
     def dockerfile_from_line(self) -> str:
@@ -865,7 +901,10 @@ exit 0
 
         description_formatters = {
             "pretty_name": self.pretty_name,
-            "based_on_container": f"based on the {self._image_properties.distribution_base_name} Base Container Image",
+            "based_on_container": (
+                self._image_properties.based_on_container_description
+                or f"based on the {self._image_properties.distribution_base_name} Base Container Image"
+            ),
             "podman_only": "This container is only supported with podman.",
         }
         description = "{pretty_name} container {based_on_container}."
@@ -943,7 +982,7 @@ exit 0
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED,):
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             return str(datetime.datetime.now().year)
         return f"15.{int(self.os_version.value)}.0"
 
@@ -1187,7 +1226,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version == OsVersion.TUMBLEWEED:
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             return "latest"
         return f"15.{os_version}"
 

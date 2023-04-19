@@ -175,7 +175,7 @@ class StagingBot:
     def _generate_project_name(self, prefix: str) -> str:
         assert self.osc_username
         res = f"home:{self.osc_username}:{prefix}:"
-        if self.os_version == OsVersion.TUMBLEWEED:
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             res += str(self.os_version)
         else:
             res += f"SLE-15-SP{str(self.os_version)}"
@@ -213,7 +213,7 @@ class StagingBot:
         """
         return (
             str(self.os_version)
-            if self.os_version == OsVersion.TUMBLEWEED
+            if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
             else f"sle15-sp{str(self.os_version)}"
         )
 

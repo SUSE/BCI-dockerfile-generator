@@ -23,6 +23,7 @@ jobs:
           - 5
           - 4
           - Tumbleweed
+          - Basalt
 
     steps:
       - uses: actions/checkout@v3
