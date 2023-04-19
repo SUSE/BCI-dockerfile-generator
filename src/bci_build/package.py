@@ -1103,7 +1103,7 @@ class OsContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/bci/bci-{self.name}:{self.version_label}"
+        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
