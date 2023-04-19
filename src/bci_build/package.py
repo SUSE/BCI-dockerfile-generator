@@ -2279,7 +2279,7 @@ REGISTRY_CONTAINERS = [
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
-    f"{bci.uid}-{bci.os_version if bci.os_version == OsVersion.TUMBLEWEED else 'sp' + str(bci.os_version) }": bci
+    f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_10_SP4,
