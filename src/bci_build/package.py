@@ -1812,7 +1812,7 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
-        support_level=SupportLevel.L3,
+        support_level=SupportLevel.ACC,
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
         additional_versions=["%%pg_version%%"],
