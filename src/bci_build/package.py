@@ -1122,7 +1122,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 
 
 def _get_python_kwargs(
-    py3_ver: Literal["3.6", "3.8", "3.9", "3.10", "3.11"], os_version: OsVersion
+    py3_ver: Literal["3.6", "3.9", "3.10", "3.11"], os_version: OsVersion
 ):
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.10"
@@ -1177,7 +1177,7 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP4, OsVersion.SP5)
 )
 
-_PYTHON_TW_VERSIONS = ("3.8", "3.9", "3.10", "3.11")
+_PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.11")
 PYTHON_TW_CONTAINERS = (
     LanguageStackContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
