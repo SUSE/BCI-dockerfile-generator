@@ -2156,7 +2156,13 @@ BUSYBOX_CONTAINERS = [
                 "ca-certificates-mozilla-prebuilt",
             )
         ],
-        config_sh_script="sed -i 's|/bin/bash|/bin/sh|' /etc/passwd",
+        config_sh_script=textwrap.dedent(
+            """
+            sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
+            # Will be recreated by the next rpm(1) run as root user
+            rm -v /usr/lib/sysimage/rpm/Index.db
+        """
+        ),
         config_sh_interpreter="/bin/sh",
     )
     for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
