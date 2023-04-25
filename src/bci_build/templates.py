@@ -72,7 +72,6 @@ KIWI_TEMPLATE = jinja2.Template(
 {%- endif %}
           additionaltags="{{ image.kiwi_additional_tags }}"{% endif %}>
         <labels>
-          <!-- See https://en.opensuse.org/Building_derived_containers#Labels -->
           <suse_label_helper:add_prefix prefix="{{ image.labelprefix }}">
             <label name="org.opencontainers.image.title" value="{{ image.title }}"/>
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
@@ -98,7 +97,7 @@ KIWI_TEMPLATE = jinja2.Template(
 {{- image.kiwi_env_entry }}
       </containerconfig>
     </type>
-    <version>15.{{ image.os_version }}.0</version>
+    <version>{{ image.kiwi_version }}</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
