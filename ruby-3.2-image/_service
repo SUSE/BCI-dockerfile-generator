@@ -3,12 +3,13 @@
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">Dockerfile</param>
-    <param name="regex">%%py38_ver%%</param>
-    <param name="package">python38-base</param>
+    <param name="regex">%%rb_ver%%</param>
+    <param name="package">ruby3.2</param>
   </service>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">Dockerfile</param>
-    <param name="regex">%%pip_ver%%</param>
-    <param name="package">python38-pip</param>
+    <param name="regex">%%rb_maj%%</param>
+    <param name="package">ruby3.2</param>
+    <param name="parse-version">minor</param>
   </service>
 </services>

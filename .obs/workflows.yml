@@ -3,10 +3,6 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: python-3.8-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: python-3.9-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -55,7 +51,7 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: ruby-3.1-image
+        source_package: ruby-3.2-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -160,9 +156,6 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: python-3.8-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: python-3.9-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -199,7 +192,7 @@ refresh_devel_BCI:
         package: golang-1.20-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: ruby-3.1-image
+        package: ruby-3.2-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: nodejs-18-image

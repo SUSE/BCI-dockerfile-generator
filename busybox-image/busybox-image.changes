@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Apr 25 22:24:05 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Reduce busybox image size by removing Index.db
+
+  Index.db is being created on demand by rpm(1) (as long as it is run as root)
+  so we don't strictly have to ship it. currently the Index.db has a lot of
+  empty space within which we could optimize away.
+
+  until then removing the file saves 10% of the total compressed size.
+
+- switch versioning to rolling Tumbleweed schema
+
+-------------------------------------------------------------------
 Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
