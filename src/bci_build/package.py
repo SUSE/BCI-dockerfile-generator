@@ -88,6 +88,8 @@ class SupportLevel(enum.Enum):
 
     L2 = "l2"
     L3 = "l3"
+    #: Additional Customer Contract
+    ACC = "acc"
     UNSUPPORTED = "unsupported"
     TECHPREVIEW = "techpreview"
 
