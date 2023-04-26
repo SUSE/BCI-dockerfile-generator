@@ -1232,7 +1232,11 @@ updates:
 
     def _get_commit_range_between_refs(
         self, child_ref: str, ancestor_ref: str
-    ) -> list[git.Commit] | None:
+    ) -> set[git.Commit] | None:
+        """Returns all commits leading from ``child_ref`` to ``ancestor_ref``,
+        **excluding** ``ancestor_ref``.
+
+        """
         repo = git.Repo(".")
         ancestor_commit = repo.commit(ancestor_ref)
         child_commit = repo.commit(child_ref)
@@ -1252,7 +1256,8 @@ updates:
         commits = _recurse_search_for_ancestor(child_commit, ancestor_commit)
         if not commits:
             return None
-        return [child_commit] + commits
+        res = set([child_commit] + commits)
+        return res - set([ancestor_commit])
 
     async def add_changelog_entry(
         self, entry: str, username: str, package_names: list[str] | None
