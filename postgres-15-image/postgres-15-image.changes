@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 26 15:17:13 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Switch supportlevel to acc
+
+-------------------------------------------------------------------
 Thu Mar 30 15:12:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Fix signal handling and use ~postgres/data as the default PGDATA location
