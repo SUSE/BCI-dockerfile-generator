@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 25 22:23:07 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Reduce busybox image size by removing Index.db
+
+-------------------------------------------------------------------
 Fri Mar  3 07:25:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
