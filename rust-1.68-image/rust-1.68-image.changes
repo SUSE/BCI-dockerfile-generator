@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  2 06:35:28 UTC 2023 - William Brown <william.brown@suse.com>
+
+- Switch latest tag to Rust 1.69
+
+-------------------------------------------------------------------
 Wed Apr 05 06:48:43 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Rust 1.68 BCI
