@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from bci_build.package import Arch
 from bci_build.package import LanguageStackContainer
@@ -29,6 +31,7 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel.until="2024-02-01"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.image-type="sle-bci"
@@ -42,6 +45,7 @@ RUN emacs -Q --batch test.el
             LanguageStackContainer(
                 name="test",
                 pretty_name="Test",
+                supported_until=date(2024, 2, 1),
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 os_version=OsVersion.SP4,
@@ -184,6 +188,8 @@ VOLUME /bin/ /usr/bin/""",
                 cmd=["/usr/bin/gcc"],
                 maintainer="invalid@suse.com",
                 volumes=["/bin/", "/usr/bin/"],
+                # does nothing on TW
+                supported_until=date(2024, 2, 1),
                 exposes_tcp=[22, 1111],
                 license="BSD",
                 version="28.2",
