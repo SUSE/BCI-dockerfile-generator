@@ -1,0 +1,48 @@
+---
+name: Update or create the CR project
+
+on:
+  push:
+    branches:
+      - "main"
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  update-cr:
+    name: Update home:defolos:BCI:CR
+    runs-on: ubuntu-22.04
+    container: ghcr.io/dcermak/bci-ci:latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os_version:
+          - 5
+          - 4
+          - Tumbleweed
+
+    steps:
+      # we need all branches for the build checks
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: run the CR project creation
+        run: |
+          poetry install
+          poetry run ./scratch-build-bot.py -vvvv --os-version ${{ matrix.os_version }} create_cr_project
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
