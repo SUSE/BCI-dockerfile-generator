@@ -1,9 +1,0 @@
--------------------------------------------------------------------
-Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
-
-- Add org.opencontainers.image.source label set to %SOURCEURL%
-
--------------------------------------------------------------------
-Wed Feb  8 07:20:47 UTC 2023 - Dan Čermák <dcermak@suse.com>
-
-- First version of the Rust 1.67 container
