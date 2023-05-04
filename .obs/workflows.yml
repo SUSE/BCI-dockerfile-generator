@@ -31,10 +31,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rust-1.67-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: rust-1.68-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
@@ -199,9 +195,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: rmt-server-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rust-1.67-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: rust-1.68-image
