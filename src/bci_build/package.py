@@ -2055,7 +2055,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.67", "1.68", "1.69"]
+_RUST_VERSIONS = ["1.68", "1.69"]
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
