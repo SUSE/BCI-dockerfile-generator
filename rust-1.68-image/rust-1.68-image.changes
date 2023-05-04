@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  4 13:19:44 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Add L3 support end-date label
+
+-------------------------------------------------------------------
 Wed Apr 05 06:48:48 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Rust 1.68 BCI
