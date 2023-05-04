@@ -390,6 +390,9 @@ class BaseContainerImage(abc.ABC):
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
+    #: The support level end date
+    supported_until: Optional[datetime.date] = None
+
     #: flag whether to not install recommended packages in the call to
     #: :command:`zypper` in :file:`Dockerfile`
     no_recommends: bool = True
@@ -1314,6 +1317,13 @@ GOLANG_IMAGES = [
     for ver, os_version in product(_GOLANG_VERSIONS, ALL_OS_VERSIONS)
 ]
 
+# see https://raw.githubusercontent.com/nodejs/Release/main/README.md
+_NODEJS_SUPPORT_ENDS = {
+    19: datetime.date(2023, 5, 31),
+    18: datetime.date(2025, 4, 30),
+    16: datetime.date(2023, 9, 11),
+}
+
 
 def _get_node_kwargs(ver: Literal[16, 18, 19], os_version: OsVersion):
     return {
@@ -1323,6 +1333,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 19], os_version: OsVersion):
             (ver == 18 and os_version == OsVersion.SP4)
             or (ver == 19 and os_version == OsVersion.TUMBLEWEED)
         ),
+        "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
         "package_name": f"nodejs-{ver}-image",
         "custom_description": f"Node.js {ver} development environment based on the SLE Base Container Image.",
         "additional_names": ["node"],
@@ -2035,6 +2046,14 @@ STOPSIGNAL SIGQUIT
 
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
+# release dates are coming from upstream - https://raw.githubusercontent.com/rust-lang/rust/master/RELEASES.md
+# we expect a new release every 6 weeks, two releases are supported at any point in time
+# and we give us one week of buffer, leading to release date + 6 + 6 + 1
+_RUST_SUPPORT_ENDS = {
+    "1.69": datetime.date(2023, 4, 20) + datetime.timedelta(weeks=6 + 6 + 1),
+    "1.68": datetime.date(2023, 3, 9) + datetime.timedelta(weeks=6 + 6 + 1),
+}
+
 # ensure that the **latest** rust version is the last one!
 _RUST_VERSIONS = ["1.67", "1.68", "1.69"]
 
@@ -2048,6 +2067,7 @@ RUST_CONTAINERS = [
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
+        supported_until=_RUST_SUPPORT_ENDS.get(rust_version, None),
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",

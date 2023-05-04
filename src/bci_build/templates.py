@@ -29,6 +29,9 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 {% if not image.is_opensuse %}LABEL com.suse.supportlevel="{{ image.support_level }}"
+{%- if image.supported_until %}
+LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
+{%- endif %}
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.image-type="{{ image.image_type }}"{% endif %}
@@ -83,6 +86,9 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
 {% if not image.is_opensuse %}            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
+{%- if image.supported_until %}
+            <label name="com.suse.supportlevel.until" value="{{ image.supported_until }}"/>
+{%- endif %}
             <label name="com.suse.image-type" value="{{ image.image_type }}"/>
             <label name="com.suse.eula" value="sle-bci"/>{% endif %}
             <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>{% if not image.is_opensuse %}
