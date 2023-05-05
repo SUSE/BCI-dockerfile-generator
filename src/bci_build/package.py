@@ -1815,7 +1815,7 @@ with open(
     _POSTGRES_LICENSE = license_file.read(-1)
 
 
-_POSTGRES_MAJOR_VERSIONS = [15, 14, 13, 12, 10]
+_POSTGRES_MAJOR_VERSIONS = [15, 14, 13, 12]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         package_name=f"postgres-{ver}-image",
@@ -1863,10 +1863,8 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
 """,
     )
     for ver, os_version in list(
-        product([15, 14], [OsVersion.SP5, OsVersion.TUMBLEWEED])
-    )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
-    + [(pg_ver, OsVersion.SP4) for pg_ver in _POSTGRES_MAJOR_VERSIONS]
+        product([15, 14], [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED])
+    ) + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
