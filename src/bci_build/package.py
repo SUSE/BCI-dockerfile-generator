@@ -152,6 +152,12 @@ RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
 ALL_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
+ALL_OS_VERSIONS_AND_EOL: list[tuple[OsVersion, datetime.date | None]] = [
+    (OsVersion.SP4, datetime.date(2023, 12, 31)),
+    (OsVersion.SP5, datetime.date(2024, 12, 31)),
+    (OsVersion.TUMBLEWEED, None),
+]
+
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
 
@@ -1184,6 +1190,7 @@ PYTHON_3_6_CONTAINERS = (
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
         support_level=SupportLevel.L3,
+        supported_until=datetime.date(2028, 7, 31),
     )
     for os_version in (OsVersion.SP4, OsVersion.SP5)
 )
@@ -1201,6 +1208,7 @@ PYTHON_TW_CONTAINERS = (
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
     support_level=SupportLevel.L3,
+    supported_until=datetime.date(2023, 12, 31),
     is_latest=False,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
@@ -1244,6 +1252,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
                 parse_version="minor",
             ),
         ],
+        "supported_until": datetime.date(2028, 7, 31),
         "package_list": [
             ruby,
             f"{ruby}-rubygem-bundler",
@@ -1396,6 +1405,11 @@ def _get_openjdk_kwargs(
         # smoke test for container environment variables
         "custom_end": f"""{DOCKERFILE_RUN} [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]""",
     }
+
+    if java_version == 11:
+        common["supported_until"] = datetime.date(2026, 12, 31)
+    elif java_version == 17:
+        common["supported_until"] = datetime.date(2027, 12, 31)
 
     if devel:
         return {
@@ -1566,6 +1580,8 @@ EXPOSE 9000
         pretty_name=f"{str(php_variant).upper()} {php_version}",
         package_name=f"{php_variant}{php_version}-image",
         os_version=os_version,
+        support_level=SupportLevel.L3,
+        supported_until=datetime.date(2024, 12, 31),
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
@@ -1674,6 +1690,7 @@ INIT_CONTAINERS = [
         name="init",
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=supported_until,
         custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="%OS_VERSION_NO_DASH% Init",
@@ -1693,7 +1710,7 @@ INIT_CONTAINERS = [
             """
         ),
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version, supported_until in ALL_OS_VERSIONS_AND_EOL
 ]
 
 
@@ -1829,6 +1846,7 @@ POSTGRES_CONTAINERS = [
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
+        supported_until=eol,
         package_list=[f"postgresql{ver}-server", "distribution-release"],
         version=ver,
         additional_versions=["%%pg_version%%"],
@@ -1867,10 +1885,11 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
-    for ver, os_version in list(
-        product([15, 14], [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED])
+    for ver, eol, os_version in (
+        [(15, datetime.date(2024, 12, 13), os_ver) for os_ver in ALL_OS_VERSIONS]
+        + [(14, datetime.date(2023, 12, 31), os_ver) for os_ver in ALL_OS_VERSIONS]
+        + [(pg_ver, None, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
@@ -1879,6 +1898,8 @@ PROMETHEUS_CONTAINERS = [
         package_name="prometheus-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        support_level=SupportLevel.TECHPREVIEW,
+        supported_until=eol,
         name="prometheus",
         pretty_name="Prometheus",
         package_list=[PROMETHEUS_PACKAGE_NAME],
@@ -1895,7 +1916,7 @@ PROMETHEUS_CONTAINERS = [
         volumes=["/var/lib/prometheus"],
         exposes_tcp=[9090],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for (os_version, eol) in ALL_OS_VERSIONS_AND_EOL
 ]
 
 ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
@@ -1904,6 +1925,8 @@ ALERTMANAGER_CONTAINERS = [
         package_name="alertmanager-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        support_level=SupportLevel.TECHPREVIEW,
+        supported_until=eol,
         name="alertmanager",
         pretty_name="Alertmanager",
         package_list=[ALERTMANAGER_PACKAGE_NAME],
@@ -1920,7 +1943,7 @@ ALERTMANAGER_CONTAINERS = [
         volumes=["/var/lib/prometheus/alertmanager"],
         exposes_tcp=[9093],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
@@ -1929,6 +1952,8 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         package_name="blackbox_exporter-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        support_level=SupportLevel.TECHPREVIEW,
+        supported_until=eol,
         name="blackbox_exporter",
         pretty_name="Blackbox Exporter",
         package_list=[BLACKBOX_EXPORTER_PACKAGE_NAME],
@@ -1944,7 +1969,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         ],
         exposes_tcp=[9115],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 GRAFANA_FILES = {}
@@ -1958,6 +1983,8 @@ GRAFANA_CONTAINERS = [
         package_name="grafana-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        support_level=SupportLevel.TECHPREVIEW,
+        supported_until=eol,
         name="grafana",
         pretty_name="Grafana",
         license="Apache-2.0",
@@ -1986,7 +2013,7 @@ GRAFANA_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /run.sh
         """,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 _NGINX_FILES = {}
@@ -2116,6 +2143,7 @@ MICRO_CONTAINERS = [
         name="micro",
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=eol,
         package_name="micro-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="%OS_VERSION_NO_DASH% Micro",
@@ -2137,7 +2165,7 @@ MICRO_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 MINIMAL_CONTAINERS = [
@@ -2146,6 +2174,7 @@ MINIMAL_CONTAINERS = [
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=eol,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name="minimal-image",
         build_recipe_type=BuildType.KIWI,
@@ -2164,7 +2193,7 @@ MINIMAL_CONTAINERS = [
             for name in ("grep", "diffutils", "info", "fillup", "libzio1")
         ],
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 BUSYBOX_CONTAINERS = [
@@ -2173,6 +2202,7 @@ BUSYBOX_CONTAINERS = [
         from_image=None,
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=eol,
         pretty_name="%OS_VERSION_NO_DASH% Busybox",
         package_name="busybox-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -2197,7 +2227,7 @@ BUSYBOX_CONTAINERS = [
         ),
         config_sh_interpreter="/bin/sh",
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 _PCP_FILES = {}
@@ -2223,6 +2253,7 @@ PCP_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
+        supported_until=eol,
         version="%%pcp_patch%%",
         version_in_uid=False,
         additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
@@ -2262,7 +2293,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 REGISTRY_CONTAINERS = [
@@ -2301,8 +2332,9 @@ REGISTRY_CONTAINERS = [
         volumes=["/var/lib/docker-registry"],
         exposes_tcp=[5000],
         support_level=SupportLevel.L3,
+        supported_until=eol,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version, eol in ALL_OS_VERSIONS_AND_EOL
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
