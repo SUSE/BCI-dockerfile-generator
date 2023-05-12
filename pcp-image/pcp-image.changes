@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 12 21:32:43 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- Mark as L3 supported 
+
+-------------------------------------------------------------------
 Thu Mar 30 15:12:51 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Put VOLUME statements last
