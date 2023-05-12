@@ -2217,6 +2217,7 @@ PCP_CONTAINERS = [
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        support_level=SupportLevel.L3,
         version="%%pcp_patch%%",
         version_in_uid=False,
         additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
