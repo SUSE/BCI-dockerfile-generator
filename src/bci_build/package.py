@@ -154,6 +154,12 @@ ALL_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
 
+# End of General Support Dates
+_SUPPORTED_UNTIL_SLE = {
+    OsVersion.SP4: datetime.date(2023, 12, 31),
+    OsVersion.SP5: None,  # datetime.date(2024, 12, 31),
+}
+
 
 @dataclass
 class Package:
@@ -1325,8 +1331,12 @@ GOLANG_IMAGES = [
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
     20: datetime.date(2026, 4, 30),
-    18: datetime.date(2025, 4, 30),
-    16: datetime.date(2023, 9, 11),
+    # ... upstream is 2024/4/30 but SUSE ends earlier with SP5
+    # see https://confluence.suse.com/display/SLE/Node.js
+    18: _SUPPORTED_UNTIL_SLE[OsVersion.SP5],
+    # upstream 2023/9/11 but SUSE extends end of general support SP4
+    # see https://confluence.suse.com/display/SLE/Node.js
+    16: _SUPPORTED_UNTIL_SLE[OsVersion.SP4],
 }
 
 
