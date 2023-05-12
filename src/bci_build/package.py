@@ -229,6 +229,9 @@ class ImageProperties:
     #: Url to the vendor's home page
     url: str
 
+    #: Url to learn about the support lifecycle of the image
+    lifecycle_url: str
+
     #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
     label_prefix: str
 
@@ -246,6 +249,7 @@ _OPENSUSE_IMAGE_PROPS = ImageProperties(
     vendor="openSUSE Project",
     registry="registry.opensuse.org",
     url="https://www.opensuse.org",
+    lifecycle_url="https://en.opensuse.org/Lifetime",
     label_prefix="org.opensuse",
     distribution_base_name="openSUSE Tumbleweed",
     build_tag_prefix=_build_tag_prefix(OsVersion.TUMBLEWEED),
@@ -258,6 +262,7 @@ _SLE_IMAGE_PROPS = ImageProperties(
     vendor="SUSE LLC",
     registry="registry.suse.com",
     url="https://www.suse.com/products/server/",
+    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
     label_prefix="com.suse",
     distribution_base_name="SLE",
     build_tag_prefix=_build_tag_prefix(OsVersion.SP4),
@@ -450,6 +455,10 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_version(self) -> Optional[str]:
         return "15.4" if self.os_version == OsVersion.SP4 else None
+
+    @property
+    def lifecycle_url(self) -> str:
+        return self._image_properties.lifecycle_url
 
     @property
     def release_stage(self) -> ReleaseStage:

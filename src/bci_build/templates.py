@@ -33,7 +33,7 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL com.suse.image-type="{{ image.image_type }}"{% endif %}
 LABEL com.suse.release-stage="{{ image.release_stage }}"
 # endlabelprefix
@@ -92,7 +92,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="com.suse.image-type" value="{{ image.image_type }}"/>
             <label name="com.suse.eula" value="sle-bci"/>{% endif %}
             <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>{% if not image.is_opensuse %}
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>{% endif %}
+            <label name="com.suse.lifecycle-url" value="{{ image.lifecycle_url }}"/>{% endif %}
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
