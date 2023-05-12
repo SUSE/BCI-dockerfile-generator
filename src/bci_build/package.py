@@ -1864,7 +1864,8 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     )
     for ver, os_version in list(
         product([15, 14], [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED])
-    ) + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
+    )
+    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
