@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 15 12:23:12 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Set supportlevel to l3
+
+-------------------------------------------------------------------
 Thu Mar 30 15:12:51 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Put VOLUME statements last
