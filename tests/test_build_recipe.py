@@ -321,8 +321,9 @@ LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
+LABEL org.opensuse.release-stage="released"
 
-LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL emacs_version="28"
 LABEL GCC_version="15"
@@ -367,7 +368,8 @@ VOLUME /bin/ /usr/bin/""",
             <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
 
-            <label name="com.suse.release-stage" value="released"/>
+            <label name="org.opensuse.release-stage" value="released"/>
+            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime"/>
             <label name="emacs_version" value="28"/>
             <label name="GCC_version" value="15"/>
           </suse_label_helper:add_prefix>
