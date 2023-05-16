@@ -1201,15 +1201,20 @@ PYTHON_TW_CONTAINERS = (
 PYTHON_3_10_SP4 = LanguageStackContainer(
     package_name="python-3.10-image",
     support_level=SupportLevel.L3,
-    is_latest=True,
+    is_latest=False,
     **_get_python_kwargs("3.10", OsVersion.SP4),
 )
 
-PYTHON_3_11_SP5 = LanguageStackContainer(
-    package_name="python-3.11-image",
-    support_level=SupportLevel.TECHPREVIEW,
-    is_latest=False,
-    **_get_python_kwargs("3.11", OsVersion.SP5),
+PYTHON_3_11_CONTAINERS = (
+    LanguageStackContainer(
+        **_get_python_kwargs("3.11", os_version),
+        package_name="python-3.11-image",
+        support_level=SupportLevel.L3,
+        # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
+        supported_until=datetime.date(2027, 12, 31),
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+    )
+    for os_version in (OsVersion.SP4, OsVersion.SP5)
 )
 
 
@@ -2305,7 +2310,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     for bci in (
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_10_SP4,
-        PYTHON_3_11_SP5,
+        *PYTHON_3_11_CONTAINERS,
         *PYTHON_TW_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
