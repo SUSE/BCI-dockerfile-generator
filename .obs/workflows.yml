@@ -11,6 +11,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: python-3.11-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
         source_package: 389-ds-container
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
@@ -107,18 +111,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
-        source_package: postgres-13-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP4
-        source_package: postgres-12-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP4
-        source_package: postgres-10-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP4
         source_package: prometheus-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
     - branch_package:
@@ -194,6 +186,9 @@ refresh_devel_BCI:
         package: python-3.10-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
+        package: python-3.11-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP4
         package: 389-ds-container
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
@@ -264,15 +259,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: postgres-14-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP4
-        package: postgres-13-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP4
-        package: postgres-12-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP4
-        package: postgres-10-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: prometheus-image
