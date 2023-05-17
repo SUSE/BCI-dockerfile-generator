@@ -1210,8 +1210,8 @@ PYTHON_3_11_CONTAINERS = (
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
         support_level=SupportLevel.L3,
-        # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
-        supported_until=datetime.date(2027, 12, 31),
+        # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers support until the EoL of SP5
+        supported_until=datetime.date(2024, 12, 31),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP4, OsVersion.SP5)
