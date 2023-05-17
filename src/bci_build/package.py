@@ -1213,7 +1213,7 @@ PYTHON_3_11_CONTAINERS = (
         # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
         supported_until=datetime.date(2027, 12, 31),
         # we accidentally released from SP5 already so we should set latest in SP5
-        is_latest=os_version == OSVersion.SP5,
+        is_latest=os_version == OsVersion.SP5,
     )
     for os_version in (OsVersion.SP4, OsVersion.SP5)
 )
