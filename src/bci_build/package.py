@@ -1324,19 +1324,19 @@ GOLANG_IMAGES = [
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
-    19: datetime.date(2023, 5, 31),
+    20: datetime.date(2026, 4, 30),
     18: datetime.date(2025, 4, 30),
     16: datetime.date(2023, 9, 11),
 }
 
 
-def _get_node_kwargs(ver: Literal[16, 18, 19], os_version: OsVersion):
+def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
     return {
         "name": "nodejs",
         "os_version": os_version,
         "is_latest": (
             (ver == 18 and os_version == OsVersion.SP4)
-            or (ver == 19 and os_version == OsVersion.TUMBLEWEED)
+            or (ver == 20 and os_version == OsVersion.TUMBLEWEED)
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
         "package_name": f"nodejs-{ver}-image",
@@ -1364,7 +1364,7 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
     )
     for ver, os_version in list(product((16, 18), (OsVersion.SP4, OsVersion.SP5)))
-    + [(18, OsVersion.TUMBLEWEED), (19, OsVersion.TUMBLEWEED)]
+    + [(18, OsVersion.TUMBLEWEED), (20, OsVersion.TUMBLEWEED)]
 ]
 
 
