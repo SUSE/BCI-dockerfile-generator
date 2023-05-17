@@ -55,8 +55,8 @@ COPY dotnet-apphost-pack-7.0.5-x64.rpm /tmp/
 COPY aspnetcore-targeting-pack-7.0.5-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0.5-x64.rpm
 COPY aspnetcore-runtime-7.0.5-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-7.0.203-x64.rpm
-COPY dotnet-sdk-7.0.203-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-7.0.302-x64.rpm
+COPY dotnet-sdk-7.0.302-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
