@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 18 07:41:46 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- revert last change
+
+-------------------------------------------------------------------
 Thu May  4 13:19:44 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Add L3 support end-date label
