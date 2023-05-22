@@ -1731,7 +1731,10 @@ MARIADB_CONTAINERS = [
         custom_description="MariaDB server for RMT, based on the SLE Base Container Image.",
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
         entrypoint=["docker-entrypoint.sh"],
-        extra_files={"docker-entrypoint.sh": _MARIAD_ENTRYPOINT},
+        extra_files={
+            "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
+            "_constraints": generate_disk_size_constraints(11),
+        },
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadbd"],
         volumes=["/var/lib/mysql"],
