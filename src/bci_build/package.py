@@ -2278,8 +2278,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
 REGISTRY_CONTAINERS = [
     ApplicationStackContainer(
         name="registry",
-        pretty_name="OCI Container Registry",
-        custom_description="Open Source Registry implementation (Distribution) using the OCI Distribution Specification",
+        pretty_name="OCI Container Registry (Distribution)",
         package_name="distribution-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
