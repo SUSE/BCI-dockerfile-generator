@@ -32,7 +32,7 @@ jobs:
 
       - name: check the changelog
         run: |
-          poetry run ./scratch-build-bot.py \
+          poetry run scratch-build-bot \
               --os-version Tumbleweed -vvvv \
               changelog_check \
                   --base-ref origin/${{ github.base_ref }} \
