@@ -23,7 +23,7 @@ jobs:
       - name: Run black and reorder-python-imports
         run: |
           poetry install
-          poetry run ./format.sh --check
+          poetry run bash ./format.sh --check
 
   ci:
     name: Run the unit tests
@@ -46,8 +46,8 @@ jobs:
 
       - run: |
           mkdir -p pkg_dest
-          for pkg in $(poetry run ./src/bci_build/package.py --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
-              poetry run ./src/bci_build/package.py $pkg pkg_dest
+          for pkg in $(poetry run package --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
+              poetry run package $pkg pkg_dest
           done
 
 

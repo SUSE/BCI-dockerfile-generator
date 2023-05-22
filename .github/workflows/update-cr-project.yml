@@ -42,7 +42,7 @@ jobs:
       - name: run the CR project creation
         run: |
           poetry install
-          poetry run ./scratch-build-bot.py -vvvv --os-version ${{ matrix.os_version }} create_cr_project
+          poetry run scratch-build-bot -vvvv --os-version ${{ matrix.os_version }} create_cr_project
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"

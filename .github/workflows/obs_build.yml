@@ -44,7 +44,7 @@ jobs:
           direction: last
 
       - name: cleanup the previously created staging project & branch
-        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
+        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run scratch-build-bot -vvvv --from-stdin cleanup
         shell: fish {0}
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
@@ -77,7 +77,7 @@ jobs:
       - name: commit the changes to a test branch and create a staging project on OBS
         run: |
           set -euo pipefail
-          poetry run ./scratch-build-bot.py \
+          poetry run scratch-build-bot \
               --os-version ${{ matrix.os_version }} \
               -vvvv \
               scratch_build \
@@ -105,7 +105,7 @@ jobs:
             Changes pushed to branch [`${{ env.BRANCH_NAME }}`](https://github.com/SUSE/BCI-dockerfile-generator/tree/${{ env.BRANCH_NAME }}) as commit [`${{ env.DEPLOYMENT_COMMIT_HASH }}`](https://github.com/SUSE/BCI-dockerfile-generator/commit/${{ env.DEPLOYMENT_COMMIT_HASH }})
 
       - name: wait for the build to finish
-        run: poetry run ./scratch-build-bot.py -vvvv wait
+        run: poetry run scratch-build-bot -vvvv wait
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
@@ -115,7 +115,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "build_res<<EOF" >> $GITHUB_ENV
-          poetry run ./scratch-build-bot.py query_build_result >> $GITHUB_ENV
+          poetry run scratch-build-bot query_build_result >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
         id: query_build_result
         env:
@@ -134,14 +134,14 @@ jobs:
           reactions: rocket
 
       - name: fail the job if the builds failed
-        run: poetry run ./scratch-build-bot.py get_build_quality
+        run: poetry run scratch-build-bot get_build_quality
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
         if: env.no_change != 'true'
 
       - name: cleanup the branches if no functional changes were commited or the build was cancelled
-        run: poetry run ./scratch-build-bot.py -vvvv -l cleanup
+        run: poetry run scratch-build-bot -vvvv -l cleanup
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"

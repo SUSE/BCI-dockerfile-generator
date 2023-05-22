@@ -2352,7 +2352,8 @@ SORTED_CONTAINER_IMAGE_NAMES = sorted(
     key=lambda bci: str(ALL_CONTAINER_IMAGE_NAMES[bci].os_version),
 )
 
-if __name__ == "__main__":
+
+def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(

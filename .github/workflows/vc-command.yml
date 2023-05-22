@@ -49,7 +49,7 @@ jobs:
               export PACKAGES
           fi
 
-          poetry run ./scratch-build-bot.py \
+          poetry run scratch-build-bot \
               -vvvv --os-version $OS_VERSION \
                 add_changelog_entry \
                 --user $user \

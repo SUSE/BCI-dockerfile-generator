@@ -54,7 +54,7 @@ package into a directory:
 
 .. code-block:: console
 
-   poetry run ./src/bci_build/package.py postgres-12-sp4 ~/tmp/postgres/
+   poetry run package postgres-12-sp4 ~/tmp/postgres/
 
 
 
