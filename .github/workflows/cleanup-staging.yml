@@ -48,7 +48,7 @@ jobs:
       - name: run the cleanup
         run: |
           poetry install
-          echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run ./scratch-build-bot.py -vvvv --from-stdin cleanup
+          echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run scratch-build-bot -vvvv --from-stdin cleanup
         shell: fish {0}
         if: steps.find_comment.outputs.comment-id != ''
         env:

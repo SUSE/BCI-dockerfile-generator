@@ -43,7 +43,7 @@ jobs:
         run: poetry install
 
       - name: setup the continuous rebuild project
-        run: poetry run ./scratch-build-bot.py --os-version ${{ matrix.os_version }} create_cr_project
+        run: poetry run scratch-build-bot --os-version ${{ matrix.os_version }} create_cr_project
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
@@ -56,7 +56,7 @@ jobs:
       - name: commit the changes to a test branch
         run: |
           set -euo pipefail
-          poetry run ./scratch-build-bot.py \
+          poetry run scratch-build-bot \
               --os-version ${{ matrix.os_version }} \
               -vvvv \
               --branch-name "for-deploy-${{ matrix.os_version }}" \
