@@ -25,10 +25,11 @@ jobs:
           - Tumbleweed
 
     steps:
-      # we need all branches for the build checks
       - uses: actions/checkout@v3
         with:
+          # we need all branches for the build checks
           fetch-depth: 0
+          # ensure that we have write permissions for pushes
           token: ${{ secrets.CHECKOUT_TOKEN }}
 
       - uses: actions/cache@v3
