@@ -36,7 +36,7 @@ jobs:
 
       - name: find the packages that are missing
         run: |
-          pkgs=$(poetry run ./scratch-build-bot.py --os-version 5 find_missing_packages)
+          pkgs=$(poetry run scratch-build-bot --os-version 5 find_missing_packages)
           if [[ ${pkgs} = "" ]]; then
               echo "missing_pkgs=false" >> $GITHUB_ENV
           else

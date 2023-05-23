@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 23 06:45:21 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Use standard naming for registry image
+
+-------------------------------------------------------------------
 Tue Apr 18 22:18:31 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Mark container-distribution as L3 supported

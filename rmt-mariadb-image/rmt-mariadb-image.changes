@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 23 08:17:08 UTC 2023 - Bruno Leon <bruno.leon@suse.com>
+
+- Add a build constraint to prevent ftbfs on workers with small / partitions
+
+-------------------------------------------------------------------
 Thu Mar 30 15:12:51 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Put VOLUME statements last
