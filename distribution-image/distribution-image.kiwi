@@ -8,7 +8,7 @@
   <description type="system">
     <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
-    <specification>openSUSE Tumbleweed OCI Container Registry Container Image</specification>
+    <specification>openSUSE Tumbleweed OCI Container Registry (Distribution) Container Image</specification>
   </description>
   <preferences>
     <type image="docker" derived_from="obsrepositories:/opensuse/bci/bci-micro#latest">
@@ -20,8 +20,8 @@
           additionaltags="%%registry_version%%-%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.application.registry">
-            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed OCI Container Registry Container Image"/>
-            <label name="org.opencontainers.image.description" value="Open Source Registry implementation (Distribution) using the OCI Distribution Specification"/>
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed OCI Container Registry (Distribution) Container Image"/>
+            <label name="org.opencontainers.image.description" value="OCI Container Registry (Distribution) based on the openSUSE Tumbleweed Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%%registry_version%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>

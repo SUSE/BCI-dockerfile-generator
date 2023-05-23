@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 23 06:45:17 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Use standard naming for registry image
+
+-------------------------------------------------------------------
 Wed Apr  5 16:55:15 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Shorten descriptions
