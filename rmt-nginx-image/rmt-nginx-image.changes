@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 24 14:02:58 UTC 2023 - Bruno Leon <bruno.leon@suse.com>
+
+- Add an entrypoint for configuring and templating streams - https://github.com/nginxinc/docker-nginx/pull/782
+
+-------------------------------------------------------------------
 Fri Mar  3 07:24:36 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add org.opencontainers.image.source label set to %SOURCEURL%
