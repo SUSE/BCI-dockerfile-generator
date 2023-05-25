@@ -18,8 +18,9 @@ LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
+LABEL org.opensuse.release-stage="released"
 
-LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL usage="This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
 

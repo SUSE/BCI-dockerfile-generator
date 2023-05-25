@@ -19,8 +19,9 @@ LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/postgres:14-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
+LABEL org.opensuse.release-stage="released"
 
-LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends postgresql14-server distribution-release; zypper -n clean; rm -rf /var/log/*
