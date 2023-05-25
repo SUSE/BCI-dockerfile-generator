@@ -20,7 +20,7 @@ LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb-client:%%mariad
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="application"
 LABEL com.suse.release-stage="released"
 # endlabelprefix

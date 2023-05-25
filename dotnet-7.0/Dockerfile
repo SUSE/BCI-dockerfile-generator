@@ -23,7 +23,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:7.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
