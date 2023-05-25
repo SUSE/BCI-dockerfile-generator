@@ -28,14 +28,16 @@ LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-{% if not image.is_opensuse %}LABEL com.suse.supportlevel="{{ image.support_level }}"
+{% if image.is_opensuse %}LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
+LABEL org.opensuse.release-stage="{{ image.release_stage }}"
+{% else %}LABEL com.suse.supportlevel="{{ image.support_level }}"
 {%- if image.supported_until %}
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.image-type="{{ image.image_type }}"{% endif %}
-LABEL com.suse.release-stage="{{ image.release_stage }}"
+LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
+LABEL com.suse.image-type="{{ image.image_type }}"
+LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
 # endlabelprefix
 {%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
@@ -91,8 +93,8 @@ KIWI_TEMPLATE = jinja2.Template(
 {%- endif %}
             <label name="com.suse.image-type" value="{{ image.image_type }}"/>
             <label name="com.suse.eula" value="sle-bci"/>{% endif %}
-            <label name="com.suse.release-stage" value="{{ image.release_stage }}"/>{% if not image.is_opensuse %}
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>{% endif %}
+            <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.release-stage" value="{{ image.release_stage }}"/>
+            <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
         </labels>
