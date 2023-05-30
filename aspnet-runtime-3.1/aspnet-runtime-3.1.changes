@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Wed Mar  8 10:59:42 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Update package download URLs

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Tue May 16 10:01:21 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Python 3.11 BCI
