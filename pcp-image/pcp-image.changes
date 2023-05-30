@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:51:30 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Fri May 12 21:32:43 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - Mark as L3 supported 

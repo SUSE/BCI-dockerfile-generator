@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:51:30 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Wed May 17 07:26:55 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Update dotnet-sdk to 7.0.302
