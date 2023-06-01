@@ -148,7 +148,7 @@ class OsVersion(enum.Enum):
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
-RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.TUMBLEWEED]
+RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 ALL_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
