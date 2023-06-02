@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:51:30 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Thu Mar 30 15:12:51 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Put VOLUME statements last
