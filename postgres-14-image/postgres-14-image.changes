@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Wed Apr 26 15:16:31 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Switch supportlevel to acc

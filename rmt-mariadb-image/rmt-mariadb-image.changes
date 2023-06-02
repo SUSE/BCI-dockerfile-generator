@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Tue May 23 08:14:57 UTC 2023 - Bruno Leon <bruno.leon@suse.com>
 
 - Add a build constraint to prevent ftbfs on workers with small / partitions

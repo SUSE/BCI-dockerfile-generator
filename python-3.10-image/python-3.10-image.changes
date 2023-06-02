@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Tue May 16 12:04:50 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - remove latest tag, will be moved to Python 3.11

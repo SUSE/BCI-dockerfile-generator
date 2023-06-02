@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
 Thu May 18 07:41:13 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - extend end-date label to SP4 end of general support date
