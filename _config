@@ -62,5 +62,5 @@ Prefer: -container:bci_openjdk:11
 Prefer: -container:bci_openjdk:17
 Prefer: -container:bci_bci-busybox:15.5
 Prefer: -container:bci_bci-init:15.5
-Prefer: -container:bci_bci-micro:15.5
-Prefer: -container:suse_sle15:15.5
+Prefer: -container:bci-bci-micro-15.5
+Prefer: -container:suse-sle15-15.5
