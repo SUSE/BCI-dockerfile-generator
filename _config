@@ -57,8 +57,8 @@ Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-defa
 #
 # temporary workaround until we can drop the SUSE:Registry repository path
 Prefer: -container:bci_openjdk:11
-Prefer: -container:bci_bci-micro:15.4
+Prefer: -container:bci-bci-micro-15.4
 Prefer: -container:bci_openjdk:17
 Prefer: -container:bci_bci-init:15.4
 Prefer: -container:bci_bci-busybox:15.4
-Prefer: -container:suse_sle15:15.4
+Prefer: -container:suse-sle15-15.4
