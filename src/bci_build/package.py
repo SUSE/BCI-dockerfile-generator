@@ -2074,12 +2074,12 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # we expect a new release every 6 weeks, two releases are supported at any point in time
 # and we give us one week of buffer, leading to release date + 6 + 6 + 1
 _RUST_SUPPORT_ENDS = {
+    "1.70": datetime.date(2023, 6, 8) + datetime.timedelta(weeks=6 + 6 + 1),
     "1.69": datetime.date(2023, 4, 20) + datetime.timedelta(weeks=6 + 6 + 1),
-    "1.68": datetime.date(2023, 3, 9) + datetime.timedelta(weeks=6 + 6 + 1),
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.68", "1.69"]
+_RUST_VERSIONS = ["1.69", "1.70"]
 
 assert (
     len(_RUST_VERSIONS) == 2
