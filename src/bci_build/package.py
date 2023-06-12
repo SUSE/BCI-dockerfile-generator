@@ -1276,6 +1276,10 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
             # additional dependencies supplementing rails
             "timezone",
         ],
+        "extra_files": {
+            # avoid ftbfs on workers with a root partition with 4GB
+            "_constraints": generate_disk_size_constraints(6)
+        },
         # as we only ship one ruby version, we want to make sure that binaries belonging
         # to our gems get installed as `bin` and not as `bin.ruby$ruby_version`
         "config_sh_script": "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
