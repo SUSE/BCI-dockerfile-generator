@@ -35,19 +35,19 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rust-1.68-image
+        source_package: rust-oldstable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rust-1.69-image
+        source_package: rust-stable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: golang-1.19-image
+        source_package: golang-oldstable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: golang-1.20-image
+        source_package: golang-stable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -180,16 +180,16 @@ refresh_devel_BCI:
         package: rmt-server-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: rust-1.68-image
+        package: rust-oldstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: rust-1.69-image
+        package: rust-stable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: golang-1.19-image
+        package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: golang-1.20-image
+        package: golang-stable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: ruby-3.2-image
