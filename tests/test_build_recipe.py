@@ -134,7 +134,7 @@ LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
@@ -172,7 +172,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
-            <label name="com.suse.release-stage" value="beta"/>
+            <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
         </labels>
