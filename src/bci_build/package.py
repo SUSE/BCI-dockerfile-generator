@@ -1302,19 +1302,22 @@ RUBY_CONTAINERS = [
 _GO_VER_T = Literal["1.19", "1.20"]
 _GOLANG_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
 
+assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
+
 
 def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
     golang_version_regex = "%%golang_version%%"
+    is_stable = ver == _GOLANG_VERSIONS[-1]
+    stability_tag = "stable" if is_stable else "oldstable"
     go = f"go{ver}"
     return {
         "os_version": os_version,
-        "package_name": f"golang-{ver}-image",
+        "package_name": f"golang-{stability_tag}-image",
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
+        "additional_versions": [stability_tag],
         "pretty_name": f"Golang {ver}",
-        "is_latest": (
-            (ver == _GOLANG_VERSIONS[-1]) and (os_version in CAN_BE_LATEST_OS_VERSION)
-        ),
+        "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "version": ver,
         "env": {
             "GOLANG_VERSION": golang_version_regex,
@@ -2087,10 +2090,21 @@ _RUST_SUPPORT_ENDS = {
 # ensure that the **latest** rust version is the last one!
 _RUST_VERSIONS = ["1.68", "1.69"]
 
+assert (
+    len(_RUST_VERSIONS) == 2
+), "Only two versions of rust must be supported at the same time"
+
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
-        package_name=f"rust-{rust_version}-image",
+        additional_versions=[
+            (
+                stability_tag := (
+                    "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
+                )
+            )
+        ],
+        package_name=f"rust-{stability_tag}-image",
         os_version=os_version,
         support_level=SupportLevel.L3,
         is_latest=(
