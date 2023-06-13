@@ -21,7 +21,7 @@ LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer php8-curl php8-zip php8-zlib php8-phar php8-mbstring apache2-mod_php8; zypper -n clean; rm -rf /var/log/*
