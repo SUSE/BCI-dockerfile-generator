@@ -31,19 +31,19 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rust-1.68-image
+        source_package: rust-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rust-1.69-image
+        source_package: rust-stable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-1.19-image
+        source_package: golang-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-1.20-image
+        source_package: golang-stable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
@@ -197,16 +197,16 @@ refresh_devel_BCI:
         package: rmt-server-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: rust-1.68-image
+        package: rust-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: rust-1.69-image
+        package: rust-stable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: golang-1.19-image
+        package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: golang-1.20-image
+        package: golang-stable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: ruby-2.5-image
