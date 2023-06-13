@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 13 15:12:07 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- rename to stable
+
+-------------------------------------------------------------------
 Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Fix lifecycle url
@@ -9,11 +14,6 @@ Thu May  4 13:19:44 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 - Add L3 support end-date label
 
 -------------------------------------------------------------------
-Tue May  2 06:35:28 UTC 2023 - William Brown <william.brown@suse.com>
+Sat Apr 29 11:13:40 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
-- Switch latest tag to Rust 1.69
-
--------------------------------------------------------------------
-Wed Apr 05 06:48:43 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
-
-- First version of the Rust 1.68 BCI
+- First version of the Rust 1.69 BCI
