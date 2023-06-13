@@ -23,7 +23,7 @@ LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux curl git-core distribution-release gcc-c++ sqlite3-devel make awk timezone; zypper -n clean; rm -rf /var/log/*

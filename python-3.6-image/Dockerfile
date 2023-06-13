@@ -23,7 +23,7 @@ LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends python3-devel python3 python3-pip curl git-core python3-wheel; zypper -n clean; rm -rf /var/log/*

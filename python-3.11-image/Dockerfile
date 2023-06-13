@@ -24,7 +24,7 @@ LABEL com.suse.supportlevel.until="2027-12-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 python311-pip curl git-core; zypper -n clean; rm -rf /var/log/*

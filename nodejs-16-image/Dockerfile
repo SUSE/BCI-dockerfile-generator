@@ -24,7 +24,7 @@ LABEL com.suse.supportlevel.until="2023-12-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 
 RUN set -euo pipefail; zypper -n in --no-recommends nodejs16 npm16 git-core update-alternatives distribution-release; zypper -n clean; rm -rf /var/log/*
