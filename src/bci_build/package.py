@@ -454,7 +454,9 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> Optional[str]:
-        return "15.4" if self.os_version == OsVersion.SP4 else None
+        if self.os_version in (OsVersion.SP4, OsVersion.SP5):
+            return f"15.{int(self.os_version.value)}"
+        return None
 
     @property
     def lifecycle_url(self) -> str:

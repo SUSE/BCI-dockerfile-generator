@@ -114,7 +114,7 @@ RUN emacs -Q --batch test.el
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildTag: bci/test:%%emacs_ver%%-%RELEASE%
-
+#!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
