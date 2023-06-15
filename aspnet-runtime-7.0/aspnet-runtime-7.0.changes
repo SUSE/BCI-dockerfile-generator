@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 14 07:12:13 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 7.0.7
+
+-------------------------------------------------------------------
 Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Fix lifecycle url
