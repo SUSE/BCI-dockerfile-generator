@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/openjdk-devel:11
 #!BuildTag: bci/openjdk-devel:11-%RELEASE%
-
+#!BuildVersion: 15.5.11
 FROM bci/openjdk:11
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

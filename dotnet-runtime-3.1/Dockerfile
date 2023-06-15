@@ -4,7 +4,7 @@
 #!BuildTag: bci/dotnet-runtime:3.1-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:3.1.32
 #!BuildTag: bci/dotnet-runtime:3.1.32-%RELEASE%
-
+#!BuildVersion: 15.5.3.1
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

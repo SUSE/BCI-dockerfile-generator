@@ -3,7 +3,7 @@
 #!BuildTag: bci/nodejs:18-%RELEASE%
 #!BuildTag: bci/node:18
 #!BuildTag: bci/node:18-%RELEASE%
-
+#!BuildVersion: 15.5.18
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

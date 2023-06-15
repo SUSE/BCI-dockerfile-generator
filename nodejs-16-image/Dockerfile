@@ -3,7 +3,7 @@
 #!BuildTag: bci/nodejs:16-%RELEASE%
 #!BuildTag: bci/node:16
 #!BuildTag: bci/node:16-%RELEASE%
-
+#!BuildVersion: 15.5.16
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
