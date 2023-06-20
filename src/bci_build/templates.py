@@ -64,7 +64,7 @@ KIWI_TEMPLATE = jinja2.Template(
   <description type="system">
     <author>{{ image.vendor }}</author>
     <contact>https://www.suse.com/</contact>
-    <specification>{{ image.title }}</specification>
+    <specification>{{ image.title }} Container Image</specification>
   </description>
   <preferences>
     <type image="docker"{{ image.kiwi_derived_from_entry }}>
