@@ -152,7 +152,7 @@ RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 ALL_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP4, OsVersion.TUMBLEWEED]
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE = {
