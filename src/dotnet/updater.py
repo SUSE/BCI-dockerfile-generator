@@ -314,9 +314,9 @@ class DotNetBCI(LanguageStackContainer):
         self.package_list = []
 
 
-_DOTNET_VERSION_T = Literal["3.1", "6.0", "7.0"]
+_DOTNET_VERSION_T = Literal["6.0", "7.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["3.1", "6.0", "7.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "7.0"]
 
 _LATEST_DOTNET_VERSION = "7.0"
 
