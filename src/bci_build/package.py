@@ -408,6 +408,9 @@ class BaseContainerImage(abc.ABC):
     #: :command:`zypper` in :file:`Dockerfile`
     no_recommends: bool = True
 
+    #: minimum build release number to use for the %RELEASE% tag expansion
+    min_build_release: Optional[str] = None
+
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
@@ -456,6 +459,12 @@ class BaseContainerImage(abc.ABC):
     def build_version(self) -> Optional[str]:
         if self.os_version in (OsVersion.SP4, OsVersion.SP5):
             return f"15.{int(self.os_version.value)}"
+        return None
+
+    @property
+    def build_release(self) -> Optional[str]:
+        if self.os_version in CAN_BE_LATEST_OS_VERSION and self.min_build_release:
+            return self.min_build_release
         return None
 
     @property
@@ -1312,6 +1321,8 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
     is_stable = ver == _GOLANG_VERSIONS[-1]
     stability_tag = "stable" if is_stable else "oldstable"
     go = f"go{ver}"
+    # Set to the latest cicount of -stable- when that version becomes oldstable
+    oldstable_min_build_release = None
     return {
         "os_version": os_version,
         "package_name": f"golang-{stability_tag}-image",
@@ -1319,6 +1330,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
         "name": "golang",
         "additional_versions": [stability_tag],
         "pretty_name": f"Golang {ver}",
+        "min_build_release": oldstable_min_build_release if not is_stable else None,
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "version": ver,
         "env": {
@@ -2070,20 +2082,28 @@ STOPSIGNAL SIGQUIT
 
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
+# ensure that the **latest** rust version is the last one!
+_RUST_VERSIONS = ("1.69", "1.70")
+
 # release dates are coming from upstream - https://raw.githubusercontent.com/rust-lang/rust/master/RELEASES.md
 # we expect a new release every 6 weeks, two releases are supported at any point in time
 # and we give us one week of buffer, leading to release date + 6 + 6 + 1
 _RUST_SUPPORT_ENDS = {
-    "1.70": datetime.date(2023, 6, 8) + datetime.timedelta(weeks=6 + 6 + 1),
     "1.69": datetime.date(2023, 4, 20) + datetime.timedelta(weeks=6 + 6 + 1),
+    "1.70": datetime.date(2023, 6, 8) + datetime.timedelta(weeks=6 + 6 + 1),
 }
 
-# ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.69", "1.70"]
+# set to the min_release to 1+(the last/highest checkin counter of the :stable container)
+# when that version is moved to :oldstable
+_RUST_MIN_RELEASES = {
+    "1.69": 5,
+    "1.70": None,
+}
 
 assert (
     len(_RUST_VERSIONS) == 2
 ), "Only two versions of rust must be supported at the same time"
+
 
 RUST_CONTAINERS = [
     LanguageStackContainer(
@@ -2096,13 +2116,14 @@ RUST_CONTAINERS = [
             )
         ],
         package_name=f"rust-{stability_tag}-image",
+        min_build_release=_RUST_MIN_RELEASES[rust_version],
         os_version=os_version,
         support_level=SupportLevel.L3,
         is_latest=(
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
-        supported_until=_RUST_SUPPORT_ENDS.get(rust_version, None),
+        supported_until=_RUST_SUPPORT_ENDS[rust_version],
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",

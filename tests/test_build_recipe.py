@@ -305,7 +305,6 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
 #!BuildTag: opensuse/bci/emacs:28
 #!BuildTag: opensuse/bci/emacs:28-%RELEASE%
 #!BuildTag: opensuse/bci/emacs:latest
-
 FROM suse/base:18
 
 MAINTAINER invalid@suse.com

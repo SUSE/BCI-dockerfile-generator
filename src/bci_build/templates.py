@@ -9,10 +9,15 @@ import jinja2
 DOCKERFILE_TEMPLATE = jinja2.Template(
     """{% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}
 {% endif %}# SPDX-License-Identifier: {{ image.license }}
-{% for tag in image.build_tags -%}
+{%- for tag in image.build_tags %}
 #!BuildTag: {{ tag }}
-{% endfor -%}
-{% if image.build_version %}#!BuildVersion: {{ image.build_version }}{% endif %}
+{%- endfor %}
+{%- if image.build_version %}
+#!BuildVersion: {{ image.build_version }}
+{%- endif %}
+{%- if image.build_release %}
+#!BuildRelease: {{ image.build_release }}
+{%- endif %}
 {{ image.dockerfile_from_line }}
 
 MAINTAINER {{ image.maintainer }}
