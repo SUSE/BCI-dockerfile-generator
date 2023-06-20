@@ -1776,8 +1776,7 @@ MARIADB_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        pretty_name="MariaDB Server",
-        custom_description="MariaDB server for RMT, based on the SLE Base Container Image.",
+        pretty_name="MariaDB Server for SUSE RMT",
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
         entrypoint=["docker-entrypoint.sh"],
         extra_files={
@@ -1825,8 +1824,7 @@ MARIADB_CLIENT_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        pretty_name="MariaDB Client",
-        custom_description="MariaDB client for RMT, based on the SLE Base Container Image.",
+        pretty_name="MariaDB Client for SUSE RMT",
         package_list=["mariadb-client"],
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
@@ -1845,9 +1843,8 @@ RMT_CONTAINERS = [
         name="rmt-server",
         package_name="rmt-server-image",
         os_version=os_version,
-        custom_description="SUSE RMT Server based on the SLE Base Container Image.",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        pretty_name="RMT Server",
+        pretty_name="SUSE RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
         replacements_via_service=[
@@ -2070,7 +2067,7 @@ NGINX_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-nginx",
-        pretty_name="RMT Nginx",
+        pretty_name="NGINX for SUSE RMT",
         version="%%nginx_version%%",
         version_in_uid=False,
         replacements_via_service=[
