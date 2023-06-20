@@ -75,22 +75,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: openjdk-13-devel-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: openjdk-15-devel-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: openjdk-13-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: openjdk-15-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: init-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -204,18 +188,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-17-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-13-devel-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-15-devel-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-13-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-15-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: init-image
