@@ -55,10 +55,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: nodejs-18-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: nodejs-20-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -193,9 +189,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: ruby-3.2-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: nodejs-18-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: nodejs-20-image
