@@ -1446,34 +1446,23 @@ def _get_openjdk_kwargs(
         }
 
 
-OPENJDK_CONTAINERS = (
-    [
-        LanguageStackContainer(
-            **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
-        )
-        for os_version, devel in product(
-            ALL_OS_VERSIONS,
-            (True, False),
-        )
-    ]
-    + [
-        LanguageStackContainer(
-            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
-            support_level=SupportLevel.L3,
-        )
-        for os_version, devel in product(
-            (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED), (True, False)
-        )
-    ]
-    + [
-        LanguageStackContainer(
-            **_get_openjdk_kwargs(
-                os_version=OsVersion.TUMBLEWEED, devel=devel, java_version=java_version
-            )
-        )
-        for devel, java_version in product((True, False), (13, 15))
-    ]
-)
+OPENJDK_CONTAINERS = [
+    LanguageStackContainer(
+        **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
+    )
+    for os_version, devel in product(
+        ALL_OS_VERSIONS,
+        (True, False),
+    )
+] + [
+    LanguageStackContainer(
+        **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
+        support_level=SupportLevel.L3,
+    )
+    for os_version, devel in product(
+        (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED), (True, False)
+    )
+]
 
 
 @enum.unique
