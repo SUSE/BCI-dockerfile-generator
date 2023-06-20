@@ -4,6 +4,7 @@
 #!BuildTag: bci/dotnet-sdk:7.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:7.0.7
 #!BuildTag: bci/dotnet-sdk:7.0.7-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:latest
 #!BuildVersion: 15.5.7.0
 FROM suse/sle15:15.5
 

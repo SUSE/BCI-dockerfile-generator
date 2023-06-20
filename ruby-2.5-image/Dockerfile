@@ -3,6 +3,7 @@
 #!BuildTag: bci/ruby:2.5-%RELEASE%
 #!BuildTag: bci/ruby:2
 #!BuildTag: bci/ruby:2-%RELEASE%
+#!BuildTag: bci/ruby:latest
 #!BuildVersion: 15.5.2.5
 FROM suse/sle15:15.5
 

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 20 14:51:36 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Add latest tags
+
+-------------------------------------------------------------------
 Thu Jun 15 13:44:18 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Set BuildVersion so that containers sort higher than those from SP4
