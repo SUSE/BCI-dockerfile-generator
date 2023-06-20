@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_version%%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_version%%-%RELEASE%
-#!BuildTag: suse/blackbox_exporter:latest
 #!BuildVersion: 15.4
 FROM suse/sle15:15.4
 
