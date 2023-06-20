@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 20 17:27:40 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- switch oldstable to rust 1.69
+
+-------------------------------------------------------------------
 Thu Jun 15 13:44:18 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Set BuildVersion so that containers sort higher than those from SP4
