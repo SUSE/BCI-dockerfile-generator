@@ -3,7 +3,6 @@
 #!BuildTag: bci/rust:1.69-%RELEASE%
 #!BuildTag: bci/rust:stable
 #!BuildTag: bci/rust:stable-%RELEASE%
-#!BuildTag: bci/rust:latest
 #!BuildVersion: 15.4.1.69
 FROM suse/sle15:15.4
 

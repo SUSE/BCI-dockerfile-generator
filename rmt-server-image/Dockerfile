@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/rmt-server:%%rmt_version%%
 #!BuildTag: suse/rmt-server:%%rmt_version%%-%RELEASE%
-#!BuildTag: suse/rmt-server:latest
 #!BuildVersion: 15.4
 FROM suse/sle15:15.4
 
