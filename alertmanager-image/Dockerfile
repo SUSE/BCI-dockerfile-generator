@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/alertmanager:%%alertmanager_version%%
 #!BuildTag: suse/alertmanager:%%alertmanager_version%%-%RELEASE%
+#!BuildTag: suse/alertmanager:latest
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 
-<!-- OBS-AddTag: bci/bci-minimal:%OS_VERSION_ID_SP% bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE% -->
+<!-- OBS-AddTag: bci/bci-minimal:%OS_VERSION_ID_SP% bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE% bci/bci-minimal:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="minimal-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -16,7 +16,7 @@
           name="bci/bci-minimal"
           tag="%OS_VERSION_ID_SP%"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.minimal">
             <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Minimal Container Image"/>

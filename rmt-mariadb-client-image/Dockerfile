@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%
 #!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%-%RELEASE%
+#!BuildTag: suse/rmt-mariadb-client:latest
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
