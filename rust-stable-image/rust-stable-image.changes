@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 20 17:27:27 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- switch stable to rust 1.70
+
+-------------------------------------------------------------------
 Tue Jun 20 14:51:36 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Add latest tags
