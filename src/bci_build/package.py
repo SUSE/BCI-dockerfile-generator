@@ -1055,7 +1055,7 @@ class LanguageStackContainer(BaseContainerImage):
     @property
     def build_tags(self) -> List[str]:
         tags = []
-        # The stability-tags feature in containers. may result in the generation of
+        # The stability-tags feature in containers may result in the generation of
         # identical release numbers for the same version from two different package
         # containers, such as "oldstable" and "stable."
         #
