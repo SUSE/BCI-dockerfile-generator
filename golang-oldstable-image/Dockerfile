@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: opensuse/bci/golang:1.19
-#!BuildTag: opensuse/bci/golang:1.19-%RELEASE%
 #!BuildTag: opensuse/bci/golang:oldstable
-#!BuildTag: opensuse/bci/golang:oldstable-%RELEASE%
+#!BuildTag: opensuse/bci/golang:oldstable-2.%RELEASE%
+#!BuildTag: opensuse/bci/golang:1.19
+#!BuildTag: opensuse/bci/golang:1.19-2.%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 
