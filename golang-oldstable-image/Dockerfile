@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: bci/golang:1.19
-#!BuildTag: bci/golang:1.19-%RELEASE%
 #!BuildTag: bci/golang:oldstable
-#!BuildTag: bci/golang:oldstable-%RELEASE%
+#!BuildTag: bci/golang:oldstable-2.%RELEASE%
+#!BuildTag: bci/golang:1.19
+#!BuildTag: bci/golang:1.19-2.%RELEASE%
 #!BuildVersion: 15.5.1.19
 FROM suse/sle15:15.5
 
