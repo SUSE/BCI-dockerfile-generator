@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 22 16:57:03 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Order the stability buildtag first in the list and prefix them with an stability index to avoid overlaps
+
+-------------------------------------------------------------------
 Tue Jun 20 17:27:40 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - switch oldstable to rust 1.69

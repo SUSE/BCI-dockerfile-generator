@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 22 16:57:03 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Order the stability buildtag first in the list and prefix them with an stability index to avoid overlaps
+
+-------------------------------------------------------------------
 Thu Jun 15 13:44:18 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Set BuildVersion so that containers sort higher than those from SP4
