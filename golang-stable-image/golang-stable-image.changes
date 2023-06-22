@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 22 16:57:03 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Order the stability buildtag first in the list and prefix them with an stability index to avoid overlaps
+
+-------------------------------------------------------------------
 Tue Jun 20 14:51:36 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Add latest tags
