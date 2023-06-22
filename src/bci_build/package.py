@@ -1026,6 +1026,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: the primary version of the language or application inside this container
     version: Union[str, int] = ""
 
+    # a rolling stability tag like 'stable' or 'oldstable' that will be added first
+    stability_tag: Optional[str] = None
+
     #: additional versions that should be added as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
@@ -1053,7 +1056,10 @@ class LanguageStackContainer(BaseContainerImage):
     def build_tags(self) -> List[str]:
         tags = []
         for name in [self.name] + self.additional_names:
-            for ver_label in [self.version_label] + self.additional_versions:
+            ver_labels = [self.version_label]
+            if self.stability_tag:
+                ver_labels = [self.stability_tag] + ver_labels
+            for ver_label in ver_labels + self.additional_versions:
                 tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
                     f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
                 ]
@@ -1317,7 +1323,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
         "package_name": f"golang-{stability_tag}-image",
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
-        "additional_versions": [stability_tag],
+        "stability_tag": stability_tag,
         "pretty_name": f"Golang {ver}",
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "version": ver,
@@ -2088,13 +2094,11 @@ assert (
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
-        additional_versions=[
-            (
-                stability_tag := (
-                    "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
-                )
+        stability_tag=(
+            stability_tag := (
+                "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
             )
-        ],
+        ),
         package_name=f"rust-{stability_tag}-image",
         os_version=os_version,
         support_level=SupportLevel.L3,
