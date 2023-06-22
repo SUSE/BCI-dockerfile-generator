@@ -1026,6 +1026,9 @@ class LanguageStackContainer(BaseContainerImage):
     #: the primary version of the language or application inside this container
     version: Union[str, int] = ""
 
+    # a rolling stability tag like 'stable' or 'oldstable' that will be added first
+    stability_tag: Optional[str] = None
+
     #: additional versions that should be added as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
@@ -1052,11 +1055,50 @@ class LanguageStackContainer(BaseContainerImage):
     @property
     def build_tags(self) -> List[str]:
         tags = []
+        # The stability-tags feature in containers may result in the generation of
+        # identical release numbers for the same version from two different package
+        # containers, such as "oldstable" and "stable."
+        #
+        # When a new version is committed, the check-in counter and the rebuild
+        # counters are reset to "1", resulting in a release number like 1.1.
+        # Subsequent changes will have release numbers like 1.2 (rebuild on the same source)
+        # and 2.1 (new source change without version change).
+        #
+        # Here's an example:
+        #   lang-stable: 1.70-1.1 (first build of the very first commit after version update)
+        #   lang-oldstable: 1.69-5.1 (first build of the fifth source change after version update)
+
+        # After a version rollover occurs from "stable" to "oldstable", the release numbers become:
+
+        #   lang-oldstable: 1.70-1.1
+        #   lang-stable: 1.71-1.1
+
+        # Now there is a conflict with the tags that were previously produced by the lang-stable
+        # container (see lang-stable-1.70-1.1 above).
+        #
+        # In order To resolve this, the solution is to namespace
+        # the tags with a prefix based on the stability ordering. This ensures that we have:
+
+        #   lang-stable: 1.70-1.1.1
+        #   lang-oldstable: 1.69-2.5.1
+
+        # After a version rollover, the numbers now become:
+
+        #   lang-oldstable: 1.70-2.1.1
+        #   lang-stable: 1.71-1.1.1
+
+        # To avoid conflicts, the tags are deconflicted based on the stability ordering.
+        _stability_tag_ordering = (None, "stable", "oldstable")
+        relsuffix = "%RELEASE%"
+        if self.stability_tag and self.stability_tag in _stability_tag_ordering:
+            relsuffix = f"{_stability_tag_ordering.index(self.stability_tag)}.%RELEASE%"
         for name in [self.name] + self.additional_names:
-            for ver_label in [self.version_label] + self.additional_versions:
-                tags += [f"{self._registry_prefix}/{name}:{ver_label}"] + [
-                    f"{self._registry_prefix}/{name}:{ver_label}-%RELEASE%"
-                ]
+            ver_labels = [self.version_label]
+            if self.stability_tag:
+                ver_labels = [self.stability_tag] + ver_labels
+            for ver_label in ver_labels + self.additional_versions:
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}-{relsuffix}"]
             if self.is_latest:
                 tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
@@ -1317,7 +1359,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
         "package_name": f"golang-{stability_tag}-image",
         "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
         "name": "golang",
-        "additional_versions": [stability_tag],
+        "stability_tag": stability_tag,
         "pretty_name": f"Golang {ver}",
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "version": ver,
@@ -2088,13 +2130,11 @@ assert (
 RUST_CONTAINERS = [
     LanguageStackContainer(
         name="rust",
-        additional_versions=[
-            (
-                stability_tag := (
-                    "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
-                )
+        stability_tag=(
+            stability_tag := (
+                "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
             )
-        ],
+        ),
         package_name=f"rust-{stability_tag}-image",
         os_version=os_version,
         support_level=SupportLevel.L3,
