@@ -32,7 +32,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$1" == "/usr/share/rmt/bin/rails" -a "$2" == "server" ]; then
-  echo "Create/migrate RMT database"
+  echo "Create/migrate SUSE RMT database"
   pushd /usr/share/rmt > /dev/null
 	/usr/share/rmt/bin/rails db:create db:migrate RAILS_ENV=production
   popd > /dev/null

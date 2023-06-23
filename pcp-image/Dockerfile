@@ -13,8 +13,8 @@ MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.pcp
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed Performance Co-Pilot (pcp) Container Image"
-LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Performance Co-Pilot (pcp)"
+LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="%%pcp_patch%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
