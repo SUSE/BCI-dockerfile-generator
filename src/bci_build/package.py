@@ -1512,9 +1512,9 @@ OPENJDK_CONTAINERS = [
 
 @enum.unique
 class PhpVariant(enum.Enum):
-    cli = "php"
-    apache = "php-apache"
-    fpm = "php-fpm"
+    cli = "PHP"
+    apache = "PHP-Apache"
+    fpm = "PHP-FPM"
 
     def __str__(self) -> str:
         return str(self.value)
@@ -1622,11 +1622,11 @@ EXPOSE 9000
         custom_end = common_end
 
     return LanguageStackContainer(
-        name=str(php_variant),
+        name=str(php_variant).lower(),
         no_recommends=False,
         version=php_version,
-        pretty_name=f"{str(php_variant).upper()} {php_version}",
-        package_name=f"{php_variant}{php_version}-image",
+        pretty_name=f"{str(php_variant)} {php_version}",
+        package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
         package_list=[
             f"php{php_version}",
