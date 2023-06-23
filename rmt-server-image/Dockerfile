@@ -8,8 +8,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-server
-LABEL org.opencontainers.image.title="SLE RMT Server Container Image"
-LABEL org.opencontainers.image.description="SUSE RMT Server based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE SUSE RMT Server"
+LABEL org.opencontainers.image.description="SUSE RMT Server container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%rmt_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

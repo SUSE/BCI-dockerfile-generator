@@ -10,8 +10,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.ruby
-LABEL org.opencontainers.image.title="SLE BCI Ruby 2.5 Container Image"
-LABEL org.opencontainers.image.description="Ruby 2.5 based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Ruby 2.5"
+LABEL org.opencontainers.image.description="Ruby 2.5 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="2.5"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

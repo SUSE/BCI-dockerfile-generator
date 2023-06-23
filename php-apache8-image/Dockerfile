@@ -8,8 +8,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.php-apache
-LABEL org.opencontainers.image.title="SLE BCI PHP-APACHE 8 Container Image"
-LABEL org.opencontainers.image.description="PHP-APACHE 8 based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI PHP-Apache 8"
+LABEL org.opencontainers.image.description="PHP-Apache 8 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="8"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

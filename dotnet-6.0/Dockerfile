@@ -11,7 +11,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.sdk
-LABEL org.opencontainers.image.title="SLE BCI .Net 6.0 SDK Container Image"
+LABEL org.opencontainers.image.title="SLE BCI .Net 6.0 SDK"
 LABEL org.opencontainers.image.description="The .Net 6.0 SDK based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 LABEL org.opencontainers.image.version="6.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"

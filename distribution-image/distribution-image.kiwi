@@ -20,8 +20,8 @@
           additionaltags="%%registry_version%%-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.registry">
-            <label name="org.opencontainers.image.title" value="SLE OCI Container Registry (Distribution) Container Image"/>
-            <label name="org.opencontainers.image.description" value="OCI Container Registry (Distribution) based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE OCI Container Registry (Distribution)"/>
+            <label name="org.opencontainers.image.description" value="OCI Container Registry (Distribution) container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%%registry_version%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>

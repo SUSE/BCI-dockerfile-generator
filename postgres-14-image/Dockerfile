@@ -10,8 +10,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postgres
-LABEL org.opencontainers.image.title="SLE PostgreSQL 14 Container Image"
-LABEL org.opencontainers.image.description="PostgreSQL 14 based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE PostgreSQL 14"
+LABEL org.opencontainers.image.description="PostgreSQL 14 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="14"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

@@ -1,4 +1,4 @@
-# SLE BCI .Net 7.0 SDK Container Image
+# SLE BCI .Net 7.0 SDK
 
 The .NET packages contained in this image come from a 3rd-party repository:
 [packages.microsoft.com](https://packages.microsoft.com).

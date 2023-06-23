@@ -8,8 +8,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.prometheus
-LABEL org.opencontainers.image.title="SLE Prometheus Container Image"
-LABEL org.opencontainers.image.description="Prometheus based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE Prometheus"
+LABEL org.opencontainers.image.description="Prometheus container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%prometheus_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

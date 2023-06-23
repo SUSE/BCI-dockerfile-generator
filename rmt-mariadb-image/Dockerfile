@@ -8,8 +8,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-mariadb
-LABEL org.opencontainers.image.title="SLE MariaDB Server Container Image"
-LABEL org.opencontainers.image.description="MariaDB server for RMT, based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE MariaDB Server for SUSE RMT"
+LABEL org.opencontainers.image.description="MariaDB Server for SUSE RMT container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%mariadb_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

@@ -12,8 +12,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.nodejs
-LABEL org.opencontainers.image.title="SLE BCI Node.js 18 Container Image"
-LABEL org.opencontainers.image.description="Node.js 18 development environment based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Node.js 18 development"
+LABEL org.opencontainers.image.description="Node.js 18 development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="18"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
