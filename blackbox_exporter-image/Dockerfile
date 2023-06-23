@@ -9,8 +9,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.blackbox_exporter
-LABEL org.opencontainers.image.title="SLE Blackbox Exporter Container Image"
-LABEL org.opencontainers.image.description="Blackbox Exporter based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE Blackbox Exporter"
+LABEL org.opencontainers.image.description="Blackbox Exporter container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%blackbox_exporter_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
