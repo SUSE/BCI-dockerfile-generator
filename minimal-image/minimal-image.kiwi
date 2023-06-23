@@ -8,7 +8,7 @@
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE BCI %OS_VERSION_NO_DASH% Minimal Container Image</specification>
+    <specification>SLE BCI 15 SP5 Minimal Container Image</specification>
   </description>
   <preferences>
     <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.5">
@@ -19,8 +19,8 @@
           additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.minimal">
-            <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Minimal Container Image"/>
-            <label name="org.opencontainers.image.description" value="A minimal environment for containers based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI 15 SP5 Minimal"/>
+            <label name="org.opencontainers.image.description" value="15 SP5 Minimal container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
