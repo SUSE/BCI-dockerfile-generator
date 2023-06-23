@@ -366,7 +366,7 @@ for os_version in (OsVersion.SP4, OsVersion.SP5):
                 version=ver,
                 name="dotnet-runtime",
                 is_sdk=False,
-                pretty_name=f".NET {ver} Runtime",
+                pretty_name=f".NET {ver} runtime",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-runtime-{ver}",
                 package_list=["dotnet-host"]
@@ -390,7 +390,7 @@ for os_version in (OsVersion.SP4, OsVersion.SP5):
                 os_version=os_version,
                 name="dotnet-aspnet",
                 is_sdk=False,
-                pretty_name=f"ASP.NET {ver} Runtime",
+                pretty_name=f"ASP.NET {ver} runtime",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"aspnet-runtime-{ver}",
                 package_list=["dotnet-host"]

@@ -145,6 +145,13 @@ class OsVersion(enum.Enum):
             return self.value
         return f"SP{self.value}"
 
+    @property
+    def pretty_os_version_no_dash(self) -> str:
+        if self.value == OsVersion.TUMBLEWEED.value:
+            return f"openSUSE {self.value}"
+
+        return f"15 SP{self.value}"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
@@ -206,7 +213,7 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
 
 @dataclass(frozen=True)
 class ImageProperties:
-    """Class storing the properties of the Base Container Images that differ
+    """Class storing the properties of the Base Container that differ
     depending on the vendor.
 
     """
@@ -272,7 +279,7 @@ _SLE_IMAGE_PROPS = ImageProperties(
 
 @dataclass
 class BaseContainerImage(abc.ABC):
-    """Base class for all Base Container Images."""
+    """Base class for all Base Containers."""
 
     #: Name of this image. It is used to generate the build tags, i.e. it
     #: defines under which name this image is published.
@@ -841,7 +848,7 @@ exit 0
             return self.custom_description
 
         return (
-            f"{self.pretty_name} based on the "
+            f"{self.pretty_name} container based on the "
             f"{self._image_properties.distribution_base_name} Base Container Image."
         )
 
@@ -851,12 +858,12 @@ exit 0
         label.
 
         It is generated from :py:attr:`BaseContainerImage.pretty_name` as
-        follows: ``"{distribution_base_name} BCI {self.pretty_name} Container
-        Image"``, where ``distribution_base_name`` is taken from
+        follows: ``"{distribution_base_name} BCI {self.pretty_name}"``, where
+        ``distribution_base_name`` is taken from
         :py:attr:`~ImageProperties.distribution_base_name`.
 
         """
-        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name}"
 
     @property
     def extra_label_lines(self) -> str:
@@ -1136,7 +1143,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 
     @property
     def title(self) -> str:
-        return f"{self._image_properties.distribution_base_name} {self.pretty_name} Container Image"
+        return f"{self._image_properties.distribution_base_name} {self.pretty_name}"
 
 
 @dataclass
@@ -1209,8 +1216,7 @@ def _get_python_kwargs(
     pip3_replacement = "%%pip_ver%%"
     kwargs = {
         "name": "python",
-        "pretty_name": f"Python {py3_ver}",
-        "custom_description": f"Python {py3_ver} development environment based on the SLE Base Container Image.",
+        "pretty_name": f"Python {py3_ver} development",
         "version": py3_ver,
         "additional_versions": ["3"],
         "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
@@ -1357,7 +1363,7 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
     return {
         "os_version": os_version,
         "package_name": f"golang-{stability_tag}-image",
-        "custom_description": f"Golang {ver} development environment based on the SLE Base Container Image.",
+        "pretty_name": f"Go {ver} development",
         "name": "golang",
         "stability_tag": stability_tag,
         "pretty_name": f"Golang {ver}",
@@ -1410,10 +1416,9 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
         "package_name": f"nodejs-{ver}-image",
-        "custom_description": f"Node.js {ver} development environment based on the SLE Base Container Image.",
+        "pretty_name": f"Node.js {ver} development",
         "additional_names": ["node"],
         "version": str(ver),
-        "pretty_name": f"Node.js {ver}",
         "package_list": [
             f"nodejs{ver}",
             # devel dependencies:
@@ -1472,8 +1477,7 @@ def _get_openjdk_kwargs(
             **common,
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
-            "pretty_name": f"OpenJDK {java_version} Development",
-            "custom_description": f"Java {java_version} Development environment based on the SLE Base Container Image.",
+            "pretty_name": f"OpenJDK {java_version} development",
             "package_list": [f"java-{java_version}-openjdk-devel", "git-core", "maven"],
             "cmd": ["/usr/bin/jshell"],
             "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
@@ -1482,8 +1486,7 @@ def _get_openjdk_kwargs(
         return {
             **common,
             "name": "openjdk",
-            "pretty_name": f"OpenJDK {java_version} Runtime",
-            "custom_description": f"Java {java_version} runtime based on the SLE Base Container Image.",
+            "pretty_name": f"OpenJDK {java_version} runtime",
             "package_list": [f"java-{java_version}-openjdk"],
         }
 
@@ -1509,9 +1512,9 @@ OPENJDK_CONTAINERS = [
 
 @enum.unique
 class PhpVariant(enum.Enum):
-    cli = "php"
-    apache = "php-apache"
-    fpm = "php-fpm"
+    cli = "PHP"
+    apache = "PHP-Apache"
+    fpm = "PHP-FPM"
 
     def __str__(self) -> str:
         return str(self.value)
@@ -1619,11 +1622,11 @@ EXPOSE 9000
         custom_end = common_end
 
     return LanguageStackContainer(
-        name=str(php_variant),
+        name=str(php_variant).lower(),
         no_recommends=False,
         version=php_version,
-        pretty_name=f"{str(php_variant).upper()} {php_version}",
-        package_name=f"{php_variant}{php_version}-image",
+        pretty_name=f"{str(php_variant)} {php_version}",
+        package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
         package_list=[
             f"php{php_version}",
@@ -1733,9 +1736,9 @@ INIT_CONTAINERS = [
         name="init",
         os_version=os_version,
         support_level=SupportLevel.L3,
-        custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is not supported when using container runtime other than podman.",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        pretty_name="%OS_VERSION_NO_DASH% Init",
+        pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
+        custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman.",
         package_list=["systemd", "gzip"],
         cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
@@ -1776,8 +1779,7 @@ MARIADB_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        pretty_name="MariaDB Server",
-        custom_description="MariaDB server for RMT, based on the SLE Base Container Image.",
+        pretty_name="MariaDB Server for SUSE RMT",
         package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
         entrypoint=["docker-entrypoint.sh"],
         extra_files={
@@ -1825,8 +1827,7 @@ MARIADB_CLIENT_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        pretty_name="MariaDB Client",
-        custom_description="MariaDB client for RMT, based on the SLE Base Container Image.",
+        pretty_name="MariaDB Client for SUSE RMT",
         package_list=["mariadb-client"],
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
@@ -1845,9 +1846,8 @@ RMT_CONTAINERS = [
         name="rmt-server",
         package_name="rmt-server-image",
         os_version=os_version,
-        custom_description="SUSE RMT Server based on the SLE Base Container Image.",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        pretty_name="RMT Server",
+        pretty_name="SUSE RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
         replacements_via_service=[
@@ -2070,7 +2070,7 @@ NGINX_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-nginx",
-        pretty_name="RMT Nginx",
+        pretty_name="NGINX for SUSE RMT",
         version="%%nginx_version%%",
         version_in_uid=False,
         replacements_via_service=[
@@ -2189,7 +2189,7 @@ MICRO_CONTAINERS = [
         support_level=SupportLevel.L3,
         package_name="micro-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        pretty_name="%OS_VERSION_NO_DASH% Micro",
+        pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
         custom_description="A micro environment for containers based on the SLE Base Container Image.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
@@ -2220,8 +2220,7 @@ MINIMAL_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name="minimal-image",
         build_recipe_type=BuildType.KIWI,
-        pretty_name="%OS_VERSION_NO_DASH% Minimal",
-        custom_description="A minimal environment for containers based on the SLE Base Container Image.",
+        pretty_name=f"{os_version.pretty_os_version_no_dash} Minimal",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in (
@@ -2244,11 +2243,10 @@ BUSYBOX_CONTAINERS = [
         from_image=None,
         os_version=os_version,
         support_level=SupportLevel.L3,
-        pretty_name="%OS_VERSION_NO_DASH% Busybox",
+        pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         package_name="busybox-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
-        custom_description="Busybox based on the SLE Base Container Image.",
         cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
@@ -2288,7 +2286,7 @@ PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
         pretty_name="Performance Co-Pilot (pcp)",
-        custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container image is not supported when using a container runtime other than podman.",
+        custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container is only supported with podman.",
         package_name="pcp-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,

@@ -22,8 +22,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.title="SLE BCI Test Container Image"
-LABEL org.opencontainers.image.description="Test based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Test"
+LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="28"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -64,8 +64,8 @@ RUN emacs -Q --batch test.el
           additionaltags="28-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.title" value="SLE BCI Test Container Image"/>
-            <label name="org.opencontainers.image.description" value="Test based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
+            <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="28"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
@@ -121,8 +121,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.title="SLE BCI Test Container Image"
-LABEL org.opencontainers.image.description="Test based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Test"
+LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%emacs_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -160,8 +160,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
           additionaltags="%%emacs_ver%%-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.title" value="SLE BCI Test Container Image"/>
-            <label name="org.opencontainers.image.description" value="Test based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
+            <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%%emacs_ver%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
@@ -212,8 +212,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.title="SLE BCI Test Container Image"
-LABEL org.opencontainers.image.description="Test based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Test"
+LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="28"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -251,8 +251,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
           additionaltags="28-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.title" value="SLE BCI Test Container Image"/>
-            <label name="org.opencontainers.image.description" value="Test based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
+            <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="28"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
@@ -312,8 +312,8 @@ MAINTAINER invalid@suse.com
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.test
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Test Container Image"
-LABEL org.opencontainers.image.description="Test based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Test"
+LABEL org.opencontainers.image.description="Test container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="28.2"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -358,8 +358,8 @@ VOLUME /bin/ /usr/bin/""",
           additionaltags="28.2-%RELEASE%,28,28-%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
-            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test Container Image"/>
-            <label name="org.opencontainers.image.description" value="Test based on the openSUSE Tumbleweed Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
+            <label name="org.opencontainers.image.description" value="Test container based on the openSUSE Tumbleweed Base Container Image."/>
             <label name="org.opencontainers.image.version" value="28.2"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
