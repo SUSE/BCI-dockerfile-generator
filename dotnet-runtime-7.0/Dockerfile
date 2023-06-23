@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-runtime:7.0
 #!BuildTag: bci/dotnet-runtime:7.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:7.0.7
-#!BuildTag: bci/dotnet-runtime:7.0.7-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:7.0.8
+#!BuildTag: bci/dotnet-runtime:7.0.8-%RELEASE%
 #!BuildVersion: 15.4.7.0
 FROM suse/sle15:15.4
 
@@ -41,8 +41,8 @@ COPY dotnet-host-7.0.8-x64.rpm /tmp/
 COPY dotnet-hostfxr-7.0.8-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0.8-sles.12-x64.rpm
 COPY dotnet-runtime-deps-7.0.8-sles.12-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.7-x64.rpm
-COPY dotnet-runtime-7.0.7-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.8-x64.rpm
+COPY dotnet-runtime-7.0.8-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 

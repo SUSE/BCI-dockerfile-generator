@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-sdk:7.0
 #!BuildTag: bci/dotnet-sdk:7.0-%RELEASE%
-#!BuildTag: bci/dotnet-sdk:7.0.7
-#!BuildTag: bci/dotnet-sdk:7.0.7-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:7.0.8
+#!BuildTag: bci/dotnet-sdk:7.0.8-%RELEASE%
 #!BuildVersion: 15.4.7.0
 FROM suse/sle15:15.4
 
@@ -46,16 +46,16 @@ COPY dotnet-targeting-pack-7.0.8-x64.rpm /tmp/
 COPY dotnet-hostfxr-7.0.8-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0.8-sles.12-x64.rpm
 COPY dotnet-runtime-deps-7.0.8-sles.12-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.7-x64.rpm
-COPY dotnet-runtime-7.0.7-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0.8-x64.rpm
+COPY dotnet-runtime-7.0.8-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-7.0.8-x64.rpm
 COPY dotnet-apphost-pack-7.0.8-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-7.0.8-x64.rpm
 COPY aspnetcore-targeting-pack-7.0.8-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0.7-x64.rpm
-COPY aspnetcore-runtime-7.0.7-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-7.0.304-cm.2-x64.rpm
-COPY dotnet-sdk-7.0.304-cm.2-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0.8-x64.rpm
+COPY aspnetcore-runtime-7.0.8-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-7.0.305-x64.rpm
+COPY dotnet-sdk-7.0.305-x64.rpm /tmp/
 
 COPY prod.repo /tmp
 
