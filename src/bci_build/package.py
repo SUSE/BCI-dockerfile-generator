@@ -120,6 +120,8 @@ class PackageType(enum.Enum):
 class OsVersion(enum.Enum):
     """Enumeration of the base operating system versions for BCI."""
 
+    #: SLE 15 Service Pack 6
+    SP6 = 6
     #: SLE 15 Service Pack 5
     SP5 = 5
     #: SLE 15 Service Pack 4
@@ -157,7 +159,14 @@ class OsVersion(enum.Enum):
 #: to ``released``.
 RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
-ALL_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+# For which versions to create Application and Language Containers?
+ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.TUMBLEWEED]
+
+# For which versions to create Base Container Images?
+ALL_BASE_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+
+# joint set of BASE and NON_BASE versions
+ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
@@ -1250,7 +1259,7 @@ PYTHON_3_6_CONTAINERS = (
         package_name="python-3.6-image",
         support_level=SupportLevel.L3,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5)
+    for os_version in (OsVersion.SP5,)
 )
 
 _PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.11")
@@ -1279,7 +1288,7 @@ PYTHON_3_11_CONTAINERS = (
         supported_until=datetime.date(2027, 12, 31),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5)
+    for os_version in (OsVersion.SP5,)
 )
 
 
@@ -1338,10 +1347,6 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
 
 RUBY_CONTAINERS = [
     LanguageStackContainer(
-        **_get_ruby_kwargs("2.5", OsVersion.SP4),
-        support_level=SupportLevel.L3,
-    ),
-    LanguageStackContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP5),
         support_level=SupportLevel.L3,
     ),
@@ -1391,7 +1396,7 @@ GOLANG_IMAGES = [
     LanguageStackContainer(
         **_get_golang_kwargs(ver, os_version), support_level=SupportLevel.L3
     )
-    for ver, os_version in product(_GOLANG_VERSIONS, ALL_OS_VERSIONS)
+    for ver, os_version in product(_GOLANG_VERSIONS, ALL_NONBASE_OS_VERSIONS)
 ]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
@@ -1436,10 +1441,12 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 NODE_CONTAINERS = [
     LanguageStackContainer(
-        **_get_node_kwargs(ver, os_version), support_level=SupportLevel.L3
-    )
-    for ver, os_version in list(product((16, 18), (OsVersion.SP4, OsVersion.SP5)))
-    + [(20, OsVersion.TUMBLEWEED)]
+        **_get_node_kwargs(16, OsVersion.SP5), support_level=SupportLevel.L3
+    ),
+    LanguageStackContainer(
+        **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
+    ),
+    LanguageStackContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
 ]
 
 
@@ -1496,7 +1503,7 @@ OPENJDK_CONTAINERS = [
         **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
     )
     for os_version, devel in product(
-        ALL_OS_VERSIONS,
+        ALL_NONBASE_OS_VERSIONS,
         (True, False),
     )
 ] + [
@@ -1504,9 +1511,7 @@ OPENJDK_CONTAINERS = [
         **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
         support_level=SupportLevel.L3,
     )
-    for os_version, devel in product(
-        (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED), (True, False)
-    )
+    for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
 ]
 
 
@@ -1674,11 +1679,8 @@ zypper -n in ${{extensions[*]}}
 
 
 PHP_CONTAINERS = [
-    _create_php_bci(os_version, variant, 8)
-    for os_version, variant in product(
-        (OsVersion.SP4, OsVersion.SP5),
-        (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
-    )
+    _create_php_bci(OsVersion.SP5, variant, 8)
+    for variant in (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm)
 ]
 
 
@@ -1725,7 +1727,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
 """,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
@@ -1755,7 +1757,7 @@ INIT_CONTAINERS = [
             """
         ),
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 
@@ -1808,7 +1810,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} mkdir /run/mysql
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
@@ -1832,7 +1834,7 @@ MARIADB_CLIENT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         cmd=["mariadb"],
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
@@ -1867,7 +1869,7 @@ RMT_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
@@ -1929,9 +1931,7 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
-    for ver, os_version in list(
-        product([15, 14], [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED])
-    )
+    for ver, os_version in list(product([15, 14], ALL_NONBASE_OS_VERSIONS))
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
 ]
 
@@ -1957,7 +1957,7 @@ PROMETHEUS_CONTAINERS = [
         volumes=["/var/lib/prometheus"],
         exposes_tcp=[9090],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
@@ -1982,7 +1982,7 @@ ALERTMANAGER_CONTAINERS = [
         volumes=["/var/lib/prometheus/alertmanager"],
         exposes_tcp=[9093],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
@@ -2006,7 +2006,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         ],
         exposes_tcp=[9115],
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 GRAFANA_FILES = {}
@@ -2048,7 +2048,7 @@ GRAFANA_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /run.sh
         """,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 _NGINX_FILES = {}
@@ -2106,7 +2106,7 @@ COPY index.html /srv/www/htdocs/
 STOPSIGNAL SIGQUIT
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
@@ -2178,7 +2178,7 @@ RUN ${{CC}} --version
     )
     for rust_version, os_version in product(
         _RUST_VERSIONS,
-        (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED),
+        ALL_NONBASE_OS_VERSIONS,
     )
 ]
 
@@ -2208,7 +2208,7 @@ MICRO_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 MINIMAL_CONTAINERS = [
@@ -2234,7 +2234,7 @@ MINIMAL_CONTAINERS = [
             for name in ("grep", "diffutils", "info", "fillup", "libzio1")
         ],
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 BUSYBOX_CONTAINERS = [
@@ -2266,7 +2266,7 @@ BUSYBOX_CONTAINERS = [
         ),
         config_sh_interpreter="/bin/sh",
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 _PCP_FILES = {}
@@ -2331,7 +2331,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
 """,
     )
-    for os_version in ALL_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 REGISTRY_CONTAINERS = [
@@ -2370,7 +2370,7 @@ REGISTRY_CONTAINERS = [
         exposes_tcp=[5000],
         support_level=SupportLevel.L3,
     )
-    for os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {

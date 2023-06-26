@@ -3,7 +3,7 @@ import pathlib
 
 import pytest
 import yaml
-from bci_build.package import ALL_OS_VERSIONS
+from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import OsVersion
 from staging.bot import StagingBot
 
@@ -16,7 +16,7 @@ def run_in_tmp_path(tmp_path: pathlib.Path):
     os.chdir(cwd)
 
 
-@pytest.mark.parametrize("os_version", ALL_OS_VERSIONS)
+@pytest.mark.parametrize("os_version", ALL_NONBASE_OS_VERSIONS)
 @pytest.mark.parametrize("branch", ["", "something"])
 @pytest.mark.parametrize("packages", [None, ["pcp-image"]])
 @pytest.mark.parametrize(
