@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 23 15:33:33 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- label capitalization and related cleanups
+
+-------------------------------------------------------------------
 Thu Jun 22 16:56:53 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Order the stability buildtag first in the list and prefix them with an stability index to avoid overlaps

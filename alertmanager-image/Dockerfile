@@ -9,8 +9,8 @@ MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.alertmanager
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed Alertmanager Container Image"
-LABEL org.opencontainers.image.description="Alertmanager based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Alertmanager"
+LABEL org.opencontainers.image.description="Alertmanager container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%alertmanager_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
