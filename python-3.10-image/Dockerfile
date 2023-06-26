@@ -10,8 +10,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.python
-LABEL org.opencontainers.image.title="SLE BCI Python 3.10 Container Image"
-LABEL org.opencontainers.image.description="Python 3.10 development environment based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Python 3.10 development"
+LABEL org.opencontainers.image.description="Python 3.10 development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="3.10"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
