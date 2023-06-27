@@ -10,7 +10,7 @@ Please create them via:
 export OSC_PASSWORD=#insert_bugzilla_password
 pkgs="{{ env.pkgs }}"
 for pkg in ${pkgs//,/}; do
-    poetry run ./scratch-build-bot.py --os-version={{ env.OS_VERSION }} --osc-user=$YOUR_USERNAME_HERE \
+    poetry run scratch-build-bot --os-version={{ env.OS_VERSION }} --osc-user=$YOUR_USERNAME_HERE \
         setup_obs_package --package-name=$pkg
 done
 ```
