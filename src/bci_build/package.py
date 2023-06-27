@@ -1451,7 +1451,7 @@ NODE_CONTAINERS = [
 
 
 def _get_openjdk_kwargs(
-    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17]
+    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17, 20]
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -1498,21 +1498,31 @@ def _get_openjdk_kwargs(
         }
 
 
-OPENJDK_CONTAINERS = [
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
-    )
-    for os_version, devel in product(
-        ALL_NONBASE_OS_VERSIONS,
-        (True, False),
-    )
-] + [
-    LanguageStackContainer(
-        **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
-        support_level=SupportLevel.L3,
-    )
-    for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
-]
+OPENJDK_CONTAINERS = (
+    [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
+        )
+        for os_version, devel in product(
+            ALL_NONBASE_OS_VERSIONS,
+            (True, False),
+        )
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
+            support_level=SupportLevel.L3,
+        )
+        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=20),
+            support_level=SupportLevel.L3,
+        )
+        for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
+    ]
+)
 
 
 @enum.unique
