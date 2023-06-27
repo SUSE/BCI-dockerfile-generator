@@ -2401,6 +2401,38 @@ REGISTRY_CONTAINERS = [
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
+HELM_CONTAINERS = [
+    ApplicationStackContainer(
+        name="helm",
+        pretty_name="Kubernetes Package Manager",
+        package_name="helm-image",
+        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%helm_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%helm_version%%",
+                package_name="helm",
+                parse_version="minor",
+            )
+        ],
+        license="Apache-2.0",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in (
+                "ca-certificates-mozilla",
+                "helm",
+            )
+        ],
+        entrypoint=["/usr/bin/helm"],
+        cmd=["help"],
+        build_recipe_type=BuildType.KIWI,
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+]
+
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
@@ -2412,6 +2444,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *NGINX_CONTAINERS,
         *PCP_CONTAINERS,
         *REGISTRY_CONTAINERS,
+        *HELM_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GOLANG_IMAGES,
