@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 27 15:55:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix reference label
+
+-------------------------------------------------------------------
 Fri Jun 23 15:33:33 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - label capitalization and related cleanups
