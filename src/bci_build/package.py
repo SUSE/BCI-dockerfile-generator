@@ -1069,8 +1069,7 @@ class LanguageStackContainer(BaseContainerImage):
         return f"{self.name}-{self.version}" if self.version_in_uid else self.name
 
     @property
-    def build_tags(self) -> List[str]:
-        tags = []
+    def _release_suffix(self) -> str:
         # The stability-tags feature in containers may result in the generation of
         # identical release numbers for the same version from two different package
         # containers, such as "oldstable" and "stable."
@@ -1104,24 +1103,34 @@ class LanguageStackContainer(BaseContainerImage):
         #   lang-stable: 1.71-1.1.1
 
         # To avoid conflicts, the tags are deconflicted based on the stability ordering.
-        _stability_tag_ordering = (None, "stable", "oldstable")
-        relsuffix = "%RELEASE%"
-        if self.stability_tag and self.stability_tag in _stability_tag_ordering:
-            relsuffix = f"{_stability_tag_ordering.index(self.stability_tag)}.%RELEASE%"
+        _STABILITY_TAG_ORDERING = (None, "stable", "oldstable")
+        if self.stability_tag and self.stability_tag in _STABILITY_TAG_ORDERING:
+            return f"{_STABILITY_TAG_ORDERING.index(self.stability_tag)}.%RELEASE%"
+        return "%RELEASE%"
+
+    @property
+    def build_tags(self) -> List[str]:
+        tags = []
+
         for name in [self.name] + self.additional_names:
             ver_labels = [self.version_label]
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels + self.additional_versions:
                 tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
-                tags += [f"{self._registry_prefix}/{name}:{ver_label}-{relsuffix}"]
+                tags += [
+                    f"{self._registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
+                ]
             if self.is_latest:
                 tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}-%RELEASE%"
+        return (
+            f"{self.registry}/{self._registry_prefix}/{self.name}"
+            + f":{self.version_label}-{self._release_suffix}"
+        )
 
     @property
     def build_version(self) -> Optional[str]:

@@ -112,8 +112,10 @@ RUN emacs -Q --batch test.el
         ),
         (
             """# SPDX-License-Identifier: MIT
+#!BuildTag: bci/test:stable
+#!BuildTag: bci/test:stable-1.%RELEASE%
 #!BuildTag: bci/test:%%emacs_ver%%
-#!BuildTag: bci/test:%%emacs_ver%%-%RELEASE%
+#!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
@@ -128,7 +130,7 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -142,7 +144,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 
-<!-- OBS-AddTag: bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-%RELEASE% -->
+<!-- OBS-AddTag: bci/test:stable bci/test:stable-1.%RELEASE% bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-1.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="6.5" name="test-%%emacs_ver%%-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -155,9 +157,9 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
     <type image="docker" derived_from="obsrepositories:/suse/sle15#15.5">
       <containerconfig
           name="bci/test"
-          tag="%%emacs_ver%%"
+          tag="stable"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="%%emacs_ver%%-%RELEASE%">
+          additionaltags="stable-1.%RELEASE%,%%emacs_ver%%,%%emacs_ver%%-1.%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
@@ -167,7 +169,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:%%emacs_ver%%-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.image-type" value="sle-bci"/>
@@ -197,6 +199,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
+                stability_tag="stable",
                 os_version=OsVersion.SP5,
                 version="%%emacs_ver%%",
             ),
