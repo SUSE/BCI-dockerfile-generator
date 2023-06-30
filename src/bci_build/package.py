@@ -1410,7 +1410,7 @@ def _get_golang_kwargs(
     }
 
 
-GOLANG_IMAGES = [
+GOLANG_CONTAINERS = [
     LanguageStackContainer(
         **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
         support_level=SupportLevel.L3,
@@ -2396,6 +2396,40 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
+GIT_CONTAINERS = [
+    ApplicationStackContainer(
+        name="git",
+        os_version=os_version,
+        support_level=SupportLevel.L3,
+        package_name="git-image",
+        pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
+        custom_description="A micro environment with Git for containers based on the SLE Base Container Image.",
+        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        build_recipe_type=BuildType.KIWI,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%git_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%git_version%%",
+                package_name="git-core",
+                parse_version="minor",
+            )
+        ],
+        license="GPL-2.0-only",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in ("git-core",)
+            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+        ],
+        # intentionally empty
+        config_sh_script="""
+""",
+    )
+    for os_version in ALL_BASE_OS_VERSIONS
+]
+
+
 REGISTRY_CONTAINERS = [
     ApplicationStackContainer(
         name="registry",
@@ -2481,7 +2515,8 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *HELM_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
-        *GOLANG_IMAGES,
+        *GIT_CONTAINERS,
+        *GOLANG_CONTAINERS,
         *RUBY_CONTAINERS,
         *NODE_CONTAINERS,
         *OPENJDK_CONTAINERS,
