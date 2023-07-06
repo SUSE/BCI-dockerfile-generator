@@ -83,6 +83,18 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: php8-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: php-apache8-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: php-fpm8-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: init-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -202,6 +214,15 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-20-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: php8-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: php-apache8-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: php-fpm8-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: init-image
