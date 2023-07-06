@@ -24,7 +24,7 @@ LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer php8-curl php8-zip php8-zlib php8-phar php8-mbstring; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring; zypper -n clean; rm -rf /var/log/*
 ENV PHP_VERSION="%%php_version%%"
 ENV PHP_INI_DIR="/etc/php8/"
 ENV PHPIZE_DEPS="php8-devel awk make"

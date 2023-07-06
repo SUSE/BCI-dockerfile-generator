@@ -24,7 +24,7 @@ LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer php8-curl php8-zip php8-zlib php8-phar php8-mbstring php8-fpm; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring php8-fpm; zypper -n clean; rm -rf /var/log/*
 ENV PHP_VERSION="%%php_version%%"
 ENV PHP_INI_DIR="/etc/php8/"
 ENV PHPIZE_DEPS="php8-devel awk make"
@@ -38,8 +38,8 @@ WORKDIR /srv/www/htdocs
 
 RUN set -euo pipefail; \
 	cd /etc/php8/fpm/; \
-        cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
-        cp php-fpm.conf.default php-fpm.conf; \
+        test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
+        test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
 	{ \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
