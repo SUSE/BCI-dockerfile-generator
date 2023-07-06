@@ -170,6 +170,7 @@ ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
+
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
@@ -1775,6 +1776,13 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
+def _get_os_container_package_names(os_version: OsVersion):
+    if os_version == OsVersion.TUMBLEWEED:
+        return ("openSUSE-release", "openSUSE-release-appliance-docker")
+
+    return ("sles-release",)
+
+
 INIT_CONTAINERS = [
     OsContainer(
         name="init",
@@ -2242,9 +2250,9 @@ MICRO_CONTAINERS = [
                 "ca-certificates-mozilla-prebuilt",
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
-                "distribution-release",
             )
             + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+            + _get_os_container_package_names(os_version)
         ],
         # intentionally empty
         config_sh_script="""
@@ -2258,12 +2266,15 @@ def _get_minimal_kwargs(os_version: OsVersion):
     package_list = [
         Package(name, pkg_type=PackageType.DELETE)
         for name in ("grep", "diffutils", "info", "fillup", "libzio1")
-    ] + [Package("distribution-release", pkg_type=PackageType.BOOTSTRAP)]
-
-    # in SLE15, rpm still depends on Perl. This has been fixed in Tumbleweed
+    ]
+    package_list += [
+        Package(name, pkg_type=PackageType.BOOTSTRAP)
+        for name in _get_os_container_package_names(os_version)
+    ]
     if os_version == OsVersion.TUMBLEWEED:
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
+        # in SLE15, rpm still depends on Perl.
         package_list += [
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base")
@@ -2304,7 +2315,8 @@ BUSYBOX_CONTAINERS = [
         cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
+            for name in _get_os_container_package_names(os_version)
+            + (
                 "busybox",
                 "busybox-links",
                 "distribution-release",
