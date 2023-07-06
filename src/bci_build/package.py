@@ -1563,7 +1563,7 @@ exec "$@"
 
 
 _EMPTY_SCRIPT = """#!/bin/sh
-echo "This script is not required in the PHP SLE BCI."
+echo "This script is not required in this PHP container."
 """
 
 
@@ -1610,8 +1610,8 @@ EXPOSE 80
             + DOCKERFILE_RUN
             + r""" \
 	cd /etc/php8/fpm/; \
-        cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
-        cp php-fpm.conf.default php-fpm.conf; \
+        test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
+        test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
 	{ \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
@@ -1655,7 +1655,7 @@ EXPOSE 9000
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
-            "php-composer",
+            "php-composer2",
             f"php{php_version}-curl",
             f"php{php_version}-zip",
             f"php{php_version}-zlib",
@@ -1698,8 +1698,11 @@ zypper -n in ${{extensions[*]}}
 
 
 PHP_CONTAINERS = [
-    _create_php_bci(OsVersion.SP5, variant, 8)
-    for variant in (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm)
+    _create_php_bci(os_version, variant, 8)
+    for os_version, variant in product(
+        (OsVersion.SP5, OsVersion.TUMBLEWEED),
+        (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
+    )
 ]
 
 
