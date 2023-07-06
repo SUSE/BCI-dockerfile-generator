@@ -29,5 +29,3 @@ RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 py
 ENV PYTHON_VERSION="%%py311_ver%%"
 ENV PIP_VERSION="%%pip_ver%%"
 
-RUN set -euo pipefail; ln -s /usr/bin/python3.11 /usr/local/bin/python3; \
-    ln -s /usr/bin/pydoc3.11 /usr/local/bin/pydoc
