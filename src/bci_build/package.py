@@ -1371,24 +1371,27 @@ RUBY_CONTAINERS = [
 
 _GO_VER_T = Literal["1.19", "1.20"]
 _GOLANG_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
+_GOLANG_VARIANTS: List[Literal] = ["", "-openssl"]
 
 assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
 
 
-def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
+def _get_golang_kwargs(
+    ver: _GO_VER_T, variant: _GOLANG_VARIANTS, os_version: OsVersion
+):
     golang_version_regex = "%%golang_version%%"
     is_stable = ver == _GOLANG_VERSIONS[-1]
-    stability_tag = "stable" if is_stable else "oldstable"
-    go = f"go{ver}"
+    stability_tag = f"stable{variant}" if is_stable else f"oldstable{variant}"
+    go = f"go{ver}{variant}"
     return {
         "os_version": os_version,
-        "package_name": f"golang-{stability_tag}-image",
-        "pretty_name": f"Go {ver} development",
-        "name": "golang",
+        "package_name": f"golang-{stability_tag}{variant}-image",
+        "pretty_name": f"Go {ver}{variant} development",
+        "name": f"golang",
         "stability_tag": stability_tag,
-        "pretty_name": f"Golang {ver}",
+        "pretty_name": f"Golang {ver}{variant}",
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
-        "version": ver,
+        "version": f"{ver}{variant}",
         "env": {
             "GOLANG_VERSION": golang_version_regex,
             "GOPATH": "/go",
@@ -1409,9 +1412,16 @@ def _get_golang_kwargs(ver: _GO_VER_T, os_version: OsVersion):
 
 GOLANG_IMAGES = [
     LanguageStackContainer(
-        **_get_golang_kwargs(ver, os_version), support_level=SupportLevel.L3
+        **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
+        support_level=SupportLevel.L3,
     )
-    for ver, os_version in product(_GOLANG_VERSIONS, ALL_NONBASE_OS_VERSIONS)
+    for ver, govariant in product(_GOLANG_VERSIONS, _GOLANG_VARIANTS)
+] + [
+    LanguageStackContainer(
+        **_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED),
+        support_level=SupportLevel.L3,
+    )
+    for ver in _GOLANG_VERSIONS
 ]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
