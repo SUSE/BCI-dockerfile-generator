@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul  6 08:16:35 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Adjust for primary python now being 3.11
+
+-------------------------------------------------------------------
 Fri Jun 23 15:33:33 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - label capitalization and related cleanups
