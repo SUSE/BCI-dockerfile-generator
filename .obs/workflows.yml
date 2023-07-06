@@ -47,7 +47,15 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: golang-oldstable-openssl-openssl-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: golang-stable-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: golang-stable-openssl-openssl-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
@@ -201,7 +209,13 @@ refresh_devel_BCI:
         package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
+        package: golang-oldstable-openssl-openssl-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
         package: golang-stable-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: golang-stable-openssl-openssl-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: ruby-2.5-image
