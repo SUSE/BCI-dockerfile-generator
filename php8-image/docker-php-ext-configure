@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "This script is not required in the PHP SLE BCI."
+echo "This script is not required in this PHP container."
