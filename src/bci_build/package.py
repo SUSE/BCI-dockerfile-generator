@@ -1385,7 +1385,7 @@ def _get_golang_kwargs(
     go = f"go{ver}{variant}"
     return {
         "os_version": os_version,
-        "package_name": f"golang-{stability_tag}{variant}-image",
+        "package_name": f"golang-{stability_tag}-image",
         "pretty_name": f"Go {ver}{variant} development",
         "name": f"golang",
         "stability_tag": stability_tag,
