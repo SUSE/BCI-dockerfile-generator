@@ -1220,7 +1220,7 @@ def _get_python_kwargs(
     py3_ver: Literal["3.6", "3.9", "3.10", "3.11"], os_version: OsVersion
 ):
     is_system_py: bool = py3_ver == (
-        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.10"
+        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.11"
     )
     py3_ver_nodots = py3_ver.replace(".", "")
 
