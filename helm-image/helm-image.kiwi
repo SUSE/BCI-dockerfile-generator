@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!-- OBS-AddTag: suse/helm:%%helm_version%% suse/helm:%%helm_version%%-%RELEASE% suse/helm:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="helm-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>SLE Kubernetes Package Manager Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.5">
+      <containerconfig
+          name="suse/helm"
+          tag="%%helm_version%%"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%%helm_version%%-%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="com.suse.application.helm">
+            <label name="org.opencontainers.image.title" value="SLE Kubernetes Package Manager"/>
+            <label name="org.opencontainers.image.description" value="Kubernetes Package Manager container based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.version" value="%%helm_version%%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/suse/helm:%%helm_version%%-%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="application"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <subcommand execute="help"/>
+        <entrypoint execute="/usr/bin/helm"/>
+      </containerconfig>
+    </type>
+    <version>15.5.0</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="ca-certificates-mozilla"/>
+    <package name="helm"/>
+  </packages>
+
+</image>
