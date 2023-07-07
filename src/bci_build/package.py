@@ -1657,7 +1657,7 @@ EXPOSE 9000
         )
     else:
         extra_pkgs = (
-            [] if OS_VERSION != "tumbleweed" else [f"php{php_version}-readline"]
+            [] if os_version != OsVersion.TUMBLEWEED else [f"php{php_version}-readline"]
         )
         extra_env = {}
         cmd = ["php", "-a"]
