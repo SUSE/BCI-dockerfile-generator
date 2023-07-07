@@ -1656,7 +1656,9 @@ EXPOSE 9000
 """
         )
     else:
-        extra_pkgs = []
+        extra_pkgs = (
+            [] if os_version != OsVersion.TUMBLEWEED else [f"php{php_version}-readline"]
+        )
         extra_env = {}
         cmd = ["php", "-a"]
         custom_end = common_end
