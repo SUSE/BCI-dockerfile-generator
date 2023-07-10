@@ -51,9 +51,8 @@
     <package name="libzio1"/>
   </packages>
   <packages type="bootstrap">
-    <package name="rpm"/>
-    <package name="perl-base"/>
     <package name="distribution-release"/>
+    <package name="rpm"/>
   </packages>
 
 </image>
