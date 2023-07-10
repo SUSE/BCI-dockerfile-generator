@@ -2251,28 +2251,40 @@ MICRO_CONTAINERS = [
     for os_version in ALL_BASE_OS_VERSIONS
 ]
 
+
+def _get_minimal_kwargs(os_version: OsVersion):
+    package_list = [
+        Package(name, pkg_type=PackageType.DELETE)
+        for name in ("grep", "diffutils", "info", "fillup", "libzio1")
+    ] + [Package("distribution-release", pkg_type=PackageType.BOOTSTRAP)]
+
+    # in SLE15, rpm still depends on Perl. This has been fixed in Tumbleweed
+    if os_version == OsVersion.TUMBLEWEED:
+        package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
+    else:
+        package_list += [
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in ("rpm-ndb", "perl-base")
+        ]
+
+    kwargs = {
+        "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
+        "package_list": package_list,
+    }
+
+    return kwargs
+
+
 MINIMAL_CONTAINERS = [
     OsContainer(
         name="minimal",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
-        os_version=os_version,
+        **_get_minimal_kwargs(os_version),
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name="minimal-image",
+        os_version=os_version,
         build_recipe_type=BuildType.KIWI,
-        pretty_name=f"{os_version.pretty_os_version_no_dash} Minimal",
-        package_list=[
-            Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
-                "rpm" if os_version == OsVersion.TUMBLEWEED else "rpm-ndb",
-                "perl-base",
-                "distribution-release",
-            )
-        ]
-        + [
-            Package(name, pkg_type=PackageType.DELETE)
-            for name in ("grep", "diffutils", "info", "fillup", "libzio1")
-        ],
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
