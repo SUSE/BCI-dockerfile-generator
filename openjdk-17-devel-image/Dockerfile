@@ -1,3 +1,4 @@
+#!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/openjdk-devel:17
 #!BuildTag: bci/openjdk-devel:17-%RELEASE%
