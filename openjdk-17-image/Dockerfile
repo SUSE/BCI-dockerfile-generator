@@ -1,3 +1,4 @@
+#!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 # SPDX-License-Identifier: MIT
 #!BuildTag: opensuse/bci/openjdk:17
 #!BuildTag: opensuse/bci/openjdk:17-%RELEASE%
