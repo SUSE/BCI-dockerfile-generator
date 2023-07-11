@@ -2319,7 +2319,6 @@ BUSYBOX_CONTAINERS = [
             + (
                 "busybox",
                 "busybox-links",
-                "distribution-release",
                 "ca-certificates-mozilla-prebuilt",
             )
         ],
