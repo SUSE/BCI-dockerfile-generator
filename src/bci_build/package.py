@@ -1342,7 +1342,6 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
             "util-linux",
             "curl",
             "git-core",
-            "distribution-release",
             # additional dependencies to build rails, ffi, sqlite3 gems -->
             "gcc-c++",
             "sqlite3-devel",
@@ -1403,7 +1402,7 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
-        "package_list": [go, "distribution-release", "make", "git-core"],
+        "package_list": [go, "make", "git-core"],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(8)
@@ -1457,7 +1456,6 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
             "git-core",
             # dependency of nodejs:
             "update-alternatives",
-            "distribution-release",
         ],
         "env": {
             "NODE_VERSION": ver,
@@ -1943,7 +1941,7 @@ POSTGRES_CONTAINERS = [
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=[f"postgresql{ver}-server", "distribution-release"],
+        package_list=[f"postgresql{ver}-server"],
         version=ver,
         additional_versions=["%%pg_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
@@ -2130,7 +2128,7 @@ NGINX_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        package_list=["nginx", "distribution-release"],
+        package_list=["nginx"],
         entrypoint=["/docker-entrypoint.sh"],
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
@@ -2197,7 +2195,6 @@ RUST_CONTAINERS = [
         package_list=[
             f"rust{rust_version}",
             f"cargo{rust_version}",
-            "distribution-release",
         ],
         version=rust_version,
         env={
