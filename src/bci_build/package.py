@@ -1489,6 +1489,8 @@ def _get_openjdk_kwargs(
     is_latest = java_version == 17 and os_version in CAN_BE_LATEST_OS_VERSION
 
     common = {
+        # Hardcoding /usr/lib64 in JAVA_HOME atm
+        "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],
         "env": JAVA_ENV,
         "version": java_version,
         "os_version": os_version,
