@@ -170,6 +170,7 @@ ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
 CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
+
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
@@ -1341,7 +1342,6 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
             "util-linux",
             "curl",
             "git-core",
-            "distribution-release",
             # additional dependencies to build rails, ffi, sqlite3 gems -->
             "gcc-c++",
             "sqlite3-devel",
@@ -1402,7 +1402,7 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
-        "package_list": [go, "distribution-release", "make", "git-core"],
+        "package_list": [go, "make", "git-core"],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(8)
@@ -1456,7 +1456,6 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
             "git-core",
             # dependency of nodejs:
             "update-alternatives",
-            "distribution-release",
         ],
         "env": {
             "NODE_VERSION": ver,
@@ -1775,6 +1774,13 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
+def _get_os_container_package_names(os_version: OsVersion):
+    if os_version == OsVersion.TUMBLEWEED:
+        return ("openSUSE-release", "openSUSE-release-appliance-docker")
+
+    return ("sles-release",)
+
+
 INIT_CONTAINERS = [
     OsContainer(
         name="init",
@@ -1935,7 +1941,7 @@ POSTGRES_CONTAINERS = [
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=[f"postgresql{ver}-server", "distribution-release"],
+        package_list=[f"postgresql{ver}-server"],
         version=ver,
         additional_versions=["%%pg_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
@@ -2122,7 +2128,7 @@ NGINX_CONTAINERS = [
                 parse_version="minor",
             )
         ],
-        package_list=["nginx", "distribution-release"],
+        package_list=["nginx"],
         entrypoint=["/docker-entrypoint.sh"],
         cmd=["nginx", "-g", "daemon off;"],
         build_recipe_type=BuildType.DOCKER,
@@ -2189,7 +2195,6 @@ RUST_CONTAINERS = [
         package_list=[
             f"rust{rust_version}",
             f"cargo{rust_version}",
-            "distribution-release",
         ],
         version=rust_version,
         env={
@@ -2242,9 +2247,9 @@ MICRO_CONTAINERS = [
                 "ca-certificates-mozilla-prebuilt",
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
-                "distribution-release",
             )
             + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+            + _get_os_container_package_names(os_version)
         ],
         # intentionally empty
         config_sh_script="""
@@ -2258,12 +2263,15 @@ def _get_minimal_kwargs(os_version: OsVersion):
     package_list = [
         Package(name, pkg_type=PackageType.DELETE)
         for name in ("grep", "diffutils", "info", "fillup", "libzio1")
-    ] + [Package("distribution-release", pkg_type=PackageType.BOOTSTRAP)]
-
-    # in SLE15, rpm still depends on Perl. This has been fixed in Tumbleweed
+    ]
+    package_list += [
+        Package(name, pkg_type=PackageType.BOOTSTRAP)
+        for name in _get_os_container_package_names(os_version)
+    ]
     if os_version == OsVersion.TUMBLEWEED:
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
+        # in SLE15, rpm still depends on Perl.
         package_list += [
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base")
@@ -2304,10 +2312,10 @@ BUSYBOX_CONTAINERS = [
         cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
+            for name in _get_os_container_package_names(os_version)
+            + (
                 "busybox",
                 "busybox-links",
-                "distribution-release",
                 "ca-certificates-mozilla-prebuilt",
             )
         ],
