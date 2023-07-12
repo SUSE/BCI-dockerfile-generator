@@ -26,6 +26,6 @@ LABEL org.opensuse.release-stage="released"
 
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends nodejs20 npm20 git-core update-alternatives distribution-release; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends nodejs20 npm20 git-core update-alternatives; zypper -n clean; rm -rf /var/log/*
 ENV NODE_VERSION="20"
 
