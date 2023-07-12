@@ -1520,7 +1520,7 @@ def _get_openjdk_kwargs(
             **common,
             "name": "openjdk",
             "pretty_name": f"OpenJDK {java_version} runtime",
-            "package_list": [f"java-{java_version}-openjdk"],
+            "package_list": [f"java-{java_version}-openjdk", "util-linux"],
         }
 
 
