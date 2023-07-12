@@ -23,7 +23,7 @@ LABEL org.opensuse.release-stage="released"
 
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends nginx distribution-release; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends nginx; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80

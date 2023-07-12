@@ -51,7 +51,8 @@
     <package name="libzio1"/>
   </packages>
   <packages type="bootstrap">
-    <package name="distribution-release"/>
+    <package name="openSUSE-release"/>
+    <package name="openSUSE-release-appliance-docker"/>
     <package name="rpm"/>
   </packages>
 
