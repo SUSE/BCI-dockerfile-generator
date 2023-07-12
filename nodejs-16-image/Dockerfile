@@ -27,6 +27,6 @@ LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends nodejs16 npm16 git-core update-alternatives distribution-release; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends nodejs16 npm16 git-core update-alternatives; zypper -n clean; rm -rf /var/log/*
 ENV NODE_VERSION="16"
 

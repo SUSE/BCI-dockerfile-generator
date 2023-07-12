@@ -28,7 +28,7 @@ LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends rust1.70 cargo1.70 distribution-release; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends rust1.70 cargo1.70; zypper -n clean; rm -rf /var/log/*
 ENV RUST_VERSION="%%RUST_VERSION%%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV CC="/usr/local/bin/gcc"

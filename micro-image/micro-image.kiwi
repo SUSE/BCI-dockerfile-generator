@@ -49,8 +49,8 @@
     <package name="bash"/>
     <package name="ca-certificates-mozilla-prebuilt"/>
     <package name="coreutils"/>
-    <package name="distribution-release"/>
     <package name="skelcd-EULA-bci"/>
+    <package name="sles-release"/>
   </packages>
 
 </image>
