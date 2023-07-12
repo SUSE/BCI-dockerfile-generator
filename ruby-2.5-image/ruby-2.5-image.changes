@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 12 12:58:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Remove distribution-release from the package list, it is inherited from the base image
+
+-------------------------------------------------------------------
 Fri Jun 23 13:44:59 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - label capitalization and other cleanups
