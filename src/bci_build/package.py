@@ -1017,7 +1017,7 @@ exit 0
                 # containers with the version_in_uid flag set to False, but by
                 # default we include it (for os containers which don't have this
                 # flag)
-                if str(ver) not in name_to_include and not getattr(
+                if str(ver) not in name_to_include and getattr(
                     self, "version_in_uid", True
                 ):
                     name_to_include += f" {ver}"
