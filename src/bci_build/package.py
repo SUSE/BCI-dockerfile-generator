@@ -1369,8 +1369,9 @@ RUBY_CONTAINERS = [
 ]
 
 
-_GO_VER_T = Literal["1.19", "1.20"]
+_GO_VER_T = Literal["1.19", "1.20", "1.21"]
 _GOLANG_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
+_GOLANG_TW_VERSIONS = _GOLANG_VERSIONS + ["1.21"]
 _GOLANG_VARIANTS: List[Literal] = ["", "-openssl"]
 
 assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
@@ -1381,7 +1382,12 @@ def _get_golang_kwargs(
 ):
     golang_version_regex = "%%golang_version%%"
     is_stable = ver == _GOLANG_VERSIONS[-1]
-    stability_tag = f"stable{variant}" if is_stable else f"oldstable{variant}"
+    stability_tag = f"oldstable{variant}"
+    if ver == _GOLANG_TW_VERSIONS[-1]:
+        stability_tag = f"unstable{variant}"
+    if is_stable:
+        stability_tag = f"stable{variant}"
+
     go = f"go{ver}{variant}"
     return {
         "os_version": os_version,
@@ -1421,7 +1427,7 @@ GOLANG_CONTAINERS = [
         **_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED),
         support_level=SupportLevel.L3,
     )
-    for ver in _GOLANG_VERSIONS
+    for ver in _GOLANG_VERSIONS + _GOLANG_TW_VERSIONS
 ]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
