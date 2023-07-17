@@ -2118,6 +2118,7 @@ NGINX_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="rmt-nginx",
+        additional_names=["nginx"],
         pretty_name="NGINX for SUSE RMT",
         version="%%nginx_version%%",
         version_in_uid=False,
