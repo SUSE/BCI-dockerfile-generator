@@ -2,6 +2,9 @@
 #!BuildTag: opensuse/rmt-nginx:%%nginx_version%%
 #!BuildTag: opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%
 #!BuildTag: opensuse/rmt-nginx:latest
+#!BuildTag: opensuse/nginx:%%nginx_version%%
+#!BuildTag: opensuse/nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: opensuse/nginx:latest
 
 FROM opensuse/tumbleweed:latest
 
