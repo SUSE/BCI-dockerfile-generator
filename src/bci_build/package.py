@@ -362,9 +362,10 @@ class BaseContainerImage(abc.ABC):
 
     #: This string is appended to the automatically generated dockerfile and can
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
-    #: **Caution** Setting both this property and
-    #: :py:attr:`~BaseContainerImage.config_sh_script` is not possible and will
-    #: result in an error.
+    #:
+    #: .. note::
+    #:   Setting both this property and :py:attr:`~BaseContainerImage.config_sh_script`
+    #:   is not possible and will result in an error.
     custom_end: str = ""
 
     #: A script that is put into :file:`config.sh` if a kiwi image is
