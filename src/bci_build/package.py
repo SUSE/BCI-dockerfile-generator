@@ -2118,48 +2118,56 @@ for filename in (
         _NGINX_FILES[filename] = cursor.read(-1)
 
 
-NGINX_CONTAINERS = [
-    ApplicationStackContainer(
-        package_name="rmt-nginx-image",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="rmt-nginx",
-        additional_names=["nginx"],
-        pretty_name="NGINX for SUSE RMT",
-        version="%%nginx_version%%",
-        version_in_uid=False,
-        replacements_via_service=[
+def _get_nginx_kwargs(os_version: OsVersion):
+    kwargs = {
+        "os_version": os_version,
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "version": "%%nginx_version%%",
+        "version_in_uid": False,
+        "replacements_via_service": [
             Replacement(
                 regex_in_build_description="%%nginx_version%%",
                 package_name="nginx",
                 parse_version="minor",
             )
         ],
-        package_list=["nginx"],
-        entrypoint=["/docker-entrypoint.sh"],
-        cmd=["nginx", "-g", "daemon off;"],
-        build_recipe_type=BuildType.DOCKER,
-        extra_files=_NGINX_FILES,
-        exposes_tcp=[80],
-        custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
-COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
-COPY 30-tune-worker-processes.sh /docker-entrypoint.d/
-COPY docker-entrypoint.sh /
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.sh
-
+        "package_list": ["gawk", "nginx"],
+        "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
+        "cmd": ["nginx", "-g", "daemon off;"],
+        "build_recipe_type": BuildType.DOCKER,
+        "extra_files": _NGINX_FILES,
+        "exposes_tcp": [80],
+        "custom_end": f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
+COPY [1-3]0-*.sh /docker-entrypoint.d/
+COPY docker-entrypoint.sh /usr/local/bin
 COPY index.html /srv/www/htdocs/
-
-{DOCKERFILE_RUN} mkdir /var/log/nginx
-{DOCKERFILE_RUN} chown nginx:nginx /var/log/nginx
-{DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
-{DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
+    ln -sf /dev/stdout /var/log/nginx/access.log; \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 
 STOPSIGNAL SIGQUIT
 """,
+    }
+
+    return kwargs
+
+
+NGINX_CONTAINERS = [
+    ApplicationStackContainer(
+        name="rmt-nginx",
+        package_name="rmt-nginx-image",
+        pretty_name="NGINX for SUSE RMT",
+        **_get_nginx_kwargs(os_version),
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+] + [
+    ApplicationStackContainer(
+        name="nginx",
+        package_name="nginx-image",
+        pretty_name="NGINX",
+        custom_description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}.",
+        **_get_nginx_kwargs(os_version),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
