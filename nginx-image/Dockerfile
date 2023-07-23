@@ -1,22 +1,22 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: opensuse/rmt-nginx:%%nginx_version%%
-#!BuildTag: opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%
-#!BuildTag: opensuse/rmt-nginx:latest
+#!BuildTag: opensuse/nginx:%%nginx_version%%
+#!BuildTag: opensuse/nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: opensuse/nginx:latest
 
 FROM opensuse/tumbleweed:latest
 
 MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.application.rmt-nginx
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed NGINX for SUSE RMT"
-LABEL org.opencontainers.image.description="NGINX for SUSE RMT container based on the openSUSE Tumbleweed Base Container Image."
+# labelprefix=org.opensuse.application.nginx
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed NGINX"
+LABEL org.opencontainers.image.description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}."
 LABEL org.opencontainers.image.version="%%nginx_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/rmt-nginx:%%nginx_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/nginx:%%nginx_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
 LABEL org.opensuse.release-stage="released"
