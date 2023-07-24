@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 24 12:55:01 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- standardize description labels
+
+-------------------------------------------------------------------
 Mon Jul 17 15:11:44 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP5 with Git BCI
