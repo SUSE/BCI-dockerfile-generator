@@ -1601,8 +1601,10 @@ RUN chmod +x /usr/local/bin/docker-php-*
         extra_pkgs = [f"apache2-mod_php{php_version}"]
         extra_env = {
             "APACHE_CONFDIR": "/etc/apache2",
-            "APACHE_ENVVARS": "/usr/sbin/envvars",
         }
+        # Tumbleweed apache has dropped envvars
+        if os_version != OsVersion.TUMBLEWEED:
+            extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
         cmd = ["apache2-foreground"]
         custom_end = (
             common_end
