@@ -362,9 +362,10 @@ class BaseContainerImage(abc.ABC):
 
     #: This string is appended to the automatically generated dockerfile and can
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
-    #: **Caution** Setting both this property and
-    #: :py:attr:`~BaseContainerImage.config_sh_script` is not possible and will
-    #: result in an error.
+    #:
+    #: .. note::
+    #:   Setting both this property and :py:attr:`~BaseContainerImage.config_sh_script`
+    #:   is not possible and will result in an error.
     custom_end: str = ""
 
     #: A script that is put into :file:`config.sh` if a kiwi image is
@@ -850,17 +851,28 @@ exit 0
         ``org.opencontainers.image.description`` label.
 
         If :py:attr:`BaseContainerImage.custom_description` is set, then that
-        value is used. Otherwise it reuses
+        value is used. Custom descriptions can use str.format() substitution to
+        expand the custom description with the following options:
+
+        - ``{pretty_name}``: the value of the pretty_name property
+        - ``{based_on_container}``: the standard "based on the $distro Base Container Image" suffix that descriptions have
+        - ``{podman_only}``: "This container is only supported with podman."
+
+        Otherwise it reuses
         :py:attr:`BaseContainerImage.pretty_name` to generate a description.
 
         """
-        if self.custom_description:
-            return self.custom_description
 
-        return (
-            f"{self.pretty_name} container based on the "
-            f"{self._image_properties.distribution_base_name} Base Container Image."
-        )
+        description_formatters = {
+            "pretty_name": self.pretty_name,
+            "based_on_container": f"based on the {self._image_properties.distribution_base_name} Base Container Image",
+            "podman_only": "This container is only supported with podman.",
+        }
+        description = "{pretty_name} container {based_on_container}."
+        if self.custom_description:
+            description = self.custom_description
+
+        return description.format(**description_formatters)
 
     @property
     def title(self) -> str:
@@ -1794,7 +1806,7 @@ INIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
-        custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman.",
+        custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=["systemd", "gzip"],
         cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
@@ -2252,7 +2264,7 @@ MICRO_CONTAINERS = [
         package_name="micro-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
-        custom_description="A micro environment for containers based on the SLE Base Container Image.",
+        custom_description="A micro environment for containers {based_on_container}.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
         package_list=[
@@ -2363,7 +2375,7 @@ PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
         pretty_name="Performance Co-Pilot (pcp)",
-        custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container is only supported with podman.",
+        custom_description="{pretty_name} container {based_on_container}. {podman_only}",
         package_name="pcp-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
@@ -2418,7 +2430,7 @@ GIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         package_name="git-image",
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
-        custom_description="A micro environment with Git for containers based on the SLE Base Container Image.",
+        custom_description="A micro environment with Git {based_on_container}.",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
