@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 24 12:55:01 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- standardize description labels
+
+-------------------------------------------------------------------
 Sun Jul 23 09:35:00 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the NGINX BCI
