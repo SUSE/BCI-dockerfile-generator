@@ -174,10 +174,12 @@ same time!</p>
 <dt class="sig sig-object py" id="bci_build.package.BaseContainerImage.custom_end">
 <span class="sig-name descname"><span class="pre">custom_end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#bci_build.package.BaseContainerImage.custom_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>This string is appended to the automatically generated dockerfile and can
-contain arbitrary instructions valid for a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>.
-<strong>Caution</strong> Setting both this property and
-<a class="reference internal" href="#bci_build.package.BaseContainerImage.config_sh_script" title="bci_build.package.BaseContainerImage.config_sh_script"><code class="xref py py-attr docutils literal notranslate"><span class="pre">config_sh_script</span></code></a> is not possible and will
-result in an error.</p>
+contain arbitrary instructions valid for a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting both this property and <a class="reference internal" href="#bci_build.package.BaseContainerImage.config_sh_script" title="bci_build.package.BaseContainerImage.config_sh_script"><code class="xref py py-attr docutils literal notranslate"><span class="pre">config_sh_script</span></code></a>
+is not possible and will result in an error.</p>
+</div>
 </dd></dl>
 
 <dl class="py attribute">
@@ -194,7 +196,14 @@ then it is used instead of the name after <code class="docutils literal notransl
 <dd><p>The description of this image which is inserted into the
 <code class="docutils literal notranslate"><span class="pre">org.opencontainers.image.description</span></code> label.</p>
 <p>If <a class="reference internal" href="#bci_build.package.BaseContainerImage.custom_description" title="bci_build.package.BaseContainerImage.custom_description"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.custom_description</span></code></a> is set, then that
-value is used. Otherwise it reuses
+value is used. Custom descriptions can use str.format() substitution to
+expand the custom description with the following options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{pretty_name}</span></code>: the value of the pretty_name property</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{based_on_container}</span></code>: the standard “based on the $distro Base Container Image” suffix that descriptions have</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{podman_only}</span></code>: “This container is only supported with podman.”</p></li>
+</ul>
+<p>Otherwise it reuses
 <a class="reference internal" href="#bci_build.package.BaseContainerImage.pretty_name" title="bci_build.package.BaseContainerImage.pretty_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.pretty_name</span></code></a> to generate a description.</p>
 </dd></dl>
 
@@ -1041,19 +1050,19 @@ during the update.</p>
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb2682e6410&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb4e1133310&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb2677b9fd0&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb4e261c5d0&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb2677b5e50&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fb4e123e810&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
