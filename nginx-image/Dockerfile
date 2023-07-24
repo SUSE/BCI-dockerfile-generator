@@ -1,22 +1,22 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: suse/rmt-nginx:%%nginx_version%%
-#!BuildTag: suse/rmt-nginx:%%nginx_version%%-%RELEASE%
-#!BuildTag: suse/rmt-nginx:latest
+#!BuildTag: suse/nginx:%%nginx_version%%
+#!BuildTag: suse/nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: suse/nginx:latest
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.rmt-nginx
-LABEL org.opencontainers.image.title="SLE NGINX for SUSE RMT"
-LABEL org.opencontainers.image.description="NGINX for SUSE RMT container based on the SLE Base Container Image."
+# labelprefix=com.suse.application.nginx
+LABEL org.opencontainers.image.title="SLE NGINX"
+LABEL org.opencontainers.image.description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}."
 LABEL org.opencontainers.image.version="%%nginx_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/suse/rmt-nginx:%%nginx_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/nginx:%%nginx_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
