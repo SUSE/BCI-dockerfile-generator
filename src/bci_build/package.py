@@ -282,7 +282,7 @@ _SLE_IMAGE_PROPS = ImageProperties(
     lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
     label_prefix="com.suse",
     distribution_base_name="SLE",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP4),
+    build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
     application_container_build_tag_prefix="suse",
 )
 
