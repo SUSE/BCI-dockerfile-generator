@@ -1459,7 +1459,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         "is_latest": (
-            (ver == 18 and os_version == OsVersion.SP4)
+            (ver == 18 and os_version == OsVersion.SP5)
             or (ver == 20 and os_version == OsVersion.TUMBLEWEED)
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
