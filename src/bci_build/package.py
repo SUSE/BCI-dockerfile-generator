@@ -2198,7 +2198,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.69", "1.70"]
+_RUST_VERSIONS = ["1.70", "1.71"]
 
 assert (
     len(_RUST_VERSIONS) == 2
