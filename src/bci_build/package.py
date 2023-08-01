@@ -2530,6 +2530,38 @@ HELM_CONTAINERS = [
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
+OPENQA_SINGLE_INSTANCE_CONTAINER = ApplicationStackContainer(
+    name="openqa-single-instance",
+    package_name="openqa-single-instance-image",
+    os_version=OsVersion.TUMBLEWEED,
+    pretty_name="openQA single-instance container",
+    custom_description="A complete openQA instance composed of all necessary components to execute openQA tests including an openQA worker",
+    is_latest=True,
+    entrypoint=["/usr/share/openqa/script/openqa-bootstrap"],
+    exposes_tcp=[80, 443, 9526],
+    env={"skip_suse_specifics": 1, "skip_suse_tests": 1},
+    version_in_uid=False,
+    version="%%pkg_version%%",
+    replacements_via_service=[
+        Replacement(
+            regex_in_build_description="%%pkg_version%%",
+            package_name="openQA-single-instance",
+        )
+    ],
+    package_list=[
+        "openQA-single-instance",
+        "openQA-bootstrap",
+        "qemu-arm",
+        "qemu-ppc",
+        "qemu-x86",
+        "qemu-tools",
+        "sudo",
+        "iputils",
+        "os-autoinst-distri-opensuse-deps",
+    ],
+    custom_end="HEALTHCHECK CMD curl -f http://localhost || exit 1",
+)
+
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
@@ -2561,6 +2593,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
+        OPENQA_SINGLE_INSTANCE_CONTAINER,
     )
 }
 
