@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug  7 08:16:10 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- refresh entrypoint scripts from upstream
+
+-------------------------------------------------------------------
 Mon Jul 24 12:55:01 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - standardize description labels
