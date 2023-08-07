@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug  7 08:16:03 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- refresh entrypoint scripts from upstream
+
+-------------------------------------------------------------------
 Sun Jul 23 14:00:03 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Simplify Dockerfile
