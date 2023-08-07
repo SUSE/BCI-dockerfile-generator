@@ -1401,6 +1401,11 @@ def _get_golang_kwargs(
         stability_tag = f"stable{variant}"
 
     go = f"go{ver}{variant}"
+    go_packages = (
+        f"{go}",
+        f"{go}-doc",
+        f"{go}-race",
+    )
     return {
         "os_version": os_version,
         "package_name": f"golang-{stability_tag}-image",
@@ -1420,7 +1425,7 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
-        "package_list": [go, "make", "git-core"],
+        "package_list": [*go_packages, "make", "git-core"],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(8)
