@@ -2329,6 +2329,16 @@ MINIMAL_CONTAINERS = [
         package_name="minimal-image",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
+        config_sh_script=textwrap.dedent(
+            """
+            #==========================================
+            # Remove compat-usrmerge-tools if installed
+            #------------------------------------------
+            if rpm -q compat-usrmerge-tools; then
+                rpm -e compat-usrmerge-tools
+            fi
+            """
+        ),
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
