@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/dotnet-runtime:6.0
 #!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:6.0.20
-#!BuildTag: bci/dotnet-runtime:6.0.20-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:1.x86_64.rpm
+#!BuildTag: bci/dotnet-runtime:1.x86_64.rpm-%RELEASE%
 #!BuildVersion: 15.5.6.0
 FROM suse/sle15:15.5
 
@@ -35,14 +35,14 @@ COPY microsoft.asc /tmp
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.20-x64.rpm
-COPY dotnet-host-6.0.20-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0.20-x64.rpm
-COPY dotnet-hostfxr-6.0.20-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0.20-sles.12-x64.rpm
-COPY dotnet-runtime-deps-6.0.20-sles.12-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0.20-x64.rpm
-COPY dotnet-runtime-6.0.20-x64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.21-1.x86_64.rpm
+COPY dotnet-host-6.0.21-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.21-1.x86_64.rpm
+COPY dotnet-hostfxr-6.0-6.0.21-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.21-1.x86_64.rpm
+COPY dotnet-runtime-deps-6.0-6.0.21-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.21-1.x86_64.rpm
+COPY dotnet-runtime-6.0-6.0.21-1.x86_64.rpm /tmp/
 
 COPY prod.repo /tmp
 
