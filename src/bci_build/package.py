@@ -282,7 +282,7 @@ _SLE_IMAGE_PROPS = ImageProperties(
     lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
     label_prefix="com.suse",
     distribution_base_name="SLE",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP4),
+    build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
     application_container_build_tag_prefix="suse",
 )
 
@@ -362,9 +362,10 @@ class BaseContainerImage(abc.ABC):
 
     #: This string is appended to the automatically generated dockerfile and can
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
-    #: **Caution** Setting both this property and
-    #: :py:attr:`~BaseContainerImage.config_sh_script` is not possible and will
-    #: result in an error.
+    #:
+    #: .. note::
+    #:   Setting both this property and :py:attr:`~BaseContainerImage.config_sh_script`
+    #:   is not possible and will result in an error.
     custom_end: str = ""
 
     #: A script that is put into :file:`config.sh` if a kiwi image is
@@ -850,17 +851,28 @@ exit 0
         ``org.opencontainers.image.description`` label.
 
         If :py:attr:`BaseContainerImage.custom_description` is set, then that
-        value is used. Otherwise it reuses
+        value is used. Custom descriptions can use str.format() substitution to
+        expand the custom description with the following options:
+
+        - ``{pretty_name}``: the value of the pretty_name property
+        - ``{based_on_container}``: the standard "based on the $distro Base Container Image" suffix that descriptions have
+        - ``{podman_only}``: "This container is only supported with podman."
+
+        Otherwise it reuses
         :py:attr:`BaseContainerImage.pretty_name` to generate a description.
 
         """
-        if self.custom_description:
-            return self.custom_description
 
-        return (
-            f"{self.pretty_name} container based on the "
-            f"{self._image_properties.distribution_base_name} Base Container Image."
-        )
+        description_formatters = {
+            "pretty_name": self.pretty_name,
+            "based_on_container": f"based on the {self._image_properties.distribution_base_name} Base Container Image",
+            "podman_only": "This container is only supported with podman.",
+        }
+        description = "{pretty_name} container {based_on_container}."
+        if self.custom_description:
+            description = self.custom_description
+
+        return description.format(**description_formatters)
 
     @property
     def title(self) -> str:
@@ -1389,6 +1401,11 @@ def _get_golang_kwargs(
         stability_tag = f"stable{variant}"
 
     go = f"go{ver}{variant}"
+    go_packages = (
+        f"{go}",
+        f"{go}-doc",
+        f"{go}-race",
+    )
     return {
         "os_version": os_version,
         "package_name": f"golang-{stability_tag}-image",
@@ -1408,7 +1425,7 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
-        "package_list": [go, "make", "git-core"],
+        "package_list": [*go_packages, "make", "git-core"],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(8)
@@ -1447,7 +1464,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         "is_latest": (
-            (ver == 18 and os_version == OsVersion.SP4)
+            (ver == 18 and os_version == OsVersion.SP5)
             or (ver == 20 and os_version == OsVersion.TUMBLEWEED)
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
@@ -1601,8 +1618,10 @@ RUN chmod +x /usr/local/bin/docker-php-*
         extra_pkgs = [f"apache2-mod_php{php_version}"]
         extra_env = {
             "APACHE_CONFDIR": "/etc/apache2",
-            "APACHE_ENVVARS": "/usr/sbin/envvars",
         }
+        # Tumbleweed apache has dropped envvars
+        if os_version != OsVersion.TUMBLEWEED:
+            extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
         cmd = ["apache2-foreground"]
         custom_end = (
             common_end
@@ -1794,7 +1813,7 @@ INIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
-        custom_description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman.",
+        custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=["systemd", "gzip"],
         cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
@@ -2118,48 +2137,56 @@ for filename in (
         _NGINX_FILES[filename] = cursor.read(-1)
 
 
-NGINX_CONTAINERS = [
-    ApplicationStackContainer(
-        package_name="rmt-nginx-image",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="rmt-nginx",
-        additional_names=["nginx"],
-        pretty_name="NGINX for SUSE RMT",
-        version="%%nginx_version%%",
-        version_in_uid=False,
-        replacements_via_service=[
+def _get_nginx_kwargs(os_version: OsVersion):
+    kwargs = {
+        "os_version": os_version,
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "version": "%%nginx_version%%",
+        "version_in_uid": False,
+        "replacements_via_service": [
             Replacement(
                 regex_in_build_description="%%nginx_version%%",
                 package_name="nginx",
                 parse_version="minor",
             )
         ],
-        package_list=["nginx"],
-        entrypoint=["/docker-entrypoint.sh"],
-        cmd=["nginx", "-g", "daemon off;"],
-        build_recipe_type=BuildType.DOCKER,
-        extra_files=_NGINX_FILES,
-        exposes_tcp=[80],
-        custom_end=f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d/
-COPY 20-envsubst-on-templates.sh /docker-entrypoint.d/
-COPY 30-tune-worker-processes.sh /docker-entrypoint.d/
-COPY docker-entrypoint.sh /
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/20-envsubst-on-templates.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/30-tune-worker-processes.sh
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.sh
-
+        "package_list": ["gawk", "nginx"],
+        "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
+        "cmd": ["nginx", "-g", "daemon off;"],
+        "build_recipe_type": BuildType.DOCKER,
+        "extra_files": _NGINX_FILES,
+        "exposes_tcp": [80],
+        "custom_end": f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
+COPY [1-3]0-*.sh /docker-entrypoint.d/
+COPY docker-entrypoint.sh /usr/local/bin
 COPY index.html /srv/www/htdocs/
-
-{DOCKERFILE_RUN} mkdir /var/log/nginx
-{DOCKERFILE_RUN} chown nginx:nginx /var/log/nginx
-{DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log
-{DOCKERFILE_RUN} ln -sf /dev/stderr /var/log/nginx/error.log
+{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
+    ln -sf /dev/stdout /var/log/nginx/access.log; \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 
 STOPSIGNAL SIGQUIT
 """,
+    }
+
+    return kwargs
+
+
+NGINX_CONTAINERS = [
+    ApplicationStackContainer(
+        name="rmt-nginx",
+        package_name="rmt-nginx-image",
+        pretty_name="NGINX for SUSE RMT",
+        **_get_nginx_kwargs(os_version),
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+] + [
+    ApplicationStackContainer(
+        name="nginx",
+        package_name="nginx-image",
+        pretty_name="NGINX",
+        custom_description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}.",
+        **_get_nginx_kwargs(os_version),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
@@ -2176,7 +2203,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.69", "1.70"]
+_RUST_VERSIONS = ["1.70", "1.71"]
 
 assert (
     len(_RUST_VERSIONS) == 2
@@ -2244,7 +2271,7 @@ MICRO_CONTAINERS = [
         package_name="micro-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
-        custom_description="A micro environment for containers based on the SLE Base Container Image.",
+        custom_description="A micro environment for containers {based_on_container}.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
         package_list=[
@@ -2302,6 +2329,16 @@ MINIMAL_CONTAINERS = [
         package_name="minimal-image",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
+        config_sh_script=textwrap.dedent(
+            """
+            #==========================================
+            # Remove compat-usrmerge-tools if installed
+            #------------------------------------------
+            if rpm -q compat-usrmerge-tools; then
+                rpm -e compat-usrmerge-tools
+            fi
+            """
+        ),
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -2355,7 +2392,7 @@ PCP_CONTAINERS = [
     ApplicationStackContainer(
         name="pcp",
         pretty_name="Performance Co-Pilot (pcp)",
-        custom_description="Performance Co-Pilot (pcp) container image based on the SLE Base Container Image. This container is only supported with podman.",
+        custom_description="{pretty_name} container {based_on_container}. {podman_only}",
         package_name="pcp-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
@@ -2410,7 +2447,7 @@ GIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         package_name="git-image",
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
-        custom_description="A micro environment with Git for containers based on the SLE Base Container Image.",
+        custom_description="A micro environment with Git {based_on_container}.",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,

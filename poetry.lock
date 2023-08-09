@@ -968,13 +968,13 @@ files = [
 
 [[package]]
 name = "sphinx"
-version = "7.0.1"
+version = "7.1.2"
 description = "Python documentation generator"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Sphinx-7.0.1.tar.gz", hash = "sha256:61e025f788c5977d9412587e733733a289e2b9fdc2fef8868ddfbfc4ccfe881d"},
-    {file = "sphinx-7.0.1-py3-none-any.whl", hash = "sha256:60c5e04756c1709a98845ed27a2eed7a556af3993afb66e77fec48189f742616"},
+    {file = "sphinx-7.1.2-py3-none-any.whl", hash = "sha256:d170a81825b2fcacb6dfd5a0d7f578a053e45d3f2b153fecc948c37344eb4cbe"},
+    {file = "sphinx-7.1.2.tar.gz", hash = "sha256:780f4d32f1d7d1126576e0e5ecc19dc32ab76cd24e950228dcf7b1f6d3d9e22f"},
 ]
 
 [package.dependencies]
@@ -1102,13 +1102,13 @@ files = [
 
 [[package]]
 name = "types-aiofiles"
-version = "23.1.0.4"
+version = "23.1.0.5"
 description = "Typing stubs for aiofiles"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-aiofiles-23.1.0.4.tar.gz", hash = "sha256:89a58cd0ae93b37a22c323c22d250bd65dde6833f6c6f3c1824784e56f47109f"},
-    {file = "types_aiofiles-23.1.0.4-py3-none-any.whl", hash = "sha256:65a862f0d36e6b8e1b2df601ba7aeeb2eba8e2f9764ba9d0989bdd498ed8c857"},
+    {file = "types-aiofiles-23.1.0.5.tar.gz", hash = "sha256:8acf2c847eb474a1397e88ac6e981484c5211715ceba1b41f6431cdc95094e7d"},
+    {file = "types_aiofiles-23.1.0.5-py3-none-any.whl", hash = "sha256:4106aa867fb8d3ded9b21ca4a9dbe3f8580f756cf90973d2b863f2cbb9c29995"},
 ]
 
 [[package]]
