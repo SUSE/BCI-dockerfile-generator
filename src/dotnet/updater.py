@@ -6,6 +6,7 @@ from functools import cmp_to_key
 from os.path import basename
 from typing import ClassVar
 from typing import Literal
+from typing import Optional
 from urllib.parse import urlparse
 
 import dnf
@@ -123,6 +124,7 @@ class Package:
 
 @dataclass(frozen=True)
 class RpmPackage(Package):
+    version: str
     url: str
 
     @staticmethod
@@ -130,6 +132,7 @@ class RpmPackage(Package):
         return RpmPackage(
             arch=arch,
             url=(url := pkg.remote_location()),
+            version=pkg.version,
             name=basename(urlparse(url).path),
         )
 
@@ -270,9 +273,7 @@ class DotNetBCI(LanguageStackContainer):
         for arch in self.exclusive_arch:
             for pkg in pkg_list:
                 if "dotnet-runtime" in pkg.name and pkg.arch == arch:
-                    for part in pkg.name.split("-"):
-                        if re.match(r"(\d+\.)+", part):
-                            versions[arch] = part
+                    versions[arch] = pkg.version
         if not versions:
             return None
         elif len(versions) != len(self.exclusive_arch):
