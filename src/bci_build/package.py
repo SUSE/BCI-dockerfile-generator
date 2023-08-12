@@ -1939,10 +1939,11 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
-def _get_os_container_package_names(os_version: OsVersion):
+def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
     if os_version == OsVersion.TUMBLEWEED:
         return ("openSUSE-release", "openSUSE-release-appliance-docker")
-
+    if os_version == OsVersion.BASALT:
+        return ("ALP-dummy-release",)
     return ("sles-release",)
 
 
@@ -2422,7 +2423,11 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
             )
-            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+            + (
+                ()
+                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
+                else ("skelcd-EULA-bci",)
+            )
             + _get_os_container_package_names(os_version)
         ],
         # intentionally empty
@@ -2442,7 +2447,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in _get_os_container_package_names(os_version)
     ]
-    if os_version == OsVersion.TUMBLEWEED:
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
