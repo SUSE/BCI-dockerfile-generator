@@ -9,14 +9,6 @@ API Documentation
    :undoc-members:
 
 
-:py:mod:`~bci_build.update` module
-----------------------------------
-
-.. automodule:: bci_build.update
-   :members:
-   :undoc-members:
-
-
 :py:mod:`~bci_build.templates` module
 -------------------------------------
 
