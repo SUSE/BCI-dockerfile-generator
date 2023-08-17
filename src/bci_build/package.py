@@ -1381,21 +1381,30 @@ RUBY_CONTAINERS = [
 ]
 
 
-_GO_VER_T = Literal["1.19", "1.20", "1.21"]
-_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
-_GOLANG_TW_VERSIONS = _GOLANG_VERSIONS + ["1.21"]
-_GOLANG_VARIANTS: List[Literal] = ["", "-openssl"]
+_GO_VER_T = Literal["1.20", "1.21", "1.22"]
+_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.20", "1.21"]
+_GOLANG_OPENSSL_VERSIONS: List[_GO_VER_T] = ["1.19", "1.20"]
+_GOLANG_TW_VERSIONS = _GOLANG_VERSIONS  # + ["1.21"]
+_GOLANG_VARIANT_T = Literal["", "-openssl"]
 
 assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
 
 
 def _get_golang_kwargs(
-    ver: _GO_VER_T, variant: _GOLANG_VARIANTS, os_version: OsVersion
+    ver: _GO_VER_T, variant: _GOLANG_VARIANT_T, os_version: OsVersion
 ):
     golang_version_regex = "%%golang_version%%"
-    is_stable = ver == _GOLANG_VERSIONS[-1]
+
+    if variant == "":
+        is_stable = ver == _GOLANG_VERSIONS[-1]
+    elif variant == "-openssl":
+        is_stable = ver == _GOLANG_OPENSSL_VERSIONS[-1]
+
     stability_tag = f"oldstable{variant}"
-    if ver == _GOLANG_TW_VERSIONS[-1]:
+    if (
+        _GOLANG_TW_VERSIONS[-1] != _GOLANG_VERSIONS[-1]
+        and ver == _GOLANG_TW_VERSIONS[-1]
+    ):
         stability_tag = f"unstable{variant}"
     if is_stable:
         stability_tag = f"stable{variant}"
@@ -1433,19 +1442,29 @@ def _get_golang_kwargs(
     }
 
 
-GOLANG_CONTAINERS = [
-    LanguageStackContainer(
-        **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
-        support_level=SupportLevel.L3,
-    )
-    for ver, govariant in product(_GOLANG_VERSIONS, _GOLANG_VARIANTS)
-] + [
-    LanguageStackContainer(
-        **_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED),
-        support_level=SupportLevel.L3,
-    )
-    for ver in _GOLANG_VERSIONS + _GOLANG_TW_VERSIONS
-]
+GOLANG_CONTAINERS = (
+    [
+        LanguageStackContainer(
+            **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
+            support_level=SupportLevel.L3,
+        )
+        for ver, govariant in product(_GOLANG_VERSIONS, ("",))
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
+            support_level=SupportLevel.L3,
+        )
+        for ver, govariant in product(_GOLANG_OPENSSL_VERSIONS, ("-openssl",))
+    ]
+    + [
+        LanguageStackContainer(
+            **_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED),
+            support_level=SupportLevel.L3,
+        )
+        for ver in _GOLANG_VERSIONS + _GOLANG_TW_VERSIONS
+    ]
+)
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
