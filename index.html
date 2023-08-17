@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
@@ -8,9 +8,9 @@
     <title>BCI build recipe generator &#8212; bci-build-templates  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Adding and Modifying Container Images" href="adding_containers.html" />
@@ -31,12 +31,12 @@
           <div class="body" role="main">
             
   <section id="bci-build-recipe-generator">
-<h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Permalink to this heading">¶</a></h1>
+<h1>BCI build recipe generator<a class="headerlink" href="#bci-build-recipe-generator" title="Link to this heading">¶</a></h1>
 <p>This repository contains the scripts to generate the build recipes (Dockerfiles
 or <a class="reference external" href="https://github.com/OSInside/kiwi">kiwi</a> build descriptions) to build the
 BCI development project in the <a class="reference external" href="https://build.opensuse.org/project/subprojects/devel:BCI">Open Build Service</a>.</p>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <p>You will need the following tools:</p>
 <ul class="simple">
 <li><p>Python 3.10 or later</p></li>
@@ -52,7 +52,7 @@ touch the .Net images)</p></li>
 root directory.</p>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <p>The main entry point of this project is the <code class="file docutils literal notranslate"><span class="pre">src/bci_build/update.py</span></code>
 script. It will branch the package on IBS, check it out into a temporary
 directory, regenererate the build recipes from the templates and send a
@@ -73,7 +73,7 @@ package into a directory:</p>
 </div>
 </section>
 <section id="use-the-dev-container">
-<h2>Use the dev-container<a class="headerlink" href="#use-the-dev-container" title="Permalink to this heading">¶</a></h2>
+<h2>Use the dev-container<a class="headerlink" href="#use-the-dev-container" title="Link to this heading">¶</a></h2>
 <p>You can use the dockerfile generator via a development container published as
 <cite>ghcr.io/suse/bci-dockerfile-generator</cite>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">podman run --rm ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py --help</span>
@@ -103,18 +103,18 @@ via a volume as follows:</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.update"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">templates</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bot</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">build_result</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#package-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#update-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#templates-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">templates</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#bot-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bot</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#build-result-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">build_result</span></code> module</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
 <section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -182,7 +182,7 @@ via a volume as follows:</p>
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

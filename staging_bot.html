@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
@@ -8,9 +8,9 @@
     <title>Staging Bot &#8212; bci-build-templates  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="api.html" />
@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <section id="staging-bot">
-<h1>Staging Bot<a class="headerlink" href="#staging-bot" title="Permalink to this heading">¶</a></h1>
+<h1>Staging Bot<a class="headerlink" href="#staging-bot" title="Link to this heading">¶</a></h1>
 <p>Pull requests to the project are tested using a bot running via github
 actions. It writes all build recipes for the images to a branch and creates a
 staging project on <a class="reference external" href="https://build.opensuse.org/">https://build.opensuse.org/</a> under the user <code class="docutils literal notranslate"><span class="pre">defolos</span></code>
@@ -46,7 +46,7 @@ project and branches on each new push or when the PR is closed/merged.</p>
 <p>For further details, see <a class="reference internal" href="api.html#staging.bot.StagingBot" title="staging.bot.StagingBot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StagingBot</span></code></a> or refer to the
 script <strong class="command">scratch-build-bot.py</strong>.</p>
 <section id="branch-setup">
-<h2>Branch setup<a class="headerlink" href="#branch-setup" title="Permalink to this heading">¶</a></h2>
+<h2>Branch setup<a class="headerlink" href="#branch-setup" title="Link to this heading">¶</a></h2>
 <p>The source code of the generator and all utilities lives in the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch,
 while the build recipes are written into separate, so called, deployment
 branches in this repository. For openSUSE Tumbleweed that is the <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/tree/tumbleweed">tumbleweed</a> branch and
@@ -64,7 +64,7 @@ to branch the packages from the CR project
 (<a class="reference internal" href="api.html#staging.bot.StagingBot.obs_workflows_yml" title="staging.bot.StagingBot.obs_workflows_yml"><code class="xref py py-attr docutils literal notranslate"><span class="pre">obs_workflows_yml</span></code></a>).</p>
 </section>
 <section id="project-setup">
-<h2>Project Setup<a class="headerlink" href="#project-setup" title="Permalink to this heading">¶</a></h2>
+<h2>Project Setup<a class="headerlink" href="#project-setup" title="Link to this heading">¶</a></h2>
 <p>The current CI setup includes the following projects:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">devel:BCI:${OS_VERSION}</span></code>: The final build recipes reside in this
@@ -150,7 +150,7 @@ every pull request against the deployment branches.</p></li>
       &copy;2022, Dan Čermák.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
