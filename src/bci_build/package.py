@@ -2489,7 +2489,7 @@ GIT_CONTAINERS = [
         config_sh_script="""
 """,
     )
-    for os_version in ALL_BASE_OS_VERSIONS
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
