@@ -1354,6 +1354,7 @@ from .openjdk import OPENJDK_CONTAINERS
 from .php import PHP_CONTAINERS
 from .rust import RUST_CONTAINERS
 
+from .basecontainers import KERNEL_MODULE_CONTAINERS
 from .basecontainers import MICRO_CONTAINERS
 from .basecontainers import MINIMAL_CONTAINERS
 from .basecontainers import BUSYBOX_CONTAINERS
@@ -1408,6 +1409,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
+        *KERNEL_MODULE_CONTAINERS,
     )
 }
 
