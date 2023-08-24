@@ -11,12 +11,12 @@ packages = [
 ]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-Jinja2 = "^3.1"
-aiohttp = "^3.8"
-rpm-vercmp = "^0.1"
-aiofiles = "^22.1"
+Jinja2 = ">=3.1"
+aiohttp = ">=3.8"
+rpm-vercmp = ">=0.1"
+aiofiles = ">=22.1"
 obs-package-update = { git = "https://github.com/dcermak/obs-package-update", branch = "main" }
-GitPython = "^3.1"
+GitPython = ">=3.1"
 
 [tool.poetry.dev-dependencies]
 black = ">=23.3"
