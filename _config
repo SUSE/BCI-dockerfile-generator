@@ -1,0 +1,91 @@
+%if "%_repository" == "images"
+Type: kiwi
+Repotype: none
+Patterntype: none
+
+Prefer: python3-kiwi
+
+# needed for busybox image building (at minimum)
+ExpandFlags: kiwi-nobasepackages
+
+# needed for micro image
+Prefer: -busybox-coreutils
+
+Binarytype: rpm
+%else
+%if "%_repository" == "containerfile"
+Type: docker
+PreInstall: cni
+
+%else
+Type: spec
+Repotype: rpm-md
+Patterntype: none
+%endif
+%endif
+
+%if "%_repository" == "product"
+Repotype: slepool:nobuildid
+Patterntype: none
+
+Type: productcompose
+Required: product-composer
+Required: package-translations
+Required: libeconf0
+Ignore: dummy-release:this-is-only-for-build-envs
+Ignore: libsystemd0-mini:this-is-only-for-build-envs
+Ignore: krb5-mini:this-is-only-for-build-envs
+%endif
+
+#
+# All repos
+#
+
+BuildFlags: excludebuild:rpm
+
+Prefer: -postgresql16-devel-mini
+Prefer: -ALP-dummy-release
+
+# prevent gdb from pulling in python 3.11 & 3.12 at the same time
+Substitute: obs:cli_debug_packages less
+
+# PYTHON STUFF
+
+# default-prjconf: buildset definitions for python-rpm-macros.
+#
+# This is usually overridden by the distribution's prjconf, landing in ~/.rpmmacros.
+# This file provides the default definition from Factory (Tumbleweed) for pure rpmbuild packaging.
+%define %primary_python python311
+%define skip_python310 1
+%define skip_python311 0
+%define skip_python312 0
+
+Prefer: -python312-base
+Prefer: -python312-devel
+Prefer: -python312-packaging
+Prefer: -python312-rpm-packaging
+Prefer: -python312-pip
+Prefer: -python312-flit-core
+Prefer: -python312-flit-core-devel
+FileProvides: /usr/bin/python3 python311-base
+
+Macros:
+## PYTHON MACROS BEGIN
+# order of %pythons is important: The last flavor overrides any operation on conflicting files and definitions during expansions,
+# making it the "default" in many cases --> keep the primary python3 provider at the end.
+%pythons %{?!skip_python3:%{?!skip_python310:python310} %{?!skip_python312:python312} %{?!skip_python311:python311}}
+%add_python() %{expand:%%define pythons %1 %pythons}
+
+%_without_python2 1
+
+# This method for generating python_modules gets too deep to expand for rpm at about 5 python flavors.
+# Hence, python_module_iter is replaced by python_module_lua in macros.lua.
+# However, OBS cannot expand lua, but has a much higher expansion depth, so this works fine for the server side resolver.
+%python_module_iter(a:) %{expand:%%define python %{-a*}} ( %python-%args ) %{expand:%%{?!python_module_iter_%1:%%{python_module_iter -a%*}}%%{?python_module_iter_%1}}
+# pseudo-undefine for obs: reset for the next expansion within the next call of python_module
+%python_module_iter_STOP %global python %%%%python
+%python_module() %{?!python_module_lua:%{expand:%%define args %{**}} %{expand:%%{python_module_iter -a %{pythons} STOP}}}%{?python_module_lua:%python_module_lua %{**}}
+# gh#openSUSE/python-rpm-macros#127 ... define our current primary Python interpreter
+%primary_python python311
+## PYTHON MACROS END
+:Macros
