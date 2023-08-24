@@ -164,12 +164,13 @@ class OsVersion(enum.Enum):
 RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 # For which versions to create Application and Language Containers?
-ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.TUMBLEWEED]
+ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED]
 
 # For which versions to create Base Container Images?
 ALL_BASE_OS_VERSIONS = [
     OsVersion.SP4,
     OsVersion.SP5,
+    OsVersion.SP6,
     OsVersion.TUMBLEWEED,
     OsVersion.BASALT,
 ]
@@ -184,6 +185,7 @@ CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED, OsVersion.BASAL
 _SUPPORTED_UNTIL_SLE = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
     OsVersion.SP5: None,  # datetime.date(2024, 12, 31),
+    OsVersion.SP6: None,
 }
 
 
