@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: alp/bci/bci-base:%OS_VERSION_ID_SP% alp/bci/bci-base:%OS_VERSION_ID_SP%.%RELEASE% alp/bci/bci-base:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="base-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>Basalt Project BCI Base Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker">
+      <containerconfig
+          name="alp/bci/bci-base"
+          tag="%OS_VERSION_ID_SP%"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="com.suse.basalt.bci.base">
+            <label name="org.opencontainers.image.title" value="Basalt Project BCI Base"/>
+            <label name="org.opencontainers.image.description" value="Base container based on the SUSE Adaptable Linux Platform (ALP)."/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
+            <label name="org.opencontainers.image.url" value="https://susealp.io/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-base:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="beta"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+      </containerconfig>
+    </type>
+    <version>2023</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="aaa_base"/>
+    <package name="bash"/>
+    <package name="ca-certificates"/>
+    <package name="ca-certificates-mozilla"/>
+    <package name="coreutils"/>
+    <package name="cracklib-dict-small"/>
+    <package name="curl"/>
+    <package name="filesystem"/>
+    <package name="glibc-locale-base"/>
+    <package name="gzip"/>
+    <package name="netcfg"/>
+    <package name="ALP-dummy-release"/>
+    <package name="openssl"/>
+    <package name="suse-build-key"/>
+    <package name="tar"/>
+    <package name="timezone"/>
+    <package name="zypper"/>
+    <package name="findutils"/>
+  </packages>
+
+</image>
