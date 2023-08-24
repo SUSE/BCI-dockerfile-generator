@@ -26,7 +26,6 @@ from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
-from bci_build.update import get_bci_project_name
 from dotnet.updater import DOTNET_IMAGES
 from dotnet.updater import DotNetBCI
 from obs_package_update.util import CommandError
@@ -63,11 +62,20 @@ _GIT_COMMIT_ENV = {
 }
 
 
+def _get_bci_project_name(os_version: OsVersion) -> str:
+    prj_suffix = (
+        os_version
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
+        else "SLE-15-SP" + str(os_version)
+    )
+    return f"devel:BCI:{prj_suffix}"
+
+
 async def _fetch_bci_devel_project_config(
     os_version: OsVersion, config_type: _CONFIG_T = "prjconf"
 ) -> str:
     """Fetches the prjconf for the specified ``os_version``"""
-    prj_name = get_bci_project_name(os_version, build_service_target="obs")
+    prj_name = _get_bci_project_name(os_version)
 
     route = f"https://api.opensuse.org/public/source/{prj_name}/{_CONF_TO_ROUTE[config_type]}"
 
@@ -175,7 +183,7 @@ class StagingBot:
     def _generate_project_name(self, prefix: str) -> str:
         assert self.osc_username
         res = f"home:{self.osc_username}:{prefix}:"
-        if self.os_version == OsVersion.TUMBLEWEED:
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             res += str(self.os_version)
         else:
             res += f"SLE-15-SP{str(self.os_version)}"
@@ -213,7 +221,7 @@ class StagingBot:
         """
         return (
             str(self.os_version)
-            if self.os_version == OsVersion.TUMBLEWEED
+            if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
             else f"sle15-sp{str(self.os_version)}"
         )
 
@@ -335,7 +343,7 @@ staging_build:
 refresh_devel_BCI:
   steps:
 """
-        devel_prj = get_bci_project_name(self.os_version)
+        devel_prj = _get_bci_project_name(self.os_version)
         for bci in self._bcis:
             workflows += f"""    - trigger_services:
         project: {devel_prj}
@@ -1403,7 +1411,7 @@ updates:
 
         await self._write_pkg_meta(
             bci[0],
-            target_obs_project=get_bci_project_name(self.os_version),
+            target_obs_project=_get_bci_project_name(self.os_version),
             git_branch_name=self.deployment_branch_name,
         )
 
@@ -1420,7 +1428,7 @@ updates:
         pkgs_on_obs = set(
             (
                 await self._run_cmd(
-                    f"{self._osc} ls {get_bci_project_name(self.os_version, 'obs')}"
+                    f"{self._osc} ls {_get_bci_project_name(self.os_version, 'obs')}"
                 )
             ).stdout.splitlines()
         )

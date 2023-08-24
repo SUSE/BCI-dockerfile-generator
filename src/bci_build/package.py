@@ -130,6 +130,8 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
+    #: Adaptable Linux Platform, Basalt project
+    BASALT = "Basalt"
 
     @staticmethod
     def parse(val: str) -> OsVersion:
@@ -143,7 +145,7 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value == OsVersion.TUMBLEWEED.value:
+        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value):
             return self.value
         return f"SP{self.value}"
 
@@ -151,6 +153,8 @@ class OsVersion(enum.Enum):
     def pretty_os_version_no_dash(self) -> str:
         if self.value == OsVersion.TUMBLEWEED.value:
             return f"openSUSE {self.value}"
+        if self.value == OsVersion.BASALT.value:
+            return "Adaptable Linux Platform"
 
         return f"15 SP{self.value}"
 
@@ -163,12 +167,17 @@ RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
 ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.TUMBLEWEED]
 
 # For which versions to create Base Container Images?
-ALL_BASE_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+ALL_BASE_OS_VERSIONS = [
+    OsVersion.SP4,
+    OsVersion.SP5,
+    OsVersion.TUMBLEWEED,
+    OsVersion.BASALT,
+]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED]
+CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED, OsVersion.BASALT]
 
 
 # End of General Support Dates
@@ -218,7 +227,11 @@ class Replacement:
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
-    return "opensuse/bci" if os_version == OsVersion.TUMBLEWEED else "bci"
+    if os_version == OsVersion.TUMBLEWEED:
+        return "opensuse/bci"
+    if os_version == OsVersion.BASALT:
+        return "alp/bci"
+    return "bci"
 
 
 @dataclass(frozen=True)
@@ -259,6 +272,9 @@ class ImageProperties:
     #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
     application_container_build_tag_prefix: str
 
+    #:
+    based_on_container_description: Optional[str] = None
+
 
 #: Image properties for openSUSE Tumbleweed
 _OPENSUSE_IMAGE_PROPS = ImageProperties(
@@ -284,6 +300,19 @@ _SLE_IMAGE_PROPS = ImageProperties(
     distribution_base_name="SLE",
     build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
     application_container_build_tag_prefix="suse",
+)
+
+_BASALT_IMAGE_PROPS = ImageProperties(
+    maintainer="SUSE LLC (https://www.suse.com/)",
+    vendor="SUSE LLC",
+    registry="registry.suse.com",
+    url="https://susealp.io/",
+    lifecycle_url="https://www.suse.com/lifecycle",
+    label_prefix="com.suse.basalt",
+    distribution_base_name="Basalt Project",
+    build_tag_prefix=_build_tag_prefix(OsVersion.BASALT),
+    application_container_build_tag_prefix="suse",
+    based_on_container_description="based on the SUSE Adaptable Linux Platform (ALP)",
 )
 
 
@@ -442,9 +471,14 @@ class BaseContainerImage(abc.ABC):
             self.build_recipe_type = (
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
-        self._image_properties = (
-            _OPENSUSE_IMAGE_PROPS if self.is_opensuse else _SLE_IMAGE_PROPS
-        )
+
+        if self.is_opensuse:
+            self._image_properties = _OPENSUSE_IMAGE_PROPS
+        elif self.os_version == OsVersion.BASALT:
+            self._image_properties = _BASALT_IMAGE_PROPS
+        else:
+            self._image_properties = _SLE_IMAGE_PROPS
+
         if not self.maintainer:
             self.maintainer = self._image_properties.maintainer
 
@@ -633,8 +667,10 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        else:
-            return f"suse/sle15:15.{self.os_version}"
+        if self.os_version == OsVersion.BASALT:
+            return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
+
+        return f"suse/sle15:15.{self.os_version}"
 
     @property
     def dockerfile_from_line(self) -> str:
@@ -865,7 +901,10 @@ exit 0
 
         description_formatters = {
             "pretty_name": self.pretty_name,
-            "based_on_container": f"based on the {self._image_properties.distribution_base_name} Base Container Image",
+            "based_on_container": (
+                self._image_properties.based_on_container_description
+                or f"based on the {self._image_properties.distribution_base_name} Base Container Image"
+            ),
             "podman_only": "This container is only supported with podman.",
         }
         description = "{pretty_name} container {based_on_container}."
@@ -943,7 +982,7 @@ exit 0
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED,):
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             return str(datetime.datetime.now().year)
         return f"15.{int(self.os_version.value)}.0"
 
@@ -1187,7 +1226,7 @@ class ApplicationStackContainer(LanguageStackContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version == OsVersion.TUMBLEWEED:
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             return "latest"
         return f"15.{os_version}"
 
@@ -1233,6 +1272,88 @@ def generate_disk_size_constraints(size_gb: int) -> str:
   </hardware>
 </constraints>
 """
+
+
+BASALT_BASE = OsContainer(
+    name="base",
+    pretty_name="Base",
+    package_name="base-image",
+    build_recipe_type=BuildType.KIWI,
+    from_image=None,
+    os_version=OsVersion.BASALT,
+    is_latest=True,
+    package_list=[
+        Package(name=pkg_name, pkg_type=PackageType.BOOTSTRAP)
+        for pkg_name in (
+            "aaa_base",
+            "bash",
+            "ca-certificates",
+            "ca-certificates-mozilla",
+            "coreutils",
+            "cracklib-dict-small",
+            "curl",
+            "filesystem",
+            "glibc-locale-base",
+            "gzip",
+            "netcfg",
+            # FIXME: enable this once it's on OBS
+            # "lsb-release",
+            "ALP-dummy-release",
+            "openssl",
+            "suse-build-key",
+            # "patterns-alp-base",
+            "tar",
+            "timezone",
+            "zypper",
+            "findutils",
+        )
+    ],
+    config_sh_script=r"""echo "Configure image: [$kiwi_iname]..."
+
+# FIXME: stop hardcoding the url, use some external mechanism once available
+zypper ar 'https://updates.suse.com/SUSE/Products/ALP-Micro/1.0/$basearch/product/' alp-micro
+
+#======================================
+# Disable recommends
+#--------------------------------------
+sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.conf
+
+#======================================
+# Exclude docs intallation
+#--------------------------------------
+sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
+
+#======================================
+# Remove locale files
+#--------------------------------------
+shopt -s globstar
+rm -f /usr/share/locale/**/*.mo
+
+# Remove zypp uuid (bsc#1098535)
+rm -f /var/lib/zypp/AnonymousUniqueId
+
+# Remove various log files. While it's possible to just rm -rf /var/log/*, that
+# would also remove some package owned directories (not %ghost) and some files
+# are actually wanted, like lastlog in the !docker case.
+# For those wondering about YaST2 here: Kiwi writes /etc/hosts, so the version
+# from the netcfg package ends up as /etc/hosts.rpmnew, which zypper writes a
+# letter about to /var/log/YaST2/config_diff_2022_03_06.log. Kiwi fixes this,
+# but the log file remains.
+rm -rf /var/log/{zypper.log,zypp/history,YaST2}
+
+# Remove the entire zypper cache content (not the dir itself, owned by libzypp)
+rm -rf /var/cache/zypp/*
+
+# Assign a fixed architecture in zypp.conf, to use the container's arch even if
+# the host arch differs (e.g. docker with --platform doesn't affect uname)
+arch=$(rpm -q --qf %{arch} glibc)
+if [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
+	sed -i "s/^# arch =.*\$/arch = i686/" /etc/zypp/zypp.conf
+	# Verify that it's applied
+	grep -q '^arch =' /etc/zypp/zypp.conf
+fi
+""",
+)
 
 
 def _get_python_kwargs(
@@ -1818,10 +1939,11 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
-def _get_os_container_package_names(os_version: OsVersion):
+def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
     if os_version == OsVersion.TUMBLEWEED:
         return ("openSUSE-release", "openSUSE-release-appliance-docker")
-
+    if os_version == OsVersion.BASALT:
+        return ("ALP-dummy-release",)
     return ("sles-release",)
 
 
@@ -2301,7 +2423,11 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
             )
-            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+            + (
+                ()
+                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
+                else ("skelcd-EULA-bci",)
+            )
             + _get_os_container_package_names(os_version)
         ],
         # intentionally empty
@@ -2321,7 +2447,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in _get_os_container_package_names(os_version)
     ]
-    if os_version == OsVersion.TUMBLEWEED:
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -2567,6 +2693,7 @@ HELM_CONTAINERS = [
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
+        BASALT_BASE,
         *PYTHON_3_6_CONTAINERS,
         PYTHON_3_10_SP4,
         *PYTHON_3_11_CONTAINERS,
