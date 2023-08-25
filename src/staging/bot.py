@@ -1428,7 +1428,7 @@ updates:
         pkgs_on_obs = set(
             (
                 await self._run_cmd(
-                    f"{self._osc} ls {_get_bci_project_name(self.os_version, 'obs')}"
+                    f"{self._osc} ls {_get_bci_project_name(self.os_version)}"
                 )
             ).stdout.splitlines()
         )
