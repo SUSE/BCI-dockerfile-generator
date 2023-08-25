@@ -61,6 +61,22 @@ _GIT_COMMIT_ENV = {
     "GIT_COMMITTER_EMAIL": "bci-internal@suse.de",
 }
 
+#: tuple of OsVersion that need the base container to be linked into the staging
+#: project
+#: this is usually only necessary during the early stages of a new SLE service
+#: pack when autobuild has not yet synced the binaries of the container images
+#: from IBS to OBS
+OS_VERSION_NEEDS_BASE_CONTAINER = (OsVersion.SP6,)
+
+
+def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
+    if os_version == OsVersion.TUMBLEWEED:
+        return "openSUSE:Factory", "opensuse-tumbleweed-image"
+    if os_version == OsVersion.BASALT:
+        raise ValueError("The Basalt base container is provided by BCI")
+
+    return f"SUSE:SLE-15-SP{os_version}:Update", "sles15-image"
+
 
 def _get_bci_project_name(os_version: OsVersion) -> str:
     prj_suffix = (
@@ -752,6 +768,22 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 f"{self._osc} meta pkg --file={tmp_pkg_conf.name} {target_obs_project} {bci_pkg.package_name}"
             )
 
+    async def link_base_container_to_staging(self) -> None:
+        """Links the base container for this os into
+        :py:attr:`StagingBot.staging_project_name`. This function does nothing
+        if the current :py:attr:`~StagingBot.os_version` is not in the list
+        :py:const:`OS_VERSION_NEEDS_BASE_CONTAINER`.
+
+        """
+        if self.os_version not in OS_VERSION_NEEDS_BASE_CONTAINER:
+            return
+
+        prj, pkg = _get_base_image_prj_pkg(self.os_version)
+
+        await self._run_cmd(
+            f"{self._osc} linkpac {prj} {pkg} {self.staging_project_name}"
+        )
+
     async def write_pkg_configs(
         self,
         packages: Iterable[BaseContainerImage],
@@ -1085,6 +1117,7 @@ updates:
             git_branch_name=self.branch_name,
             target_obs_project=self.staging_project_name,
         )
+        await self.link_base_container_to_staging()
         await self._wait_for_all_pkg_service_runs()
 
         # "encourage" OBS to rebuild, in case this project existed before
@@ -1692,6 +1725,7 @@ comma-separated list. The package list is taken from the environment variable
                     git_branch_name=bot.branch_name,
                     target_obs_project=bot.staging_project_name,
                 )
+                await bot.link_base_container_to_staging()
 
             coro = _create_staging_proj()
 
