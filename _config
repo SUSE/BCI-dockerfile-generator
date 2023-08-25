@@ -1,0 +1,31 @@
+%if "%_repository" == "images"
+Type: kiwi
+Repotype: none
+Patterntype: none
+
+Prefer: python3-kiwi
+
+# needed for busybox image building (at minimum)
+ExpandFlags: kiwi-nobasepackages
+
+# needed for micro image
+Prefer: -busybox-coreutils
+
+Binarytype: rpm
+%else
+%if %_repository == "containerfile"
+Type: docker
+# PreInstall: release-compare
+
+%else
+%if %_repository == "helmcharts"
+Type: helm
+#Prefer: sles-release
+PreInstall: release-compare perl-YAML-LibYAML
+%else
+Type: spec
+Repotype: none
+Patterntype: none
+%endif
+%endif
+%endif

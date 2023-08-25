@@ -1,0 +1,48 @@
+---
+staging_build:
+  steps:
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: base-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: init-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: minimal-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: micro-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: busybox-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+  filters:
+    event: pull_request
+
+refresh_devel_BCI:
+  steps:
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: base-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: init-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: minimal-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: micro-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: busybox-image
+  filters:
+    event: push
+    branches:
+      only:
+        - Basalt

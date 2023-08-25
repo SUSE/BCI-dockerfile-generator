@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: alp/bci/bci-minimal:%OS_VERSION_ID_SP% alp/bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE% alp/bci/bci-minimal:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="minimal-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>Basalt Project BCI Adaptable Linux Platform Minimal Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker" derived_from="obsrepositories:/alp/bci/bci-micro#latest">
+      <containerconfig
+          name="alp/bci/bci-minimal"
+          tag="%OS_VERSION_ID_SP%"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="com.suse.basalt.bci.minimal">
+            <label name="org.opencontainers.image.title" value="Basalt Project BCI Adaptable Linux Platform Minimal"/>
+            <label name="org.opencontainers.image.description" value="Adaptable Linux Platform Minimal container based on the SUSE Adaptable Linux Platform (ALP)."/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
+            <label name="org.opencontainers.image.url" value="https://susealp.io/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="l3"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="beta"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+      </containerconfig>
+    </type>
+    <version>2023</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="delete">
+    <package name="grep"/>
+    <package name="diffutils"/>
+    <package name="info"/>
+    <package name="fillup"/>
+    <package name="libzio1"/>
+  </packages>
+  <packages type="bootstrap">
+    <package name="ALP-dummy-release"/>
+    <package name="rpm"/>
+  </packages>
+
+</image>

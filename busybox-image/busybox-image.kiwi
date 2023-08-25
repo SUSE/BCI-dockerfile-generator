@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- OBS-AddTag: alp/bci/bci-busybox:%OS_VERSION_ID_SP% alp/bci/bci-busybox:%OS_VERSION_ID_SP%.%RELEASE% alp/bci/bci-busybox:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="busybox-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>SUSE LLC</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>Basalt Project BCI Adaptable Linux Platform BusyBox Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker">
+      <containerconfig
+          name="alp/bci/bci-busybox"
+          tag="%OS_VERSION_ID_SP%"
+          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="com.suse.basalt.bci.busybox">
+            <label name="org.opencontainers.image.title" value="Basalt Project BCI Adaptable Linux Platform BusyBox"/>
+            <label name="org.opencontainers.image.description" value="Adaptable Linux Platform BusyBox container based on the SUSE Adaptable Linux Platform (ALP)."/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
+            <label name="org.opencontainers.image.url" value="https://susealp.io/"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-busybox:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+            <label name="com.suse.supportlevel" value="l3"/>
+            <label name="com.suse.image-type" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.release-stage" value="beta"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+        <subcommand execute="/bin/sh"/>
+      </containerconfig>
+    </type>
+    <version>2023</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="ALP-dummy-release"/>
+    <package name="busybox"/>
+    <package name="busybox-links"/>
+    <package name="ca-certificates-mozilla-prebuilt"/>
+  </packages>
+
+</image>
