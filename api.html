@@ -3,10 +3,10 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>API Documentation &#8212; bci-build-templates  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
@@ -1016,19 +1016,19 @@ workers with at least <code class="docutils literal notranslate"><span class="pr
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fdfe6819750&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f7e87a05710&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fdfe476bed0&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f7e87326950&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7fdfe6a8a650&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f7e88d6de50&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
@@ -1045,6 +1045,16 @@ descriptions.</p>
 <dt class="sig sig-object py" id="staging.bot.OSC_USER_ENVVAR_NAME">
 <span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">OSC_USER_ENVVAR_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'OSC_USER'</span></em><a class="headerlink" href="#staging.bot.OSC_USER_ENVVAR_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>environment variable name from which the osc username for the bot is read</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="staging.bot.OS_VERSION_NEEDS_BASE_CONTAINER">
+<span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">OS_VERSION_NEEDS_BASE_CONTAINER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(OsVersion.SP6,)</span></em><a class="headerlink" href="#staging.bot.OS_VERSION_NEEDS_BASE_CONTAINER" title="Link to this definition">¶</a></dt>
+<dd><p>tuple of OsVersion that need the base container to be linked into the staging
+project
+this is usually only necessary during the early stages of a new SLE service
+pack when autobuild has not yet synced the binaries of the container images
+from IBS to OBS</p>
 </dd></dl>
 
 <dl class="py class">
@@ -1181,6 +1191,15 @@ addition between <code class="docutils literal notranslate"><span class="pre">ba
 one line <strong class="command">osc vc</strong> entry).</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.link_base_container_to_staging">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_base_container_to_staging</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.link_base_container_to_staging" title="Link to this definition">¶</a></dt>
+<dd><p>Links the base container for this os into
+<a class="reference internal" href="#staging.bot.StagingBot.staging_project_name" title="staging.bot.StagingBot.staging_project_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">StagingBot.staging_project_name</span></code></a>. This function does nothing
+if the current <a class="reference internal" href="#staging.bot.StagingBot.os_version" title="staging.bot.StagingBot.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a> is not in the list
+<a class="reference internal" href="#staging.bot.OS_VERSION_NEEDS_BASE_CONTAINER" title="staging.bot.OS_VERSION_NEEDS_BASE_CONTAINER"><code class="xref py py-const docutils literal notranslate"><span class="pre">OS_VERSION_NEEDS_BASE_CONTAINER</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
