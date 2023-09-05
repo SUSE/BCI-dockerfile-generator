@@ -5,7 +5,7 @@
 #!BuildTag: suse/pcp:%%pcp_minor%%-%RELEASE%
 #!BuildTag: suse/pcp:%%pcp_major%%
 #!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
-
+#!BuildVersion: 15.6
 FROM bci/bci-init:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

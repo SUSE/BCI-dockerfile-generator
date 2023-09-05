@@ -1,0 +1,34 @@
+-------------------------------------------------------------------
+Tue Sep  5 11:29:30 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Readd buildversion tags
+
+-------------------------------------------------------------------
+Thu Jul  6 10:15:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Correct the php-composer package name to php-composer2 and improve the message in docker-php-ext-configure
+
+-------------------------------------------------------------------
+Fri Jun 23 13:44:59 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- label capitalization and other cleanups
+
+-------------------------------------------------------------------
+Thu Jun 15 13:44:18 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion so that containers sort higher than those from SP4
+
+-------------------------------------------------------------------
+Tue Jun 13 15:45:53 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Mark SP5 based containers as released
+
+-------------------------------------------------------------------
+Tue May 30 06:51:30 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
+Wed Mar 08 10:11:14 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the PHP 8 BCI

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
-
+#!BuildVersion: 15.6
 FROM suse/sle15:15.6
 
 MAINTAINER william.brown@suse.com
