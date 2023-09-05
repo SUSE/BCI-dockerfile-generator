@@ -1297,6 +1297,7 @@ BASALT_BASE = OsContainer(
             "filesystem",
             "glibc-locale-base",
             "gzip",
+            "jdupes",
             "netcfg",
             # FIXME: enable this once it's on OBS
             # "lsb-release",
@@ -1312,6 +1313,16 @@ BASALT_BASE = OsContainer(
     ],
     config_sh_script=r"""echo "Configure image: [$kiwi_iname]..."
 
+# don't have multiple licenses of the same type
+jdupes -1 -L -r /usr/share/licenses
+
+#
+zypper --non-interactive rm -u jdupes
+
+# Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
+# which would avoid it being installed by filesystem package
+rpm -e compat-usrmerge-tools
+
 # FIXME: stop hardcoding the url, use some external mechanism once available
 zypper ar 'https://updates.suse.com/SUSE/Products/ALP-Micro/1.0/$basearch/product/' alp-micro
 
@@ -1321,7 +1332,7 @@ zypper ar 'https://updates.suse.com/SUSE/Products/ALP-Micro/1.0/$basearch/produc
 sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.conf
 
 #======================================
-# Exclude docs intallation
+# Exclude docs installation
 #--------------------------------------
 sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
 
