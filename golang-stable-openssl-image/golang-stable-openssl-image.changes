@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
-Tue Sep 05 11:12:13 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
+Tue Sep  5 11:29:30 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Readd buildversion tags
+
+-------------------------------------------------------------------
+Wed Jul 12 12:58:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Remove distribution-release from the package list, it is inherited from the base image
+
+-------------------------------------------------------------------
+Thu Jul 06 20:35:56 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Golang 1.20-openssl BCI

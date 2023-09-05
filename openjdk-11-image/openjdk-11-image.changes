@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  5 11:29:30 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Readd buildversion tags
+
+-------------------------------------------------------------------
 Sat Aug 26 09:37:08 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the OpenJDK 11 runtime BCI
