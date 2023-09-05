@@ -508,7 +508,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> Optional[str]:
-        if self.os_version in (OsVersion.SP4, OsVersion.SP5):
+        if self.os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6):
             return f"15.{int(self.os_version.value)}"
         return None
 
@@ -1410,7 +1410,7 @@ PYTHON_3_6_CONTAINERS = (
         package_name="python-3.6-image",
         support_level=SupportLevel.L3,
     )
-    for os_version in (OsVersion.SP5,)
+    for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
 _PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.11")
@@ -1439,7 +1439,7 @@ PYTHON_3_11_CONTAINERS = (
         supported_until=datetime.date(2027, 12, 31),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version in (OsVersion.SP5,)
+    for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
 
@@ -1498,6 +1498,10 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion)
 RUBY_CONTAINERS = [
     LanguageStackContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP5),
+        support_level=SupportLevel.L3,
+    ),
+    LanguageStackContainer(
+        **_get_ruby_kwargs("2.5", OsVersion.SP6),
         support_level=SupportLevel.L3,
     ),
     LanguageStackContainer(**_get_ruby_kwargs("3.2", OsVersion.TUMBLEWEED)),
@@ -1568,23 +1572,24 @@ def _get_golang_kwargs(
 GOLANG_CONTAINERS = (
     [
         LanguageStackContainer(
-            **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
+            **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
-        for ver, govariant in product(_GOLANG_VERSIONS, ("",))
+        for ver, govariant, sle15sp in product(
+            _GOLANG_VERSIONS, ("",), (OsVersion.SP5, OsVersion.SP6)
+        )
     ]
     + [
         LanguageStackContainer(
-            **_get_golang_kwargs(ver, govariant, OsVersion.SP5),
+            **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
-        for ver, govariant in product(_GOLANG_OPENSSL_VERSIONS, ("-openssl",))
+        for ver, govariant, sle15sp in product(
+            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP5, OsVersion.SP6)
+        )
     ]
     + [
-        LanguageStackContainer(
-            **_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED),
-            support_level=SupportLevel.L3,
-        )
+        LanguageStackContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))
         for ver in _GOLANG_VERSIONS + _GOLANG_TW_VERSIONS
     ]
 )
@@ -1635,6 +1640,10 @@ NODE_CONTAINERS = [
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
     ),
+    # still stuck in staging :(
+    # LanguageStackContainer(
+    #    **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
+    # ),
     LanguageStackContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
 ]
 
@@ -1886,7 +1895,7 @@ zypper -n in ${{extensions[*]}}
 PHP_CONTAINERS = [
     _create_php_bci(os_version, variant, 8)
     for os_version, variant in product(
-        (OsVersion.SP5, OsVersion.TUMBLEWEED),
+        (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED),
         (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
     )
 ]
