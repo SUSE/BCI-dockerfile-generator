@@ -4,7 +4,7 @@
 #!BuildTag: suse/postgres:%%pg_version%%
 #!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
 #!BuildTag: suse/postgres:latest
-
+#!BuildVersion: 15.6.15
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

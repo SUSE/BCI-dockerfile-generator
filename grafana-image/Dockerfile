@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #!BuildTag: suse/grafana:%%grafana_version%%
 #!BuildTag: suse/grafana:%%grafana_version%%-%RELEASE%
-
+#!BuildVersion: 15.6
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

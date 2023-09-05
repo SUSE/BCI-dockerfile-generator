@@ -3,6 +3,14 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: python-3.6-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: python-3.11-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: 389-ds-container
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -43,6 +51,26 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: golang-oldstable-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: golang-stable-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: golang-oldstable-openssl-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: golang-stable-openssl-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: ruby-2.5-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: openjdk-11-devel-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -56,6 +84,18 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: openjdk-17-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: php8-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: php-apache8-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: php-fpm8-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
@@ -112,6 +152,12 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
+        package: python-3.6-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: python-3.11-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
         package: 389-ds-container
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
@@ -142,6 +188,21 @@ refresh_devel_BCI:
         package: git-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
+        package: golang-oldstable-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: golang-stable-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: golang-oldstable-openssl-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: golang-stable-openssl-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: ruby-2.5-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
         package: openjdk-11-devel-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
@@ -152,6 +213,15 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: php8-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: php-apache8-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: php-fpm8-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: init-image

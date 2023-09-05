@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/openjdk:17
 #!BuildTag: bci/openjdk:17-%RELEASE%
-
+#!BuildVersion: 15.6.17
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
