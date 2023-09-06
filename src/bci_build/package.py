@@ -1551,7 +1551,6 @@ def _get_golang_kwargs(
     go_packages = (
         f"{go}",
         f"{go}-doc",
-        f"{go}-race",
     )
     return {
         "os_version": os_version,
@@ -1572,6 +1571,13 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
+        "custom_end": textwrap.dedent(
+            f"""
+            # only available on go's tsan_arch architectures
+            #!ArchExclusiveline x86_64 aarch64 s390x ppc64le
+            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; rm -rf /var/log/*; fi
+            """
+        ),
         "package_list": [*go_packages, "make", "git-core"],
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
