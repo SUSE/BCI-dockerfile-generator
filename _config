@@ -18,8 +18,5 @@ Patterntype: none
 %endif
 %endif
 
-# for some reason we have a choice on aarch64 for libicu
-Prefer: libicu71
-
 # don't rebuild with every release:
 # Substitute: distribution-release openSUSE-release-mini
