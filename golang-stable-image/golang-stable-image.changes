@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  6 16:26:55 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- install the race subpackage only on architectures where it is available
+
+-------------------------------------------------------------------
 Thu Aug 17 13:41:35 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - go 1.21 is now stable, go 1.20 is now oldstable
