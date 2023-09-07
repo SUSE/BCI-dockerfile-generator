@@ -1324,7 +1324,7 @@ zypper --non-interactive rm -u jdupes
 rpm -e compat-usrmerge-tools
 
 # FIXME: stop hardcoding the url, use some external mechanism once available
-zypper ar 'https://updates.suse.com/SUSE/Products/ALP-Micro/1.0/$basearch/product/' alp-micro
+zypper -n ar --gpgcheck --enable 'https://updates.suse.com/SUSE/Products/ALP-Dolomite/1.0/$basearch/product/' repo-basalt
 
 #======================================
 # Disable recommends
