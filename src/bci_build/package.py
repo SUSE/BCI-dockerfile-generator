@@ -1652,15 +1652,14 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 NODE_CONTAINERS = [
     LanguageStackContainer(
-        **_get_node_kwargs(16, OsVersion.SP5), support_level=SupportLevel.L3
+        **_get_node_kwargs(16, OsVersion.SP4), support_level=SupportLevel.L3
     ),
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
     ),
-    # still stuck in staging :(
-    # LanguageStackContainer(
-    #    **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
-    # ),
+    LanguageStackContainer(
+        **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
+    ),
     LanguageStackContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
 ]
 
@@ -2173,8 +2172,13 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
-    for ver, os_version in list(product([15, 14], ALL_NONBASE_OS_VERSIONS))
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (13, 12)]
+    for ver, os_version in (
+        # PostgreSQL 14 is only supported on SP4
+        [(14, OsVersion.SP4)]
+        # PostgreSQL 15 is supported on SP5+
+        + list(product([15], ALL_NONBASE_OS_VERSIONS))
+    )
+    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
