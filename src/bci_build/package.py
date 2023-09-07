@@ -1657,10 +1657,9 @@ NODE_CONTAINERS = [
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
     ),
-    # still stuck in staging :(
-    # LanguageStackContainer(
-    #    **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
-    # ),
+    LanguageStackContainer(
+        **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
+    ),
     LanguageStackContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
 ]
 
