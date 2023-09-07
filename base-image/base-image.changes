@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep  7 15:52:44 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- update repository name and url
+
+-------------------------------------------------------------------
 Wed Sep  6 16:30:16 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - merge in optimisations from tumbleweed
