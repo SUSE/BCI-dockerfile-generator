@@ -1652,7 +1652,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 NODE_CONTAINERS = [
     LanguageStackContainer(
-        **_get_node_kwargs(16, OsVersion.SP5), support_level=SupportLevel.L3
+        **_get_node_kwargs(16, OsVersion.SP4), support_level=SupportLevel.L3
     ),
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
