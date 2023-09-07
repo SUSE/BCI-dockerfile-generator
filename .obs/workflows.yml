@@ -71,6 +71,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: nodejs-20-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: openjdk-11-devel-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -112,10 +116,6 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: postgres-15-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: postgres-14-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
@@ -203,6 +203,9 @@ refresh_devel_BCI:
         package: ruby-2.5-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
+        package: nodejs-20-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
         package: openjdk-11-devel-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
@@ -234,9 +237,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: postgres-15-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: postgres-14-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: prometheus-image
