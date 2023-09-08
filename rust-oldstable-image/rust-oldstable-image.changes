@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  8 07:06:47 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- improve buildversion for stable to oldstable transition
+
+-------------------------------------------------------------------
 Wed Jul 26 09:38:48 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - oldstable is rust 1.70 now
