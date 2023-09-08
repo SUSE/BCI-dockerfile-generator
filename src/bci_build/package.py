@@ -1129,7 +1129,7 @@ class LanguageStackContainer(BaseContainerImage):
         return f"{self.name}-{self.version}" if self.version_in_uid else self.name
 
     @property
-    def _release_suffix(self) -> str:
+    def _stability_suffix(self) -> str:
         # The stability-tags feature in containers may result in the generation of
         # identical release numbers for the same version from two different package
         # containers, such as "oldstable" and "stable."
@@ -1165,7 +1165,13 @@ class LanguageStackContainer(BaseContainerImage):
         # To avoid conflicts, the tags are deconflicted based on the stability ordering.
         _STABILITY_TAG_ORDERING = (None, "stable", "oldstable")
         if self.stability_tag and self.stability_tag in _STABILITY_TAG_ORDERING:
-            return f"{_STABILITY_TAG_ORDERING.index(self.stability_tag)}.%RELEASE%"
+            return f"{_STABILITY_TAG_ORDERING.index(self.stability_tag)}"
+        return ""
+
+    @property
+    def _release_suffix(self) -> str:
+        if self._stability_suffix:
+            return f"{self._stability_suffix}.%RELEASE%"
         return "%RELEASE%"
 
     @property
@@ -1203,7 +1209,10 @@ class LanguageStackContainer(BaseContainerImage):
             # the parent's classes build_version
             try:
                 version.parse(str(self.version))
-                return f"{build_ver}.{self.version}"
+                stability_suffix = ""
+                if self._stability_suffix:
+                    stability_suffix = "." + self._stability_suffix
+                return f"{build_ver}.{self.version}{stability_suffix}"
             except version.InvalidVersion:
                 return build_ver
         return None
