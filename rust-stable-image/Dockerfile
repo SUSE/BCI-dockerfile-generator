@@ -4,7 +4,7 @@
 #!BuildTag: bci/rust:1.71
 #!BuildTag: bci/rust:1.71-1.%RELEASE%
 #!BuildTag: bci/rust:latest
-#!BuildVersion: 15.5.1.71
+#!BuildVersion: 15.5.1.71.1
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

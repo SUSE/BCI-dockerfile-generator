@@ -4,7 +4,7 @@
 #!BuildTag: bci/golang:1.21
 #!BuildTag: bci/golang:1.21-1.%RELEASE%
 #!BuildTag: bci/golang:latest
-#!BuildVersion: 15.5.1.21
+#!BuildVersion: 15.5.1.21.1
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -34,5 +34,5 @@ ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin
 
 
 # only available on go's tsan_arch architectures
-#!ArchExclusiveline x86_64 aarch64 s390x ppc64le
+#!ArchExclusiveLine x86_64 aarch64 s390x ppc64le
 RUN set -euo pipefail; if zypper -n install go1.21-race; then zypper -n clean; rm -rf /var/log/*; fi

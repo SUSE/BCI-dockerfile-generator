@@ -3,7 +3,7 @@
 #!BuildTag: bci/rust:oldstable-2.%RELEASE%
 #!BuildTag: bci/rust:1.70
 #!BuildTag: bci/rust:1.70-2.%RELEASE%
-#!BuildVersion: 15.5.1.70
+#!BuildVersion: 15.5.1.70.2
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
