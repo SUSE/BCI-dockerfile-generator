@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  8 12:29:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- typo fix
+
+-------------------------------------------------------------------
 Wed Sep  6 16:26:36 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - install the race subpackage only on architectures where it is available
