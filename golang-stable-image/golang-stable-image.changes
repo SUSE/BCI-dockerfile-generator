@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  8 12:29:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- typo fix
+
+-------------------------------------------------------------------
 Fri Sep  8 07:06:21 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - improve buildversion for stable to oldstable transition
