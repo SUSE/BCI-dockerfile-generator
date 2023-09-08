@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  8 07:06:21 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- improve buildversion for stable to oldstable transition
+
+-------------------------------------------------------------------
 Wed Sep  6 16:26:36 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - install the race subpackage only on architectures where it is available

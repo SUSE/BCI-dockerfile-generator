@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  8 07:06:21 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- improve buildversion for stable to oldstable transition
+
+-------------------------------------------------------------------
 Tue Sep  5 11:29:30 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Readd buildversion tags
