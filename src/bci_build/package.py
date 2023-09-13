@@ -336,6 +336,9 @@ class BaseContainerImage(abc.ABC):
     #: The SLE service pack to which this package belongs
     os_version: OsVersion
 
+    #: Epoch to use for handling os_version downgrades
+    os_epoch: Optional[int] = None
+
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP`` (for SLE) or ``opensuse/tumbleweed:latest`` (for
     #: Tumbleweed) when an empty string is used.
@@ -508,8 +511,11 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> Optional[str]:
-        if self.os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6):
-            return f"15.{int(self.os_version.value)}"
+        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+            epoch = ""
+            if self.os_epoch:
+                epoch = f"{self.os_epoch}."
+            return f"15.{epoch}{int(self.os_version.value)}"
         return None
 
     @property
@@ -1105,10 +1111,10 @@ class LanguageStackContainer(BaseContainerImage):
     # a rolling stability tag like 'stable' or 'oldstable' that will be added first
     stability_tag: Optional[str] = None
 
-    #: additional versions that should be added as tags to this container
+    #: versions that to include as tags to this container
     additional_versions: List[str] = field(default_factory=list)
 
-    #: flag whether the version should be included in the uid
+    #: flag whether the version is included in the uid
     version_in_uid: bool = True
 
     def __post_init__(self) -> None:
@@ -1660,8 +1666,11 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
+    # os_epoch was set because we temporarily released NodeJS 16 from SP5
     LanguageStackContainer(
-        **_get_node_kwargs(16, OsVersion.SP4), support_level=SupportLevel.L3
+        **_get_node_kwargs(16, OsVersion.SP4),
+        support_level=SupportLevel.L3,
+        os_epoch=10,
     ),
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
@@ -2139,6 +2148,7 @@ POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         package_name=f"postgres-{ver}-image",
         os_version=os_version,
+        os_epoch=os_epoch,
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
@@ -2181,13 +2191,13 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
 """,
     )
-    for ver, os_version in (
+    for ver, os_version, os_epoch in (
         # PostgreSQL 14 is only supported on SP4
-        [(14, OsVersion.SP4)]
+        [(14, OsVersion.SP4, 10)]
         # PostgreSQL 15 is supported on SP5+
-        + list(product([15], ALL_NONBASE_OS_VERSIONS))
+        + [(15, os, None) for os in ALL_NONBASE_OS_VERSIONS]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
+    + [(pg_ver, OsVersion.TUMBLEWEED, None) for pg_ver in (14, 13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
