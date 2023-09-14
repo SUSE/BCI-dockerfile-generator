@@ -802,7 +802,14 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 will be added
 
         """
-        tasks = []
+        tasks = [
+            self._write_pkg_meta(
+                bci,
+                git_branch_name=git_branch_name,
+                target_obs_project=target_obs_project,
+            )
+            for bci in packages
+        ]
 
         for bci in packages:
             tasks.append(
@@ -1808,9 +1815,10 @@ comma-separated list. The package list is taken from the environment variable
         elif action == "setup_obs_package":
 
             async def _setup_pkg_meta():
-                tasks = []
-                for pkg_name in args.package_name:
-                    tasks.append(bot.configure_devel_bci_package(pkg_name))
+                tasks = [
+                    bot.configure_devel_bci_package(pkg_name)
+                    for pkg_name in args.package_name
+                ]
                 await asyncio.gather(*tasks)
 
             coro = _setup_pkg_meta()

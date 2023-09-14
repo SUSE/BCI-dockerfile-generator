@@ -821,7 +821,7 @@ exit 0
             (delete_packages, bootstrap_packages, image_packages, uninstall_packages),
             PKG_TYPES,
         ):
-            if len(pkg_list) > 0:
+            if pkg_list:
                 res += (
                     f"""  <packages type="{pkg_type}">
     """
@@ -1714,8 +1714,7 @@ def _get_openjdk_kwargs(
     }
 
     if devel:
-        return {
-            **common,
+        return common | {
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
             "pretty_name": f"OpenJDK {java_version} development",
@@ -1723,13 +1722,11 @@ def _get_openjdk_kwargs(
             "cmd": ["/usr/bin/jshell"],
             "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
         }
-    else:
-        return {
-            **common,
-            "name": "openjdk",
-            "pretty_name": f"OpenJDK {java_version} runtime",
-            "package_list": [f"java-{java_version}-openjdk"],
-        }
+    return common | {
+        "name": "openjdk",
+        "pretty_name": f"OpenJDK {java_version} runtime",
+        "package_list": [f"java-{java_version}-openjdk"],
+    }
 
 
 OPENJDK_CONTAINERS = (
