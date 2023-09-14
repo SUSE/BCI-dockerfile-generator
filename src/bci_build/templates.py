@@ -34,7 +34,7 @@ LABEL org.opensuse.release-stage="{{ image.release_stage }}"
 {%- if image.supported_until %}
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="{{ image.eula }}"
 LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL com.suse.image-type="{{ image.image_type }}"
 LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
@@ -92,7 +92,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="com.suse.supportlevel.until" value="{{ image.supported_until }}"/>
 {%- endif %}
             <label name="com.suse.image-type" value="{{ image.image_type }}"/>
-            <label name="com.suse.eula" value="sle-bci"/>{% endif %}
+            <label name="com.suse.eula" value="{{ image.eula }}"/>{% endif %}
             <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.release-stage" value="{{ image.release_stage }}"/>
             <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
