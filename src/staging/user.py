@@ -21,7 +21,7 @@ class User:
             raise ValueError(f"Invalid tag, expected 'person', but got '{tag}'")
 
         for child in elem:
-            if (tag := child.tag) in kwargs.keys():
+            if (tag := child.tag) in kwargs:
                 if not child.text:
                     raise ValueError(f"Element {tag} is missing an entry")
                 kwargs[tag] = child.text

@@ -129,11 +129,11 @@ class RepositoryBuildResult:
 
         """
         tree = ET.fromstring(obs_api_reply)
-        build_results = []
-
-        for result in tree:
-            if result.tag == "result":
-                build_results.append(RepositoryBuildResult._from_result(result))
+        build_results = [
+            RepositoryBuildResult._from_result(result)
+            for result in tree
+            if result.tag == "result"
+        ]
 
         return build_results
 
