@@ -161,7 +161,11 @@ class OsVersion(enum.Enum):
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
-RELEASED_OS_VERSIONS = [OsVersion.SP4, OsVersion.SP5, OsVersion.TUMBLEWEED]
+RELEASED_OS_VERSIONS = [OsVersion.SP3] + [
+    OsVersion.SP4,
+    OsVersion.SP5,
+    OsVersion.TUMBLEWEED,
+]
 
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED]
@@ -233,6 +237,8 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
         return "opensuse/bci"
     if os_version == OsVersion.BASALT:
         return "alp/bci"
+    if os_version == OsVersion.SP3:
+        return "suse/ltss/sle15.3"
     return "bci"
 
 
@@ -261,6 +267,9 @@ class ImageProperties:
     #: Url to the vendor's home page
     url: str
 
+    #: The EULA identifier to set
+    eula: str
+
     #: Url to learn about the support lifecycle of the image
     lifecycle_url: str
 
@@ -284,6 +293,7 @@ _OPENSUSE_IMAGE_PROPS = ImageProperties(
     vendor="openSUSE Project",
     registry="registry.opensuse.org",
     url="https://www.opensuse.org",
+    eula="sle-bci",
     lifecycle_url="https://en.opensuse.org/Lifetime",
     label_prefix="org.opensuse",
     distribution_base_name="openSUSE Tumbleweed",
@@ -297,10 +307,25 @@ _SLE_IMAGE_PROPS = ImageProperties(
     vendor="SUSE LLC",
     registry="registry.suse.com",
     url="https://www.suse.com/products/server/",
+    eula="sle-bci",
     lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
     label_prefix="com.suse",
     distribution_base_name="SLE",
     build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
+    application_container_build_tag_prefix="suse",
+)
+
+#: Image properties for SUSE Linux Enterprise 15 SP3 LTSS images
+_SLE_15_SP3_LTSS_IMAGE_PROPS = ImageProperties(
+    maintainer="SUSE LLC (https://www.suse.com/)",
+    vendor="SUSE LLC",
+    registry="registry.suse.com",
+    url="https://www.suse.com/products/server/",
+    eula="sle-eula",
+    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
+    label_prefix="com.suse",
+    distribution_base_name="SLE LTSS",
+    build_tag_prefix=_build_tag_prefix(OsVersion.SP3),
     application_container_build_tag_prefix="suse",
 )
 
@@ -309,6 +334,7 @@ _BASALT_IMAGE_PROPS = ImageProperties(
     vendor="SUSE LLC",
     registry="registry.suse.com",
     url="https://susealp.io/",
+    eula="sle-bci",
     lifecycle_url="https://www.suse.com/lifecycle",
     label_prefix="com.suse.basalt",
     distribution_base_name="Basalt Project",
@@ -481,6 +507,8 @@ class BaseContainerImage(abc.ABC):
             self._image_properties = _OPENSUSE_IMAGE_PROPS
         elif self.os_version == OsVersion.BASALT:
             self._image_properties = _BASALT_IMAGE_PROPS
+        elif self.os_version == OsVersion.SP3:
+            self._image_properties = _SLE_15_SP3_LTSS_IMAGE_PROPS
         else:
             self._image_properties = _SLE_IMAGE_PROPS
 
@@ -517,6 +545,10 @@ class BaseContainerImage(abc.ABC):
                 epoch = f"{self.os_epoch}."
             return f"15.{epoch}{int(self.os_version.value)}"
         return None
+
+    @property
+    def eula(self) -> str:
+        return self._image_properties.eula
 
     @property
     def lifecycle_url(self) -> str:
