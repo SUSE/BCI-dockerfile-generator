@@ -44,8 +44,8 @@ COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
 COPY dotnet-targeting-pack-6.0-6.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.22-1.x86_64.rpm
 COPY dotnet-hostfxr-6.0-6.0.22-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.21-1.x86_64.rpm
-COPY dotnet-runtime-deps-6.0-6.0.21-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.22-1.x86_64.rpm
+COPY dotnet-runtime-deps-6.0-6.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.22-1.x86_64.rpm
 COPY dotnet-runtime-6.0-6.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-6.0-6.0.22-1.x86_64.rpm
