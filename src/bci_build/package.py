@@ -2048,6 +2048,50 @@ INIT_CONTAINERS = [
     for os_version in ALL_BASE_OS_VERSIONS
 ]
 
+# https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3991.pdf
+# Chapter 9.1 Crypto Officer Guidance
+_FIPS_15_SP2_ASSET_BASEURL = "https://api.opensuse.org/public/build/"
+_FIPS_15_SP2_BINARIES = [
+    f"SUSE:SLE-15-SP2:Update/pool/x86_64/openssl-1_1.18804/{name}-1.1.1d-11.20.1.x86_64.rpm"
+    for name in ("openssl-1_1", "libopenssl1_1", "libopenssl1_1-hmac")
+] + [
+    f"SUSE:SLE-15-SP1:Update/pool/x86_64/libgcrypt.15117/{name}-1.8.2-8.36.1.x86_64.rpm"
+    for name in ("libgcrypt20", "libgcrypt20-hmac")
+]
+
+FIPS_BASE_CONTAINERS = [
+    OsContainer(
+        name="base-fips",
+        package_name="base-fips-image",
+        exclusive_arch=[Arch.X86_64],
+        os_version=os_version,
+        build_recipe_type=BuildType.DOCKER,
+        support_level=SupportLevel.L3,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        pretty_name=f"{os_version.pretty_os_version_no_dash} FIPS-140-2",
+        package_list=["fipscheck"],
+        extra_labels={
+            "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
+        },
+        custom_end="".join(
+            f"#!RemoteAssetUrl: {_FIPS_15_SP2_ASSET_BASEURL}{binary}\nCOPY {os.path.basename(binary)} .\n"
+            for binary in _FIPS_15_SP2_BINARIES
+        ).strip()
+        + textwrap.dedent(
+            f"""
+            {DOCKERFILE_RUN} \\
+                [ $(LC_ALL=C rpm --checksig -v *rpm | \\
+                    grep -c -E "^ *V3.*key ID 39db7c82: OK") = {len(_FIPS_15_SP2_BINARIES)} ] \\
+                && rpm -Uvh --oldpackage *.rpm \\
+                && rm -vf *.rpm \\
+                && rpmqpack | grep -E '(openssl|libgcrypt)'  | xargs zypper -n addlock
+            ENV OPENSSL_FORCE_FIPS_MODE=1
+            """
+        ),
+    )
+    for os_version in (OsVersion.SP3,)
+]
+
 
 with open(
     os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
@@ -2792,6 +2836,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *OPENJDK_CONTAINERS,
         *PHP_CONTAINERS,
         *INIT_CONTAINERS,
+        *FIPS_BASE_CONTAINERS,
         *MARIADB_CONTAINERS,
         *MARIADB_CLIENT_CONTAINERS,
         *POSTGRES_CONTAINERS,
