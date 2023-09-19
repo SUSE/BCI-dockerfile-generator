@@ -2,6 +2,13 @@
 Wed Sep 13 10:56:02 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - increase buildversion to allow downgrade to SP4
+  The number 10 was chosen after careful consideration of
+  how many SPs will be released on SLE15 until end of 2023.
+
+-------------------------------------------------------------------
+Mon Jul 24 12:55:01 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- standardize description labels
 
 -------------------------------------------------------------------
 Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
