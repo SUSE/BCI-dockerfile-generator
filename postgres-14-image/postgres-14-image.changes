@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 19 15:45:11 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- undo last change on buildversion - not needed for postgresql
+
+-------------------------------------------------------------------
 Wed Sep 13 10:56:02 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - increase buildversion to allow downgrade to SP4
