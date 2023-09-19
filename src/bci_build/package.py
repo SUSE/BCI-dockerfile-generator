@@ -2266,7 +2266,7 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     )
     for ver, os_version, os_epoch in (
         # PostgreSQL 14 is only supported on SP4
-        [(14, OsVersion.SP4, 10)]
+        [(14, OsVersion.SP4, None)]
         # PostgreSQL 15 is supported on SP5+
         + [(15, os, None) for os in ALL_NONBASE_OS_VERSIONS]
     )
