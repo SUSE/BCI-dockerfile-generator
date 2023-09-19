@@ -11,6 +11,21 @@ Mon Jul 24 12:55:01 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 - standardize description labels
 
 -------------------------------------------------------------------
+Wed Jul 12 12:58:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Remove distribution-release from the package list, it is inherited from the base image
+
+-------------------------------------------------------------------
+Tue Jun 27 15:55:54 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix reference label
+
+-------------------------------------------------------------------
+Fri Jun 23 13:44:59 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- label capitalization and other cleanups
+
+-------------------------------------------------------------------
 Tue May 30 06:52:15 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Fix lifecycle url
