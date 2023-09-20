@@ -2216,7 +2216,8 @@ with open(
     _POSTGRES_LICENSE = license_file.read(-1)
 
 
-_POSTGRES_MAJOR_VERSIONS = [15, 14, 13, 12]
+# first list the SLE15 versions, then the TW specific versions
+_POSTGRES_MAJOR_VERSIONS = [15, 14] + [16, 13, 12]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         package_name=f"postgres-{ver}-image",
@@ -2270,7 +2271,7 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
         # PostgreSQL 15 is supported on SP5+
         + [(15, os, None) for os in ALL_NONBASE_OS_VERSIONS]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED, None) for pg_ver in (14, 13, 12)]
+    + [(pg_ver, OsVersion.TUMBLEWEED, None) for pg_ver in (16, 14, 13, 12)]
 ]
 
 PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
