@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 21 10:47:03 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- update stable to Rust 1.72
+
+-------------------------------------------------------------------
 Fri Sep  8 12:29:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - typo fix
