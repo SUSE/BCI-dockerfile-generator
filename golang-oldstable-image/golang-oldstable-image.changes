@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Fri Sep  8 07:06:47 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - improve buildversion for stable to oldstable transition

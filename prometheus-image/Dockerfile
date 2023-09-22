@@ -2,6 +2,7 @@
 #!BuildTag: suse/prometheus:%%prometheus_version%%
 #!BuildTag: suse/prometheus:%%prometheus_version%%-%RELEASE%
 #!BuildTag: suse/prometheus:latest
+#!BuildName: suse-prometheus-%%prometheus_version%%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 

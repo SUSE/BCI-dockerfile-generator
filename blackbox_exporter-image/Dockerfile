@@ -2,6 +2,7 @@
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_version%%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_version%%-%RELEASE%
 #!BuildTag: suse/blackbox_exporter:latest
+#!BuildName: suse-blackbox_exporter-%%blackbox_exporter_version%%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 

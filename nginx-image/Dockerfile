@@ -2,6 +2,7 @@
 #!BuildTag: suse/nginx:%%nginx_version%%
 #!BuildTag: suse/nginx:%%nginx_version%%-%RELEASE%
 #!BuildTag: suse/nginx:latest
+#!BuildName: suse-nginx-%%nginx_version%%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 

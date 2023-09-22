@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Wed Jul 26 17:44:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add latest tag to nodejs18 sle bci image

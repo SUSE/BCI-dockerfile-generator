@@ -4,6 +4,7 @@
 #!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:6.0.22
 #!BuildTag: bci/dotnet-runtime:6.0.22-%RELEASE%
+#!BuildName: bci-dotnet-runtime-6.0
 #!BuildVersion: 15.5.6.0
 FROM suse/sle15:15.5
 

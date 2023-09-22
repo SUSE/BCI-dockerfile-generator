@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Thu Sep 21 10:47:15 UTC 2023 - Dirk Müller <dmueller@suse.com>
 
 - update oldstable to rust 1.71

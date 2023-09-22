@@ -6,6 +6,7 @@
 #!BuildTag: suse/pcp:%%pcp_major%%
 #!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
 #!BuildTag: suse/pcp:latest
+#!BuildName: suse-pcp-%%pcp_patch%%
 #!BuildVersion: 15.5
 FROM bci/bci-init:15.5
 

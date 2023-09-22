@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Wed Jul 12 12:58:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Remove distribution-release from the package list, it is inherited from the base image

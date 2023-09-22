@@ -2,6 +2,7 @@
 #!BuildTag: suse/grafana:%%grafana_version%%
 #!BuildTag: suse/grafana:%%grafana_version%%-%RELEASE%
 #!BuildTag: suse/grafana:latest
+#!BuildName: suse-grafana-%%grafana_version%%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
