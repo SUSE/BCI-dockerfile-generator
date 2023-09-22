@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:37 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Tue Sep 19 15:45:11 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - undo last change on buildversion - not needed for postgresql
