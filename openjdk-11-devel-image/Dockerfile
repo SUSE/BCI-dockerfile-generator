@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/openjdk-devel:11
 #!BuildTag: bci/openjdk-devel:11-%RELEASE%
+#!BuildName: bci-openjdk-devel-11
 #!BuildVersion: 15.6.11
 FROM bci/openjdk:11
 

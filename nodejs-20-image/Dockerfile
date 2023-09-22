@@ -3,6 +3,7 @@
 #!BuildTag: bci/nodejs:20-%RELEASE%
 #!BuildTag: bci/node:20
 #!BuildTag: bci/node:20-%RELEASE%
+#!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
 FROM suse/sle15:15.6
 

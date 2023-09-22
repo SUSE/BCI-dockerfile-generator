@@ -3,6 +3,7 @@
 #!BuildTag: bci/rust:oldstable-2.%RELEASE%
 #!BuildTag: bci/rust:1.71
 #!BuildTag: bci/rust:1.71-2.%RELEASE%
+#!BuildName: bci-rust-oldstable
 #!BuildVersion: 15.6.1.71.2
 FROM suse/sle15:15.6
 
