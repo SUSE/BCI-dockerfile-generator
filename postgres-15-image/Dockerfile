@@ -4,6 +4,7 @@
 #!BuildTag: suse/postgres:%%pg_version%%
 #!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
 #!BuildTag: suse/postgres:latest
+#!BuildName: suse-postgres-15
 #!BuildVersion: 15.5.15
 FROM suse/sle15:15.5
 

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/php-apache:8
 #!BuildTag: bci/php-apache:8-%RELEASE%
+#!BuildName: bci-php-apache-8
 #!BuildVersion: 15.5.8
 FROM suse/sle15:15.5
 

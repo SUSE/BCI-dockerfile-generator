@@ -5,6 +5,7 @@
 #!BuildTag: bci/dotnet-aspnet:7.0.11
 #!BuildTag: bci/dotnet-aspnet:7.0.11-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:latest
+#!BuildName: bci-dotnet-aspnet-7.0
 #!BuildVersion: 15.5.7.0
 FROM suse/sle15:15.5
 

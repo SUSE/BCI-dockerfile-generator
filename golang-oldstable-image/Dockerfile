@@ -3,6 +3,7 @@
 #!BuildTag: bci/golang:oldstable-2.%RELEASE%
 #!BuildTag: bci/golang:1.20
 #!BuildTag: bci/golang:1.20-2.%RELEASE%
+#!BuildName: bci-golang-oldstable
 #!BuildVersion: 15.5.1.20.2
 FROM suse/sle15:15.5
 

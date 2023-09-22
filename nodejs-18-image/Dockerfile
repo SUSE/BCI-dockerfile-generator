@@ -5,6 +5,7 @@
 #!BuildTag: bci/node:18
 #!BuildTag: bci/node:18-%RELEASE%
 #!BuildTag: bci/node:latest
+#!BuildName: bci-nodejs-18
 #!BuildVersion: 15.5.18
 FROM suse/sle15:15.5
 

@@ -3,6 +3,7 @@
 #!BuildTag: bci/python:3.6-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
+#!BuildName: bci-python-3.6
 #!BuildVersion: 15.5.3.6
 FROM suse/sle15:15.5
 
