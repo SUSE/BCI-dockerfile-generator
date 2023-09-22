@@ -538,6 +538,12 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
+    def build_name(self) -> Optional[str]:
+        if self.build_tags:
+            return self.build_tags[0].replace("/", ":").replace(":", "-")
+        return None
+
+    @property
     def build_version(self) -> Optional[str]:
         if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             epoch = ""
