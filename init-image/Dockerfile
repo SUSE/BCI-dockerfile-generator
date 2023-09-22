@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%
+#!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6
 FROM suse/sle15:15.6
 

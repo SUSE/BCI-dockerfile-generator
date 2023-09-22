@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Fri Sep  8 12:29:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - typo fix

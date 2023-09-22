@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:22 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Thu Sep 07 20:41:17 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Node.js 20 development BCI

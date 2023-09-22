@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: bci/php-fpm:8
 #!BuildTag: bci/php-fpm:8-%RELEASE%
+#!BuildName: bci-php-fpm-8
 #!BuildVersion: 15.6.8
 FROM suse/sle15:15.6
 

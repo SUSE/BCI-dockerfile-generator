@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: suse/rmt-nginx:%%nginx_version%%
 #!BuildTag: suse/rmt-nginx:%%nginx_version%%-%RELEASE%
+#!BuildName: suse-rmt-nginx-%%nginx_version%%
 #!BuildVersion: 15.6
 FROM suse/sle15:15.6
 

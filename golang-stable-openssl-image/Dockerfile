@@ -3,6 +3,7 @@
 #!BuildTag: bci/golang:stable-openssl-%RELEASE%
 #!BuildTag: bci/golang:1.20-openssl
 #!BuildTag: bci/golang:1.20-openssl-%RELEASE%
+#!BuildName: bci-golang-stable-openssl
 #!BuildVersion: 15.6
 FROM suse/sle15:15.6
 

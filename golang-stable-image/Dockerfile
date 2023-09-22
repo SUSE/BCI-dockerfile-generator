@@ -3,6 +3,7 @@
 #!BuildTag: bci/golang:stable-1.%RELEASE%
 #!BuildTag: bci/golang:1.21
 #!BuildTag: bci/golang:1.21-1.%RELEASE%
+#!BuildName: bci-golang-stable
 #!BuildVersion: 15.6.1.21.1
 FROM suse/sle15:15.6
 
