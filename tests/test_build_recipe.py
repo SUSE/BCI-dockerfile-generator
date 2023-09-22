@@ -15,6 +15,7 @@ from bci_build.templates import KIWI_TEMPLATE
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
+#!BuildName: bci-test-28
 #!BuildVersion: 15.4.28
 FROM suse/sle15:15.4
 
@@ -116,6 +117,7 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:stable-1.%RELEASE%
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
+#!BuildName: bci-test-stable
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
@@ -208,6 +210,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             """# SPDX-License-Identifier: MIT
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
+#!BuildName: bci-test-28
 #!BuildVersion: 15.4.28
 FROM suse/sle15:15.4
 
