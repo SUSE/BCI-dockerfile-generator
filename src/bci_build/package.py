@@ -1443,13 +1443,18 @@ def _get_python_kwargs(
         "pretty_name": f"Python {py3_ver} development",
         "version": py3_ver,
         "additional_versions": ["3"],
-        "env": {"PYTHON_VERSION": py3_ver_replacement, "PIP_VERSION": pip3_replacement},
+        "env": {
+            "PYTHON_VERSION": py3_ver_replacement,
+            "PATH": "$PATH:/root/.local/bin",
+            "PIP_VERSION": pip3_replacement,
+        },
         "package_list": [f"{py3}-devel", py3, pip3, "curl", "git-core"]
         + (
             [f"{py3}-wheel"]
             if is_system_py or os_version == OsVersion.TUMBLEWEED
             else []
-        ),
+        )
+        + ([f"{py3}-pipx"] if os_version == OsVersion.TUMBLEWEED else []),
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description=py3_ver_replacement,
@@ -1463,7 +1468,9 @@ def _get_python_kwargs(
         symlink_py_and_pydoc = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
 
-        kwargs["config_sh_script"] = symlink_py_and_pydoc
+        kwargs["config_sh_script"] = (
+            "install -d -m 0755 /root/.local/bin; "
+        ) + symlink_py_and_pydoc
 
     return kwargs
 
