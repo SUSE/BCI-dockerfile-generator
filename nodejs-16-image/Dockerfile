@@ -3,6 +3,7 @@
 #!BuildTag: bci/nodejs:16-%RELEASE%
 #!BuildTag: bci/node:16
 #!BuildTag: bci/node:16-%RELEASE%
+#!BuildName: bci-nodejs-16
 #!BuildVersion: 15.10.4.16
 FROM suse/sle15:15.4
 

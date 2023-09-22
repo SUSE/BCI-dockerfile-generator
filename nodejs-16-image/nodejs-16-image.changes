@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:37 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Wed Sep 13 10:56:02 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - increase buildversion to allow downgrade to SP4
