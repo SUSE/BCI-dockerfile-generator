@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Tue Jul 11 09:32:05 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Build only on 64 bit arches as JAVA_HOME is hard coded to /usr/lib64

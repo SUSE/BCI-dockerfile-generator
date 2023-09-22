@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
 Thu Jul  6 10:15:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Correct the php-composer package name to php-composer2 and improve the message in docker-php-ext-configure
