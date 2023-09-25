@@ -2682,9 +2682,9 @@ PCP_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
-        version="%%pcp_patch%%",
+        version="%%pcp_major%%",
         version_in_uid=False,
-        additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
+        additional_versions=["%%pcp_minor%%", "%%pcp_patch%%"],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description=f"%%pcp_{ver}%%",
