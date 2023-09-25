@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 25 11:06:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Add /root/.local/bin to PATH, jsc#PED-5573
+
+-------------------------------------------------------------------
 Thu Jul  6 08:16:35 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Adjust for primary python now being 3.11
