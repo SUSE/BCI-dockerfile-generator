@@ -30,7 +30,8 @@ LABEL com.suse.release-stage="beta"
 
 RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 python311-pip curl git-core; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py311_ver%%"
+ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
-RUN set -euo pipefail; ln -s /usr/bin/python3.11 /usr/local/bin/python3; \
+RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.11 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.11 /usr/local/bin/pydoc
