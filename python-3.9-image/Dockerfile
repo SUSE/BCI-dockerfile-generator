@@ -24,9 +24,10 @@ LABEL org.opensuse.release-stage="released"
 
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends python39-devel python39 python39-pip curl git-core python39-wheel; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends python39-devel python39 python39-pip curl git-core python39-wheel python39-pipx; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py39_ver%%"
+ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
-RUN set -euo pipefail; ln -s /usr/bin/python3.9 /usr/local/bin/python3; \
+RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.9 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.9 /usr/local/bin/pydoc
