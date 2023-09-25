@@ -29,7 +29,8 @@ LABEL com.suse.release-stage="released"
 
 RUN set -euo pipefail; zypper -n in --no-recommends python310-devel python310 python310-pip curl git-core; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py310_ver%%"
+ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
-RUN set -euo pipefail; ln -s /usr/bin/python3.10 /usr/local/bin/python3; \
+RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.10 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.10 /usr/local/bin/pydoc
