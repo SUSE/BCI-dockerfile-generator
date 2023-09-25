@@ -1464,13 +1464,14 @@ def _get_python_kwargs(
         ],
         "os_version": os_version,
     }
+
+    config_sh_script = "install -d -m 0755 /root/.local/bin"
+
     if not is_system_py:
-        symlink_py_and_pydoc = rf"""ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
+        config_sh_script += rf"""; ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
 
-        kwargs["config_sh_script"] = (
-            "install -d -m 0755 /root/.local/bin; "
-        ) + symlink_py_and_pydoc
+    kwargs["config_sh_script"] = config_sh_script
 
     return kwargs
 
