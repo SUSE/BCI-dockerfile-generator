@@ -29,5 +29,6 @@ LABEL com.suse.release-stage="released"
 
 RUN set -euo pipefail; zypper -n in --no-recommends python3-devel python3 python3-pip curl git-core python3-wheel; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py36_ver%%"
+ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
