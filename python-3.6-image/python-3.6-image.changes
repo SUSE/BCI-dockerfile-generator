@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 25 11:06:37 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Add /root/.local/bin to PATH, jsc#PED-5573
+
+-------------------------------------------------------------------
 Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add buildname when buildversion is set otherwise OBS ignores it
