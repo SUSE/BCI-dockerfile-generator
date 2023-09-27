@@ -13,6 +13,8 @@ from bci_build.templates import KIWI_TEMPLATE
     [
         (
             """# SPDX-License-Identifier: MIT
+# Copyright header
+
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
 #!BuildName: bci-test-28
@@ -46,7 +48,7 @@ RUN emacs -Q --batch test.el
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-
+<!-- Copyright header-->
 <!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -113,6 +115,8 @@ RUN emacs -Q --batch test.el
         ),
         (
             """# SPDX-License-Identifier: MIT
+# Copyright header
+
 #!BuildTag: bci/test:stable
 #!BuildTag: bci/test:stable-1.%RELEASE%
 #!BuildTag: bci/test:%%emacs_ver%%
@@ -145,7 +149,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-
+<!-- Copyright header-->
 <!-- OBS-AddTag: bci/test:stable bci/test:stable-1.%RELEASE% bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-1.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -208,6 +212,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
         ),
         (
             """# SPDX-License-Identifier: MIT
+# Copyright header
+
 #!BuildTag: bci/test:28
 #!BuildTag: bci/test:28-%RELEASE%
 #!BuildName: bci-test-28
@@ -238,7 +244,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-
+<!-- Copyright header-->
 <!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -299,8 +305,9 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             ),
         ),
         (
-            """#!ExclusiveArch: x86_64 s390x
-# SPDX-License-Identifier: BSD
+            """# SPDX-License-Identifier: BSD
+# Copyright header
+#!ExclusiveArch: x86_64 s390x
 #!BuildTag: opensuse/bci/test:28.2
 #!BuildTag: opensuse/bci/test:28.2-%RELEASE%
 #!BuildTag: opensuse/bci/test:28
@@ -345,7 +352,7 @@ RUN emacs -Q --batch
 VOLUME /bin/ /usr/bin/""",
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: BSD -->
-
+<!-- Copyright header-->
 <!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:28-%RELEASE% opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:28-%RELEASE% opensuse/bci/emacs:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -441,5 +448,10 @@ VOLUME /bin/ /usr/bin/""",
 def test_build_recipe_templates(
     dockerfile: str, kiwi_xml: str, image: LanguageStackContainer
 ) -> None:
-    assert DOCKERFILE_TEMPLATE.render(DOCKERFILE_RUN="RUN", image=image) == dockerfile
-    assert KIWI_TEMPLATE.render(image=image) == kiwi_xml
+    assert (
+        DOCKERFILE_TEMPLATE.render(
+            DOCKERFILE_RUN="RUN", image=image, INFOHEADER="# Copyright header"
+        )
+        == dockerfile
+    )
+    assert KIWI_TEMPLATE.render(image=image, INFOHEADER="Copyright header") == kiwi_xml
