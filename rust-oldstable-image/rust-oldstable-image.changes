@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 14:29:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
 Thu Sep 28 10:32:14 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - include lifecycle data in the container as well
