@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 14:29:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
 Sat Aug 26 09:37:08 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP6 with Git BCI
