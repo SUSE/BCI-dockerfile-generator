@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 14:29:26 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
 Wed Jul 12 12:35:49 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Replace distribution-release with sles-release
