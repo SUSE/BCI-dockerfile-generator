@@ -12,8 +12,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
-LABEL org.opencontainers.image.title="SLE BCI Golang 1.20-openssl"
-LABEL org.opencontainers.image.description="Golang 1.20-openssl container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Go 1.20-openssl development"
+LABEL org.opencontainers.image.description="Go 1.20-openssl development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="1.20-openssl"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
