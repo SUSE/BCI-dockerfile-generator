@@ -11,8 +11,8 @@ MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.golang
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Golang 1.21"
-LABEL org.opencontainers.image.description="Golang 1.21 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Go 1.21 development"
+LABEL org.opencontainers.image.description="Go 1.21 development container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="1.21"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
