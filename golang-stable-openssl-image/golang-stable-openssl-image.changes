@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 10:32:27 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- include lifecycle data in the container as well
+
+-------------------------------------------------------------------
 Fri Sep 22 09:32:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add buildname when buildversion is set otherwise OBS ignores it
