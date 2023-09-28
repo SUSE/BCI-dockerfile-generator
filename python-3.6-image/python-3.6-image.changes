@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 10:32:14 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- include lifecycle data in the container as well
+
+-------------------------------------------------------------------
 Mon Sep 25 11:06:45 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Add /root/.local/bin to PATH, jsc#PED-5573
