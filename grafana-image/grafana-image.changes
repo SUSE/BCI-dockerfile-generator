@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 28 14:29:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
 Fri Sep 22 09:32:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add buildname when buildversion is set otherwise OBS ignores it
