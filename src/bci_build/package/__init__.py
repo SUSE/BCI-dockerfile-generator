@@ -6,6 +6,7 @@ import asyncio
 import datetime
 import enum
 import os
+import textwrap
 from dataclasses import dataclass
 from dataclasses import field
 from typing import Callable
@@ -17,6 +18,7 @@ from typing import overload
 from typing import Union
 
 from bci_build.templates import DOCKERFILE_TEMPLATE
+from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
@@ -1068,8 +1070,10 @@ exit 0
 
         if self.build_recipe_type == BuildType.DOCKER:
             fname = "Dockerfile"
+            infoheader = textwrap.indent(INFOHEADER_TEMPLATE, "# ")
+
             dockerfile = DOCKERFILE_TEMPLATE.render(
-                image=self, DOCKERFILE_RUN=DOCKERFILE_RUN
+                image=self, INFOHEADER=infoheader, DOCKERFILE_RUN=DOCKERFILE_RUN
             )
             if dockerfile[-1] != "\n":
                 dockerfile += "\n"
@@ -1081,7 +1085,12 @@ exit 0
             fname = f"{self.package_name}.kiwi"
             tasks.append(
                 asyncio.ensure_future(
-                    write_file_to_dest(fname, KIWI_TEMPLATE.render(image=self))
+                    write_file_to_dest(
+                        fname,
+                        KIWI_TEMPLATE.render(
+                            image=self, INFOHEADER=INFOHEADER_TEMPLATE
+                        ),
+                    )
                 )
             )
             files.append(fname)
