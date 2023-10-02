@@ -2,6 +2,7 @@
 import datetime
 from typing import Literal
 
+from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
@@ -87,6 +88,7 @@ PYTHON_3_10_SP4 = LanguageStackContainer(
     support_level=SupportLevel.L3,
     is_latest=False,
     **_get_python_kwargs("3.10", OsVersion.SP4),
+    supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP4],
 )
 
 PYTHON_3_11_CONTAINERS = (
