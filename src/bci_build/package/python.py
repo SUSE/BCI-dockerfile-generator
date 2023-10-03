@@ -41,7 +41,8 @@ def _get_python_kwargs(
             if is_system_py or os_version == OsVersion.TUMBLEWEED
             else []
         )
-        + ([f"{py3}-pipx"] if os_version == OsVersion.TUMBLEWEED else []),
+        + ([f"{py3}-pipx"] if os_version == OsVersion.TUMBLEWEED else [])
+        + os_version.lifecycle_data_pkg,
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description=py3_ver_replacement,
