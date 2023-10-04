@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  4 07:34:12 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- include lifecycle data
+
+-------------------------------------------------------------------
 Thu Sep 28 14:29:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add copyright and description header
