@@ -29,6 +29,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:SLE-15-SP4
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP4
+        source_package: sle15-kernel-module-toolkit
+        target_project: home:defolos:BCI:CR:SLE-15-SP4:Staging
   filters:
     event: pull_request
 
@@ -55,6 +59,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP4
         package: busybox-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP4
+        package: sle15-kernel-module-toolkit
   filters:
     event: push
     branches:
