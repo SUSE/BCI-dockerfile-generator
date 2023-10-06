@@ -4,10 +4,12 @@ import textwrap
 
 from bci_build.package import _build_tag_prefix
 from bci_build.package import ALL_BASE_OS_VERSIONS
+from bci_build.package import ALL_OS_VERSIONS
 from bci_build.package import Arch
 from bci_build.package import BuildType
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import generate_disk_size_constraints
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 from bci_build.package import Package
@@ -212,4 +214,28 @@ BUSYBOX_CONTAINERS = [
         config_sh_interpreter="/bin/sh",
     )
     for os_version in ALL_BASE_OS_VERSIONS
+]
+
+
+KERNEL_MODULE_CONTAINERS = [
+    OsContainer(
+        name="sle15-kernel-module-toolkit",
+        pretty_name="SLE 15 Kernel Module Toolkit",
+        package_name="sle15-kernel-module-toolkit",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        package_list=[
+            "kernel-devel",
+            "kernel-syms",
+            "gcc",
+            "kmod-compat",
+            "make",
+            "patch",
+            "awk",
+        ]
+        # tar is not in bci-base in 15.4, but we need it to unpack tarballs
+        + (["tar"] if os_version == OsVersion.SP4 else []),
+        extra_files={"_constraints": generate_disk_size_constraints(8)},
+    )
+    for os_version in (ALL_OS_VERSIONS - {OsVersion.BASALT, OsVersion.TUMBLEWEED})
 ]
