@@ -4,13 +4,14 @@ from itertools import product
 from typing import List
 from typing import Literal
 
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import LanguageStackContainer
-from bci_build.package import OsVersion
 from bci_build.package import Replacement
-from bci_build.package import SupportLevel
+from bci_build.package.bciclasses import LanguageStackContainer
+
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import DOCKERFILE_RUN
+from .constants import OsVersion
+from .constants import SupportLevel
+from .utils import generate_disk_size_constraints
 
 
 _GO_VER_T = Literal["1.20", "1.21", "1.22"]

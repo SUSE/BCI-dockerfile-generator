@@ -30,11 +30,11 @@ If you want to create a new Container Image on OBS, then proceed as follows:
 
    $ osc mkpac $new_pkg_name
 
-4. Run the script :command:`./src/bci_build/package.py` as follows:
+4. Run the :command:`package` as follows:
 
    .. code-block:: console
 
-      $ poetry run ./src/bci_build/package.py $new_container_nvr-$SP_ID path_to_checkout_of_new_pkg_name
+      $ poetry run package $new_container_nvr-$SP_ID path_to_checkout_of_new_pkg_name
 
    where ``$new_container_nvr`` is the value of the
    :py:attr:`~bci_build.package.BaseContainerImage.uid` property of your
@@ -44,7 +44,7 @@ If you want to create a new Container Image on OBS, then proceed as follows:
    :py:attr:`~bci_build.package.LanguageStackContainer.version`, depending on
    the type of the container) and ``$SP_ID`` the identifier of this service pack
    (e.g. ``sp4`` or ``sp3``). You can find all available containers via
-   :command:`poetry ./src/bci_build/package.py --help`.
+   :command:`poetry run package --help`.
 
    ``path_to_checkout_of_new_pkg_name`` is the path where you have checked out
    the *package* ``$new_pkg_name`` to.

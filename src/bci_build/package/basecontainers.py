@@ -2,19 +2,20 @@
 import os
 import textwrap
 
-from bci_build.package import _build_tag_prefix
-from bci_build.package import ALL_BASE_OS_VERSIONS
-from bci_build.package import ALL_OS_VERSIONS
-from bci_build.package import Arch
-from bci_build.package import BuildType
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import OsContainer
-from bci_build.package import OsVersion
-from bci_build.package import Package
-from bci_build.package import PackageType
-from bci_build.package import SupportLevel
+from bci_build.package.bciclasses import OsContainer
+from bci_build.package.bciclasses import Package
+from bci_build.package.utils import build_tag_prefix
+
+from .constants import ALL_BASE_OS_VERSIONS
+from .constants import ALL_OS_VERSIONS
+from .constants import Arch
+from .constants import BuildType
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import DOCKERFILE_RUN
+from .constants import OsVersion
+from .constants import PackageType
+from .constants import SupportLevel
+from .utils import generate_disk_size_constraints
 
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
@@ -153,7 +154,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         ]
 
     kwargs = {
-        "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        "from_image": f"{build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
         "package_list": package_list,
     }

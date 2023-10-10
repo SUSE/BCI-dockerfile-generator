@@ -13,8 +13,8 @@
 # sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
-project = "bci-build-templates"
-copyright = "2022, Dan Čermák"
+project = "BCI-dockerfile-generator"
+copyright = "2023, SUSE LLC"
 author = "Dan Čermák"
 
 
