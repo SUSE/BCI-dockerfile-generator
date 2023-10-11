@@ -134,33 +134,45 @@ with open(
 ) as entrypoint:
     _MARIAD_ENTRYPOINT = entrypoint.read(-1)
 
-MARIADB_CONTAINERS = [
-    ApplicationStackContainer(
-        package_name="rmt-mariadb-image",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="rmt-mariadb",
-        version="%%mariadb_version%%",
-        version_in_uid=False,
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description="%%mariadb_version%%",
-                package_name="mariadb",
-                parse_version="minor",
-            )
-        ],
-        pretty_name="MariaDB Server for SUSE RMT",
-        package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
-        entrypoint=["docker-entrypoint.sh"],
-        extra_files={
-            "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
-            "_constraints": generate_disk_size_constraints(11),
-        },
-        build_recipe_type=BuildType.DOCKER,
-        cmd=["mariadbd"],
-        volumes=["/var/lib/mysql"],
-        exposes_tcp=[3306],
-        custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
+MARIADB_CONTAINERS = []
+MARIADB_CLIENT_CONTAINERS = []
+
+for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
+    if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
+        prefix = ""
+        additional_names = []
+    else:
+        prefix = "rmt-"
+        additional_names = ["mariadb"]
+
+    MARIADB_CONTAINERS.append(
+        ApplicationStackContainer(
+            package_name=f"{prefix}mariadb-image",
+            additional_names=additional_names,
+            os_version=os_version,
+            is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+            name=f"{prefix}mariadb",
+            version="%%mariadb_version%%",
+            version_in_uid=False,
+            replacements_via_service=[
+                Replacement(
+                    regex_in_build_description="%%mariadb_version%%",
+                    package_name="mariadb",
+                    parse_version="minor",
+                )
+            ],
+            pretty_name="MariaDB Server",
+            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
+            entrypoint=["docker-entrypoint.sh"],
+            extra_files={
+                "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
+                "_constraints": generate_disk_size_constraints(11),
+            },
+            build_recipe_type=BuildType.DOCKER,
+            cmd=["mariadbd"],
+            volumes=["/var/lib/mysql"],
+            exposes_tcp=[3306],
+            custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -177,33 +189,31 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 {DOCKERFILE_RUN} mkdir /run/mysql
 """,
+        )
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
-]
 
-
-MARIADB_CLIENT_CONTAINERS = [
-    ApplicationStackContainer(
-        package_name="rmt-mariadb-client-image",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version_in_uid=False,
-        name="rmt-mariadb-client",
-        version="%%mariadb_version%%",
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description="%%mariadb_version%%",
-                package_name="mariadb-client",
-                parse_version="minor",
-            )
-        ],
-        pretty_name="MariaDB Client for SUSE RMT",
-        package_list=["mariadb-client"],
-        build_recipe_type=BuildType.DOCKER,
-        cmd=["mariadb"],
+    MARIADB_CLIENT_CONTAINERS.append(
+        ApplicationStackContainer(
+            package_name=f"{prefix}mariadb-client-image",
+            os_version=os_version,
+            is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+            version_in_uid=False,
+            name=f"{prefix}mariadb-client",
+            additional_names=[f"{name}-client" for name in additional_names],
+            version="%%mariadb_version%%",
+            replacements_via_service=[
+                Replacement(
+                    regex_in_build_description="%%mariadb_version%%",
+                    package_name="mariadb-client",
+                    parse_version="minor",
+                )
+            ],
+            pretty_name="MariaDB Client",
+            package_list=["mariadb-client"],
+            build_recipe_type=BuildType.DOCKER,
+            cmd=["mariadb"],
+        )
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
-]
 
 
 with open(
