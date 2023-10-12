@@ -21,6 +21,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:Basalt
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: basalt-kernel-module-toolkit
+        target_project: home:defolos:BCI:CR:Basalt:Staging
   filters:
     event: pull_request
 
@@ -41,6 +45,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Basalt
         package: busybox-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: basalt-kernel-module-toolkit
   filters:
     event: push
     branches:
