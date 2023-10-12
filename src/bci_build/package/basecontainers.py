@@ -217,25 +217,34 @@ BUSYBOX_CONTAINERS = [
 ]
 
 
-KERNEL_MODULE_CONTAINERS = [
-    OsContainer(
-        name="sle15-kernel-module-toolkit",
-        pretty_name="SLE 15 Kernel Module Toolkit",
-        package_name="sle15-kernel-module-toolkit",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        package_list=[
-            "kernel-devel",
-            "kernel-syms",
-            "gcc",
-            "kmod-compat",
-            "make",
-            "patch",
-            "awk",
-        ]
-        # tar is not in bci-base in 15.4, but we need it to unpack tarballs
-        + (["tar"] if os_version == OsVersion.SP4 else []),
-        extra_files={"_constraints": generate_disk_size_constraints(8)},
+KERNEL_MODULE_CONTAINERS = []
+
+for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
+    if os_version == OsVersion.BASALT:
+        prefix = "basalt"
+        pretty_prefix = prefix.upper()
+    else:
+        prefix = "sle15"
+        pretty_prefix = "SLE 15"
+
+    KERNEL_MODULE_CONTAINERS.append(
+        OsContainer(
+            name=f"{prefix}-kernel-module-toolkit",
+            pretty_name=f"{pretty_prefix} Kernel Module Toolkit",
+            package_name=f"{prefix}-kernel-module-toolkit",
+            os_version=os_version,
+            is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+            package_list=[
+                "kernel-devel",
+                "kernel-syms",
+                "gcc",
+                "kmod-compat",
+                "make",
+                "patch",
+                "awk",
+            ]
+            # tar is not in bci-base in 15.4, but we need it to unpack tarballs
+            + (["tar"] if os_version == OsVersion.SP4 else []),
+            extra_files={"_constraints": generate_disk_size_constraints(8)},
+        )
     )
-    for os_version in (ALL_OS_VERSIONS - {OsVersion.BASALT, OsVersion.TUMBLEWEED})
-]
