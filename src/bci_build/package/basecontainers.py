@@ -229,9 +229,9 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
 
     KERNEL_MODULE_CONTAINERS.append(
         OsContainer(
-            name=f"{prefix}-kernel-module-toolkit",
-            pretty_name=f"{pretty_prefix} Kernel Module Toolkit",
-            package_name=f"{prefix}-kernel-module-toolkit",
+            name=f"{prefix}-kernel-module-devel",
+            pretty_name=f"{pretty_prefix} Kernel Module Development",
+            package_name=f"{prefix}-kernel-module-devel",
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=[
