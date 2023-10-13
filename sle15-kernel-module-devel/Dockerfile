@@ -14,25 +14,25 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: bci/bci-sle15-kernel-module-toolkit:%OS_VERSION_ID_SP%
-#!BuildTag: bci/bci-sle15-kernel-module-toolkit:%OS_VERSION_ID_SP%.%RELEASE%
-#!BuildTag: bci/bci-sle15-kernel-module-toolkit:latest
-#!BuildName: bci-bci-sle15-kernel-module-toolkit-%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%.%RELEASE%
+#!BuildTag: bci/bci-sle15-kernel-module-devel:latest
+#!BuildName: bci-bci-sle15-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.5
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.sle15-kernel-module-toolkit
-LABEL org.opencontainers.image.title="SLE BCI SLE 15 Kernel Module Toolkit"
-LABEL org.opencontainers.image.description="SLE 15 Kernel Module Toolkit container based on the SLE Base Container Image."
+# labelprefix=com.suse.bci.sle15-kernel-module-devel
+LABEL org.opencontainers.image.title="SLE BCI SLE 15 Kernel Module Development"
+LABEL org.opencontainers.image.description="SLE 15 Kernel Module Development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/bci-sle15-kernel-module-toolkit:%OS_VERSION_ID_SP%.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
