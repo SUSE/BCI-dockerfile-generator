@@ -111,11 +111,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rmt-mariadb-image
+        source_package: mariadb-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: rmt-mariadb-client-image
+        source_package: mariadb-client-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -253,10 +253,10 @@ refresh_devel_BCI:
         package: init-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: rmt-mariadb-image
+        package: mariadb-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: rmt-mariadb-client-image
+        package: mariadb-client-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postgres-15-image
