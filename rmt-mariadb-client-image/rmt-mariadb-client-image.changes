@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 16 09:19:39 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add mariadb-client build tag and adjust description
+
+-------------------------------------------------------------------
 Thu Sep 28 14:29:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add copyright and description header
