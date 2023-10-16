@@ -11,6 +11,14 @@ staging_build:
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
+        source_package: mariadb-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: mariadb-client-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
         source_package: minimal-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
@@ -36,6 +44,12 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Basalt
         package: init-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: mariadb-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: mariadb-client-image
     - trigger_services:
         project: devel:BCI:Basalt
         package: minimal-image
