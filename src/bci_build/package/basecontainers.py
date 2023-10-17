@@ -110,7 +110,7 @@ FIPS_BASE_CONTAINERS = [
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} FIPS-140-2",
-        package_list=["fipscheck"],
+        package_list=["fipscheck", "sles-ltss-release"],
         extra_labels={
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
         },
