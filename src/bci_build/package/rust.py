@@ -2,12 +2,13 @@
 import datetime
 from itertools import product
 
-from bci_build.package import ALL_NONBASE_OS_VERSIONS
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import LanguageStackContainer
-from bci_build.package import Replacement
-from bci_build.package import SupportLevel
+from bci_build.package.bciclasses import LanguageStackContainer
+from bci_build.package.bciclasses import Replacement
+from bci_build.package.utils import generate_disk_size_constraints
+
+from .constants import ALL_NONBASE_OS_VERSIONS
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import SupportLevel
 
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 

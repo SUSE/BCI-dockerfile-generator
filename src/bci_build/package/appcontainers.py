@@ -2,19 +2,19 @@
 import os
 from typing import Dict
 
-from bci_build.package import _build_tag_prefix
-from bci_build.package import ALL_NONBASE_OS_VERSIONS
-from bci_build.package import ApplicationStackContainer
-from bci_build.package import BuildType
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import OsContainer
-from bci_build.package import OsVersion
-from bci_build.package import Package
-from bci_build.package import PackageType
-from bci_build.package import Replacement
-from bci_build.package import SupportLevel
+from .bciclasses import ApplicationStackContainer
+from .bciclasses import OsContainer
+from .bciclasses import Package
+from .bciclasses import PackageType
+from .bciclasses import Replacement
+from .bciclasses import SupportLevel
+from .constants import ALL_NONBASE_OS_VERSIONS
+from .constants import BuildType
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import DOCKERFILE_RUN
+from .constants import OsVersion
+from .utils import build_tag_prefix
+from .utils import generate_disk_size_constraints
 
 
 _PCP_FILES = {}
@@ -36,7 +36,7 @@ PCP_CONTAINERS = [
         pretty_name="Performance Co-Pilot (pcp)",
         custom_description="{pretty_name} container {based_on_container}. {podman_only}",
         package_name="pcp-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
@@ -511,7 +511,7 @@ GIT_CONTAINERS = [
         package_name="git-image",
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
         custom_description="A micro environment with Git {based_on_container}.",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%git_version%%",
@@ -542,7 +542,7 @@ REGISTRY_CONTAINERS = [
         name="registry",
         pretty_name="OCI Container Registry (Distribution)",
         package_name="distribution-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
@@ -582,7 +582,7 @@ HELM_CONTAINERS = [
         name="helm",
         pretty_name="Kubernetes Package Manager",
         package_name="helm-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%helm_version%%",

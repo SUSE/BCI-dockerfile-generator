@@ -1,12 +1,12 @@
-"""Ruby LanguageStack BCI containers"""
+"""Ruby LanguageStack BCI containers."""
 from typing import Literal
 
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import LanguageStackContainer
-from bci_build.package import OsVersion
-from bci_build.package import Replacement
-from bci_build.package import SupportLevel
+from .bciclasses import LanguageStackContainer
+from .bciclasses import Replacement
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import OsVersion
+from .constants import SupportLevel
+from .utils import generate_disk_size_constraints
 
 
 def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion):

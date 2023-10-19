@@ -3,15 +3,16 @@ import os
 from itertools import product
 from typing import Literal
 
-from bci_build.package import _build_tag_prefix
-from bci_build.package import ALL_NONBASE_OS_VERSIONS
-from bci_build.package import Arch
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
-from bci_build.package import LanguageStackContainer
-from bci_build.package import OsVersion
-from bci_build.package import SupportLevel
+from bci_build.package.bciclasses import Arch
+from bci_build.package.bciclasses import LanguageStackContainer
+from bci_build.package.utils import build_tag_prefix
+from bci_build.package.utils import generate_disk_size_constraints
+
+from .constants import ALL_NONBASE_OS_VERSIONS
+from .constants import CAN_BE_LATEST_OS_VERSION
+from .constants import DOCKERFILE_RUN
+from .constants import OsVersion
+from .constants import SupportLevel
 
 
 def _get_openjdk_kwargs(
@@ -52,7 +53,7 @@ def _get_openjdk_kwargs(
             "pretty_name": f"OpenJDK {java_version} development",
             "package_list": [f"java-{java_version}-openjdk-devel", "git-core", "maven"],
             "cmd": ["/usr/bin/jshell"],
-            "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
+            "from_image": f"{build_tag_prefix(os_version)}/openjdk:{java_version}",
         }
     return common | {
         "name": "openjdk",

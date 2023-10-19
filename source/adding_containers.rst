@@ -3,10 +3,10 @@
 Adding and Modifying Container Images
 =====================================
 
-All container images are defined in :file:`src/bci_build/package.py` as
-instances of the :py:class:`~bci_build.package.LanguageStackContainer`,
-:py:class:`~bci_build.package.ApplicationStackContainer` or
-:py:class:`~bci_build.package.OsContainer` classes.
+All container images are defined in :file:`src/bci_build/package/` as
+instances of the :py:class:`~bci_build.package.bciclasses.LanguageStackContainer`,
+:py:class:`~bci_build.package.bciclasses.ApplicationStackContainer` or
+:py:class:`~bci_build.package.bciclasses.OsContainer` classes.
 
 The different classes result in slightly different images, mostly with respect
 to the way versions, tags and labels are handled. For example instances of

@@ -1,9 +1,9 @@
 """Base Container for the Basalt Project"""
-from bci_build.package import BuildType
-from bci_build.package import OsContainer
-from bci_build.package import OsVersion
-from bci_build.package import Package
-from bci_build.package import PackageType
+from .bciclasses import OsContainer
+from .bciclasses import Package
+from .constants import BuildType
+from .constants import OsVersion
+from .constants import PackageType
 
 
 BASALT_BASE = OsContainer(
@@ -29,8 +29,7 @@ BASALT_BASE = OsContainer(
             "gzip",
             "jdupes",
             "netcfg",
-            # FIXME: enable this once it's on OBS
-            # "lsb-release",
+            "lsb-release",
             "ALP-dummy-release",
             "openssl",
             "suse-build-key",
@@ -91,9 +90,9 @@ rm -rf /var/cache/zypp/*
 # the host arch differs (e.g. docker with --platform doesn't affect uname)
 arch=$(rpm -q --qf %{arch} glibc)
 if [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-	sed -i "s/^# arch =.*\$/arch = i686/" /etc/zypp/zypp.conf
-	# Verify that it's applied
-	grep -q '^arch =' /etc/zypp/zypp.conf
+    sed -i "s/^# arch =.*\$/arch = i686/" /etc/zypp/zypp.conf
+    # Verify that it's applied
+    grep -q '^arch =' /etc/zypp/zypp.conf
 fi
 """,
 )

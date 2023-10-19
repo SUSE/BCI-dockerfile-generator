@@ -1,11 +1,12 @@
 import enum
 from itertools import product
 
-from bci_build.package import _BASH_SET
-from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import LanguageStackContainer
-from bci_build.package import OsVersion
-from bci_build.package import Replacement
+from bci_build.package.bciclasses import LanguageStackContainer
+from bci_build.package.bciclasses import Replacement
+
+from .constants import BASH_SET
+from .constants import DOCKERFILE_RUN
+from .constants import OsVersion
 
 
 @enum.unique
@@ -29,7 +30,7 @@ set -e
 
 # first arg is `-f` or `--some-option`
 if [ "${{1#-}}" != "$1" ]; then
-	set -- {cmd} "$@"
+    set -- {cmd} "$@"
 fi
 
 exec "$@"
@@ -85,28 +86,28 @@ EXPOSE 80
 """
             + DOCKERFILE_RUN
             + r""" \
-	cd /etc/php8/fpm/; \
+    cd /etc/php8/fpm/; \
         test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
         test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
-	{ \
-		echo '[global]'; \
-		echo 'error_log = /proc/self/fd/2'; \
-		echo; echo '; https://github.com/docker-library/php/pull/725#issuecomment-443540114'; echo 'log_limit = 8192'; \
-		echo; \
-		echo '[www]'; \
-		echo '; if we send this to /proc/self/fd/1, it never appears'; \
-		echo 'access.log = /proc/self/fd/2'; \
-		echo; \
-		echo 'clear_env = no'; \
-		echo; \
-		echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
-		echo 'catch_workers_output = yes'; \
-		echo 'decorate_workers_output = no'; \
-	} | tee php-fpm.d/docker.conf; \
-	{ \
-		echo '[global]'; \
-		echo 'daemonize = no'; \
-	} | tee php-fpm.d/zz-docker.conf
+    { \
+        echo '[global]'; \
+        echo 'error_log = /proc/self/fd/2'; \
+        echo; echo '; https://github.com/docker-library/php/pull/725#issuecomment-443540114'; echo 'log_limit = 8192'; \
+        echo; \
+        echo '[www]'; \
+        echo '; if we send this to /proc/self/fd/1, it never appears'; \
+        echo 'access.log = /proc/self/fd/2'; \
+        echo; \
+        echo 'clear_env = no'; \
+        echo; \
+        echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
+        echo 'catch_workers_output = yes'; \
+        echo 'decorate_workers_output = no'; \
+    } | tee php-fpm.d/docker.conf; \
+    { \
+        echo '[global]'; \
+        echo 'daemonize = no'; \
+    } | tee php-fpm.d/zz-docker.conf
 
 # Override stop signal to stop process gracefully
 # https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
@@ -160,7 +161,7 @@ EXPOSE 9000
             "docker-php-ext-configure": _EMPTY_SCRIPT,
             "docker-php-ext-enable": _EMPTY_SCRIPT,
             "docker-php-ext-install": f"""#!/bin/bash
-{_BASH_SET}
+{BASH_SET}
 
 extensions=()
 

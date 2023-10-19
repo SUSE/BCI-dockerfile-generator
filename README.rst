@@ -49,7 +49,7 @@ Or to update all images for a service pack, run:
 
 
 If you do not want to interact with OBS at all, then you can also use the
-:file:`src/bci_build/package.py` script to just write the files of a single
+:file:`src/bci_build/package/__init__.py` script to just write the files of a single
 package into a directory:
 
 .. code-block:: console
