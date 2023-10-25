@@ -303,6 +303,7 @@ POSTGRES_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
+    install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
 
