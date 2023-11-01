@@ -39,7 +39,6 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 
 MAINTAINER {{ image.maintainer }}
 
-# Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
 LABEL org.opencontainers.image.title="{{ image.title }}"
 LABEL org.opencontainers.image.description="{{ image.description }}"

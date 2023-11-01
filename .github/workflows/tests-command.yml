@@ -1,0 +1,83 @@
+---
+name: Tests Command
+on:
+  repository_dispatch:
+    types: [tests-command]
+
+jobs:
+  append-changelog:
+    runs-on: ubuntu-22.04
+    container: ghcr.io/dcermak/bci-ci:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: get the command parameters
+        id: vars
+        run: |
+          OS_VERSION="${{ github.event.client_payload.slash_command.args.named.os_version }}"
+          if [[ -z "$OS_VERSION" ]]; then echo "Missing os_version parameter!"; exit 1; fi
+          echo "OS_VERSION=$OS_VERSION" >> $GITHUB_ENV
+
+          TOX_ENV="${{ github.event.client_payload.slash_command.args.named.env }}"
+          if [[ ! -z "$TOX_ENV" ]]; then
+              echo "TOX_ENV=$TOX_ENV" >> $GITHUB_ENV
+          fi
+
+          BCI_TESTS_BRANCH="${{ github.event.client_payload.slash_command.args.named.branch }}"
+          if [[ ! -z "$BCI_TESTS_BRANCH" ]]; then
+              echo "BCI_TESTS_BRANCH=$BCI_TESTS_BRANCH"
+          fi
+
+      - name: find the previous comment created by the bot
+        uses: peter-evans/find-comment@v2
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: "Created a staging project on OBS for ${{ env.OS_VERSION }}"
+          direction: last
+
+      - name: error out if no previous comment was found
+        if: steps.find_comment.outputs.comment-id == ''
+        run: exit 1
+
+      - name: run BCI-tests
+        run: echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run scratch-build-bot -vvvv --from-stdin run_bci_tests
+        shell: fish {0}
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+        if: steps.find_comment.outputs.comment-id != ''
+
+      - name: Add reaction to the original comment on success
+        if: ${{ success() }}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.PAT }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: "+1"
+
+      - name: generate the url to this workflow run
+        if: ${{ failure() || cancelled() }}
+        run: echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+
+      - name: Add reaction and a link to the error to the original comment on failure
+        if: ${{ failure() || cancelled() }}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.PAT }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: "-1"
+          body: Failed to run BCI-Tests, see the [workflow run](${{ env.run_url }}) for further details.

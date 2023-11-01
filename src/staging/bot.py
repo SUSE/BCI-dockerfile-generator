@@ -31,6 +31,7 @@ from dotnet.updater import DotNetBCI
 from obs_package_update.util import CommandError
 from obs_package_update.util import CommandResult
 from obs_package_update.util import retry_async_run_cmd
+from obs_package_update.util import run_cmd
 from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
@@ -1101,6 +1102,74 @@ updates:
             (await self._run_cmd(self._osc_fetch_results_cmd())).stdout
         )
 
+    @property
+    def staging_project_registry_base_url(self) -> str:
+        """Returns the base url to the containers in the staging project on
+        OBS. This url is missing the repository name and the actual container
+        tag, but it can be used to plug the staging project directly into
+        BCI-tests.
+
+        """
+        return "registry.opensuse.org/" + self.staging_project_name.lower().replace(
+            ":", "/"
+        )
+
+    async def fetch_built_tags_from_staging(
+        self, arch: Arch | None = Arch.X86_64
+    ) -> list[str]:
+        """Retrieve the builds tags of all container images built in the staging
+        project and return their unique build tag.
+
+        This function will not return **all** build tags of a container, but
+        instead it will try to pick the most useful one (that is currently the
+        one containing 'latest') or just give you the first one not containing a
+        ``%`` as that character is used for replacements (and hence will not be
+        present in the actual build tag).
+
+        An exception is raised if a container image has **no** valid build tags
+        (i.e. all contain a ``%``).
+
+        FIXME: if this turns out to be a problem, we can start fetching binaries
+        from OBS, specifically the ``.containerinfo`` file. It contains the
+        actual tags and could be used to obtain the **actual** build tag.
+
+        """
+        build_results = await self.fetch_build_results()
+        green_packages = []
+
+        for repo_build_res in build_results:
+            if arch and repo_build_res.arch != arch:
+                continue
+
+            for pkg_build_res in repo_build_res.packages:
+                if pkg_build_res.code == PackageStatusCode.SUCCEEDED:
+                    green_packages.append(pkg_build_res.name)
+
+        build_tags = []
+        for pkg_name in set(green_packages):
+            for bci in self._bcis:
+                if bci.package_name == pkg_name:
+                    latest_tags = [
+                        tag for tag in bci.build_tags if tag.endswith("latest")
+                    ]
+                    if latest_tags:
+                        build_tags.append(latest_tags[0])
+                    else:
+                        if all("%" in tag for tag in bci.build_tags):
+                            raise ValueError(f"Cannot add build tag for {pkg_name}, ")
+
+                        for tag in bci.build_tags:
+                            if "%" not in tag:
+                                build_tags.append(tag)
+                                break
+
+        return build_tags
+
+    @staticmethod
+    def build_tag_to_bci_tests_marker(build_tag: str) -> str:
+        """Convert a build tag to a marker that is used by BCI-tests."""
+        return build_tag.rsplit("/", maxsplit=1)[-1].replace(":", "_")
+
     async def force_rebuild(self) -> str:
         """Deletes all binaries of the project on OBS and force rebuilds everything."""
         await self._run_cmd(
@@ -1511,6 +1580,7 @@ def main() -> None:
         "changelog_check",
         "setup_obs_package",
         "find_missing_packages",
+        "run_bci_tests",
     ]
 
     parser = argparse.ArgumentParser()
@@ -1691,6 +1761,8 @@ comma-separated list. The package list is taken from the environment variable
         help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
     )
 
+    subparsers.add_parser("run_bci_tests", help="Run BCI-Tests on test build")
+
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
 
@@ -1839,6 +1911,54 @@ comma-separated list. The package list is taken from the environment variable
                 return ", ".join(await bot.find_missing_packages_on_obs())
 
             coro = _pkgs_as_str()
+
+        elif action == "run_bci_tests":
+            if bot.os_version == OsVersion.TUMBLEWEED:
+                raise ValueError("Running BCI-Tests is not supported on Tumbleweed.")
+
+            async def _run_tests() -> str:
+                tox_env = os.getenv("TOX_ENV")
+                bci_tests_branch = os.getenv("BCI_TESTS_BRANCH")
+
+                runner = RunCommand(
+                    cwd=(bci_tests_dir := os.path.join(os.getcwd(), "BCI-tests")),
+                    logger=LOGGER,
+                )
+                if not os.path.exists(bci_tests_dir):
+                    await run_cmd(
+                        f"git clone https://github.com/SUSE/BCI-tests", logger=LOGGER
+                    )
+                else:
+                    await runner("git pull")
+
+                if bci_tests_branch:
+                    await runner(f"git checkout {bci_tests_branch}")
+
+                env = os.environ.copy()
+                env["OS_VERSION"] = f"15.{bot.os_version}"
+                # pull images directly from the staging project
+                env["TARGET"] = "custom"
+                env["BASEURL"] = bot.staging_project_registry_base_url
+
+                # - no point in running unit tests, linting or doc generation
+                # - repo tests make no sense, as the repo is not built from this project
+                # - get urls is just a legacy test env, not useful here
+                env["TOX_SKIP_ENV"] = r"(py(\d+)-unit|lint|doc|repository|get_urls)"
+
+                test_res = await runner(
+                    f"tox {'-e ' + tox_env if tox_env else ''} -- -n auto -k \"("
+                    + " or ".join(
+                        (
+                            bot.build_tag_to_bci_tests_marker(bt)
+                            for bt in await bot.fetch_built_tags_from_staging()
+                        )
+                    )
+                    + ')"',
+                    env=env,
+                )
+                return test_res.stdout
+
+            coro = _run_tests()
 
         else:
             assert False, f"invalid action: {action}"
