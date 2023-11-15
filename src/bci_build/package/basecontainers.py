@@ -231,7 +231,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
         OsContainer(
             name=f"{prefix}-kernel-module-devel",
             pretty_name=f"{pretty_prefix} Kernel Module Development",
-            package_name=f"{prefix}-kernel-module-devel",
+            package_name=f"{prefix}-kernel-module-devel-image",
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=[
