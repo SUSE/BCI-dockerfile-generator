@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 16 21:35:33 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- switch to 1.20
+
+-------------------------------------------------------------------
 Thu Sep 28 14:29:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add copyright and description header
