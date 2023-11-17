@@ -3,6 +3,7 @@ import datetime
 from typing import Literal
 
 from bci_build.package import _SUPPORTED_UNTIL_SLE
+from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
@@ -24,10 +25,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
     return {
         "name": "nodejs",
         "os_version": os_version,
-        "is_latest": (
-            (ver == 18 and os_version == OsVersion.SP5)
-            or (ver == 20 and os_version == OsVersion.TUMBLEWEED)
-        ),
+        "is_latest": ver == 20 and os_version in CAN_BE_LATEST_OS_VERSION,
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
@@ -56,6 +54,9 @@ NODE_CONTAINERS = [
     ),
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
+    ),
+    LanguageStackContainer(
+        **_get_node_kwargs(20, OsVersion.SP5), support_level=SupportLevel.L3
     ),
     LanguageStackContainer(
         **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
