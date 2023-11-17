@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 17 19:12:54 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Mark node 20 as latest version
+
+-------------------------------------------------------------------
 Thu Sep 28 14:29:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add copyright and description header
