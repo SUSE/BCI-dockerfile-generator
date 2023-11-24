@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 24 16:19:23 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- Add PHP readline package
+
+-------------------------------------------------------------------
 Thu Sep 28 14:29:34 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - add copyright and description header
