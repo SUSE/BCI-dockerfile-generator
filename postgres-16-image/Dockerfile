@@ -14,26 +14,27 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: suse/postgres:15
-#!BuildTag: suse/postgres:15-%RELEASE%
+#!BuildTag: suse/postgres:16
+#!BuildTag: suse/postgres:16-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_version%%
 #!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
-#!BuildName: suse-postgres-15
-#!BuildVersion: 15.6.15
+#!BuildTag: suse/postgres:latest
+#!BuildName: suse-postgres-16
+#!BuildVersion: 15.6.16
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postgres
-LABEL org.opencontainers.image.title="SLE PostgreSQL 15"
-LABEL org.opencontainers.image.description="PostgreSQL 15 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="15"
+LABEL org.opencontainers.image.title="SLE PostgreSQL 16"
+LABEL org.opencontainers.image.description="PostgreSQL 16 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="16"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/suse/postgres:15-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/postgres:16-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="acc"
 LABEL com.suse.eula="sle-bci"
@@ -42,9 +43,9 @@ LABEL com.suse.image-type="application"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends postgresql15-server; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends postgresql16-server; zypper -n clean; rm -rf /var/log/*
 ENV LANG="en_US.utf8"
-ENV PG_MAJOR="15"
+ENV PG_MAJOR="16"
 ENV PG_VERSION="%%pg_version%%"
 ENV PGDATA="/var/lib/pgsql/data"
 
@@ -57,7 +58,7 @@ RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
     install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
-    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql15/postgresql.conf.sample
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql16/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \

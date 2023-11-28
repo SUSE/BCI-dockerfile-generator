@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 28 11:43:42 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- postgresql 16 is now the latest version
+
+-------------------------------------------------------------------
 Wed Oct 25 15:41:24 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - ensure rundir for postgres is created with the proper permissions
