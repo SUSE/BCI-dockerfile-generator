@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Tue Nov 28 11:43:44 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- postgresql 16 is now the latest version
+
+-------------------------------------------------------------------
+Tue Nov 28 11:25:15 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the PostgreSQL 16 BCI
