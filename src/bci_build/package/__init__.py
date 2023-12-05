@@ -1360,6 +1360,7 @@ from .basecontainers import MINIMAL_CONTAINERS
 from .basecontainers import BUSYBOX_CONTAINERS
 from .basecontainers import INIT_CONTAINERS
 from .basecontainers import FIPS_BASE_CONTAINERS
+from .basecontainers import GITEA_RUNNER_CONTAINER
 
 from .appcontainers import GIT_CONTAINERS
 from .appcontainers import HELM_CONTAINERS
@@ -1410,6 +1411,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
         *KERNEL_MODULE_CONTAINERS,
+        GITEA_RUNNER_CONTAINER,
     )
 }
 
