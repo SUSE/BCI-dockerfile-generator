@@ -165,6 +165,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: gitea-runner-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
   filters:
     event: pull_request
 
@@ -293,6 +297,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: busybox-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: gitea-runner-image
   filters:
     event: push
     branches:
