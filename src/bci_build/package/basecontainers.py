@@ -248,3 +248,27 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
+
+
+with open(
+    os.path.join(os.path.dirname(__file__), "gitea-runner", "osc_checkout")
+) as osc_checkout_f:
+    OSC_CHECKOUT = osc_checkout_f.read(-1)
+
+
+GITEA_RUNNER_CONTAINER = OsContainer(
+    name="gitea-runner",
+    pretty_name="Gitea Action Runner",
+    package_name="gitea-runner-image",
+    os_version=OsVersion.TUMBLEWEED,
+    is_latest=True,
+    package_list=[
+        "osc",
+        "expect",
+        "obs-service-source_validator",
+        *_get_os_container_package_names(OsVersion.TUMBLEWEED),
+    ],
+    extra_files={"osc_checkout": OSC_CHECKOUT},
+    custom_end=f"""COPY osc_checkout /usr/bin/osc_checkout
+{DOCKERFILE_RUN} chmod +x /usr/bin/osc_checkout""",
+)
