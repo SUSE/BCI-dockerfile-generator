@@ -266,6 +266,8 @@ GITEA_RUNNER_CONTAINER = OsContainer(
         "osc",
         "expect",
         "obs-service-source_validator",
+        "typescript",
+        "git",
         *_get_os_container_package_names(OsVersion.TUMBLEWEED),
     ],
     extra_files={"osc_checkout": OSC_CHECKOUT},
