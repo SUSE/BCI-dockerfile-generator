@@ -1376,6 +1376,7 @@ from .appcontainers import ALERTMANAGER_CONTAINERS
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS
 from .appcontainers import GRAFANA_CONTAINERS
 from .appcontainers import PCP_CONTAINERS
+from .appcontainers import TRIVY_CONTAINERS
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
@@ -1390,6 +1391,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *PCP_CONTAINERS,
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,
+        *TRIVY_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GIT_CONTAINERS,
