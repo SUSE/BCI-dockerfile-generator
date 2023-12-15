@@ -52,11 +52,16 @@ LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 {% if image.is_opensuse %}LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL org.opensuse.release-stage="{{ image.release_stage }}"
-{% else %}LABEL com.suse.supportlevel="{{ image.support_level }}"
-{%- if image.supported_until %}
-LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
-{%- endif %}
+{% endif -%}
+{% if not image.is_opensuse -%}
+{% if image.image_type == "application" -%}
+LABEL com.suse.supportlevel="{{ image.support_level }}"
 LABEL com.suse.eula="{{ image.eula }}"
+{% else -%}
+LABEL {{ image.labelprefix }}.supportlevel="{{ image.support_level }}"
+LABEL {{ image.labelprefix }}.eula="{{ image.eula }}"
+{%- endif %}
+{% if image.supported_until %}LABEL com.suse.supportlevel.until="{{ image.supported_until }}"{% endif %}
 LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL com.suse.image-type="{{ image.image_type }}"
 LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
