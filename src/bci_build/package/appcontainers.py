@@ -179,7 +179,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod 755 /usr/local/bin/docker-entrypoint.sh
 {DOCKERFILE_RUN} ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
-{DOCKERFILE_RUN} sed -i 's#gosu mysql#su mysql -s /bin/bash -m#g' /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} sed -i -e 's,exec gosu mysql ,exec setpriv --reuid=mysql --regid=mysql --clear-groups -- /bin/bash ,g' /usr/local/bin/docker-entrypoint.sh
 
 # Ensure all logs goes to stdout
 {DOCKERFILE_RUN} sed -i 's/^log/#log/g' /etc/my.cnf
