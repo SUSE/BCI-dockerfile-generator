@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 20 15:05:04 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- set mariadbd as PID 1 in container
+
+-------------------------------------------------------------------
 Mon Oct 16 09:19:41 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - Add mariadb build tag and adjust description
