@@ -1594,6 +1594,7 @@ from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
+from .valkey import VALKEY_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
@@ -1609,6 +1610,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,
         *TRIVY_CONTAINERS,
+        *VALKEY_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GIT_CONTAINERS,
