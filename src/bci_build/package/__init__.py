@@ -62,6 +62,7 @@ class ImageType(enum.Enum):
     """Values of the ``image-type`` label of a BCI"""
 
     SLE_BCI = "sle-bci"
+    SLE_LTSS = "sle-bci-ltss"
     APPLICATION = "application"
 
     def __str__(self) -> str:
@@ -184,6 +185,8 @@ ALL_BASE_OS_VERSIONS = [
     OsVersion.TUMBLEWEED,
     OsVersion.BASALT,
 ]
+
+ALL_BASE_OS_LTSS_VERSIONS = [OsVersion.SP3, OsVersion.SP4]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
@@ -333,6 +336,7 @@ _SLE_15_SP3_LTSS_IMAGE_PROPS = ImageProperties(
     distribution_base_name="SLE LTSS",
     build_tag_prefix=_build_tag_prefix(OsVersion.SP3),
     application_container_build_tag_prefix="suse",
+    based_on_container_description="based on SUSE Linux Enterprise Server 15 SP3",
 )
 
 _BASALT_IMAGE_PROPS = ImageProperties(
@@ -1024,9 +1028,11 @@ exit 0
             self._image_properties.label_prefix
             + "."
             + (
-                {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
-                    self.image_type
-                ]
+                {
+                    ImageType.SLE_BCI: "bci",
+                    ImageType.SLE_LTSS: "bci.ltss",
+                    ImageType.APPLICATION: "application",
+                }[self.image_type]
             )
             + "."
             + (self.custom_labelprefix_end or self.name)
@@ -1308,6 +1314,9 @@ class OsContainer(BaseContainerImage):
 
     @property
     def image_type(self) -> ImageType:
+        if self.os_version in ALL_BASE_OS_LTSS_VERSIONS:
+            return ImageType.SLE_LTSS
+
         return ImageType.SLE_BCI
 
     @property
