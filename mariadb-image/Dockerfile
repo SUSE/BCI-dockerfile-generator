@@ -38,7 +38,7 @@ LABEL org.opensuse.release-stage="released"
 
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux pwgen; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306
