@@ -162,7 +162,8 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                 )
             ],
             pretty_name="MariaDB Server",
-            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
+            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"]
+            + (["pwgen"] if os_version == OsVersion.TUMBLEWEED else []),
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
                 "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
