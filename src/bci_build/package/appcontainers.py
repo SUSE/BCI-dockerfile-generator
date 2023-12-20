@@ -15,6 +15,7 @@ from bci_build.package import Package
 from bci_build.package import PackageType
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
+from jinja2 import Template
 
 
 _PCP_FILES = {}
@@ -130,7 +131,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
 ]
 
 with open(
-    os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
+    os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh.j2")
 ) as entrypoint:
     _MARIAD_ENTRYPOINT = entrypoint.read(-1)
 
@@ -162,11 +163,15 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                 )
             ],
             pretty_name="MariaDB Server",
-            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"]
-            + (["pwgen"] if os_version == OsVersion.TUMBLEWEED else []),
+            package_list=(
+                ["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"]
+                + (["pwgen"] if os_version == OsVersion.TUMBLEWEED else [])
+            ),
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
-                "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
+                "docker-entrypoint.sh": Template(_MARIAD_ENTRYPOINT).render(
+                    os_version=str(os_version)
+                ),
                 "_constraints": generate_disk_size_constraints(11),
             },
             build_recipe_type=BuildType.DOCKER,

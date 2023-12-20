@@ -54,8 +54,8 @@ _mariadb_file_env() {
 # check to see if this file is being run or sourced from another script
 _is_sourced() {
 	# https://unix.stackexchange.com/a/215279
-	[ "${#FUNCNAME[@]}" -ge 2 ] \
-		&& [ "${FUNCNAME[0]}" = '_is_sourced' ] \
+{% raw %}	[ "${#FUNCNAME[@]}" -ge 2 ] \
+{% endraw %}		&& [ "${FUNCNAME[0]}" = '_is_sourced' ] \
 		&& [ "${FUNCNAME[1]}" = 'source' ]
 }
 
@@ -146,8 +146,8 @@ docker_temp_server_stop() {
 
 # Verify that the minimally required password settings are set for new databases.
 docker_verify_minimum_env() {
-	if [ -z "$MARIADB_ROOT_PASSWORD" -a -z "$MARIADB_ALLOW_EMPTY_ROOT_PASSWORD" -a -z "$MARIADB_RANDOM_ROOT_PASSWORD" ]; then
-		mysql_error $'Database is uninitialized and password option is not specified\n\tYou need to specify one of MARIADB_ROOT_PASSWORD, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD and MARIADB_RANDOM_ROOT_PASSWORD'
+	if [ -z "$MARIADB_ROOT_PASSWORD" -a -z "$MARIADB_ALLOW_EMPTY_ROOT_PASSWORD" {% if os_version == "Tumbleweed" %}-a -z "$MARIADB_RANDOM_ROOT_PASSWORD" {% endif %}]; then
+		mysql_error $'Database is uninitialized and password option is not specified\n\tYou need to specify one of MARIADB_ROOT_PASSWORD{% if os_version == "Tumbleweed" %}, MARIADB_RANDOM_ROOT_PASSWORD{% endif %} and MARIADB_ALLOW_EMPTY_ROOT_PASSWORD'
 	fi
 }
 
@@ -200,9 +200,9 @@ docker_setup_env() {
 	# set MARIADB_ from MYSQL_ when it is unset and then make them the same value
 	: "${MARIADB_ALLOW_EMPTY_ROOT_PASSWORD:=${MYSQL_ALLOW_EMPTY_PASSWORD:-}}"
 	export MYSQL_ALLOW_EMPTY_PASSWORD="$MARIADB_ALLOW_EMPTY_ROOT_PASSWORD" MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
-	: "${MARIADB_RANDOM_ROOT_PASSWORD:=${MYSQL_RANDOM_ROOT_PASSWORD:-}}"
+{% if os_version == "Tumbleweed" %}	: "${MARIADB_RANDOM_ROOT_PASSWORD:=${MYSQL_RANDOM_ROOT_PASSWORD:-}}"
 	export MYSQL_RANDOM_ROOT_PASSWORD="$MARIADB_RANDOM_ROOT_PASSWORD" MARIADB_RANDOM_ROOT_PASSWORD
-	: "${MARIADB_INITDB_SKIP_TZINFO:=${MYSQL_INITDB_SKIP_TZINFO:-}}"
+{% endif %}	: "${MARIADB_INITDB_SKIP_TZINFO:=${MYSQL_INITDB_SKIP_TZINFO:-}}"
 	export MYSQL_INITDB_SKIP_TZINFO="$MARIADB_INITDB_SKIP_TZINFO" MARIADB_INITDB_SKIP_TZINFO
 
 	declare -g DATABASE_ALREADY_EXISTS
@@ -266,13 +266,13 @@ docker_setup_db() {
 		} | docker_process_sql --dont-use-mysql-root-password --database=mysql
 		# tell docker_process_sql to not use MYSQL_ROOT_PASSWORD since it is not set yet
 	fi
-	# Generate random root password
+{% if os_version == "Tumbleweed" %}	# Generate random root password
 	if [ -n "$MARIADB_RANDOM_ROOT_PASSWORD" ]; then
 		MARIADB_ROOT_PASSWORD="$(pwgen --numerals --capitalize --symbols --remove-chars="'\\" -1 32)"
 		export MARIADB_ROOT_PASSWORD MYSQL_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
 		mysql_note "GENERATED ROOT PASSWORD: $MARIADB_ROOT_PASSWORD"
 	fi
-	# Sets root password and creates root users for non-localhost hosts
+{% endif %}	# Sets root password and creates root users for non-localhost hosts
 	local rootCreate=
 	local rootPasswordEscaped
 	rootPasswordEscaped=$( docker_sql_escape_string_literal "${MARIADB_ROOT_PASSWORD}" )
