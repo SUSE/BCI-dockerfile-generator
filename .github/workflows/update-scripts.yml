@@ -26,5 +26,4 @@ jobs:
             This is an automated update via ./update-files.sh
           base: main
           add-paths: |
-            src/bci_build/postgres/*
-            src/bci_build/nginx/*
+            src/bci_build/package/*
