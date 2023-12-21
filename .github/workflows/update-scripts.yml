@@ -19,7 +19,7 @@ jobs:
         with:
           delete-branch: true
           commit-message: "🤖: Update external files via ./update-files.sh"
-          reviewers: dcermak,brunoleon
+          reviewers: dcermak,dirkmueller
           assignees: dcermak
           title: "🤖: Update external files"
           body: |
