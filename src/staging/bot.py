@@ -706,6 +706,22 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
             )
 
+    @property
+    def sle_aggregate(self) -> str:
+        return (
+            f"""<aggregatelist>
+  <aggregate project="SUSE:Containers:SLE-SERVER:15-SP{self.os_version}">
+"""
+            + "\n".join(
+                f'<binary>container:{bci.build_tags[0].replace("/", "-").replace(":", "-") }</binary>'
+                for bci in self._bcis
+            )
+            + """
+</aggregate>
+</aggregatelist>
+"""
+        )
+
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
             f"{self._osc} results --xml {extra_osc_flags} "
@@ -1085,9 +1101,24 @@ updates:
 
             return ["_config"]
 
+        async def write_aggregate() -> list[str]:
+            if self.os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
+                return []
+
+            pkg_name = f"bci_15_{self.os_version}"
+            await aiofiles.os.makedirs(
+                pkg_dir := os.path.join(destination_prj_folder, pkg_name), exist_ok=True
+            )
+            async with aiofiles.open(
+                (aggregate := os.path.join(pkg_dir, "_aggregate")), "w"
+            ) as aggregate_file:
+                await aggregate_file.write(self.sle_aggregate)
+            return [aggregate]
+
         tasks.append(write_obs_workflows_yml())
         tasks.append(write_underscore_config())
         tasks.append(write_github_actions())
+        tasks.append(write_aggregate())
 
         files = await asyncio.gather(*tasks)
         flattened_file_list = []
