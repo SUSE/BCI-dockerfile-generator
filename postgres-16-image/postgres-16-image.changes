@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan  2 08:30:24 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update year to 2024
+
+-------------------------------------------------------------------
 Tue Nov 28 11:43:44 UTC 2023 - Dan Čermák <dcermak@suse.com>
 
 - postgresql 16 is now the latest version
