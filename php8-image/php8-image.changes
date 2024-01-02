@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan  2 08:30:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update year to 2024
+
+-------------------------------------------------------------------
 Fri Nov 24 16:19:23 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - Add PHP readline package
