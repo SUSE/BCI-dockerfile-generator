@@ -1320,7 +1320,7 @@ updates:
         if not commits:
             return None
         res = set([child_commit] + commits)
-        return res - set([ancestor_commit])
+        return res - {ancestor_commit}
 
     async def add_changelog_entry(
         self, entry: str, username: str, package_names: list[str] | None
@@ -1472,9 +1472,9 @@ updates:
         """
         repo = git.Repo(".")
         deployment_branch_head = repo.commit(f"origin/{self.deployment_branch_name}")
-        pkgs_in_deployment_branch = set(
+        pkgs_in_deployment_branch = {
             tree.name for tree in deployment_branch_head.tree
-        ) - set((".obs", ".github", "_config"))
+        } - {".obs", ".github", "_config"}
         pkgs_on_obs = set(
             (
                 await self._run_cmd(
@@ -1680,9 +1680,7 @@ comma-separated list. The package list is taken from the environment variable
         required=True,
         type=str,
         help="Name of the package to configure on OBS",
-        choices=list(
-            set(bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values())
-        )
+        choices=list({bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values()})
         + [dotnet_img.package_name for dotnet_img in DOTNET_IMAGES],
     )
 
