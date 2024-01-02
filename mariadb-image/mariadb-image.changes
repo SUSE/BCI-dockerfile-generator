@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan  2 08:30:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update year to 2024
+
+-------------------------------------------------------------------
 Wed Dec 20 15:05:23 UTC 2023 - Dirk Mueller <dmueller@suse.com>
 
 - set mariadbd as PID 1 in container
