@@ -404,7 +404,7 @@ VOLUME /bin/ /usr/bin/""",
 
       </containerconfig>
     </type>
-    <version>2023</version>
+    <version>__CURRENT_YEAR__</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
@@ -417,7 +417,9 @@ VOLUME /bin/ /usr/bin/""",
     <package name="emacs"/>
   </packages>
 
-</image>""",
+</image>""".replace(
+                "__CURRENT_YEAR__", str(date.today().year)
+            ),
             LanguageStackContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",
