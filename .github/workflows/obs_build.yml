@@ -15,7 +15,6 @@ jobs:
         os_version:
           - 6
           - 5
-          - 4
           - Tumbleweed
           - Basalt
 
