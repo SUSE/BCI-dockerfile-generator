@@ -178,7 +178,6 @@ ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED]
 
 # For which versions to create Base Container Images?
 ALL_BASE_OS_VERSIONS = [
-    OsVersion.SP4,
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
@@ -1344,7 +1343,6 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 
 from .basalt_base import BASALT_BASE
 from .python import PYTHON_3_6_CONTAINERS
-from .python import PYTHON_3_10_SP4
 from .python import PYTHON_3_11_CONTAINERS
 from .python import PYTHON_TW_CONTAINERS
 from .ruby import RUBY_CONTAINERS
@@ -1383,7 +1381,6 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     for bci in (
         BASALT_BASE,
         *PYTHON_3_6_CONTAINERS,
-        PYTHON_3_10_SP4,
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_TW_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,

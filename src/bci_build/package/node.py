@@ -46,12 +46,6 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
-    # os_epoch was set because we temporarily released NodeJS 16 from SP5
-    LanguageStackContainer(
-        **_get_node_kwargs(16, OsVersion.SP4),
-        support_level=SupportLevel.L3,
-        os_epoch=10,
-    ),
     LanguageStackContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
     ),

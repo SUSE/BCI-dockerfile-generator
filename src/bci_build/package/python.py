@@ -84,14 +84,6 @@ PYTHON_TW_CONTAINERS = (
     for pyver in _PYTHON_TW_VERSIONS
 )
 
-PYTHON_3_10_SP4 = LanguageStackContainer(
-    package_name="python-3.10-image",
-    support_level=SupportLevel.L3,
-    is_latest=False,
-    **_get_python_kwargs("3.10", OsVersion.SP4),
-    supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP4],
-)
-
 PYTHON_3_11_CONTAINERS = (
     LanguageStackContainer(
         **_get_python_kwargs("3.11", os_version),
