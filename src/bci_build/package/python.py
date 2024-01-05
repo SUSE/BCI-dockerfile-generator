@@ -26,6 +26,14 @@ def _get_python_kwargs(
     py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
+    has_pipx = False
+    # Tumbleweed rocks
+    if os_version == OsVersion.TUMBLEWEED:
+        has_pipx = True
+    # Enabled only for Python 3.11 on SLE15 (jsc#PED-5573)
+    if os_version not in (OsVersion.BASALT, OsVersion.TUMBLEWEED) and py3_ver == "3.11":
+        has_pipx = True
+
     kwargs = {
         "name": "python",
         "pretty_name": f"Python {py3_ver} development",
@@ -42,7 +50,7 @@ def _get_python_kwargs(
             if is_system_py or os_version == OsVersion.TUMBLEWEED
             else []
         )
-        + ([f"{py3}-pipx"] if os_version == OsVersion.TUMBLEWEED else [])
+        + ([f"{py3}-pipx"] if has_pipx else [])
         + os_version.lifecycle_data_pkg,
         "replacements_via_service": [
             Replacement(
