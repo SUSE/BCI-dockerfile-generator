@@ -1344,6 +1344,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 from .basalt_base import BASALT_BASE
 from .python import PYTHON_3_6_CONTAINERS
 from .python import PYTHON_3_11_CONTAINERS
+from .python import PYTHON_3_12_CONTAINERS
 from .python import PYTHON_TW_CONTAINERS
 from .ruby import RUBY_CONTAINERS
 from .golang import GOLANG_CONTAINERS
@@ -1380,6 +1381,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         BASALT_BASE,
+        PYTHON_3_12_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_TW_CONTAINERS,
