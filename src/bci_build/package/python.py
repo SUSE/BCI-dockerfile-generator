@@ -11,7 +11,7 @@ from bci_build.package import SupportLevel
 
 
 def _get_python_kwargs(
-    py3_ver: Literal["3.6", "3.9", "3.10", "3.11"], os_version: OsVersion
+    py3_ver: Literal["3.6", "3.9", "3.10", "3.11", "3.12"], os_version: OsVersion
 ):
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.11"
@@ -82,6 +82,7 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
+### Add 3.12, currently in Staging
 _PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.11")
 PYTHON_TW_CONTAINERS = (
     LanguageStackContainer(
@@ -102,4 +103,13 @@ PYTHON_3_11_CONTAINERS = (
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP5, OsVersion.SP6)
+)
+
+PYTHON_3_12_CONTAINERS = LanguageStackContainer(
+    **_get_python_kwargs("3.12", OsVersion.SP6),
+    package_name="python-3.12-image",
+    support_level=SupportLevel.L3,
+    supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+    # Technically it is the latest but we want to prefer the long term Python 3.11
+    is_latest=False,
 )
