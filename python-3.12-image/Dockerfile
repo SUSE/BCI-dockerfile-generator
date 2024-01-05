@@ -14,39 +14,38 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: bci/python:3.11
-#!BuildTag: bci/python:3.11-%RELEASE%
+#!BuildTag: bci/python:3.12
+#!BuildTag: bci/python:3.12-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
-#!BuildName: bci-python-3.11
-#!BuildVersion: 15.6.3.11
+#!BuildName: bci-python-3.12
+#!BuildVersion: 15.6.3.12
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.python
-LABEL org.opencontainers.image.title="SLE BCI Python 3.11 development"
-LABEL org.opencontainers.image.description="Python 3.11 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="3.11"
+LABEL org.opencontainers.image.title="SLE BCI Python 3.12 development"
+LABEL org.opencontainers.image.description="Python 3.12 development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="3.12"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/python:3.11-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/python:3.12-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2027-12-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 python311-pip curl git-core python311-pipx lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/*
-ENV PYTHON_VERSION="%%py311_ver%%"
+RUN set -euo pipefail; zypper -n in --no-recommends python312-devel python312 python312-pip curl git-core lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/*
+ENV PYTHON_VERSION="%%py312_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
-RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.11 /usr/local/bin/python3; \
-    ln -s /usr/bin/pydoc3.11 /usr/local/bin/pydoc
+RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.12 /usr/local/bin/python3; \
+    ln -s /usr/bin/pydoc3.12 /usr/local/bin/pydoc
