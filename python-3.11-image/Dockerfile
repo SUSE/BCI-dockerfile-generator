@@ -44,7 +44,7 @@ LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 python311-pip curl git-core lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 python311-pip curl git-core python311-pipx lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/*
 ENV PYTHON_VERSION="%%py311_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
