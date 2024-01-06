@@ -162,8 +162,7 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                 )
             ],
             pretty_name="MariaDB Server",
-            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"]
-            + (["pwgen"] if os_version == OsVersion.TUMBLEWEED else []),
+            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
                 "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
@@ -181,6 +180,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
 {DOCKERFILE_RUN} sed -i -e 's,exec gosu mysql ,exec setpriv --reuid=mysql --regid=mysql --clear-groups -- /bin/bash ,g' /usr/local/bin/docker-entrypoint.sh
+{DOCKERFILE_RUN} sed -i -e 's,$(pwgen .*),$(openssl rand -base64 36),' /usr/local/bin/docker-entrypoint.sh
 
 # Ensure all logs goes to stdout
 {DOCKERFILE_RUN} sed -i 's/^log/#log/g' /etc/my.cnf
