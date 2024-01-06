@@ -38,7 +38,7 @@ LABEL org.opensuse.release-stage="released"
 
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux pwgen; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux; zypper -n clean; rm -rf /var/log/*
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306
@@ -50,6 +50,7 @@ RUN set -euo pipefail; chmod 755 /usr/local/bin/docker-entrypoint.sh
 RUN set -euo pipefail; ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
 RUN set -euo pipefail; sed -i -e 's,exec gosu mysql ,exec setpriv --reuid=mysql --regid=mysql --clear-groups -- /bin/bash ,g' /usr/local/bin/docker-entrypoint.sh
+RUN set -euo pipefail; sed -i -e 's,$(pwgen .*),$(openssl rand -base64 36),' /usr/local/bin/docker-entrypoint.sh
 
 # Ensure all logs goes to stdout
 RUN set -euo pipefail; sed -i 's/^log/#log/g' /etc/my.cnf
