@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Jan  6 10:44:30 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use openssl to generate passwords securely
+
+-------------------------------------------------------------------
 Tue Jan  2 08:30:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update year to 2024
