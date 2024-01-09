@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan  9 16:48:01 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Remove obsolete com.suse.image-type label
+
+-------------------------------------------------------------------
 Sat Jan  6 10:46:20 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - use openssl to generate passwords securely
