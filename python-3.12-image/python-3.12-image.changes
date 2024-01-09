@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan  9 16:47:44 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Remove obsolete com.suse.image-type label
+
+-------------------------------------------------------------------
 Fri Jan 05 15:39:01 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Python 3.12 development BCI
