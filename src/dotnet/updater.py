@@ -326,7 +326,7 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
 
 DOTNET_IMAGES: list[DotNetBCI] = []
 
-for os_version in (OsVersion.SP5,):
+for os_version in (OsVersion.SP5, OsVersion.SP6):
     for ver in _DOTNET_VERSIONS:
         package_list: list[Package | str] = [
             "dotnet-host",
