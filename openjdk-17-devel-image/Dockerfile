@@ -36,7 +36,6 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
