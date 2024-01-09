@@ -1,12 +1,10 @@
 import logging
-import re
 from dataclasses import dataclass
 from dataclasses import field
 from functools import cmp_to_key
 from os.path import basename
 from typing import ClassVar
 from typing import Literal
-from typing import Optional
 from urllib.parse import urlparse
 
 import dnf
