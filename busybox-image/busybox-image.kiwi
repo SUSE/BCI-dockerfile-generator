@@ -42,7 +42,6 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-busybox:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="l3"/>
-            <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
