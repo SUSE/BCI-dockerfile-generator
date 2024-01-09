@@ -38,7 +38,6 @@ LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2024-02-01"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
@@ -78,7 +77,6 @@ RUN emacs -Q --batch test.el
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.supportlevel.until" value="2024-02-01"/>
-            <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
@@ -141,7 +139,6 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
@@ -178,7 +175,6 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
-            <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
@@ -236,7 +232,6 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.image-type="sle-bci"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
@@ -273,7 +268,6 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:28-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
-            <label name="com.suse.image-type" value="sle-bci"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
