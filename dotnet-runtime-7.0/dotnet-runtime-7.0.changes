@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 11 09:59:50 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Switch latest tag to .Net 8
+
+-------------------------------------------------------------------
 Thu Jan 11 07:39:54 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - New upstream release 7.0.15
