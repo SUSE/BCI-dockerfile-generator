@@ -39,4 +39,4 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends kernel-devel kernel-syms gcc kmod-compat make patch awk; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends kernel-devel kernel-syms gcc kmod-compat make patch awk rpm-build; zypper -n clean; rm -rf /var/log/*
