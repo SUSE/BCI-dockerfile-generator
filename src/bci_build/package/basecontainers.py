@@ -242,6 +242,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 "make",
                 "patch",
                 "awk",
+                "rpm-build",
             ]
             # tar is not in bci-base in 15.4, but we need it to unpack tarballs
             + (["tar"] if os_version == OsVersion.SP4 else []),
