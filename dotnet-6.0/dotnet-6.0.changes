@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 11 07:39:16 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.26
+
+-------------------------------------------------------------------
 Tue Jan  9 16:47:51 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Remove obsolete com.suse.image-type label
