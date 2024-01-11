@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-runtime:7.0-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:7.0.15
 #!BuildTag: bci/dotnet-runtime:7.0.15-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:latest
 #!BuildName: bci-dotnet-runtime-7.0
 #!BuildVersion: 15.5.7.0
 FROM suse/sle15:15.5

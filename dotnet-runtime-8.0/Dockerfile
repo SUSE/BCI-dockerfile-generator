@@ -14,26 +14,27 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-aspnet:7.0
-#!BuildTag: bci/dotnet-aspnet:7.0-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:7.0.15
-#!BuildTag: bci/dotnet-aspnet:7.0.15-%RELEASE%
-#!BuildName: bci-dotnet-aspnet-7.0
-#!BuildVersion: 15.5.7.0
+#!BuildTag: bci/dotnet-runtime:8.0
+#!BuildTag: bci/dotnet-runtime:8.0-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:8.0.1
+#!BuildTag: bci/dotnet-runtime:8.0.1-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:latest
+#!BuildName: bci-dotnet-runtime-8.0
+#!BuildVersion: 15.5.8.0
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.dotnet.aspnet
-LABEL org.opencontainers.image.title="SLE BCI ASP.NET 7.0 runtime"
-LABEL org.opencontainers.image.description="The ASP.NET 7.0 runtime based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="7.0"
+# labelprefix=com.suse.bci.dotnet.runtime
+LABEL org.opencontainers.image.title="SLE BCI .NET 8.0 runtime"
+LABEL org.opencontainers.image.description="The .NET 8.0 runtime based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+LABEL org.opencontainers.image.version="8.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:7.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:8.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -49,16 +50,14 @@ COPY microsoft.asc /tmp
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.15-1.x86_64.rpm
-COPY dotnet-host-7.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0-7.0.15-1.x86_64.rpm
-COPY dotnet-hostfxr-7.0-7.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0-7.0.15-1.x86_64.rpm
-COPY dotnet-runtime-deps-7.0-7.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0-7.0.15-1.x86_64.rpm
-COPY dotnet-runtime-7.0-7.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-7.0-7.0.15-1.x86_64.rpm
-COPY aspnetcore-runtime-7.0-7.0.15-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.1-1.x86_64.rpm
+COPY dotnet-host-8.0.1-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.1-1.x86_64.rpm
+COPY dotnet-hostfxr-8.0-8.0.1-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.1-1.x86_64.rpm
+COPY dotnet-runtime-deps-8.0-8.0.1-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.1-1.x86_64.rpm
+COPY dotnet-runtime-8.0-8.0.1-1.x86_64.rpm /tmp/
 
 COPY prod.repo /tmp
 
