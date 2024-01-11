@@ -313,11 +313,11 @@ class DotNetBCI(LanguageStackContainer):
         self.package_list = []
 
 
-_DOTNET_VERSION_T = Literal["6.0", "7.0"]
+_DOTNET_VERSION_T = Literal["6.0", "7.0", "8.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "7.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "7.0", "8.0"]
 
-_LATEST_DOTNET_VERSION = "7.0"
+_LATEST_DOTNET_VERSION = "8.0"
 
 
 def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool:
