@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 11 13:42:52 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add rpm-build to support signing of KMPs
+
+-------------------------------------------------------------------
 Tue Jan  9 16:47:51 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Remove obsolete com.suse.image-type label
