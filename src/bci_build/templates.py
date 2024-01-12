@@ -48,6 +48,8 @@ LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL io.artifacthub.package.readme-url="{{ image.readme_url }}"{% if image.logo_url %}
+LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"{% endif %}
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 {% if image.is_opensuse %}LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
@@ -106,6 +108,8 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
+            <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
+            <label name="io.artifacthub.package.logo-url" value="{{ image.logo_url }}"/>{% endif %}
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
 {% if not image.is_opensuse %}            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
