@@ -176,6 +176,18 @@ staging_build:
   filters:
     event: pull_request
 
+refresh_staging_project:
+  steps:
+    - trigger_services:
+        project: home:defolos:BCI:CR:Tumbleweed
+        package: _project
+  filters:
+    event: push
+    branches:
+      only:
+        - Tumbleweed
+
+
 refresh_devel_BCI:
   steps:
     - trigger_services:
