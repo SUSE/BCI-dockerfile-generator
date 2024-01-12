@@ -342,6 +342,13 @@ class StagingBot:
         sub-project.
 
         """
+        deployment_branch_push_filter = f"""  filters:
+    event: push
+    branches:
+      only:
+        - {self.deployment_branch_name}
+"""
+
         workflows = """---
 staging_build:
   steps:
@@ -353,8 +360,15 @@ staging_build:
         source_package: {bci.package_name}
         target_project: {source_project}:Staging
 """
-        workflows += """  filters:
+        workflows += f"""  filters:
     event: pull_request
+
+refresh_staging_project:
+  steps:
+    - trigger_services:
+        project: {source_project}
+        package: _project
+{deployment_branch_push_filter}
 
 refresh_devel_BCI:
   steps:
@@ -366,12 +380,8 @@ refresh_devel_BCI:
         package: {bci.package_name}
 """
 
-        workflows += f"""  filters:
-    event: push
-    branches:
-      only:
-        - {self.deployment_branch_name}
-"""
+        workflows += deployment_branch_push_filter
+
         return workflows
 
     @property
