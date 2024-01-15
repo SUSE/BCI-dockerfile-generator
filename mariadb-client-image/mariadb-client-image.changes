@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 15 13:50:57 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Mark container as l3 supported
+
+-------------------------------------------------------------------
 Tue Jan  9 16:48:01 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Remove obsolete com.suse.image-type label
