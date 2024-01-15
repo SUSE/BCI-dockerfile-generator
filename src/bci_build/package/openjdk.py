@@ -76,13 +76,17 @@ OPENJDK_CONTAINERS = (
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
+        for os_version, devel in product(
+            (OsVersion.SP5, OsVersion.TUMBLEWEED), (True, False)
+        )
     ]
     + [
         LanguageStackContainer(
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=21),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
+        for os_version, devel in product(
+            (OsVersion.SP6, OsVersion.TUMBLEWEED), (True, False)
+        )
     ]
 )
