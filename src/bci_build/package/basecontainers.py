@@ -266,6 +266,7 @@ GITEA_RUNNER_CONTAINER = OsContainer(
     package_list=[
         "osc",
         "expect",
+        "obs-service-format_spec_file",
         "obs-service-source_validator",
         "typescript",
         "git",
