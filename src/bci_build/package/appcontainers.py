@@ -168,6 +168,7 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                 "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
                 "_constraints": generate_disk_size_constraints(11),
             },
+            support_level=SupportLevel.L3,
             build_recipe_type=BuildType.DOCKER,
             cmd=["mariadbd"],
             volumes=["/var/lib/mysql"],
@@ -210,6 +211,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
                 )
             ],
             pretty_name="MariaDB Client",
+            support_level=SupportLevel.L3,
             package_list=["mariadb-client"],
             build_recipe_type=BuildType.DOCKER,
             cmd=["mariadb"],
@@ -467,6 +469,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
         "extra_files": _NGINX_FILES,
+        "support_level": SupportLevel.L3,
         "exposes_tcp": [80],
         "custom_end": f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
@@ -605,6 +608,7 @@ HELM_CONTAINERS = [
         entrypoint=["/usr/bin/helm"],
         cmd=["help"],
         build_recipe_type=BuildType.KIWI,
+        support_level=SupportLevel.L3,
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
