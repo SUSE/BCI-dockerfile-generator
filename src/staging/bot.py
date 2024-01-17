@@ -235,11 +235,7 @@ class StagingBot:
         where the build recipes are checked out by default.
 
         """
-        return (
-            str(self.os_version)
-            if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
-            else f"sle15-sp{str(self.os_version)}"
-        )
+        return self.os_version.deployment_branch_name
 
     @property
     def package_names(self) -> list[str] | None:
@@ -1029,10 +1025,17 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 if isinstance(bci_pkg, DotNetBCI):
                     bci_pkg.generate_custom_end()
 
+                async def write_readme() -> str:
+                    async with aiofiles.open(
+                        os.path.join(destination_prj_folder, bci_pkg.readme_path), "w"
+                    ) as readme_md_f:
+                        await readme_md_f.write(bci_pkg.readme)
+                    return bci_pkg.readme_path
+
                 return [
                     f"{bci_pkg.package_name}/{fname}"
                     for fname in await bci_pkg.write_files_to_folder(dest)
-                ]
+                ] + [await write_readme()]
 
             img_dest_dir = os.path.join(destination_prj_folder, bci.package_name)
             tasks.append(write_files(bci, img_dest_dir))

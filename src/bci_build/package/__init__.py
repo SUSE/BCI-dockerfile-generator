@@ -159,6 +159,14 @@ class OsVersion(enum.Enum):
         return f"15 SP{self.value}"
 
     @property
+    def deployment_branch_name(self) -> str:
+        return (
+            str(self.value)
+            if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value)
+            else f"sle15-sp{self.value}"
+        )
+
+    @property
     def lifecycle_data_pkg(self) -> List[str]:
         if self.value not in (OsVersion.BASALT.value, OsVersion.TUMBLEWEED.value):
             return ["lifecycle-data-sle-module-development-tools"]
@@ -490,6 +498,11 @@ class BaseContainerImage(abc.ABC):
     #: flag whether to not install recommended packages in the call to
     #: :command:`zypper` in :file:`Dockerfile`
     no_recommends: bool = True
+
+    #: URL to the logo of this container image.
+    #: This value is added to the ``io.artifacthub.package.logo-url`` label if
+    #: present
+    logo_url: str = ""
 
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
@@ -976,6 +989,31 @@ exit 0
 
         """
         return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name}"
+
+    @property
+    def readme_path(self) -> str:
+        return f"{self.package_name}/README.md"
+
+    @property
+    def readme_url(self) -> str:
+        # we cannot use %SOURCEURL% for Tumbleweed, as it points directly to OBS
+        # with a url like:
+        # https://build.opensuse.org/package/show/openSUSE:Factory/ruby-3.2-image?rev=2bf407f529a768e95f024bce5a916c69
+        # to point to the README, we'd have to inject something *before* the query
+        if self.is_opensuse:
+            return f"https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/{self.os_version.deployment_branch_name}/{self.readme_path}"
+
+        return "%SOURCEURL%/README.md"
+
+    @property
+    def readme(self) -> str:
+        if "README.md" in self.extra_files:
+            return str(self.extra_files["README.md"])
+
+        return f"""# The {self.title} Container image
+
+{self.description}
+"""
 
     @property
     def extra_label_lines(self) -> str:
