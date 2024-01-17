@@ -40,6 +40,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/suse/registry:%%registry_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="l3"/>
