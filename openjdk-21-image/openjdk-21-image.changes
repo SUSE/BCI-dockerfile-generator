@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 17 14:30:09 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Add initial README stub
+
+-------------------------------------------------------------------
 Mon Jan 15 18:27:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the OpenJDK 21 runtime BCI
