@@ -315,9 +315,8 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
 """,
     )
     for ver, os_version in (
-        # PostgreSQL 15 & 16 is supported on SP5+
-        [(15, os) for os in ALL_NONBASE_OS_VERSIONS]
-        + [(16, os) for os in ALL_NONBASE_OS_VERSIONS]
+        [(15, os) for os in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
+        + [(16, os) for os in (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED)]
     )
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
