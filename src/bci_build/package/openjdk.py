@@ -15,7 +15,7 @@ from bci_build.package import SupportLevel
 
 
 def _get_openjdk_kwargs(
-    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17, 20]
+    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17, 20, 21]
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -64,10 +64,11 @@ def _get_openjdk_kwargs(
 OPENJDK_CONTAINERS = (
     [
         LanguageStackContainer(
-            **_get_openjdk_kwargs(os_version, devel, 11), support_level=SupportLevel.L3
+            **_get_openjdk_kwargs(os_version, devel, java_version=11),
+            support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
-            ALL_NONBASE_OS_VERSIONS,
+            (OsVersion.SP5, OsVersion.TUMBLEWEED),
             (True, False),
         )
     ]
