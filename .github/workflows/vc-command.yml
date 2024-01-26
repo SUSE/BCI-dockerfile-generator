@@ -62,7 +62,7 @@ jobs:
 
       - name: Add reaction to the original comment on success
         if: ${{ success() }}
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.PAT }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
@@ -74,7 +74,7 @@ jobs:
 
       - name: Add reaction and a link to the error to the original comment on failure
         if: ${{ failure() || cancelled() }}
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.PAT }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
