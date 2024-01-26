@@ -2,8 +2,8 @@
 import datetime
 from typing import Literal
 
-from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement

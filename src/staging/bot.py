@@ -22,16 +22,17 @@ import aiofiles.os
 import aiofiles.tempfile
 import aiohttp
 import git
+from obs_package_update.util import CommandError
+from obs_package_update.util import CommandResult
+from obs_package_update.util import RunCommand
+from obs_package_update.util import retry_async_run_cmd
+
 from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from dotnet.updater import DOTNET_IMAGES
 from dotnet.updater import DotNetBCI
-from obs_package_update.util import CommandError
-from obs_package_update.util import CommandResult
-from obs_package_update.util import retry_async_run_cmd
-from obs_package_update.util import RunCommand
 from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
@@ -301,8 +302,9 @@ class StagingBot:
             osc_username=osc_username,
         )
 
-        assert bot.staging_project_name == (
-            prj := prj_markdown_link.split("]")[0].replace("[", "")
+        assert (
+            bot.staging_project_name
+            == (prj := prj_markdown_link.split("]")[0].replace("[", ""))
         ), f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
         return bot
 
@@ -876,7 +878,11 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         # not touch any BCI and thus `res` will be an empty list
         # => give reduce an initial value (last parameter) as it will otherwise
         #    fail
-        assert reduce(lambda l, r: l and r, (p in bci_pkg_names for p in res), True)
+        assert reduce(
+            lambda folder_a, folder_b: folder_a and folder_b,
+            (pkg in bci_pkg_names for pkg in res),
+            True,
+        )
         return res
 
     async def _run_git_action_in_worktree(

@@ -2,12 +2,11 @@
 import datetime
 from typing import Literal
 
-from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
-
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {

@@ -1,6 +1,7 @@
 from datetime import date
 
 import pytest
+
 from bci_build.package import Arch
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
@@ -421,9 +422,7 @@ VOLUME /bin/ /usr/bin/""",
     <package name="emacs"/>
   </packages>
 
-</image>""".replace(
-                "__CURRENT_YEAR__", str(date.today().year)
-            ),
+</image>""".replace("__CURRENT_YEAR__", str(date.today().year)),
             LanguageStackContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",

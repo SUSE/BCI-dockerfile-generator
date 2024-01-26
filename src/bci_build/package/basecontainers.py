@@ -2,20 +2,19 @@
 import os
 import textwrap
 
-from bci_build.package import _build_tag_prefix
 from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_OS_VERSIONS
-from bci_build.package import Arch
-from bci_build.package import BuildType
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
+from bci_build.package import Arch
+from bci_build.package import BuildType
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
 from bci_build.package import SupportLevel
-
+from bci_build.package import _build_tag_prefix
+from bci_build.package import generate_disk_size_constraints
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 

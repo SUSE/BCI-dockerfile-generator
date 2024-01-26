@@ -6,12 +6,11 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
-
+from bci_build.package import generate_disk_size_constraints
 
 _GO_VER_T = Literal["1.20", "1.21", "1.22"]
 _GOLANG_VERSIONS: List[_GO_VER_T] = ["1.20", "1.21"]

@@ -3,6 +3,7 @@ import pathlib
 
 import pytest
 import yaml
+
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import OsVersion
 from staging.bot import StagingBot
