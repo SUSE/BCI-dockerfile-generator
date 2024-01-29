@@ -9,7 +9,7 @@ from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 
 
-def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2"], os_version: OsVersion):
+def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion):
     ruby = f"ruby{ruby_version}"
     ruby_major = ruby_version.split(".")[0]
 
@@ -70,5 +70,5 @@ RUBY_CONTAINERS = [
         **_get_ruby_kwargs("2.5", OsVersion.SP6),
         support_level=SupportLevel.L3,
     ),
-    LanguageStackContainer(**_get_ruby_kwargs("3.2", OsVersion.TUMBLEWEED)),
+    LanguageStackContainer(**_get_ruby_kwargs("3.3", OsVersion.TUMBLEWEED)),
 ]
