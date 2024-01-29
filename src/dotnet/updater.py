@@ -8,12 +8,13 @@ from typing import Literal
 from urllib.parse import urlparse
 
 import dnf
+from jinja2 import Template
+
 from bci_build.logger import LOGGER
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import generate_disk_size_constraints
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
-from jinja2 import Template
+from bci_build.package import generate_disk_size_constraints
 from staging.build_result import Arch
 
 MS_ASC = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -301,9 +302,7 @@ class DotNetBCI(LanguageStackContainer):
         pkgs = self._fetch_packages()
 
         if new_version := self._guess_version_from_pkglist(pkgs):
-            assert (
-                not self.additional_versions
-            ), f"additional_versions property must be unset, but got {self.additional_versions}"
+            assert not self.additional_versions, f"additional_versions property must be unset, but got {self.additional_versions}"
             self.additional_versions = [new_version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(

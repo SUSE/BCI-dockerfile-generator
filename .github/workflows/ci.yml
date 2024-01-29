@@ -20,10 +20,13 @@ jobs:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
 
-      - name: Run black and reorder-python-imports
-        run: |
-          poetry install
-          poetry run bash ./format.sh --check
+      - run: poetry install
+
+      - name: Run ruff format
+        run: poetry run ruff format --check --diff
+
+      - name: run ruff linter
+        run: poetry run ruff check
 
   ci:
     name: Run the unit tests

@@ -1,8 +1,8 @@
 import enum
 from itertools import product
 
-from bci_build.package import _BASH_SET
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import _BASH_SET
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement

@@ -163,12 +163,15 @@ def is_build_failed(build_results: list[RepositoryBuildResult]) -> bool:
             )
 
         for pkg_res in build_res.packages:
-            assert pkg_res.code in (
-                PackageStatusCode.EXCLUDED,
-                PackageStatusCode.FAILED,
-                PackageStatusCode.SUCCEEDED,
-                PackageStatusCode.UNRESOLVABLE,
-                PackageStatusCode.DISABLED,
+            assert (
+                pkg_res.code
+                in (
+                    PackageStatusCode.EXCLUDED,
+                    PackageStatusCode.FAILED,
+                    PackageStatusCode.SUCCEEDED,
+                    PackageStatusCode.UNRESOLVABLE,
+                    PackageStatusCode.DISABLED,
+                )
             ), f"package {pkg_res.name} (from repository {build_res.repository} for {build_res.project} and {build_res.arch}) has unfinished state {pkg_res.code}"
 
             if pkg_res.code in (

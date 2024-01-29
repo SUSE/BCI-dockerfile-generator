@@ -5,7 +5,6 @@ from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
 
-
 BASALT_BASE = OsContainer(
     name="base",
     pretty_name="Base",

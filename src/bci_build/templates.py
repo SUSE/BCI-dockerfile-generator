@@ -6,7 +6,6 @@ import datetime
 
 import jinja2
 
-
 INFOHEADER_TEMPLATE = f"""
     Copyright (c) {datetime.datetime.now().year} SUSE LLC
 

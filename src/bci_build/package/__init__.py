@@ -14,16 +14,16 @@ from typing import Dict
 from typing import List
 from typing import Literal
 from typing import Optional
-from typing import overload
 from typing import Union
+from typing import overload
+
+from packaging import version
 
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
-from packaging import version
-
 
 _BASH_SET = "set -euo pipefail"
 
@@ -882,9 +882,7 @@ exit 0
                     f"""  <packages type="{pkg_type}">
     """
                     + """
-    """.join(
-                        f'<package name="{pkg}"/>' for pkg in pkg_list
-                    )
+    """.join(f'<package name="{pkg}"/>' for pkg in pkg_list)
                     + """
   </packages>
 """
@@ -912,9 +910,7 @@ exit 0
             """\n        <environment>
           """
             + """
-          """.join(
-                f'<env name="{k}" value="{v}"/>' for k, v in self.env.items()
-            )
+          """.join(f'<env name="{k}" value="{v}"/>' for k, v in self.env.items())
             + """
         </environment>
 """
@@ -1379,41 +1375,39 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
-from .basalt_base import BASALT_BASE
-from .python import PYTHON_3_6_CONTAINERS
-from .python import PYTHON_3_11_CONTAINERS
-from .python import PYTHON_3_12_CONTAINERS
-from .python import PYTHON_TW_CONTAINERS
-from .ruby import RUBY_CONTAINERS
-from .golang import GOLANG_CONTAINERS
-from .node import NODE_CONTAINERS
-from .openjdk import OPENJDK_CONTAINERS
-from .php import PHP_CONTAINERS
-from .rust import RUST_CONTAINERS
-
-from .basecontainers import KERNEL_MODULE_CONTAINERS
-from .basecontainers import MICRO_CONTAINERS
-from .basecontainers import MINIMAL_CONTAINERS
-from .basecontainers import BUSYBOX_CONTAINERS
-from .basecontainers import INIT_CONTAINERS
-from .basecontainers import FIPS_BASE_CONTAINERS
-from .basecontainers import GITEA_RUNNER_CONTAINER
-
-from .appcontainers import GIT_CONTAINERS
-from .appcontainers import HELM_CONTAINERS
-from .appcontainers import REGISTRY_CONTAINERS
-from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS
-from .appcontainers import NGINX_CONTAINERS
-from .appcontainers import RMT_CONTAINERS
-from .appcontainers import MARIADB_CONTAINERS
-from .appcontainers import MARIADB_CLIENT_CONTAINERS
-from .appcontainers import POSTGRES_CONTAINERS
-from .appcontainers import PROMETHEUS_CONTAINERS
-from .appcontainers import ALERTMANAGER_CONTAINERS
-from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS
-from .appcontainers import GRAFANA_CONTAINERS
-from .appcontainers import PCP_CONTAINERS
-from .appcontainers import TRIVY_CONTAINERS
+from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
+from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
+from .appcontainers import GIT_CONTAINERS  # noqa: E402
+from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
+from .appcontainers import HELM_CONTAINERS  # noqa: E402
+from .appcontainers import MARIADB_CLIENT_CONTAINERS  # noqa: E402
+from .appcontainers import MARIADB_CONTAINERS  # noqa: E402
+from .appcontainers import NGINX_CONTAINERS  # noqa: E402
+from .appcontainers import PCP_CONTAINERS  # noqa: E402
+from .appcontainers import POSTGRES_CONTAINERS  # noqa: E402
+from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
+from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
+from .appcontainers import RMT_CONTAINERS  # noqa: E402
+from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
+from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
+from .basalt_base import BASALT_BASE  # noqa: E402
+from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
+from .basecontainers import FIPS_BASE_CONTAINERS  # noqa: E402
+from .basecontainers import GITEA_RUNNER_CONTAINER  # noqa: E402
+from .basecontainers import INIT_CONTAINERS  # noqa: E402
+from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
+from .basecontainers import MICRO_CONTAINERS  # noqa: E402
+from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
+from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .node import NODE_CONTAINERS  # noqa: E402
+from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
+from .php import PHP_CONTAINERS  # noqa: E402
+from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
+from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
+from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
+from .python import PYTHON_TW_CONTAINERS  # noqa: E402
+from .ruby import RUBY_CONTAINERS  # noqa: E402
+from .rust import RUST_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
