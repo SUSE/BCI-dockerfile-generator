@@ -616,9 +616,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 container_repos = ("containerfile", "images")
                 if name in container_repos:
                     for repo_name in container_repos:
-                        (bci_devel_prj_path := ET.Element("path")).attrib[
-                            "project"
-                        ] = _get_bci_project_name(self.os_version)
+                        (bci_devel_prj_path := ET.Element("path")).attrib["project"] = (
+                            _get_bci_project_name(self.os_version)
+                        )
                         bci_devel_prj_path.attrib["repository"] = repo_name
 
                         elem.insert(0, bci_devel_prj_path)
@@ -664,9 +664,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         meta = await self._generate_test_project_meta(
             self.continuous_rebuild_project_name
         )
-        (
-            scmsync := ET.Element("scmsync")
-        ).text = f"https://github.com/SUSE/bci-dockerfile-generator#{self.deployment_branch_name}"
+        (scmsync := ET.Element("scmsync")).text = (
+            f"https://github.com/SUSE/bci-dockerfile-generator#{self.deployment_branch_name}"
+        )
         meta.append(scmsync)
         await self._send_prj_meta(self.continuous_rebuild_project_name, meta)
 
@@ -770,9 +770,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         (title := ET.Element("title")).text = bci_pkg.title
         (descr := ET.Element("description")).text = bci_pkg.description
-        (
-            scmsync := ET.Element("scmsync")
-        ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
+        (scmsync := ET.Element("scmsync")).text = (
+            f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
+        )
 
         for elem in (title, descr, scmsync):
             pkg_conf.append(elem)
