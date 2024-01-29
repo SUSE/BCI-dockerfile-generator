@@ -71,7 +71,7 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: ruby-3.2-image
+        source_package: ruby-3.3-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -247,7 +247,7 @@ refresh_devel_BCI:
         package: golang-unstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: ruby-3.2-image
+        package: ruby-3.3-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: nodejs-20-image
