@@ -84,30 +84,34 @@ CUSTOM_END_TEMPLATE = Template(
     """{% if image.is_sdk %}# telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1{% endif %}
 
-# The MS GPG keys
-COPY microsoft.asc /tmp
-
 RUN mkdir -p /tmp/
 
 {% for pkg in dotnet_packages -%}
 #!RemoteAssetUrl: {{ pkg.url }}
 COPY {{ pkg.name }} /tmp/
 {% endfor %}
-COPY prod.repo /tmp
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
 RUN zypper --non-interactive install --no-recommends sles-release
 
 # Importing MS GPG keys
+COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
 RUN zypper --non-interactive install --no-recommends libicu /tmp/*rpm
 
-RUN cp /tmp/prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-
+COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 RUN zypper -n addlock dotnet-host
 
 RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/*
+
+{% if not image.is_sdk and image.use_nonprivileged_user %}
+ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
+ENV DOTNET_VERSION={{ dotnet_version }}
+RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
+WORKDIR /app
+EXPOSE 8080
+{% endif %}
 """
 )
 
@@ -144,6 +148,9 @@ class DotNetBCI(LanguageStackContainer):
     #: Specifies whether this package contains the full .Net SDK
     is_sdk: bool = False
 
+    #: Specifies whether this container needs a nonprivileged user (defaults to True for dotnet 8.0+)
+    use_nonprivileged_user: bool = False
+
     package_list: list[str | Package] | list[str] = field(default_factory=list)
 
     _base: ClassVar[dnf.Base | None] = None
@@ -155,6 +162,11 @@ class DotNetBCI(LanguageStackContainer):
         if OsVersion.TUMBLEWEED == self.os_version:
             raise ValueError(".Net BCIs are not supported for openSUSE Tumbleweed")
         super().__post_init__()
+
+        # https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/aspnet-port
+        self.use_nonprivileged_user = False
+        if self.version not in ("6.0", "7.0"):
+            self.use_nonprivileged_user = True
 
         self.custom_description = f"The {self.pretty_name} based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 
@@ -308,6 +320,7 @@ class DotNetBCI(LanguageStackContainer):
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
+            dotnet_version=new_version,
         )
         self.package_list = []
 
