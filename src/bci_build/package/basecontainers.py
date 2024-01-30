@@ -1,6 +1,8 @@
 """Base container images maintained by the BCI generator"""
+
 import os
 import textwrap
+from pathlib import Path
 
 from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_OS_VERSIONS
@@ -250,11 +252,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
     )
 
 
-with open(
-    os.path.join(os.path.dirname(__file__), "gitea-runner", "osc_checkout")
-) as osc_checkout_f:
-    OSC_CHECKOUT = osc_checkout_f.read(-1)
-
+OSC_CHECKOUT = (Path(__file__).parent / "gitea-runner" / "osc_checkout").read_bytes()
 
 GITEA_RUNNER_CONTAINER = OsContainer(
     name="gitea-runner",

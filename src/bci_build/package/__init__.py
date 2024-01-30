@@ -9,6 +9,7 @@ import os
 import textwrap
 from dataclasses import dataclass
 from dataclasses import field
+from pathlib import Path
 from typing import Callable
 from typing import Dict
 from typing import List
@@ -1004,6 +1005,8 @@ exit 0
     @property
     def readme(self) -> str:
         if "README.md" in self.extra_files:
+            if isinstance(self.extra_files["README.md"], bytes):
+                return self.extra_files["README.md"].decode("utf-8")
             return str(self.extra_files["README.md"])
 
         return f"""# The {self.title} Container image
@@ -1148,14 +1151,13 @@ exit 0
         )
 
         changes_file_name = self.package_name + ".changes"
-        changes_file_dest = os.path.join(dest, changes_file_name)
-        if not os.path.exists(changes_file_dest):
+        if not (Path(dest) / changes_file_name).exists():
             name_to_include = self.pretty_name
             if "%" in name_to_include:
                 name_to_include = self.name.capitalize()
 
             if hasattr(self, "version"):
-                ver = getattr(self, "version")
+                ver = self.version
                 # we don't want to include the version for language stack
                 # containers with the version_in_uid flag set to False, but by
                 # default we include it (for os containers which don't have this
