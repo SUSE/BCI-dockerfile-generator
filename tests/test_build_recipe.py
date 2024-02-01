@@ -29,7 +29,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="28"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
@@ -74,7 +74,7 @@ RUN emacs -Q --batch test.el
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
-            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
             <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:28-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
@@ -133,7 +133,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%emacs_ver%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
@@ -175,7 +175,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
-            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
             <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
@@ -228,7 +228,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="28"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
@@ -270,7 +270,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
-            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/server/"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
             <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:28-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
