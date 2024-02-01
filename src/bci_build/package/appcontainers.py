@@ -1,5 +1,6 @@
 """Application Containers that are generated with the BCI tooling"""
-import os
+
+from pathlib import Path
 from typing import Dict
 
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
@@ -26,8 +27,7 @@ for filename in (
     "README.md",
     "healthcheck",
 ):
-    with open(os.path.join(os.path.dirname(__file__), "pcp", filename)) as cursor:
-        _PCP_FILES[filename] = cursor.read(-1)
+    _PCP_FILES[filename] = (Path(__file__).parent / "pcp" / filename).read_bytes()
 
 PCP_CONTAINERS = [
     ApplicationStackContainer(
@@ -84,8 +84,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
 
 _389DS_FILES: Dict[str, str] = {}
 _fname = "nsswitch.conf"
-with open(os.path.join(os.path.dirname(__file__), "389-ds", _fname)) as nsswitch:
-    _389DS_FILES[_fname] = nsswitch.read(-1)
+_389DS_FILES[_fname] = (Path(__file__).parent / "389-ds" / _fname).read_bytes()
 
 THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
@@ -128,10 +127,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
-with open(
-    os.path.join(os.path.dirname(__file__), "mariadb", "entrypoint.sh")
-) as entrypoint:
-    _MARIAD_ENTRYPOINT = entrypoint.read(-1)
+_MARIADB_ENTRYPOINT = (Path(__file__).parent / "mariadb" / "entrypoint.sh").read_bytes()
 
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
@@ -164,7 +160,7 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
             package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
-                "docker-entrypoint.sh": _MARIAD_ENTRYPOINT,
+                "docker-entrypoint.sh": _MARIADB_ENTRYPOINT,
                 "_constraints": generate_disk_size_constraints(11),
             },
             support_level=SupportLevel.L3,
@@ -218,10 +214,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
     )
 
 
-with open(
-    os.path.join(os.path.dirname(__file__), "rmt", "entrypoint.sh")
-) as entrypoint:
-    _RMT_ENTRYPOINT = entrypoint.read(-1)
+_RMT_ENTRYPOINT = (Path(__file__).parent / "rmt" / "entrypoint.sh").read_bytes()
 
 RMT_CONTAINERS = [
     ApplicationStackContainer(
@@ -253,16 +246,10 @@ RMT_CONTAINERS = [
 ]
 
 
-with open(
-    os.path.join(os.path.dirname(__file__), "postgres", "entrypoint.sh")
-) as entrypoint:
-    _POSTGRES_ENTRYPOINT = entrypoint.read(-1)
-
-with open(
-    os.path.join(os.path.dirname(__file__), "postgres", "LICENSE")
-) as license_file:
-    _POSTGRES_LICENSE = license_file.read(-1)
-
+_POSTGRES_ENTRYPOINT = (
+    Path(__file__).parent / "postgres" / "entrypoint.sh"
+).read_bytes()
+_POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes()
 
 # first list the SLE15 versions, then the TW specific versions
 _POSTGRES_MAJOR_VERSIONS = [16, 15, 14] + [13, 12]
@@ -314,8 +301,11 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
 """,
     )
     for ver, os_version in (
-        [(15, os) for os in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
-        + [(16, os) for os in (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED)]
+        [(15, variant) for variant in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
+        + [
+            (16, variant)
+            for variant in (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED)
+        ]
     )
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
@@ -395,9 +385,10 @@ BLACKBOX_EXPORTER_CONTAINERS = [
 ]
 
 GRAFANA_FILES = {}
-for filename in {"run.sh", "LICENSE"}:
-    with open(os.path.join(os.path.dirname(__file__), "grafana", filename)) as cursor:
-        GRAFANA_FILES[filename] = cursor.read()
+for filename in ("run.sh", "LICENSE"):
+    GRAFANA_FILES[filename] = (
+        Path(__file__).parent / "grafana" / filename
+    ).read_bytes()
 
 GRAFANA_PACKAGE_NAME = "grafana"
 GRAFANA_CONTAINERS = [
@@ -445,8 +436,7 @@ for filename in (
     "30-tune-worker-processes.sh",
     "index.html",
 ):
-    with open(os.path.join(os.path.dirname(__file__), "nginx", filename)) as cursor:
-        _NGINX_FILES[filename] = cursor.read(-1)
+    _NGINX_FILES[filename] = (Path(__file__).parent / "nginx" / filename).read_bytes()
 
 
 def _get_nginx_kwargs(os_version: OsVersion):

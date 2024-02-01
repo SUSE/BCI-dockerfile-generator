@@ -46,7 +46,7 @@ BCI_FIXTURE_RET_T = Tuple[Type[BaseContainerImage], Union[BciKwargs, BciKwargsBa
 def bci(request: SubRequest) -> Generator[BCI_FIXTURE_RET_T, None, None]:
     p = request.param if request.param in BCI_CLASSES else request.param[0]
 
-    if p == LanguageStackContainer or p == ApplicationStackContainer:
+    if p in (LanguageStackContainer, ApplicationStackContainer):
         kwargs: BciKwargs = {**KWARGS, "version": "1.0"}
         yield p, kwargs
     else:
