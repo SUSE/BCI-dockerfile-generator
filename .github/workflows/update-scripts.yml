@@ -15,7 +15,7 @@ jobs:
         run: ./update-files.sh
 
       - name: create a pull request with the updated files
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           delete-branch: true
           commit-message: "🤖: Update external files via ./update-files.sh"
