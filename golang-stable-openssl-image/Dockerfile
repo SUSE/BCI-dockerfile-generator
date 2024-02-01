@@ -30,7 +30,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE BCI Go 1.21-openssl development"
 LABEL org.opencontainers.image.description="Go 1.21-openssl development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="1.21-openssl"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
