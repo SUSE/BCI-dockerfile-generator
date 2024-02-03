@@ -32,7 +32,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE Performance Co-Pilot (pcp)"
 LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container based on the SLE Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="%%pcp_patch%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"

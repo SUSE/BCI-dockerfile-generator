@@ -28,7 +28,7 @@ MAINTAINER william.brown@suse.com
 LABEL org.opencontainers.image.title="SLE 389 Directory Server"
 LABEL org.opencontainers.image.description="389 Directory Server container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%389ds_version%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
