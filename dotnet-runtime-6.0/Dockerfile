@@ -29,7 +29,7 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 LABEL org.opencontainers.image.title="SLE BCI .NET 6.0 runtime"
 LABEL org.opencontainers.image.description="The .NET 6.0 runtime based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 LABEL org.opencontainers.image.version="6.0"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/server/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
