@@ -45,9 +45,6 @@ LABEL com.suse.release-stage="beta"
 
 
 
-# The MS GPG keys
-COPY microsoft.asc /tmp
-
 RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.26-1.x86_64.rpm
@@ -59,18 +56,18 @@ COPY dotnet-runtime-deps-6.0-6.0.26-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.26-1.x86_64.rpm
 COPY dotnet-runtime-6.0-6.0.26-1.x86_64.rpm /tmp/
 
-COPY prod.repo /tmp
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
 RUN zypper --non-interactive install --no-recommends sles-release
 
 # Importing MS GPG keys
+COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
 RUN zypper --non-interactive install --no-recommends libicu /tmp/*rpm
 
-RUN cp /tmp/prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-
+COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 RUN zypper -n addlock dotnet-host
 
 RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/*
+
