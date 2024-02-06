@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  6 11:05:10 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Simplify copy of the repository during build
+
+-------------------------------------------------------------------
 Sat Feb  3 10:29:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page

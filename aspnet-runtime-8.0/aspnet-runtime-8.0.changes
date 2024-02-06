@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  6 11:06:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add app user and environment variables for .Net 8
+
+-------------------------------------------------------------------
 Sat Feb  3 10:29:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page
