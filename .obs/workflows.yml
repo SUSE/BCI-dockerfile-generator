@@ -59,15 +59,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: golang-oldstable-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: golang-stable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: golang-unstable-image
+        source_package: golang-oldstable-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -238,13 +234,10 @@ refresh_devel_BCI:
         package: git-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: golang-oldstable-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: golang-stable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: golang-unstable-image
+        package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: ruby-3.3-image
