@@ -16,8 +16,8 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-runtime:6.0
 #!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:6.0.26
-#!BuildTag: bci/dotnet-runtime:6.0.26-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:6.0.27
+#!BuildTag: bci/dotnet-runtime:6.0.27-%RELEASE%
 #!BuildName: bci-dotnet-runtime-6.0
 #!BuildVersion: 15.6.6.0
 FROM suse/sle15:15.6
@@ -47,14 +47,14 @@ LABEL com.suse.release-stage="beta"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.26-1.x86_64.rpm
-COPY dotnet-host-6.0.26-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.26-1.x86_64.rpm
-COPY dotnet-hostfxr-6.0-6.0.26-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.26-1.x86_64.rpm
-COPY dotnet-runtime-deps-6.0-6.0.26-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.26-1.x86_64.rpm
-COPY dotnet-runtime-6.0-6.0.26-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.27-1.x86_64.rpm
+COPY dotnet-host-6.0.27-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.27-1.x86_64.rpm
+COPY dotnet-hostfxr-6.0-6.0.27-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.27-1.x86_64.rpm
+COPY dotnet-runtime-deps-6.0-6.0.27-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.27-1.x86_64.rpm
+COPY dotnet-runtime-6.0-6.0.27-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
