@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 14 08:29:01 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.27
+
+-------------------------------------------------------------------
 Tue Feb  6 11:05:10 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Simplify copy of the repository during build
