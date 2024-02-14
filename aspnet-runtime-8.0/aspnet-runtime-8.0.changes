@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 14 08:29:12 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 8.0.2
+
+-------------------------------------------------------------------
 Tue Feb  6 11:06:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add app user and environment variables for .Net 8
