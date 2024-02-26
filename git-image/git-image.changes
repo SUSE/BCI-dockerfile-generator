@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 26 14:55:45 UTC 2024 - Tan Néau <tan.neau@suse.com>
+
+- Add openssh-client to allow to clone git repos over ssh
+
+-------------------------------------------------------------------
 Sat Feb  3 10:29:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page
