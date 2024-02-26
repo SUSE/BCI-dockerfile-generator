@@ -517,7 +517,11 @@ GIT_CONTAINERS = [
         license="GPL-2.0-only",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in ("git-core",)
+            for name in (
+                "catatonit",
+                "git-core",
+                "openssh-clients",
+            )
             + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
         ],
         # intentionally empty
