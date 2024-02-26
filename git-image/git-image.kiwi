@@ -60,6 +60,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   </repository>
   <packages type="bootstrap">
     <package name="git-core"/>
+    <package name="openssh-clients"/>
     <package name="skelcd-EULA-bci"/>
   </packages>
 
