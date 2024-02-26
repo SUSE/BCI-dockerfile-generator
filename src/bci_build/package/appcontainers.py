@@ -518,7 +518,6 @@ GIT_CONTAINERS = [
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in (
-                "catatonit",
                 "git-core",
                 "openssh-clients",
             )
