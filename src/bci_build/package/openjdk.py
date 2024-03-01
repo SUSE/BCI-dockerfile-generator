@@ -1,4 +1,5 @@
 """OpenJDK (Java) related BCI containers"""
+
 import os
 from itertools import product
 from typing import Literal

@@ -618,9 +618,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 container_repos = ("containerfile", "images")
                 if name in container_repos:
                     for repo_name in container_repos:
-                        (bci_devel_prj_path := ET.Element("path")).attrib[
-                            "project"
-                        ] = _get_bci_project_name(self.os_version)
+                        (bci_devel_prj_path := ET.Element("path")).attrib["project"] = (
+                            _get_bci_project_name(self.os_version)
+                        )
                         bci_devel_prj_path.attrib["repository"] = repo_name
 
                         elem.insert(0, bci_devel_prj_path)

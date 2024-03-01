@@ -1,4 +1,5 @@
 """Rust language BCI container"""
+
 import datetime
 from itertools import product
 

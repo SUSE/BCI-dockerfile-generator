@@ -1,4 +1,5 @@
 """Base Container for the Basalt Project"""
+
 from bci_build.package import BuildType
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
