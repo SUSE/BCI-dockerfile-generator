@@ -5,7 +5,6 @@
    :caption: Contents:
 
    adding_containers
-   creating_packages
 
    staging_bot
 
