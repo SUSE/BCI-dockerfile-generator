@@ -770,8 +770,7 @@ exit 0
         main_element: Literal["volumes"],
         entry_element: Literal["volume name"],
         entries: Optional[List[str]],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     @overload
     def _kiwi_volumes_expose(
@@ -779,8 +778,7 @@ exit 0
         main_element: Literal["expose"],
         entry_element: Literal["port number"],
         entries: Optional[List[int]],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def _kiwi_volumes_expose(
         self,
@@ -817,16 +815,14 @@ exit 0
         self,
         instruction: Literal["EXPOSE"],
         entries: Optional[List[int]],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     @overload
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["VOLUME"],
         entries: Optional[List[str]],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def _dockerfile_volume_expose(
         self,

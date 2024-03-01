@@ -1,4 +1,5 @@
 """Go language BCI containers"""
+
 import textwrap
 from itertools import product
 from typing import List

@@ -1,4 +1,5 @@
 """Ruby LanguageStack BCI containers"""
+
 from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
