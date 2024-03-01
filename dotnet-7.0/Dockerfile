@@ -77,7 +77,7 @@ RUN zypper --non-interactive install --no-recommends sles-release
 COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
-RUN zypper --non-interactive install --no-recommends libicu /tmp/*rpm
+RUN zypper --non-interactive install --no-recommends libicu libopenssl1_1 /tmp/*rpm
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 RUN zypper -n addlock dotnet-host
