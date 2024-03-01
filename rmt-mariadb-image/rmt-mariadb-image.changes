@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  1 07:37:55 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Update entrypoint: add support for setting memory limits and refactor healthcheck user creation
+
+-------------------------------------------------------------------
 Sat Feb  3 10:29:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page
