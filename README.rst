@@ -55,24 +55,3 @@ package into a directory:
 .. code-block:: console
 
    poetry run package postgres-12-sp4 ~/tmp/postgres/
-
-
-
-Use the dev-container
----------------------
-
-You can use the dockerfile generator via a development container published as
-`ghcr.io/suse/bci-dockerfile-generator`:
-
-.. code-block:: console
-
-   podman run --rm ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py --help
-
-
-Some commands of the dockerfile-generator use :command:`osc` and require access
-to a valid :file:`~/.config/osc/oscrc`. You can expose your own to the container
-via a volume as follows:
-
-.. code-block:: console
-
-   podman run --rm -v ~/.config/osc/:/root/.config/osc/:Z ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py $additional_args
