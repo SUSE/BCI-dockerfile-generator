@@ -62,6 +62,7 @@ class ReleaseStage(enum.Enum):
 class ImageType(enum.Enum):
     """Values of the ``image-type`` label of a BCI"""
 
+    LTSS = "ltss"
     SLE_BCI = "sle-bci"
     APPLICATION = "application"
 
@@ -1056,9 +1057,11 @@ exit 0
             self._image_properties.label_prefix
             + "."
             + (
-                {ImageType.SLE_BCI: "bci", ImageType.APPLICATION: "application"}[
-                    self.image_type
-                ]
+                {
+                    ImageType.SLE_BCI: "bci",
+                    ImageType.APPLICATION: "application",
+                    ImageType.LTSS: "sle",
+                }[self.image_type]
             )
             + "."
             + (self.custom_labelprefix_end or self.name)
@@ -1356,6 +1359,13 @@ class OsContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
+
+
+@dataclass
+class LTSSContainer(OsContainer):
+    @property
+    def image_type(self) -> ImageType:
+        return ImageType.LTSS
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
