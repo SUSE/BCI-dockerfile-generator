@@ -11,6 +11,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import Arch
 from bci_build.package import BuildType
 from bci_build.package import OsContainer
+from bci_build.package import OsFIPSContainer
 from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
@@ -102,7 +103,7 @@ _FIPS_15_SP2_BINARIES = [
 ]
 
 FIPS_BASE_CONTAINERS = [
-    OsContainer(
+    OsFIPSContainer(
         name="base-fips",
         package_name="base-fips-image",
         exclusive_arch=[Arch.X86_64],

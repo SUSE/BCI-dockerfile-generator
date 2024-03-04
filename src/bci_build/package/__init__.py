@@ -1357,6 +1357,12 @@ class OsContainer(BaseContainerImage):
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
 
+@dataclass
+class OsFIPSContainer(OsContainer):
+    @property
+    def image_type(self) -> ImageType:
+        return ImageType.SLE_BCI
+
 
 def generate_disk_size_constraints(size_gb: int) -> str:
     """Creates the contents of a :file:`_constraints` file for OBS to require
