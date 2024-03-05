@@ -66,11 +66,11 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
 
 {% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; rm -rf /var/log/*{% endif %}
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
-{%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
 {%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}
 {%- if image.expose_dockerfile %}{{ image.expose_dockerfile }}{% endif %}
 {% if image.dockerfile_custom_end %}{{ image.dockerfile_custom_end }}{% endif %}
+{%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
 {%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
 """
 )
