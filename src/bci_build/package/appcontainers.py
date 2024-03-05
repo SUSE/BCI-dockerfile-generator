@@ -82,7 +82,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
 ]
 
 
-_389DS_FILES: Dict[str, str] = {}
+_389DS_FILES: Dict[str, str | bytes] = {}
 _fname = "nsswitch.conf"
 _389DS_FILES[_fname] = (Path(__file__).parent / "389-ds" / _fname).read_bytes()
 
