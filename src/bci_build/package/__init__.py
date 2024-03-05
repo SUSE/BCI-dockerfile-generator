@@ -1397,6 +1397,7 @@ from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
 from .appcontainers import RMT_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
+from .appcontainers import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
 from .basalt_base import BASALT_BASE  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
@@ -1453,6 +1454,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *BUSYBOX_CONTAINERS,
         *KERNEL_MODULE_CONTAINERS,
         GITEA_RUNNER_CONTAINER,
+        *TOMCAT_CONTAINERS,
     )
 }
 
