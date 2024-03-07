@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  7 16:23:56 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Add sles-release to fix build failures
+
+-------------------------------------------------------------------
 Sat Feb  3 10:29:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page
