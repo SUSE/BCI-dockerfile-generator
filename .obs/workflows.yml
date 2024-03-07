@@ -3,7 +3,15 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
+        source_package: basalt-kernel-module-devel-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
         source_package: base-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: busybox-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
@@ -19,27 +27,19 @@ staging_build:
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
-        source_package: minimal-image
-        target_project: home:defolos:BCI:CR:Basalt:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Basalt
         source_package: micro-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
-        source_package: busybox-image
-        target_project: home:defolos:BCI:CR:Basalt:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Basalt
-        source_package: basalt-kernel-module-devel-image
-        target_project: home:defolos:BCI:CR:Basalt:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Basalt
-        source_package: tomcat-9-image
+        source_package: minimal-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Basalt
         source_package: tomcat-10-image
+        target_project: home:defolos:BCI:CR:Basalt:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Basalt
+        source_package: tomcat-9-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
   filters:
     event: pull_request
@@ -60,7 +60,13 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:Basalt
+        package: basalt-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:Basalt
         package: base-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: busybox-image
     - trigger_services:
         project: devel:BCI:Basalt
         package: init-image
@@ -72,22 +78,16 @@ refresh_devel_BCI:
         package: mariadb-client-image
     - trigger_services:
         project: devel:BCI:Basalt
-        package: minimal-image
-    - trigger_services:
-        project: devel:BCI:Basalt
         package: micro-image
     - trigger_services:
         project: devel:BCI:Basalt
-        package: busybox-image
-    - trigger_services:
-        project: devel:BCI:Basalt
-        package: basalt-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:Basalt
-        package: tomcat-9-image
+        package: minimal-image
     - trigger_services:
         project: devel:BCI:Basalt
         package: tomcat-10-image
+    - trigger_services:
+        project: devel:BCI:Basalt
+        package: tomcat-9-image
   filters:
     event: push
     branches:
