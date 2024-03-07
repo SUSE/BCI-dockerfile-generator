@@ -191,11 +191,9 @@ class StagingBot:
         instance.
 
         """
-        return (
-            bci
-            for bci in list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
-            if bci.os_version == self.os_version
-        )
+        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
+        all_bcis.sort(key=lambda bci: bci.uid)
+        return (bci for bci in all_bcis if bci.os_version == self.os_version)
 
     def _generate_project_name(self, prefix: str) -> str:
         assert self.osc_username
