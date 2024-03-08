@@ -23,6 +23,8 @@ jobs:
           - 6
           - 5
           - Tumbleweed
+          - SLCC-free
+          - SLCC-paid
 
     steps:
       - uses: actions/checkout@v4
