@@ -33,10 +33,10 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
+for os_version in ALL_NONBASE_OS_VERSIONS:
     mariadb_pkg_version = get_pkg_version("mariadb", os_version)
     mariadb_version = to_major_minor_version(mariadb_pkg_version)
-    if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
+    if os_version in (OsVersion.SLCC, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []
     else:

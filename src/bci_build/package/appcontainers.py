@@ -592,7 +592,7 @@ TOMCAT_CONTAINERS = [
             ),
         ],
         cmd=[
-            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.BASALT) else 'lib'}/tomcat/server",
+            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.SLCC) else 'lib'}/tomcat/server",
             "start",
         ],
         exposes_tcp=[8080],
