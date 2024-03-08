@@ -1,4 +1,4 @@
-"""Base Container for the Basalt Project"""
+"""Base Container for the SLCI Project"""
 
 from bci_build.package import BuildType
 from bci_build.package import OsContainer
@@ -6,13 +6,13 @@ from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
 
-BASALT_BASE = OsContainer(
+SLCI_BASE = OsContainer(
     name="base",
     pretty_name="Base",
     package_name="base-image",
     build_recipe_type=BuildType.KIWI,
     from_image=None,
-    os_version=OsVersion.BASALT,
+    os_version=OsVersion.SLCI,
     is_latest=True,
     package_list=[
         Package(name=pkg_name, pkg_type=PackageType.BOOTSTRAP)
@@ -54,7 +54,7 @@ zypper --non-interactive rm -u jdupes
 rpm -e compat-usrmerge-tools
 
 # FIXME: stop hardcoding the url, use some external mechanism once available
-zypper -n ar --gpgcheck --enable 'https://updates.suse.com/SUSE/Products/ALP-Dolomite/1.0/$basearch/product/' repo-basalt
+zypper -n ar --gpgcheck --enable 'https://updates.suse.com/SUSE/Products/ALP-Dolomite/1.0/$basearch/product/' repo-slci
 
 #======================================
 # Disable recommends

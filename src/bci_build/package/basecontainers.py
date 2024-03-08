@@ -25,7 +25,7 @@ _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
     if os_version == OsVersion.TUMBLEWEED:
         return ("openSUSE-release", "openSUSE-release-appliance-docker")
-    if os_version == OsVersion.BASALT:
+    if os_version == OsVersion.SLCI:
         return ("ALP-dummy-release",)
     return ("sles-release",)
 
@@ -51,7 +51,7 @@ MICRO_CONTAINERS = [
             )
             + (
                 ()
-                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
+                if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCI)
                 else ("skelcd-EULA-bci",)
             )
             + _get_os_container_package_names(os_version)
@@ -145,7 +145,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in _get_os_container_package_names(os_version)
     ]
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCI):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -222,8 +222,8 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.BASALT:
-        prefix = "basalt"
+    if os_version == OsVersion.SLCI:
+        prefix = "slci"
         pretty_prefix = prefix.upper()
     else:
         prefix = "sle15"

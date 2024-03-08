@@ -32,7 +32,7 @@ def _get_python_kwargs(
     if os_version == OsVersion.TUMBLEWEED:
         has_pipx = True
     # Enabled only for Python 3.11 on SLE15 (jsc#PED-5573)
-    if os_version not in (OsVersion.BASALT, OsVersion.TUMBLEWEED) and py3_ver == "3.11":
+    if os_version not in (OsVersion.SLCI, OsVersion.TUMBLEWEED) and py3_ver == "3.11":
         has_pipx = True
 
     kwargs = {
