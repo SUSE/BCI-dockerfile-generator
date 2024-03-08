@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -134,7 +135,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 
@@ -194,7 +195,14 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     )
     for ver, os_version in (
         [(15, variant) for variant in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
-        + [(16, variant) for variant in (OsVersion.SP6, OsVersion.TUMBLEWEED)]
+        + [
+            (16, variant)
+            for variant in (
+                OsVersion.SLE16_0,
+                OsVersion.SP6,
+                OsVersion.TUMBLEWEED,
+            )
+        ]
     )
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
