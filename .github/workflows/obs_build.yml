@@ -16,7 +16,8 @@ jobs:
           - 6
           - 5
           - Tumbleweed
-          - Basalt
+          # - SLCC-free
+          # - SLCC-paid
 
     steps:
       # we need all branches for the build checks
