@@ -147,8 +147,8 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
-    if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
+for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SLCC}:
+    if os_version in (OsVersion.SLCC, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []
     else:
@@ -704,7 +704,7 @@ TOMCAT_CONTAINERS = [
             ),
         ],
         cmd=[
-            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.BASALT) else 'lib'}/tomcat/server",
+            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.SLCC) else 'lib'}/tomcat/server",
             "start",
         ],
         exposes_tcp=[8080],
