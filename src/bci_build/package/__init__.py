@@ -135,8 +135,8 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
-    #: Adaptable Linux Platform, Basalt project
-    BASALT = "Basalt"
+    #: SUSE Linux Container Collection
+    SLCC = "SLCC"
 
     @staticmethod
     def parse(val: str) -> OsVersion:
@@ -150,7 +150,7 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value):
+        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLCC.value):
             return self.value
         return f"SP{self.value}"
 
@@ -160,7 +160,7 @@ class OsVersion(enum.Enum):
             # TW has no version by itself and the "openSUSE Tumbleweed" is
             # already part of the base identifier
             return ""
-        if self.value == OsVersion.BASALT.value:
+        if self.value == OsVersion.SLCC.value:
             return "Adaptable Linux Platform"
 
         return f"15 SP{self.value}"
@@ -169,13 +169,13 @@ class OsVersion(enum.Enum):
     def deployment_branch_name(self) -> str:
         return (
             str(self.value)
-            if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value)
+            if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLCC.value)
             else f"sle15-sp{self.value}"
         )
 
     @property
     def lifecycle_data_pkg(self) -> list[str]:
-        if self.value not in (OsVersion.BASALT.value, OsVersion.TUMBLEWEED.value):
+        if self.value not in (OsVersion.SLCC.value, OsVersion.TUMBLEWEED.value):
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
@@ -211,7 +211,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
-    OsVersion.BASALT,
+    OsVersion.SLCC,
 ]
 
 # List of SPs that are already under LTSS
@@ -222,11 +222,7 @@ ALL_OS_VERSIONS: set[OsVersion] = {
     v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)
 }
 
-CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
-    OsVersion.SP5,
-    OsVersion.TUMBLEWEED,
-    OsVersion.BASALT,
-]
+CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [OsVersion.SP5, OsVersion.TUMBLEWEED, OsVersion.SLCC]
 
 
 # End of General Support Dates
@@ -283,8 +279,8 @@ class Replacement:
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
         return "opensuse/bci"
-    if os_version == OsVersion.BASALT:
-        return "alp/bci"
+    if os_version == OsVersion.SLCC:
+        return "slcc"
     if os_version == OsVersion.SP3:
         return "suse/ltss/sle15.3"
     if os_version == OsVersion.SP4:
@@ -380,18 +376,17 @@ _SLE_15_SP3_LTSS_IMAGE_PROPS = ImageProperties(
     application_container_build_tag_prefix="suse",
 )
 
-_BASALT_IMAGE_PROPS = ImageProperties(
+_SLCC_IMAGE_PROPS = ImageProperties(
     maintainer="SUSE LLC (https://www.suse.com/)",
     vendor="SUSE LLC",
     registry="registry.suse.com",
     url="https://susealp.io/",
     eula="sle-bci",
     lifecycle_url="https://www.suse.com/lifecycle",
-    label_prefix="com.suse.basalt",
-    distribution_base_name="Basalt Project",
-    build_tag_prefix=_build_tag_prefix(OsVersion.BASALT),
+    label_prefix="com.suse.slcc",
+    distribution_base_name="SUSE Linux Container Collection",
+    build_tag_prefix=_build_tag_prefix(OsVersion.SLCC),
     application_container_build_tag_prefix="suse",
-    based_on_container_description="based on the SUSE Adaptable Linux Platform (ALP)",
 )
 
 
@@ -567,8 +562,8 @@ class BaseContainerImage(abc.ABC):
 
         if self.is_opensuse:
             self._image_properties = _OPENSUSE_IMAGE_PROPS
-        elif self.os_version == OsVersion.BASALT:
-            self._image_properties = _BASALT_IMAGE_PROPS
+        elif self.os_version == OsVersion.SLCC:
+            self._image_properties = _SLCC_IMAGE_PROPS
         elif self.os_version == OsVersion.SP3:
             self._image_properties = _SLE_15_SP3_LTSS_IMAGE_PROPS
         else:
@@ -618,7 +613,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> str | None:
-        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
             epoch = ""
             if self.os_epoch:
                 epoch = f"{self.os_epoch}."
@@ -784,7 +779,7 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        if self.os_version == OsVersion.BASALT:
+        if self.os_version == OsVersion.SLCC:
             return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
@@ -1147,7 +1142,7 @@ exit 0
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
             return str(datetime.datetime.now().year)
         return f"15.{int(self.os_version.value)}.0"
 
@@ -1419,7 +1414,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
             return "latest"
         return f"15.{os_version}"
 
@@ -1485,7 +1480,6 @@ from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .appcontainers import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
-from .basalt_base import BASALT_BASE  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
 from .basecontainers import FIPS_BASE_CONTAINERS  # noqa: E402
 from .basecontainers import GITEA_RUNNER_CONTAINER  # noqa: E402
@@ -1506,11 +1500,12 @@ from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
+from .slcc_base import SLCC_BASE  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
-        BASALT_BASE,
+        SLCC_BASE,
         PYTHON_3_12_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
