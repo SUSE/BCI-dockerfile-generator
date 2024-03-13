@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 13 07:58:32 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 8.0.3
+
+-------------------------------------------------------------------
 Fri Mar  1 12:29:57 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Explicitly add the libopenssl1_1 dependency
