@@ -18,6 +18,7 @@ from typing import Optional
 from typing import Union
 from typing import overload
 
+import jinja2
 from packaging import version
 
 from bci_build.templates import DOCKERFILE_TEMPLATE
@@ -1006,6 +1007,10 @@ exit 0
                 return self.extra_files["README.md"].decode("utf-8")
             return str(self.extra_files["README.md"])
 
+        readme_template_fname = Path(__file__).parent / self.name / "README.md.j2"
+        if readme_template_fname.exists():
+            return jinja2.Template(readme_template_fname.read_text()).render(image=self)
+
         return f"""# The {self.title} Container image
 
 {self.description}
@@ -1182,6 +1187,10 @@ exit 0
         for fname, contents in self.extra_files.items():
             files.append(fname)
             tasks.append(write_file_to_dest(fname, contents))
+
+        if "README.md" not in self.extra_files:
+            files.append("README.md")
+            tasks.append(write_file_to_dest("README.md", self.readme))
 
         await asyncio.gather(*tasks)
 
