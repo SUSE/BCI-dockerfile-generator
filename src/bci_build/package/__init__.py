@@ -194,6 +194,9 @@ ALL_BASE_OS_VERSIONS = [
     OsVersion.BASALT,
 ]
 
+# List of SPs that are already under LTSS
+ALL_OS_LTSS_VERSIONS = [OsVersion.SP3, OsVersion.SP4]
+
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
 
@@ -254,6 +257,9 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
         return "alp/bci"
     if os_version == OsVersion.SP3:
         return "suse/ltss/sle15.3"
+    if os_version == OsVersion.SP4:
+        return "suse/ltss/sle15.4"
+
     return "bci"
 
 
@@ -1342,6 +1348,9 @@ class OsContainer(BaseContainerImage):
 
     @property
     def image_type(self) -> ImageType:
+        if self.os_version in ALL_OS_LTSS_VERSIONS:
+            return ImageType.LTSS
+
         return ImageType.SLE_BCI
 
     @property
@@ -1359,13 +1368,6 @@ class OsContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
-
-
-@dataclass
-class LTSSContainer(OsContainer):
-    @property
-    def image_type(self) -> ImageType:
-        return ImageType.LTSS
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
