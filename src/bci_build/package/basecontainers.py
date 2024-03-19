@@ -36,6 +36,7 @@ MICRO_CONTAINERS = [
         os_version=os_version,
         support_level=SupportLevel.L3,
         package_name="micro-image",
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
         custom_description="A micro environment for containers {based_on_container}.",
@@ -78,6 +79,7 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
         package_name="init-image",
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         custom_end=textwrap.dedent(
             f"""
             RUN mkdir -p /etc/systemd/system.conf.d/ && \\
@@ -170,6 +172,7 @@ MINIMAL_CONTAINERS = [
         support_level=SupportLevel.L3,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name="minimal-image",
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
         config_sh_script=textwrap.dedent(
@@ -194,6 +197,7 @@ BUSYBOX_CONTAINERS = [
         support_level=SupportLevel.L3,
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         package_name="busybox-image",
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
         cmd=["/bin/sh"],
@@ -234,6 +238,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             name=f"{prefix}-kernel-module-devel",
             pretty_name=f"{pretty_prefix} Kernel Module Development",
             package_name=f"{prefix}-kernel-module-devel-image",
+            logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=[
