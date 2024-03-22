@@ -15,7 +15,7 @@ http:
   addr: 0.0.0.0:5000
 ```
 
-You can also create an empty directory to persistently store the images outside the container:
+You can also create an empty directory for storing the images outside the container:
 
 ```bash
 mkdir -p /var/lib/docker-registry
@@ -28,8 +28,7 @@ podman run -d --restart=always -p 5000:5000 -v /path/to/config.yml:/etc/docker/r
   -v /var/lib/docker-registry:/var/lib/docker-registry --name registry {{ image.reference }}
 ```
 
-The registry will be available at `http://localhost:5000`. To keep the registry running after a reboot,
-you can create a systemd service:
+The registry is available at `http://localhost:5000`. To keep the registry running after a reboot, create a systemd service as follows:
 
 ```bash
 sudo podman generate systemd registry > /etc/systemd/system/registry.service
