@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 22 17:21:10 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add readme and logo urls
+
+-------------------------------------------------------------------
 Thu Mar  7 16:23:37 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Add sles-release to fix build failures
