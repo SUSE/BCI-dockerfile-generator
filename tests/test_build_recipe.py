@@ -36,9 +36,10 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.bci.test.supportlevel="techpreview"
+LABEL com.suse.bci.test.eula="sle-bci"
 LABEL com.suse.supportlevel.until="2024-02-01"
-LABEL com.suse.eula="sle-bci"
+
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
@@ -140,8 +141,9 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.bci.test.supportlevel="techpreview"
+LABEL com.suse.bci.test.eula="sle-bci"
+
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
@@ -235,8 +237,9 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.bci.test.supportlevel="techpreview"
+LABEL com.suse.bci.test.eula="sle-bci"
+
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
@@ -337,6 +340,7 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 LABEL io.artifacthub.package.logo-url="https://suse.com/assets/emacs-logo.svg"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
+
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
 LABEL org.opensuse.release-stage="released"
 
