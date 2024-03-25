@@ -14,3 +14,4 @@ curl -o src/bci_build/package/nginx/30-tune-worker-processes.sh https://raw.gith
 curl -o src/bci_build/package/grafana/run.sh https://raw.githubusercontent.com/grafana/grafana/main/packaging/docker/run.sh
 
 curl -o src/bci_build/package/mariadb/entrypoint.sh https://raw.githubusercontent.com/MariaDB/mariadb-docker/master/docker-entrypoint.sh
+curl -o src/bci_build/package/mariadb/healthcheck.sh https://raw.githubusercontent.com/MariaDB/mariadb-docker/master/healthcheck.sh
