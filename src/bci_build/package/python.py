@@ -83,8 +83,7 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
-### Add 3.12, currently in Staging
-_PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.11")
+_PYTHON_TW_VERSIONS = ("3.9", "3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
     LanguageStackContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
