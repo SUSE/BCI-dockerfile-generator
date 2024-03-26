@@ -42,7 +42,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/suse/helm:%%helm_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="l3"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
