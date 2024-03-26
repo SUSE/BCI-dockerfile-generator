@@ -43,7 +43,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
             <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-micro:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="l3"/>
+            <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
