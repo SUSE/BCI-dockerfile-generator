@@ -542,6 +542,13 @@ class BaseContainerImage(abc.ABC):
         if not self.maintainer:
             self.maintainer = self._image_properties.maintainer
 
+        # limit to tech preview for beta releases
+        if (
+            self.release_stage == ReleaseStage.BETA
+            and self.support_level == SupportLevel.L3
+        ):
+            self.support_level = SupportLevel.TECHPREVIEW
+
     @property
     def is_opensuse(self) -> bool:
         return self.os_version == OsVersion.TUMBLEWEED
