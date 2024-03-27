@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 26 19:14:54 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- switch to tech preview while unreleased
+
+-------------------------------------------------------------------
 Wed Jan 17 14:30:22 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Add initial README stub
