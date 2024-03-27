@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 27 05:51:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- limit supportlevel to tech preview while still in beta phase
+
+-------------------------------------------------------------------
 Sat Feb  3 10:25:19 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update link to bci specific landing page
