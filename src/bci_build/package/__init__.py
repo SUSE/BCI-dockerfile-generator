@@ -1022,7 +1022,13 @@ exit 0
 
         readme_template_fname = Path(__file__).parent / self.name / "README.md.j2"
         if readme_template_fname.exists():
-            return jinja2.Template(readme_template_fname.read_text()).render(image=self)
+            jinja2_env = jinja2.Environment(
+                loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
+                autoescape=jinja2.select_autoescape(["md"]),
+            )
+            return jinja2_env.from_string(readme_template_fname.read_text()).render(
+                image=self
+            )
 
         return f"""# The {self.title} Container image
 
