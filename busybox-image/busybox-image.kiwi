@@ -65,6 +65,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="busybox"/>
     <package name="busybox-links"/>
     <package name="ca-certificates-mozilla-prebuilt"/>
+    <package name="skelcd-EULA-bci"/>
   </packages>
 
 </image>
