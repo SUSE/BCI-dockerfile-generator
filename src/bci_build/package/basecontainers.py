@@ -29,7 +29,7 @@ def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
     return ("sles-release",)
 
 
-def _get_eula_package_names(os_version: OsVersion) -> str:
+def _get_eula_package_names(os_version: OsVersion) -> tuple[str, ...]:
     if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
         return ()
     return ("skelcd-EULA-bci",)
