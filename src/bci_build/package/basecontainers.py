@@ -208,6 +208,11 @@ BUSYBOX_CONTAINERS = [
                 "busybox-links",
                 "ca-certificates-mozilla-prebuilt",
             )
+            + (
+                ()
+                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
+                else ("skelcd-EULA-bci",)
+            )
         ],
         config_sh_script=textwrap.dedent(
             """
