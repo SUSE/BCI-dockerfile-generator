@@ -29,6 +29,12 @@ def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
     return ("sles-release",)
 
 
+def _get_eula_package_names(os_version: OsVersion) -> str:
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        return ()
+    return ("skelcd-EULA-bci",)
+
+
 MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
@@ -49,11 +55,7 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
             )
-            + (
-                ()
-                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
-                else ("skelcd-EULA-bci",)
-            )
+            + _get_eula_package_names(os_version)
             + _get_os_container_package_names(os_version)
         ],
         # intentionally empty
@@ -208,11 +210,7 @@ BUSYBOX_CONTAINERS = [
                 "busybox-links",
                 "ca-certificates-mozilla-prebuilt",
             )
-            + (
-                ()
-                if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
-                else ("skelcd-EULA-bci",)
-            )
+            + _get_eula_package_names(os_version)
         ],
         config_sh_script=textwrap.dedent(
             """
