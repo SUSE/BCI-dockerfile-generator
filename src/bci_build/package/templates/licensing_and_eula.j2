@@ -1,5 +1,9 @@
-## License
-SPDX-License-Identifier: {{ image.license }}
+## Licensing
+`SPDX-License-Identifier: {{ image.license }}`
+
+The build recipe and this documentation is licensed as {{ image.license }}.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
 
 {%if image.is_opensuse %}This image is based on [openSUSE Tumbleweed](https://get.opensuse.org/tumbleweed/).
 {% else -%}
