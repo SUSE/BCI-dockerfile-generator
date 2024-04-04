@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr  4 07:02:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Install the BCI EULA into the container
+
+-------------------------------------------------------------------
 Fri Mar 22 17:21:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add readme and logo urls
