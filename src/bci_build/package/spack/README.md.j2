@@ -1,0 +1,69 @@
+# Spack %%spack_version%% Container Image
+
+Spack is a package manager for supercomputers. It provides build recipes
+for > 6k software components and allows to build entire HPC application
+stacks with little to no prerequisites installed.
+
+This container image serves as a build environment for a `Dockerfile`
+or an `apptainter.def` file created by `spack containerize`. It can be
+used to run spack commands directly as well. Doing this may require to
+bind-mount local directories into the container.
+
+## How to use the image
+
+This image may be used to build and containerize application stacks using
+Spack. The stack will be installed in a base container such as SLE BCI Base.
+To build a containerized application stack, create the file `spack.yaml`
+in an empty directory with the content:
+```yaml
+spack:
+  specs:
+  - <application spec>
+
+  container:
+    format: <container_format>
+    images:
+      build: "{{ image.reference }}"
+      final: "registry.suse.com/bci/bci-base:latest"
+    os_packages:
+      command: zypper
+      build:
+      - <additional packages for building>
+      final:
+      - <additional packages for final container>
+```
+Replace 'application spec' by the application name, optionally with
+additional build specifications (for details consult the
+[Spack documentation](https://spack.readthedocs.io/en/latest/)).
+The 'container_format' can be either `docker` for a docker/OCI container
+image or `singularity` for a Singularity/Apptainer container image.
+The `os_packages` section is optional. Here you may specify additional
+packages which should be installed in the build container or on the final
+runtime container image.
+To build an Apptainer container, run the following commands in the same
+directory:
+```ShellSession
+$ spack containerize > apptainer.def
+$ apptainer build apptainer.sif apptainer.def
+```
+This will build `apptainer.sif` as the final Singularity/Apptainer image
+which you may run:
+```ShellSession
+$ apptainer exec ./apptainer.sif <command line ...>
+```
+To build a docker/OCI container, run the following:
+```ShellSession
+$ spack containerize > Containerfile
+$ podman build -t <target_name> --format=docker .
+```
+This builds a Docker container which you can run with:
+```
+$ podman run -it --rm <target_name> <command line ...>
+```
+If you do not have a local installation of Spack, you may use this container
+to run Spack commands - like `spack containerize`:
+```ShellSession
+$ podman run -v $(pwd):/root:Z --rm {{ image.reference }} containerize > Containerfile
+```
+For futher details check the
+(Spack documentation on container images)[https://spack.readthedocs.io/en/latest/containers.html].
