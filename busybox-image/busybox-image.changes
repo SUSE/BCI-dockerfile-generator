@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr  4 07:02:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Install the BCI EULA into the container
+
+-------------------------------------------------------------------
 Wed Mar 27 05:51:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - limit supportlevel to tech preview while still in beta phase
