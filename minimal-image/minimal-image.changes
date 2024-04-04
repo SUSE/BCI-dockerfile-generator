@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr  4 17:37:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add a shared licensing footer to the base container READMEs
+
+-------------------------------------------------------------------
 Tue Mar 26 19:14:54 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - switch to tech preview while unreleased
