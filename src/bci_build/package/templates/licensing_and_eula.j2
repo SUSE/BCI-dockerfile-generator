@@ -1,0 +1,26 @@
+## Licensing
+`SPDX-License-Identifier: {{ image.license }}`
+
+The build recipe and this documentation is licensed as {{ image.license }}.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+{%if image.is_opensuse %}This image is based on [openSUSE Tumbleweed](https://get.opensuse.org/tumbleweed/).
+{% else -%}
+{% if image.support_level|string == "techpreview" -%}
+This image is a tech preview. Do not use it for production.
+Your feedback is welcome.
+Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
+{% elif image.support_level|string == 'unsupported' -%}
+This image is unsupported and provided as-is.
+{% else -%}
+{% if image.eula|string == 'sle-bci' -%}
+This image is based on [SLE BCI](https://opensource.suse.com/bci/), a stable and redistributable foundation for software innovation. SLE BCI is enterprise-ready, and it comes with an option for support.
+
+See the [SLE BCI EULA](https://www.suse.com/licensing/eula/#bci) for further information.
+{% elif image.eula|string == 'sle' -%}
+This image is based on [SUSE Linux Enterprise Server](https://www.suse.com/products/server/), a reliable,
+secure, and scalable server operating system built to power mission-critical workloads in physical and virtual environments.
+{%- endif %}
+{%- endif %}
+{%- endif %}
