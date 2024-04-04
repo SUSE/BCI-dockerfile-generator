@@ -807,3 +807,53 @@ https://tomcat.apache.org/migration-10.html
     )
     for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_BASE_OS_VERSIONS)
 ]
+
+SPACK_CONTAINERS = [
+    ApplicationStackContainer(
+        name="spack",
+        package_name="spack-image",
+        pretty_name="Spack package manager for supercomputers - build container",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%spack_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%spack_version%%",
+                package_name="spack",
+                parse_version="patch",
+            )
+        ],
+        package_list=["spack", "python3-base", "python3-boto3",
+                         "autoconf", "bison", "ccache", "cmake-full",
+                         "flex", "libtool", "libzip-devel", "m4",
+                         "libcurl-devel", "libopenssl-devel",
+                         "xz-devel", "ncurses-devel", "makeinfo", "patchelf" ],
+        entrypoint=["/bin/bash", "/usr/share/spack/docker/entrypoint.bash"],
+        cmd=["interactive-shell"],
+        build_recipe_type=BuildType.DOCKER,
+        env={"SPACK_ROOT": "/usr", "CURRENTLY_BUILDING_DOCKER_IMAGE": "1",
+                 "container": "docker"},
+        extra_files={
+            "_constraints": generate_disk_size_constraints(10),
+        },
+        support_level=SupportLevel.L3,
+        custom_end=f"""
+{DOCKERFILE_RUN} ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \
+       /usr/local/bin/docker-shell \
+    && ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \
+       /usr/local/bin/interactive-shell \
+    && ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \
+       /usr/local/bin/spack-env \
+    && echo 'source $SPACK_ROOT/share/spack/spack-completion.bash' > /root/.bashrc
+{DOCKERFILE_RUN} mkdir -p /root/.spack \
+    && cp $SPACK_ROOT/share/spack/docker/modules.yaml \
+       /root/.spack/modules.yaml \
+    && rm -rf /root/*.* /run/nologin
+
+WORKDIR /root
+SHELL ["docker-shell"]
+        """,
+    )
+    for os_version in [ OsVersion.SP6 ]
+]
