@@ -8,5 +8,13 @@ we recommend deploying a project using the SLE BCI-Minimal image only
 when the final build artifact bundles all dependencies and has no
 external runtime requirements (like Python or Ruby).
 
-## License
- SPDX-License-Identifier: MIT
+## Licensing
+`SPDX-License-Identifier: MIT`
+
+The build recipe and this documentation is licensed as MIT.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+This image is based on [SLE BCI](https://opensource.suse.com/bci/), a stable and redistributable foundation for software innovation. SLE BCI is enterprise-ready, and it comes with an option for support.
+
+See the [SLE BCI EULA](https://www.suse.com/licensing/eula/#bci) for further information.
