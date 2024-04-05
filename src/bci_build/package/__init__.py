@@ -241,11 +241,14 @@ class Replacement:
 
     """
 
-    #: regex to be replaced in :file:`Dockerfile` or :file:`$pkg_name.kiwi`
+    #: regex to be replaced in :py:attr:`~bci_build.package.Replacement.file_name`, :file:`Dockerfile` or :file:`$pkg_name.kiwi`
     regex_in_build_description: str
 
     #: package name to be queried for the version
     package_name: str
+
+    #: override file name, if unset use :file:`Dockerfile` or :file:`$pkg_name.kiwi`
+    file_name: Optional[str] = None
 
     #: specify how the version should be formated, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
