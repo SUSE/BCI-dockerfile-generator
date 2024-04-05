@@ -35,6 +35,13 @@ sudo podman generate systemd registry > /etc/systemd/system/registry.service
 sudo systemctl enable --now registry
 ```
 
+## Licensing
+`SPDX-License-Identifier: Apache-2.0`
 
-## License
- SPDX-License-Identifier: Apache-2.0
+The build recipe and this documentation is licensed as Apache-2.0.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+This image is a tech preview. Do not use it for production.
+Your feedback is welcome.
+Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
