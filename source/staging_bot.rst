@@ -1,3 +1,5 @@
+.. _staging-bot:
+
 Staging Bot
 ===========
 
@@ -13,7 +15,7 @@ containers built on OBS. The bot will delete the previously created staging
 project and branches on each new push or when the PR is closed/merged.
 
 For further details, see :py:class:`~staging.bot.StagingBot` or refer to the
-script :command:`scratch-build-bot.py`.
+help of the command :command:`poetry run scratch-build-bot`.
 
 
 Branch setup
