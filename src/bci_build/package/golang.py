@@ -64,13 +64,7 @@ def _get_golang_kwargs(
                 regex_in_build_description=golang_version_regex, package_name=go
             )
         ],
-        "custom_end": textwrap.dedent(
-            f"""
-            # only available on go's tsan_arch architectures
-            #!ArchExclusiveLine x86_64 aarch64 s390x ppc64le
-            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; rm -rf /var/log/*; fi
-            """
-        ),
+        "custom_end": f"{DOCKERFILE_RUN} zypper -n install {go}-race; zypper -n clean; rm -rf /var/log/*;",
         "package_list": [*go_packages, "make", "git-core"]
         + os_version.lifecycle_data_pkg,
         "extra_files": {
