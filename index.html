@@ -36,58 +36,69 @@
 <p>This repository contains the scripts to generate the build recipes (Dockerfiles
 or <a class="reference external" href="https://github.com/OSInside/kiwi">kiwi</a> build descriptions) to build the
 BCI development project in the <a class="reference external" href="https://build.opensuse.org/project/subprojects/devel:BCI">Open Build Service</a>.</p>
+<p>Find the latest fully rendered documentation <a class="reference external" href="https://opensource.suse.com/BCI-dockerfile-generator/">here</a>.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <p>You will need the following tools:</p>
 <ul class="simple">
 <li><p>Python 3.10 or later</p></li>
-<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a> 1.2.0 or later</p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
 <li><p><a class="reference external" href="https://github.com/openSUSE/osc/">osc</a> installed and configured to reach
-<a class="reference external" href="https://build.opensuse.org/">OBS</a> by default. If you want to target IBS
-(build.suse.de) directly, then add the alias <code class="docutils literal notranslate"><span class="pre">ibs</span></code> for
-<a class="reference external" href="https://build.suse.de">https://build.suse.de</a>.</p></li>
+<a class="reference external" href="https://build.opensuse.org/">OBS</a> by default.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">python-dnf</span></code> installed via your system’s package manager (if you want to
 touch the .Net images)</p></li>
 </ul>
 <p>To get started, clone this repository and run <strong class="command">poetry install</strong> in its
 root directory.</p>
 </section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
-<p>The main entry point of this project is the <code class="file docutils literal notranslate"><span class="pre">src/bci_build/update.py</span></code>
-script. It will branch the package on IBS, check it out into a temporary
-directory, regenererate the build recipes from the templates and send a
-submitrequest back upstream.</p>
-<p>For example, to update the nodejs containers, run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/update.py --commit-msg &quot;Update according to $reason&quot; --images nodejs-12-sp4 nodejs-14-sp4 nodejs-16-sp4</span>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>This repository contains two major components:</p>
+<ol class="arabic simple">
+<li><p>templating logic to autogenerate the <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> and kiwi build
+descriptions for SLE BCI (see <a class="reference internal" href="api.html#module-bci_build" title="bci_build"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build</span></code></a>) including an updater for
+our .Net images (see <a class="reference internal" href="api.html#module-dotnet" title="dotnet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dotnet</span></code></a>).</p></li>
+<li><p>Github automation to render the templates into separate branches and
+synchronize them to the Open Build Service (see <a class="reference internal" href="api.html#module-staging" title="staging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging</span></code></a>).</p></li>
+</ol>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">¶</a></h2>
+<p>To contribute a new container or modify an existing one, please check the
+chapter <a class="reference internal" href="adding_containers.html#adding-and-modifying-container-images"><span class="std std-ref">Adding and Modifying Container Images</span></a>.</p>
+<p>Before submitting your changes, please format your source code with <a class="reference external" href="https://docs.astral.sh/ruff/">ruff</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format
+<span class="c1"># reorder imports:</span>
+poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>--fix
 </pre></div>
 </div>
-<p>Or to update all images for a service pack, run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run ./src/bci_build/update.py --commit-msg &quot;Update according to $OtherReason&quot; --service-pack 4</span>
-</pre></div>
-</div>
-<p>If you do not want to interact with OBS at all, then you can also use the
-<code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> script to just write the files of a single
-package into a directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">poetry run package postgres-12-sp4 ~/tmp/postgres/</span>
+<p>Additionally, run the unit tests and check whether the documentation builds
+(additional points if you update it):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># tests</span>
+poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-vv
+<span class="c1"># docs</span>
+poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span><span class="nb">source</span><span class="w"> </span>build<span class="w"> </span>-W
 </pre></div>
 </div>
 </section>
-<section id="use-the-dev-container">
-<h2>Use the dev-container<a class="headerlink" href="#use-the-dev-container" title="Link to this heading">¶</a></h2>
-<p>You can use the dockerfile generator via a development container published as
-<cite>ghcr.io/suse/bci-dockerfile-generator</cite>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">podman run --rm ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py --help</span>
+<section id="entrypoints">
+<h2>Entrypoints<a class="headerlink" href="#entrypoints" title="Link to this heading">¶</a></h2>
+<p>The projects currently provides two entry points. The first is the package build
+description “dumper” called <code class="docutils literal notranslate"><span class="pre">package</span></code>. It writes the build description of a
+single container image into a specified directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>package<span class="w"> </span>postgres-12-sp4<span class="w"> </span>~/tmp/postgres/
 </pre></div>
 </div>
-<p>Some commands of the dockerfile-generator use <strong class="command">osc</strong> and require access
-to a valid <code class="file docutils literal notranslate"><span class="pre">~/.config/osc/oscrc</span></code>. You can expose your own to the container
-via a volume as follows:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">podman run --rm -v ~/.config/osc/:/root/.config/osc/:Z ghcr.io/suse/bci-dockerfile-generator:latest ./src/bci_build/update.py $additional_args</span>
-</pre></div>
-</div>
+<p>The first argument is the name of the container image, this is the concatenation
+of the image name (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.name" title="bci_build.package.BaseContainerImage.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>) and
+the operating system version
+(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.os_version" title="bci_build.package.BaseContainerImage.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a>).</p>
+<p>The second entry point is the github automation bot, which is not intended for
+end user usage. You can find some details in the chapter <a class="reference internal" href="staging_bot.html#staging-bot"><span class="std std-ref">Staging Bot</span></a>.</p>
+</section>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="adding_containers.html#adding-files-to-the-image">Adding files to the Image</a></li>
@@ -97,17 +108,19 @@ via a volume as follows:</p>
 <li class="toctree-l2"><a class="reference internal" href="adding_containers.html#new-package-checklist">New Package Checklist</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="staging_bot.html">Staging Bot</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="staging_bot.html#branch-setup">Branch setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="staging_bot.html#project-setup">Project Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">templates</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bot</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">build_result</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.templates</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-dotnet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dotnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.bot</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.build_result</span></code> module</a></li>
 </ul>
 </li>
 </ul>
@@ -140,10 +153,8 @@ via a volume as follows:</p>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="staging_bot.html">Staging Bot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>

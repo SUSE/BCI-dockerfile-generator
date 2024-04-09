@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="api.html" />
-    <link rel="prev" title="Creating packages on OBS" href="creating_packages.html" />
+    <link rel="prev" title="Adding and Modifying Container Images" href="adding_containers.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
           <div class="body" role="main">
             
   <section id="staging-bot">
-<h1>Staging Bot<a class="headerlink" href="#staging-bot" title="Link to this heading">¶</a></h1>
+<span id="id1"></span><h1>Staging Bot<a class="headerlink" href="#staging-bot" title="Link to this heading">¶</a></h1>
 <p>Pull requests to the project are tested using a bot running via github
 actions. It writes all build recipes for the images to a branch and creates a
 staging project on <a class="reference external" href="https://build.opensuse.org/">https://build.opensuse.org/</a> under the user <code class="docutils literal notranslate"><span class="pre">defolos</span></code>
@@ -45,7 +45,7 @@ with the build results and either pass or fail the CI job depending on how the
 containers built on OBS. The bot will delete the previously created staging
 project and branches on each new push or when the PR is closed/merged.</p>
 <p>For further details, see <a class="reference internal" href="api.html#staging.bot.StagingBot" title="staging.bot.StagingBot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StagingBot</span></code></a> or refer to the
-script <strong class="command">scratch-build-bot.py</strong>.</p>
+help of the command <strong class="command">poetry run scratch-build-bot</strong>.</p>
 <section id="branch-setup">
 <h2>Branch setup<a class="headerlink" href="#branch-setup" title="Link to this heading">¶</a></h2>
 <p>The source code of the generator and all utilities lives in the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch,
@@ -104,10 +104,8 @@ every pull request against the deployment branches.</p></li>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="adding_containers.html">Adding and Modifying Container Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Staging Bot</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#branch-setup">Branch setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#project-setup">Project Setup</a></li>
@@ -120,7 +118,7 @@ every pull request against the deployment branches.</p></li>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="creating_packages.html" title="previous chapter">Creating packages on OBS</a></li>
+      <li>Previous: <a href="adding_containers.html" title="previous chapter">Adding and Modifying Container Images</a></li>
       <li>Next: <a href="api.html" title="next chapter">API Documentation</a></li>
   </ul></li>
 </ul>

@@ -1,11 +1,13 @@
 .. include:: ../README.rst
 
+
+Contents
+--------
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    adding_containers
-   creating_packages
 
    staging_bot
 

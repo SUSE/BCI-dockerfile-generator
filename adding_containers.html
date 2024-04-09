@@ -13,7 +13,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Creating packages on OBS" href="creating_packages.html" />
+    <link rel="next" title="Staging Bot" href="staging_bot.html" />
     <link rel="prev" title="BCI build recipe generator" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -34,7 +34,7 @@
             
   <section id="adding-and-modifying-container-images">
 <span id="id1"></span><h1>Adding and Modifying Container Images<a class="headerlink" href="#adding-and-modifying-container-images" title="Link to this heading">¶</a></h1>
-<p>All container images are defined in <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code> as
+<p>All container images are defined in the <a class="reference internal" href="api.html#module-bci_build.package" title="bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package</span></code></a> package as
 instances of the <a class="reference internal" href="api.html#bci_build.package.LanguageStackContainer" title="bci_build.package.LanguageStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LanguageStackContainer</span></code></a>,
 <a class="reference internal" href="api.html#bci_build.package.ApplicationStackContainer" title="bci_build.package.ApplicationStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationStackContainer</span></code></a> or
 <a class="reference internal" href="api.html#bci_build.package.OsContainer" title="bci_build.package.OsContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">OsContainer</span></code></a> classes.</p>
@@ -80,18 +80,18 @@ e.g. a longer script or configuration file. This can be achieved by adding the
 file to the <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.extra_files" title="bci_build.package.BaseContainerImage.extra_files"><code class="xref py py-attr docutils literal notranslate"><span class="pre">extra_files</span></code></a>
 dictionary. The key should be the file name and the value are the file contents.</p>
 <p>Please only include very short files directly in
-<code class="file docutils literal notranslate"><span class="pre">src/bci_build/package.py</span></code>. Longer files should go into a subdirectory of
-<code class="file docutils literal notranslate"><span class="pre">src/bci_build</span></code> and be read in on construction. In case you are taking the
-additional file from an upstream source, then consider adding it to the script
-<code class="file docutils literal notranslate"><span class="pre">update-files.sh</span></code> as well. A Github Action runs this script every day and
-ensures that your external file stays up to date.</p>
+<a class="reference internal" href="api.html#module-bci_build.package" title="bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code></a>. Longer files should go into a subdirectory of
+<code class="file docutils literal notranslate"><span class="pre">src/bci_build/package/</span></code> and be read in on construction. In case you are
+taking the additional file from an upstream source, then consider adding it to
+the script <code class="file docutils literal notranslate"><span class="pre">update-files.sh</span></code> as well. A Github Action runs this script
+every day and ensures that your external file stays up to date.</p>
 </section>
 <section id="automatic-package-version-substitution">
 <h2>Automatic Package Version Substitution<a class="headerlink" href="#automatic-package-version-substitution" title="Link to this heading">¶</a></h2>
 <p>Some Container Images ship with environment variables that include the version
 of a component in the container image. For example the PostgreSQL Container
-Image sets the environment variable <code class="docutils literal notranslate"><span class="pre">PG_VERSION</span></code> to the <cite>major.minor</cite> version
-of PostgreSQL installed in the container image.</p>
+Image sets the environment variable <code class="docutils literal notranslate"><span class="pre">PG_VERSION</span></code> to the <code class="docutils literal notranslate"><span class="pre">major.minor</span></code>
+version of PostgreSQL installed in the container image.</p>
 <p>Setting this environment variable manually is rather brittle and would require
 to constantly update the sources. Instead, we can leverage the service
 <a class="reference external" href="https://github.com/openSUSE/obs-service-replace_using_package_version">obs-service-replace_using_package_version</a>.</p>
@@ -139,9 +139,9 @@ attribute via this mechanism.</p>
 <h2>Installing Packages into the Container Image<a class="headerlink" href="#installing-packages-into-the-container-image" title="Link to this heading">¶</a></h2>
 <p>In most cases it sufficient to just set the
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.package_list" title="bci_build.package.BaseContainerImage.package_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_list</span></code></a> attribute to a
-list of package names as strings. This will yield a <code class="docutils literal notranslate"><span class="pre">RUN</span> <span class="pre">zypper</span> <span class="pre">-n</span> <span class="pre">in</span>
-<span class="pre">$list_of_packages</span></code> line in the <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> or the following XML in the
-kiwi build description:</p>
+list of package names as strings. This will yield a <strong class="command">RUN zypper -n
+in --no-recommends $list_of_packages</strong> line in the <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> or the
+following XML in the kiwi build description:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;packages</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;image&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- one line per package --&gt;</span>
 <span class="w">  </span><span class="nt">&lt;package</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;$pkg_name&quot;</span><span class="nt">/&gt;</span>
@@ -195,8 +195,9 @@ an abstraction (if feasible and meaningful) or use
 <li><p>[ ] Merge the pull request creating the container into <code class="docutils literal notranslate"><span class="pre">main</span></code></p></li>
 <li><p>[ ] Review the automatically created pull request against the deployment
 branches and add a changelog entry</p></li>
-<li><p>[ ] Create the package on <cite>devel:BCI:</cite> with a <cite>&lt;scmsync&gt;</cite> entry so that it is
-pulled from git</p></li>
+<li><p>[ ] Create the package on <code class="docutils literal notranslate"><span class="pre">devel:BCI:</span></code> with a <code class="docutils literal notranslate"><span class="pre">&lt;scmsync&gt;</span></code> entry so that it
+is pulled from git, this can be done automatically via the
+<strong class="command">scratch_build_bot setup_obs_package</strong> command.</p></li>
 <li><p>[ ] Set up branch protection rules for the deployment branches including the
 newly added package for the OBS SCM builds</p></li>
 </ul>
@@ -220,7 +221,6 @@ newly added package for the OBS SCM builds</p></li>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Adding and Modifying Container Images</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#adding-files-to-the-image">Adding files to the Image</a></li>
@@ -230,7 +230,6 @@ newly added package for the OBS SCM builds</p></li>
 <li class="toctree-l2"><a class="reference internal" href="#new-package-checklist">New Package Checklist</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="creating_packages.html">Creating packages on OBS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="staging_bot.html">Staging Bot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
@@ -240,7 +239,7 @@ newly added package for the OBS SCM builds</p></li>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">BCI build recipe generator</a></li>
-      <li>Next: <a href="creating_packages.html" title="next chapter">Creating packages on OBS</a></li>
+      <li>Next: <a href="staging_bot.html" title="next chapter">Staging Bot</a></li>
   </ul></li>
 </ul>
 </div>

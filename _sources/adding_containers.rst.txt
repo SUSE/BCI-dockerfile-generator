@@ -3,7 +3,7 @@
 Adding and Modifying Container Images
 =====================================
 
-All container images are defined in :file:`src/bci_build/package.py` as
+All container images are defined in the :py:mod:`bci_build.package` package as
 instances of the :py:class:`~bci_build.package.LanguageStackContainer`,
 :py:class:`~bci_build.package.ApplicationStackContainer` or
 :py:class:`~bci_build.package.OsContainer` classes.
@@ -59,11 +59,11 @@ file to the :py:attr:`~bci_build.package.BaseContainerImage.extra_files`
 dictionary. The key should be the file name and the value are the file contents.
 
 Please only include very short files directly in
-:file:`src/bci_build/package.py`. Longer files should go into a subdirectory of
-:file:`src/bci_build` and be read in on construction. In case you are taking the
-additional file from an upstream source, then consider adding it to the script
-:file:`update-files.sh` as well. A Github Action runs this script every day and
-ensures that your external file stays up to date.
+:py:mod:`~bci_build.package`. Longer files should go into a subdirectory of
+:file:`src/bci_build/package/` and be read in on construction. In case you are
+taking the additional file from an upstream source, then consider adding it to
+the script :file:`update-files.sh` as well. A Github Action runs this script
+every day and ensures that your external file stays up to date.
 
 
 Automatic Package Version Substitution
@@ -71,8 +71,8 @@ Automatic Package Version Substitution
 
 Some Container Images ship with environment variables that include the version
 of a component in the container image. For example the PostgreSQL Container
-Image sets the environment variable ``PG_VERSION`` to the `major.minor` version
-of PostgreSQL installed in the container image.
+Image sets the environment variable ``PG_VERSION`` to the ``major.minor``
+version of PostgreSQL installed in the container image.
 
 Setting this environment variable manually is rather brittle and would require
 to constantly update the sources. Instead, we can leverage the service
@@ -128,9 +128,9 @@ Installing Packages into the Container Image
 
 In most cases it sufficient to just set the
 :py:attr:`~bci_build.package.BaseContainerImage.package_list` attribute to a
-list of package names as strings. This will yield a ``RUN zypper -n in
-$list_of_packages`` line in the :file:`Dockerfile` or the following XML in the
-kiwi build description:
+list of package names as strings. This will yield a :command:`RUN zypper -n
+in --no-recommends $list_of_packages` line in the :file:`Dockerfile` or the
+following XML in the kiwi build description:
 
 .. code-block:: xml
 
@@ -194,8 +194,9 @@ New Package Checklist
 - [ ] Review the automatically created pull request against the deployment
   branches and add a changelog entry
 
-- [ ] Create the package on `devel:BCI:` with a `<scmsync>` entry so that it is
-  pulled from git
+- [ ] Create the package on ``devel:BCI:`` with a ``<scmsync>`` entry so that it
+  is pulled from git, this can be done automatically via the
+  :command:`scratch_build_bot setup_obs_package` command.
 
 - [ ] Set up branch protection rules for the deployment branches including the
   newly added package for the OBS SCM builds
