@@ -144,6 +144,10 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.DELETE)
         for name in ("grep", "diffutils", "info", "fillup", "libzio1")
     ]
+    # the last user of libpcre1 on SP6 is grep which we deinstall above
+    if os_version in (OsVersion.SP6,):
+        package_list.append(Package("libpcre1", pkg_type=PackageType.DELETE))
+
     package_list += [
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in _get_os_container_package_names(os_version)
