@@ -62,7 +62,12 @@ RUST_CONTAINERS = [
         },
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
-            "_constraints": generate_disk_size_constraints(6)
+            "_constraints": generate_disk_size_constraints(6),
+            (
+                check_fname := "rust-and-cargo-pin.check"
+            ): f"""requires:cargo{rust_version}
+requires:rust{rust_version}
+""",
         },
         replacements_via_service=[
             Replacement(
@@ -79,6 +84,7 @@ RUN ln -sf $(ls /usr/bin/gcc-*|grep -P ".*gcc-[[:digit:]]+") {_RUST_GCC_PATH}
 # smoke test that gcc works
 RUN gcc --version
 RUN ${{CC}} --version
+COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}
 """,
     )
     for rust_version, os_version in product(
