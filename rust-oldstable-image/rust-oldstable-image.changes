@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 10 06:22:35 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- Switch to Rust 1.76
+
+-------------------------------------------------------------------
 Wed Mar 27 05:51:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - limit supportlevel to tech preview while still in beta phase
