@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 10 06:21:43 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- New release 8.0.4
+
+-------------------------------------------------------------------
 Tue Apr  2 09:18:35 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Bump dotnet-sdk release rpm
