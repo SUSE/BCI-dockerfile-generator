@@ -65,6 +65,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="info"/>
     <package name="fillup"/>
     <package name="libzio1"/>
+    <package name="libpcre1"/>
   </packages>
   <packages type="bootstrap">
     <package name="sles-release"/>
