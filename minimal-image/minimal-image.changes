@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 10 13:15:25 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Delete libpcre1 too, it is only required by grep, which gets deleted too
+
+-------------------------------------------------------------------
 Thu Apr  4 17:37:02 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add a shared licensing footer to the base container READMEs
