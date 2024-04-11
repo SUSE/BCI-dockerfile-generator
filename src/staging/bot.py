@@ -16,7 +16,9 @@ from datetime import timedelta
 from functools import reduce
 from typing import ClassVar
 from typing import Literal
+from typing import NoReturn
 from typing import TypedDict
+from typing import overload
 
 import aiofiles.os
 import aiofiles.tempfile
@@ -70,21 +72,29 @@ _GIT_COMMIT_ENV = {
 OS_VERSION_NEEDS_BASE_CONTAINER = (OsVersion.SP6,)
 
 
+@overload
+def _get_base_image_prj_pkg(
+    os_version: Literal[
+        OsVersion.SLCC_DEVELOPMENT, OsVersion.SLCC_LTS, OsVersion.SLCC_PRODUCTION
+    ],
+) -> NoReturn: ...
+
+
+@overload
+def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]: ...
+
+
 def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
     if os_version == OsVersion.TUMBLEWEED:
         return "openSUSE:Factory", "opensuse-tumbleweed-image"
-    if os_version == OsVersion.SLCC:
-        raise ValueError("The SLCC base container is provided by BCI")
+    if os_version.is_slcc:
+        raise ValueError("The SLCC base containers are provided by the project itself")
 
     return f"SUSE:SLE-15-SP{os_version}:Update", "sles15-image"
 
 
 def _get_bci_project_name(os_version: OsVersion) -> str:
-    prj_suffix = (
-        os_version
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC)
-        else "SLE-15-SP" + str(os_version)
-    )
+    prj_suffix = "SLE-15-SP" + str(os_version) if os_version.is_sles else os_version
     return f"devel:BCI:{prj_suffix}"
 
 
@@ -198,10 +208,10 @@ class StagingBot:
     def _generate_project_name(self, prefix: str) -> str:
         assert self.osc_username
         res = f"home:{self.osc_username}:{prefix}:"
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
-            res += str(self.os_version)
-        else:
+        if self.os_version.is_sles:
             res += f"SLE-15-SP{str(self.os_version)}"
+        else:
+            res += str(self.os_version)
         return res
 
     @property
