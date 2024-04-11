@@ -127,6 +127,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
+
 _MARIADB_ENTRYPOINT = (Path(__file__).parent / "mariadb" / "entrypoint.sh").read_bytes()
 _MARIADB_HEALTHCHECK = (
     Path(__file__).parent / "mariadb" / "healthcheck.sh"
@@ -147,8 +148,8 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SLCC}:
-    if os_version in (OsVersion.SLCC, OsVersion.TUMBLEWEED):
+for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SLCC_DEVELOPMENT}:
+    if os_version.is_slcc or os_version.is_opensuse:
         prefix = ""
         additional_names = []
     else:
