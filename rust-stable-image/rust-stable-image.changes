@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 11 06:57:36 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Pin rust & cargo version to prevent zypper up from upgrading to a newer rust
+
+-------------------------------------------------------------------
 Wed Apr 10 06:22:45 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - Switch to Rust 1.77
