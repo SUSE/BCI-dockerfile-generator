@@ -141,6 +141,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
+
 _POSTGRES_ENTRYPOINT = (
     Path(__file__).parent / "postgres" / "entrypoint.sh"
 ).read_bytes()

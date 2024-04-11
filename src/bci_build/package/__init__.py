@@ -135,8 +135,12 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
-    #: SUSE Linux Container Collection
-    SLCC = "SLCC"
+    #: SUSE Linux Container Collection - free stream
+    SLCC_FREE = "SLCC-free"
+    #: SUSE Linux Container Collection - paid stream
+    SLCC_PAID = "SLCC-paid"
+    #: SUSE Linux Container Collection - SLES 16 Containers stream
+    SLCC_SLES_16_CONTAINERS = "SLES-16-containers"
 
     @staticmethod
     def parse(val: str) -> OsVersion:
@@ -149,10 +153,44 @@ class OsVersion(enum.Enum):
         return str(self.value)
 
     @property
+    def is_slcc(self) -> bool:
+        return self.value in (
+            OsVersion.SLCC_FREE.value,
+            OsVersion.SLCC_PAID.value,
+            OsVersion.SLCC_SLES_16_CONTAINERS.value,
+        )
+
+    @property
+    def is_opensuse(self) -> bool:
+        return self.value == OsVersion.TUMBLEWEED.value
+
+    @property
+    def is_ltss(self) -> bool:
+        """determines whether this OS is covered by a different EULA and is not
+        redistributable.
+
+        """
+        return self.value in (
+            OsVersion.SP3.value,
+            OsVersion.SP4.value,
+            OsVersion.SLCC_SLES_16_CONTAINERS.value,
+        )
+
+    @property
+    def distribution_base_name(self) -> str:
+        if self.is_opensuse:
+            return "openSUSE Tumbleweed"
+        if self.is_sle15:
+            return "SLE"
+        assert self.is_slcc
+        return "SUSE Linux Container Collection"
+
+    @property
     def pretty_print(self) -> str:
-        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLCC.value):
-            return self.value
-        return f"SP{self.value}"
+        if self.is_sle15:
+            return f"SP{self.value}"
+        assert isinstance(self.value, str)
+        return self.value
 
     @property
     def pretty_os_version_no_dash(self) -> str:
@@ -160,22 +198,19 @@ class OsVersion(enum.Enum):
             # TW has no version by itself and the "openSUSE Tumbleweed" is
             # already part of the base identifier
             return ""
-        if self.value == OsVersion.SLCC.value:
-            return "Adaptable Linux Platform"
+        if self.is_slcc:
+            return "SUSE Linux Container Collection"
 
+        assert self.is_sle15
         return f"15 SP{self.value}"
 
     @property
     def deployment_branch_name(self) -> str:
-        return (
-            str(self.value)
-            if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLCC.value)
-            else f"sle15-sp{self.value}"
-        )
+        return f"sle15-sp{self.value}" if self.is_sle15 else str(self.value)
 
     @property
     def lifecycle_data_pkg(self) -> list[str]:
-        if self.value not in (OsVersion.SLCC.value, OsVersion.TUMBLEWEED.value):
+        if self.is_sle15:
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
@@ -197,12 +232,29 @@ class OsVersion(enum.Enum):
         """
         if self.is_sle15:
             return f"15.{str(self.value)}"
-        # FIXME
-        # if self.is_slcc:
-        #     return "16.0"
+        if self.is_slcc:
+            return "16.0"
 
         # Tumbleweed rolls too fast, just use latest
         return "latest"
+
+    def has_container_suseconnect(self) -> bool:
+        return self.is_sle15 or self.value == OsVersion.SLCC_SLES_16_CONTAINERS
+
+    @property
+    def eula_package_names(self) -> tuple[str, ...]:
+        if self.is_sle15:
+            return ("skelcd-EULA-bci",)
+        if self.is_slcc:
+            return (f"skelcd-EULA-{str(self.value).lower()}",)
+        return ()
+
+
+SLCC_OS_VERSIONS: list[OsVersion] = [
+    OsVersion.SLCC_FREE,
+    OsVersion.SLCC_PAID,
+    OsVersion.SLCC_SLES_16_CONTAINERS,
+]
 
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
@@ -220,6 +272,8 @@ ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
+    OsVersion.SLCC_FREE,
+    OsVersion.SLCC_PAID,
 ]
 
 # For which versions to create Base Container Images?
@@ -227,8 +281,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
-    OsVersion.SLCC,
-]
+] + SLCC_OS_VERSIONS
 
 # List of SPs that are already under LTSS
 ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP3, OsVersion.SP4]
@@ -241,7 +294,6 @@ ALL_OS_VERSIONS: set[OsVersion] = {
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.TUMBLEWEED,
-    OsVersion.SLCC,
 ]
 
 
@@ -316,115 +368,35 @@ class Replacement:
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
         return "opensuse/bci"
-    if os_version == OsVersion.SLCC:
-        return "slcc"
+    if os_version == OsVersion.SLCC_SLES_16_CONTAINERS:
+        return "suse/sle16"
+    if os_version == OsVersion.SLCC_PAID:
+        return "suse/supported"
     if os_version == OsVersion.SP3:
         return "suse/ltss/sle15.3"
     if os_version == OsVersion.SP4:
         return "suse/ltss/sle15.4"
 
+    # remaining SLE SPs + SLCC free use BCI as the prefix
     return "bci"
 
 
-@dataclass(frozen=True)
-class ImageProperties:
-    """Class storing the properties of the Base Container that differ
-    depending on the vendor.
+_OPENSUSE_MAINTAINER = "openSUSE (https://www.opensuse.org/)"
+_SUSE_MAINTAINER = "SUSE LLC (https://www.suse.com/)"
 
-    """
+_OPENSUSE_VENDOR = "openSUSE Project"
+_SUSE_VENDOR = "SUSE LLC"
 
-    #: maintainer of the image
-    maintainer: str
+_OPENSUSE_REGISTRY = "registry.opensuse.org"
+_SUSE_REGISTRY = "registry.suse.com"
 
-    #: full vendor string as it will be included in the
-    #: ``org.opencontainers.image.vendor`` label
-    vendor: str
+_OPENSUSE_LIFECYCLE = "https://en.opensuse.org/Lifetime"
+_SLE_LIFECYCLE = "https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+_SLCC_LIFECYCLE = "https://www.suse.com/lifecycle"
 
-    #: The name of the underlying distribution. It will be inserted into the
-    #: image's title as ``$distribution_base_name BCI $pretty_name Container
-    #: Image``.
-    distribution_base_name: str
-
-    #: The url to the registry of this vendor
-    registry: str
-
-    #: Url to the vendor's home page
-    url: str
-
-    #: The EULA identifier to set
-    eula: str
-
-    #: Url to learn about the support lifecycle of the image
-    lifecycle_url: str
-
-    #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
-    label_prefix: str
-
-    #: The prefix of the build tag for DevelopmentContainer and OsContainer Images.
-    #: The build tag is constructed as `$build_tag_prefix/$name`
-    build_tag_prefix: str
-
-    #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
-    application_container_build_tag_prefix: str
-
-    #:
-    based_on_container_description: str | None = None
-
-
-#: Image properties for openSUSE Tumbleweed
-_OPENSUSE_IMAGE_PROPS = ImageProperties(
-    maintainer="openSUSE (https://www.opensuse.org/)",
-    vendor="openSUSE Project",
-    registry="registry.opensuse.org",
-    url="https://www.opensuse.org",
-    eula="sle-bci",
-    lifecycle_url="https://en.opensuse.org/Lifetime",
-    label_prefix="org.opensuse",
-    distribution_base_name="openSUSE Tumbleweed",
-    build_tag_prefix=_build_tag_prefix(OsVersion.TUMBLEWEED),
-    application_container_build_tag_prefix="opensuse",
-)
-
-#: Image properties for SUSE Linux Enterprise
-_SLE_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://www.suse.com/products/base-container-images/",
-    eula="sle-bci",
-    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
-    label_prefix="com.suse",
-    distribution_base_name="SLE",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
-    application_container_build_tag_prefix="suse",
-)
-
-#: Image properties for SUSE Linux Enterprise 15 SP3 LTSS images
-_SLE_15_SP3_LTSS_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://www.suse.com/products/server/",
-    eula="sle-eula",
-    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
-    label_prefix="com.suse",
-    distribution_base_name="SLE LTSS",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP3),
-    application_container_build_tag_prefix="suse",
-)
-
-_SLCC_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://susealp.io/",
-    eula="sle-bci",
-    lifecycle_url="https://www.suse.com/lifecycle",
-    label_prefix="com.suse.slcc",
-    distribution_base_name="SUSE Linux Container Collection",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SLCC),
-    application_container_build_tag_prefix="suse",
-)
+_OPENSUSE_URL = "https://www.opensuse.org"
+_SLE_BCI_URL = "https://www.suse.com/products/base-container-images/"
+_SLCC_URL = "FIXME"
 
 
 @dataclass
@@ -578,8 +550,6 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
-    _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
-
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -597,17 +567,10 @@ class BaseContainerImage(abc.ABC):
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
-        if self.is_opensuse:
-            self._image_properties = _OPENSUSE_IMAGE_PROPS
-        elif self.os_version == OsVersion.SLCC:
-            self._image_properties = _SLCC_IMAGE_PROPS
-        elif self.os_version == OsVersion.SP3:
-            self._image_properties = _SLE_15_SP3_LTSS_IMAGE_PROPS
-        else:
-            self._image_properties = _SLE_IMAGE_PROPS
-
         if not self.maintainer:
-            self.maintainer = self._image_properties.maintainer
+            self.maintainer = (
+                _OPENSUSE_MAINTAINER if self.is_opensuse else _SUSE_MAINTAINER
+            )
 
         # limit to tech preview for beta releases
         if (
@@ -618,7 +581,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def is_opensuse(self) -> bool:
-        return self.os_version == OsVersion.TUMBLEWEED
+        return self.os_version.is_opensuse
 
     @property
     @abc.abstractmethod
@@ -650,7 +613,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> str | None:
-        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
+        if self.os_version.is_sle15:
             epoch = ""
             if self.os_epoch:
                 epoch = f"{self.os_epoch}."
@@ -659,11 +622,25 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def eula(self) -> str:
-        return self._image_properties.eula
+        """EULA covering this image. Is ``sle-eula`` for LTSS codestreams and
+        SLCC paid otherwise it is ``sle-bci``.
+
+        """
+        return (
+            "sle-eula"
+            if (self.os_version.is_ltss or self.os_version == OsVersion.SLCC_PAID)
+            else "sle-bci"
+        )
 
     @property
     def lifecycle_url(self) -> str:
-        return self._image_properties.lifecycle_url
+        if self.os_version.is_opensuse:
+            return _OPENSUSE_LIFECYCLE
+        if self.os_version.is_sle15:
+            return _SLE_LIFECYCLE
+
+        assert self.os_version.is_slcc
+        return _SLCC_LIFECYCLE
 
     @property
     def release_stage(self) -> ReleaseStage:
@@ -686,7 +663,13 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        return self._image_properties.url
+        if self.is_opensuse:
+            return _OPENSUSE_URL
+        if self.os_version.is_sle15:
+            return _SLE_BCI_URL
+
+        assert self.os_version.is_slcc
+        return _SLCC_URL
 
     @property
     def vendor(self) -> str:
@@ -694,12 +677,12 @@ class BaseContainerImage(abc.ABC):
         label
 
         """
-        return self._image_properties.vendor
+        return _OPENSUSE_VENDOR if self.is_opensuse else _SUSE_VENDOR
 
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        return self._image_properties.registry
+        return _OPENSUSE_REGISTRY if self.is_opensuse else _SUSE_REGISTRY
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -719,7 +702,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def _registry_prefix(self) -> str:
-        return self._image_properties.build_tag_prefix
+        return _build_tag_prefix(self.os_version)
 
     @staticmethod
     def _cmd_entrypoint_docker(
@@ -816,8 +799,8 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        if self.os_version == OsVersion.SLCC:
-            return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
+        if self.os_version.is_slcc:
+            return f"{_build_tag_prefix(self.os_version)}/base:latest"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
         if self.image_type == ImageType.APPLICATION:
@@ -1057,10 +1040,7 @@ exit 0
 
         description_formatters = {
             "pretty_name": self.pretty_name,
-            "based_on_container": (
-                self._image_properties.based_on_container_description
-                or f"based on the {self._image_properties.distribution_base_name} Base Container Image"
-            ),
+            "based_on_container": f"based on the {self.os_version.distribution_base_name} Base Container Image",
             "podman_only": "This container is only supported with podman.",
         }
         description = "{pretty_name} container {based_on_container}."
@@ -1075,12 +1055,12 @@ exit 0
         label.
 
         It is generated from :py:attr:`BaseContainerImage.pretty_name` as
-        follows: ``"{distribution_base_name} BCI {self.pretty_name}"``, where
-        ``distribution_base_name`` is taken from
-        :py:attr:`~ImageProperties.distribution_base_name`.
+        follows: ``"{distribution_base_name}(if ! SLLC: BCI else '')
+        {self.pretty_name}"``, where ``distribution_base_name`` is taken from
+        :py:attr:`~OsVersion.distribution_base_name`.
 
         """
-        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name}"
+        return f"{self.os_version.distribution_base_name}{' BCI' if not self.os_version.is_slcc else ''} {self.pretty_name}"
 
     @property
     def readme_path(self) -> str:
@@ -1165,23 +1145,33 @@ exit 0
         :py:attr:`~BaseContainerImage.custom_labelprefix_end`.
 
         """
-        return (
-            self._image_properties.label_prefix
-            + "."
-            + (
-                {
-                    ImageType.SLE_BCI: "bci",
-                    ImageType.APPLICATION: "application",
-                    ImageType.LTSS: "sle",
-                }[self.image_type]
+        if self.os_version.is_opensuse:
+            labelprefix = "org.opensuse."
+        elif self.os_version.is_sle15:
+            labelprefix = "com.suse."
+        else:
+            assert self.os_version.is_slcc
+            labelprefix = (
+                "com.suse.slcc."
+                + {
+                    OsVersion.SLCC_FREE: "free",
+                    OsVersion.SLCC_PAID: "supported",
+                    OsVersion.SLCC_SLES_16_CONTAINERS: "sle16",
+                }[self.os_version]
             )
-            + "."
-            + (self.custom_labelprefix_end or self.name)
-        )
+
+        if not self.os_version.is_slcc:
+            labelprefix += {
+                ImageType.SLE_BCI: "bci",
+                ImageType.APPLICATION: "application",
+                ImageType.LTSS: "sle",
+            }[self.image_type]
+
+        return f"{labelprefix}.{(self.custom_labelprefix_end or self.name)}"
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC_PRODUCTION):
             return str(datetime.datetime.now().year)
         return f"15.{int(self.os_version.value)}.0"
 
@@ -1438,7 +1428,11 @@ class DevelopmentContainer(BaseContainerImage):
 class ApplicationStackContainer(DevelopmentContainer):
     @property
     def _registry_prefix(self) -> str:
-        return self._image_properties.application_container_build_tag_prefix
+        if self.is_opensuse:
+            return "opensuse"
+        if self.os_version.is_slcc:
+            return _build_tag_prefix(self.os_version)
+        return "suse"
 
     @property
     def image_type(self) -> ImageType:
@@ -1446,7 +1440,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def title(self) -> str:
-        return f"{self._image_properties.distribution_base_name} {self.pretty_name}"
+        return f"{self.os_version.distribution_base_name} {self.pretty_name}"
 
     @property
     def eula(self) -> str:
@@ -1459,9 +1453,9 @@ class ApplicationStackContainer(DevelopmentContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC):
-            return "latest"
-        return f"15.{os_version}"
+        if os_version.is_sle15:
+            return f"15.{os_version}"
+        return "latest"
 
     @property
     def uid(self) -> str:
@@ -1478,21 +1472,33 @@ class OsContainer(BaseContainerImage):
 
         return ImageType.SLE_BCI
 
+    @staticmethod
+    def build_tag_name_prefix(os_version: OsVersion) -> str:
+        """Prefix that is inserted in front of the name into the build tag"""
+        return "" if os_version.is_slcc else "bci-"
+
     @property
     def build_tags(self) -> list[str]:
         tags = []
+        prefix = self.build_tag_name_prefix(self.os_version)
+
         for name in [self.name] + self.additional_names:
             tags += [
-                f"{self._registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
-                f"{self._registry_prefix}/bci-{name}:{self.version_label}",
+                f"{self._registry_prefix}/{prefix}{name}:%OS_VERSION_ID_SP%",
+                f"{self._registry_prefix}/{prefix}{name}:{self.version_label}",
             ] + (
-                [f"{self._registry_prefix}/bci-{name}:latest"] if self.is_latest else []
+                [f"{self._registry_prefix}/{prefix}{name}:latest"]
+                if self.is_latest
+                else []
             )
         return tags
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
+        return (
+            f"{self.registry}/{self._registry_prefix}/"
+            + f"{self.build_tag_name_prefix(self.os_version)}{self.name}:{self.version_label}"
+        )
 
     @property
     def pretty_reference(self) -> str:
@@ -1548,8 +1554,8 @@ from .python import PYTHON_TW_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
-from .spack import SPACK_CONTAINERS  # noqa: E402
 from .slcc_base import SLCC_BASE  # noqa: E402
+from .spack import SPACK_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
