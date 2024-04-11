@@ -64,7 +64,7 @@ LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
 # endlabelprefix
 {%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
 
-{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; rm -rf /var/log/*{% endif %}
+{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
 {%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}
