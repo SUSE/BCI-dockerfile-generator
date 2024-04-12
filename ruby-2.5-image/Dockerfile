@@ -42,7 +42,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux curl git-core gcc-c++ sqlite3-devel make awk timezone; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux curl git-core gcc-c++ sqlite3-devel make awk timezone; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV LANG="C.UTF-8"
 ENV RUBY_VERSION="%%rb_ver%%"
 ENV RUBY_MAJOR="%%rb_maj%%"
