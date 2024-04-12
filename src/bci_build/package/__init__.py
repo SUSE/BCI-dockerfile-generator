@@ -33,6 +33,10 @@ _BASH_SET = "set -euo pipefail"
 #: from not being noticed
 DOCKERFILE_RUN = f"RUN {_BASH_SET};"
 
+#: Remove various log files. While it is possible to just ``rm -rf /var/log/*``,
+#: that would also remove some package owned directories (not %ghost)
+LOG_CLEAN = "rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}"
+
 
 @enum.unique
 class Arch(enum.Enum):
@@ -733,7 +737,7 @@ if command -v zypper > /dev/null; then
     zypper -n clean
 fi
 
-rm -rf /var/log/zypp
+{LOG_CLEAN}
 
 exit 0
 """
@@ -1132,7 +1136,10 @@ exit 0
             infoheader = textwrap.indent(INFOHEADER_TEMPLATE, "# ")
 
             dockerfile = DOCKERFILE_TEMPLATE.render(
-                image=self, INFOHEADER=infoheader, DOCKERFILE_RUN=DOCKERFILE_RUN
+                image=self,
+                INFOHEADER=infoheader,
+                DOCKERFILE_RUN=DOCKERFILE_RUN,
+                LOG_CLEAN=LOG_CLEAN,
             )
             if dockerfile[-1] != "\n":
                 dockerfile += "\n"

@@ -43,7 +43,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 COPY test.el .
 RUN emacs -Q --batch test.el
 """,
@@ -146,7 +146,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -241,7 +241,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -344,7 +344,7 @@ LABEL org.opensuse.release-stage="released"
 LABEL emacs_version="28"
 LABEL GCC_version="15"
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; rm -rf /var/log/*
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 ENV EMACS_VERSION="28"
 ENV GPP_path="/usr/bin/g++"
 
@@ -456,7 +456,10 @@ def test_build_recipe_templates(
 ) -> None:
     assert (
         DOCKERFILE_TEMPLATE.render(
-            DOCKERFILE_RUN="RUN", image=image, INFOHEADER="# Copyright header"
+            DOCKERFILE_RUN="RUN",
+            image=image,
+            INFOHEADER="# Copyright header",
+            LOG_CLEAN="##LOGCLEAN##",
         )
         == dockerfile
     )
