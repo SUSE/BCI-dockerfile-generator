@@ -43,7 +43,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends go1.22 go1.22-doc make git-core lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends go1.22 go1.22-doc make git-core lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GOLANG_VERSION="%%golang_version%%"
 ENV GOPATH="/go"
 ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
