@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:32:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- build with java 21
+
+-------------------------------------------------------------------
 Fri Apr 12 12:04:42 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Don't wipe everything in /var/log, only remove log files (this omits directories owned by packages)
