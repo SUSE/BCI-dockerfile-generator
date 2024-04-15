@@ -45,7 +45,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends tomcat10; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends tomcat10 java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV TOMCAT_MAJOR="10"
 ENV TOMCAT_VERSION="%%tomcat_version%%"
 ENV CATALINA_HOME="/usr/share/tomcat"
