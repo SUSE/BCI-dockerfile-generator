@@ -4,7 +4,12 @@ import pytest
 
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
+from bci_build.package import BuildType
+from bci_build.package import OsContainer
 from bci_build.package import OsVersion
+from bci_build.package import Package
+from bci_build.package import PackageType
+from bci_build.package import SupportLevel
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 
@@ -463,4 +468,96 @@ def test_build_recipe_templates(
         )
         == dockerfile
     )
+    assert KIWI_TEMPLATE.render(image=image, INFOHEADER="Copyright header") == kiwi_xml
+
+
+@pytest.mark.parametrize(
+    "kiwi_xml,image",
+    [
+        (
+            """<?xml version="1.0" encoding="utf-8"?>\n<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright header-->
+<!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE% opensuse/bci/bci-test:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="7.4" name="test-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>openSUSE Project</author>
+    <contact>https://www.suse.com/</contact>
+    <specification>openSUSE Tumbleweed BCI openSUSE Tumbleweed Test Container Image</specification>
+  </description>
+  <preferences>
+    <type image="docker">
+      <containerconfig
+          name="opensuse/bci/bci-test"
+          tag="%OS_VERSION_ID_SP%"
+          maintainer="openSUSE (https://www.opensuse.org/)"
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI openSUSE Tumbleweed Test"/>
+            <label name="org.opencontainers.image.description" value="A test environment for containers."/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
+            <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
+            <label name="org.opencontainers.image.url" value="https://www.opensuse.org"/>
+            <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
+            <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
+            <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+
+            <label name="org.opensuse.release-stage" value="released"/>
+            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime"/>
+          </suse_label_helper:add_prefix>
+        </labels>
+      </containerconfig>
+    </type>
+    <version>__CURRENT_YEAR__</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="bash"/>
+    <package name="ca-certificates-mozilla-prebuilt"/>
+    <package name="coreutils"/>
+    <package name="skelcd-EULA-test"/>
+    <package name="Test-release"/>
+  </packages>
+
+</image>""".replace("__CURRENT_YEAR__", str(date.today().year)),
+            OsContainer(
+                name="test",
+                os_version=OsVersion.TUMBLEWEED,
+                support_level=SupportLevel.L3,
+                package_name="test-image",
+                logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
+                is_latest=True,
+                pretty_name=f"{OsVersion.TUMBLEWEED.pretty_os_version_no_dash} Test",
+                custom_description="A test environment for containers.",
+                from_image=None,
+                build_recipe_type=BuildType.KIWI,
+                package_list=[
+                    Package(name, pkg_type=PackageType.BOOTSTRAP)
+                    for name in (
+                        "bash",
+                        "ca-certificates-mozilla-prebuilt",
+                        # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
+                        "coreutils",
+                    )
+                    + tuple(("skelcd-EULA-test",))
+                    + tuple(("Test-release",))
+                ],
+                # intentionally empty
+                config_sh_script="""
+""",
+            ),
+        ),
+    ],
+)
+def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
     assert KIWI_TEMPLATE.render(image=image, INFOHEADER="Copyright header") == kiwi_xml
