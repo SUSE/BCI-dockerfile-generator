@@ -19,6 +19,18 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: gcc-12-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: gcc-13-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: gcc-14-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: git-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -210,6 +222,15 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: busybox-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: gcc-12-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: gcc-13-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: gcc-14-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: git-image
