@@ -55,6 +55,14 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: gcc-13-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: gcc-7-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: git-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
@@ -257,6 +265,12 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: dotnet-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: gcc-13-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: gcc-7-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: git-image
