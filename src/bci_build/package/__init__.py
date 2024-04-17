@@ -1438,6 +1438,7 @@ from .basecontainers import INIT_CONTAINERS  # noqa: E402
 from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
 from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
+from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
 from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
@@ -1486,6 +1487,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *KERNEL_MODULE_CONTAINERS,
         GITEA_RUNNER_CONTAINER,
         *TOMCAT_CONTAINERS,
+        *GCC_CONTAINERS,
     )
 }
 
