@@ -53,7 +53,7 @@ RUN emacs -Q --batch test.el
 <!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="6.5" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
@@ -154,7 +154,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 <!-- OBS-AddTag: bci/test:stable bci/test:stable-1.%RELEASE% bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-1.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="6.5" name="test-%%emacs_ver%%-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-%%emacs_ver%%-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
@@ -249,7 +249,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 <!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="6.5" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
@@ -359,7 +359,7 @@ VOLUME /bin/ /usr/bin/""",
 <!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:28-%RELEASE% opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:28-%RELEASE% opensuse/bci/emacs:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="6.5" name="test-28.2-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-28.2-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
