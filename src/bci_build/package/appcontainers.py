@@ -6,6 +6,7 @@ from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SLCC_OS_VERSIONS
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BuildType
 from bci_build.package import OsContainer
@@ -43,7 +44,7 @@ PCP_CONTAINERS = [
         pretty_name="Performance Co-Pilot (pcp)",
         custom_description="{pretty_name} container {based_on_container}. {podman_only}",
         package_name="pcp-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/{OsContainer.build_tag_name_prefix(os_version)}init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
@@ -195,11 +196,19 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
 """,
     )
     for ver, os_version in (
-        [(15, variant) for variant in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
+        [
+            (15, variant)
+            for variant in (
+                OsVersion.SP5,
+                OsVersion.TUMBLEWEED,
+                OsVersion.SLCC_PAID,
+            )
+        ]
         + [
             (16, variant)
             for variant in (
-                OsVersion.SLE16_0,
+                OsVersion.SLCC_FREE,
+                OsVersion.SLCC_PAID,
                 OsVersion.SP6,
                 OsVersion.TUMBLEWEED,
             )
@@ -303,6 +312,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         custom_end=_generate_prometheus_family_healthcheck(_BLACKBOX_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
+    if not os_version.is_slcc
 ]
 
 _GRAFANA_FILES = {}
@@ -409,7 +419,7 @@ NGINX_CONTAINERS = [
         pretty_name="NGINX for SUSE RMT",
         **_get_nginx_kwargs(os_version),
     )
-    for os_version in (OsVersion.SP6,)
+    for os_version in (OsVersion.SP6, *SLCC_OS_VERSIONS)
 ] + [
     ApplicationStackContainer(
         name="nginx",
@@ -429,7 +439,7 @@ GIT_CONTAINERS = [
         package_name="git-image",
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
         custom_description="A micro environment with Git {based_on_container}.",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/{OsContainer.build_tag_name_prefix(os_version)}micro:{OsContainer.version_to_container_os_version(os_version)}",
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%git_version%%",
@@ -448,7 +458,7 @@ GIT_CONTAINERS = [
                 "git-core",
                 "openssh-clients",
             )
-            + (() if os_version == OsVersion.TUMBLEWEED else ("skelcd-EULA-bci",))
+            + os_version.eula_package_names
         ],
         # intentionally empty
         config_sh_script="""
@@ -463,7 +473,7 @@ REGISTRY_CONTAINERS = [
         name="registry",
         pretty_name="OCI Container Registry (Distribution)",
         package_name="distribution-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/{OsContainer.build_tag_name_prefix(os_version)}micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
@@ -503,7 +513,7 @@ HELM_CONTAINERS = [
         name="helm",
         pretty_name="Kubernetes Package Manager",
         package_name="helm-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/{OsContainer.build_tag_name_prefix(os_version)}micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version=get_pkg_version("helm", os_version),
@@ -530,7 +540,7 @@ TRIVY_CONTAINERS = [
         name="trivy",
         pretty_name="Container Vulnerability Scanner",
         package_name="trivy-image",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=f"{_build_tag_prefix(os_version)}/{OsContainer.build_tag_name_prefix(os_version)}micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%trivy_version%%",
