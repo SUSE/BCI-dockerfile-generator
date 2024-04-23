@@ -1635,7 +1635,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         *BASE_CONTAINERS,
-        PYTHON_3_12_CONTAINERS,
+        *PYTHON_3_12_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_TW_CONTAINERS,

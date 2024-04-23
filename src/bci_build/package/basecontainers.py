@@ -206,7 +206,12 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in os_version.release_package_names
     ]
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
+    if os_version in (
+        OsVersion.TUMBLEWEED,
+        OsVersion.SLCC_FREE,
+        OsVersion.SLCC_PAID,
+        OsVersion.SLE16_0,
+    ):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -215,8 +220,10 @@ def _get_minimal_kwargs(os_version: OsVersion):
             for name in ("rpm-ndb", "perl-base")
         ]
 
+    micro_name = "micro" if os_version.is_slfo else "bci-micro"
+
     kwargs = {
-        "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        "from_image": f"{_build_tag_prefix(os_version)}/{micro_name}:{OsContainer.version_to_container_os_version(os_version)}",
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
         "package_list": package_list,
     }
@@ -291,6 +298,9 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
     if os_version == OsVersion.SLE16_0:
         prefix = "sle16"
         pretty_prefix = "SLE 16"
+    elif os_version.is_slfo and os_version != OsVersion.SLE16_0:
+        prefix = "slcc"
+        pretty_prefix = prefix.upper()
     else:
         prefix = "sle15"
         pretty_prefix = "SLE 15"

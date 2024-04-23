@@ -109,7 +109,7 @@ _PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
-        is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
+        is_latest=(pyver == _PYTHON_TW_VERSIONS[-1]),
         package_name=f"python-{pyver}-image",
     )
     for pyver in _PYTHON_TW_VERSIONS
@@ -119,12 +119,27 @@ PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
+        is_latest=(
+            (os_version in CAN_BE_LATEST_OS_VERSION)
+            and (os_version != OsVersion.SLCC_PAID)
+        ),
     )
-    for os_version in (OsVersion.SP6,)
+    for os_version in (OsVersion.SP6, OsVersion.SLCC_PAID)
 )
 
-PYTHON_3_12_CONTAINERS = PythonDevelopmentContainer(
-    **_get_python_kwargs("3.12", OsVersion.SP6),
-    package_name="python-3.12-image",
-    is_latest=OsVersion.SP6 in CAN_BE_LATEST_OS_VERSION,
-)
+
+PYTHON_3_12_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.12", os_version),
+        package_name="python-3.12-image",
+        # Technically it is the latest but we want to prefer the long term Python
+        # 3.11 for SLE, SLCC Paid & TW
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION
+        and os_version != OsVersion.SLCC_PAID,
+    )
+    for os_version in (
+        OsVersion.SP6,
+        OsVersion.SLCC_PAID,
+        OsVersion.SLCC_FREE,
+    )
+]
