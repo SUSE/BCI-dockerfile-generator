@@ -6,6 +6,7 @@ from bci_build.package import _BASH_SET
 from bci_build.package import LanguageStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
+from bci_build.package import SupportLevel
 
 
 @enum.unique
@@ -148,6 +149,7 @@ EXPOSE 9000
             Replacement("%%php_version%%", package_name=f"php{php_version}"),
         ],
         cmd=cmd,
+        support_level=SupportLevel.L3,
         entrypoint=["docker-php-entrypoint"],
         env={
             "PHP_VERSION": "%%php_version%%",
