@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 24 06:06:18 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Mark container image as L3 supported
+
+-------------------------------------------------------------------
 Fri Apr 12 12:04:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Don't wipe everything in /var/log, only remove log files (this omits directories owned by packages)
