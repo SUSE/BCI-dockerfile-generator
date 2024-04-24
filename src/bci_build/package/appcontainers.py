@@ -355,3 +355,94 @@ REGISTRY_CONTAINERS = [
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
+
+
+_BASE_PODMAN_OSC_CMD = (
+    "podman run --rm -it --privileged "
+    + r"-v \$HOME/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z "
+    + r"-v \$HOME/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z"
+)
+
+OSC_CONTAINER = ApplicationStackContainer(
+    name="osc",
+    pretty_name="Packaging",
+    package_name="packaging-image",
+    os_version=OsVersion.TUMBLEWEED,
+    is_latest=True,
+    # we want all the recommends from osc & build
+    no_recommends=False,
+    version_in_uid=False,
+    version="%%osc_version%%",
+    replacements_via_service=[
+        Replacement(regex_in_build_description="%%osc_version%%", package_name="osc")
+    ],
+    extra_files={
+        "entrypoint.sh": (Path(__file__).parent / "osc" / "entrypoint.sh").read_bytes()
+    },
+    extra_labels={
+        "run": f"{_BASE_PODMAN_OSC_CMD} IMAGE",
+        "runv": f"{_BASE_PODMAN_OSC_CMD} {(_pkg_cache_vol := '-v pkgcache:/var/tmp/osbuild-packagecache')} IMAGE",
+        "runcwd": f"{_BASE_PODMAN_OSC_CMD} {(_cwd_mount := '-v .:/root/osc-workdir:z')} IMAGE",
+        "runcwdv": f"{_BASE_PODMAN_OSC_CMD} {_pkg_cache_vol} {_cwd_mount} IMAGE",
+    },
+    package_list=[
+        # osc + osc build
+        "osc",
+        "build",
+        "cpio",
+        "hostname",
+        # all the services
+        "obs-service-appimage",
+        "obs-service-cargo",
+        "obs-service-cdi_containers_meta",
+        "obs-service-compose_kiwi_description",
+        "obs-service-docker_label_helper",
+        "obs-service-download_assets",
+        "obs-service-download_files",
+        "obs-service-download_url",
+        "obs-service-extract_file",
+        "obs-service-format_spec_file",
+        "obs-service-go_modules",
+        "obs-service-kiwi_label_helper",
+        "obs-service-kiwi_metainfo_helper",
+        "obs-service-kubevirt_containers_meta",
+        "obs-service-node_modules",
+        "obs-service-obs_scm",
+        "obs-service-product_converter",
+        "obs-service-recompress",
+        "obs-service-refresh_patches",
+        "obs-service-replace_using_env",
+        "obs-service-replace_using_package_version",
+        "obs-service-set_version",
+        "obs-service-snapcraft",
+        "obs-service-source_validator",
+        "obs-service-tar",
+        "obs-service-tar_scm",
+        "obs-service-verify_file",
+        *OsVersion.TUMBLEWEED.release_package_names,
+        # for convenience
+        "bash-completion",
+        # for scmsync packages
+        "git",
+        "obs-scm-bridge",
+        # IBS access
+        "openssh-common",
+        "openssh-clients",
+        # for building
+        "podman",
+        "runc",
+    ],
+    cmd=["/bin/bash"],
+    custom_end="""WORKDIR /root/osc-workdir
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENV OSC_VM_TYPE=podman
+""",
+    entrypoint=["/usr/local/bin/entrypoint.sh"],
+    volumes=[
+        # default location of the package cache
+        "/var/tmp/osbuild-packagecache",
+        # default buildroot path
+        "/var/tmp/build-root-root",
+    ],
+)
