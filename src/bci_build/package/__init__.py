@@ -1147,8 +1147,11 @@ exit 0
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLCC_PRODUCTION):
+        if self.os_version == OsVersion.TUMBLEWEED:
             return str(datetime.datetime.now().year)
+        # FIXME: both should be handled better
+        if self.os_version.is_slcc:
+            return "16.0.0"
         return f"15.{int(self.os_version.value)}.0"
 
     @property
@@ -1425,6 +1428,10 @@ class OsContainer(BaseContainerImage):
     def version_to_container_os_version(os_version: OsVersion) -> str:
         if os_version.is_sle15:
             return f"15.{os_version}"
+        if os_version.is_slcc:
+            # FIXME:
+            # we'll probably have to find a better way here
+            return "16.0"
         return "latest"
 
     @property
