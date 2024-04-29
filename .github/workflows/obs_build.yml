@@ -80,6 +80,7 @@ jobs:
           set -euo pipefail
           poetry run scratch-build-bot \
               --os-version ${{ matrix.os_version }} \
+              --branch-name="${{ matrix.os_version }}-${{ github.event.pull_request.number }}" \
               -vvvv \
               scratch_build \
                 --commit-message='Test build for #${{ github.event.pull_request.number }}' \
