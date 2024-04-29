@@ -113,11 +113,35 @@ jobs:
           OSC_USER: "defolos"
         if: env.no_change != 'true'
 
+      - name: Install crane to list images on the registry
+        uses: imjasonh/setup-crane@v0.1
+        if: env.no_change != 'true'
+
       - name: retrieve the build result
         run: |
           set -euo pipefail
+          export PROJECT_NAME=${{ env.PROJECT_NAME }}
+          export REGISTRY_PREFIX=$(echo ${PROJECT_NAME,,} | sed 's|:|/|g')
+          export TEST_OS_VER=${{ env.OS_VERSION_PRETTY }}
+          export TEST_OS_VER=$(echo ${TEST_OS_VER/SP/15.})
+
           echo "build_res<<EOF" >> $GITHUB_ENV
           poetry run scratch-build-bot query_build_result >> $GITHUB_ENV
+
+          echo >> $GITHUB_ENV
+          echo >> $GITHUB_ENV
+          echo "To run [BCI-tests](https://github.com/SUSE/BCI-tests) against this PR, use the following command:" >> $GITHUB_ENV
+          echo "\`\`\`bash" >> $GITHUB_ENV
+          echo "OS_VERSION=${TEST_OS_VER,,} TARGET=custom BASEURL=registry.opensuse.org/${REGISTRY_PREFIX}/ tox -- -n auto" >> $GITHUB_ENV
+          echo "\`\`\`" >> $GITHUB_ENV
+
+          echo >> $GITHUB_ENV
+          echo >> $GITHUB_ENV
+          echo "<details><summary>The following images can be pulled from the staging project:</summary>" >> $GITHUB_ENV
+          # newline to make markdown happy
+          echo >> $GITHUB_ENV
+          for img in $(crane catalog registry.opensuse.org | grep "^${REGISTRY_PREFIX}"); do echo "- \`registry.opensuse.org/${img}\`" >> $GITHUB_ENV; done
+          echo "</details>" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
         id: query_build_result
         env:
