@@ -46,8 +46,7 @@ directory:
 $ spack containerize > apptainer.def
 $ apptainer build apptainer.sif apptainer.def
 ```
-This will build `apptainer.sif` as the final Singularity/Apptainer image
-which you may run:
+This builds `apptainer.sif` as the final Singularity/Apptainer image that can then be run as follows:
 ```ShellSession
 $ apptainer exec ./apptainer.sif <command line ...>
 ```
