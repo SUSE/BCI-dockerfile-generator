@@ -55,7 +55,7 @@ To build a docker/OCI container, run the following:
 $ spack containerize > Containerfile
 $ podman build -t <target_name> --format=docker .
 ```
-This builds a Docker container which you can run with:
+This builds a Docker container that you can run as follows:
 ```
 $ podman run -it --rm <target_name> <command line ...>
 ```
