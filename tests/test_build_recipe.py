@@ -25,7 +25,7 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildTag: bci/test:28-%RELEASE%
 #!BuildName: bci-test-28
 #!BuildVersion: 15.4.28
-FROM suse/sle15:15.4
+FROM suse/ltss/sle15.4/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -65,7 +65,7 @@ RUN emacs -Q --batch test.el
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.4">
+    <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
       <containerconfig
           name="bci/test"
           tag="28"
@@ -224,7 +224,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 #!BuildTag: bci/test:28-%RELEASE%
 #!BuildName: bci-test-28
 #!BuildVersion: 15.4.28
-FROM suse/sle15:15.4
+FROM suse/ltss/sle15.4/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -261,7 +261,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.4">
+    <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
       <containerconfig
           name="bci/test"
           tag="28"
