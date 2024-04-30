@@ -5,7 +5,7 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import _SUPPORTED_UNTIL_SLE
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
 
@@ -46,14 +46,14 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_node_kwargs(18, OsVersion.SP5), support_level=SupportLevel.L3
     ),
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_node_kwargs(20, OsVersion.SP5), support_level=SupportLevel.L3
     ),
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
     ),
-    LanguageStackContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
 ]

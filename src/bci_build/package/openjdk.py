@@ -7,7 +7,7 @@ from typing import Literal
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import Arch
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
@@ -63,7 +63,7 @@ def _get_openjdk_kwargs(
 
 OPENJDK_CONTAINERS = (
     [
-        LanguageStackContainer(
+        DevelopmentContainer(
             **_get_openjdk_kwargs(os_version, devel, java_version=11),
             support_level=SupportLevel.L3,
         )
@@ -73,7 +73,7 @@ OPENJDK_CONTAINERS = (
         )
     ]
     + [
-        LanguageStackContainer(
+        DevelopmentContainer(
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
             support_level=SupportLevel.L3,
         )
@@ -82,7 +82,7 @@ OPENJDK_CONTAINERS = (
         )
     ]
     + [
-        LanguageStackContainer(
+        DevelopmentContainer(
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=21),
             support_level=SupportLevel.L3,
         )

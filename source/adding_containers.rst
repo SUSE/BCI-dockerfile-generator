@@ -4,7 +4,7 @@ Adding and Modifying Container Images
 =====================================
 
 All container images are defined in the :py:mod:`bci_build.package` package as
-instances of the :py:class:`~bci_build.package.LanguageStackContainer`,
+instances of the :py:class:`~bci_build.package.DevelopmentContainer`,
 :py:class:`~bci_build.package.ApplicationStackContainer` or
 :py:class:`~bci_build.package.OsContainer` classes.
 
@@ -119,7 +119,7 @@ Our PostgreSQL example would result in the following code:
 Note that this process is **not** limited to environment variable, it can be
 used to replace **anything** inside the container build description. This can be
 seen in the above code block, where we also set the
-:py:attr:`~bci_build.package.LanguageStackContainer.additional_versions`
+:py:attr:`~bci_build.package.DevelopmentContainer.additional_versions`
 attribute via this mechanism.
 
 

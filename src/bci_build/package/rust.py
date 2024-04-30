@@ -5,7 +5,7 @@ from itertools import product
 
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -33,7 +33,7 @@ assert (
 ), "Only two versions of rust must be supported at the same time"
 
 RUST_CONTAINERS = [
-    LanguageStackContainer(
+    DevelopmentContainer(
         name="rust",
         stability_tag=(
             stability_tag := (

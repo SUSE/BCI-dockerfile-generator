@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 
 from bci_build.package import Arch
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -101,7 +101,7 @@ RUN emacs -Q --batch test.el
   </packages>
 
 </image>""",
-            LanguageStackContainer(
+            DevelopmentContainer(
                 name="test",
                 pretty_name="Test",
                 supported_until=date(2024, 2, 1),
@@ -201,7 +201,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
   </packages>
 
 </image>""",
-            LanguageStackContainer(
+            DevelopmentContainer(
                 name="test",
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
@@ -296,7 +296,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
   </packages>
 
 </image>""",
-            LanguageStackContainer(
+            DevelopmentContainer(
                 name="test",
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
@@ -423,7 +423,7 @@ VOLUME /bin/ /usr/bin/""",
   </packages>
 
 </image>""".replace("__CURRENT_YEAR__", str(date.today().year)),
-            LanguageStackContainer(
+            DevelopmentContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",
                 pretty_name="Test",
@@ -452,7 +452,7 @@ VOLUME /bin/ /usr/bin/""",
     ],
 )
 def test_build_recipe_templates(
-    dockerfile: str, kiwi_xml: str, image: LanguageStackContainer
+    dockerfile: str, kiwi_xml: str, image: DevelopmentContainer
 ) -> None:
     assert (
         DOCKERFILE_TEMPLATE.render(

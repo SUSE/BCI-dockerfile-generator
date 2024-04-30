@@ -1,5 +1,5 @@
 from bci_build.package import BuildType
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.templates import SERVICE_TEMPLATE
@@ -17,9 +17,7 @@ _BASE_KWARGS = {
 def test_service_without_replacement_kiwi():
     assert (
         SERVICE_TEMPLATE.render(
-            image=LanguageStackContainer(
-                **_BASE_KWARGS, build_recipe_type=BuildType.KIWI
-            )
+            image=DevelopmentContainer(**_BASE_KWARGS, build_recipe_type=BuildType.KIWI)
         )
         == """<services>
   <service mode="buildtime" name="kiwi_label_helper"/>
@@ -31,7 +29,7 @@ def test_service_without_replacement_kiwi():
 def test_service_with_replacement_kiwi():
     assert (
         SERVICE_TEMPLATE.render(
-            image=LanguageStackContainer(
+            image=DevelopmentContainer(
                 **_BASE_KWARGS,
                 build_recipe_type=BuildType.KIWI,
                 replacements_via_service=[
@@ -56,7 +54,7 @@ def test_service_with_replacement_kiwi():
 def test_service_with_replacement_docker():
     assert (
         SERVICE_TEMPLATE.render(
-            image=LanguageStackContainer(
+            image=DevelopmentContainer(
                 **_BASE_KWARGS,
                 build_recipe_type=BuildType.DOCKER,
                 replacements_via_service=[

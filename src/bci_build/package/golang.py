@@ -7,7 +7,7 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
@@ -82,7 +82,7 @@ def _get_golang_kwargs(
 
 GOLANG_CONTAINERS = (
     [
-        LanguageStackContainer(
+        DevelopmentContainer(
             **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
@@ -91,7 +91,7 @@ GOLANG_CONTAINERS = (
         )
     ]
     + [
-        LanguageStackContainer(
+        DevelopmentContainer(
             **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
@@ -100,7 +100,7 @@ GOLANG_CONTAINERS = (
         )
     ]
     + [
-        LanguageStackContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))
+        DevelopmentContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))
         for ver in set(_GOLANG_VERSIONS + _GOLANG_TW_VERSIONS)
     ]
 )

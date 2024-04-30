@@ -11,11 +11,11 @@ from _pytest.python import Metafunc
 
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BaseContainerImage
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 
-BCI_CLASSES = [OsContainer, LanguageStackContainer, ApplicationStackContainer]
+BCI_CLASSES = [OsContainer, DevelopmentContainer, ApplicationStackContainer]
 
 
 class BciKwargsBase(TypedDict):
@@ -46,7 +46,7 @@ BCI_FIXTURE_RET_T = Tuple[Type[BaseContainerImage], Union[BciKwargs, BciKwargsBa
 def bci(request: SubRequest) -> Generator[BCI_FIXTURE_RET_T, None, None]:
     p = request.param if request.param in BCI_CLASSES else request.param[0]
 
-    if p in (LanguageStackContainer, ApplicationStackContainer):
+    if p in (DevelopmentContainer, ApplicationStackContainer):
         kwargs: BciKwargs = {**KWARGS, "version": "1.0"}
         yield p, kwargs
     else:

@@ -3,7 +3,7 @@ from itertools import product
 
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
@@ -44,7 +44,7 @@ echo "This script is not required in this PHP container."
 
 def _create_php_bci(
     os_version: OsVersion, php_variant: PhpVariant, php_version: int
-) -> LanguageStackContainer:
+) -> DevelopmentContainer:
     common_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-*
 """
@@ -126,7 +126,7 @@ EXPOSE 9000
         cmd = ["php", "-a"]
         custom_end = common_end
 
-    return LanguageStackContainer(
+    return DevelopmentContainer(
         name=str(php_variant).lower(),
         no_recommends=False,
         version=php_version,
