@@ -59,7 +59,7 @@ This builds a Docker container that you can run as follows:
 ```
 $ podman run -it --rm <target_name> <command line ...>
 ```
-If you do not have a local installation of Spack, you may use this container
+If you do not have a local installation of Spack, you can use this container
 to run Spack commands - like `spack containerize`:
 ```ShellSession
 $ podman run -v $(pwd):/root:Z --rm {{ image.reference }} containerize > Containerfile
