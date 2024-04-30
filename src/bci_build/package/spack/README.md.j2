@@ -50,7 +50,7 @@ This builds `apptainer.sif` as the final Singularity/Apptainer image that can th
 ```ShellSession
 $ apptainer exec ./apptainer.sif <command line ...>
 ```
-To build a docker/OCI container, run the following:
+To build a docker/OCI container, run the following commands:
 ```ShellSession
 $ spack containerize > Containerfile
 $ podman build -t <target_name> --format=docker .
