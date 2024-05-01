@@ -191,6 +191,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: spack-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: tomcat-10-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -355,6 +359,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: sle15-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: spack-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: tomcat-10-image
