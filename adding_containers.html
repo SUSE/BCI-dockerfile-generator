@@ -35,7 +35,7 @@
   <section id="adding-and-modifying-container-images">
 <span id="id1"></span><h1>Adding and Modifying Container Images<a class="headerlink" href="#adding-and-modifying-container-images" title="Link to this heading">¶</a></h1>
 <p>All container images are defined in the <a class="reference internal" href="api.html#module-bci_build.package" title="bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package</span></code></a> package as
-instances of the <a class="reference internal" href="api.html#bci_build.package.LanguageStackContainer" title="bci_build.package.LanguageStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LanguageStackContainer</span></code></a>,
+instances of the <a class="reference internal" href="api.html#bci_build.package.DevelopmentContainer" title="bci_build.package.DevelopmentContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DevelopmentContainer</span></code></a>,
 <a class="reference internal" href="api.html#bci_build.package.ApplicationStackContainer" title="bci_build.package.ApplicationStackContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationStackContainer</span></code></a> or
 <a class="reference internal" href="api.html#bci_build.package.OsContainer" title="bci_build.package.OsContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">OsContainer</span></code></a> classes.</p>
 <p>The different classes result in slightly different images, mostly with respect
@@ -132,7 +132,7 @@ service to only extract the version up to a certain point via the attribute
 <p>Note that this process is <strong>not</strong> limited to environment variable, it can be
 used to replace <strong>anything</strong> inside the container build description. This can be
 seen in the above code block, where we also set the
-<a class="reference internal" href="api.html#bci_build.package.LanguageStackContainer.additional_versions" title="bci_build.package.LanguageStackContainer.additional_versions"><code class="xref py py-attr docutils literal notranslate"><span class="pre">additional_versions</span></code></a>
+<a class="reference internal" href="api.html#bci_build.package.DevelopmentContainer.additional_versions" title="bci_build.package.DevelopmentContainer.additional_versions"><code class="xref py py-attr docutils literal notranslate"><span class="pre">additional_versions</span></code></a>
 attribute via this mechanism.</p>
 </section>
 <section id="installing-packages-into-the-container-image">
