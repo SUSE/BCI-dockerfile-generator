@@ -4,7 +4,7 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 
@@ -34,7 +34,7 @@ def _is_main_gcc(os_version: OsVersion, gcc_version: Literal[7, 12, 13, 14]) -> 
 
 
 GCC_CONTAINERS = [
-    LanguageStackContainer(
+    DevelopmentContainer(
         name="gcc",
         package_name=f"gcc-{gcc_version}-image",
         os_version=os_version,

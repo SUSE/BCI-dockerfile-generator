@@ -12,7 +12,7 @@ from jinja2 import Template
 
 from bci_build.logger import LOGGER
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import generate_disk_size_constraints
 from staging.build_result import Arch
@@ -144,7 +144,7 @@ _DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64]
 
 
 @dataclass
-class DotNetBCI(LanguageStackContainer):
+class DotNetBCI(DevelopmentContainer):
     #: Specifies whether this package contains the full .Net SDK
     is_sdk: bool = False
 

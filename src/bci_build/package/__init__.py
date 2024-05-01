@@ -302,7 +302,7 @@ class ImageProperties:
     #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
     label_prefix: str
 
-    #: The prefix of the build tag for LanguageStackContainer and OsContainer Images.
+    #: The prefix of the build tag for DevelopmentContainer and OsContainer Images.
     #: The build tag is constructed as `$build_tag_prefix/$name`
     build_tag_prefix: str
 
@@ -1224,7 +1224,7 @@ exit 0
 
 
 @dataclass
-class LanguageStackContainer(BaseContainerImage):
+class DevelopmentContainer(BaseContainerImage):
     #: the primary version of the language or application inside this container
     version: Union[str, int] = ""
 
@@ -1345,7 +1345,7 @@ class LanguageStackContainer(BaseContainerImage):
 
 
 @dataclass
-class ApplicationStackContainer(LanguageStackContainer):
+class ApplicationStackContainer(DevelopmentContainer):
     @property
     def _registry_prefix(self) -> str:
         return self._image_properties.application_container_build_tag_prefix

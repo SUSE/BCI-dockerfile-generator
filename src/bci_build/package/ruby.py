@@ -1,9 +1,9 @@
-"""Ruby LanguageStack BCI containers"""
+"""Ruby Development BCI containers"""
 
 from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
@@ -63,13 +63,13 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion)
 
 
 RUBY_CONTAINERS = [
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP5),
         support_level=SupportLevel.L3,
     ),
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP6),
         support_level=SupportLevel.L3,
     ),
-    LanguageStackContainer(**_get_ruby_kwargs("3.3", OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_ruby_kwargs("3.3", OsVersion.TUMBLEWEED)),
 ]

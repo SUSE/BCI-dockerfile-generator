@@ -5,7 +5,7 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import _SUPPORTED_UNTIL_SLE
-from bci_build.package import LanguageStackContainer
+from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
@@ -75,7 +75,7 @@ def _get_python_kwargs(
 
 
 PYTHON_3_6_CONTAINERS = (
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
         support_level=SupportLevel.L3,
@@ -85,7 +85,7 @@ PYTHON_3_6_CONTAINERS = (
 
 _PYTHON_TW_VERSIONS = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
         is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
         package_name=f"python-{pyver}-image",
@@ -94,7 +94,7 @@ PYTHON_TW_CONTAINERS = (
 )
 
 PYTHON_3_11_CONTAINERS = (
-    LanguageStackContainer(
+    DevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
         support_level=SupportLevel.L3,
@@ -105,7 +105,7 @@ PYTHON_3_11_CONTAINERS = (
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
-PYTHON_3_12_CONTAINERS = LanguageStackContainer(
+PYTHON_3_12_CONTAINERS = DevelopmentContainer(
     **_get_python_kwargs("3.12", OsVersion.SP6),
     package_name="python-3.12-image",
     support_level=SupportLevel.L3,
