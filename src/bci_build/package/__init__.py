@@ -241,11 +241,14 @@ class Replacement:
 
     """
 
-    #: regex to be replaced in :file:`Dockerfile` or :file:`$pkg_name.kiwi`
+    #: regex to be replaced in :py:attr:`~bci_build.package.Replacement.file_name`, :file:`Dockerfile` or :file:`$pkg_name.kiwi`
     regex_in_build_description: str
 
     #: package name to be queried for the version
     package_name: str
+
+    #: override file name, if unset use :file:`Dockerfile` or :file:`$pkg_name.kiwi`
+    file_name: Optional[str] = None
 
     #: specify how the version should be formated, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
@@ -1449,6 +1452,7 @@ from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
 from .python import PYTHON_TW_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
+from .spack import SPACK_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
@@ -1488,6 +1492,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         GITEA_RUNNER_CONTAINER,
         *TOMCAT_CONTAINERS,
         *GCC_CONTAINERS,
+        *SPACK_CONTAINERS,
     )
 }
 

@@ -35,7 +35,12 @@ def test_service_with_replacement_kiwi():
                 replacements_via_service=[
                     Replacement(
                         regex_in_build_description="re", package_name="coreutils"
-                    )
+                    ),
+                    Replacement(
+                        regex_in_build_description="re",
+                        package_name="coreutils",
+                        file_name="replacementfile",
+                    ),
                 ],
             )
         )
@@ -44,6 +49,11 @@ def test_service_with_replacement_kiwi():
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">test-image.kiwi</param>
+    <param name="regex">re</param>
+    <param name="package">coreutils</param>
+  </service>
+  <service name="replace_using_package_version" mode="buildtime">
+    <param name="file">replacementfile</param>
     <param name="regex">re</param>
     <param name="package">coreutils</param>
   </service>
@@ -66,6 +76,12 @@ def test_service_with_replacement_docker():
                         package_name="filesystem",
                         parse_version="minor",
                     ),
+                    Replacement(
+                        regex_in_build_description="%%minor_ver%%",
+                        file_name="replacementfile",
+                        package_name="filesystem",
+                        parse_version="minor",
+                    ),
                 ],
             )
         )
@@ -79,6 +95,12 @@ def test_service_with_replacement_docker():
   </service>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">Dockerfile</param>
+    <param name="regex">%%minor_ver%%</param>
+    <param name="package">filesystem</param>
+    <param name="parse-version">minor</param>
+  </service>
+  <service name="replace_using_package_version" mode="buildtime">
+    <param name="file">replacementfile</param>
     <param name="regex">%%minor_ver%%</param>
     <param name="package">filesystem</param>
     <param name="parse-version">minor</param>

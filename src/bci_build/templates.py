@@ -149,7 +149,7 @@ SERVICE_TEMPLATE = jinja2.Template(
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
 {%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
-    <param name="file">{% if (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>
+    <param name="file">{% if replacement.file_name != None %}{{replacement.file_name}}{% elif (image.build_recipe_type|string) == "docker" %}Dockerfile{% else %}{{ image.package_name }}.kiwi{% endif %}</param>
     <param name="regex">{{ replacement.regex_in_build_description }}</param>
     <param name="package">{{ replacement.package_name }}</param>{% if replacement.parse_version %}
     <param name="parse-version">{{ replacement.parse_version }}</param>{% endif %}
