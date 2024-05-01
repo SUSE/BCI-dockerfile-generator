@@ -183,6 +183,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: spack-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: tomcat-10-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -345,6 +349,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: rust-stable-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: spack-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: tomcat-10-image
