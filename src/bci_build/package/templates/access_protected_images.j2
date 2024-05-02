@@ -1,0 +1,37 @@
+## Accessing the Container Image
+
+This Container Image requires an subscription from SUSE to access. In order
+to access the container image, you must login to the SUSE Registry with your credentials. There are three ways to do that.
+
+#### Use the system registration of your host system
+
+If the host system you are using to build or run a container is already registered with the correct subscription required for accessing the LTSS container images, you can use the registration information from the host to log in to the registry.
+
+The file `/etc/zypp/credentials.d/SCCcredentials` contains a username and a password. These credentials allow you to access any container that is available under the subscription of the respective host system. You can use these credentials to log in to SUSE Registry using the following commands (use the leading space before the echo command to avoid storing the credentials in the shell history):
+
+```ShellSession
+set +o history
+  echo PASSWORD | podman login -u USERNAME --password-stdin registry.suse.com
+  set -o history
+```
+
+#### Use a separate SUSE Customer Center registration code
+If the host system is not registered with SUSE Customer Center, you can use a valid SUSE Customer Center registration code to log in to the registry:
+
+```ShellSession
+set +o history
+  echo SCC_REGISTRATION_CODE | podman login -u "regcode" --password-stdin registry.suse.com
+set -o history
+```
+The user parameter in this case is the verbatim string regcode, and `SCC_REGISTRATION_CODE` is the actual registration code obtained from SUSE.
+
+#### Use the organization mirroring credentials
+You can also use the organization mirroring credentials to log in to the SUSE Registry:
+
+```ShellSession
+set +o history
+ echo SCC_MIRRORING_PASSWORD | podman login -u "SCC_MIRRORING_USER" --password-stdin registry.suse.com
+set -o history
+```
+
+These credentials give you access to all subscriptions the organization owns, including those related to container images in the SUSE Registry. The credentials are highly privileged and should be preferably used for a private mirroring registry only.
