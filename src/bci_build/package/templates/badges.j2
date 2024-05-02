@@ -1,0 +1,6 @@
+{% if image.eula == 'sle-bci' -%}
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+{%- endif %}
+{% if image.support_level | string != 'l3' -%}
+![Support Level](https://img.shields.io/badge/Support_Level-{{ image.support_level }}-blue)
+{%- endif %}

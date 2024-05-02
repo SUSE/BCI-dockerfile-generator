@@ -1047,20 +1047,24 @@ exit 0
                 return self.extra_files["README.md"].decode("utf-8")
             return str(self.extra_files["README.md"])
 
+        # default template if no custom README.md.j2 template is provided in the package folder
+        readme_template = textwrap.dedent(f"""
+            # The {self.title} Container image
+            {{% include 'badges.j2' %}}
+
+            {self.description}
+
+            {{% include 'licensing_and_eula.j2' %}}
+            """)
         readme_template_fname = Path(__file__).parent / self.name / "README.md.j2"
         if readme_template_fname.exists():
-            jinja2_env = jinja2.Environment(
-                loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
-                autoescape=jinja2.select_autoescape(["md"]),
-            )
-            return jinja2_env.from_string(readme_template_fname.read_text()).render(
-                image=self
-            )
+            readme_template = readme_template_fname.read_text()
 
-        return f"""# The {self.title} Container image
-
-{self.description}
-"""
+        jinja2_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
+            autoescape=jinja2.select_autoescape(["md"]),
+        )
+        return jinja2_env.from_string(readme_template).render(image=self)
 
     @property
     def extra_label_lines(self) -> str:
@@ -1380,6 +1384,12 @@ class ApplicationStackContainer(DevelopmentContainer):
     @property
     def title(self) -> str:
         return f"{self._image_properties.distribution_base_name} {self.pretty_name}"
+
+    @property
+    def eula(self) -> str:
+        if self.is_opensuse:
+            return "sle-bci"
+        return "sle-eula"
 
 
 @dataclass
