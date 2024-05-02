@@ -26,7 +26,6 @@ for filename in (
     "10-host_mount.conf.template",
     "pmcd",
     "pmlogger",
-    "README.md",
     "healthcheck",
 ):
     _PCP_FILES[filename] = (Path(__file__).parent / "pcp" / filename).read_bytes()
