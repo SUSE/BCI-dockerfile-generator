@@ -683,7 +683,11 @@ TOMCAT_CONTAINERS = [
                 else f"tomcat{tomcat_major}"
             )
         ]
-        + (["java-21-openjdk-headless"] if os_version == OsVersion.SP6 else []),
+        + (
+            ["java-21-openjdk", "java-21-openjdk-headless"]
+            if os_version == OsVersion.SP6
+            else []
+        ),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%tomcat_version%%", package_name=tomcat_pkg
