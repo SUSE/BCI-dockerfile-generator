@@ -15,6 +15,7 @@ from typing import Dict
 from typing import List
 from typing import Literal
 from typing import Optional
+from typing import Set
 from typing import Union
 from typing import overload
 
@@ -27,15 +28,15 @@ from bci_build.templates import KIWI_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
 
-_BASH_SET = "set -euo pipefail"
+_BASH_SET: str = "set -euo pipefail"
 
 #: a ``RUN`` command with a common set of bash flags applied to prevent errors
 #: from not being noticed
-DOCKERFILE_RUN = f"RUN {_BASH_SET};"
+DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 
 #: Remove various log files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
-LOG_CLEAN = "rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}"
+LOG_CLEAN: str = "rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}"
 
 
 @enum.unique
@@ -182,17 +183,22 @@ class OsVersion(enum.Enum):
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
-RELEASED_OS_VERSIONS = [OsVersion.SP3] + [
+RELEASED_OS_VERSIONS: List[OsVersion] = [
+    OsVersion.SP3,
     OsVersion.SP4,
     OsVersion.SP5,
     OsVersion.TUMBLEWEED,
 ]
 
 # For which versions to create Application and Language Containers?
-ALL_NONBASE_OS_VERSIONS = [OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED]
+ALL_NONBASE_OS_VERSIONS: List[OsVersion] = [
+    OsVersion.SP5,
+    OsVersion.SP6,
+    OsVersion.TUMBLEWEED,
+]
 
 # For which versions to create Base Container Images?
-ALL_BASE_OS_VERSIONS = [
+ALL_BASE_OS_VERSIONS: List[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
@@ -200,16 +206,22 @@ ALL_BASE_OS_VERSIONS = [
 ]
 
 # List of SPs that are already under LTSS
-ALL_OS_LTSS_VERSIONS = [OsVersion.SP3, OsVersion.SP4]
+ALL_OS_LTSS_VERSIONS: List[OsVersion] = [OsVersion.SP3, OsVersion.SP4]
 
 # joint set of BASE and NON_BASE versions
-ALL_OS_VERSIONS = {v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)}
+ALL_OS_VERSIONS: Set[OsVersion] = {
+    v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)
+}
 
-CAN_BE_LATEST_OS_VERSION = [OsVersion.SP5, OsVersion.TUMBLEWEED, OsVersion.BASALT]
+CAN_BE_LATEST_OS_VERSION: List[OsVersion] = [
+    OsVersion.SP5,
+    OsVersion.TUMBLEWEED,
+    OsVersion.BASALT,
+]
 
 
 # End of General Support Dates
-_SUPPORTED_UNTIL_SLE = {
+_SUPPORTED_UNTIL_SLE: Dict[OsVersion, datetime.date | None] = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
     OsVersion.SP5: None,  # datetime.date(2024, 12, 31),
     OsVersion.SP6: None,

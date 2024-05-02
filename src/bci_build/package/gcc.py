@@ -8,8 +8,10 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 
+_GCC_VERSIONS = Literal[7, 12, 13, 14]
 
-def _is_latest_gcc(os_version: OsVersion, gcc_version: Literal[7, 12, 13, 14]) -> bool:
+
+def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED and gcc_version == 14:
         return True
     # FIXME: os_version.is_sles
@@ -21,7 +23,7 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: Literal[7, 12, 13, 14]) -
     return False
 
 
-def _is_main_gcc(os_version: OsVersion, gcc_version: Literal[7, 12, 13, 14]) -> bool:
+def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED and gcc_version == 13:
         return True
     # FIXME: os_version.is_sles
