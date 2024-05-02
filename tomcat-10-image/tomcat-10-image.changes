@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  2 15:34:40 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Explicitly require java-21-openjdk to prevent an older jdk from being installed
+
+-------------------------------------------------------------------
 Fri Apr 12 16:32:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - build with java 21
