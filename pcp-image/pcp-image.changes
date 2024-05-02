@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  2 06:58:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add licensing footer to the README
+
+-------------------------------------------------------------------
 Fri Apr 12 12:04:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Don't wipe everything in /var/log, only remove log files (this omits directories owned by packages)
