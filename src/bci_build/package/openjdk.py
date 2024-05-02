@@ -15,7 +15,9 @@ from bci_build.package import generate_disk_size_constraints
 
 
 def _get_openjdk_kwargs(
-    os_version: OsVersion, devel: bool, java_version: Literal[11, 13, 15, 17, 20, 21]
+    os_version: OsVersion,
+    devel: bool,
+    java_version: Literal[11, 13, 15, 17, 20, 21, 22],
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -89,5 +91,12 @@ OPENJDK_CONTAINERS = (
         for os_version, devel in product(
             (OsVersion.SP6, OsVersion.TUMBLEWEED), (True, False)
         )
+    ]
+    + [
+        DevelopmentContainer(
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=22),
+            support_level=SupportLevel.L3,
+        )
+        for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
     ]
 )
