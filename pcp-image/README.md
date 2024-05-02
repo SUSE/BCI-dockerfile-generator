@@ -91,3 +91,14 @@ The pmproxy daemon listens on this port and exposes the REST [PMWEBAPI(3)](https
 ## Documentation
 
 [PCP books](https://pcp.readthedocs.io)
+
+## Licensing
+`SPDX-License-Identifier: (LGPL-2.1+ AND GPL-2.0+)`
+
+The build recipe and this documentation is licensed as (LGPL-2.1+ AND GPL-2.0+).
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+This image is a tech preview. Do not use it for production.
+Your feedback is welcome.
+Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
