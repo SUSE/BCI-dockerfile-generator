@@ -114,7 +114,7 @@ jobs:
         if: env.no_change != 'true'
 
       - name: Install crane to list images on the registry
-        uses: imjasonh/setup-crane@v0.1
+        uses: imjasonh/setup-crane@v0.3
         if: env.no_change != 'true'
 
       - name: retrieve the build result
