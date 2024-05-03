@@ -1,9 +1,7 @@
-from typing import Union
-
 import aiofiles
 
 
-async def write_to_file(fname: str, contents: Union[str, bytes]) -> None:
+async def write_to_file(fname: str, contents: str | bytes) -> None:
     if isinstance(contents, str):
         async with aiofiles.open(fname, "w") as f:
             await f.write(contents)

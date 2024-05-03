@@ -7,16 +7,11 @@ import datetime
 import enum
 import os
 import textwrap
+from collections.abc import Callable
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
-from typing import Callable
-from typing import Dict
-from typing import List
 from typing import Literal
-from typing import Optional
-from typing import Set
-from typing import Union
 from typing import overload
 
 import jinja2
@@ -175,7 +170,7 @@ class OsVersion(enum.Enum):
         )
 
     @property
-    def lifecycle_data_pkg(self) -> List[str]:
+    def lifecycle_data_pkg(self) -> list[str]:
         if self.value not in (OsVersion.BASALT.value, OsVersion.TUMBLEWEED.value):
             return ["lifecycle-data-sle-module-development-tools"]
         return []
@@ -183,7 +178,7 @@ class OsVersion(enum.Enum):
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
-RELEASED_OS_VERSIONS: List[OsVersion] = [
+RELEASED_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP3,
     OsVersion.SP4,
     OsVersion.SP5,
@@ -191,14 +186,14 @@ RELEASED_OS_VERSIONS: List[OsVersion] = [
 ]
 
 # For which versions to create Application and Language Containers?
-ALL_NONBASE_OS_VERSIONS: List[OsVersion] = [
+ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
 ]
 
 # For which versions to create Base Container Images?
-ALL_BASE_OS_VERSIONS: List[OsVersion] = [
+ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
@@ -206,14 +201,14 @@ ALL_BASE_OS_VERSIONS: List[OsVersion] = [
 ]
 
 # List of SPs that are already under LTSS
-ALL_OS_LTSS_VERSIONS: List[OsVersion] = [OsVersion.SP3, OsVersion.SP4]
+ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP3, OsVersion.SP4]
 
 # joint set of BASE and NON_BASE versions
-ALL_OS_VERSIONS: Set[OsVersion] = {
+ALL_OS_VERSIONS: set[OsVersion] = {
     v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)
 }
 
-CAN_BE_LATEST_OS_VERSION: List[OsVersion] = [
+CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.TUMBLEWEED,
     OsVersion.BASALT,
@@ -221,7 +216,7 @@ CAN_BE_LATEST_OS_VERSION: List[OsVersion] = [
 
 
 # End of General Support Dates
-_SUPPORTED_UNTIL_SLE: Dict[OsVersion, datetime.date | None] = {
+_SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
     OsVersion.SP5: None,  # datetime.date(2024, 12, 31),
     OsVersion.SP6: None,
@@ -260,14 +255,14 @@ class Replacement:
     package_name: str
 
     #: override file name, if unset use :file:`Dockerfile` or :file:`$pkg_name.kiwi`
-    file_name: Optional[str] = None
+    file_name: str | None = None
 
     #: specify how the version should be formated, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
     #: for further details
-    parse_version: Optional[
-        Literal["major", "minor", "patch", "patch_update", "offset"]
-    ] = None
+    parse_version: (
+        None | (Literal["major", "minor", "patch", "patch_update", "offset"])
+    ) = None
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
@@ -325,7 +320,7 @@ class ImageProperties:
     application_container_build_tag_prefix: str
 
     #:
-    based_on_container_description: Optional[str] = None
+    based_on_container_description: str | None = None
 
 
 #: Image properties for openSUSE Tumbleweed
@@ -404,7 +399,7 @@ class BaseContainerImage(abc.ABC):
     os_version: OsVersion
 
     #: Epoch to use for handling os_version downgrades
-    os_epoch: Optional[int] = None
+    os_epoch: int | None = None
 
     #: The container from which this one is derived. defaults to
     #: ``suse/sle15:15.$SP`` (for SLE) or ``opensuse/tumbleweed:latest`` (for
@@ -412,7 +407,7 @@ class BaseContainerImage(abc.ABC):
     #:
     #: When from image is ``None``, then this image will not be based on
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
-    from_image: Optional[str] = ""
+    from_image: str | None = ""
 
     #: Architectures of this image.
     #:
@@ -429,22 +424,22 @@ class BaseContainerImage(abc.ABC):
     #: :command:`sh -c "MY_CMD"`.
     #: If your entrypoint must not be called through a shell, then pass the
     #: binary and its parameters as a list
-    entrypoint: Optional[List[str]] = None
+    entrypoint: list[str] | None = None
 
     # The user to use for entrypoint service
-    entrypoint_user: Optional[str] = ""
+    entrypoint_user: str | None = ""
 
     #: An optional CMD for the image, it is omitted if empty or ``None``
-    cmd: Optional[List[str]] = None
+    cmd: list[str] | None = None
 
     #: An optional list of volumes, it is omitted if empty or ``None``
-    volumes: Optional[List[str]] = None
+    volumes: list[str] | None = None
 
     #: An optional list of tcp port exposes, it is omitted if empty or ``None``
-    exposes_tcp: Optional[List[int]] = None
+    exposes_tcp: list[int] | None = None
 
     #: Extra environment variables to be set in the container
-    env: Union[Dict[str, Union[str, int]], Dict[str, str], Dict[str, int]] = field(
+    env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
         default_factory=dict
     )
 
@@ -452,14 +447,14 @@ class BaseContainerImage(abc.ABC):
     #: <https://github.com/openSUSE/obs-service-replace_using_package_version>`_
     #: that are used in this image into this list.
     #: See also :py:class:`~Replacement`
-    replacements_via_service: List[Replacement] = field(default_factory=list)
+    replacements_via_service: list[Replacement] = field(default_factory=list)
 
     #: Additional labels that should be added to the image. These are added into
     #: the ``PREFIXEDLABEL`` section.
-    extra_labels: Dict[str, str] = field(default_factory=dict)
+    extra_labels: dict[str, str] = field(default_factory=dict)
 
     #: Packages to be installed inside the container image
-    package_list: Union[List[str], List[Package]] = field(default_factory=list)
+    package_list: list[str] | list[Package] = field(default_factory=list)
 
     #: This string is appended to the automatically generated dockerfile and can
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
@@ -487,19 +482,19 @@ class BaseContainerImage(abc.ABC):
     config_sh_interpreter: str = "/bin/bash"
 
     #: The maintainer of this image, defaults to SUSE/openSUSE
-    maintainer: Optional[str] = None
+    maintainer: str | None = None
 
     #: Additional files that belong into this container-package.
     #: The key is the filename, the values are the file contents.
-    extra_files: Union[
-        Dict[str, Union[str, bytes]], Dict[str, bytes], Dict[str, str]
-    ] = field(default_factory=dict)
+    extra_files: dict[str, str | bytes] | dict[str, bytes] | dict[str, str] = field(
+        default_factory=dict
+    )
 
     #: Additional names under which this image should be published alongside
     #: :py:attr:`~BaseContainerImage.name`.
     #: These names are only inserted into the
     #: :py:attr:`~BaseContainerImage.build_tags`
-    additional_names: List[str] = field(default_factory=list)
+    additional_names: list[str] = field(default_factory=list)
 
     #: By default the containers get the labelprefix
     #: ``{label_prefix}.bci.{self.name}``. If this value is not an empty string,
@@ -511,7 +506,7 @@ class BaseContainerImage(abc.ABC):
 
     #: Define whether this container image is built using docker or kiwi.
     #: If not set, then the build type will default to docker from SP4 onwards.
-    build_recipe_type: Optional[BuildType] = None
+    build_recipe_type: BuildType | None = None
 
     #: A license string to be placed in a comment at the top of the Dockerfile
     #: or kiwi build description file.
@@ -521,7 +516,7 @@ class BaseContainerImage(abc.ABC):
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
     #: The support level end date
-    supported_until: Optional[datetime.date] = None
+    supported_until: datetime.date | None = None
 
     #: flag whether to not install recommended packages in the call to
     #: :command:`zypper` in :file:`Dockerfile`
@@ -591,13 +586,13 @@ class BaseContainerImage(abc.ABC):
         pass
 
     @property
-    def build_name(self) -> Optional[str]:
+    def build_name(self) -> str | None:
         if self.build_tags:
             return self.build_tags[0].replace("/", ":").replace(":", "-")
         return None
 
     @property
-    def build_version(self) -> Optional[str]:
+    def build_version(self) -> str | None:
         if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             epoch = ""
             if self.os_epoch:
@@ -671,8 +666,8 @@ class BaseContainerImage(abc.ABC):
 
     @staticmethod
     def _cmd_entrypoint_docker(
-        prefix: Literal["CMD", "ENTRYPOINT"], value: Optional[List[str]]
-    ) -> Optional[str]:
+        prefix: Literal["CMD", "ENTRYPOINT"], value: list[str] | None
+    ) -> str | None:
         if not value:
             return None
         if isinstance(value, list):
@@ -680,19 +675,19 @@ class BaseContainerImage(abc.ABC):
         assert False, f"Unexpected type for {prefix}: {type(value)}"
 
     @property
-    def entrypoint_docker(self) -> Optional[str]:
+    def entrypoint_docker(self) -> str | None:
         """The entrypoint line in a :file:`Dockerfile`."""
         return self._cmd_entrypoint_docker("ENTRYPOINT", self.entrypoint)
 
     @property
-    def cmd_docker(self) -> Optional[str]:
+    def cmd_docker(self) -> str | None:
         return self._cmd_entrypoint_docker("CMD", self.cmd)
 
     @staticmethod
     def _cmd_entrypoint_kiwi(
         prefix: Literal["subcommand", "entrypoint"],
-        value: Optional[List[str]],
-    ) -> Optional[str]:
+        value: list[str] | None,
+    ) -> str | None:
         if not value:
             return None
         if len(value) == 1:
@@ -702,20 +697,18 @@ class BaseContainerImage(abc.ABC):
             return (
                 f"""\n        <{prefix} execute=\"{value[0]}\">
 """
-                + "\n".join(
-                    (f'          <argument name="{arg}"/>' for arg in value[1:])
-                )
+                + "\n".join(f'          <argument name="{arg}"/>' for arg in value[1:])
                 + f"""
         </{prefix}>
 """
             )
 
     @property
-    def entrypoint_kiwi(self) -> Optional[str]:
+    def entrypoint_kiwi(self) -> str | None:
         return self._cmd_entrypoint_kiwi("entrypoint", self.entrypoint)
 
     @property
-    def cmd_kiwi(self) -> Optional[str]:
+    def cmd_kiwi(self) -> str | None:
         return self._cmd_entrypoint_kiwi("subcommand", self.cmd)
 
     @property
@@ -758,7 +751,7 @@ exit 0
 """
 
     @property
-    def _from_image(self) -> Optional[str]:
+    def _from_image(self) -> str | None:
         if self.from_image is None:
             return None
         if self.from_image:
@@ -803,7 +796,7 @@ exit 0
         self,
         main_element: Literal["volumes"],
         entry_element: Literal["volume name"],
-        entries: Optional[List[str]],
+        entries: list[str] | None,
     ) -> str: ...
 
     @overload
@@ -811,14 +804,14 @@ exit 0
         self,
         main_element: Literal["expose"],
         entry_element: Literal["port number"],
-        entries: Optional[List[int]],
+        entries: list[int] | None,
     ) -> str: ...
 
     def _kiwi_volumes_expose(
         self,
         main_element: Literal["volumes", "expose"],
         entry_element: Literal["volume name", "port number"],
-        entries: Optional[Union[List[int], List[str]]],
+        entries: list[int] | list[str] | None,
     ) -> str:
         if not entries:
             return ""
@@ -848,20 +841,20 @@ exit 0
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE"],
-        entries: Optional[List[int]],
+        entries: list[int] | None,
     ) -> str: ...
 
     @overload
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["VOLUME"],
-        entries: Optional[List[str]],
+        entries: list[str] | None,
     ) -> str: ...
 
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE", "VOLUME"],
-        entries: Optional[Union[List[int], List[str]]],
+        entries: list[int] | list[str] | None,
     ):
         if not entries:
             return ""
@@ -884,8 +877,8 @@ exit 0
 
         def create_pkg_filter_func(
             pkg_type: PackageType,
-        ) -> Callable[[Union[str, Package]], bool]:
-            def pkg_filter_func(p: Union[str, Package]) -> bool:
+        ) -> Callable[[str | Package], bool]:
+            def pkg_filter_func(p: str | Package) -> bool:
                 if isinstance(p, str):
                     return pkg_type == PackageType.IMAGE
                 return p.pkg_type == pkg_type
@@ -955,7 +948,7 @@ exit 0
 
     @property
     @abc.abstractmethod
-    def build_tags(self) -> List[str]:
+    def build_tags(self) -> list[str]:
         """All build tags that will be added to this image. Note that build tags are
         full paths on the registry and not just a tag.
 
@@ -1126,7 +1119,7 @@ exit 0
         return f"15.{int(self.os_version.value)}.0"
 
     @property
-    def kiwi_additional_tags(self) -> Optional[str]:
+    def kiwi_additional_tags(self) -> str | None:
         """Entry for the ``additionaltags`` attribute in the kiwi build
         description.
 
@@ -1144,7 +1137,7 @@ exit 0
 
         return ",".join(extra_tags) if extra_tags else None
 
-    async def write_files_to_folder(self, dest: str) -> List[str]:
+    async def write_files_to_folder(self, dest: str) -> list[str]:
         """Writes all files required to build this image into the destination folder and
         returns the filenames (not full paths) that were written to the disk.
 
@@ -1152,7 +1145,7 @@ exit 0
         files = ["_service"]
         tasks = []
 
-        async def write_file_to_dest(fname: str, contents: Union[str, bytes]) -> None:
+        async def write_file_to_dest(fname: str, contents: str | bytes) -> None:
             await write_to_file(os.path.join(dest, fname), contents)
 
         if self.build_recipe_type == BuildType.DOCKER:
@@ -1250,13 +1243,13 @@ exit 0
 @dataclass
 class DevelopmentContainer(BaseContainerImage):
     #: the primary version of the language or application inside this container
-    version: Union[str, int] = ""
+    version: str | int = ""
 
     # a rolling stability tag like 'stable' or 'oldstable' that will be added first
-    stability_tag: Optional[str] = None
+    stability_tag: str | None = None
 
     #: versions that to include as tags to this container
-    additional_versions: List[str] = field(default_factory=list)
+    additional_versions: list[str] = field(default_factory=list)
 
     #: flag whether the version is included in the uid
     version_in_uid: bool = True
@@ -1325,7 +1318,7 @@ class DevelopmentContainer(BaseContainerImage):
         return "%RELEASE%"
 
     @property
-    def build_tags(self) -> List[str]:
+    def build_tags(self) -> list[str]:
         tags = []
 
         for name in [self.name] + self.additional_names:
@@ -1349,7 +1342,7 @@ class DevelopmentContainer(BaseContainerImage):
         )
 
     @property
-    def build_version(self) -> Optional[str]:
+    def build_version(self) -> str | None:
         build_ver = super().build_version
         if build_ver:
             # if self.version is a numeric version and not a macro, then
@@ -1407,7 +1400,7 @@ class OsContainer(BaseContainerImage):
         return ImageType.SLE_BCI
 
     @property
-    def build_tags(self) -> List[str]:
+    def build_tags(self) -> list[str]:
         tags = []
         for name in [self.name] + self.additional_names:
             tags += [
@@ -1475,7 +1468,7 @@ from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 
-ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
+ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         BASALT_BASE,

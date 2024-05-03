@@ -2,7 +2,6 @@
 
 from itertools import product
 from pathlib import Path
-from typing import Dict
 
 from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
@@ -83,7 +82,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
 ]
 
 
-_389DS_FILES: Dict[str, str | bytes] = {}
+_389DS_FILES: dict[str, str | bytes] = {}
 _fname = "nsswitch.conf"
 _389DS_FILES[_fname] = (Path(__file__).parent / "389-ds" / _fname).read_bytes()
 
