@@ -13,12 +13,13 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
+from enum import Enum
+from enum import unique
 from functools import reduce
 from io import BytesIO
 from pathlib import Path
 from typing import ClassVar
 from typing import Literal
-from typing import TypedDict
 
 import aiofiles.os
 import aiofiles.tempfile
@@ -106,9 +107,10 @@ async def _fetch_bci_devel_project_config(
             return await response.text()
 
 
-class _ProjectConfigs(TypedDict):
-    meta: ET.Element
-    prjconf: str
+@unique
+class ProjectConfig(Enum):
+    PRJCONF = "prjconf"
+    META = "prj"
 
 
 @dataclass
@@ -197,6 +199,16 @@ class StagingBot:
             return tmp.getvalue()
         except KeyError:
             raise ValueError(f"File {file_name} not found in branch {branch_name}")
+
+    @property
+    def _devel_project_prjconf(self) -> bytes:
+        """Returns the saved prjconf of the corresponding ``devel:BCI:$subname``
+        project from git
+
+        """
+        return self._read_file_from_branch(
+            f"origin/{self.deployment_branch_name}", "_config"
+        )
 
     @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
@@ -571,28 +583,38 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             "osc" if not self._osc_conf_file else f"osc --config={self._osc_conf_file}"
         )
 
-    async def _send_prj_meta(
-        self, target_project_name: str, prj_meta: ET.Element | str
+    async def _send_prj_config(
+        self,
+        target_project_name: str,
+        config: ET.Element | str | bytes,
+        config_type: ProjectConfig = ProjectConfig.META,
     ) -> None:
         """Set the meta of the project on OBS with the name
         ``target_project_name`` to the config ``prj_meta``.
 
         """
+        if isinstance(config, ET.Element) and config_type == ProjectConfig.PRJCONF:
+            raise ValueError("Cannot set the prjconf from a XML Element")
+
         async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
-            if isinstance(prj_meta, str):
-                await tmp_meta.write(prj_meta.encode())
+            if isinstance(config, str):
+                data = config.encode()
+            elif isinstance(config, ET.Element):
+                data = ET.tostring(config)
             else:
-                await tmp_meta.write(ET.tostring(prj_meta))
+                data = config
+
+            await tmp_meta.write(data)
             await tmp_meta.flush()
 
-            async def _send_prj_meta():
+            async def _send_meta():
                 await self._run_cmd(
-                    f"{self._osc} meta prj --file={tmp_meta.name} {target_project_name}"
+                    f"{self._osc} meta {config_type.value} --file={tmp_meta.name} {target_project_name}"
                 )
 
             # obs sometimes dies setting the project meta with SQL errors 🤯
             # so we just try again…
-            await retry_async_run_cmd(_send_prj_meta)
+            await retry_async_run_cmd(_send_meta)
 
     async def write_cr_project_config(self) -> None:
         """Send the configuration of the continuous rebuild project to OBS.
@@ -604,7 +626,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         prj_name, meta = generate_meta(
             self.os_version, ProjectType.CR, self.osc_username
         )
-        await self._send_prj_meta(prj_name, meta)
+        await self._send_prj_config(prj_name, meta, ProjectConfig.META)
 
     async def write_staging_project_configs(self) -> None:
         """Submit the ``prjconf`` and ``meta`` to the test project on OBS.
@@ -621,21 +643,14 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             self.os_version, ProjectType.STAGING, self.osc_username, self.branch_name
         )
 
-        prjconf = self._read_file_from_branch(
-            f"origin/{self.deployment_branch_name}", "_config"
-        )
-
         # First set the project meta! This will create the project if it does not
         # exist already, if we do it asynchronously, then the prjconf might be
         # written before the project exists, which fails
-        await self._send_prj_meta(prj_name, prj_meta)
+        await self._send_prj_config(prj_name, prj_meta, ProjectConfig.META)
 
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_prjconf:
-            await tmp_prjconf.write(prjconf)
-            await tmp_prjconf.flush()
-            await self._run_cmd(
-                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
-            )
+        await self._send_prj_config(
+            prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
+        )
 
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
@@ -1424,6 +1439,23 @@ updates:
             if not changelog_updated
         ]
 
+    async def configure_devel_bci_project(self) -> None:
+        """Adjust to project meta of the devel project on OBS to match the
+        template generated via
+        :py:func:`staging.project_setup.generate_meta`. Additionally set the
+        project meta from the file :file:`_config` in the deployment branch and
+        set the `OSRT:Config` attribute for pkglistgen to function as expected.
+
+        """
+        prj_name, meta = generate_meta(
+            self.os_version, ProjectType.DEVEL, self.osc_username
+        )
+        await self._send_prj_config(prj_name, meta, ProjectConfig.META)
+
+        await self._send_prj_config(
+            prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
+        )
+
     async def configure_devel_bci_package(self, package_name: str) -> None:
         bci = [b for b in self._bcis if b.package_name == package_name]
 
@@ -1489,6 +1521,7 @@ def main() -> None:
         "add_changelog_entry",
         "changelog_check",
         "setup_obs_package",
+        "setup_obs_project",
         "find_missing_packages",
     ]
 
@@ -1664,6 +1697,10 @@ comma-separated list. The package list is taken from the environment variable
     )
 
     subparsers.add_parser(
+        "setup_obs_project", help="Configure the devel project on OBS"
+    )
+
+    subparsers.add_parser(
         "find_missing_packages",
         help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
     )
@@ -1809,6 +1846,9 @@ comma-separated list. The package list is taken from the environment variable
                 await asyncio.gather(*tasks)
 
             coro = _setup_pkg_meta()
+
+        elif action == "setup_obs_project":
+            coro = bot.configure_devel_bci_project()
 
         elif action == "find_missing_packages":
 
