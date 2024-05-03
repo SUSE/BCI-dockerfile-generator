@@ -46,7 +46,16 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
     <arch>aarch64</arch>{% if with_all_arches %}
     <arch>s390x</arch>
     <arch>ppc64le</arch>{% endif %}
-  </repository>{% if with_helmcharts_repo %}
+  </repository>{% if with_product_repo %}
+  <repository name="product">
+    <path project="{{ project_name }}" repository="containerfile"/>
+    <path project="{{ project_name }}" repository="images"/>
+    <path project="{{ project_name }}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>{% if with_all_arches %}
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>{% endif %}
+  </repository>{% endif %}{% if with_helmcharts_repo %}
   <repository name="helmcharts">
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
@@ -168,6 +177,7 @@ def generate_meta(
         maintainers=users,
         with_all_arches=with_all_arches,
         with_helmcharts_repo=with_helmcharts_repo,
+        with_product_repo=os_version.is_slcc,
         repository_paths=repository_paths,
         description=description,
         extra_header=extra_header,
