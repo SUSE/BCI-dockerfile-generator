@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May  3 09:48:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update tomcat readme to have standard footer and correct references
+
+-------------------------------------------------------------------
 Thu May  2 15:34:40 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Explicitly require java-21-openjdk to prevent an older jdk from being installed
