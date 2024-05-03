@@ -1049,7 +1049,7 @@ exit 0
 
         # default template if no custom README.md.j2 template is provided in the package folder
         readme_template = textwrap.dedent(f"""
-            # The {self.title} Container image
+            # The {self.title} Container Image
             {{% include 'badges.j2' %}}
 
             {self.description}
