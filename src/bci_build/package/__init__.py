@@ -181,6 +181,21 @@ class OsVersion(enum.Enum):
         return f"15 SP{self.value}"
 
     @property
+    def full_os_name(self) -> str:
+        if self.is_slcc:
+            assert isinstance(self.value, str)
+            return (
+                "SUSE Linux Container Collection - "
+                + self.value.replace("SLCC-", "").replace("-", " ")
+                + " Stream"
+            )
+        if self.is_sle15:
+            return f"{self.distribution_base_name} {self.pretty_os_version_no_dash}"
+
+        assert self.is_opensuse
+        return self.distribution_base_name
+
+    @property
     def deployment_branch_name(self) -> str:
         if self.is_tumbleweed or self.is_slfo:
             return str(self.value)
