@@ -724,3 +724,32 @@ WORKDIR $CATALINA_HOME
     )
     for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_BASE_OS_VERSIONS)
 ]
+
+APACHE2_CONTAINERS = [
+    ApplicationStackContainer(
+        name="apache2",
+        os_version=os_version,
+        package_name="apache2-image",
+        pretty_name="Apache HTTPD Server",
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%apache2_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%apache2_version%%",
+                package_name="apache2",
+                parse_version="minor",
+            )
+        ],
+        license="Apache-2.0",
+        package_list=["apache2"],
+        entrypoint=["httpd", "-DFOREGROUND"],
+        volumes=["/srv/www/htdocs"],
+        exposes_tcp=[80],
+        custom_end="""
+# https://httpd.apache.org/docs/2.4/stopping.html#gracefulstop
+STOPSIGNAL SIGWINCH
+""",
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+]

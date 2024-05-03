@@ -1,0 +1,99 @@
+# {{ image.pretty_name }} Container Image
+
+The Apache HTTP Server Project is an effort to develop and maintain an open-source HTTP server for modern operating systems including UNIX and Windows. The goal of this project is to provide a secure, efficient and extensible server that provides HTTP services in sync with the current HTTP standards.
+
+## How to use this image
+
+This image only contains Apache httpd. To start a simple HTML server run:
+
+{%- set reference = ( image.reference | replace("-%RELEASE%", "") ) %}
+
+```ShellSession
+$ podman run -it --rm -p 8080:80 -v /path/to/html:/srv/www/htdocs/ {{reference}}
+```
+
+## Configuration
+
+The Apache configarion is stored in the directory `/etc/apache2/`.
+
+Apache filesystem layout:
+
+```
+/etc/apache2/
+  |-- charset.conv  . . . . . . . . . . . .  for mod_auth_ldap
+  |-- conf.d/
+  |   |-- apache2-manual.conf . . . . . . .  conf that comes with apache2-doc
+  |   |-- mod_php4.conf . . . . . . . . . .  (example) conf that comes with apache2-mod_php4
+  |   `-- ... . . . . . . . . . . . . . . .  other configuration added by packages
+  |-- default-server.conf
+  |-- errors.conf
+  |-- httpd.conf  . . . . . . . . . . . . .  top level configuration file
+  |-- listen.conf
+  |-- magic
+  |-- mime.types -> ../mime.types
+  |-- mod_autoindex-defaults.conf
+  |-- mod_info.conf
+  |-- mod_log_config.conf
+  |-- mod_mime-defaults.conf
+  |-- mod_perl-startup.pl
+  |-- mod_status.conf
+  |-- mod_userdir.conf
+  |-- mod_usertrack.conf
+  |-- server-tuning.conf
+  |-- ssl-global.conf
+  |-- protocols.conf
+  |-- ssl.crl/  . . . . . . . . . . . . . .  PEM-encoded X.509 Certificate Revocation Lists (CRL)
+  |-- ssl.crt/  . . . . . . . . . . . . . .  PEM-encoded X.509 Certificates
+  |-- ssl.csr/  . . . . . . . . . . . . . .  PEM-encoded X.509 Certificate Signing Requests
+  |-- ssl.key/  . . . . . . . . . . . . . .  PEM-encoded RSA Private Keys
+  |-- ssl.prm/  . . . . . . . . . . . . . .  public DSA Parameter Files
+  |-- global.conf
+  |-- loadmodule.conf
+  |-- uid.conf
+  `-- vhosts.d/ . . . . . . . . . . . . . .  put your virtual host configuration (*.conf) here
+      |-- vhost-ssl.template
+      `-- vhost.template
+```
+
+Configuration examples are available in the directory `/usr/share/doc/packages/apache2/conf/`.
+
+To customize the configuration of the httpd server, first obtain the default configuration from the container:
+
+```ShellSession
+$ podman run --rm --entrypoint /bin/cat {{reference}} /etc/apache2/httpd.conf > my-httpd.conf
+```
+
+Once you made any changes, mount the customized httpd server configuration:
+
+```ShellSession
+$ podman run -it --rm -p 8080:80 -v /path/to/my-httpd.conf:/etc/apache2/httpd.conf {{reference}}
+```
+
+You can use this method to change any configuration file.
+
+### SSL/HTTPS
+
+If you need to run your web traffic over SSL mount your certificates to the appropriated location.
+For example, `/etc/apache2/ssl.crt/` for the certificate and `/etc/apache2/ssl.key/` for the key.
+
+The SSL configuration file is `/etc/apache2/ssl-global.conf` and `ssl_module` is loaded by default.
+
+## Modules
+
+Many modules are already loaded by default.
+
+Check which modules are currently loaded:
+
+```ShellSession
+$ podman run --rm {{reference}} -M
+```
+
+If you need to make any changes, the module configuration file is `/etc/apache2/loadmodule.conf`.
+
+## Volumes
+
+The DocumentRoot is `/srv/www/htdocs/`.
+
+Mount this volume to the directory containing all your HTML.
+
+{% include 'licensing_and_eula.j2' %}

@@ -1427,6 +1427,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 
 
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
+from .appcontainers import APACHE2_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
 from .appcontainers import GIT_CONTAINERS  # noqa: E402
 from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
@@ -1500,6 +1501,7 @@ ALL_CONTAINER_IMAGE_NAMES: Dict[str, BaseContainerImage] = {
         *KERNEL_MODULE_CONTAINERS,
         GITEA_RUNNER_CONTAINER,
         *TOMCAT_CONTAINERS,
+        *APACHE2_CONTAINERS,
         *GCC_CONTAINERS,
         *SPACK_CONTAINERS,
     )
