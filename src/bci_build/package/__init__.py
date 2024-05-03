@@ -961,6 +961,15 @@ exit 0
         pass
 
     @property
+    def pretty_reference(self) -> str:
+        """
+        Returns the human readable pretty URL to this image. Used in image documentation.
+        """
+        return (
+            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}"
+        )
+
+    @property
     def description(self) -> str:
         """The description of this image which is inserted into the
         ``org.opencontainers.image.description`` label.
