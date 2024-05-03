@@ -6,6 +6,7 @@ from itertools import product
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DevelopmentContainer
+from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -86,8 +87,11 @@ RUN ${{CC}} --version
 COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}
 """,
     )
-    for rust_version, os_version in product(
-        _RUST_VERSIONS,
-        ALL_NONBASE_OS_VERSIONS,
+    for rust_version, os_version in list(
+        product(
+            _RUST_VERSIONS,
+            set(ALL_NONBASE_OS_VERSIONS).difference({OsVersion.SLCC_FREE}),
+        )
     )
+    + [(_RUST_VERSIONS[-1], OsVersion.SLCC_FREE)]
 ]

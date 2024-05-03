@@ -11,7 +11,7 @@ from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 
 
-def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion):
+def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.2", "3.3"], os_version: OsVersion):
     ruby = f"ruby{ruby_version}"
     ruby_major = ruby_version.split(".")[0]
 
@@ -66,5 +66,11 @@ RUBY_CONTAINERS = [
         **_get_ruby_kwargs("2.5", OsVersion.SP6),
         support_level=SupportLevel.L3,
     ),
+    # FIXME: enable this for SLCC v2
+    # DevelopmentContainer(**_get_ruby_kwargs("3.2", OsVersion.SLCC_DEVELOPMENT)),
+    # DevelopmentContainer(
+    #     **_get_ruby_kwargs("3.2", OsVersion.SLCC_PRODUCTION),
+    #     support_level=SupportLevel.L3,
+    # ),
     DevelopmentContainer(**_get_ruby_kwargs("3.3", OsVersion.TUMBLEWEED)),
 ]
