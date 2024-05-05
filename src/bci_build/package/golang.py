@@ -2,7 +2,6 @@
 
 import textwrap
 from itertools import product
-from typing import List
 from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
@@ -14,8 +13,8 @@ from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 
 _GO_VER_T = Literal["1.20", "1.21", "1.22"]
-_GOLANG_VERSIONS: List[_GO_VER_T] = ["1.21", "1.22"]
-_GOLANG_OPENSSL_VERSIONS: List[_GO_VER_T] = ["1.20", "1.21"]
+_GOLANG_VERSIONS: list[_GO_VER_T] = ["1.21", "1.22"]
+_GOLANG_OPENSSL_VERSIONS: list[_GO_VER_T] = ["1.20", "1.21"]
 _GOLANG_TW_VERSIONS = _GOLANG_VERSIONS
 _GOLANG_VARIANT_T = Literal["", "-openssl"]
 
