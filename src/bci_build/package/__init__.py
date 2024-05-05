@@ -756,7 +756,13 @@ exit 0
             return "opensuse/tumbleweed:latest"
         if self.os_version == OsVersion.BASALT:
             return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
+        if self.os_version in ALL_OS_LTSS_VERSIONS:
+            return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
+        if self.image_type == ImageType.APPLICATION:
+            return f"suse/sle15:15.{self.os_version}"
 
+        # TODO(dmllr): Change to the redistributable image bci/bci-base:15.$SP
+        # once we can agree on the split
         return f"suse/sle15:15.{self.os_version}"
 
     @property
