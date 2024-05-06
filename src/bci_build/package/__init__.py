@@ -766,9 +766,7 @@ exit 0
         if self.image_type == ImageType.APPLICATION:
             return f"suse/sle15:15.{self.os_version}"
 
-        # TODO(dmllr): Change to the redistributable image bci/bci-base:15.$SP
-        # once we can agree on the split
-        return f"suse/sle15:15.{self.os_version}"
+        return f"bci/bci-base:15.{self.os_version}"
 
     @property
     def dockerfile_from_line(self) -> str:
