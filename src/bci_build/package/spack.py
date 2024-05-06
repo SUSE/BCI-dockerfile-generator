@@ -3,6 +3,7 @@
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _SUPPORTED_UNTIL_SLE
+from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
@@ -67,6 +68,9 @@ SPACK_CONTAINERS = [
         extra_files={
             "_constraints": generate_disk_size_constraints(10),
         },
+        exclusive_arch=(
+            [Arch.AARCH64, Arch.X86_64] if os_version in (OsVersion.TUMBLEWEED,) else []
+        ),
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
         custom_end=rf"""
