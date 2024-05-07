@@ -169,7 +169,13 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                     regex_in_build_description="%%mariadb_version%%",
                     package_name="mariadb",
                     parse_version="minor",
-                )
+                ),
+                Replacement(
+                    file_name="README.md",
+                    regex_in_build_description="%%mariadb_version%%",
+                    package_name="mariadb",
+                    parse_version="minor",
+                ),
             ],
             pretty_name="MariaDB Server",
             package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
@@ -226,7 +232,7 @@ COPY gosu /usr/local/bin/gosu
                     regex_in_build_description="%%mariadb_version%%",
                     package_name="mariadb-client",
                     parse_version="minor",
-                )
+                ),
             ],
             pretty_name="MariaDB Client",
             support_level=SupportLevel.L3,
