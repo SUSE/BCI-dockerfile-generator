@@ -1,5 +1,6 @@
 # SLE BCI-Micro: Suitable for deploying static binaries
-
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 This image is similar to SLE BCI-Minimal but without the RPM package manager.
 The primary use case for the image is deploying static binaries produced
 externally or during multi-stage builds. As there is no straightforward
