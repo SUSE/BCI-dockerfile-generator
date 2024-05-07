@@ -37,6 +37,7 @@ from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
+from bci_build.package import Package
 from dotnet.updater import DOTNET_IMAGES
 from dotnet.updater import DotNetBCI
 from staging.build_result import PackageBuildResult
@@ -310,6 +311,29 @@ class StagingBot:
                 else True
             )
         )
+
+    @property
+    def groups_yml(self) -> str:
+        """Generate a the ``container_packages`` YAML list for
+        :file:`groups.yml` in ``000package-groups`` from the container images
+        for this code stream.
+
+        .. caution:: Only works for SLCC!
+
+        """
+        if not self.os_version.is_slcc:
+            raise ValueError("Only supported for SLCC code streams")
+
+        res = "container_packages:"
+
+        for bci in sorted(list(self._bcis), key=lambda b: b.uid):
+            res += f"\n    # {bci.uid}\n    - "
+            res += "\n    - ".join(
+                pkg.name if isinstance(pkg, Package) else pkg
+                for pkg in bci.package_list
+            )
+
+        return res
 
     @staticmethod
     def from_github_comment(comment_text: str, osc_username: str) -> "StagingBot":
@@ -1543,6 +1567,7 @@ def main() -> None:
         "changelog_check",
         "setup_obs_package",
         "setup_obs_project",
+        "groups_yml",
         "find_missing_packages",
     ]
 
@@ -1722,6 +1747,11 @@ comma-separated list. The package list is taken from the environment variable
     )
 
     subparsers.add_parser(
+        "groups_yml",
+        help="Create a list of all container packages that can be inserted into groups.yml",
+    )
+
+    subparsers.add_parser(
         "find_missing_packages",
         help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
     )
@@ -1870,6 +1900,13 @@ comma-separated list. The package list is taken from the environment variable
 
         elif action == "setup_obs_project":
             coro = bot.configure_devel_bci_project()
+
+        elif action == "groups_yml":
+
+            async def _groups_yml():
+                return bot.groups_yml
+
+            coro = _groups_yml()
 
         elif action == "find_missing_packages":
 
