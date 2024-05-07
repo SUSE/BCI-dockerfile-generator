@@ -40,7 +40,7 @@ LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomc
 LABEL org.opensuse.reference="registry.suse.com/suse/tomcat:10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
