@@ -33,6 +33,7 @@ from obs_package_update.util import retry_async_run_cmd
 
 from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
+from bci_build.package import ALL_OS_LTSS_VERSIONS
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from dotnet.updater import DOTNET_IMAGES
@@ -298,14 +299,19 @@ class StagingBot:
         if comment_text == "":
             raise ValueError("Received empty github comment, cannot create the bot")
         # comment_text looks like this:
-        # Created a staging project on OBS for 4: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-HsmtR](url/to/proj)
+        #
+        # Rendered the templates for 6
         # Changes pushed to branch [`sle15-sp4-HsmtR`](url/to/branch)
+        # Created a staging project on OBS: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-HsmtR](url/to/proj)
+        #
+        # The last line of the comment is only present if the bot created a
+        # build, otherwise it's missing
         lines = comment_text.strip().splitlines()
-        proj_line = lines[0]
-        CREATED_TEXT = "Created a staging project on OBS for "
-        if CREATED_TEXT not in proj_line:
+        branch_line = lines[0]
+        RENDERED_TEMPLATES_TEXT = "Rendered the templates for "
+        if RENDERED_TEMPLATES_TEXT not in branch_line:
             raise ValueError(f"Invalid first line in the comment: {comment_text}")
-        os_ver, prj_markdown_link = proj_line.replace(CREATED_TEXT, "").split(": ")
+        os_ver = branch_line.replace(RENDERED_TEMPLATES_TEXT, "").strip()
 
         CHANGES_TEXT = "Changes pushed to branch "
         branch_line = lines[1]
@@ -320,10 +326,18 @@ class StagingBot:
             osc_username=osc_username,
         )
 
-        assert (
-            bot.staging_project_name
-            == (prj := prj_markdown_link.split("]")[0].replace("[", ""))
-        ), f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
+        # sanity check if we have created a project
+        if len(lines) > 2 and (proj_line := lines[2]):
+            prj_markdown_link = proj_line.replace(
+                "Created a staging project on OBS: ", ""
+            )
+            prj = prj_markdown_link.split("]")[0].replace("[", "")
+
+            if bot.staging_project_name != prj:
+                raise ValueError(
+                    f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
+                )
+
         return bot
 
     @staticmethod
@@ -1532,7 +1546,7 @@ def main() -> None:
     parser.add_argument(
         "--os-version",
         type=str,
-        choices=[str(v) for v in ALL_OS_VERSIONS],
+        choices=[str(v) for v in ALL_OS_VERSIONS.union(ALL_OS_LTSS_VERSIONS)],
         nargs=1,
         default=[os.getenv(OS_VERSION_ENVVAR_NAME)],
         help=f"The OS version for which all actions shall be made. The value from the environment variable {OS_VERSION_ENVVAR_NAME} is used if not provided.",
@@ -1764,7 +1778,14 @@ comma-separated list. The package list is taken from the environment variable
             coro = _create_staging_proj()
 
         elif action == "commit_state":
-            coro = bot.write_all_build_recipes_to_branch(args.commit_message[0])
+
+            async def _commit():
+                commit_or_None = await bot.write_all_build_recipes_to_branch(
+                    args.commit_message[0]
+                )
+                return commit_or_None or "No changes"
+
+            coro = _commit()
 
         elif action == "query_build_result":
 

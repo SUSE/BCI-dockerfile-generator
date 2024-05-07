@@ -47,8 +47,9 @@ _osc_user = "defolos"
     "comment,bot",
     [
         (
-            """Created a staging project on OBS for 4: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj)
-Changes pushed to branch [`sle15-sp4-AVeMj`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp4-AVeMj)""",
+            """Rendered the templates for 4
+Changes pushed to branch [`sle15-sp4-AVeMj`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp4-AVeMj)
+Created a staging project on OBS: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj)""",
             StagingBot(
                 os_version=OsVersion.SP4,
                 branch_name="sle15-sp4-AVeMj",
@@ -56,8 +57,9 @@ Changes pushed to branch [`sle15-sp4-AVeMj`](https://github.com/SUSE/BCI-dockerf
             ),
         ),
         (
-            """Created a staging project on OBS for Tumbleweed: [home:defolos:BCI:Staging:Tumbleweed:tumbleweed-EqgiS](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:Tumbleweed:tumbleweed-EqgiS)
-Changes pushed to branch [`tumbleweed-EqgiS`](https://github.com/SUSE/BCI-dockerfile-generator/tree/tumbleweed-EqgiS)""",
+            """Rendered the templates for Tumbleweed
+Changes pushed to branch [`tumbleweed-EqgiS`](https://github.com/SUSE/BCI-dockerfile-generator/tree/tumbleweed-EqgiS)
+Created a staging project on OBS: [home:defolos:BCI:Staging:Tumbleweed:tumbleweed-EqgiS](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:Tumbleweed:tumbleweed-EqgiS)""",
             StagingBot(
                 os_version=OsVersion.TUMBLEWEED,
                 branch_name="tumbleweed-EqgiS",
@@ -65,11 +67,22 @@ Changes pushed to branch [`tumbleweed-EqgiS`](https://github.com/SUSE/BCI-docker
             ),
         ),
         (
-            """Created a staging project on OBS for 3: [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa)
-Changes pushed to branch [`sle15-sp3-OZGYa`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp3-OZGYa)""",
+            """Rendered the templates for 3
+Changes pushed to branch [`sle15-sp3-OZGYa`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp3-OZGYa)
+Created a staging project on OBS: [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa)""",
             StagingBot(
                 os_version=OsVersion.SP3,
                 branch_name="sle15-sp3-OZGYa",
+                osc_username=_osc_user,
+            ),
+        ),
+        (
+            """Rendered the templates for 6
+Changes pushed to branch [`sle15-sp6-1337`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp6-1337)
+""",
+            StagingBot(
+                os_version=OsVersion.SP6,
+                branch_name="sle15-sp6-1337",
                 osc_username=_osc_user,
             ),
         ),
