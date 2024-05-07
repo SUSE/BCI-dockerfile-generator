@@ -1,13 +1,23 @@
 ## Accessing the Container Image
 
-To access this image container image requires a valid SUSE subscription. In order
-to access the container image, you must login to the SUSE Registry with your credentials. There are three ways to do that.
+Accessing this container image requires a valid SUSE subscription. In order
+to access the container image, you must login to the SUSE Registry with your credentials.
+There are three ways to do that which are described below. The first two methods
+leverage the system registration of your host system, while the third method
+requires you to obtain the organisation SCC mirroring credentials.
 
 ### Use the system registration of your host system
 
-If the host system you are using to build or run a container is already registered with the correct subscription required for accessing the LTSS container images, you can use the registration information from the host to log in to the registry.
+If the host system you are using to build or run a container is already registered with
+the correct subscription required for accessing the LTSS container images, you can use
+the registration information from the host to log in to the registry.
 
-The file `/etc/zypp/credentials.d/SCCcredentials` contains a username and a password. These credentials allow you to access any container that is available under the subscription of the respective host system. You can use these credentials to log in to SUSE Registry using the following commands (use the leading space before the echo command to avoid storing the credentials in the shell history):
+The file `/etc/zypp/credentials.d/SCCcredentials` contains a username and a password.
+These credentials allow you to access any container that is available under the
+subscription of the respective host system. You can use these credentials to log
+in to SUSE Registry using the following commands
+(use the leading space before the echo command to avoid storing the credentials in the
+shell history):
 
 ```ShellSession
 set +o history
@@ -16,17 +26,22 @@ set -o history
 ```
 
 ### Use a separate SUSE Customer Center registration code
-If the host system is not registered with SUSE Customer Center, you can use a valid SUSE Customer Center registration code to log in to the registry:
+
+If the host system is not registered with SUSE Customer Center, you can use a valid
+SUSE Customer Center registration code to log in to the registry:
 
 ```ShellSession
 set +o history
  echo SCC_REGISTRATION_CODE | podman login -u "regcode" --password-stdin registry.suse.com
 set -o history
 ```
-The user parameter in this case is the verbatim string `regcode`, and `SCC_REGISTRATION_CODE` is the actual registration code obtained from SUSE.
+The user parameter in this case is the verbatim string `regcode`, and
+`SCC_REGISTRATION_CODE` is the actual registration code obtained from SUSE.
 
 ### Use the organization mirroring credentials
-You can also use the organization mirroring credentials to log in to the SUSE Registry:
+
+You can also use the organization mirroring credentials to log in to the
+SUSE Registry:
 
 ```ShellSession
 set +o history
@@ -34,4 +49,7 @@ set +o history
 set -o history
 ```
 
-These credentials give you access to all subscriptions the organization owns, including those related to container images in the SUSE Registry. The credentials are highly privileged and should be preferably used for a private mirroring registry only.
+These credentials give you access to all subscriptions the organization owns,
+including those related to container images in the SUSE Registry.
+The credentials are highly privileged and should be preferably used for
+a private mirroring registry only.
