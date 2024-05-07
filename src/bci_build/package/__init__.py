@@ -1055,7 +1055,7 @@ exit 0
             {self.description}
 
             {{% include 'licensing_and_eula.j2' %}}
-            """)
+            """).strip()
         readme_template_fname = Path(__file__).parent / self.name / "README.md.j2"
         if readme_template_fname.exists():
             readme_template = readme_template_fname.read_text()
