@@ -67,7 +67,7 @@ GCC_CONTAINERS = [
             rf"""# symlink all versioned gcc & g++ binaries to unversioned
 # ones in /usr/local/bin so that plain gcc works
 {DOCKERFILE_RUN} for gcc_bin in $(rpm -ql {gcc_pkg} {gpp} |grep ^/usr/bin/ ); do \
-        ln -f $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-{gcc_version}$||'); \
+        ln -sf $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-{gcc_version}$||'); \
     done
 """
             if not _is_main_gcc(os_version, gcc_version)
