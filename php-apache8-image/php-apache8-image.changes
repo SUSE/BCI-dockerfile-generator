@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  7 19:12:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- extend READMEs; correct eula for application images
+
+-------------------------------------------------------------------
 Wed Apr 24 06:06:18 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Mark container image as L3 supported

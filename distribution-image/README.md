@@ -1,5 +1,6 @@
 # The SLE BCI Distribution Image
 
+
 This container image allows to run a local OCI registry. Before you start the container,
 you need to create a `config.yml` with the following content:
 
@@ -42,6 +43,3 @@ The build recipe and this documentation is licensed as Apache-2.0.
 The container itself contains various software components under various open source licenses listed in the associated
 Software Bill of Materials (SBOM).
 
-This image is based on [SLE BCI](https://opensource.suse.com/bci/), a stable and redistributable foundation for software innovation. SLE BCI is enterprise-ready, and it comes with an option for support.
-
-See the [SLE BCI EULA](https://www.suse.com/licensing/eula/#bci) for further information.
