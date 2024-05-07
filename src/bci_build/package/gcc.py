@@ -46,6 +46,7 @@ GCC_CONTAINERS = [
                 (gcc_pkg := f"gcc{gcc_version}"),
                 (gpp := f"{gcc_pkg}-c++"),
                 "make",
+                "gawk",
             ]
             + (["gcc", "gcc-c++"] if _is_main_gcc(os_version, gcc_version) else [])
         ),
