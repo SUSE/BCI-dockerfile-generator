@@ -1,5 +1,6 @@
 # The GNU Compiler Collection Container Image
-
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 The GNU Compiler Collection (GCC) is an optimizing compiler for various
 architectures and operating systems. It is the default compiler in the GNU
 project and most Linux distributions, including SUSE Linux Enterprise and

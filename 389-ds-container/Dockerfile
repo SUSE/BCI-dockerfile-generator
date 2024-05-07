@@ -36,7 +36,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/suse/389-ds:%%389ds_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix

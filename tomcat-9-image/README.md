@@ -1,5 +1,7 @@
 # Tomcat 9 Container Image
 
+![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+
 Apache Tomcat (Tomcat for short) is a free and open-source implementation of the
 Jakarta Servlet, Jakarta Expression Language, and WebSocket technologies. It
 provides a pure Java HTTP web server environment that can run Java code. It is a
@@ -31,7 +33,7 @@ The deployed webapp is then accessible via `http://localhost:8080/$webapp_name`.
 
 The container image can be used in rootless mode with Podman. Keep in mind that
 Podman remaps the `tomcat` user in the container to a different user on the
-host. This user will not have write access to the mounted directory. To avoid
+host. This user does not have write access to the mounted directory. To avoid
 permission issues change permissions of the shared directory to `0777` as
 follows:
 
