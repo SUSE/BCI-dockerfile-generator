@@ -1,3 +1,16 @@
-# The SLE NGINX Container image
+# The SLE NGINX Container Image
+
+![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 NGINX open source all-in-one load balancer, content cache and web server based on the SLE Base Container Image.
+
+## Licensing
+`SPDX-License-Identifier: MIT`
+
+The build recipe and this documentation is licensed as MIT.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+This image is a tech preview. Do not use it for production.
+Your feedback is welcome.
+Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).

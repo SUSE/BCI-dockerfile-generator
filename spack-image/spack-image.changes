@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  7 19:09:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- extend READMEs; correct eula for application images
+
+-------------------------------------------------------------------
 Wed May 01 08:17:45 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Spack development BCI

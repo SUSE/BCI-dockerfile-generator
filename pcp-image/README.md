@@ -1,5 +1,7 @@
 # Performance Co-Pilot container
 
+![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+
 Performance Co-Pilot ([PCP](https://pcp.io)) is a system performance analysis toolkit.
 
 ## Usage
@@ -11,7 +13,7 @@ $ podman run -d \
     -p 44321:44321 \
     -p 44322:44322 \
     -v pcp-archives:/var/log/pcp/pmlogger \
-    registry.suse.com/suse/pcp
+    registry.suse.com/suse/pcp:%%pcp_patch%%
 ```
 
 **Note:** On SELinux enabled systems, the following boolean needs to be set: `sudo setsebool -P container_manage_cgroup true`
@@ -27,7 +29,7 @@ $ sudo podman run -d \
     -e HOST_MOUNT=/host \
     -v pcp-archives:/var/log/pcp/pmlogger \
     -v /:/host:ro,rslave \
-    registry.suse.com/suse/pcp
+    registry.suse.com/suse/pcp:%%pcp_patch%%
 ```
 
 ## Configuration
@@ -62,7 +64,7 @@ $ podman run -d \
     -e PCP_SERVICES=pmlogger \
     -v $(pwd)/pmlogger.control:/etc/pcp/pmlogger/control.d/local:z \
     -v pcp-archives:/var/log/pcp/pmlogger \
-    registry.suse.com/suse/pcp
+    registry.suse.com/suse/pcp:%%pcp_patch%%
 ```
 
 pmlogger.control:
