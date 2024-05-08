@@ -251,10 +251,10 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 "kernel-devel",
                 "kernel-syms",
                 "gcc",
-                "kmod-compat",
+                "kmod",
                 "make",
                 "patch",
-                "awk",
+                "gawk",
                 "rpm-build",
                 *_get_os_container_package_names(os_version),
             ]

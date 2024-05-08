@@ -48,7 +48,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion)
             "gcc-c++",
             "sqlite3-devel",
             "make",
-            "awk",
+            "gawk",
             # additional dependencies supplementing rails
             "timezone",
         ],
