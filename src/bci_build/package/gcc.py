@@ -1,5 +1,6 @@
 """Build description for the GCC Container Images"""
 
+import datetime
 from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
@@ -7,9 +8,18 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
+from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 
 _GCC_VERSIONS = Literal[7, 12, 13, 14]
+
+# The lifecycle is two years after the XX.2 release
+# according to upstream release date at
+# https://gcc.gnu.org/releases.html
+_GCC_SUPPORT_ENDS: dict[_GCC_VERSIONS, datetime.date | None] = {
+    13: datetime.date(2025, 7, 31),
+    14: None,
+}
 
 
 def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
@@ -42,6 +52,8 @@ GCC_CONTAINERS = [
         package_name=f"gcc-{gcc_version}-image",
         os_version=os_version,
         version=gcc_version,
+        support_level=SupportLevel.L3,
+        supported_until=_GCC_SUPPORT_ENDS.get(gcc_version, None),
         package_list=(
             [
                 (gcc_pkg := f"gcc{gcc_version}"),
@@ -50,6 +62,7 @@ GCC_CONTAINERS = [
                 "gawk",
             ]
             + (["gcc", "gcc-c++"] if _is_main_gcc(os_version, gcc_version) else [])
+            + os_version.lifecycle_data_pkg
         ),
         pretty_name="GNU Compiler Collection",
         is_latest=(
