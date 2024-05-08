@@ -1,6 +1,7 @@
 # The SUSE Linux Enterprise 15 SP3 FIPS-140-2 Container image
 {% include 'badges.j2' %}
 
+## Description
 This container image is a SUSE Linux Enterprise 15 SP3 base container image
 that includes the SLES 15 FIPS-140-2 certified OpenSSL module.
 
@@ -13,6 +14,7 @@ standard OpenSSL library. It provides the same functionality as the standard
 OpenSSL library, with additional security features to meet the FIPS-140-2
 requirements.
 
+## Usage
 The image is configured to enforce the use of FIPS-140 mode by default via the
 environment variable `OPENSSL_FORCE_FIPS_MODE`. This variable is set to `1` in
 the image. This means that all cryptographic operations performed by the
