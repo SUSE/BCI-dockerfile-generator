@@ -10,10 +10,21 @@ from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 
+_PYTHON_VERSIONS = Literal["3.6", "3.10", "3.11", "3.12"]
 
-def _get_python_kwargs(
-    py3_ver: Literal["3.6", "3.9", "3.10", "3.11", "3.12"], os_version: OsVersion
-):
+# The lifecycle is handcrafted by the SUSE Python maintainers
+_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
+    # Actually end of general support of SLE15, SP7 is the last known SP
+    "3.6": _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
+    # only openSUSE
+    "3.10": None,
+    # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
+    "3.11": datetime.date(2027, 12, 31),
+    "3.12": _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+}
+
+
+def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.11"
     )
@@ -79,11 +90,12 @@ PYTHON_3_6_CONTAINERS = (
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
         support_level=SupportLevel.L3,
+        supported_until=_PYTHON_SUPPORT_ENDS["3.6"],
     )
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
-_PYTHON_TW_VERSIONS = ("3.10", "3.12", "3.11")
+_PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
     DevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
@@ -98,8 +110,7 @@ PYTHON_3_11_CONTAINERS = (
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
         support_level=SupportLevel.L3,
-        # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
-        supported_until=datetime.date(2027, 12, 31),
+        supported_until=_PYTHON_SUPPORT_ENDS["3.11"],
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP5, OsVersion.SP6)
@@ -109,7 +120,7 @@ PYTHON_3_12_CONTAINERS = DevelopmentContainer(
     **_get_python_kwargs("3.12", OsVersion.SP6),
     package_name="python-3.12-image",
     support_level=SupportLevel.L3,
-    supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+    supported_until=_PYTHON_SUPPORT_ENDS["3.12"],
     # Technically it is the latest but we want to prefer the long term Python 3.11
     is_latest=False,
 )
