@@ -251,7 +251,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 "kernel-devel",
                 "kernel-syms",
                 "gcc",
-                "kmod-compat",
+                "kmod",
                 "make",
                 "patch",
                 "gawk",
