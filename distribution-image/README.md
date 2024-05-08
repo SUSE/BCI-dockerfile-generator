@@ -1,7 +1,13 @@
-# The SLE BCI Distribution Image
+# SLE OCI Container Registry (Distribution): Suitable for running a local OCI registry
 
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
-This container image allows to run a local OCI registry. Before you start the container,
+
+## Description
+This container image allows to run a local OCI registry.
+
+
+## Usage
+Before you start the container,
 you need to create a `config.yml` with the following content:
 
 ```yaml
