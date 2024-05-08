@@ -26,7 +26,7 @@ def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         "is_latest": ver == 20 and os_version in CAN_BE_LATEST_OS_VERSION,
-        "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
+        "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
         "additional_names": ["node"],

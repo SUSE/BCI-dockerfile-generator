@@ -53,7 +53,7 @@ GCC_CONTAINERS = [
         os_version=os_version,
         version=gcc_version,
         support_level=SupportLevel.L3,
-        supported_until=_GCC_SUPPORT_ENDS.get(gcc_version, None),
+        supported_until=_GCC_SUPPORT_ENDS.get(gcc_version),
         package_list=(
             [
                 (gcc_pkg := f"gcc{gcc_version}"),
