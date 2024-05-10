@@ -16,7 +16,7 @@ _GCC_VERSIONS = Literal[7, 12, 13, 14]
 # The lifecycle is two years after the XX.2 release
 # according to upstream release date at
 # https://gcc.gnu.org/releases.html
-_GCC_SUPPORT_ENDS: dict[_GCC_VERSIONS, datetime.date | None] = {
+_GCC_SLCC_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
     13: datetime.date(2025, 7, 31),
     14: None,
 }
@@ -25,8 +25,7 @@ _GCC_SUPPORT_ENDS: dict[_GCC_VERSIONS, datetime.date | None] = {
 def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED and gcc_version == 14:
         return True
-    # FIXME: os_version.is_sles
-    if os_version in (OsVersion.SP6, OsVersion.SP5) and gcc_version == 13:
+    if os_version.is_sle15 and gcc_version == 13:
         return True
     # if os_version in (OsVersion.SLCC_DEVELOPMENT, OsVersion.SLCC_PRODUCTION):
     #     assert gcc_version == 13
@@ -37,8 +36,7 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
 def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED and gcc_version == 13:
         return True
-    # FIXME: os_version.is_sles
-    if os_version in (OsVersion.SP5, OsVersion.SP6) and gcc_version == 7:
+    if os_version.is_sle15 and gcc_version == 7:
         return True
     # if os_version in (OsVersion.SLCC_DEVELOPMENT, OsVersion.SLCC_PRODUCTION):
     #     assert gcc_version == 13
@@ -52,8 +50,14 @@ GCC_CONTAINERS = [
         package_name=f"gcc-{gcc_version}-image",
         os_version=os_version,
         version=gcc_version,
-        support_level=SupportLevel.L3,
-        supported_until=_GCC_SUPPORT_ENDS.get(gcc_version),
+        support_level=(
+            SupportLevel.L3 if not os_version.is_sle15 else SupportLevel.TECHPREVIEW
+        ),
+        supported_until=(
+            _GCC_SLCC_SUPPORTED_UNTIL.get(gcc_version)
+            if not os_version.is_sle15
+            else None
+        ),
         package_list=(
             [
                 (gcc_pkg := f"gcc{gcc_version}"),

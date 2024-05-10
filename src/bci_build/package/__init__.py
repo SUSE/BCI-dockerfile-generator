@@ -179,6 +179,16 @@ class OsVersion(enum.Enum):
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
+    @property
+    def is_sle15(self) -> bool:
+        return self.value in (
+            OsVersion.SP3.value,
+            OsVersion.SP4.value,
+            OsVersion.SP5.value,
+            OsVersion.SP6.value,
+            OsVersion.SP7.value,
+        )
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.

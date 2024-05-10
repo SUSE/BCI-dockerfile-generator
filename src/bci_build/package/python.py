@@ -72,6 +72,10 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             Replacement(regex_in_build_description=pip3_replacement, package_name=pip3),
         ],
         "os_version": os_version,
+        "support_level": SupportLevel.L3,
+        "supported_until": _SLE_15_PYTHON_SUPPORT_ENDS[py3_ver]
+        if os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6, OsVersion.SP7)
+        else None,
     }
 
     config_sh_script = "install -d -m 0755 /root/.local/bin"
@@ -89,8 +93,6 @@ PYTHON_3_6_CONTAINERS = (
     DevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
-        support_level=SupportLevel.L3,
-        supported_until=_SLE_15_PYTHON_SUPPORT_ENDS["3.6"],
     )
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
@@ -109,8 +111,6 @@ PYTHON_3_11_CONTAINERS = (
     DevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
-        support_level=SupportLevel.L3,
-        supported_until=_SLE_15_PYTHON_SUPPORT_ENDS["3.11"],
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP5, OsVersion.SP6)
@@ -119,8 +119,6 @@ PYTHON_3_11_CONTAINERS = (
 PYTHON_3_12_CONTAINERS = DevelopmentContainer(
     **_get_python_kwargs("3.12", OsVersion.SP6),
     package_name="python-3.12-image",
-    support_level=SupportLevel.L3,
-    supported_until=_SLE_15_PYTHON_SUPPORT_ENDS["3.12"],
     # Technically it is the latest but we want to prefer the long term Python 3.11
     is_latest=False,
 )
