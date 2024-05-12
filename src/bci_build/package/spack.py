@@ -68,9 +68,8 @@ SPACK_CONTAINERS = [
         extra_files={
             "_constraints": generate_disk_size_constraints(10),
         },
-        exclusive_arch=(
-            [Arch.AARCH64, Arch.X86_64] if os_version in (OsVersion.TUMBLEWEED,) else []
-        ),
+        # HPC module only exists for those two arches (bsc#1224130)
+        exclusive_arch=(Arch.AARCH64, Arch.X86_64),
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
         custom_end=rf"""
