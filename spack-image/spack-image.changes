@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun May 12 13:44:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- restrict spack container to supported architectures (bsc#1224130)
+
+-------------------------------------------------------------------
 Wed May  8 16:26:53 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - README fixes - better titles and follow recommended document structure
