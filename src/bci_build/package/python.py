@@ -73,9 +73,9 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         ],
         "os_version": os_version,
         "support_level": SupportLevel.L3,
-        "supported_until": _SLE_15_PYTHON_SUPPORT_ENDS[py3_ver]
-        if os_version in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6, OsVersion.SP7)
-        else None,
+        "supported_until": (
+            _SLE_15_PYTHON_SUPPORT_ENDS[py3_ver] if os_version.is_sle15 else None
+        ),
     }
 
     config_sh_script = "install -d -m 0755 /root/.local/bin"
