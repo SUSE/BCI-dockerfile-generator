@@ -80,6 +80,38 @@ poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> 
 poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span><span class="nb">source</span><span class="w"> </span>build<span class="w"> </span>-W
 </pre></div>
 </div>
+<section id="documentation-readmes">
+<h3>Documentation - READMEs<a class="headerlink" href="#documentation-readmes" title="Link to this heading">¶</a></h3>
+<p>We are using Jinja2 templates to create Markdown formatted <code class="file docutils literal notranslate"><span class="pre">README.md</span></code>
+files of each container.</p>
+<p>To create a new <code class="file docutils literal notranslate"><span class="pre">README.md</span></code>, create a new file in the location
+<code class="file docutils literal notranslate"><span class="pre">src/bci_build/package/$name/README.md.j2</span></code> where <code class="docutils literal notranslate"><span class="pre">$name</span></code> is the
+container image name
+(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.name" title="bci_build.package.BaseContainerImage.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>). Add a markdown
+formatted README that explains the specifics of using this container
+images. Focus on anything container specific, like volumes, the behavior of the
+entrypoint and differences to the package in SLES/SLFO/Tumbleweed. If there is
+upstream/downstream documentation, refer to it if applicable.</p>
+<p>There are additionally the following helper templates, to enhance the READMEs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">licensing_and_eula.j2</span></code>: Adds a standard licencing &amp; EULA footer. <strong>MUST</strong>
+be included at the bottom of every README.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">badges.j2</span></code>: Adds a Redistributable &amp; optional supportlevel badge. <strong>MUST</strong>
+be included at the top of every README.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access_protected_images.j2</span></code>: Explains how to access an image behind the
+paywall. It only needs to be added at the bottom of paywalled images.</p></li>
+</ul>
+<p>You can include the helpers via the following directive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s1">&#39;licensing_and_eula.j2&#39;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="file docutils literal notranslate"><span class="pre">README.md.j2</span></code> template is rendered with the respective
+<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a> being passed as the parameter
+<code class="docutils literal notranslate"><span class="pre">image</span></code> to the templating engine. This allows you to use all properties of the
+<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a> in the README, e.g. the image
+title (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.title" title="bci_build.package.BaseContainerImage.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a>) or the reference
+(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.pretty_reference" title="bci_build.package.BaseContainerImage.pretty_reference"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pretty_reference</span></code></a>).</p>
+</section>
 </section>
 <section id="entrypoints">
 <h2>Entrypoints<a class="headerlink" href="#entrypoints" title="Link to this heading">¶</a></h2>
