@@ -65,6 +65,48 @@ Additionally, run the unit tests and check whether the documentation builds
    poetry run sphinx-build -M html source build -W
 
 
+Documentation - READMEs
+^^^^^^^^^^^^^^^^^^^^^^^
+
+We are using Jinja2 templates to create Markdown formatted :file:`README.md`
+files of each container.
+
+To create a new :file:`README.md`, create a new file in the location
+:file:`src/bci_build/package/$name/README.md.j2` where ``$name`` is the
+container image name
+(:py:attr:`~bci_build.package.BaseContainerImage.name`). Add a markdown
+formatted README that explains the specifics of using this container
+images. Focus on anything container specific, like volumes, the behavior of the
+entrypoint and differences to the package in SLES/SLFO/Tumbleweed. If there is
+upstream/downstream documentation, refer to it if applicable.
+
+There are additionally the following helper templates, to enhance the READMEs:
+
+- ``licensing_and_eula.j2``: Adds a standard licencing & EULA footer. **MUST**
+  be included at the bottom of every README.
+
+- ``badges.j2``: Adds a Redistributable & optional supportlevel badge. **MUST**
+  be included at the top of every README.
+
+- ``access_protected_images.j2``: Explains how to access an image behind the
+  paywall. It only needs to be added at the bottom of paywalled images.
+
+
+You can include the helpers via the following directive:
+
+.. code-block::
+
+   {% include 'licensing_and_eula.j2' %}
+
+
+The :file:`README.md.j2` template is rendered with the respective
+:py:class:`~bci_build.package.BaseContainerImage` being passed as the parameter
+``image`` to the templating engine. This allows you to use all properties of the
+:py:class:`~bci_build.package.BaseContainerImage` in the README, e.g. the image
+title (:py:attr:`~bci_build.package.BaseContainerImage.title`) or the reference
+(:py:attr:`~bci_build.package.BaseContainerImage.pretty_reference`).
+
+
 Entrypoints
 -----------
 
