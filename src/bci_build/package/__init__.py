@@ -527,6 +527,10 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
+    #: Optional custom build name that will override the default buildname, if
+    #: set
+    custom_build_name: str = ""
+
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
@@ -587,6 +591,8 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_name(self) -> str | None:
+        if self.custom_build_name:
+            return self.custom_build_name
         if self.build_tags:
             return self.build_tags[0].replace("/", ":").replace(":", "-")
         return None
