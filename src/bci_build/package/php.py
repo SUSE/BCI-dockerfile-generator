@@ -1,6 +1,7 @@
 import enum
 from itertools import product
 
+from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
@@ -41,6 +42,9 @@ _EMPTY_SCRIPT = """#!/bin/sh
 echo "This script is not required in this PHP container."
 """
 
+_PHP_VERSIONS = (8,)
+_LATEST_PHP_VERSION = sorted(_PHP_VERSIONS, reverse=True)[0]
+
 
 def _create_php_bci(
     os_version: OsVersion, php_variant: PhpVariant, php_version: int
@@ -48,6 +52,7 @@ def _create_php_bci(
     common_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-*
 """
+    assert php_version in _PHP_VERSIONS, f"PHP version {php_version} is not supported"
 
     if php_variant == PhpVariant.apache:
         extra_pkgs = [f"apache2-mod_php{php_version}"]
@@ -133,6 +138,8 @@ EXPOSE 9000
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
+        is_latest=php_version == _LATEST_PHP_VERSION
+        and os_version in CAN_BE_LATEST_OS_VERSION,
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
