@@ -418,6 +418,10 @@ class BaseContainerImage(abc.ABC):
     #: Determines whether this image will have the ``latest`` tag.
     is_latest: bool = False
 
+    #: Determines whether only one version of this image will be published
+    #: under the same registry path.
+    is_singleton_image: bool = False
+
     #: An optional entrypoint for the image, it is omitted if empty or ``None``
     #: If you provide a string, then it will be included in the container build
     #: recipe as is, i.e. it will be called via a shell as
@@ -588,7 +592,11 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_name(self) -> str | None:
         if self.build_tags:
-            return self.build_tags[0].replace("/", ":").replace(":", "-")
+            build_name = self.build_tags[0]
+            if self.is_singleton_image:
+                build_name = build_name.partition(":")[0]
+            return build_name.replace("/", ":").replace(":", "-")
+
         return None
 
     @property
