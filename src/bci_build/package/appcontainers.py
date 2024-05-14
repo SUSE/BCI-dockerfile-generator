@@ -252,6 +252,7 @@ RMT_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="SUSE RMT Server",
+        stability_tag="stable",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
         replacements_via_service=[
