@@ -254,6 +254,7 @@ RMT_CONTAINERS = [
         pretty_name="SUSE RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
+        custom_build_name="suse-rmt-server",
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%rmt_version%%",
