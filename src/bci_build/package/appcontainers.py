@@ -17,6 +17,7 @@ from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
 from bci_build.package.versions import to_major_minor_version
 from bci_build.package.versions import to_major_version
@@ -326,10 +327,14 @@ for filename in (
 
 
 def _get_nginx_kwargs(os_version: OsVersion):
+    nginx_version = to_major_minor_version(get_pkg_version("nginx", os_version))
+
+    version_check_lines = generate_package_version_check("nginx", nginx_version)
+
     kwargs = {
         "os_version": os_version,
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
-        "version": "%%nginx_version%%",
+        "version": nginx_version,
         "version_in_uid": False,
         "replacements_via_service": [
             Replacement(
@@ -345,7 +350,8 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
         "exposes_tcp": [80],
-        "custom_end": f"""{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
+        "custom_end": f"""{ version_check_lines }
+{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin
 COPY index.html /srv/www/htdocs/
