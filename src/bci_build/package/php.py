@@ -1,6 +1,7 @@
 import enum
 from itertools import product
 
+from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
@@ -133,6 +134,7 @@ EXPOSE 9000
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
