@@ -129,7 +129,7 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildName: bci-test-stable
 #!BuildVersion: 15.5
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -166,7 +166,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/suse/sle15#15.5">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.5">
       <containerconfig
           name="bci/test"
           tag="stable"
