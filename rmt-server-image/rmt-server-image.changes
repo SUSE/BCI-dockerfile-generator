@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 15 15:07:18 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove rmt-version from BuildName for easier publishing
+
+-------------------------------------------------------------------
 Tue May  7 19:09:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - extend READMEs; correct eula for application images
