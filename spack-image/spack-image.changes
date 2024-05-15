@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
 Sun May 12 13:44:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - restrict spack container to supported architectures (bsc#1224130)
