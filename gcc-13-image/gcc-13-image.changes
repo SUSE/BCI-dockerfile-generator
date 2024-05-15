@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
+Wed May 15 13:43:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add _constraints to prevent ftbfs
+
+-------------------------------------------------------------------
 Wed May  8 16:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - README fixes - better titles and follow recommended document structure

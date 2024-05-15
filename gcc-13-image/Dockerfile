@@ -21,7 +21,7 @@
 #!BuildTag: bci/gcc:latest
 #!BuildName: bci-gcc-13
 #!BuildVersion: 15.5.13
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

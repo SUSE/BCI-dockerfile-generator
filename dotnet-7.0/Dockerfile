@@ -20,7 +20,7 @@
 #!BuildTag: bci/dotnet-sdk:7.0.19-%RELEASE%
 #!BuildName: bci-dotnet-sdk-7.0
 #!BuildVersion: 15.5.7.0
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

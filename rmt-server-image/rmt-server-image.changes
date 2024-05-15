@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
+Wed May 15 15:07:03 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove rmt-version from BuildName for easier publishing
+
+-------------------------------------------------------------------
 Tue May  7 19:12:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - extend READMEs; correct eula for application images
