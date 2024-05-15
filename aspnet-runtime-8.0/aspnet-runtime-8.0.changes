@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
 Wed May 15 06:41:58 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - update to 8.0.5
