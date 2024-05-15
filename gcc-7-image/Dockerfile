@@ -20,7 +20,7 @@
 #!BuildTag: bci/gcc:%%gcc_version%%-%RELEASE%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.5.7
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

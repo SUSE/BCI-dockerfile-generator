@@ -20,7 +20,7 @@
 #!BuildTag: bci/rust:1.76-2.%RELEASE%
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 15.5.1.76.2
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

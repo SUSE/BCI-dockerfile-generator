@@ -21,7 +21,7 @@
 #!BuildTag: bci/ruby:latest
 #!BuildName: bci-ruby-2.5
 #!BuildVersion: 15.5.2.5
-FROM suse/sle15:15.5
+FROM bci/bci-base:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
