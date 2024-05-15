@@ -16,8 +16,8 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-runtime:7.0
 #!BuildTag: bci/dotnet-runtime:7.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:7.0.18
-#!BuildTag: bci/dotnet-runtime:7.0.18-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:7.0.19
+#!BuildTag: bci/dotnet-runtime:7.0.19-%RELEASE%
 #!BuildName: bci-dotnet-runtime-7.0
 #!BuildVersion: 15.5.7.0
 FROM suse/sle15:15.5
@@ -47,14 +47,14 @@ LABEL com.suse.release-stage="released"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.18-1.x86_64.rpm
-COPY dotnet-host-7.0.18-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0-7.0.18-1.x86_64.rpm
-COPY dotnet-hostfxr-7.0-7.0.18-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0-7.0.18-1.x86_64.rpm
-COPY dotnet-runtime-deps-7.0-7.0.18-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0-7.0.18-1.x86_64.rpm
-COPY dotnet-runtime-7.0-7.0.18-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-7.0.19-1.x86_64.rpm
+COPY dotnet-host-7.0.19-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-7.0-7.0.19-1.x86_64.rpm
+COPY dotnet-hostfxr-7.0-7.0.19-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-7.0-7.0.19-1.x86_64.rpm
+COPY dotnet-runtime-deps-7.0-7.0.19-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-7.0-7.0.19-1.x86_64.rpm
+COPY dotnet-runtime-7.0-7.0.19-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
