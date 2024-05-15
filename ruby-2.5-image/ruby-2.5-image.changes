@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
 Wed May  8 10:03:53 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - use the actual package name in installation

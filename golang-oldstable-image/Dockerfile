@@ -20,7 +20,7 @@
 #!BuildTag: bci/golang:1.21-2.%RELEASE%
 #!BuildName: bci-golang-oldstable
 #!BuildVersion: 15.6.1.21.2
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

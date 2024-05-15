@@ -18,7 +18,7 @@
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%
 #!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
