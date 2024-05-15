@@ -7,6 +7,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
+from bci_build.package import generate_disk_size_constraints
 
 _GCC_VERSIONS = Literal[7, 12, 13, 14]
 
@@ -64,6 +65,7 @@ GCC_CONTAINERS = [
         ],
         env={"GCC_VERSION": "%%gcc_version%%"},
         additional_versions=["%%gcc_version%%"],
+        extra_files={"_constraints": generate_disk_size_constraints(6)},
         custom_end=(
             rf"""# symlink all versioned gcc & g++ binaries to unversioned
 # ones in /usr/local/bin so that plain gcc works
