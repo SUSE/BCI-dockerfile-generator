@@ -20,7 +20,7 @@
 #!BuildTag: bci/dotnet-aspnet:8.0.5-%RELEASE%
 #!BuildName: bci-dotnet-aspnet-8.0
 #!BuildVersion: 15.6.8.0
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

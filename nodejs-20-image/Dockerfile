@@ -20,7 +20,7 @@
 #!BuildTag: bci/node:20-%RELEASE%
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 

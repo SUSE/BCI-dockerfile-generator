@@ -20,7 +20,7 @@
 #!BuildTag: bci/python:3-%RELEASE%
 #!BuildName: bci-python-3.12
 #!BuildVersion: 15.6.3.12
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
