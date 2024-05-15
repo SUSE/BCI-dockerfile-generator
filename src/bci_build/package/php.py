@@ -122,11 +122,8 @@ EXPOSE 9000
 """
         )
     else:
-        extra_pkgs = (
-            []
-            if os_version not in (OsVersion.TUMBLEWEED, OsVersion.SP6)
-            else [f"php{php_version}-readline"]
-        )
+        # required for the interactive shell to work
+        extra_pkgs = [f"php{php_version}-readline"]
         extra_env = {}
         cmd = ["php", "-a"]
         custom_end = common_end
