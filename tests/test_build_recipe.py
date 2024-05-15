@@ -484,7 +484,7 @@ def test_build_recipe_templates(
   <description type="system">
     <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
-    <specification>openSUSE Tumbleweed BCI openSUSE Tumbleweed Test Container Image</specification>
+    <specification>openSUSE Tumbleweed BCI Test Container Image</specification>
   </description>
   <preferences>
     <type image="docker">
@@ -495,7 +495,7 @@ def test_build_recipe_templates(
           additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
-            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI openSUSE Tumbleweed Test"/>
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
             <label name="org.opencontainers.image.description" value="A test environment for containers."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>

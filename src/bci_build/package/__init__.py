@@ -155,7 +155,9 @@ class OsVersion(enum.Enum):
     @property
     def pretty_os_version_no_dash(self) -> str:
         if self.value == OsVersion.TUMBLEWEED.value:
-            return f"openSUSE {self.value}"
+            # TW has no version by itself and the "openSUSE Tumbleweed" is
+            # already part of the base identifier
+            return ""
         if self.value == OsVersion.BASALT.value:
             return "Adaptable Linux Platform"
 
@@ -530,6 +532,8 @@ class BaseContainerImage(abc.ABC):
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:
+        self.pretty_name = self.pretty_name.strip()
+
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
         if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
