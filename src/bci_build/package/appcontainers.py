@@ -251,6 +251,7 @@ RMT_CONTAINERS = [
         package_name="rmt-server-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         pretty_name="SUSE RMT Server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
