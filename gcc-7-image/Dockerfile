@@ -42,6 +42,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends gcc7 gcc7-c++ make gawk gcc gcc-c++; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends gcc7 gcc7-c++ make gawk gcc gcc-c++ lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GCC_VERSION="%%gcc_version%%"
 
