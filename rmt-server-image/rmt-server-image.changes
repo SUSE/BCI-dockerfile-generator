@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 16 13:40:18 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Update README from upstream
+
+-------------------------------------------------------------------
 Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base
