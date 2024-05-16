@@ -42,7 +42,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends gcc13 gcc13-c++ make gawk; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends gcc13 gcc13-c++ make gawk lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GCC_VERSION="%%gcc_version%%"
 
 # symlink all versioned gcc & g++ binaries to unversioned
