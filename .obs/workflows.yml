@@ -23,10 +23,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: aspnet-runtime-7.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: aspnet-runtime-8.0
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -35,19 +31,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: dotnet-runtime-7.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: dotnet-runtime-8.0
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: dotnet-6.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: dotnet-7.0
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
@@ -235,25 +223,16 @@ refresh_devel_BCI:
         package: aspnet-runtime-6.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
-        package: aspnet-runtime-7.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
         package: aspnet-runtime-8.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: dotnet-runtime-6.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
-        package: dotnet-runtime-7.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
         package: dotnet-runtime-8.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: dotnet-6.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: dotnet-7.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: dotnet-8.0
