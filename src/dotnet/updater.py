@@ -165,7 +165,7 @@ class DotNetBCI(DevelopmentContainer):
 
         # https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/aspnet-port
         self.use_nonprivileged_user = False
-        if self.version not in ("6.0", "7.0"):
+        if self.version != "6.0":
             self.use_nonprivileged_user = True
 
         self.custom_description = f"The {self.pretty_name} based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
@@ -325,9 +325,9 @@ class DotNetBCI(DevelopmentContainer):
         self.package_list = []
 
 
-_DOTNET_VERSION_T = Literal["6.0", "7.0", "8.0"]
+_DOTNET_VERSION_T = Literal["6.0", "8.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "7.0", "8.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "8.0"]
 
 _LATEST_DOTNET_VERSION = "8.0"
 
