@@ -150,6 +150,7 @@ EXPOSE 9000
             f"php{php_version}-phar",
             f"php{php_version}-mbstring",
         ]
+        + os_version.lifecycle_data_pkg
         + extra_pkgs,
         replacements_via_service=[
             Replacement("%%composer_version%%", package_name="php-composer2"),

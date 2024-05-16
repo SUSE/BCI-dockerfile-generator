@@ -47,7 +47,7 @@ RUST_CONTAINERS = [
             rust_version == _RUST_VERSIONS[-1]
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
-        supported_until=_RUST_SUPPORT_ENDS.get(rust_version, None),
+        supported_until=_RUST_SUPPORT_ENDS.get(rust_version),
         pretty_name=f"Rust {rust_version}",
         package_list=[
             f"rust{rust_version}",

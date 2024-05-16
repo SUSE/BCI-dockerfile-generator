@@ -9,8 +9,12 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
 
+_NODE_VERSIONS = Literal[16, 18, 20, 21, 22]
+
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
+    22: datetime.date(2027, 4, 30),
+    21: datetime.date(2024, 6, 1),
     20: datetime.date(2026, 4, 30),
     # ... upstream is 2024/4/30 but SUSE ends earlier with SP5
     # see https://confluence.suse.com/display/SLE/Node.js
@@ -21,12 +25,13 @@ _NODEJS_SUPPORT_ENDS = {
 }
 
 
-def _get_node_kwargs(ver: Literal[16, 18, 20], os_version: OsVersion):
+def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
     return {
         "name": "nodejs",
         "os_version": os_version,
+        # we label the newest LTS version as latest
         "is_latest": ver == 20 and os_version in CAN_BE_LATEST_OS_VERSION,
-        "supported_until": _NODEJS_SUPPORT_ENDS.get(ver, None),
+        "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
         "additional_names": ["node"],

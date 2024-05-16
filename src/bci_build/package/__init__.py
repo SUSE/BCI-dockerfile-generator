@@ -123,6 +123,8 @@ class PackageType(enum.Enum):
 class OsVersion(enum.Enum):
     """Enumeration of the base operating system versions for BCI."""
 
+    #: SLE 15 Service Pack 7
+    SP7 = 7
     #: SLE 15 Service Pack 6
     SP6 = 6
     #: SLE 15 Service Pack 5
@@ -177,6 +179,16 @@ class OsVersion(enum.Enum):
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
+    @property
+    def is_sle15(self) -> bool:
+        return self.value in (
+            OsVersion.SP3.value,
+            OsVersion.SP4.value,
+            OsVersion.SP5.value,
+            OsVersion.SP6.value,
+            OsVersion.SP7.value,
+        )
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
@@ -220,8 +232,9 @@ CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
-    OsVersion.SP5: None,  # datetime.date(2024, 12, 31),
+    OsVersion.SP5: datetime.date(2024, 12, 31),
     OsVersion.SP6: None,
+    OsVersion.SP7: datetime.date(2028, 7, 31),
 }
 
 
