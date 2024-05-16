@@ -42,7 +42,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk timezone util-linux findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306
