@@ -15,3 +15,5 @@ curl -o src/bci_build/package/grafana/run.sh https://raw.githubusercontent.com/g
 
 curl -o src/bci_build/package/mariadb/entrypoint.sh https://raw.githubusercontent.com/MariaDB/mariadb-docker/master/docker-entrypoint.sh
 curl -o src/bci_build/package/mariadb/healthcheck.sh https://raw.githubusercontent.com/MariaDB/mariadb-docker/master/healthcheck.sh
+
+curl -o src/bci_build/package/templates/rmt_helm_chart_readme.j2 https://raw.githubusercontent.com/SUSE/helm-charts/main/rmt-helm/README.md
