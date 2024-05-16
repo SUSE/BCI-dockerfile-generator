@@ -178,7 +178,14 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
                 ),
             ],
             pretty_name="MariaDB Server",
-            package_list=["mariadb", "mariadb-tools", "gawk", "timezone", "util-linux"],
+            package_list=[
+                "mariadb",
+                "mariadb-tools",
+                "gawk",
+                "timezone",
+                "util-linux",
+                "findutils",
+            ],
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
                 "docker-entrypoint.sh": _MARIADB_ENTRYPOINT,
@@ -257,7 +264,7 @@ POSTGRES_CONTAINERS = [
         name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=[f"postgresql{ver}-server"],
+        package_list=[f"postgresql{ver}-server", "findutils"],
         version=ver,
         additional_versions=["%%pg_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
@@ -448,7 +455,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 parse_version="minor",
             )
         ],
-        "package_list": ["gawk", "nginx"],
+        "package_list": ["gawk", "nginx", "findutils"],
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
