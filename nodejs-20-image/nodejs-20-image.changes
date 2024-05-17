@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 17 13:50:40 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Explicitly install findutils for containers that need it
+
+-------------------------------------------------------------------
 Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base
