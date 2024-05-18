@@ -162,7 +162,7 @@ EXPOSE 9000
         env={
             "PHP_VERSION": "%%php_version%%",
             "PHP_INI_DIR": f"/etc/php{php_version}/",
-            "PHPIZE_DEPS": f"php{php_version}-devel awk make",
+            "PHPIZE_DEPS": f"php{php_version}-devel awk make findutils",
             "COMPOSER_VERSION": "%%composer_version%%",
             **extra_env,
         },
