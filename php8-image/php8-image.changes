@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun May 19 09:10:14 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- add findutils for phpize
+
+-------------------------------------------------------------------
 Thu May 16 11:29:52 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add lifecycle data package
