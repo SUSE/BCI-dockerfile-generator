@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 22 13:34:37 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Extend README
+
+-------------------------------------------------------------------
 Sun May 19 09:10:14 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - add findutils for phpize
