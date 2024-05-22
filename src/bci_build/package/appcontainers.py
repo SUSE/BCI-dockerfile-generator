@@ -17,6 +17,7 @@ from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.basecontainers import _get_os_container_package_names
 
 _PCP_FILES = {}
 for filename in (
@@ -703,3 +704,74 @@ WORKDIR $CATALINA_HOME
     )
     for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_BASE_OS_VERSIONS)
 ]
+
+_BASE_PODMAN_OSC_CMD = (
+    "podman run --rm -it "
+    + r"-v \$HOME/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z "
+    + r"-v \$HOME/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z"
+)
+
+OSC_CONTAINER = ApplicationStackContainer(
+    name="osc",
+    pretty_name="Packaging",
+    package_name="packaging-image",
+    os_version=OsVersion.TUMBLEWEED,
+    is_latest=True,
+    version_in_uid=False,
+    version="%%osc_version%%",
+    replacements_via_service=[
+        Replacement(regex_in_build_description="%%osc_version%%", package_name="osc")
+    ],
+    extra_files={
+        "entrypoint.sh": (Path(__file__).parent / "osc" / "entrypoint.sh").read_bytes()
+    },
+    extra_labels={
+        "run": f"{_BASE_PODMAN_OSC_CMD} IMAGE",
+        "runcwd": f"{_BASE_PODMAN_OSC_CMD} -v .:/root/osc-workdir:z IMAGE",
+    },
+    package_list=[
+        "osc",
+        "obs-service-appimage",
+        "obs-service-cargo",
+        "obs-service-cdi_containers_meta",
+        "obs-service-compose_kiwi_description",
+        "obs-service-docker_label_helper",
+        "obs-service-download_assets",
+        "obs-service-download_files",
+        "obs-service-download_url",
+        "obs-service-extract_file",
+        "obs-service-format_spec_file",
+        "obs-service-go_modules",
+        "obs-service-kiwi_label_helper",
+        "obs-service-kiwi_metainfo_helper",
+        "obs-service-kubevirt_containers_meta",
+        "obs-service-node_modules",
+        "obs-service-obs_scm",
+        "cpio",
+        "obs-service-product_converter",
+        "obs-service-recompress",
+        "obs-service-refresh_patches",
+        "obs-service-replace_using_env",
+        "obs-service-replace_using_package_version",
+        "obs-service-set_version",
+        "obs-service-snapcraft",
+        "obs-service-source_validator",
+        "obs-service-tar",
+        "obs-service-tar_scm",
+        "obs-service-verify_file",
+        *_get_os_container_package_names(OsVersion.TUMBLEWEED),
+        "git",
+        "openssh-common",
+        "openssh-clients",
+    ],
+    cmd=["/bin/bash"],
+    custom_end="""WORKDIR /root/osc-workdir
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+""",
+    entrypoint=["/usr/local/bin/entrypoint.sh"],
+    volumes=[
+        # default location of the build root & package cache
+        "/var/tmp"
+    ],
+)
