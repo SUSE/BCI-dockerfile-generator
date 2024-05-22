@@ -1,0 +1,41 @@
+# The PHP Apache {{ image.version }} Container Image
+
+{% include 'badges.j2' %}
+
+{% include 'php_description.j2' %}
+
+## How to use the image
+
+The image ships with the Apache web server and the `mod_php` module.
+
+To deploy an application, copy its sources into the htdocs folder
+`/srv/www/htdocs` (this directory is the `WORKDIR` of the container image):
+
+```Dockerfile
+FROM {{ image.pretty_reference }}
+
+RUN set -eux; \
+    zypper -n in $my_dependencies; \
+    # additional setup steps
+
+# Copy the app into the Apache2 document root
+COPY app/ .
+```
+
+Build the image and run the resulting container:
+
+```ShellSession
+$ buildah bud -t my-app .
+$ podman run -d -p 8080:80 my-app
+```
+
+Alternatively, you can mount the application's source code directly into the
+container:
+
+```ShellSession
+$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z {{ image.reference }}
+```
+
+{% include 'php_common.j2' %}
+
+{% include 'licensing_and_eula.j2' %}

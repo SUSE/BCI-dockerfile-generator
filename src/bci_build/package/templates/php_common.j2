@@ -1,0 +1,50 @@
+## How to install PHP extensions
+
+PHP extensions must be installed using the `zypper` package manager. PHP
+extensions are named using the `php{{ image.version }}-$extension_name` scheme,
+and they can be installed as follows:
+
+```Dockerfile
+FROM {{ image.pretty_reference }}
+
+RUN zypper -n in php{{ image.version }}-gd php{{ image.version }}-intl
+```
+
+Alternatively, you can use the `docker-php-ext-install` script. It is provided
+for compatibility with the [PHP DockerHub Image](https://hub.docker.com/_/php)
+but it uses zypper to install the extensions from RPMs. It is provided for
+compatibility reasons and can be used similar to the script from PHP DockerHub
+image:
+
+```Dockerfile
+FROM {{ image.pretty_reference }}
+
+RUN docker-php-ext-install gd intl
+```
+
+## How to install PECL extensions
+
+[PECL](https://pecl.php.net/) is a package repository hosting PHP extensions. It
+can be used as an alternative source to obtain PHP extensions, but without any
+guarantee of interoperability with this image and without any official support.
+
+PECL extensions can be installed as follows:
+
+```Dockerfile
+FROM {{ image.pretty_reference }}
+
+RUN set -euo pipefail; \
+    zypper -n in $PHPIZE_DEPS php8-pecl; \
+    pecl install APCu-5.1.21;
+```
+
+**Note:** Building an extension may require installing additional dependencies.
+
+
+## Compatibility with the DockerHub Image
+
+The following scripts ship with the image to keep it compatible with the
+DockerHub image: `docker-php-source`, `docker-php-ext-configure`,
+`docker-php-ext-enable`, and `docker-php-ext-install`. Note that only
+`docker-php-ext-install` performs an actual job. None of the other scripts
+require to be executed in the image.

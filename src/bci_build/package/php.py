@@ -1,5 +1,6 @@
 import enum
 from itertools import product
+from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -42,12 +43,13 @@ _EMPTY_SCRIPT = """#!/bin/sh
 echo "This script is not required in this PHP container."
 """
 
-_PHP_VERSIONS = (8,)
+_PHP_VERSION_T = Literal[8]
+_PHP_VERSIONS: tuple[_PHP_VERSION_T, ...] = (8,)
 _LATEST_PHP_VERSION = sorted(_PHP_VERSIONS, reverse=True)[0]
 
 
 def _create_php_bci(
-    os_version: OsVersion, php_variant: PhpVariant, php_version: int
+    os_version: OsVersion, php_variant: PhpVariant, php_version: _PHP_VERSION_T
 ) -> DevelopmentContainer:
     common_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-*
@@ -90,8 +92,9 @@ EXPOSE 80
 
 """
             + DOCKERFILE_RUN
-            + r""" \
-	cd /etc/php8/fpm/; \
+            + rf""" \
+	cd /etc/php{php_version}/fpm/; \ """
+            + """
         test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
         test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
 	{ \
@@ -122,11 +125,8 @@ EXPOSE 9000
 """
         )
     else:
-        extra_pkgs = (
-            []
-            if os_version not in (OsVersion.TUMBLEWEED, OsVersion.SP6)
-            else [f"php{php_version}-readline"]
-        )
+        # required for the interactive shell to work
+        extra_pkgs = [f"php{php_version}-readline"]
         extra_env = {}
         cmd = ["php", "-a"]
         custom_end = common_end
@@ -138,8 +138,10 @@ EXPOSE 9000
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
-        is_latest=php_version == _LATEST_PHP_VERSION
-        and os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(
+            php_version == _LATEST_PHP_VERSION
+            and os_version in CAN_BE_LATEST_OS_VERSION
+        ),
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
