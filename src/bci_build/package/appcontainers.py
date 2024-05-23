@@ -147,13 +147,18 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
+for mariadb_version, os_version in zip(
+    ("10.6", "10.11", "11.2", "10.11"), ALL_NONBASE_OS_VERSIONS + [OsVersion.BASALT]
+):
     if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []
     else:
         prefix = "rmt-"
         additional_names = ["mariadb"]
+
+    version_check_lines = f"""# sanity check that the version from the tag is equal to the version that we expect
+{DOCKERFILE_RUN} [[ $(rpm -q --qf "%{{version}}" mariadb-client | cut -d "." -f -2) = "{mariadb_version}" ]]"""
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(
@@ -162,21 +167,8 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             name=f"{prefix}mariadb",
-            version="%%mariadb_version%%",
+            version=mariadb_version,
             version_in_uid=False,
-            replacements_via_service=[
-                Replacement(
-                    regex_in_build_description="%%mariadb_version%%",
-                    package_name="mariadb",
-                    parse_version="minor",
-                ),
-                Replacement(
-                    file_name="README.md",
-                    regex_in_build_description="%%mariadb_version%%",
-                    package_name="mariadb",
-                    parse_version="minor",
-                ),
-            ],
             pretty_name="MariaDB Server",
             package_list=[
                 "mariadb",
@@ -198,7 +190,9 @@ for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.BASALT}:
             cmd=["mariadbd"],
             volumes=["/var/lib/mysql"],
             exposes_tcp=[3306],
-            custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
+            custom_end=rf"""{version_check_lines}
+
+{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -233,19 +227,13 @@ COPY gosu /usr/local/bin/gosu
             version_in_uid=False,
             name=f"{prefix}mariadb-client",
             additional_names=[f"{name}-client" for name in additional_names],
-            version="%%mariadb_version%%",
-            replacements_via_service=[
-                Replacement(
-                    regex_in_build_description="%%mariadb_version%%",
-                    package_name="mariadb-client",
-                    parse_version="minor",
-                ),
-            ],
+            version=mariadb_version,
             pretty_name="MariaDB Client",
             support_level=SupportLevel.L3,
             package_list=["mariadb-client"],
             build_recipe_type=BuildType.DOCKER,
             cmd=["mariadb"],
+            custom_end=version_check_lines,
         )
     )
 
