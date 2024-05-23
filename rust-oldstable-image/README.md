@@ -1,8 +1,8 @@
-# The SLE BCI Rust 1.76 Container Image
+# The SLE BCI Rust 1.77 Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
 
-Rust 1.76 container based on the SLE Base Container Image.
+Rust 1.77 container based on the SLE Base Container Image.
 
 ## Licensing
 `SPDX-License-Identifier: MIT`
