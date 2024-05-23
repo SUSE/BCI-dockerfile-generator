@@ -94,7 +94,7 @@ EXPOSE 80
             + DOCKERFILE_RUN
             + rf""" \
 	cd /etc/php{php_version}/fpm/; \ """
-            + """
+            + r"""
         test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
         test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
 	{ \
