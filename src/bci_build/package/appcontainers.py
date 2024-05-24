@@ -434,7 +434,6 @@ _NGINX_FILES = {}
 for filename in (
     "docker-entrypoint.sh",
     "LICENSE",
-    "10-listen-on-ipv6-by-default.sh",
     "20-envsubst-on-templates.sh",
     "30-tune-worker-processes.sh",
     "index.html",
