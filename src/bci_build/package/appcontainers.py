@@ -454,7 +454,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 parse_version="minor",
             )
         ],
-        "package_list": ["gawk", "nginx", "findutils"],
+        "package_list": ["gawk", "nginx", "findutils", "gettext-runtime"],
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
