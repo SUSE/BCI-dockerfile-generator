@@ -434,7 +434,6 @@ _NGINX_FILES = {}
 for filename in (
     "docker-entrypoint.sh",
     "LICENSE",
-    "10-listen-on-ipv6-by-default.sh",
     "20-envsubst-on-templates.sh",
     "30-tune-worker-processes.sh",
     "index.html",
@@ -455,7 +454,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 parse_version="minor",
             )
         ],
-        "package_list": ["gawk", "nginx", "findutils"],
+        "package_list": ["gawk", "nginx", "findutils", "gettext-runtime"],
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
