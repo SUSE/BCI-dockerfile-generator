@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 24 06:34:53 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch to Rust 1.77
+
+-------------------------------------------------------------------
 Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base
