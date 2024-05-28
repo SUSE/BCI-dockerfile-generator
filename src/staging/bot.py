@@ -68,7 +68,7 @@ _GIT_COMMIT_ENV = {
 #: this is usually only necessary during the early stages of a new SLE service
 #: pack when autobuild has not yet synced the binaries of the container images
 #: from IBS to OBS
-OS_VERSION_NEEDS_BASE_CONTAINER = (OsVersion.SP6,)
+OS_VERSION_NEEDS_BASE_CONTAINER: tuple[OsVersion, ...] = ()
 
 
 def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
