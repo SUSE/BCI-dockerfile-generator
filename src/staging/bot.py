@@ -954,7 +954,8 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 for f in all_tracked_files
                 if (f[0] not in (".", "_")) and not f.endswith(".changes")
             ]
-            await run_in_worktree("git rm -r " + " ".join(files_to_delete))
+            if files_to_delete:
+                await run_in_worktree("git rm -r " + " ".join(files_to_delete))
 
             written_files = await self.write_all_image_build_recipes(worktree_dir)
             await run_in_worktree("git add " + " ".join(written_files))
