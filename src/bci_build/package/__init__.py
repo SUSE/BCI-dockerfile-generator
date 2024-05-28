@@ -189,6 +189,21 @@ class OsVersion(enum.Enum):
             OsVersion.SP7.value,
         )
 
+    @property
+    def os_version(self) -> str:
+        """Returns the numeric version of :py:class:`OsContainer` (or
+        ``latest``).
+
+        """
+        if self.is_sle15:
+            return f"15.{str(self.value)}"
+        # FIXME
+        # if self.is_slcc:
+        #     return "16.0"
+
+        # Tumbleweed rolls too fast, just use latest
+        return "latest"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
