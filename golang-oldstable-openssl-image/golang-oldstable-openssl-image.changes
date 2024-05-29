@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 28 12:13:20 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- Extend README.md
+
+-------------------------------------------------------------------
 Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base
