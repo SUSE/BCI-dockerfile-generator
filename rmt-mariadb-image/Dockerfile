@@ -14,12 +14,12 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: suse/rmt-mariadb:%%mariadb_version%%
-#!BuildTag: suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%
-#!BuildTag: suse/mariadb:%%mariadb_version%%
-#!BuildTag: suse/mariadb:%%mariadb_version%%-%RELEASE%
-#!BuildName: suse-rmt-mariadb-%%mariadb_version%%
-#!BuildVersion: 15.6
+#!BuildTag: suse/rmt-mariadb:10.11
+#!BuildTag: suse/rmt-mariadb:10.11-%RELEASE%
+#!BuildTag: suse/mariadb:10.11
+#!BuildTag: suse/mariadb:10.11-%RELEASE%
+#!BuildName: suse-rmt-mariadb-10.11
+#!BuildVersion: 15.6.10.11
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -28,13 +28,13 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 # labelprefix=com.suse.application.rmt-mariadb
 LABEL org.opencontainers.image.title="SLE MariaDB Server"
 LABEL org.opencontainers.image.description="MariaDB Server container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%mariadb_version%%"
+LABEL org.opencontainers.image.version="10.11"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb:10.11-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
@@ -46,6 +46,9 @@ RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk t
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306
+# sanity check that the version from the tag is equal to the version that we expect
+RUN set -euo pipefail; [[ $(rpm -q --qf "%{version}" mariadb-client | cut -d "." -f -2) = "10.11" ]]
+
 RUN set -euo pipefail; mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
