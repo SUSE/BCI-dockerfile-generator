@@ -31,7 +31,7 @@ BASALT_BASE = OsContainer(
             "netcfg",
             # FIXME: enable this once it's on OBS
             # "lsb-release",
-            "ALP-dummy-release",
+            *OsVersion.BASALT.release_package_names,
             "openssl",
             "suse-build-key",
             # "patterns-alp-base",

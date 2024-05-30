@@ -204,6 +204,30 @@ class OsVersion(enum.Enum):
         # Tumbleweed rolls too fast, just use latest
         return "latest"
 
+    @property
+    def has_container_suseconnect(self) -> bool:
+        return self.is_sle15  # or self.value == OsVersion.SLCC_SLES_16_CONTAINERS
+
+    @property
+    def eula_package_names(self) -> tuple[str, ...]:
+        if self.is_sle15:
+            return ("skelcd-EULA-bci",)
+        # if self.is_slcc:
+        #     return (f"skelcd-EULA-{str(self.value).lower()}",)
+        return ()
+
+    @property
+    def release_package_names(self) -> tuple[str, ...]:
+        if self.value == OsVersion.TUMBLEWEED.value:
+            return ("openSUSE-release", "openSUSE-release-appliance-docker")
+        if self.value == OsVersion.BASALT.value:
+            return ("ALP-dummy-release",)
+        # if self.is_slcc:
+        #     return (f"{str(self.value).lower()}-release",)
+
+        assert self.is_sle15
+        return ("sles-release",)
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
