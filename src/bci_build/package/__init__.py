@@ -189,6 +189,21 @@ class OsVersion(enum.Enum):
             OsVersion.SP7.value,
         )
 
+    @property
+    def os_version(self) -> str:
+        """Returns the numeric version of :py:class:`OsContainer` (or
+        ``latest``).
+
+        """
+        if self.is_sle15:
+            return f"15.{str(self.value)}"
+        # FIXME
+        # if self.is_slcc:
+        #     return "16.0"
+
+        # Tumbleweed rolls too fast, just use latest
+        return "latest"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
@@ -995,13 +1010,15 @@ exit 0
         pass
 
     @property
+    @abc.abstractmethod
     def pretty_reference(self) -> str:
+        """Returns the human readable registry URL to this image. It is intended
+        to be used in the image documentation.
+
+        This url needn't point to an exact version-release but can include just
+        the major os version or the latest tag.
+
         """
-        Returns the human readable pretty URL to this image. Used in image documentation.
-        """
-        return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}"
-        )
 
     @property
     def description(self) -> str:
@@ -1375,6 +1392,12 @@ class DevelopmentContainer(BaseContainerImage):
         )
 
     @property
+    def pretty_reference(self) -> str:
+        return (
+            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}"
+        )
+
+    @property
     def build_version(self) -> str | None:
         build_ver = super().build_version
         if build_ver:
@@ -1453,6 +1476,10 @@ class OsContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
+
+    @property
+    def pretty_reference(self) -> str:
+        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
