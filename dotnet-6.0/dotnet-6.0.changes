@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 31 09:11:58 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.31
+
+-------------------------------------------------------------------
 Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base

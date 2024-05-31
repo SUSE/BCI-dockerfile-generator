@@ -16,8 +16,8 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-sdk:8.0
 #!BuildTag: bci/dotnet-sdk:8.0-%RELEASE%
-#!BuildTag: bci/dotnet-sdk:8.0.5
-#!BuildTag: bci/dotnet-sdk:8.0.5-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:8.0.6
+#!BuildTag: bci/dotnet-sdk:8.0.6-%RELEASE%
 #!BuildName: bci-dotnet-sdk-8.0
 #!BuildVersion: 15.6.8.0
 FROM bci/bci-base:15.6
@@ -48,26 +48,26 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.5-1.x86_64.rpm
-COPY dotnet-host-8.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.6-1.x86_64.rpm
+COPY dotnet-host-8.0.6-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-targeting-pack-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-hostfxr-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-runtime-deps-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-runtime-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-apphost-pack-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-8.0-8.0.5-1.x86_64.rpm
-COPY aspnetcore-targeting-pack-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.5-1.x86_64.rpm
-COPY aspnetcore-runtime-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.300-1.x86_64.rpm
-COPY dotnet-sdk-8.0-8.0.300-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-targeting-pack-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-hostfxr-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-runtime-deps-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-runtime-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-apphost-pack-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-8.0-8.0.6-1.x86_64.rpm
+COPY aspnetcore-targeting-pack-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.6-1.x86_64.rpm
+COPY aspnetcore-runtime-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.301-1.x86_64.rpm
+COPY dotnet-sdk-8.0-8.0.301-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
