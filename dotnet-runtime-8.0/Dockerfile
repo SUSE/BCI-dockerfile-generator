@@ -16,8 +16,8 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-runtime:8.0
 #!BuildTag: bci/dotnet-runtime:8.0-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:8.0.5
-#!BuildTag: bci/dotnet-runtime:8.0.5-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:8.0.6
+#!BuildTag: bci/dotnet-runtime:8.0.6-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:latest
 #!BuildName: bci-dotnet-runtime-8.0
 #!BuildVersion: 15.5.8.0
@@ -48,14 +48,14 @@ LABEL com.suse.release-stage="released"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.5-1.x86_64.rpm
-COPY dotnet-host-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-hostfxr-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-runtime-deps-8.0-8.0.5-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.5-1.x86_64.rpm
-COPY dotnet-runtime-8.0-8.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.6-1.x86_64.rpm
+COPY dotnet-host-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-hostfxr-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-runtime-deps-8.0-8.0.6-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.6-1.x86_64.rpm
+COPY dotnet-runtime-8.0-8.0.6-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -74,7 +74,7 @@ RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/*
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=8.0.5
+ENV DOTNET_VERSION=8.0.6
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
