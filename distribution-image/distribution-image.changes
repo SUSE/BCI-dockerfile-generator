@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 31 10:01:14 UTC 2024 - Fredrik Lönnegren <fredrik.lonnegren@suse.com>
+
+- Correct configuration path in the README
+
+-------------------------------------------------------------------
 Wed May  8 16:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - README fixes - better titles and follow recommended document structure
