@@ -17,6 +17,7 @@ from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_package_version_check
 
 _PCP_FILES = {}
 for filename in (
@@ -157,8 +158,7 @@ for mariadb_version, os_version in zip(
         prefix = "rmt-"
         additional_names = ["mariadb"]
 
-    version_check_lines = f"""# sanity check that the version from the tag is equal to the version that we expect
-{DOCKERFILE_RUN} [[ $(rpm -q --qf "%{{version}}" mariadb-client | cut -d "." -f -2) = "{mariadb_version}" ]]"""
+    version_check_lines = generate_package_version_check("mariadb-client", mariadb_version)
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(

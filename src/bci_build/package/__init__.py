@@ -272,6 +272,9 @@ class Package:
         return self.name
 
 
+PARSE_VERSION_T = Literal["major", "minor", "patch", "patch_update", "offset"]
+
+
 @dataclass
 class Replacement:
     """Represents a replacement via the `obs-service-replace_using_package_version
@@ -291,9 +294,7 @@ class Replacement:
     #: specify how the version should be formated, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
     #: for further details
-    parse_version: (
-        None | (Literal["major", "minor", "patch", "patch_update", "offset"])
-    ) = None
+    parse_version: None | PARSE_VERSION_T = None
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
