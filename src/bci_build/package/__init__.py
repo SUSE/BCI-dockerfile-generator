@@ -296,6 +296,15 @@ class Replacement:
     #: for further details
     parse_version: None | PARSE_VERSION_T = None
 
+    def __post_init__(self) -> None:
+        """Barf if someone tries to replace variables in README, as those
+        changes will be only performed in the buildroot, but not in the actual
+        source package.
+
+        """
+        if self.file_name and "readme" in self.file_name.lower():
+            raise ValueError(f"Cannot replace variables in {self.file_name}!")
+
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
