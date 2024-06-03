@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jun  3 15:53:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set release stage to released, which updates READMEs and support status to its final state
+
+-------------------------------------------------------------------
 Fri May 17 07:42:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - README updates from doc team
