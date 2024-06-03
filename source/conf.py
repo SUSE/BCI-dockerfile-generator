@@ -13,8 +13,10 @@
 # sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
+import datetime
+
 project = "bci-build-templates"
-copyright = "2022, Dan Čermák"
+copyright = f"{datetime.date.today().year}, SUSE LLC"
 author = "Dan Čermák"
 
 
