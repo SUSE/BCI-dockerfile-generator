@@ -9,6 +9,8 @@ from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import get_pkg_version
 
 SPACK_CONTAINERS = [
     DevelopmentContainer(
@@ -19,25 +21,14 @@ SPACK_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         logo_url="https://spack.io/assets/images/spack-logo-white.svg",
-        version="%%spack_version%%",
+        version=(spack_pkg_version := get_pkg_version("spack", os_version)),
         version_in_uid=False,
         additional_versions=["%%spack_minor%%"],
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%spack_version%%",
-                package_name="spack",
-                parse_version="patch",
-            ),
-            Replacement(
                 regex_in_build_description="%%spack_minor%%",
                 package_name="spack",
                 parse_version="minor",
-            ),
-            Replacement(
-                regex_in_build_description="%%spack_version%%",
-                file_name="README.md",
-                package_name="spack",
-                parse_version="patch",
             ),
         ],
         package_list=[
@@ -69,7 +60,7 @@ SPACK_CONTAINERS = [
             "_constraints": generate_disk_size_constraints(10),
         },
         # HPC module only exists for those two arches (bsc#1224130)
-        exclusive_arch=(Arch.AARCH64, Arch.X86_64),
+        exclusive_arch=[Arch.AARCH64, Arch.X86_64],
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
         custom_end=rf"""
@@ -84,6 +75,8 @@ SPACK_CONTAINERS = [
     && cp $SPACK_ROOT/share/spack/docker/modules.yaml \
        /root/.spack/modules.yaml \
     && rm -rf /root/*.* /run/nologin
+
+{generate_package_version_check('spack', spack_pkg_version, 'patch')}
 
 WORKDIR /root
 SHELL ["docker-shell"]

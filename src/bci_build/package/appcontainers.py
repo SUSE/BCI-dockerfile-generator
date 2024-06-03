@@ -18,6 +18,9 @@ from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import get_pkg_version
+from bci_build.package.versions import to_major_minor_version
+from bci_build.package.versions import to_major_version
 
 _PCP_FILES = {}
 for filename in (
@@ -40,16 +43,19 @@ PCP_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
-        version="%%pcp_patch%%",
+        version=(pcp_ver := get_pkg_version("pcp", os_version)),
         version_in_uid=False,
-        additional_versions=["%%pcp_minor%%", "%%pcp_major%%"],
+        additional_versions=[
+            to_major_minor_version(pcp_ver),
+            to_major_version(pcp_ver),
+        ],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description=f"%%pcp_{ver}%%",
                 package_name="pcp",
                 parse_version=ver,
             )
-            for ver in ("major", "minor", "patch")
+            for ver in ("major", "minor")
         ],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
@@ -148,9 +154,9 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-for mariadb_version, os_version in zip(
-    ("10.6", "10.11", "11.2", "10.11"), ALL_NONBASE_OS_VERSIONS + [OsVersion.BASALT]
-):
+
+for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
+    mariadb_version = to_major_minor_version(get_pkg_version("mariadb", os_version))
     if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []
@@ -158,7 +164,9 @@ for mariadb_version, os_version in zip(
         prefix = "rmt-"
         additional_names = ["mariadb"]
 
-    version_check_lines = generate_package_version_check("mariadb-client", mariadb_version)
+    version_check_lines = generate_package_version_check(
+        "mariadb-client", mariadb_version
+    )
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(
