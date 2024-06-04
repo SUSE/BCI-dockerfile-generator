@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  4 12:34:36 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- Fix grammar mistake in licensing footer
+
+-------------------------------------------------------------------
 Wed May 15 15:51:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Switch FROM build tag from suse/sle15 to bci/bci-base
