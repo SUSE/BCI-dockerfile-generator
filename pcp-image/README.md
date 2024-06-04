@@ -96,9 +96,12 @@ The pmproxy daemon listens on this port and exposes the REST [PMWEBAPI(3)](https
 [PCP books](https://pcp.readthedocs.io)
 
 ## Licensing
+
 `SPDX-License-Identifier: (LGPL-2.1+ AND GPL-2.0+)`
 
-The build recipe and this documentation is licensed as (LGPL-2.1+ AND GPL-2.0+).
+This documentation and the build recipe are licensed as (LGPL-2.1+ AND GPL-2.0+).
 The container itself contains various software components under various open source licenses listed in the associated
 Software Bill of Materials (SBOM).
 
+This image is based on [SUSE Linux Enterprise Server](https://www.suse.com/products/server/), a reliable,
+secure, and scalable server operating system built to power mission-critical workloads in physical and virtual environments.
