@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  4 10:36:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Align supported until date with SLE 15 SP7 EoL
+
+-------------------------------------------------------------------
 Thu May 16 11:30:30 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add support end date
