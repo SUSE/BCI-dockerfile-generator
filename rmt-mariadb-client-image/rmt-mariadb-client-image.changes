@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  4 12:34:36 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- Fix grammar mistake in licensing footer
+
+-------------------------------------------------------------------
 Thu May 30 08:19:39 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Fix version string in reference
