@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun  5 12:44:37 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Hardcode pcp version in the README
+
+-------------------------------------------------------------------
 Tue Jun  4 12:34:36 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
 
 - Fix grammar mistake in licensing footer
