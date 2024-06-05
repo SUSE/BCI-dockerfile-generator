@@ -31,7 +31,6 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/bci/openjdk-devel:11-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
@@ -39,6 +38,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends java-11-openjdk-devel git-core maven; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-11-openjdk-11/bin"

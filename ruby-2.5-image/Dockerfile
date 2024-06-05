@@ -34,7 +34,6 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL org.opensuse.reference="registry.suse.com/bci/ruby:2.5-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
@@ -42,6 +41,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux curl git-core gcc-c++ sqlite3-devel make gawk timezone; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV LANG="C.UTF-8"
