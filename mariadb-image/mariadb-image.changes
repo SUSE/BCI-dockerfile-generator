@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun  5 15:13:27 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Don't add artifacthub labels into labelprefix section
+
+-------------------------------------------------------------------
 Wed Jun  5 12:47:13 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Avoid bashism version check
