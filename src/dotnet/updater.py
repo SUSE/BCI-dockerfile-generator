@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 
 import dnf
 from jinja2 import Template
+from packaging import version
 
 from bci_build.logger import LOGGER
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
@@ -102,7 +103,7 @@ RUN rpm --import /tmp/microsoft.asc
 RUN zypper --non-interactive install --no-recommends libicu {# we need to explicitly require openssl 1.1 since SP6 #}{% if image.os_version | string not in ["3", "4", "5"] %}libopenssl1_1 {% endif %}/tmp/*rpm
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-RUN zypper -n addlock dotnet-host
+COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
 RUN rm -rf /tmp/* && zypper clean && """
     + LOG_CLEAN
@@ -173,7 +174,10 @@ class DotNetBCI(DevelopmentContainer):
 
         self.custom_description = f"The {self.pretty_name} based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 
+        ver = version.parse(str(self.version))
+
         self.extra_files = {
+            "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
             "microsoft.asc": MS_ASC,
             "prod.repo": MS_REPO,
             "README.md": README_MD_TEMPLATE.render(image=self),
