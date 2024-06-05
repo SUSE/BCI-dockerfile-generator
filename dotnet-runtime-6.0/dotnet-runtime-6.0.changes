@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun  5 15:10:31 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Don't add artifacthub labels into labelprefix section
+
+-------------------------------------------------------------------
 Mon Jun  3 15:53:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set release stage to released, which updates READMEs and support status to its final state
