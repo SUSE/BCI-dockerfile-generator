@@ -48,8 +48,8 @@ RUN set -euo pipefail; zypper -n in --no-recommends mariadb mariadb-tools gawk t
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306
-# sanity check that the version from the tag is equal to the version that we expect
-RUN set -euo pipefail; [[ $(rpm -q --qf "%{version}" mariadb-client | cut -d "." -f -2) = "10.6" ]]
+# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' mariadb-client | cut -d '.' -f -2)" = "10.6" ]
 
 RUN set -euo pipefail; mkdir /docker-entrypoint-initdb.d
 
