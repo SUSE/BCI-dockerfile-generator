@@ -14,15 +14,15 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: suse/pcp:%%pcp_patch%%
-#!BuildTag: suse/pcp:%%pcp_patch%%-%RELEASE%
-#!BuildTag: suse/pcp:%%pcp_minor%%
-#!BuildTag: suse/pcp:%%pcp_minor%%-%RELEASE%
-#!BuildTag: suse/pcp:%%pcp_major%%
-#!BuildTag: suse/pcp:%%pcp_major%%-%RELEASE%
+#!BuildTag: suse/pcp:5.2.5
+#!BuildTag: suse/pcp:5.2.5-%RELEASE%
+#!BuildTag: suse/pcp:5.2
+#!BuildTag: suse/pcp:5.2-%RELEASE%
+#!BuildTag: suse/pcp:5
+#!BuildTag: suse/pcp:5-%RELEASE%
 #!BuildTag: suse/pcp:latest
-#!BuildName: suse-pcp-%%pcp_patch%%
-#!BuildVersion: 15.5
+#!BuildName: suse-pcp-5.2.5
+#!BuildVersion: 15.5.5.2.5
 FROM bci/bci-init:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -31,13 +31,13 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 # labelprefix=com.suse.application.pcp
 LABEL org.opencontainers.image.title="SLE Performance Co-Pilot (pcp)"
 LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container based on the SLE Base Container Image. This container is only supported with podman."
-LABEL org.opencontainers.image.version="%%pcp_patch%%"
+LABEL org.opencontainers.image.version="5.2.5"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-LABEL org.opensuse.reference="registry.suse.com/suse/pcp:%%pcp_patch%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/pcp:5.2.5-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
