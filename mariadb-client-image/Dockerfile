@@ -41,5 +41,5 @@ LABEL org.opensuse.release-stage="released"
 
 RUN set -euo pipefail; zypper -n in --no-recommends mariadb-client; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 CMD ["mariadb"]
-# sanity check that the version from the tag is equal to the version that we expect
-RUN set -euo pipefail; [[ $(rpm -q --qf "%{version}" mariadb-client | cut -d "." -f -2) = "11.2" ]]
+# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' mariadb-client | cut -d '.' -f -2)" = "11.2" ]
