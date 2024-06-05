@@ -134,6 +134,14 @@ used to replace <strong>anything</strong> inside the container build description
 seen in the above code block, where we also set the
 <a class="reference internal" href="api.html#bci_build.package.DevelopmentContainer.additional_versions" title="bci_build.package.DevelopmentContainer.additional_versions"><code class="xref py py-attr docutils literal notranslate"><span class="pre">additional_versions</span></code></a>
 attribute via this mechanism.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The current setup <strong>cannot</strong> replace versions in READMEs. If you rely on
+versions getting replaced in a README (usually via the
+<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.pretty_reference" title="bci_build.package.BaseContainerImage.pretty_reference"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pretty_reference</span></code></a> property),
+then you <strong>must</strong> hardcode the version using the mechanism outlined in the
+<a class="reference internal" href="api.html#module-bci_build.package.versions" title="bci_build.package.versions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">versions</span></code></a> module.</p>
+</div>
 </section>
 <section id="installing-packages-into-the-container-image">
 <h2>Installing Packages into the Container Image<a class="headerlink" href="#installing-packages-into-the-container-image" title="Link to this heading">¶</a></h2>

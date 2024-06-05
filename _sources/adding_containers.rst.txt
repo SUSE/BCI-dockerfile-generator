@@ -123,6 +123,15 @@ seen in the above code block, where we also set the
 attribute via this mechanism.
 
 
+.. Caution::
+
+   The current setup **cannot** replace versions in READMEs. If you rely on
+   versions getting replaced in a README (usually via the
+   :py:attr:`~bci_build.package.BaseContainerImage.pretty_reference` property),
+   then you **must** hardcode the version using the mechanism outlined in the
+   :py:mod:`~bci_build.package.versions` module.
+
+
 Installing Packages into the Container Image
 --------------------------------------------
 
