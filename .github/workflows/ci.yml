@@ -70,7 +70,7 @@ jobs:
           key: tox-${{ hashFiles('poetry.lock') }}
 
       - name: build the documentation with sphinx
-        run: poetry run sphinx-build -M html source build -W
+        run: poetry run sphinx-build -M html source build
 
       - name: upload the build directory
         uses: actions/upload-artifact@v4

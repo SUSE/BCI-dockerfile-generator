@@ -1,0 +1,38 @@
+---
+name: update package versions from OBS
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  update-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: poetry install
+
+      - name: run version update
+        run: poetry run update-versions
+        env:
+          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
+          OSC_USER: "defolos"
+
+      - name: create a pull request with the updated versions
+        uses: peter-evans/create-pull-request@v6
+        with:
+          delete-branch: true
+          commit-message: "🤖: Update package versions via update-versions"
+          reviewers: dcermak,dirkmueller,alexandrevicenzi
+          assignees: dcermak
+          title: "🤖: Update package versions"
+          body: |
+            This is an automated update via poetry run update-versions
+          base: main
+          add-paths: |
+            src/bci_build/package/package_versions.json

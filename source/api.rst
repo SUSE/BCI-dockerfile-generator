@@ -16,6 +16,13 @@ API Documentation
    :members:
    :undoc-members:
 
+:py:mod:`bci_build.package.versions` module
+-------------------------------------------
+
+.. automodule:: bci_build.package.versions
+   :members:
+   :undoc-members:
+
 
 :py:mod:`bci_build.templates` module
 -------------------------------------

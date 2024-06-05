@@ -10,17 +10,19 @@ packages = [
     { include = "dotnet", from = "src" },
 ]
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = "^3.11"
 Jinja2 = ">=3.1"
 aiohttp = ">=3.9.0"
 rpm-vercmp = ">=0.1"
 aiofiles = ">=22.1"
 obs-package-update = { git = "https://github.com/dcermak/obs-package-update", branch = "main" }
+py-obs = { git = "https://github.com/dcermak/py-obs", branch = "main" }
 GitPython = ">=3.1"
 
 [tool.poetry.scripts]
 package = "bci_build.package:main"
 scratch-build-bot = "staging.bot:main"
+update-versions = "bci_build.package.versions:run_version_update"
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.1.14"
