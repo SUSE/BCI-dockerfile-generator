@@ -48,21 +48,27 @@ LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL io.artifacthub.package.readme-url="{{ image.readme_url }}"{% if image.logo_url %}
-LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"{% endif %}
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-{% if image.is_opensuse %}LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
+{%- if image.is_opensuse %}
+LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL org.opensuse.release-stage="{{ image.release_stage }}"
-{% else %}LABEL com.suse.supportlevel="{{ image.support_level }}"
+{%- else %}
+LABEL com.suse.supportlevel="{{ image.support_level }}"
 {%- if image.supported_until %}
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}
 LABEL com.suse.eula="{{ image.eula }}"
 LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
-LABEL com.suse.release-stage="{{ image.release_stage }}"{% endif %}
+LABEL com.suse.release-stage="{{ image.release_stage }}"
+{%- endif %}
 # endlabelprefix
-{%- if image.extra_label_lines %}{{ image.extra_label_lines }}{% endif %}
+LABEL io.artifacthub.package.readme-url="{{ image.readme_url }}"
+{%- if image.logo_url %}
+LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"
+{%- endif %}
+{%- if image.extra_label_lines %}{{ image.extra_label_lines }}
+{%- endif %}
 
 {% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
@@ -108,19 +114,21 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
-            <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
-            <label name="io.artifacthub.package.logo-url" value="{{ image.logo_url }}"/>{% endif %}
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-{% if not image.is_opensuse %}            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
+{%- if not image.is_opensuse %}
+            <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
 {%- if image.supported_until %}
             <label name="com.suse.supportlevel.until" value="{{ image.supported_until }}"/>
 {%- endif %}
-            <label name="com.suse.eula" value="{{ image.eula }}"/>{% endif %}
+            <label name="com.suse.eula" value="{{ image.eula }}"/>
+{%- endif %}
             <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.release-stage" value="{{ image.release_stage }}"/>
             <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
+          <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
+          <label name="io.artifacthub.package.logo-url" value="{{ image.logo_url }}"/>{% endif %}
         </labels>
 {%- if image.cmd_kiwi %}{{ image.cmd_kiwi }}{% endif %}
 {%- if image.entrypoint_kiwi %}{{ image.entrypoint_kiwi }}{% endif %}
