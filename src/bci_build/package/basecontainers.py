@@ -22,7 +22,6 @@ from bci_build.package import generate_disk_size_constraints
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
-
 MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
