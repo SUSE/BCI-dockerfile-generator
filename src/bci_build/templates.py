@@ -90,6 +90,12 @@ KIWI_TEMPLATE = jinja2.Template(
 <!-- SPDX-License-Identifier: {{ image.license }} -->
 <!-- {{ INFOHEADER }}-->
 <!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
+{%- if image.exclusive_arch %}
+<!-- OBS-ExclusiveArch:{% for arch in image.exclusive_arch %} {{ arch }}{%- endfor %} -->
+{%- endif %}
+{%- if image.kiwi_ignore_packages %}
+<!-- OBS-IgnorePackage:{% for pkg in image.kiwi_ignore_packages %} {{ pkg }}{%- endfor %} -->
+{%- endif %}
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
