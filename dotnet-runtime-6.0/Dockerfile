@@ -67,7 +67,7 @@ RUN rpm --import /tmp/microsoft.asc
 RUN zypper --non-interactive install --no-recommends libicu libopenssl1_1 /tmp/*rpm
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-RUN zypper -n addlock dotnet-host
+COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
-RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/*
+RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
