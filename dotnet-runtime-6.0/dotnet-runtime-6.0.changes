@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun  5 16:34:48 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- lock dotnet-host only within the minor version
+
+-------------------------------------------------------------------
 Wed Jun  5 15:12:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Don't add artifacthub labels into labelprefix section
