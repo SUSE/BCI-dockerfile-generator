@@ -12,6 +12,7 @@ from jinja2 import Template
 
 from bci_build.logger import LOGGER
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import generate_disk_size_constraints
@@ -103,7 +104,9 @@ RUN zypper --non-interactive install --no-recommends libicu {# we need to explic
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 RUN zypper -n addlock dotnet-host
 
-RUN rm -rf /tmp/* && zypper clean && rm -rf /var/log/*
+RUN rm -rf /tmp/* && zypper clean && """
+    + LOG_CLEAN
+    + """
 
 {% if not image.is_sdk and image.use_nonprivileged_user %}
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
