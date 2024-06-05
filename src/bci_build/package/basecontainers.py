@@ -132,6 +132,7 @@ FIPS_BASE_CONTAINERS = [
                 && rm -vf *.rpm \\
                 && rpmqpack | grep -E '(openssl|libgcrypt)'  | xargs zypper -n addlock
             ENV OPENSSL_FORCE_FIPS_MODE=1
+            ENV LIBGCRYPT_FORCE_FIPS_MODE=1
             """
         ),
     )
