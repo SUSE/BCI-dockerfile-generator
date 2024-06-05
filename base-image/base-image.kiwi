@@ -39,7 +39,6 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://susealp.io/"/>
-            <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
             <label name="org.opensuse.reference" value="registry.suse.com/alp/bci/bci-base:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
@@ -47,6 +46,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
     </type>

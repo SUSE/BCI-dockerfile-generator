@@ -31,8 +31,6 @@ LABEL org.opencontainers.image.url="https://susealp.io/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 LABEL org.opensuse.reference="registry.suse.com/alp/bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -40,6 +38,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 LABEL usage="This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
 
 RUN set -euo pipefail; zypper -n in --no-recommends systemd gzip; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
