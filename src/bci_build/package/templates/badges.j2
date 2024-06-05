@@ -1,12 +1,10 @@
 {% if image.eula == 'sle-bci' -%}
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 {%- endif %}
-{% if not image.is_opensuse and image.support_level | string != 'l3' -%}
+{%- if not image.is_opensuse and image.support_level | string != 'l3' -%}
 ![Support Level](https://img.shields.io/badge/Support_Level-{{ image.support_level }}-blue)
 {%- endif %}
-{% if not image.is_opensuse and image.build_tags[0].find('/ltss/') != -1 -%}
+{%- if not image.is_opensuse and image.image_type | string == "ltss" -%}
 ![Access Protected](https://img.shields.io/badge/Requires_login_for_access-orange)
-{%- endif %}
-{% if not image.is_opensuse and image.build_tags[0].find('/ltss/') != -1 -%}
 ![Long Term Service Pack Support](https://img.shields.io/badge/LTSS-Yes-orange)
 {%- endif %}
