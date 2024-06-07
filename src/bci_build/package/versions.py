@@ -153,4 +153,4 @@ def run_version_update() -> None:
         loop.run_until_complete(osc.teardown())
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as versions_json:
-        json.dump(new_versions, versions_json, indent=4)
+        json.dump(new_versions, versions_json, indent=4, sort_keys=True)
