@@ -39,5 +39,6 @@ jobs:
           body: |
             This is an automated update via poetry run update-versions
           base: main
+          branch: create-pull-request/update-versions
           add-paths: |
             src/bci_build/package/package_versions.json
