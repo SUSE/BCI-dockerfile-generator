@@ -1,5 +1,6 @@
 """Base container images maintained by the BCI generator"""
 
+import datetime
 import os
 import textwrap
 from pathlib import Path
@@ -116,6 +117,7 @@ FIPS_BASE_CONTAINERS = [
         os_version=os_version,
         build_recipe_type=BuildType.DOCKER,
         support_level=SupportLevel.L3,
+        supported_until=datetime.date(2025, 12, 31),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} FIPS-140-2",
         package_list=["fipscheck", "sles-ltss-release"],
