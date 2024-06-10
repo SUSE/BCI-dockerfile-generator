@@ -1,6 +1,5 @@
 # The Basalt Project BCI Adaptable Linux Platform Init Container Image
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 Systemd environment for containers based on the SUSE Adaptable Linux Platform (ALP). This container is only supported with podman.
 

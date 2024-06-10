@@ -1,6 +1,5 @@
 # Basalt Project BCI Adaptable Linux Platform Micro: Suitable for deploying static binaries
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 ## Description
 This image is similar to Minimal but without the RPM package manager.
