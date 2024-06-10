@@ -1,6 +1,5 @@
 # Basalt Project BCI Adaptable Linux Platform Minimal: Base Container image without Zypper
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 ## Description
 This image comes without Zypper, but it does have the RPM package manager installed.

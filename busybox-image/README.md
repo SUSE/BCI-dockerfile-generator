@@ -1,6 +1,5 @@
 # Basalt Project BCI Adaptable Linux Platform BusyBox: the smallest and GPLv3-free image
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 ## Description
 This image comes with the most basic tools provided by the BusyBox project.

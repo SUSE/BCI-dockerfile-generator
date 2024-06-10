@@ -1,6 +1,5 @@
 # The Basalt Project BCI Base Container Image
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 Base container based on the SUSE Adaptable Linux Platform (ALP).
 
