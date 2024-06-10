@@ -1,7 +1,6 @@
 # The SLE BCI Ruby 2.5 Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 Ruby 2.5 container based on the SLE Base Container Image.
 
 ## Licensing

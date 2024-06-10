@@ -1,7 +1,6 @@
 # The SLE BCI Rust 1.77 Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 Rust 1.77 container based on the SLE Base Container Image.
 
 ## Licensing

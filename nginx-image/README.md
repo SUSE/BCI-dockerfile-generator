@@ -1,7 +1,6 @@
 # The SLE NGINX Container Image
 
 
-
 NGINX open source all-in-one load balancer, content cache and web server based on the SLE Base Container Image.
 
 ## Licensing

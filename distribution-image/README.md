@@ -1,7 +1,6 @@
 # SLE OCI Container Registry (Distribution): Suitable for running a local OCI registry
 
 
-
 ## Description
 This container image allows to run a local OCI registry.
 

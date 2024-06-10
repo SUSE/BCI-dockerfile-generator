@@ -1,5 +1,4 @@
 # The {self.title} Container Image
-
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 # Purpose

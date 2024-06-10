@@ -1,5 +1,4 @@
 # The SLE Blackbox Exporter Container Image
-
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 Blackbox Exporter container based on the SLE Base Container Image.

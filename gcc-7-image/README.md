@@ -1,6 +1,5 @@
 # SLE BCI GNU Compiler Collection Container Image (GCC)
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 # Description
 The GNU Compiler Collection (GCC) is an optimizing compiler for various

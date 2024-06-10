@@ -1,7 +1,6 @@
 # The SLE BCI Node.js 20 development Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 Node.js 20 development container based on the SLE Base Container Image.
 
 ## Licensing
