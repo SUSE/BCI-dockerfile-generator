@@ -1,6 +1,5 @@
 # The SLE BCI SLE 15 Kernel Module Development Container Image
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 SLE 15 Kernel Module Development container based on the SLE Base Container Image.
 

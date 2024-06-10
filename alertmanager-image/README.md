@@ -1,5 +1,4 @@
 # The SLE Alertmanager Container Image
-
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 Alertmanager container based on the SLE Base Container Image.

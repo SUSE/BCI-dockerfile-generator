@@ -1,7 +1,6 @@
 # The SLE 15 SP6 with Git Container Image
 
 
-
 A micro environment with Git based on the SLE Base Container Image.
 
 ## Licensing

@@ -1,5 +1,4 @@
 # The SLE Grafana Container Image
-
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 Grafana container based on the SLE Base Container Image.
