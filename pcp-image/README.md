@@ -1,7 +1,6 @@
 # SLE Performance Co-Pilot (pcp): Performance Co-Pilot
 
 
-
 ## Description
 Performance Co-Pilot ([PCP](https://pcp.io)) is a system performance analysis toolkit.
 

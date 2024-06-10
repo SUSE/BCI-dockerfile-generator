@@ -1,5 +1,4 @@
 # Tomcat 9 Container Image
-
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 
 ## Description

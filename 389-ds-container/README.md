@@ -1,7 +1,6 @@
 # The SLE 389 Directory Server Container Image
 
 
-
 389 Directory Server container based on the SLE Base Container Image.
 
 ## Licensing

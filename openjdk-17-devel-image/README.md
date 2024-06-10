@@ -1,7 +1,6 @@
 # The SLE BCI OpenJDK 17 development Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 OpenJDK 17 development container based on the SLE Base Container Image.
 
 ## Licensing

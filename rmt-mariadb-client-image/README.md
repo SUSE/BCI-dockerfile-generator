@@ -1,7 +1,6 @@
 # The SLE MariaDB Client Container Image
 
 
-
 MariaDB Client container based on the SLE Base Container Image.
 
 ## Licensing

@@ -1,7 +1,6 @@
 # The SLE Kubernetes Package Manager Container Image
 
 
-
 Kubernetes Package Manager container based on the SLE Base Container Image.
 
 ## Licensing

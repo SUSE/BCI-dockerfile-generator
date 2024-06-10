@@ -1,7 +1,6 @@
 # The SLE BCI OpenJDK 11 runtime Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 OpenJDK 11 runtime container based on the SLE Base Container Image.
 
 ## Licensing

@@ -1,6 +1,5 @@
 # PostgreSQL 15 Container Image
 
-
 ![Support Level](https://img.shields.io/badge/Support_Level-acc-blue)
 
 ## Description

@@ -1,7 +1,6 @@
 # The SLE BCI 15 SP5 Init Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
-
 Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman.
 
 ## Licensing
