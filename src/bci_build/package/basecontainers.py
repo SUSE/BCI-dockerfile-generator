@@ -8,6 +8,7 @@ from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import Arch
 from bci_build.package import BuildType
 from bci_build.package import OsContainer
@@ -40,6 +41,7 @@ MICRO_CONTAINERS = [
         name="micro",
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         package_name="micro-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -71,6 +73,7 @@ INIT_CONTAINERS = [
         name="init",
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
@@ -176,6 +179,7 @@ MINIMAL_CONTAINERS = [
         name="minimal",
         **_get_minimal_kwargs(os_version),
         support_level=SupportLevel.L3,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_name="minimal-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
