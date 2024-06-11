@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 11 15:01:44 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add end of support date aligned with SLE 15 SP5
+
+-------------------------------------------------------------------
 Tue Jun 11 09:45:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update README; reduce unnecessary newlines
