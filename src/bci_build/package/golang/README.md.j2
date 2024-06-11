@@ -23,9 +23,19 @@ library, for cryptographic operations in the container environment.
 
 
 ## Usage
+There are two ways to work with Go images. First, you can encapsulate your
+application in a `scratch` container image, which is essentially an empty
+image. This approach will not function if your Go application depends on libc
+or any other library, as they will not be available.
+
+A second method is to use a slim base container image with just the minimal
+packages needed.
 
 To compile and deploy an application, copy the sources, fetch dependencies
-(assuming go.mod is used for dependency management), and build the binary:
+(assuming go.mod is used for dependency management), and build the binary using
+the following Dockerfile options.
+
+### Building from `scratch`
 
 ```Dockerfile
 # Build the application using the {{ image.pretty_name }} container image
@@ -42,7 +52,7 @@ COPY . ./
 
 # Make sure to build the application with CGO disabled.
 # This will force Go to use some Go implementations of code
-# rather than those normally supplied by the host operating system.
+# rather than those supplied by the host operating system.
 # You need this for scratch images as those supporting libraries
 # are not available.
 RUN CGO_ENABLED=0 go build -o /hello
@@ -76,21 +86,46 @@ To run the application tests inside a container, use the following command:
 $ podman run --rm -v "$PWD":/app:Z -w /app {{ image.pretty_reference }} go test -v
 ```
 
-**Note:** The Go image should be used as a build environment. That means
+### Building from SLE BCI
+
+The Go image should be used as a build environment. That means
 the compiler does not need to be shipped as part of the images that are
 distributed. Instead, it is recommended that the Go image is used as the
 builder image only.
 
-There are two ways to work with Go images. First, you can encapsulate your
-application in a `scratch` container image, which is essentially an empty
-image. This approach will not function if your Go application depends on libc
-or any other library, as they will not be available.
-
-A second method is to use a slim base container image with just the minimal
-packages needed.
 The [SLE BCI General Purpose Base Containers](https://opensource.suse.com/bci-docs/documentation/general-purpose-bci/)
 images offer four different options here, depending on your exact requirements.
 
+```Dockerfile
+# Build the application using the {{ image.pretty_name }} Container Image
+FROM {{ image.pretty_reference }} as build
+
+WORKDIR /app
+
+# pre-copy/cache go.mod for pre-downloading dependencies and only
+# redownloading them in subsequent builds if they change
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+
+COPY . ./
+
+# Make sure to build the application with CGO disabled.
+# This will force Go to use some Go implementations of code
+# rather than those normally supplied by the host operating system.
+# You need this for scratch images as those supporting libraries
+# are not available.
+RUN CGO_ENABLED=0 go build -o /hello
+
+# Bundle the application into a scratch image
+FROM registry.suse.com/bci/bci-micro:15.4
+
+COPY --from=build /hello /hello
+
+CMD ["/hello"]
+```
+
+
+The above example uses the SLE BCI micro image as the deployment image for the resulting application.
 See the [SLE BCI use with Go documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
 for further details.
 
