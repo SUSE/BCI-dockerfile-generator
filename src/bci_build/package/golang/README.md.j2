@@ -4,11 +4,27 @@
 
 ## Description
 
-[Go](https://go.dev/) (a.k.a., Golang) is a statically-typed programming language, with syntax loosely derived from C. Go offers additional features such as garbage collection, type safety, certain dynamic-typing capabilities, additional built-in types (for example, variable-length arrays and key-value maps) as well as a large standard library.
+[Go](https://go.dev/) (a.k.a., Golang) is a statically-typed programming
+language, with syntax loosely derived from C. Go offers additional features
+such as garbage collection, type safety, certain dynamic-typing capabilities,
+additional built-in types (for example, variable-length arrays and key-value
+maps) as well as a large standard library.
+
+{%- if image.version.endswith('-openssl') %}
+
+## FIPS 140-2
+
+The image includes a FIPS 140-2 enabled Go wrapper that prefers using OpenSSL
+for cryptographic operations. This allows the use of FIPS 140-2 validated
+routines for cryptographic operations in the container environment.
+
+{%- endif %}
+
 
 ## Usage
 
-To compile and deploy an application, copy the sources, fetch dependencies (assuming go.mod is used for dependency management), and build the binary:
+To compile and deploy an application, copy the sources, fetch dependencies
+(assuming go.mod is used for dependency management), and build the binary:
 
 ```Dockerfile
 # Build the application using the {{ image.pretty_name }} container image
@@ -16,7 +32,8 @@ FROM {{ image.pretty_reference }} as build
 
 WORKDIR /app
 
-# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
+# pre-copy/cache go.mod for pre-downloading dependencies and only
+# redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
@@ -58,26 +75,44 @@ To run the application tests inside a container, use the following command:
 $ podman run --rm -v "$PWD":/app:Z -w /app {{ image.pretty_reference }} go test -v
 ```
 
-**Note:** The Golang image should be used as a build environment. For runtime, self-contained Go binaries should use a `scratch` image and for applications that require external dependencies use the `bci-base` image.
+**Note:** The Go image should be used as a build environment. That means
+the compiler does not need to be shipped as part of the images that are
+distributed. Instead, it is recommended that the Go image is used as the
+builder image only.
 
-## Additional tools
+There are two ways to work with Go images. First, you can encapsulate your
+application in a `scratch` container image, which is essentially an empty
+image. This approach will not function if your Go application depends on libc
+or any other library, as they will not be available.
 
-The following additional tools are included in the image:
+A second method is to use a slim base container image with just the minimal
+packages needed.
+The [SLE BCI General Purpose Base Containers](https://opensource.suse.com/bci-docs/documentation/general-purpose-bci/)
+images offer four different options here, depending on your exact requirements.
 
-- go{{ image.version }}-race
-- make
-- git-core
+See the [SLE BCI use with Go documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
+for further details.
 
-{% if image.version.endswith('-openssl') %}
-## FIPS 140
+{%- if image.version.endswith('-openssl') %}
 
-The image includes a FIPS 140 enabled Go toolchain using OpenSSL.
+## FIPS 140-2
 
-To restrict all TLS configuration to FIPS-approved settings, add the following line:
+To restrict all TLS configuration to FIPS-approved settings, add
+the following line:
 
 ```go
 import _ "crypto/tls/fipsonly"
 ```
-{% endif %}
+
+{%- endif %}
+
+
+## Additional tools
+
+The following tools are also included in the image:
+
+- go{{ image.version }}-race
+- make
+- git-core
 
 {% include 'licensing_and_eula.j2' %}
