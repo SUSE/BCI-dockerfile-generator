@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 11 15:36:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add SLSA badges
+
+-------------------------------------------------------------------
 Mon Jun 10 15:12:15 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update README; reduce unnecessary newlines
