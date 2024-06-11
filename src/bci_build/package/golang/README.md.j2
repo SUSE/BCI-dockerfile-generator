@@ -12,11 +12,12 @@ maps) as well as a large standard library.
 
 {%- if image.version.endswith('-openssl') %}
 
-## FIPS 140-2
+## FIPS 140-3
 
-The image includes a FIPS 140-2 enabled Go wrapper that prefers using OpenSSL
-for cryptographic operations. This allows the use of FIPS 140-2 validated
-routines for cryptographic operations in the container environment.
+The image includes a FIPS 140-2/140-3 enabled Go wrapper that prefers using OpenSSL
+for cryptographic operations, if available at runtime.
+This allows the use of FIPS 140-2/140-3 validated routines, provided by the OpenSSL
+library, for cryptographic operations in the container environment.
 
 {%- endif %}
 
@@ -95,7 +96,7 @@ for further details.
 
 {%- if image.version.endswith('-openssl') %}
 
-## FIPS 140-2
+## FIPS 140-3
 
 To restrict all TLS configuration to FIPS-approved settings, add
 the following line:
