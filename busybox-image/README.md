@@ -1,5 +1,7 @@
 # Basalt Project BCI Adaptable Linux Platform BusyBox: the smallest and GPLv3-free image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
+[![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+[![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
 ## Description
 This image comes with the most basic tools provided by the BusyBox project.
