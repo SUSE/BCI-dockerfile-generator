@@ -192,6 +192,9 @@ class DotNetBCI(DevelopmentContainer):
             "6.0": datetime.date(2024, 11, 12),
             "8.0": datetime.date(2026, 11, 10),
         }.get(str(self.version))
+        assert (
+            self.supported_until
+        ), f".Net version missing in lifecycle information: {self.version}"
 
         self.extra_files = {
             "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
