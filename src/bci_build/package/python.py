@@ -1,6 +1,7 @@
 """Python language related BCI containers"""
 
 import datetime
+from dataclasses import dataclass
 from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
@@ -24,6 +25,12 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
 }
 
 
+@dataclass
+class PythonDevelopmentContainer(DevelopmentContainer):
+    has_pipx: bool = False
+    has_wheel: bool = False
+
+
 def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     is_system_py: bool = py3_ver == (
         "3.6" if os_version != OsVersion.TUMBLEWEED else "3.11"
@@ -39,6 +46,7 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
     has_pipx = False
+    has_wheel = True if is_system_py or os_version == OsVersion.TUMBLEWEED else False
     # Tumbleweed rocks
     if os_version == OsVersion.TUMBLEWEED:
         has_pipx = True
@@ -57,11 +65,7 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             "PIP_VERSION": pip3_replacement,
         },
         "package_list": [f"{py3}-devel", py3, pip3, "curl", "git-core"]
-        + (
-            [f"{py3}-wheel"]
-            if is_system_py or os_version == OsVersion.TUMBLEWEED
-            else []
-        )
+        + ([f"{py3}-wheel"] if has_wheel else [])
         + ([f"{py3}-pipx"] if has_pipx else [])
         + os_version.lifecycle_data_pkg,
         "replacements_via_service": [
@@ -71,6 +75,8 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             ),
             Replacement(regex_in_build_description=pip3_replacement, package_name=pip3),
         ],
+        "has_wheel": has_wheel,
+        "has_pipx": has_pipx,
         "os_version": os_version,
         "support_level": SupportLevel.L3,
         "supported_until": (
@@ -90,7 +96,7 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
 
 
 PYTHON_3_6_CONTAINERS = (
-    DevelopmentContainer(
+    PythonDevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
     )
@@ -99,7 +105,7 @@ PYTHON_3_6_CONTAINERS = (
 
 _PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
-    DevelopmentContainer(
+    PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
         is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
         package_name=f"python-{pyver}-image",
@@ -108,7 +114,7 @@ PYTHON_TW_CONTAINERS = (
 )
 
 PYTHON_3_11_CONTAINERS = (
-    DevelopmentContainer(
+    PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -116,7 +122,7 @@ PYTHON_3_11_CONTAINERS = (
     for os_version in (OsVersion.SP5, OsVersion.SP6)
 )
 
-PYTHON_3_12_CONTAINERS = DevelopmentContainer(
+PYTHON_3_12_CONTAINERS = PythonDevelopmentContainer(
     **_get_python_kwargs("3.12", OsVersion.SP6),
     package_name="python-3.12-image",
     # Technically it is the latest but we want to prefer the long term Python 3.11
