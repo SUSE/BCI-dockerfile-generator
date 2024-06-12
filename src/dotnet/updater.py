@@ -1,3 +1,13 @@
+"""
+This module contains classes and functions related to updating and generating Dockerfiles for .NET development containers.
+
+The main classes in this module are:
+- Package: Represents a package with its name and architecture.
+- RpmPackage: Represents an RPM package with additional attributes like version and URL.
+- DotNetBCI: Represents a .NET development container based on the SLE Base Container Image.
+"""
+
+import datetime
 import logging
 from dataclasses import dataclass
 from dataclasses import field
@@ -176,6 +186,16 @@ class DotNetBCI(DevelopmentContainer):
 
         ver = version.parse(str(self.version))
 
+        # Set the lifecycle information taken from
+        # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
+        self.supported_until = {
+            "6.0": datetime.date(2024, 11, 12),
+            "8.0": datetime.date(2026, 11, 10),
+        }.get(str(self.version))
+        assert (
+            self.supported_until
+        ), f".Net version missing in lifecycle information: {self.version}"
+
         self.extra_files = {
             "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
             "microsoft.asc": MS_ASC,
@@ -337,6 +357,10 @@ _DOTNET_VERSION_T = Literal["6.0", "8.0"]
 _DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "8.0"]
 
 _LATEST_DOTNET_VERSION = "8.0"
+
+assert _LATEST_DOTNET_VERSION in _DOTNET_VERSIONS
+assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS)
+assert _DOTNET_VERSIONS[-1] == _LATEST_DOTNET_VERSION
 
 
 def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool:
