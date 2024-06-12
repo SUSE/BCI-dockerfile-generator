@@ -120,6 +120,17 @@ class PackageType(enum.Enum):
 
 
 @enum.unique
+class PackageCategory(enum.Enum):
+    """The category of a package in the image."""
+
+    CORE = "core"
+    EXTRA = "extra"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@enum.unique
 class OsVersion(enum.Enum):
     """Enumeration of the base operating system versions for BCI."""
 
@@ -267,6 +278,9 @@ class Package:
     #: The package type. This parameter is only applicable for kiwi builds and
     #: defines into which ``<packages>`` element this package is inserted.
     pkg_type: PackageType = PackageType.IMAGE
+
+    #: The package category. This parameter is intendend for documentation.
+    pkg_category: PackageCategory = PackageCategory.CORE
 
     def __str__(self) -> str:
         return self.name
@@ -845,6 +859,34 @@ exit 0
                     f"Cannot add a package of type {pkg.pkg_type} into a Dockerfile based build."
                 )
         return " ".join(str(pkg) for pkg in self.package_list)
+
+    @property
+    def pretty_extra_packages(self) -> list[str]:
+        """Returns the non-core packages in this image. It is intended
+        to be used in the image documentation to create an additional
+        packages section.
+
+        """
+        package_list = []
+
+        for pkg in self.package_list:
+            if isinstance(pkg, Package):
+                if pkg.pkg_type != PackageType.IMAGE:
+                    continue
+
+                if pkg.pkg_category == PackageCategory.CORE:
+                    continue
+
+                name = pkg.name
+            else:
+                name = pkg
+
+            if name in self.os_version.lifecycle_data_pkg:
+                continue
+
+            package_list.append(name)
+
+        return sorted(package_list)
 
     @overload
     def _kiwi_volumes_expose(
