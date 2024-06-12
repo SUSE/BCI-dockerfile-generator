@@ -7,6 +7,7 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import Package
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 
@@ -56,7 +57,13 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             "PATH": "$PATH:/root/.local/bin",
             "PIP_VERSION": pip3_replacement,
         },
-        "package_list": [f"{py3}-devel", py3, pip3, "curl", "git-core"]
+        "package_list": [
+            Package(py3),
+            Package(pip3),
+            f"{py3}-devel",
+            "curl",
+            "git-core",
+        ]
         + (
             [f"{py3}-wheel"]
             if is_system_py or os_version == OsVersion.TUMBLEWEED
