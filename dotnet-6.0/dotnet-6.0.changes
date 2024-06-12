@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 12 10:12:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add EoL dates aligned with upstream
+
+-------------------------------------------------------------------
 Wed Jun  5 16:34:48 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - lock dotnet-host only within the minor version
