@@ -1,5 +1,6 @@
 """Container definition for the MariaDB database server and client."""
 
+import re
 from pathlib import Path
 
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
@@ -14,10 +15,6 @@ from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
 from bci_build.package.versions import to_major_minor_version
 
-_MARIADB_ENTRYPOINT = (Path(__file__).parent / "mariadb" / "entrypoint.sh").read_bytes()
-_MARIADB_HEALTHCHECK = (
-    Path(__file__).parent / "mariadb" / "healthcheck.sh"
-).read_bytes()
 _MARIADB_GOSU = b"""#!/bin/bash
 
 u=$1
@@ -34,9 +31,9 @@ setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
-
 for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
-    mariadb_version = to_major_minor_version(get_pkg_version("mariadb", os_version))
+    mariadb_pkg_version = get_pkg_version("mariadb", os_version)
+    mariadb_version = to_major_minor_version(mariadb_pkg_version)
     if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []
@@ -47,6 +44,22 @@ for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
     version_check_lines = generate_package_version_check(
         "mariadb-client", mariadb_version
     )
+
+    docker_entrypoint = (
+        Path(__file__).parent / "mariadb" / str(mariadb_version) / "entrypoint.sh"
+    ).read_text()
+    # Patch up the version number to be the exact x.y.z version that we ship
+    # Although the current version is not checking the patch level, this might
+    # change in the future
+    docker_entrypoint = re.sub(
+        f'echo -n "{mariadb_version}.*-MariaDB"',
+        f'echo -n "{mariadb_pkg_version}-MariaDB"',
+        docker_entrypoint,
+    )
+
+    healthcheck = (
+        Path(__file__).parent / "mariadb" / str(mariadb_version) / "healthcheck.sh"
+    ).read_bytes()
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(
@@ -68,8 +81,8 @@ for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
             ],
             entrypoint=["docker-entrypoint.sh"],
             extra_files={
-                "docker-entrypoint.sh": _MARIADB_ENTRYPOINT,
-                "healthcheck.sh": _MARIADB_HEALTHCHECK,
+                "docker-entrypoint.sh": docker_entrypoint,
+                "healthcheck.sh": healthcheck,
                 "gosu": _MARIADB_GOSU,
                 "_constraints": generate_disk_size_constraints(11),
             },
