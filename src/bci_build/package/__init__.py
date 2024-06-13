@@ -1513,8 +1513,6 @@ from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
 from .appcontainers import GIT_CONTAINERS  # noqa: E402
 from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
 from .appcontainers import HELM_CONTAINERS  # noqa: E402
-from .appcontainers import MARIADB_CLIENT_CONTAINERS  # noqa: E402
-from .appcontainers import MARIADB_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import POSTGRES_CONTAINERS  # noqa: E402
@@ -1533,6 +1531,8 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
+from .mariadb import MARIADB_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
 from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
 from .php import PHP_CONTAINERS  # noqa: E402
