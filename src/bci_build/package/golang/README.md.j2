@@ -16,24 +16,30 @@ maps) as well as a large standard library.
 
 The image includes a FIPS 140-2/140-3 enabled Go wrapper that prefers using OpenSSL
 for cryptographic operations, if available at runtime.
-This allows the use of FIPS 140-2/140-3 validated routines, provided by the OpenSSL
+Therefore, you can use FIPS 140-2/140-3 validated routines, provided by the OpenSSL
 library, for cryptographic operations in the container environment.
 
 {%- endif %}
 
 
 ## Usage
-There are two ways to work with Go images. First, you can encapsulate your
-application in a `scratch` container image, which is essentially an empty
-image. This approach will not function if your Go application depends on libc
-or any other library, as they will not be available.
+We recommend using the Go image as a build environment. Thus,  
+the compiler does not need to be shipped as part of the images that are
+deployed. Instead, we recommend to use the Go image as the
+builder image only.
 
-A second method is to use a slim base container image with just the minimal
-packages needed.
+There are two options to work with Go images. First, you can encapsulate your
+application in a `scratch` container image, essentially an empty filesystem
+image. This approach only works if your Go application does not depend on libc
+or any other library or files, as they will not be available.
+
+The second option uses a slim base container image with just the minimal
+packages required to run the Go application.
 
 To compile and deploy an application, copy the sources, fetch dependencies
 (assuming go.mod is used for dependency management), and build the binary using
 the following Dockerfile options.
+
 
 ### Building from `scratch`
 
@@ -60,9 +66,9 @@ RUN CGO_ENABLED=0 go build -o /hello
 # Bundle the application into a scratch image
 FROM scratch
 
-COPY --from=build /hello /hello
+COPY --from=build /hello /usr/local/bin/hello
 
-CMD ["/hello"]
+CMD ["/usr/local/bin/hello"]
 ```
 
 Build and run the container image:
@@ -86,15 +92,11 @@ To run the application tests inside a container, use the following command:
 $ podman run --rm -v "$PWD":/app:Z -w /app {{ image.pretty_reference }} go test -v
 ```
 
+
 ### Building from SLE BCI
 
-The Go image should be used as a build environment. That means
-the compiler does not need to be shipped as part of the images that are
-distributed. Instead, it is recommended that the Go image is used as the
-builder image only.
-
 The [SLE BCI General Purpose Base Containers](https://opensource.suse.com/bci-docs/documentation/general-purpose-bci/)
-images offer four different options here, depending on your exact requirements.
+images offer four different options for deployment, depending on your exact requirements.
 
 ```Dockerfile
 # Build the application using the {{ image.pretty_name }} Container Image
@@ -109,24 +111,19 @@ RUN go mod download && go mod verify
 
 COPY . ./
 
-# Make sure to build the application with CGO disabled.
-# This will force Go to use some Go implementations of code
-# rather than those normally supplied by the host operating system.
-# You need this for scratch images as those supporting libraries
-# are not available.
-RUN CGO_ENABLED=0 go build -o /hello
+RUN go build -o /hello
 
 # Bundle the application into a scratch image
 FROM registry.suse.com/bci/bci-micro:15.4
 
-COPY --from=build /hello /hello
+COPY --from=build /hello /usr/local/bin/hello
 
-CMD ["/hello"]
+CMD ["/usr/local/bin/hello"]
 ```
 
-
-The above example uses the SLE BCI micro image as the deployment image for the resulting application.
-See the [SLE BCI use with Go documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
+The above example uses the SLE BCI micro image as the deployment image for
+the resulting application. See the [SLE BCI use with Go
+documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
 for further details.
 
 {%- if image.version.endswith('-openssl') %}
