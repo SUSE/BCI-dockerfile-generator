@@ -100,6 +100,8 @@ jobs:
         uses: peter-evans/create-or-update-comment@v4
         id: create_comment
         with:
+          comment-id: ${{ steps.find_comment.outputs.comment-id || '' }}
+          edit-mode: replace
           issue-number: ${{ github.event.pull_request.number }}
           # !!! if you change the body, then you must adjust StagingBot.from_github_comment() !!!
           body: |
