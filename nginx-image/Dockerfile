@@ -14,11 +14,11 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: suse/nginx:%%nginx_version%%
-#!BuildTag: suse/nginx:%%nginx_version%%-%RELEASE%
+#!BuildTag: suse/nginx:1.21
+#!BuildTag: suse/nginx:1.21-%RELEASE%
 #!BuildTag: suse/nginx:latest
-#!BuildName: suse-nginx-%%nginx_version%%
-#!BuildVersion: 15.5
+#!BuildName: suse-nginx-1.21
+#!BuildVersion: 15.5.1.21
 FROM suse/sle15:15.5
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -27,12 +27,12 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 # labelprefix=com.suse.application.nginx
 LABEL org.opencontainers.image.title="SLE NGINX"
 LABEL org.opencontainers.image.description="NGINX open source all-in-one load balancer, content cache and web server based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%nginx_version%%"
+LABEL org.opencontainers.image.version="1.21"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/suse/nginx:%%nginx_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/nginx:1.21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
@@ -45,6 +45,8 @@ RUN set -euo pipefail; zypper -n in --no-recommends gawk nginx findutils gettext
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
+# sanity check that the version from the tag is equal to the version of nginx that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' nginx | cut -d '.' -f -2)" = "1.21" ]
 RUN set -euo pipefail; mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin
