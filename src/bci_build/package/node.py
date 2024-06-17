@@ -9,10 +9,13 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import SupportLevel
 
-_NODE_VERSIONS = Literal[16, 18, 20, 21, 22]
+_NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
+    # upcoming LTS version ~ 2025-04
+    24: datetime.date(2028, 4, 30),
+    23: datetime.date(2025, 6, 1),
     22: datetime.date(2027, 4, 30),
     21: datetime.date(2024, 6, 1),
     20: datetime.date(2026, 4, 30),
