@@ -22,6 +22,11 @@ from bci_build.package.versions import get_pkg_version
 from bci_build.package.versions import to_major_minor_version
 from bci_build.package.versions import to_major_version
 
+
+def _envsubst_pkg_name(os_version: OsVersion) -> str:
+    return "envsubst" if os_version == OsVersion.TUMBLEWEED else "gettext-runtime"
+
+
 _PCP_FILES = {}
 for filename in (
     "container-entrypoint",
@@ -62,7 +67,7 @@ PCP_CONTAINERS = [
             "pcp",
             "hostname",
             "shadow",
-            "gettext-runtime",
+            _envsubst_pkg_name(os_version),
             "util-linux-systemd",
         ],
         entrypoint=["/usr/local/bin/container-entrypoint"],
@@ -343,7 +348,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 parse_version="minor",
             )
         ],
-        "package_list": ["gawk", "nginx", "findutils", "gettext-runtime"],
+        "package_list": ["gawk", "nginx", "findutils", _envsubst_pkg_name(os_version)],
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
