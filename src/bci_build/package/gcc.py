@@ -7,6 +7,7 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -77,7 +78,7 @@ GCC_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%gcc_version%%",
                 package_name=gcc_pkg,
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         env={"GCC_VERSION": "%%gcc_version%%"},

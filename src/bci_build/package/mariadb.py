@@ -9,6 +9,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BuildType
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -81,7 +82,7 @@ for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
                     regex_in_build_description=_MARIADB_VERSION_REGEX,
                     package_name="mariadb",
                     file_name=_ENTRYPOINT_FNAME,
-                    parse_version="patch",
+                    parse_version=ParseVersion.PATCH,
                 )
             ],
             package_list=[

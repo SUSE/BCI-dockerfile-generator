@@ -5,6 +5,7 @@ from typing import Literal
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -33,7 +34,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion)
             Replacement(
                 regex_in_build_description="%%rb_maj%%",
                 package_name=ruby,
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             ),
         ],
         "package_list": [

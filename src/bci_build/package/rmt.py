@@ -7,6 +7,7 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BuildType
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 
 _RMT_ENTRYPOINT = (Path(__file__).parent / "rmt-server" / "entrypoint.sh").read_bytes()
@@ -25,7 +26,7 @@ RMT_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%rmt_version%%",
                 package_name="rmt-server",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         version_in_uid=False,

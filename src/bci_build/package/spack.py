@@ -6,6 +6,7 @@ from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
@@ -28,7 +29,7 @@ SPACK_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%spack_minor%%",
                 package_name="spack",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             ),
         ],
         package_list=[

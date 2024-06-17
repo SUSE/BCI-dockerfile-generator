@@ -13,6 +13,7 @@ from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
@@ -60,7 +61,7 @@ PCP_CONTAINERS = [
                 package_name="pcp",
                 parse_version=ver,
             )
-            for ver in ("major", "minor")
+            for ver in (ParseVersion.MAJOR, ParseVersion.MINOR)
         ],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
@@ -116,7 +117,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%389ds_version%%",
                 package_name="389-ds",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         exposes_tcp=[3389, 3636],
@@ -175,7 +176,7 @@ POSTGRES_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%pg_version%%",
                 package_name=f"postgresql{ver}-server",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         volumes=["$PGDATA"],
@@ -225,7 +226,7 @@ PROMETHEUS_CONTAINERS = [
                 package_name=_PROMETHEUS_PACKAGE_NAME,
                 parse_version=level,
             )
-            for level in ("major", "minor", "patch")
+            for level in (ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus"],
         exposes_tcp=[9090],
@@ -252,7 +253,7 @@ ALERTMANAGER_CONTAINERS = [
                 package_name=_ALERTMANAGER_PACKAGE_NAME,
                 parse_version=level,
             )
-            for level in ("minor", "patch")
+            for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus/alertmanager"],
         exposes_tcp=[9093],
@@ -279,7 +280,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
                 package_name=_BLACKBOX_EXPORTER_PACKAGE_NAME,
                 parse_version=level,
             )
-            for level in ("minor", "patch")
+            for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         exposes_tcp=[9115],
     )
@@ -320,7 +321,7 @@ GRAFANA_CONTAINERS = [
                 package_name=_GRAFANA_PACKAGE_NAME,
                 parse_version=level,
             )
-            for level in ("major", "minor", "patch")
+            for level in (ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/grafana"],
         exposes_tcp=[3000],
@@ -356,7 +357,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
             Replacement(
                 regex_in_build_description="%%nginx_version%%",
                 package_name="nginx",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         "package_list": ["gawk", "nginx", "findutils", _envsubst_pkg_name(os_version)],
@@ -419,7 +420,7 @@ GIT_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%git_version%%",
                 package_name="git-core",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         license="GPL-2.0-only",
@@ -453,7 +454,7 @@ REGISTRY_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%registry_version%%",
                 package_name="distribution-registry",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         license="Apache-2.0",
@@ -493,7 +494,7 @@ HELM_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%helm_version%%",
                 package_name="helm",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         license="Apache-2.0",
@@ -527,7 +528,7 @@ TRIVY_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%trivy_version%%",
                 package_name="trivy",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         license="Apache-2.0",
@@ -579,7 +580,7 @@ TOMCAT_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%tomcat_minor%%",
                 package_name=tomcat_pkg,
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             ),
         ],
         cmd=[
