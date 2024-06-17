@@ -63,4 +63,5 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(20, OsVersion.SP6), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(**_get_node_kwargs(20, OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_node_kwargs(22, OsVersion.TUMBLEWEED)),
 ]
