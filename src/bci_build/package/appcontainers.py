@@ -203,7 +203,7 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
 
-PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
+_PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
 PROMETHEUS_CONTAINERS = [
     ApplicationStackContainer(
         package_name="prometheus-image",
@@ -211,16 +211,21 @@ PROMETHEUS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="prometheus",
         pretty_name="Prometheus",
-        package_list=[PROMETHEUS_PACKAGE_NAME],
-        version="%%prometheus_version%%",
+        package_list=[_PROMETHEUS_PACKAGE_NAME],
+        version="%%prometheus_patch_version%%",
+        additional_versions=[
+            "%%prometheus_minor_version%%",
+            "%%prometheus_major_version%%",
+        ],
         version_in_uid=False,
         entrypoint=["/usr/bin/prometheus"],
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%prometheus_version%%",
-                package_name=PROMETHEUS_PACKAGE_NAME,
-                parse_version="patch",
+                regex_in_build_description=f"%%prometheus_{level}_version%%",
+                package_name=_PROMETHEUS_PACKAGE_NAME,
+                parse_version=level,
             )
+            for level in ("major", "minor", "patch")
         ],
         volumes=["/var/lib/prometheus"],
         exposes_tcp=[9090],
@@ -228,7 +233,7 @@ PROMETHEUS_CONTAINERS = [
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
-ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
+_ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
 ALERTMANAGER_CONTAINERS = [
     ApplicationStackContainer(
         package_name="alertmanager-image",
@@ -236,16 +241,18 @@ ALERTMANAGER_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="alertmanager",
         pretty_name="Alertmanager",
-        package_list=[ALERTMANAGER_PACKAGE_NAME],
-        version="%%alertmanager_version%%",
+        package_list=[_ALERTMANAGER_PACKAGE_NAME],
+        version="%%alertmanager_patch_version%%",
+        additional_versions=["%%alertmanager_minor_version%%"],
         version_in_uid=False,
         entrypoint=["/usr/bin/prometheus-alertmanager"],
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%alertmanager_version%%",
-                package_name=ALERTMANAGER_PACKAGE_NAME,
-                parse_version="patch",
+                regex_in_build_description=f"%%alertmanager_{level}_version%%",
+                package_name=_ALERTMANAGER_PACKAGE_NAME,
+                parse_version=level,
             )
+            for level in ("minor", "patch")
         ],
         volumes=["/var/lib/prometheus/alertmanager"],
         exposes_tcp=[9093],
@@ -253,7 +260,7 @@ ALERTMANAGER_CONTAINERS = [
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
-BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
+_BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
 BLACKBOX_EXPORTER_CONTAINERS = [
     ApplicationStackContainer(
         package_name="blackbox_exporter-image",
@@ -261,29 +268,31 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="blackbox_exporter",
         pretty_name="Blackbox Exporter",
-        package_list=[BLACKBOX_EXPORTER_PACKAGE_NAME],
-        version="%%blackbox_exporter_version%%",
+        package_list=[_BLACKBOX_EXPORTER_PACKAGE_NAME],
+        version="%%blackbox_exporter_patch_version%%",
+        additional_versions=["%%blackbox_exporter_minor_version%%"],
         version_in_uid=False,
         entrypoint=["/usr/bin/blackbox_exporter"],
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%blackbox_exporter_version%%",
-                package_name=BLACKBOX_EXPORTER_PACKAGE_NAME,
-                parse_version="patch",
+                regex_in_build_description=f"%%blackbox_exporter_{level}_version%%",
+                package_name=_BLACKBOX_EXPORTER_PACKAGE_NAME,
+                parse_version=level,
             )
+            for level in ("minor", "patch")
         ],
         exposes_tcp=[9115],
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
-GRAFANA_FILES = {}
+_GRAFANA_FILES = {}
 for filename in ("run.sh", "LICENSE"):
-    GRAFANA_FILES[filename] = (
+    _GRAFANA_FILES[filename] = (
         Path(__file__).parent / "grafana" / filename
     ).read_bytes()
 
-GRAFANA_PACKAGE_NAME = "grafana"
+_GRAFANA_PACKAGE_NAME = "grafana"
 GRAFANA_CONTAINERS = [
     ApplicationStackContainer(
         package_name="grafana-image",
@@ -292,11 +301,12 @@ GRAFANA_CONTAINERS = [
         name="grafana",
         pretty_name="Grafana",
         license="Apache-2.0",
-        package_list=[GRAFANA_PACKAGE_NAME],
-        version="%%grafana_version%%",
+        package_list=[_GRAFANA_PACKAGE_NAME],
+        version="%%grafana_patch_version%%",
+        additional_versions=["%%grafana_minor_version%%", "%%grafana_major_version%%"],
         version_in_uid=False,
         entrypoint=["/run.sh"],
-        extra_files=GRAFANA_FILES,
+        extra_files=_GRAFANA_FILES,
         env={
             "GF_PATHS_DATA": "/var/lib/grafana",
             "GF_PATHS_HOME": "/usr/share/grafana",
@@ -306,10 +316,11 @@ GRAFANA_CONTAINERS = [
         },
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%grafana_version%%",
-                package_name=GRAFANA_PACKAGE_NAME,
-                parse_version="patch",
+                regex_in_build_description=f"%%grafana_{level}_version%%",
+                package_name=_GRAFANA_PACKAGE_NAME,
+                parse_version=level,
             )
+            for level in ("major", "minor", "patch")
         ],
         volumes=["/var/lib/grafana"],
         exposes_tcp=[3000],
