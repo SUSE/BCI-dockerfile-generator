@@ -379,7 +379,7 @@ NGINX_CONTAINERS = [
         pretty_name="NGINX for SUSE RMT",
         **_get_nginx_kwargs(os_version),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in (OsVersion.SP5, OsVersion.SP6)
 ] + [
     ApplicationStackContainer(
         name="nginx",
