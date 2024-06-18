@@ -1,4 +1,4 @@
-# PostgreSQL 16 Container Image
+# PostgreSQL 16 container image
 
 ![Support Level](https://img.shields.io/badge/Support_Level-acc-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
