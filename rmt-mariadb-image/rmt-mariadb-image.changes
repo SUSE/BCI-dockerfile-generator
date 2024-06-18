@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 18 17:25:26 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use sentence style capitalization in READMEs
+
+-------------------------------------------------------------------
 Sat Jun 15 16:05:56 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Stop hardcoding MariaDB version in docker-entrypoint.sh and use a service instead
