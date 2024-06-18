@@ -286,6 +286,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         additional_versions=["%%blackbox_exporter_minor_version%%"],
         version_in_uid=False,
         entrypoint=["/usr/bin/blackbox_exporter"],
+        cmd=["--config.file=/etc/prometheus/blackbox.yml"],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description=f"%%blackbox_exporter_{level}_version%%",
