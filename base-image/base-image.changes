@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 18 17:25:30 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use sentence style capitalization in READMEs
+
+-------------------------------------------------------------------
 Tue Jun 11 15:36:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add SLSA badges

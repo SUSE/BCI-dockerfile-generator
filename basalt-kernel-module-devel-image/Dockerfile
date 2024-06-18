@@ -24,8 +24,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.basalt.bci.basalt-kernel-module-devel
-LABEL org.opencontainers.image.title="Basalt Project BCI BASALT Kernel Module Development"
-LABEL org.opencontainers.image.description="BASALT Kernel Module Development container based on the SUSE Adaptable Linux Platform (ALP)."
+LABEL org.opencontainers.image.title="Basalt Project BCI BASALT Kernel module development"
+LABEL org.opencontainers.image.description="BASALT Kernel module development container based on the SUSE Adaptable Linux Platform (ALP)."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.opencontainers.image.url="https://susealp.io/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
