@@ -204,7 +204,15 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
 
+
+def _generate_prometheus_family_healthcheck(port: int) -> str:
+    return rf"""HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
+    CMD ["/usr/bin/curl", "-m", "2", "-sf", "http://localhost:{port}/-/healthy"]
+"""
+
+
 _PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
+_PROMETHEUS_PORT = 9090
 PROMETHEUS_CONTAINERS = [
     ApplicationStackContainer(
         package_name="prometheus-image",
@@ -212,7 +220,7 @@ PROMETHEUS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="prometheus",
         pretty_name="Prometheus",
-        package_list=[_PROMETHEUS_PACKAGE_NAME],
+        package_list=[_PROMETHEUS_PACKAGE_NAME, "curl"],
         version="%%prometheus_patch_version%%",
         additional_versions=[
             "%%prometheus_minor_version%%",
@@ -229,12 +237,14 @@ PROMETHEUS_CONTAINERS = [
             for level in (ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus"],
-        exposes_tcp=[9090],
+        exposes_tcp=[_PROMETHEUS_PORT],
+        custom_end=_generate_prometheus_family_healthcheck(_PROMETHEUS_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 _ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
+_ALERTMANAGER_PORT = 9093
 ALERTMANAGER_CONTAINERS = [
     ApplicationStackContainer(
         package_name="alertmanager-image",
@@ -242,7 +252,7 @@ ALERTMANAGER_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="alertmanager",
         pretty_name="Alertmanager",
-        package_list=[_ALERTMANAGER_PACKAGE_NAME],
+        package_list=[_ALERTMANAGER_PACKAGE_NAME, "curl"],
         version="%%alertmanager_patch_version%%",
         additional_versions=["%%alertmanager_minor_version%%"],
         version_in_uid=False,
@@ -256,12 +266,14 @@ ALERTMANAGER_CONTAINERS = [
             for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus/alertmanager"],
-        exposes_tcp=[9093],
+        exposes_tcp=[_ALERTMANAGER_PORT],
+        custom_end=_generate_prometheus_family_healthcheck(_ALERTMANAGER_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 _BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
+_BLACKBOX_PORT = 9115
 BLACKBOX_EXPORTER_CONTAINERS = [
     ApplicationStackContainer(
         package_name="blackbox_exporter-image",
@@ -269,7 +281,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="blackbox_exporter",
         pretty_name="Blackbox Exporter",
-        package_list=[_BLACKBOX_EXPORTER_PACKAGE_NAME],
+        package_list=[_BLACKBOX_EXPORTER_PACKAGE_NAME, "curl"],
         version="%%blackbox_exporter_patch_version%%",
         additional_versions=["%%blackbox_exporter_minor_version%%"],
         version_in_uid=False,
@@ -282,7 +294,8 @@ BLACKBOX_EXPORTER_CONTAINERS = [
             )
             for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
-        exposes_tcp=[9115],
+        exposes_tcp=[_BLACKBOX_PORT],
+        custom_end=_generate_prometheus_family_healthcheck(_BLACKBOX_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
