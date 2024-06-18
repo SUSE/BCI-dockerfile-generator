@@ -250,7 +250,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
     KERNEL_MODULE_CONTAINERS.append(
         OsContainer(
             name=f"{prefix}-kernel-module-devel",
-            pretty_name=f"{pretty_prefix} Kernel Module Development",
+            pretty_name=f"{pretty_prefix} Kernel module development",
             package_name=f"{prefix}-kernel-module-devel-image",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
@@ -277,7 +277,7 @@ OSC_CHECKOUT = (Path(__file__).parent / "gitea-runner" / "osc_checkout").read_by
 
 GITEA_RUNNER_CONTAINER = OsContainer(
     name="gitea-runner",
-    pretty_name="Gitea Action Runner",
+    pretty_name="Gitea action runner",
     package_name="gitea-runner-image",
     os_version=OsVersion.TUMBLEWEED,
     is_latest=True,

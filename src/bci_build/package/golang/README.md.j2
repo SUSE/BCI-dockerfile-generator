@@ -1,4 +1,4 @@
-# {{ image.pretty_name }} Container Image
+# {{ image.pretty_name }} container image
 
 {% include 'badges.j2' %}
 
@@ -11,7 +11,7 @@
 To compile and deploy an application, copy the sources, fetch dependencies (assuming go.mod is used for dependency management), and build the binary:
 
 ```Dockerfile
-# Build the application using the {{ image.pretty_name }} Container Image
+# Build the application using the {{ image.pretty_name }} container image
 FROM {{ image.pretty_reference }} as build
 
 WORKDIR /app
