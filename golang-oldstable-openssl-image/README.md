@@ -1,4 +1,4 @@
-# Go 1.20-openssl development Container Image
+# Go 1.20-openssl development container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
@@ -13,7 +13,7 @@
 To compile and deploy an application, copy the sources, fetch dependencies (assuming go.mod is used for dependency management), and build the binary:
 
 ```Dockerfile
-# Build the application using the Go 1.20-openssl development Container Image
+# Build the application using the Go 1.20-openssl development container image
 FROM registry.suse.com/bci/golang:1.20-openssl as build
 
 WORKDIR /app
