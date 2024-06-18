@@ -25,8 +25,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.sle15-kernel-module-devel
-LABEL org.opencontainers.image.title="SLE BCI SLE 15 Kernel Module Development"
-LABEL org.opencontainers.image.description="SLE 15 Kernel Module Development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI SLE 15 Kernel module development"
+LABEL org.opencontainers.image.description="SLE 15 Kernel module development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%.%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

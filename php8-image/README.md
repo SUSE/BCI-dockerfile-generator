@@ -1,4 +1,4 @@
-# The PHP 8 Container Image
+# The PHP 8 container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
