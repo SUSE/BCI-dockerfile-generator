@@ -1,6 +1,7 @@
 from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.templates import SERVICE_TEMPLATE
 
@@ -74,13 +75,13 @@ def test_service_with_replacement_docker():
                     Replacement(
                         regex_in_build_description="%%minor_ver%%",
                         package_name="filesystem",
-                        parse_version="minor",
+                        parse_version=ParseVersion.MINOR,
                     ),
                     Replacement(
                         regex_in_build_description="%%minor_ver%%",
                         file_name="replacementfile",
                         package_name="filesystem",
-                        parse_version="minor",
+                        parse_version=ParseVersion.MINOR,
                     ),
                 ],
             )

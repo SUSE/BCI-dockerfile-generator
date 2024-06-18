@@ -272,7 +272,13 @@ class Package:
         return self.name
 
 
-PARSE_VERSION_T = Literal["major", "minor", "patch", "patch_update", "offset"]
+@enum.unique
+class ParseVersion(enum.StrEnum):
+    MAJOR = enum.auto()
+    MINOR = enum.auto()
+    PATCH = enum.auto()
+    PATCH_UPDATE = enum.auto()
+    OFFSET = enum.auto()
 
 
 @dataclass
@@ -294,7 +300,7 @@ class Replacement:
     #: specify how the version should be formated, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
     #: for further details
-    parse_version: None | PARSE_VERSION_T = None
+    parse_version: None | ParseVersion = None
 
     def __post_init__(self) -> None:
         """Barf if someone tries to replace variables in README, as those
@@ -302,6 +308,7 @@ class Replacement:
         source package.
 
         """
+
         if self.file_name and "readme" in self.file_name.lower():
             raise ValueError(f"Cannot replace variables in {self.file_name}!")
 
