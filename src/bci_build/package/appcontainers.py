@@ -488,15 +488,8 @@ HELM_CONTAINERS = [
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version="%%helm_version%%",
+        version=to_major_minor_version(get_pkg_version("helm", os_version)),
         version_in_uid=False,
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description="%%helm_version%%",
-                package_name="helm",
-                parse_version=ParseVersion.MINOR,
-            )
-        ],
         license="Apache-2.0",
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
