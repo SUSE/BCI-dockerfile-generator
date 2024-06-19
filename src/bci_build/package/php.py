@@ -192,7 +192,7 @@ zypper -n in ${{extensions[*]}}
 PHP_CONTAINERS = [
     _create_php_bci(os_version, variant, 8)
     for os_version, variant in product(
-        (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED),
+        (OsVersion.SP6, OsVersion.TUMBLEWEED),
         (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
     )
 ]

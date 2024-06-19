@@ -100,7 +100,7 @@ PYTHON_3_6_CONTAINERS = (
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
     )
-    for os_version in (OsVersion.SP5, OsVersion.SP6)
+    for os_version in (OsVersion.SP6,)
 )
 
 _PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
@@ -119,7 +119,7 @@ PYTHON_3_11_CONTAINERS = (
         package_name="python-3.11-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version in (OsVersion.SP5, OsVersion.SP6)
+    for os_version in (OsVersion.SP6,)
 )
 
 PYTHON_3_12_CONTAINERS = PythonDevelopmentContainer(
