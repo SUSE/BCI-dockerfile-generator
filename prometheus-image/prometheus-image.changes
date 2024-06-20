@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 20 14:50:00 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Add HEALTHCHECK to the image
+
+-------------------------------------------------------------------
 Tue Jun 18 17:25:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - use sentence style capitalization in READMEs
