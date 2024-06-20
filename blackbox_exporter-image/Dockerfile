@@ -43,6 +43,9 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]
+CMD ["--config.file=/etc/prometheus/blackbox.yml"]
 EXPOSE 9115
+HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
+    CMD ["/usr/bin/curl", "-m", "2", "-sf", "http://localhost:9115/-/healthy"]
