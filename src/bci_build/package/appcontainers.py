@@ -67,6 +67,7 @@ PCP_CONTAINERS = [
         package_list=[
             "pcp",
             "hostname",
+            "procps",
             "shadow",
             _envsubst_pkg_name(os_version),
             "util-linux-systemd",
