@@ -11,6 +11,8 @@ Contents
 
    staging_bot
 
+   new_codestream
+
    api
 
 Indices and tables

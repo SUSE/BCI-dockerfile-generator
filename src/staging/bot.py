@@ -13,10 +13,15 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
+from enum import Enum
+from enum import unique
 from functools import reduce
+from io import BytesIO
+from pathlib import Path
 from typing import ClassVar
 from typing import Literal
-from typing import TypedDict
+from typing import NoReturn
+from typing import overload
 
 import aiofiles.os
 import aiofiles.tempfile
@@ -32,12 +37,15 @@ from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
+from bci_build.package import Package
 from dotnet.updater import DOTNET_IMAGES
 from dotnet.updater import DotNetBCI
-from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
+from staging.project_setup import ProjectType
+from staging.project_setup import generate_meta
+from staging.project_setup import generate_project_name
 from staging.user import User
 from staging.util import ensure_absent
 from staging.util import get_obs_project_url
@@ -71,21 +79,37 @@ _GIT_COMMIT_ENV = {
 OS_VERSION_NEEDS_BASE_CONTAINER: tuple[OsVersion, ...] = ()
 
 
+@overload
+def _get_base_image_prj_pkg(
+    os_version: Literal[
+        OsVersion.SLCC_FREE,
+        OsVersion.SLCC_PAID,
+        OsVersion.SLCC_SLES_16_CONTAINERS,
+    ],
+) -> NoReturn: ...
+
+
+@overload
+def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]: ...
+
+
 def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
     if os_version == OsVersion.TUMBLEWEED:
         return "openSUSE:Factory", "opensuse-tumbleweed-image"
-    if os_version == OsVersion.BASALT:
-        raise ValueError("The Basalt base container is provided by BCI")
+    if os_version.is_slcc:
+        raise ValueError("The SLCC base containers are provided by the project itself")
 
     return f"SUSE:SLE-15-SP{os_version}:Update", "sles15-image"
 
 
 def _get_bci_project_name(os_version: OsVersion) -> str:
-    prj_suffix = (
-        os_version
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT)
-        else "SLE-15-SP" + str(os_version)
-    )
+    if os_version.is_sle15:
+        prj_suffix = f"SLE-15-SP{os_version}"
+    elif os_version.is_slcc:
+        prj_suffix = str(os_version).replace("-", ":")
+    else:
+        prj_suffix = str(os_version)
+
     return f"devel:BCI:{prj_suffix}"
 
 
@@ -102,9 +126,421 @@ async def _fetch_bci_devel_project_config(
             return await response.text()
 
 
-class _ProjectConfigs(TypedDict):
-    meta: ET.Element
-    prjconf: str
+@unique
+class ProjectConfig(Enum):
+    PRJCONF = "prjconf"
+    META = "prj"
+
+
+_PACKAGE_GROUP_NAME = "slcc_packages"
+
+
+@dataclass(frozen=True)
+class TripleZeroPackageGroups:
+    """000package-groups"""
+
+    os_version: OsVersion
+
+    architectures: list[str] = field(
+        default_factory=lambda: ["x86_64", "aarch64", "s390x", "ppc64le"]
+    )
+
+    def __post_init__(self) -> None:
+        if not self.os_version.is_slcc:
+            raise ValueError(f"Only implemented for SLCC, not for {self.os_version}")
+
+    @property
+    def release_spec_in(self) -> str:
+        pkg_name = f"{str(self.os_version).lower()}-release"
+        return (
+            f"""#
+# spec file for package {pkg_name}
+#
+# Copyright (c) {datetime.now().year} SUSE LLC
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via https://bugzilla.suse.com/
+#
+
+Name:           {pkg_name}
+Summary:        ___SUMMARY___ ___BETA_VERSION___
+License:        MIT
+Group:          System/Fhs
+Version:        ___VERSION___
+Release:        0
+# FIXME? or keep this package name
+BuildRequires:  skelcd-EULA-{str(self.os_version).lower()}
+Provides:       distribution-release
+"""
+            + """Provides:       product(SUSE_SLE) = %{version}-%{release}
+Provides:       product(SUSE_SLE-SP___PATCH_LEVEL___) = %{version}-%{release}
+
+# bsc#1055299
+Conflicts:      otherproviders(distribution-release)
+
+___PRODUCT_PROVIDES___
+
+___PRODUCT_DEPENDENCIES___
+
+
+ExclusiveArch:  """
+            + " ".join(self.architectures)
+            + """
+
+Source100:      weakremovers.inc
+%include %{SOURCE100}
+
+%description
+___DESCRIPTION___
+
+___FLAVOR_PACKAGES___
+
+%prep
+
+%build
+
+%install
+mkdir -p %buildroot/%_sysconfdir
+
+___CREATE_OS_RELEASE_FILE___
+
+cat << EOF >> %buildroot/%_sysconfdir/os-release
+DOCUMENTATION_URL="https://documentation.suse.com/"
+EOF
+
+___CREATE_PRODUCT_FILES___
+
+
+%files
+%defattr(644,root,root,755)
+%config %_sysconfdir/os-release
+%dir %_sysconfdir/products.d
+%_sysconfdir/products.d/*
+
+%changelog
+"""
+        )
+
+    @property
+    def product_in(self) -> str:
+        pool_prefix = f"{self.os_version.value}-{self.os_version.os_version}"
+        return (
+            f"""<?xml version="1.0" encoding="UTF-8"?>
+<productdefinition xmlns:xi="http://www.w3.org/2001/XInclude">
+  <products>
+    <product>
+      <vendor>SUSE</vendor>
+      <name>{str(self.os_version).lower()}</name>
+      <version>{self.os_version.os_version}</version>
+      <release>1</release>
+
+      <!-- <endoflife>2026-10-31</endoflife> -->
+      <codestream>
+        <name>{self.os_version.full_os_name}</name>
+        <!-- <endoflife>2026-10-31</endoflife> -->
+      </codestream>
+
+      <productline>{self.os_version.pretty_os_version_no_dash}</productline>
+
+      <register>
+        <pool>
+          <!-- we need a product specific channel to provide System roles and release-package updates -->
+"""
+            + "\n".join(
+                f"""          <repository project="SUSE:Products:{self.os_version}:{self.os_version.os_version}:{arch}" name="images" medium="{medium}product" arch="{arch}" >
+            <zypp name="{pool_prefix}{alias}-Pool" alias="{pool_prefix}{alias}-Pool"/>
+          </repository>"""
+                for (medium, alias), arch in itertools.product(
+                    [("", ""), ("debug_", "-Debuginfo"), ("source_", "-Source")],
+                    self.architectures,
+                )
+            )
+            + """
+        </pool>
+        <updates>
+"""
+            + "\n".join(
+                f"""          <distrotarget arch="{arch}">sle-15-{arch}</distrotarget>"""
+                for arch in self.architectures
+            )
+            + """
+          <!-- we need a product specific channel to provide System roles and release-package updates -->
+          <!-- the update channels don't exist now; we are discussing the option not to have separate update and pool
+"""
+            + "\n".join(
+                f"""          <repository project="SUSE:Updates:{self.os_version}:{self.os_version.os_version}:{arch}" name="update" arch="{arch}" >
+             <zypp name="{pool_prefix}-Updates" alias="{pool_prefix}-Updates"/>
+          </repository>"""
+                for arch in self.architectures
+            )
+            + "\n".join(
+                f"""          <repository project="SUSE:Updates:{self.os_version}:{self.os_version.os_version}:{arch}" name="update_debug" arch="{arch}" >
+             <zypp name="{pool_prefix}-Debuginfo-Updates" alias="{pool_prefix}-Debuginfo-Updates"/>
+          </repository>"""
+                for arch in self.architectures
+            )
+            + f""" -->
+        </updates>
+      </register>
+
+      <summary>{self.os_version.full_os_name}</summary> <!-- one line only -->
+      <shortsummary>{self.os_version.full_os_name}</shortsummary>
+      <description>{self.os_version.full_os_name}</description>
+
+      <!-- Available languages for collecting packages and during installation and runtime -->
+      <linguas>
+        <language>en</language>
+      </linguas>
+
+      <urls>
+        <!-- FIXME -->
+        <url name="releasenotes">https://www.suse.com/releasenotes/%{{_target_cpu}}/SL-Micro/6.0/release-notes-sl-micro.rpm</url>
+      </urls>
+
+      <buildconfig>
+        <!-- This section is needed to generate the installation media -->
+        <producttheme>{self.os_version}</producttheme>
+    <!-- <betaversion>RC</betaversion> -->
+      </buildconfig>
+
+      <installconfig>
+          <!-- All flags needed during installation -->
+          <defaultlang>en_US</defaultlang>
+          <distribution>SUSE</distribution>
+      </installconfig>
+
+      <!-- All Flags needed in the running system -->
+      <runtimeconfig/>
+    </product>
+  </products>
+
+  <!-- Default conditionals, repositories and archsets get imported -->
+  <xi:include href="defaults-conditionals.include"/>
+  <xi:include href="defaults-archsets.include"/>
+  <xi:include href="defaults-repositories.include"/>
+
+  <mediasets>
+    <!-- BEWARE: do not touch the naming here without adapting ftp upload scripts ! -->
+    <media type="ftp"
+      flavor="POOL"
+      sourcemedia="2"
+      debugmedia="3"
+      mediastyle="suse-alp"
+      create_pattern="false"
+      repo_only="true"
+      run_make_listings="true"
+      download_mirror_policy="false"
+      use_required="true"
+      use_recommended="true"
+      use_suggested="false"
+      use_undecided="false">
+
+      <use group="{_PACKAGE_GROUP_NAME}" create_pattern="false" />
+      <!-- FIXME: temporary disable: -->
+      <!-- <use group="slcc-development.x86_64" create_pattern="false" /> -->
+      <!-- <use group="slcc-development.aarch64" create_pattern="false"/> -->
+      <!-- <use group="slcc-development.s390x" create_pattern="false"/> -->
+      <!-- <use group="slcc-development.ppc64le" create_pattern="false"/> -->
+"""
+            + "\n".join(
+                f"""      <archsets>
+        <archset ref="{arch}" />
+      </archsets>"""
+                for arch in self.architectures
+            )
+            + f"""
+      <metadata>
+      </metadata>
+    </media>
+  </mediasets>
+
+  <xi:include href="{_PACKAGE_GROUP_NAME}.group"/>
+
+</productdefinition>"""
+        )
+
+    @property
+    def default_productcompose_in(self) -> str:
+        return f"""product_compose_schema: 0.2
+
+vendor: SUSE
+name: {self.os_version.value}
+version: {self.os_version.os_version}
+product-type: module
+summary: {self.os_version.full_os_name}
+
+scc:
+  description: >
+    Alp Basalt ftp tree, also known as POOL.
+    Used for GA and maintenance update afterwards.
+
+build_options:
+### For maintenance, otherwise only "the best" version of each package is picked:
+# - take_all_available_versions
+- hide_flavor_in_product_directory_name
+
+
+source: split
+debug: split
+
+# has only an effect during maintenance:
+set_updateinfo_from: maint-coord@suse.de
+
+# will be extended with architecture and flavor string
+# product_directory_name: "ALP-Dolomite-1.0"
+
+flavors:
+  {_PACKAGE_GROUP_NAME}_aarch64:
+    architectures: [ aarch64 ]
+  {_PACKAGE_GROUP_NAME}_ppc64le:
+    architectures: [ ppc64le ]
+  {_PACKAGE_GROUP_NAME}_s390x:
+    architectures: [ s390x ]
+  {_PACKAGE_GROUP_NAME}_x86_64:
+    architectures: [ x86_64 ]
+
+unpack:
+  - unpackset
+
+packagesets:
+- name: unpackset
+  packages:
+  - skelcd-EULA-{str(self.os_version.value).lower()}
+
+# The following is generated by openSUSE-release-tools
+
+This part will get replaced by pkglistgen and the file will get written to
+000productcompose sub directory.
+
+"""
+
+
+@dataclass(frozen=True)
+class SkelcdPackage:
+    os_version: OsVersion
+
+    @property
+    def spec(self) -> str:
+        return (
+            f"""#
+# spec file for package skelcd
+#
+# Copyright (c) 2024 SUSE LLC.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+%define SLE_RELEASE 16
+#
+# default replacement variables for README content
+%define PRETTY_NAME {self.os_version.pretty_os_version_no_dash}
+%define UNDERLINE ===================================
+%define PRODUCT_LINK https://www.suse.com/sles
+
+%define product {str(self.os_version.value).lower()}
+%define PRODUCT {str(self.os_version.value).upper()}
+"""
+            + """
+%define dash -
+
+%define container_path usr/share/licenses/product/%{PRODUCT}
+%define skelcd1_path usr/share/licenses/product/%{product}
+
+# release is a beta
+%define beta 0
+
+%if 0%{?beta} == 1
+%define license_dir license.beta
+%else
+%define license_dir license.final
+%endif
+
+%dnl %define skelcd1_path usr/lib/skelcd/CD1
+
+Name:           skelcd%{?dash}%{product}
+
+
+AutoReqProv:    off
+Version:        2024.05.03.1
+Release:        0
+Summary:        CD skeleton for %{PRODUCT}
+License:        GPL-2.0-only
+Group:          Metapackages
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Source:         skelcd-%{version}.tar.xz
+# please repo-checker (bsc#1089174)
+Provides:       skelcd = %{version}
+Conflicts:      otherproviders(skelcd)
+
+%description
+Skeleton package for %{PRODUCT}
+
+%package -n skelcd-EULA%{?dash}%{product}
+Summary:        EULA for media
+Group:          Metapackages
+
+%description -n skelcd-EULA%{?dash}%{product}
+Internal package only.
+
+
+%prep
+%setup -n skelcd%{?dash}%{version} -q
+
+%build
+
+%install
+#
+# copy the product READMEs
+pushd READMEs/default
+sed -i -e 's/{PRETTY_NAME}/%{PRETTY_NAME} %{SLE_RELEASE}/g' README
+sed -i -e 's/{UNDERLINE}/%{UNDERLINE}/g' README
+# use @ as delimiter, as the product link conflicts with the standard '/' delimiter
+sed -i -e 's@{PRODUCT_LINK}@%{PRODUCT_LINK}@g' README
+popd
+
+#
+# license tarball generation
+mkdir -p $RPM_BUILD_ROOT/%{skelcd1_path}/media.1
+pushd %license_dir
+# touch all license files to make sure they have the most recent date
+# this impacts which license is shown on the CDN to fix bsc#1186047 and bsc#1186812
+# else in case beta EULAs have a more recent date than final EULAs they won't
+# get replaced
+touch *
+ls -1 > directory.yast # required for downloading of EULAs from SCC
+
+# bci doesn't have a release package, make EULA available directly
+rmdir $RPM_BUILD_ROOT/%{skelcd1_path}/media.1
+mv ../BCI/*.txt  $RPM_BUILD_ROOT/%{skelcd1_path}/
+
+popd
+
+#
+# skelcd-EULA
+%files -n skelcd-EULA-%{product}
+%defattr(644,root,root,755)
+%dir %{_datadir}/licenses/product
+/%{skelcd1_path}
+
+%changelog
+"""
+        )
 
 
 @dataclass
@@ -184,6 +620,26 @@ class StagingBot:
         if not self.osc_username:
             raise RuntimeError("osc_username is not set, cannot continue")
 
+    def _read_file_from_branch(self, branch_name: str, file_name: str) -> bytes:
+        tmp = BytesIO()
+        try:
+            git.Repo(Path(__file__).parent.parent.parent).commit(branch_name).tree[
+                file_name
+            ].stream_data(tmp)
+            return tmp.getvalue()
+        except KeyError:
+            raise ValueError(f"File {file_name} not found in branch {branch_name}")
+
+    @property
+    def _devel_project_prjconf(self) -> bytes:
+        """Returns the saved prjconf of the corresponding ``devel:BCI:$subname``
+        project from git
+
+        """
+        return self._read_file_from_branch(
+            f"origin/{self.deployment_branch_name}", "_config"
+        )
+
     @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
         """Generator yielding all
@@ -196,19 +652,10 @@ class StagingBot:
         all_bcis.sort(key=lambda bci: bci.uid)
         return (bci for bci in all_bcis if bci.os_version == self.os_version)
 
-    def _generate_project_name(self, prefix: str) -> str:
-        assert self.osc_username
-        res = f"home:{self.osc_username}:{prefix}:"
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
-            res += str(self.os_version)
-        else:
-            res += f"SLE-15-SP{str(self.os_version)}"
-        return res
-
     @property
     def continuous_rebuild_project_name(self) -> str:
         """The name of the continuous rebuild project on OBS."""
-        return self._generate_project_name("BCI:CR")
+        return generate_project_name(self.os_version, ProjectType.CR, self.osc_username)
 
     @property
     def staging_project_name(self) -> str:
@@ -222,7 +669,9 @@ class StagingBot:
         - ``BRANCH``: :py:attr:`branch_name`
 
         """
-        return self._generate_project_name("BCI:Staging") + ":" + self.branch_name
+        return generate_project_name(
+            self.os_version, ProjectType.STAGING, self.osc_username, self.branch_name
+        )
 
     @property
     def staging_project_url(self) -> str:
@@ -273,6 +722,29 @@ class StagingBot:
                 else True
             )
         )
+
+    @property
+    def groups_yml(self) -> str:
+        """Generate a the ``container_packages`` YAML list for
+        :file:`groups.yml` in ``000package-groups`` from the container images
+        for this code stream.
+
+        .. caution:: Only works for SLCC!
+
+        """
+        if not self.os_version.is_slcc:
+            raise ValueError("Only supported for SLCC code streams")
+
+        res = "container_packages:"
+
+        for bci in sorted(list(self._bcis), key=lambda b: b.uid):
+            res += f"\n    # {bci.uid}\n    - "
+            res += "\n    - ".join(
+                pkg.name if isinstance(pkg, Package) else pkg
+                for pkg in bci.package_list
+            )
+
+        return res
 
     @staticmethod
     def from_github_comment(comment_text: str, osc_username: str) -> "StagingBot":
@@ -564,96 +1036,38 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             "osc" if not self._osc_conf_file else f"osc --config={self._osc_conf_file}"
         )
 
-    async def _generate_test_project_meta(self, target_project_name: str) -> ET.Element:
-        bci_devel_meta = ET.fromstring(
-            await _fetch_bci_devel_project_config(self.os_version, "meta")
-        )
-
-        # write the same project meta as devel:BCI, but replace the 'devel:BCI:*'
-        # with the target project name in the main element and in all repository
-        # path entries
-        bci_devel_meta.attrib["name"] = target_project_name
-
-        # we will remove the helmchartsrepo as we do not need it
-        repo_names = []
-        repos_to_remove = []
-
-        # ppc64le & s390x are mostly busted on TW and just cause pointless
-        # build failures, so we don't build them
-        # Also, we don't use the local architecture, so drop that one always
-        arches_to_drop = [str(Arch.LOCAL)]
-        arches_to_drop.extend(
-            [str(Arch.PPC64LE), str(Arch.S390X)]
-            if self.os_version == OsVersion.TUMBLEWEED
-            else []
-        )
-
-        for elem in bci_devel_meta:
-            if elem.tag == "repository":
-                if "name" in elem.attrib:
-                    if (name := elem.attrib["name"]) in ("helmcharts", "standard"):
-                        if name == "helmcharts":
-                            repos_to_remove.append(elem)
-                        continue
-
-                    repo_names.append(name)
-                else:
-                    raise ValueError(
-                        f"Invalid <repository> element, missing 'name' attribute: {ET.tostring(elem).decode()}"
-                    )
-
-                for repo_elem in elem.iter(tag="path"):
-                    if (
-                        "project" in repo_elem.attrib
-                        and "devel:BCI:" in repo_elem.attrib["project"]
-                    ):
-                        repo_elem.attrib["project"] = target_project_name
-
-                arch_entries = list(elem.iter(tag="arch"))
-                for arch_entry in arch_entries:
-                    if arch_entry.text in arches_to_drop:
-                        elem.remove(arch_entry)
-
-                container_repos = ("containerfile", "images")
-                if name in container_repos:
-                    for repo_name in container_repos:
-                        (bci_devel_prj_path := ET.Element("path")).attrib["project"] = (
-                            _get_bci_project_name(self.os_version)
-                        )
-                        bci_devel_prj_path.attrib["repository"] = repo_name
-
-                        elem.insert(0, bci_devel_prj_path)
-
-        self.repositories = repo_names
-        for repo_to_remove in repos_to_remove:
-            bci_devel_meta.remove(repo_to_remove)
-
-        person = ET.Element(
-            "person", {"userid": self.osc_username, "role": "maintainer"}
-        )
-        bci_devel_meta.append(person)
-
-        return bci_devel_meta
-
-    async def _send_prj_meta(
-        self, target_project_name: str, prj_meta: ET.Element
+    async def _send_prj_config(
+        self,
+        target_project_name: str,
+        config: ET.Element | str | bytes,
+        config_type: ProjectConfig = ProjectConfig.META,
     ) -> None:
         """Set the meta of the project on OBS with the name
         ``target_project_name`` to the config ``prj_meta``.
 
         """
+        if isinstance(config, ET.Element) and config_type == ProjectConfig.PRJCONF:
+            raise ValueError("Cannot set the prjconf from a XML Element")
+
         async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
-            await tmp_meta.write(ET.tostring(prj_meta))
+            if isinstance(config, str):
+                data = config.encode()
+            elif isinstance(config, ET.Element):
+                data = ET.tostring(config)
+            else:
+                data = config
+
+            await tmp_meta.write(data)
             await tmp_meta.flush()
 
-            async def _send_prj_meta():
+            async def _send_meta():
                 await self._run_cmd(
-                    f"{self._osc} meta prj --file={tmp_meta.name} {target_project_name}"
+                    f"{self._osc} meta {config_type.value} --file={tmp_meta.name} {target_project_name}"
                 )
 
             # obs sometimes dies setting the project meta with SQL errors 🤯
             # so we just try again…
-            await retry_async_run_cmd(_send_prj_meta)
+            await retry_async_run_cmd(_send_meta)
 
     async def write_cr_project_config(self) -> None:
         """Send the configuration of the continuous rebuild project to OBS.
@@ -662,56 +1076,34 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         then its configuration (= ``meta`` in OBS jargon) will be updated.
 
         """
-        meta = await self._generate_test_project_meta(
-            self.continuous_rebuild_project_name
+        prj_name, meta = generate_meta(
+            self.os_version, ProjectType.CR, self.osc_username
         )
-        (
-            scmsync := ET.Element("scmsync")
-        ).text = f"https://github.com/SUSE/bci-dockerfile-generator#{self.deployment_branch_name}"
-        meta.append(scmsync)
-        await self._send_prj_meta(self.continuous_rebuild_project_name, meta)
+        await self._send_prj_config(prj_name, meta, ProjectConfig.META)
 
     async def write_staging_project_configs(self) -> None:
         """Submit the ``prjconf`` and ``meta`` to the test project on OBS.
 
-        The ``prjconf`` is taken directly from the development project on OBS
-        (``devel:BCI:*``).
+        The ``meta`` is generated using a template via
+        py.func:`~staging.project_setup.generate_project_name`.
 
-        The ``meta`` has to be modified slightly:
+        The ``prjconf`` is taken from the file:`_config` file in the deployment
+        branch.
 
-        - we remove the ``helmcharts`` repository (we don't create anything for
-          that repo, so not worth creating it)
-        - change the path from ``devel:BCI:*`` to the staging project name
-        - add the bot user as the maintainer (otherwise you can't do anything in
-          the project anymore…)
-
-        Then we send the ``meta`` and then the ``prjconf``.
         """
-        confs: _ProjectConfigs = {}
 
-        async def _fetch_prjconf():
-            confs["prjconf"] = await _fetch_bci_devel_project_config(
-                self.os_version, "prjconf"
-            )
-
-        async def _fetch_prj():
-            confs["meta"] = await self._generate_test_project_meta(
-                self.staging_project_name
-            )
-
-        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
+        prj_name, prj_meta = generate_meta(
+            self.os_version, ProjectType.STAGING, self.osc_username, self.branch_name
+        )
 
         # First set the project meta! This will create the project if it does not
         # exist already, if we do it asynchronously, then the prjconf might be
         # written before the project exists, which fails
-        await self._send_prj_meta(self.staging_project_name, confs["meta"])
+        await self._send_prj_config(prj_name, prj_meta, ProjectConfig.META)
 
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
-            await tmp_prjconf.write(confs["prjconf"])
-            await tmp_prjconf.flush()
-            await self._run_cmd(
-                f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"
-            )
+        await self._send_prj_config(
+            prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
+        )
 
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
@@ -1495,6 +1887,26 @@ updates:
             if not changelog_updated
         ]
 
+    async def configure_devel_bci_project(self) -> None:
+        """Adjust to project meta of the devel project on OBS to match the
+        template generated via
+        :py:func:`staging.project_setup.generate_meta`. Additionally set the
+        project meta from the file :file:`_config` in the deployment branch and
+        set the `OSRT:Config` attribute for pkglistgen to function as expected.
+
+        """
+        prj_name, meta = generate_meta(
+            self.os_version, ProjectType.DEVEL, self.osc_username
+        )
+        await self._send_prj_config(prj_name, meta, ProjectConfig.META)
+
+        await self._send_prj_config(
+            prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
+        )
+
+        await self._run_cmd(f"""{self._osc} meta attribute {prj_name} -a OSRT:Config --set 'main-repo = standard
+pkglistgen-archs = ppc64le s390x aarch64 x86_64'""")
+
     async def configure_devel_bci_package(self, package_name: str) -> None:
         bci = [b for b in self._bcis if b.package_name == package_name]
 
@@ -1560,6 +1972,8 @@ def main() -> None:
         "add_changelog_entry",
         "changelog_check",
         "setup_obs_package",
+        "setup_obs_project",
+        "000package-groups",
         "find_missing_packages",
     ]
 
@@ -1735,8 +2149,34 @@ comma-separated list. The package list is taken from the environment variable
     )
 
     subparsers.add_parser(
+        "setup_obs_project", help="Configure the devel project on OBS"
+    )
+
+    subparsers.add_parser(
+        "groups_yml",
+        help="Create a list of all container packages that can be inserted into groups.yml",
+    )
+
+    subparsers.add_parser(
         "find_missing_packages",
         help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
+    )
+
+    triple_zero_parser = subparsers.add_parser(
+        "000package-groups", help="generate 000package-groups files"
+    )
+    triple_zero_parser.add_argument(
+        "--file",
+        nargs=1,
+        required=True,
+        type=str,
+        choices=[
+            "groups.yml",
+            "release.spec.in",
+            "product.in",
+            "skelcd",
+            "default.productcompose.in",
+        ],
     )
 
     loop = asyncio.get_event_loop()
@@ -1776,10 +2216,10 @@ comma-separated list. The package list is taken from the environment variable
 
     try:
         action: ACTION_T = args.action
-        coro: Coroutine[Any, Any, Any] | None = None
+        coro_or_str: Coroutine[Any, Any, Any] | str | None = None
 
         if action == "rebuild":
-            coro = bot.force_rebuild()
+            coro_or_str = bot.force_rebuild()
 
         elif action == "create_staging_project":
 
@@ -1792,17 +2232,17 @@ comma-separated list. The package list is taken from the environment variable
                 )
                 await bot.link_base_container_to_staging()
 
-            coro = _create_staging_proj()
+            coro_or_str = _create_staging_proj()
 
         elif action == "commit_state":
-            coro = bot.write_all_build_recipes_to_branch(args.commit_message[0])
+            coro_or_str = bot.write_all_build_recipes_to_branch(args.commit_message[0])
 
         elif action == "query_build_result":
 
             async def print_build_res():
                 return render_as_markdown(await bot.fetch_build_results())
 
-            coro = print_build_res()
+            coro_or_str = print_build_res()
 
         elif action == "scratch_build":
 
@@ -1810,10 +2250,10 @@ comma-separated list. The package list is taken from the environment variable
                 commit_or_none = await bot.scratch_build(args.commit_message[0])
                 return commit_or_none or "No changes"
 
-            coro = _scratch()
+            coro_or_str = _scratch()
 
         elif action == "cleanup":
-            coro = bot.remote_cleanup(
+            coro_or_str = bot.remote_cleanup(
                 branches=not args.no_cleanup_branch,
                 obs_project=not args.no_cleanup_project,
             )
@@ -1825,7 +2265,7 @@ comma-separated list. The package list is taken from the environment variable
                     await bot.wait_for_build_to_finish(timeout_sec=args.timeout_sec[0])
                 )
 
-            coro = _wait()
+            coro_or_str = _wait()
 
         elif action == "get_build_quality":
 
@@ -1835,10 +2275,10 @@ comma-separated list. The package list is taken from the environment variable
                     raise RuntimeError("Build failed!")
                 return "Build succeded"
 
-            coro = _quality()
+            coro_or_str = _quality()
 
         elif action == "create_cr_project":
-            coro = bot.write_cr_project_config()
+            coro_or_str = bot.write_cr_project_config()
 
         elif action == "add_changelog_entry":
             changelog_entry = " ".join(args.entry)
@@ -1850,7 +2290,7 @@ comma-separated list. The package list is taken from the environment variable
             elif packages_len > 1:
                 pkg_names = args.packages
 
-            coro = bot.add_changelog_entry(
+            coro_or_str = bot.add_changelog_entry(
                 entry=changelog_entry, username=username, package_names=pkg_names
             )
 
@@ -1869,7 +2309,7 @@ comma-separated list. The package list is taken from the environment variable
                         f"{change_ref}: {', '.join(packages_without_changes)}"
                     )
 
-            coro = _error_on_pkg_without_changes()
+            coro_or_str = _error_on_pkg_without_changes()
         elif action == "setup_obs_package":
 
             async def _setup_pkg_meta():
@@ -1879,21 +2319,44 @@ comma-separated list. The package list is taken from the environment variable
                 ]
                 await asyncio.gather(*tasks)
 
-            coro = _setup_pkg_meta()
+            coro_or_str = _setup_pkg_meta()
+
+        elif action == "setup_obs_project":
+            coro_or_str = bot.configure_devel_bci_project()
+
+        elif action == "000package-groups":
+            if (fname := args.file[0]) == "groups.yml":
+                coro_or_str = bot.groups_yml
+            elif fname == "product.in":
+                coro_or_str = TripleZeroPackageGroups(bot.os_version).product_in
+            elif fname == "release.spec.in":
+                coro_or_str = TripleZeroPackageGroups(bot.os_version).release_spec_in
+            elif fname == "default.productcompose.in":
+                coro_or_str = TripleZeroPackageGroups(
+                    bot.os_version
+                ).default_productcompose_in
+            elif fname == "skelcd":
+                coro_or_str = SkelcdPackage(bot.os_version).spec
+            else:
+                raise ValueError(f"Invalid file for 000package-groups: {fname}")
 
         elif action == "find_missing_packages":
 
             async def _pkgs_as_str() -> str:
                 return ", ".join(await bot.find_missing_packages_on_obs())
 
-            coro = _pkgs_as_str()
+            coro_or_str = _pkgs_as_str()
 
         else:
             assert False, f"invalid action: {action}"
 
-        assert coro is not None
-        res = loop.run_until_complete(coro)
-        if res:
-            print(res)
+        assert coro_or_str is not None
+
+        if isinstance(coro_or_str, str):
+            print(coro_or_str)
+        else:
+            res = loop.run_until_complete(coro_or_str)
+            if res:
+                print(res)
     finally:
         loop.run_until_complete(bot.teardown())

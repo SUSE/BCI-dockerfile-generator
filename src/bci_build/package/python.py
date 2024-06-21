@@ -51,7 +51,10 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     if os_version == OsVersion.TUMBLEWEED:
         has_pipx = True
     # Enabled only for Python 3.11 on SLE15 (jsc#PED-5573)
-    if os_version not in (OsVersion.BASALT, OsVersion.TUMBLEWEED) and py3_ver == "3.11":
+    if (
+        os_version not in (OsVersion.SLCC_PAID, OsVersion.TUMBLEWEED)
+        and py3_ver == "3.11"
+    ):
         has_pipx = True
 
     kwargs = {
@@ -107,7 +110,7 @@ _PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
-        is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
+        is_latest=(pyver == _PYTHON_TW_VERSIONS[-1]),
         package_name=f"python-{pyver}-image",
     )
     for pyver in _PYTHON_TW_VERSIONS
@@ -117,14 +120,26 @@ PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(
+            (os_version in CAN_BE_LATEST_OS_VERSION)
+            and (os_version != OsVersion.SLCC_PAID)
+        ),
     )
-    for os_version in (OsVersion.SP5, OsVersion.SP6)
+    for os_version in (OsVersion.SP5, OsVersion.SP6, OsVersion.SLCC_PAID)
 )
 
-PYTHON_3_12_CONTAINERS = PythonDevelopmentContainer(
-    **_get_python_kwargs("3.12", OsVersion.SP6),
-    package_name="python-3.12-image",
-    # Technically it is the latest but we want to prefer the long term Python 3.11
-    is_latest=False,
-)
+
+PYTHON_3_12_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.12", OsVersion.SP6),
+        package_name="python-3.12-image",
+        # Technically it is the latest but we want to prefer the long term
+        # Python 3.11 for SLE 15 & TW
+        is_latest=os_version.is_slcc,
+    )
+    for os_version in (
+        OsVersion.SP6,
+        OsVersion.SLCC_PAID,
+        OsVersion.SLCC_FREE,
+    )
+]

@@ -23,20 +23,6 @@ from bci_build.package import generate_disk_size_constraints
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
-def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
-    if os_version == OsVersion.TUMBLEWEED:
-        return ("openSUSE-release", "openSUSE-release-appliance-docker")
-    if os_version == OsVersion.BASALT:
-        return ("ALP-dummy-release",)
-    return ("sles-release",)
-
-
-def _get_eula_package_names(os_version: OsVersion) -> tuple[str, ...]:
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
-        return ()
-    return ("skelcd-EULA-bci",)
-
-
 MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
@@ -58,8 +44,8 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
             )
-            + _get_eula_package_names(os_version)
-            + _get_os_container_package_names(os_version)
+            + os_version.eula_package_names
+            + os_version.release_package_names
         ],
         # intentionally empty
         config_sh_script="""
@@ -157,9 +143,14 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list += [
         Package(name, pkg_type=PackageType.BOOTSTRAP)
-        for name in _get_os_container_package_names(os_version)
+        for name in os_version.release_package_names
     ]
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+    if os_version in (
+        OsVersion.TUMBLEWEED,
+        OsVersion.SLCC_FREE,
+        OsVersion.SLCC_PAID,
+        OsVersion.SLCC_SLES_16_CONTAINERS,
+    ):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -168,8 +159,10 @@ def _get_minimal_kwargs(os_version: OsVersion):
             for name in ("rpm-ndb", "perl-base")
         ]
 
+    micro_name = "micro" if os_version.is_slcc else "bci-micro"
+
     kwargs = {
-        "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        "from_image": f"{_build_tag_prefix(os_version)}/{micro_name}:{OsContainer.version_to_container_os_version(os_version)}",
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
         "package_list": package_list,
     }
@@ -216,13 +209,13 @@ BUSYBOX_CONTAINERS = [
         cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in _get_os_container_package_names(os_version)
+            for name in os_version.release_package_names
             + (
                 "busybox",
                 "busybox-links",
                 "ca-certificates-mozilla-prebuilt",
             )
-            + _get_eula_package_names(os_version)
+            + os_version.eula_package_names
         ],
         config_sh_script=textwrap.dedent(
             """
@@ -240,8 +233,8 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.BASALT:
-        prefix = "basalt"
+    if os_version.is_slcc:
+        prefix = "slcc"
         pretty_prefix = prefix.upper()
     else:
         prefix = "sle15"
@@ -264,7 +257,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 "patch",
                 "gawk",
                 "rpm-build",
-                *_get_os_container_package_names(os_version),
+                *os_version.release_package_names,
             ]
             # tar is not in bci-base in 15.4, but we need it to unpack tarballs
             + (["tar"] if os_version == OsVersion.SP4 else []),
@@ -288,7 +281,7 @@ GITEA_RUNNER_CONTAINER = OsContainer(
         "obs-service-source_validator",
         "typescript",
         "git",
-        *_get_os_container_package_names(OsVersion.TUMBLEWEED),
+        *OsVersion.TUMBLEWEED.release_package_names,
     ],
     extra_files={"osc_checkout": OSC_CHECKOUT},
     custom_end=f"""COPY osc_checkout /usr/bin/osc_checkout
