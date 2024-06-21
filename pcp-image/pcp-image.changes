@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 21 06:21:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add missing procps package
+
+-------------------------------------------------------------------
 Tue Jun 11 15:36:43 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add SLSA badges
