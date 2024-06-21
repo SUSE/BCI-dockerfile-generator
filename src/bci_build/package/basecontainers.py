@@ -23,20 +23,6 @@ from bci_build.package import generate_disk_size_constraints
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
 
-def _get_os_container_package_names(os_version: OsVersion) -> tuple[str, ...]:
-    if os_version == OsVersion.TUMBLEWEED:
-        return ("openSUSE-release", "openSUSE-release-appliance-docker")
-    if os_version == OsVersion.BASALT:
-        return ("ALP-dummy-release",)
-    return ("sles-release",)
-
-
-def _get_eula_package_names(os_version: OsVersion) -> tuple[str, ...]:
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
-        return ()
-    return ("skelcd-EULA-bci",)
-
-
 MICRO_CONTAINERS = [
     OsContainer(
         name="micro",
@@ -58,8 +44,8 @@ MICRO_CONTAINERS = [
                 # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
                 "coreutils",
             )
-            + _get_eula_package_names(os_version)
-            + _get_os_container_package_names(os_version)
+            + os_version.eula_package_names
+            + os_version.release_package_names
         ],
         # intentionally empty
         config_sh_script="""
@@ -157,7 +143,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list += [
         Package(name, pkg_type=PackageType.BOOTSTRAP)
-        for name in _get_os_container_package_names(os_version)
+        for name in os_version.release_package_names
     ]
     if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
@@ -216,13 +202,15 @@ BUSYBOX_CONTAINERS = [
         cmd=["/bin/sh"],
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in _get_os_container_package_names(os_version)
-            + (
-                "busybox",
-                "busybox-links",
-                "ca-certificates-mozilla-prebuilt",
+            for name in (
+                os_version.release_package_names
+                + (
+                    "busybox",
+                    "busybox-links",
+                    "ca-certificates-mozilla-prebuilt",
+                )
+                + os_version.eula_package_names
             )
-            + _get_eula_package_names(os_version)
         ],
         config_sh_script=textwrap.dedent(
             """
@@ -264,7 +252,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 "patch",
                 "gawk",
                 "rpm-build",
-                *_get_os_container_package_names(os_version),
+                *os_version.release_package_names,
             ]
             # tar is not in bci-base in 15.4, but we need it to unpack tarballs
             + (["tar"] if os_version == OsVersion.SP4 else []),
@@ -288,7 +276,7 @@ GITEA_RUNNER_CONTAINER = OsContainer(
         "obs-service-source_validator",
         "typescript",
         "git",
-        *_get_os_container_package_names(OsVersion.TUMBLEWEED),
+        *OsVersion.TUMBLEWEED.release_package_names,
     ],
     extra_files={"osc_checkout": OSC_CHECKOUT},
     custom_end=f"""COPY osc_checkout /usr/bin/osc_checkout
