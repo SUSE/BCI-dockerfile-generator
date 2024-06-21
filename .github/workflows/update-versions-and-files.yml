@@ -36,6 +36,7 @@ jobs:
       - name: create a pull request with the updated versions and files
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.CHECKOUT_TOKEN }}
           delete-branch: true
           commit-message: "🤖: Update package versions and external files"
           reviewers: dcermak,dirkmueller,alexandrevicenzi
