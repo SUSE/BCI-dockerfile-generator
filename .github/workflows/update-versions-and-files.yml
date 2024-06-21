@@ -1,5 +1,5 @@
 ---
-name: update package versions from OBS
+name: update package versions from OBS and external files
 on:
   schedule:
     - cron: '0 0 * * *'
@@ -28,17 +28,23 @@ jobs:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
 
-      - name: create a pull request with the updated versions
+      # update package versions first so that update-files.sh fetches the files
+      # based on the new versions
+      - name: run update-files.sh
+        run: ./update-files.sh
+
+      - name: create a pull request with the updated versions and files
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.CHECKOUT_TOKEN }}
           delete-branch: true
-          commit-message: "🤖: Update package versions via update-versions"
+          commit-message: "🤖: Update package versions and external files"
           reviewers: dcermak,dirkmueller,alexandrevicenzi
           assignees: dcermak
-          title: "🤖: Update package versions"
+          title: "🤖: Update package versions and files"
           body: |
-            This is an automated update via poetry run update-versions
+            This is an automated update via poetry run update-versions and ./update-files.sh
           base: main
-          branch: create-pull-request/update-versions
+          branch: create-pull-request/update-versions-and-files
           add-paths: |
-            src/bci_build/package/package_versions.json
+            src/bci_build/package/*
