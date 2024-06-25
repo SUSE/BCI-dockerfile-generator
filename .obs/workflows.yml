@@ -25,14 +25,6 @@ staging_build:
         source_project: home:defolos:BCI:CR:Basalt
         source_package: minimal-image
         target_project: home:defolos:BCI:CR:Basalt:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Basalt
-        source_package: tomcat-10-image
-        target_project: home:defolos:BCI:CR:Basalt:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Basalt
-        source_package: tomcat-9-image
-        target_project: home:defolos:BCI:CR:Basalt:Staging
   filters:
     event: pull_request
 
@@ -68,12 +60,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Basalt
         package: minimal-image
-    - trigger_services:
-        project: devel:BCI:Basalt
-        package: tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:Basalt
-        package: tomcat-9-image
   filters:
     event: push
     branches:
