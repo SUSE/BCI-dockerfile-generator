@@ -3,79 +3,7 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: 389-ds-container
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: alertmanager-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: blackbox_exporter-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: busybox-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: aspnet-runtime-6.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: aspnet-runtime-8.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: dotnet-runtime-6.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: dotnet-runtime-8.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: dotnet-6.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: dotnet-8.0
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: gcc-13-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: gcc-7-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: git-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-oldstable-openssl-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-oldstable-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-stable-openssl-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: golang-stable-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: grafana-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: helm-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
@@ -91,15 +19,7 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: nginx-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: nodejs-18-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: nodejs-20-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
@@ -119,83 +39,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: pcp-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: php8-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: php-apache8-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: php-fpm8-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: postgres-15-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: postgres-16-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: prometheus-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: python-3.11-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: python-3.6-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: distribution-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rmt-mariadb-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rmt-mariadb-client-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rmt-nginx-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rmt-server-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: ruby-2.5-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rust-oldstable-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: rust-stable-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: sle15-kernel-module-devel-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: tomcat-10-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: tomcat-9-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
   filters:
     event: pull_request
@@ -216,61 +64,7 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: 389-ds-container
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: alertmanager-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: blackbox_exporter-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
         package: busybox-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: aspnet-runtime-6.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: aspnet-runtime-8.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: dotnet-runtime-6.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: dotnet-runtime-8.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: dotnet-6.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: dotnet-8.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: gcc-13-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: gcc-7-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: git-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: golang-oldstable-openssl-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: golang-oldstable-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: golang-stable-openssl-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: golang-stable-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: grafana-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: helm-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: init-image
@@ -282,13 +76,7 @@ refresh_devel_BCI:
         package: minimal-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: nginx-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
         package: nodejs-18-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: nodejs-20-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: openjdk-11-image
@@ -303,64 +91,10 @@ refresh_devel_BCI:
         package: openjdk-17-devel-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: pcp-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: php8-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: php-apache8-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: php-fpm8-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
         package: postgres-15-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
-        package: postgres-16-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: prometheus-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: python-3.11-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: python-3.6-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: distribution-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rmt-mariadb-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rmt-mariadb-client-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rmt-nginx-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rmt-server-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: ruby-2.5-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rust-oldstable-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: rust-stable-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
         package: sle15-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: tomcat-9-image
   filters:
     event: push
     branches:
