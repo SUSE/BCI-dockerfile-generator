@@ -64,9 +64,9 @@ GCC_CONTAINERS = [
                 (gcc_pkg := f"gcc{gcc_version}"),
                 (gpp := f"{gcc_pkg}-c++"),
                 "make",
-                "gawk",
             ]
             + (["gcc", "gcc-c++"] if _is_main_gcc(os_version, gcc_version) else [])
+            + os_version.common_devel_packages
             + os_version.lifecycle_data_pkg
         ),
         pretty_name="GNU Compiler Collection",

@@ -70,7 +70,8 @@ def _get_golang_kwargs(
             {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; rm -rf /var/log/*; fi
             """
         ),
-        "package_list": [*go_packages, "make", "git-core"]
+        "package_list": [*go_packages, "make"]
+        + os_version.common_devel_packages
         + os_version.lifecycle_data_pkg,
         "extra_files": {
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB

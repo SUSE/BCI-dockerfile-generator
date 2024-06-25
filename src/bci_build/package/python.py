@@ -64,7 +64,8 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             "PATH": "$PATH:/root/.local/bin",
             "PIP_VERSION": pip3_replacement,
         },
-        "package_list": [f"{py3}-devel", py3, pip3, "curl", "git-core"]
+        "package_list": [f"{py3}-devel", py3, pip3]
+        + os_version.common_devel_packages
         + ([f"{py3}-wheel"] if has_wheel else [])
         + ([f"{py3}-pipx"] if has_pipx else [])
         + os_version.lifecycle_data_pkg,

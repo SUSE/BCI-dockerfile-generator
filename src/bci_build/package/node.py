@@ -43,12 +43,10 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
             f"nodejs{ver}",
             # devel dependencies:
             f"npm{ver}",
-            "git-core",
-            # used by upstream installation scripts
-            "findutils",
             # dependency of nodejs:
             "update-alternatives",
-        ],
+        ]
+        + os_version.common_devel_packages,
         "env": {
             "NODE_VERSION": ver,
         },
