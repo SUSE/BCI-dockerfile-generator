@@ -18,6 +18,7 @@
 #!BuildTag: bci/spack:0.21.2-%RELEASE%
 #!BuildTag: bci/spack:%%spack_minor%%
 #!BuildTag: bci/spack:%%spack_minor%%-%RELEASE%
+#!BuildTag: bci/spack:latest
 #!BuildName: bci-spack-0.21.2
 #!BuildVersion: 15.6.0.21.2
 FROM bci/bci-base:15.6

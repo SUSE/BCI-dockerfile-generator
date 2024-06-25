@@ -18,6 +18,7 @@
 #!BuildTag: bci/gcc:13-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_version%%
 #!BuildTag: bci/gcc:%%gcc_version%%-%RELEASE%
+#!BuildTag: bci/gcc:latest
 #!BuildName: bci-gcc-13
 #!BuildVersion: 15.6.13
 FROM bci/bci-base:15.6

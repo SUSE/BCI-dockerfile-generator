@@ -20,6 +20,7 @@
 #!BuildTag: suse/tomcat:%%tomcat_version%%-%RELEASE%
 #!BuildTag: suse/tomcat:%%tomcat_minor%%
 #!BuildTag: suse/tomcat:%%tomcat_minor%%-%RELEASE%
+#!BuildTag: suse/tomcat:latest
 #!BuildName: suse-tomcat-10
 #!BuildVersion: 15.6.10
 FROM suse/sle15:15.6
