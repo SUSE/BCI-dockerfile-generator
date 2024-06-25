@@ -16,7 +16,6 @@
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 #!BuildTag: bci/openjdk-devel:17
 #!BuildTag: bci/openjdk-devel:17-%RELEASE%
-#!BuildTag: bci/openjdk-devel:latest
 #!BuildName: bci-openjdk-devel-17
 #!BuildVersion: 15.5.17
 FROM bci/openjdk:17

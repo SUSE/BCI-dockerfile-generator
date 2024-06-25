@@ -16,7 +16,6 @@
 
 #!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%.%RELEASE%
-#!BuildTag: bci/bci-sle15-kernel-module-devel:latest
 #!BuildName: bci-bci-sle15-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.5
 FROM bci/bci-base:15.5
