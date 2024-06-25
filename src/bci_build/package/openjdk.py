@@ -4,7 +4,6 @@ import os
 from itertools import product
 from typing import Literal
 
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
@@ -27,7 +26,9 @@ def _get_openjdk_kwargs(
         "JAVA_VERSION": f"{java_version}",
     }
 
-    is_latest = java_version == 17 and os_version in CAN_BE_LATEST_OS_VERSION
+    is_latest = (java_version == 21 and os_version.is_sle15) or (
+        java_version == 22 and os_version.is_tumbleweed
+    )
 
     common = {
         # Hardcoding /usr/lib64 in JAVA_HOME atm

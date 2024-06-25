@@ -190,6 +190,10 @@ class OsVersion(enum.Enum):
         )
 
     @property
+    def is_tumbleweed(self) -> bool:
+        return self.value == OsVersion.TUMBLEWEED.value
+
+    @property
     def os_version(self) -> str:
         """Returns the numeric version of :py:class:`OsContainer` (or
         ``latest``).
