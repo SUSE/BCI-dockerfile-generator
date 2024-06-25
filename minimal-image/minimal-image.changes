@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 25 10:05:40 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove latest tag from SP5 based containers
+
+-------------------------------------------------------------------
 Tue Jun 11 15:01:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add SLSA badges
