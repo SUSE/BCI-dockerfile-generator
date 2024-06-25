@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- move latest tag to sp6 based containers
+
+-------------------------------------------------------------------
 Fri Jun 21 06:21:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add missing procps package

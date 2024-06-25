@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- move latest tag to sp6 based containers
+
+-------------------------------------------------------------------
 Tue Jun 18 17:25:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - use sentence style capitalization in READMEs

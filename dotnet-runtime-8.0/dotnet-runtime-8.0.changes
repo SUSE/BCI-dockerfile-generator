@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- move latest tag to sp6 based containers
+
+-------------------------------------------------------------------
 Wed Jun 12 10:12:27 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add EoL dates aligned with upstream

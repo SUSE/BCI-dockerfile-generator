@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-sdk:8.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:8.0.6
 #!BuildTag: bci/dotnet-sdk:8.0.6-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-8.0
 #!BuildVersion: 15.6.8.0
 FROM bci/bci-base:15.6

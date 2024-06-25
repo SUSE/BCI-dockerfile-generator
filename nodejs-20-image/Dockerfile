@@ -16,8 +16,10 @@
 
 #!BuildTag: bci/nodejs:20
 #!BuildTag: bci/nodejs:20-%RELEASE%
+#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:20
 #!BuildTag: bci/node:20-%RELEASE%
+#!BuildTag: bci/node:latest
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
 FROM bci/bci-base:15.6

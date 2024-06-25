@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- move latest tag to sp6 based containers
+
+-------------------------------------------------------------------
 Thu Jun 20 09:53:45 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
 
 - extend README.md

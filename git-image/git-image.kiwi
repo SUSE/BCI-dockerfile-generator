@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: suse/git:%%git_version%% suse/git:%%git_version%%-%RELEASE% -->
+<!-- OBS-AddTag: suse/git:%%git_version%% suse/git:%%git_version%%-%RELEASE% suse/git:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="git-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -29,7 +29,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
           name="suse/git"
           tag="%%git_version%%"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="%%git_version%%-%RELEASE%">
+          additionaltags="%%git_version%%-%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.git">
             <label name="org.opencontainers.image.title" value="SLE 15 SP6 with Git"/>

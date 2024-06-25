@@ -16,6 +16,7 @@
 
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
+#!BuildTag: suse/389-ds:latest
 #!BuildName: suse-389-ds-%%389ds_version%%
 #!BuildVersion: 15.6
 FROM suse/sle15:15.6

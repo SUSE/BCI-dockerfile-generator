@@ -16,6 +16,7 @@
 
 #!BuildTag: suse/nginx:1.21
 #!BuildTag: suse/nginx:1.21-%RELEASE%
+#!BuildTag: suse/nginx:latest
 #!BuildName: suse-nginx-1.21
 #!BuildVersion: 15.6.1.21
 FROM suse/sle15:15.6
