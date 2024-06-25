@@ -3,7 +3,6 @@
 from itertools import product
 from pathlib import Path
 
-from bci_build.package import ALL_BASE_OS_VERSIONS
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -197,10 +196,7 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     )
     for ver, os_version in (
         [(15, variant) for variant in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
-        + [
-            (16, variant)
-            for variant in (OsVersion.SP5, OsVersion.SP6, OsVersion.TUMBLEWEED)
-        ]
+        + [(16, variant) for variant in (OsVersion.SP6, OsVersion.TUMBLEWEED)]
     )
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
@@ -406,7 +402,7 @@ NGINX_CONTAINERS = [
         pretty_name="NGINX for SUSE RMT",
         **_get_nginx_kwargs(os_version),
     )
-    for os_version in (OsVersion.SP5, OsVersion.SP6)
+    for os_version in (OsVersion.SP6,)
 ] + [
     ApplicationStackContainer(
         name="nginx",
@@ -615,5 +611,5 @@ WORKDIR $CATALINA_HOME
         entrypoint_user="tomcat",
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
-    for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_BASE_OS_VERSIONS)
+    for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_NONBASE_OS_VERSIONS)
 ]

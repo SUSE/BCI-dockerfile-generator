@@ -190,6 +190,10 @@ class OsVersion(enum.Enum):
         )
 
     @property
+    def is_tumbleweed(self) -> bool:
+        return self.value == OsVersion.TUMBLEWEED.value
+
+    @property
     def os_version(self) -> str:
         """Returns the numeric version of :py:class:`OsContainer` (or
         ``latest``).
@@ -241,7 +245,6 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
-    OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
 ]
@@ -263,7 +266,7 @@ ALL_OS_VERSIONS: set[OsVersion] = {
 }
 
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
-    OsVersion.SP5,
+    OsVersion.SP6,
     OsVersion.TUMBLEWEED,
     OsVersion.BASALT,
 ]
