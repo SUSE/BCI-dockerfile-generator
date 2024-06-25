@@ -2,11 +2,11 @@
 {% include 'badges.j2' %}
 
 ## Description
-The `bci-micro` image is smaller than `bci-minimal` because it
-does not include the RPM package manager, only the RPM database.
 
-The primary use case for the image is deploying static binaries produced
-externally or during multi-stage builds.
+The `bci-micro` image includes the RPM database, but not the RPM package
+manager. This means that the image is smaller than `bci-minimal`. The primary
+use case for the image is deploying static binaries produced externally or
+during multi-stage builds.
 
 
 ## Usage
@@ -14,7 +14,7 @@ externally or during multi-stage builds.
 As there is no straightforward way to install additional
 dependencies inside the container image, we recommend deploying a project
 using the `bci-micro` image only when the final build artifact bundles all
-dependencies needs no further installation of packaged requirements.
+dependencies and needs no further installation of packages.
 
 Example using a Go application:
 
@@ -25,7 +25,7 @@ WORKDIR /app
 
 RUN go install github.com/go-training/helloworld@latest
 
-# Create image to bundle app
+# Create an image to bundle the app
 FROM registry.suse.com/bci/bci-micro:latest
 
 COPY --from=build /go/bin/helloworld /usr/local/bin/helloworld
