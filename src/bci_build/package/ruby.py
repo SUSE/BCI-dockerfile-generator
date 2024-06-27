@@ -43,16 +43,14 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion)
             f"{ruby}-devel",
             # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
             "util-linux",
-            "curl",
-            "git-core",
             # additional dependencies to build rails, ffi, sqlite3 gems -->
             "gcc-c++",
             "sqlite3-devel",
             "make",
-            "gawk",
             # additional dependencies supplementing rails
             "timezone",
-        ],
+        ]
+        + os_version.common_devel_packages,
         "extra_files": {
             # avoid ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
