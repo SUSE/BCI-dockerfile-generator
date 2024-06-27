@@ -43,7 +43,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends python3-devel python3 python3-pip curl git-core python3-wheel lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends python3-devel python3 python3-pip curl findutils gawk git-core procps python3-wheel lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV PYTHON_VERSION="%%py36_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
