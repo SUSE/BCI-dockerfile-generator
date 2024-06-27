@@ -183,7 +183,11 @@ class OsVersion(enum.Enum):
     def common_devel_packages(self) -> list[str]:
         """Returns a list of common development packages that are needed for
         all development containers"""
-        return ["findutils", "gawk", "git-core", "curl", "procps"]
+        r = set(("findutils", "gawk", "git-core", "curl", "procps"))
+        if self.is_tumbleweed:
+            r.add("util-linux")
+
+        return sorted(list(r))
 
     @property
     def is_sle15(self) -> bool:
