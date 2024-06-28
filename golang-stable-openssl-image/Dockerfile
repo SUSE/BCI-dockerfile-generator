@@ -43,7 +43,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends go1.21-openssl go1.21-openssl-doc make git-core lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends go1.21-openssl go1.21-openssl-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GOLANG_VERSION="%%golang_version%%"
 ENV GOPATH="/go"
 ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"

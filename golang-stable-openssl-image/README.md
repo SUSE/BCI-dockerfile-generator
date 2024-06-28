@@ -21,7 +21,7 @@ library, for cryptographic operations in the container environment.
 
 
 ## Usage
-We recommend using the Go image as a build environment. Thus,  
+We recommend using the Go image as a build environment. Thus,
 the compiler does not need to be shipped as part of the images that are
 deployed. Instead, we recommend to use the Go image as the
 builder image only.
@@ -136,11 +136,11 @@ import _ "crypto/tls/fipsonly"
 
 ## Additional tools
 
-The following tools are also included in the image:
+In addition to the standard SLE BCI development packages, the following tools
+are included in the image:
 
 - go1.21-openssl-race
 - make
-- git-core
 
 ## Licensing
 
