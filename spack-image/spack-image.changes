@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul  1 15:19:30 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add usage label stating supported hosts
+
+-------------------------------------------------------------------
 Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - move latest tag to sp6 based containers
