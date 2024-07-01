@@ -62,6 +62,9 @@ SPACK_CONTAINERS = [
         },
         # HPC module only exists for those two arches (bsc#1224130)
         exclusive_arch=[Arch.AARCH64, Arch.X86_64],
+        extra_labels={
+            "usage": "This container is enabled and supported only on a SLE15+ host."
+        },
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
         custom_end=rf"""
