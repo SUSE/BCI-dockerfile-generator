@@ -43,6 +43,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL io.artifacthub.package.logo-url="https://spack.io/assets/images/spack-logo-white.svg"
+LABEL usage="This container is enabled and supported only on a SLE15+ host."
 
 RUN set -euo pipefail; zypper -n in spack bison cmake-full flex libtool makeinfo patchelf lsb-release zstd libzip-devel libcurl-devel libopenssl-devel ncurses-devel tack xz-devel; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV SPACK_ROOT="/usr"
