@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul  1 18:47:31 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- add badges to README
+
+-------------------------------------------------------------------
 Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - move latest tag to sp6 based containers
