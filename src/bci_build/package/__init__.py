@@ -984,6 +984,9 @@ exit 0
 
             return pkg_filter_func
 
+        def pkg_listing_func(pkg: Package) -> str:
+           return f'<package name="{pkg}"/>'
+
         PKG_TYPES = (
             PackageType.DELETE,
             PackageType.BOOTSTRAP,
@@ -1004,8 +1007,7 @@ exit 0
                 res += (
                     f"""  <packages type="{pkg_type}">
     """
-                    + """
-    """.join(f'<package name="{pkg}"/>' for pkg in pkg_list)
+                    + "\n    ".join(pkg_listing_func(pkg) for pkg in pkg_list)
                     + """
   </packages>
 """
@@ -1565,7 +1567,7 @@ from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .appcontainers import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
-from .basalt_base import BASALT_BASE  # noqa: E402
+from .base import BASE_CONTAINERS  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
 from .basecontainers import FIPS_BASE_CONTAINERS  # noqa: E402
 from .basecontainers import GITEA_RUNNER_CONTAINER  # noqa: E402
@@ -1592,7 +1594,7 @@ from .spack import SPACK_CONTAINERS  # noqa: E402
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
-        BASALT_BASE,
+        *BASE_CONTAINERS,
         PYTHON_3_12_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
