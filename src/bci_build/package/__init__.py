@@ -1108,6 +1108,7 @@ exit 0
         - ``{pretty_name}``: the value of the pretty_name property
         - ``{based_on_container}``: the standard "based on the $distro Base Container Image" suffix that descriptions have
         - ``{podman_only}``: "This container is only supported with podman."
+        - ``{privileged_only}``: "This container is only supported in privileged mode."
 
         Otherwise it reuses
         :py:attr:`BaseContainerImage.pretty_name` to generate a description.
@@ -1121,6 +1122,7 @@ exit 0
                 or f"based on the {self._image_properties.distribution_base_name} Base Container Image"
             ),
             "podman_only": "This container is only supported with podman.",
+            "privileged_only": "This container is only supported in privileged mode.",
         }
         description = "{pretty_name} container {based_on_container}."
         if self.custom_description:
@@ -1596,6 +1598,7 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
@@ -1628,6 +1631,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *RUST_CONTAINERS,
         *GIT_CONTAINERS,
         *GOLANG_CONTAINERS,
+        *KIWI_CONTAINERS,
         *RUBY_CONTAINERS,
         *NODE_CONTAINERS,
         *OPENJDK_CONTAINERS,

@@ -1,0 +1,32 @@
+# {{ image.pretty_name }} container image
+
+{% include 'badges.j2' %}
+
+## Description
+
+[KIWI](https://osinside.github.io/kiwi/) is a command-line utility for building
+Linux system appliances. An appliance is a ready to use image of an operating
+system that includes a pre-configured application for a specific use case. The
+appliance is provided as an image file and needs to be deployed to or
+activated in the target system or service.
+
+KIWI NG can create different types of appliances. In addition to the standard installation ISOs and images for virtual machines, KIWI NG can also build images that boot via PXE or Vagrant boxes.
+
+## Usage
+To build a system image, you need to create a KIWI image description and mount
+it into your container. The KIWI image description is a collection of human-readable files stored in a directory. At least one XML file `config.xml` or `*.kiwi`
+is required. Additionally, there may be other files like scripts or
+configuration files.
+
+To run an appliance build, the container needs to be launched in privileged
+mode:
+
+```ShellSession
+$ podman run --privileged -v /path/to/kiwi/descr:/image:Z {{ image.pretty_reference }}
+```
+
+For more information about KIWI, see the [KIWI documentation](https://osinside.github.io/kiwi/),
+specifically the [Getting Started](https://osinside.github.io/kiwi/quickstart.html).
+
+
+{% include 'licensing_and_eula.j2' %}
