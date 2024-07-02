@@ -696,6 +696,27 @@ class BaseContainerImage(abc.ABC):
         return None
 
     @property
+    def build_release(self) -> str | None:
+        if self.os_version not in (OsVersion.SP6,):
+            return None
+        if "dotnet" in self.build_name:
+            if "8.0" in self.build_name:
+                return "20"
+            if "6.0" in self.build_name:
+                return "32"
+        if "golang" in self.build_name:
+            return "33"
+        if "python" in self.build_name:
+            return "41"
+        if "php" in self.build_name:
+            return "30"
+        if "node" in self.build_name:
+            return "30"
+        if isinstance(self, ApplicationStackContainer):
+            return "35"
+        return None
+
+    @property
     def eula(self) -> str:
         return self._image_properties.eula
 
