@@ -35,6 +35,9 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {% if image.build_version %}#!BuildName: {{ image.build_name }}
 #!BuildVersion: {{ image.build_version }}
 {%- endif %}
+{%- if image.build_release %}
+#!BuildRelease: {{ image.build_release }}
+{%- endif %}
 {{ image.dockerfile_from_line }}
 
 MAINTAINER {{ image.maintainer }}
