@@ -21,6 +21,7 @@
 #!BuildTag: suse/postgres:latest
 #!BuildName: suse-postgres-16
 #!BuildVersion: 15.6.16
+#!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -22,6 +22,7 @@
 #!BuildTag: bci/node:latest
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
+#!BuildRelease: 30
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

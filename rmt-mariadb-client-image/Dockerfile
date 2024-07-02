@@ -22,6 +22,7 @@
 #!BuildTag: suse/mariadb-client:latest
 #!BuildName: suse-rmt-mariadb-client-10.11
 #!BuildVersion: 15.6.10.11
+#!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -23,6 +23,7 @@
 #!BuildTag: suse/grafana:latest
 #!BuildName: suse-grafana-%%grafana_patch_version%%
 #!BuildVersion: 15.6
+#!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

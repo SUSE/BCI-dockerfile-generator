@@ -19,6 +19,7 @@
 #!BuildTag: bci/php-fpm:latest
 #!BuildName: bci-php-fpm-8
 #!BuildVersion: 15.6.8
+#!BuildRelease: 30
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

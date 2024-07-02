@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  2 11:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set buildrelease to make lang and app containers newer than sp5
+
+-------------------------------------------------------------------
 Mon Jul  1 18:47:31 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
 
 - add badges to README

@@ -23,6 +23,7 @@
 #!BuildTag: suse/pcp:latest
 #!BuildName: suse-pcp-5.3.7
 #!BuildVersion: 15.6.5.3.7
+#!BuildRelease: 35
 FROM bci/bci-init:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -20,6 +20,7 @@
 #!BuildTag: bci/python:3-%RELEASE%
 #!BuildName: bci-python-3.6
 #!BuildVersion: 15.6.3.6
+#!BuildRelease: 41
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

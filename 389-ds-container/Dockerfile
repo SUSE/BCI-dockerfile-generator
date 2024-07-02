@@ -19,6 +19,7 @@
 #!BuildTag: suse/389-ds:latest
 #!BuildName: suse-389-ds-%%389ds_version%%
 #!BuildVersion: 15.6
+#!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER william.brown@suse.com
