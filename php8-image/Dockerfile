@@ -19,6 +19,7 @@
 #!BuildTag: bci/php:latest
 #!BuildName: bci-php-8
 #!BuildVersion: 15.6.8
+#!BuildRelease: 30
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

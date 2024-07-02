@@ -21,6 +21,7 @@
 #!BuildTag: bci/python:latest
 #!BuildName: bci-python-3.11
 #!BuildVersion: 15.6.3.11
+#!BuildRelease: 41
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

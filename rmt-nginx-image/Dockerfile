@@ -19,6 +19,7 @@
 #!BuildTag: suse/rmt-nginx:latest
 #!BuildName: suse-rmt-nginx-1.21
 #!BuildVersion: 15.6.1.21
+#!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)

@@ -20,6 +20,7 @@
 #!BuildTag: bci/golang:1.20-openssl-%RELEASE%
 #!BuildName: bci-golang-oldstable-openssl
 #!BuildVersion: 15.6
+#!BuildRelease: 33
 FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
