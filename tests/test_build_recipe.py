@@ -21,10 +21,10 @@ from bci_build.templates import KIWI_TEMPLATE
             """# SPDX-License-Identifier: MIT
 # Copyright header
 
-#!BuildTag: bci/test:28
-#!BuildTag: bci/test:28-%RELEASE%
-#!BuildName: bci-test-28
-#!BuildVersion: 15.4.28
+#!BuildTag: bci/test:27
+#!BuildTag: bci/test:27-%RELEASE%
+#!BuildName: bci-test-27
+#!BuildVersion: 15.4.27
 FROM suse/ltss/sle15.4/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -33,12 +33,12 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="28"
+LABEL org.opencontainers.image.version="27"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/test:27-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2024-02-01"
@@ -55,10 +55,10 @@ RUN emacs -Q --batch test.el
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright header-->
-<!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
+<!-- OBS-AddTag: bci/test:27 bci/test:27-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-27-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
@@ -68,19 +68,19 @@ RUN emacs -Q --batch test.el
     <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
       <containerconfig
           name="bci/test"
-          tag="28"
+          tag="27"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="28-%RELEASE%">
+          additionaltags="27-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
             <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
-            <label name="org.opencontainers.image.version" value="28"/>
+            <label name="org.opencontainers.image.version" value="27"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:28-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:27-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.supportlevel.until" value="2024-02-01"/>
@@ -113,7 +113,7 @@ RUN emacs -Q --batch test.el
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 os_version=OsVersion.SP4,
-                version="28",
+                version="27",
                 custom_end="""COPY test.el .
 RUN emacs -Q --batch test.el
 """,
@@ -220,10 +220,10 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
             """# SPDX-License-Identifier: MIT
 # Copyright header
 
-#!BuildTag: bci/test:28
-#!BuildTag: bci/test:28-%RELEASE%
-#!BuildName: bci-test-28
-#!BuildVersion: 15.4.28
+#!BuildTag: bci/test:29
+#!BuildTag: bci/test:29-%RELEASE%
+#!BuildName: bci-test-29
+#!BuildVersion: 15.4.29
 FROM suse/ltss/sle15.4/sle15:15.4
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
@@ -232,12 +232,12 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="28"
+LABEL org.opencontainers.image.version="29"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/test:28-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/test:29-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -251,10 +251,10 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright header-->
-<!-- OBS-AddTag: bci/test:28 bci/test:28-%RELEASE% -->
+<!-- OBS-AddTag: bci/test:29 bci/test:29-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-29-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
@@ -264,19 +264,19 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
     <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
       <containerconfig
           name="bci/test"
-          tag="28"
+          tag="29"
           maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="28-%RELEASE%">
+          additionaltags="29-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
             <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
-            <label name="org.opencontainers.image.version" value="28"/>
+            <label name="org.opencontainers.image.version" value="29"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:28-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/test:29-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
@@ -307,7 +307,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
                 package_list=["gcc", "emacs"],
                 package_name="emacs-image",
                 os_version=OsVersion.SP4,
-                version="28",
+                version="29",
             ),
         ),
         (
