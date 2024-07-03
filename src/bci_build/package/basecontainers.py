@@ -194,6 +194,7 @@ BUSYBOX_CONTAINERS = [
         from_image=None,
         os_version=os_version,
         support_level=SupportLevel.L3,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         package_name="busybox-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
@@ -242,6 +243,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             package_name=f"{prefix}-kernel-module-devel-image",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
+            supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=[
                 "kernel-devel",
