@@ -204,6 +204,10 @@ class OsVersion(enum.Enum):
         return self.value == OsVersion.TUMBLEWEED.value
 
     @property
+    def is_ltss(self) -> bool:
+        return self in ALL_OS_LTSS_VERSIONS
+
+    @property
     def os_version(self) -> str:
         """Returns the numeric version of :py:class:`OsContainer` (or
         ``latest``).
@@ -363,108 +367,6 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
     return "bci"
 
 
-@dataclass(frozen=True)
-class ImageProperties:
-    """Class storing the properties of the Base Container that differ
-    depending on the vendor.
-
-    """
-
-    #: maintainer of the image
-    maintainer: str
-
-    #: full vendor string as it will be included in the
-    #: ``org.opencontainers.image.vendor`` label
-    vendor: str
-
-    #: The name of the underlying distribution. It will be inserted into the
-    #: image's title as ``$distribution_base_name BCI $pretty_name Container
-    #: Image``.
-    distribution_base_name: str
-
-    #: The url to the registry of this vendor
-    registry: str
-
-    #: Url to the vendor's home page
-    url: str
-
-    #: The EULA identifier to set
-    eula: str
-
-    #: Url to learn about the support lifecycle of the image
-    lifecycle_url: str
-
-    #: The prefix of the label names ``$label_prefix.bci.$label = foobar``
-    label_prefix: str
-
-    #: The prefix of the build tag for DevelopmentContainer and OsContainer Images.
-    #: The build tag is constructed as `$build_tag_prefix/$name`
-    build_tag_prefix: str
-
-    #: Same as :py:attr:`build_tag_prefix` but for ApplicationStackContainer Images.
-    application_container_build_tag_prefix: str
-
-    #:
-    based_on_container_description: str | None = None
-
-
-#: Image properties for openSUSE Tumbleweed
-_OPENSUSE_IMAGE_PROPS = ImageProperties(
-    maintainer="openSUSE (https://www.opensuse.org/)",
-    vendor="openSUSE Project",
-    registry="registry.opensuse.org",
-    url="https://www.opensuse.org",
-    eula="sle-bci",
-    lifecycle_url="https://en.opensuse.org/Lifetime",
-    label_prefix="org.opensuse",
-    distribution_base_name="openSUSE Tumbleweed",
-    build_tag_prefix=_build_tag_prefix(OsVersion.TUMBLEWEED),
-    application_container_build_tag_prefix="opensuse",
-)
-
-#: Image properties for SUSE Linux Enterprise
-_SLE_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://www.suse.com/products/base-container-images/",
-    eula="sle-bci",
-    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
-    label_prefix="com.suse",
-    distribution_base_name="SLE",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP5),
-    application_container_build_tag_prefix="suse",
-)
-
-#: Image properties for SUSE Linux Enterprise 15 SP3 LTSS images
-_SLE_15_SP3_LTSS_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://www.suse.com/products/server/",
-    eula="sle-eula",
-    lifecycle_url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15",
-    label_prefix="com.suse",
-    distribution_base_name="SLE LTSS",
-    build_tag_prefix=_build_tag_prefix(OsVersion.SP3),
-    application_container_build_tag_prefix="suse",
-)
-
-_BASALT_IMAGE_PROPS = ImageProperties(
-    maintainer="SUSE LLC (https://www.suse.com/)",
-    vendor="SUSE LLC",
-    registry="registry.suse.com",
-    url="https://susealp.io/",
-    eula="sle-bci",
-    lifecycle_url="https://www.suse.com/lifecycle",
-    label_prefix="com.suse.basalt",
-    distribution_base_name="Basalt Project",
-    build_tag_prefix=_build_tag_prefix(OsVersion.BASALT),
-    application_container_build_tag_prefix="suse",
-    based_on_container_description="based on the SUSE Adaptable Linux Platform (ALP)",
-)
-
-
 @dataclass
 class BaseContainerImage(abc.ABC):
     """Base class for all Base Containers."""
@@ -616,8 +518,6 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
-    _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
-
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -635,17 +535,12 @@ class BaseContainerImage(abc.ABC):
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
-        if self.is_opensuse:
-            self._image_properties = _OPENSUSE_IMAGE_PROPS
-        elif self.os_version == OsVersion.BASALT:
-            self._image_properties = _BASALT_IMAGE_PROPS
-        elif self.os_version == OsVersion.SP3:
-            self._image_properties = _SLE_15_SP3_LTSS_IMAGE_PROPS
-        else:
-            self._image_properties = _SLE_IMAGE_PROPS
-
         if not self.maintainer:
-            self.maintainer = self._image_properties.maintainer
+            self.maintainer = (
+                "openSUSE (https://www.opensuse.org/)"
+                if self.os_version.is_tumbleweed
+                else "SUSE LLC (https://www.suse.com/)"
+            )
 
         # limit to tech preview for beta releases
         if (
@@ -653,10 +548,6 @@ class BaseContainerImage(abc.ABC):
             and self.support_level == SupportLevel.L3
         ):
             self.support_level = SupportLevel.TECHPREVIEW
-
-    @property
-    def is_opensuse(self) -> bool:
-        return self.os_version == OsVersion.TUMBLEWEED
 
     @property
     @abc.abstractmethod
@@ -717,12 +608,32 @@ class BaseContainerImage(abc.ABC):
         return None
 
     @property
+    def distribution_base_name(self) -> str:
+        if self.os_version.is_tumbleweed:
+            return "openSUSE Tumbleweed"
+        elif self.os_version.is_ltss:
+            return "SLE LTSS"
+        elif self.os_version.is_sle15:
+            return "SLE"
+        elif self.os_version.value == OsVersion.BASALT.value:
+            return "Basalt Project"
+
+        raise NotImplementedError(f"Unknown os_version: {self.os_version}")
+
+    @property
     def eula(self) -> str:
-        return self._image_properties.eula
+        """EULA covering this image. can be ``sle-eula`` or ``sle-bci``."""
+        if self.os_version.is_ltss:
+            return "sle-eula"
+        return "sle-bci"
 
     @property
     def lifecycle_url(self) -> str:
-        return self._image_properties.lifecycle_url
+        if self.os_version.is_tumbleweed:
+            return "https://en.opensuse.org/Lifetime"
+        if self.os_version.is_sle15:
+            return "https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+        return "https://www.suse.com/lifecycle"
 
     @property
     def release_stage(self) -> ReleaseStage:
@@ -745,7 +656,14 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        return self._image_properties.url
+        if self.os_version.is_tumbleweed:
+            return "https://www.opensuse.org"
+        if self.os_version.is_ltss:
+            return "https://www.suse.com/products/long-term-service-pack-support/"
+        if self.os_version.value == OsVersion.BASALT.value:
+            return "https://susealp.io/"
+
+        return "https://www.suse.com/products/base-container-images/"
 
     @property
     def vendor(self) -> str:
@@ -753,12 +671,16 @@ class BaseContainerImage(abc.ABC):
         label
 
         """
-        return self._image_properties.vendor
+        if self.os_version.is_tumbleweed:
+            return "openSUSE Project"
+        return "SUSE LLC"
 
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        return self._image_properties.registry
+        if self.os_version.is_tumbleweed:
+            return "registry.opensuse.org"
+        return "registry.suse.com"
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -778,7 +700,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def _registry_prefix(self) -> str:
-        return self._image_properties.build_tag_prefix
+        return _build_tag_prefix(self.os_version)
 
     @staticmethod
     def _cmd_entrypoint_docker(
@@ -1118,8 +1040,7 @@ exit 0
         description_formatters = {
             "pretty_name": self.pretty_name,
             "based_on_container": (
-                self._image_properties.based_on_container_description
-                or f"based on the {self._image_properties.distribution_base_name} Base Container Image"
+                f"based on the {self.distribution_base_name} Base Container Image"
             ),
             "podman_only": "This container is only supported with podman.",
             "privileged_only": "This container is only supported in privileged mode.",
@@ -1141,7 +1062,7 @@ exit 0
         :py:attr:`~ImageProperties.distribution_base_name`.
 
         """
-        return f"{self._image_properties.distribution_base_name} BCI {self.pretty_name}"
+        return f"{self.distribution_base_name} BCI {self.pretty_name}"
 
     @property
     def readme_path(self) -> str:
@@ -1153,7 +1074,7 @@ exit 0
         # with a url like:
         # https://build.opensuse.org/package/show/openSUSE:Factory/ruby-3.2-image?rev=2bf407f529a768e95f024bce5a916c69
         # to point to the README, we'd have to inject something *before* the query
-        if self.is_opensuse:
+        if self.os_version.is_tumbleweed:
             return f"https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/{self.os_version.deployment_branch_name}/{self.readme_path}"
 
         return "%SOURCEURL%/README.md"
@@ -1226,8 +1147,11 @@ exit 0
         :py:attr:`~BaseContainerImage.custom_labelprefix_end`.
 
         """
+        labelprefix = "com.suse"
+        if self.os_version.is_tumbleweed:
+            labelprefix = "org.opensuse"
         return (
-            self._image_properties.label_prefix
+            labelprefix
             + "."
             + (
                 {
@@ -1388,6 +1312,12 @@ class DevelopmentContainer(BaseContainerImage):
             raise ValueError("A language stack container requires a version")
 
     @property
+    def _registry_prefix(self) -> str:
+        if self.os_version.is_tumbleweed:
+            return "opensuse/bci"
+        return "bci"
+
+    @property
     def image_type(self) -> ImageType:
         return ImageType.SLE_BCI
 
@@ -1499,7 +1429,9 @@ class DevelopmentContainer(BaseContainerImage):
 class ApplicationStackContainer(DevelopmentContainer):
     @property
     def _registry_prefix(self) -> str:
-        return self._image_properties.application_container_build_tag_prefix
+        if self.os_version.is_tumbleweed:
+            return "opensuse"
+        return "suse"
 
     @property
     def image_type(self) -> ImageType:
@@ -1507,11 +1439,12 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def title(self) -> str:
-        return f"{self._image_properties.distribution_base_name} {self.pretty_name}"
+        return f"{self.distribution_base_name} {self.pretty_name}"
 
     @property
     def eula(self) -> str:
-        if self.is_opensuse:
+        """SLE BCI Application containers are non-redistributable by default."""
+        if self.os_version.is_tumbleweed:
             return "sle-bci"
         return "sle-eula"
 

@@ -147,9 +147,7 @@ FIPS_BASE_CONTAINERS = [
         exclusive_arch=[Arch.X86_64],
         os_version=os_version,
         build_recipe_type=BuildType.DOCKER,
-        support_level=(
-            SupportLevel.L3 if os_version == OsVersion.SP3 else SupportLevel.TECHPREVIEW
-        ),
+        support_level=SupportLevel.L3,
         supported_until=(
             datetime.date(2025, 12, 31)
             if os_version == OsVersion.SP3
