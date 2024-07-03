@@ -1,10 +1,16 @@
-# The SUSE Linux Enterprise 15 SP3 FIPS-140-2 container image
+{% if image.build_version == '15.3' %}
+# The SUSE Linux Enterprise 15 SP3 LTSS FIPS-140-2 container image
+{% else %}
+# The SUSE Linux Enterprise 15 SP4 LTSS FIPS-140-3 container image
+{% endif %}
 {% include 'badges.j2' %}
 
 ## Description
-This SUSE Linux Enterprise 15 SP3-based container image includes the
-SLES 15 FIPS-140-2 certified OpenSSL and libgcrypt modules. The image
-is designed to run on a FIPS-140-2 compliant SUSE Linux Enterprise Server 15 SP3
+
+{% if image.build_version | string == '15.3' %}
+This SUSE Linux Enterprise 15 SP3 LTSS-based container image includes the
+SLES 15 FIPS-140-2 certified OpenSSL and libgcrypt modules. The image is
+designed to run on a FIPS-140-2 compliant SUSE Linux Enterprise Server 15 SP3
 host environment. Although it is configured to enforce FIPS mode, the FIPS
 certification requires a host kernel in FIPS mode to be fully compliant.
 
@@ -22,12 +28,29 @@ Similarly, the [FIPS-140-2 certified libgcrypt module](https://csrc.nist.gov/CSR
 is a drop-in replacement for the standard libgcrypt library. It provides the
 same functionality as the standard libgcrypt library, with the additional
 security features enforced to meet FIPS-140-2 requirements.
+{% else %}
+This SUSE Linux Enterprise 15 SP4 LTSS-based container image includes the
+OpenSSL and libgcrypt modules that have been submitted for FIPS 140-3 certification.
+
+The FIPS 140-3 certification process is currently in progress. The modules are
+designed to meet the FIPS 140-3 requirements and are in the process of being
+certified by the National Institute of Standards and Technology (NIST).
+
+The FIPS 140-3 certified OpenSSL module is a cryptographic module that provides
+a FIPS 140-3 compliant cryptographic library. The module is designed to provide
+the same functionality as the standard OpenSSL library, with additional security
+features to meet the FIPS 140-3 requirements.
+
+Similarly, the FIPS 140-3 certified libgcrypt module is designed to provide the
+same functionality as the standard libgcrypt library, with additional security
+features enforced to meet the FIPS 140-3 requirements.
+{% endif %}
 
 ## Usage
-The image is configured to enforce the use of FIPS-140 mode by default,
+The image is configured to enforce the use of FIPS mode by default,
 independent of the host environment setup by specifying the following
 environment variables:
-* `OPENSSL_FIPS=1`: Initialize the OpenSSL FIPS-140 mode
+* `OPENSSL_FIPS=1`: Initialize the OpenSSL FIPS mode
 * `OPENSSL_FORCE_FIPS_MODE=1`: Set FIPS mode to enforcing independent of the host kernel
 * `LIBGCRYPT_FORCE_FIPS_MODE=1`: Set FIPS mode in libgcrypt to enforcing
 
