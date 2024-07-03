@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul  3 06:23:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add supported until date
+
+-------------------------------------------------------------------
 Tue Jun 25 10:05:40 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove latest tag from SP5 based containers
