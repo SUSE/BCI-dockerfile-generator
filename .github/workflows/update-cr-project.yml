@@ -21,7 +21,6 @@ jobs:
           - 6
           - 5
           - Tumbleweed
-          - Basalt
 
     steps:
       # we need all branches for the build checks
