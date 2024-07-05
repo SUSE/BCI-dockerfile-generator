@@ -31,7 +31,7 @@ DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 
 #: Remove various log files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
-LOG_CLEAN: str = "rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}"
+LOG_CLEAN: str = """rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}"""
 
 
 @enum.unique
