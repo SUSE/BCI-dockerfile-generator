@@ -6,6 +6,7 @@ from typing import Literal
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
@@ -56,6 +57,7 @@ def _get_golang_kwargs(
         "env": {
             "GOLANG_VERSION": golang_version_regex,
             "GOPATH": "/go",
+            "GOTOOLCHAIN": "local",
             "PATH": "/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         },
         "replacements_via_service": [
@@ -67,7 +69,11 @@ def _get_golang_kwargs(
             f"""
             # only available on go's tsan_arch architectures
             #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; rm -rf /var/log/*; fi
+            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; fi
+            {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
+            {DOCKERFILE_RUN} {LOG_CLEAN}
+            WORKDIR /go
+
             """
         ),
         "package_list": [*go_packages, "make"]
