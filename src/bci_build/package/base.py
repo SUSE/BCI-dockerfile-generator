@@ -88,7 +88,7 @@ rm -f /var/log/lastlog
 #======================================
 # Remove locale files
 #--------------------------------------
-find /usr/share/locale -name '*.mo' -delete
+(shopt -s globstar; rm -f /usr/share/locale/**/*.mo)
 """
     ).render(os_version=os_version)
 
