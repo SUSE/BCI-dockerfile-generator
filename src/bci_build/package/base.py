@@ -25,7 +25,15 @@ suseSetupProduct
 # don't have duplicate licenses of the same type
 jdupes -1 -L -r /usr/share/licenses
 
+{% if os_version.is_tumbleweed -%}
+#======================================
+# Add repos from control.xml
+#--------------------------------------
+add-yast-repos
+zypper --non-interactive rm -u live-add-yast-repos jdupes
+{% else -%}
 zypper --non-interactive rm -u jdupes
+{% endif %}
 
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
 # which would avoid it being installed by filesystem package
@@ -48,7 +56,7 @@ sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp
 zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://updates.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product/' SLE_BCI
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://updates.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://updates.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_source/' SLE_BCI_source
-{% endif %}
+{%- endif %}
 
 #======================================
 # Remove zypp uuid (bsc#1098535)
@@ -57,6 +65,17 @@ rm -f /var/lib/zypp/AnonymousUniqueId
 
 # Remove the entire zypper cache content (not the dir itself, owned by libzypp)
 rm -rf /var/cache/zypp/*
+
+{% if os_version.is_tumbleweed -%}
+# Assign a fixed architecture in zypp.conf, to use the container's arch even if
+# the host arch differs (e.g. docker with --platform doesn't affect uname)
+arch=$(rpm -q --qf %{arch} glibc)
+if [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
+    sed -i "s/^# arch =.*\$/arch = i686/" /etc/zypp/zypp.conf
+    # Verify that it's applied
+    grep -q '^arch =' /etc/zypp/zypp.conf
+fi
+{%- endif -%}
 
 #==========================================
 # Hack! The go container management tools can't handle sparse files:
