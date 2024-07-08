@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul  8 10:31:15 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- more upstream-compatible golang containers
+
+-------------------------------------------------------------------
 Tue Jul  2 11:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set buildrelease to make lang and app containers newer than sp5
