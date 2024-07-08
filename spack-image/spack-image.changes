@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul  8 13:40:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use minor version level only for spack
+
+-------------------------------------------------------------------
 Mon Jul  1 15:19:30 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add usage label stating supported hosts
