@@ -1,4 +1,4 @@
-# Spack 0.21.2 container image
+# Spack 0.21 container image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -26,7 +26,7 @@ spack:
   container:
     format: <container_format>
     images:
-      build: "registry.suse.com/bci/spack:0.21.2"
+      build: "registry.suse.com/bci/spack:0.21"
       final: "registry.suse.com/bci/bci-base:latest"
     os_packages:
       command: zypper
@@ -65,7 +65,7 @@ $ podman run -it --rm <target_name> <command line ...>
 If you do not have a local installation of Spack, you can use this container
 to run Spack commands - like `spack containerize`:
 ```ShellSession
-$ podman run -v $(pwd):/root:Z --rm registry.suse.com/bci/spack:0.21.2 containerize > Containerfile
+$ podman run -v $(pwd):/root:Z --rm registry.suse.com/bci/spack:0.21 containerize > Containerfile
 ```
 For further information, refer to the
 [Spack documentation on container images](https://spack.readthedocs.io/en/latest/containers.html).
