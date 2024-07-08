@@ -15,19 +15,23 @@ assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
 TOMCAT_CONTAINERS = [
     ApplicationCollectionContainer(
         name="apache-tomcat",
-        pretty_name=f"Apache Tomcat {tomcat_major}",
-        package_name=f"apache-tomcat-{tomcat_major}-image"
+        pretty_name="Apache Tomcat",
+        package_name=f"apache-tomcat-{tomcat_major}-java-{jre_version}-image"
         if os_version.is_tumbleweed
-        else f"sac-apache-tomcat-{tomcat_major}-image",
+        else f"sac-apache-tomcat-{tomcat_major}-java{jre_version}-image",
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
             and tomcat_major == _TOMCAT_VERSIONS[-1]
+            and jre_version == 22
             and os_version.is_tumbleweed
         ),
-        version=tomcat_major,
+        version=f"{tomcat_major}-jre{jre_version}",
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        additional_versions=["%%tomcat_version%%", "%%tomcat_minor%%"],
+        additional_versions=[
+            f"%%tomcat_version%%-jre{jre_version}",
+            f"%%tomcat_minor%%-jre{jre_version}",
+        ],
         package_list=[
             tomcat_pkg := (
                 "tomcat"
@@ -35,11 +39,7 @@ TOMCAT_CONTAINERS = [
                 else f"tomcat{tomcat_major}"
             )
         ]
-        + (
-            ["java-21-openjdk", "java-21-openjdk-headless"]
-            if os_version == OsVersion.SP6
-            else []
-        ),
+        + [f"java-{jre_version}-openjdk", f"java-{jre_version}-openjdk-headless"],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%tomcat_version%%", package_name=tomcat_pkg
@@ -74,9 +74,11 @@ WORKDIR $CATALINA_HOME
         entrypoint_user="tomcat",
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
-    for tomcat_major, os_version in (
-        (10, OsVersion.TUMBLEWEED),
-        (9, OsVersion.TUMBLEWEED),
-        (10, OsVersion.SP6),
+    for tomcat_major, os_version, jre_version in (
+        (10, OsVersion.TUMBLEWEED, 22),
+        (10, OsVersion.TUMBLEWEED, 21),
+        (10, OsVersion.TUMBLEWEED, 17),
+        (9, OsVersion.TUMBLEWEED, 17),
+        (10, OsVersion.SP6, 21),
     )
 ]
