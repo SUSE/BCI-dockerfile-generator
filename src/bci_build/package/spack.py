@@ -6,12 +6,11 @@ from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
+from bci_build.package.versions import to_major_minor_version
 
 SPACK_CONTAINERS = [
     DevelopmentContainer(
@@ -22,16 +21,11 @@ SPACK_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         logo_url="https://spack.io/assets/images/spack-logo-white.svg",
-        version=(spack_pkg_version := get_pkg_version("spack", os_version)),
+        version=to_major_minor_version(
+            spack_pkg_version := get_pkg_version("spack", os_version)
+        ),
+        additional_versions=[spack_pkg_version],
         version_in_uid=False,
-        additional_versions=["%%spack_minor%%"],
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description="%%spack_minor%%",
-                package_name="spack",
-                parse_version=ParseVersion.MINOR,
-            ),
-        ],
         package_list=[
             "spack",
             "bison",
