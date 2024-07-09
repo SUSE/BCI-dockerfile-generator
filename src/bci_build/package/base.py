@@ -1,5 +1,6 @@
 """The base container image is the base image with zypper included."""
 
+from dataclasses import dataclass
 from pathlib import Path
 
 from jinja2 import Template
@@ -93,6 +94,18 @@ rm -f /var/log/lastlog
     ).render(os_version=os_version)
 
 
+@dataclass
+class Sles15Image(OsContainer):
+    @property
+    def build_tags(self) -> list[str]:
+        return list(
+            set(
+                super().build_tags
+                + ["suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.version_label}"]
+            )
+        )
+
+
 def _get_base_kwargs(os_version: OsVersion) -> dict:
     package_name: str = "base-image"
     if os_version.is_ltss:
@@ -162,5 +175,5 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 
 # TODO merge in tumbleweed changes and switch to ALL_BASE_OS_VERSIONS
 BASE_CONTAINERS = [
-    OsContainer(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP5, OsVersion.SP6)
+    Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP5, OsVersion.SP6)
 ]

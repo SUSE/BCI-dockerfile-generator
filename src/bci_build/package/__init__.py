@@ -1261,11 +1261,11 @@ exit 0
         the image itself.
 
         """
-        extra_tags = []
+        extra_tags = set()
         for buildtag in self.build_tags[1:]:
             path, tag = buildtag.split(":")
             if path.endswith(self.name):
-                extra_tags.append(tag)
+                extra_tags.add(tag)
 
         return ",".join(extra_tags) if extra_tags else None
 
@@ -1546,19 +1546,8 @@ class OsContainer(BaseContainerImage):
     @property
     def build_tags(self) -> list[str]:
         tags: list[str] = []
-        tagnames: list[str] = [self.name] + self.additional_names
-        # super ugly special case hack for SLE15 base image
-        # the SLE15 base container is published as suse/sle15 and as bci/bci-base at the
-        # same time. We have no logic to publish anything outside the bci/ namespace so
-        # we need to special case this here and set the main tag to suse/sle15 and
-        # add bci/bci-base as additional one.
-        if self.os_version.is_sle15 and self.name == "base":
-            tags.extend(
-                ("suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.version_label}")
-            )
-            tagnames = self.additional_names
 
-        for name in tagnames:
+        for name in [self.name] + self.additional_names:
             tags += [
                 f"{self._registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
                 f"{self._registry_prefix}/bci-{name}:{self.version_label}",
