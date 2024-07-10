@@ -16,8 +16,8 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-aspnet:6.0
 #!BuildTag: bci/dotnet-aspnet:6.0-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:6.0.31
-#!BuildTag: bci/dotnet-aspnet:6.0.31-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:6.0.32
+#!BuildTag: bci/dotnet-aspnet:6.0.32-%RELEASE%
 #!BuildName: bci-dotnet-aspnet-6.0
 #!BuildVersion: 15.6.6.0
 #!BuildRelease: 32
@@ -49,16 +49,16 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.31-1.x86_64.rpm
-COPY dotnet-host-6.0.31-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.31-1.x86_64.rpm
-COPY dotnet-hostfxr-6.0-6.0.31-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.31-1.x86_64.rpm
-COPY dotnet-runtime-deps-6.0-6.0.31-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.31-1.x86_64.rpm
-COPY dotnet-runtime-6.0-6.0.31-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-6.0-6.0.31-1.x86_64.rpm
-COPY aspnetcore-runtime-6.0-6.0.31-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.32-1.x86_64.rpm
+COPY dotnet-host-6.0.32-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.32-1.x86_64.rpm
+COPY dotnet-hostfxr-6.0-6.0.32-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.32-1.x86_64.rpm
+COPY dotnet-runtime-deps-6.0-6.0.32-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.32-1.x86_64.rpm
+COPY dotnet-runtime-6.0-6.0.32-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-6.0-6.0.32-1.x86_64.rpm
+COPY aspnetcore-runtime-6.0-6.0.32-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
