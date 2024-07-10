@@ -39,7 +39,13 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 #!BuildRelease: {{ image.build_release }}
 {%- endif %}
 {{ image.dockerfile_from_line }}
+{%- if image.from_target_image %}
+COPY --from=target / /target
+{%- endif %}
 
+{% if image.packages %}{{ DOCKERFILE_RUN }} zypper{% if image.from_target_image %} --installroot /target --gpg-auto-import-keys {% endif %} -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
+{% if image.from_target_image %}FROM target
+COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
 LABEL org.opencontainers.image.authors="{{ image.maintainer }}"
@@ -73,7 +79,6 @@ LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"
 {%- if image.extra_label_lines %}{{ image.extra_label_lines }}
 {%- endif %}
 
-{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
 {%- if image.env_lines %}{{- image.env_lines }}{% endif %}
 {%- if image.entrypoint_docker %}{{ image.entrypoint_docker }}{% endif %}
 {%- if image.cmd_docker %}{{ image.cmd_docker }}{% endif %}

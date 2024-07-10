@@ -4,9 +4,11 @@ import datetime
 
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package import _build_tag_prefix
 
 from .appcollection import ApplicationCollectionContainer
 
@@ -68,12 +70,17 @@ TOMCAT_CONTAINERS = [
             f"%%tomcat_version%%-jre{jre_version}",
             f"%%tomcat_minor%%-jre{jre_version}",
         ],
+        from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
             tomcat_pkg := (
                 "tomcat"
                 if tomcat_major == _TOMCAT_VERSIONS[0]
                 else f"tomcat{tomcat_major}"
-            )
+            ),
+            # currently needed by testsuite
+            "curl",
+            # currently needed by custom_end
+            "sed",
         ]
         + [f"java-{jre_version}-openjdk", f"java-{jre_version}-openjdk-headless"],
         replacements_via_service=[
