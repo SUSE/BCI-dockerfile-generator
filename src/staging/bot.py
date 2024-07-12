@@ -995,7 +995,12 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
             await run_in_worktree(
                 f"git commit -m '{commit_msg or 'Test build'}'",
-                env={**_GIT_COMMIT_ENV, **os.environ},
+                env={
+                    **_GIT_COMMIT_ENV,
+                    "GIT_AUTHOR_NAME": _GIT_COMMIT_ENV["GIT_COMMITTER_NAME"],
+                    "GIT_AUTHOR_EMAIL": _GIT_COMMIT_ENV["GIT_COMMITTER_EMAIL"],
+                    **os.environ,
+                },
             )
             return True
 
