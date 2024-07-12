@@ -24,8 +24,8 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildTag: bci/test:27
 #!BuildTag: bci/test:27-%RELEASE%
 #!BuildName: bci-test-27
-#!BuildVersion: 15.4.27
-FROM suse/ltss/sle15.4/sle15:15.4
+#!BuildVersion: 15.6.27
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -65,7 +65,7 @@ RUN emacs -Q --batch test.el
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="27"
@@ -92,7 +92,7 @@ RUN emacs -Q --batch test.el
         </labels>
       </containerconfig>
     </type>
-    <version>15.4.0</version>
+    <version>15.6.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
@@ -112,7 +112,7 @@ RUN emacs -Q --batch test.el
                 supported_until=date(2024, 2, 1),
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
-                os_version=OsVersion.SP4,
+                os_version=OsVersion.SP6,
                 version="27",
                 custom_end="""COPY test.el .
 RUN emacs -Q --batch test.el
@@ -223,8 +223,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 #!BuildTag: bci/test:29
 #!BuildTag: bci/test:29-%RELEASE%
 #!BuildName: bci-test-29
-#!BuildVersion: 15.4.29
-FROM suse/ltss/sle15.4/sle15:15.4
+#!BuildVersion: 15.6.29
+FROM bci/bci-base:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
@@ -261,7 +261,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/suse/ltss/sle15.4/sle15#15.4">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="29"
@@ -287,7 +287,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
         </labels>
       </containerconfig>
     </type>
-    <version>15.4.0</version>
+    <version>15.6.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
@@ -306,7 +306,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
                 package_name="emacs-image",
-                os_version=OsVersion.SP4,
+                os_version=OsVersion.SP6,
                 version="29",
             ),
         ),
