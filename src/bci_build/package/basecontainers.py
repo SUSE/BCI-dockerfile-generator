@@ -110,17 +110,24 @@ assert len(_FIPS_15_SP2_BINARIES) == len(_FIPS_15_SP4_BINARIES)
 
 
 def _get_fips_base_custom_end(os_version: OsVersion) -> str:
+    custom_end = ""
     match os_version:
         case OsVersion.SP3:
             bins: list[str] = _FIPS_15_SP2_BINARIES
         case OsVersion.SP4:
             bins: list[str] = _FIPS_15_SP4_BINARIES
+            custom_end += (
+                f"{DOCKERFILE_RUN} update-crypto-policies --no-reload --set FIPS\n"
+            )
         case _:
             raise NotImplementedError(f"Unsupported os_version: {os_version}")
-    return "".join(
-        f"#!RemoteAssetUrl: {_FIPS_ASSET_BASEURL}{binary}\nCOPY {os.path.basename(binary)} .\n"
-        for binary in bins
-    ).strip()
+    return (
+        custom_end
+        + "".join(
+            f"#!RemoteAssetUrl: {_FIPS_ASSET_BASEURL}{binary}\nCOPY {os.path.basename(binary)} .\n"
+            for binary in bins
+        ).strip()
+    )
 
 
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
@@ -150,7 +157,12 @@ FIPS_BASE_CONTAINERS = [
         ),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=_get_fips_pretty_name(os_version),
-        package_list=["fipscheck", "sles-ltss-release"],
+        package_list=["sles-ltss-release"]
+        + (
+            ["fipscheck"]
+            if os_version == OsVersion.SP3
+            else ["crypto-policies-scripts"]
+        ),
         extra_labels={
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
         },
