@@ -18,7 +18,7 @@ KIWI_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         # kiwi is not L3 supported
         # support_level=SupportLevel.L3,
-        version=(kiwi_ver := get_pkg_version("python3-kiwi", os_version)),
+        version=(kiwi_ver := get_pkg_version("python-kiwi", os_version)),
         version_in_uid=False,
         additional_versions=[
             to_major_minor_version(kiwi_ver),
