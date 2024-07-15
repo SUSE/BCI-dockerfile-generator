@@ -620,6 +620,10 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
+    #: Additional xml comments that are pasted at the top of the kiwi built
+    #: recipe that are processed by OBS
+    kiwi_obs_magic_comments: str = ""
+
     _image_properties: ImageProperties = field(default=_SLE_IMAGE_PROPS)
 
     def __post_init__(self) -> None:

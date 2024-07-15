@@ -123,6 +123,8 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         "build_recipe_type": BuildType.KIWI,
         "from_image": None,
         "os_version": os_version,
+        "kiwi_obs_magic_comments": """<!-- OBS-IgnorePackage: rpm -->
+<!-- OBS-ExcludeArch: i586 -->""",
         "support_level": SupportLevel.L3,
         # latest tag is injected in a special way for base images in prjconf
         # "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,

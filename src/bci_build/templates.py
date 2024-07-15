@@ -90,10 +90,8 @@ KIWI_TEMPLATE = jinja2.Template(
 <!-- SPDX-License-Identifier: {{ image.license }} -->
 <!-- {{ INFOHEADER }}-->
 <!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
-<!-- OBS-Imagerepo: obsrepositories:/ -->
-{%- if image.os_version.is_sle15 and image.name == "base" %}
-<!-- OBS-IgnorePackage: rpm -->
-<!-- OBS-ExcludeArch: i586 -->{% endif %}
+<!-- OBS-Imagerepo: obsrepositories:/ -->{%- if image.kiwi_obs_magic_comments %}
+{{ image.kiwi_obs_magic_comments}}{% endif %}
 
 <image schemaversion="7.4" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
