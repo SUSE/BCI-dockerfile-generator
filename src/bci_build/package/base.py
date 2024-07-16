@@ -175,6 +175,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
             )
         ],
         "config_sh_script": _get_base_config_sh_script(os_version),
+        "_min_release_counter": 40,
     }
 
 
