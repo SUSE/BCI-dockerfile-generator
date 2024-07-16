@@ -49,12 +49,16 @@ the current version for every code stream that is present in the dictionary.
 import asyncio
 import json
 from pathlib import Path
+from typing import Literal
+from typing import NoReturn
+from typing import overload
 
 from packaging import version
 from py_obs.osc import Osc
 from py_obs.project import fetch_package_info
 
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 
 #: Type for storing versions of packages.
 #: The key is the package name.
@@ -108,6 +112,43 @@ def to_major_minor_version(ver: str) -> str:
 def to_major_version(ver: str) -> str:
     """Return the major version of a valid python packaging version."""
     return str(version.parse(ver).major)
+
+
+@overload
+def format_version(
+    ver: str,
+    format: Literal[ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH],
+) -> str: ...
+
+
+@overload
+def format_version(
+    ver: str,
+    format: Literal[ParseVersion.PATCH_UPDATE, ParseVersion.OFFSET],
+) -> NoReturn: ...
+
+
+def format_version(ver: str, format: ParseVersion) -> str:
+    """Format the string `ver` to the supplied `format`, e.g.:
+
+    >>> format_version('1.2.3', ParseVersion.MAJOR)
+    1
+    >>> format_version('1.2.3', ParseVersion.MINOR)
+    1.2
+    >>> format_version('1.2', ParseVersion.PATCH)
+    1.2.0
+
+    """
+    v = version.parse(ver)
+    match format:
+        case ParseVersion.MAJOR:
+            return str(v.major)
+        case ParseVersion.MINOR:
+            return f"{v.major}.{v.minor}"
+        case ParseVersion.PATCH:
+            return f"{v.major}.{v.minor}.{v.micro}"
+        case _:
+            raise ValueError(f"Invalid version format: {format}")
 
 
 async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
