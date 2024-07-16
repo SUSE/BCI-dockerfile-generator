@@ -46,3 +46,5 @@ LABEL com.suse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends btrfsprogs checkmedia dracut-kiwi-oem-repart e2fsprogs enchant-devel gcc glibc-devel iproute2 jing kiwi-systemdeps-core libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xfsprogs; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+# sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' python3-kiwi | cut -d '.' -f -2)" = "9.24" ]
