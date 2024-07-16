@@ -1125,7 +1125,8 @@ various code streams in a json file.</p>
 <p>We need to know the version of certain packages in the distribution to be able
 to hardcode it in READMEs as we cannot let the build service create READMEs for
 us (this is a hard to work around limitation of OBS and the
-replace_using_package_version service).</p>
+<a class="reference external" href="https://github.com/openSUSE/obs-service-replace_using_package_version">replace_using_package_version</a>
+service).</p>
 <p>Therefore we keep a single json file in the code with all packages and their
 version per code stream in the git repository of the following form:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1156,10 +1157,42 @@ streams with a dummy version, e.g.:</p>
 </div>
 <p>Save the file and run the version update. <a class="reference internal" href="#bci_build.package.versions.update_versions" title="bci_build.package.versions.update_versions"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_versions()</span></code></a> will fetch
 the current version for every code stream that is present in the dictionary.</p>
+<p>For some packages we do not need to know the full version, to prevent pointless
+automated churn. In such a case, add the additional key <code class="docutils literal notranslate"><span class="pre">version_format</span></code> to a
+package dictionary and set the value to the version format limit (e.g. <cite>major</cite>
+or <cite>minor</cite>). The value must correspond to a enum value of
+<a class="reference internal" href="#bci_build.package.ParseVersion" title="bci_build.package.ParseVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParseVersion</span></code></a>. Applied to the above example, this
+results in:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;nginx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;parse_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;minor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Tumbleweed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.25&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;6&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.21&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;5&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.21&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.package.versions.PACKAGE_VERSIONS_JSON_PATH">
 <span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">PACKAGE_VERSIONS_JSON_PATH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/__w/BCI-dockerfile-generator/BCI-dockerfile-generator/src/bci_build/package/package_versions.json')</span></em><a class="headerlink" href="#bci_build.package.versions.PACKAGE_VERSIONS_JSON_PATH" title="Link to this definition">¶</a></dt>
 <dd><p>Path to the json file where the package versions are stored</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bci_build.package.versions.format_version">
+<span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">format_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.12)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ParseVersion.MAJOR</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParseVersion.MINOR</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParseVersion.PATCH</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#bci_build.package.versions.format_version" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">format_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.12)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ParseVersion.PATCH_UPDATE</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParseVersion.OFFSET</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><span class="pre">NoReturn</span></a></span></span></dt>
+<dd><p>Format the string <cite>ver</cite> to the supplied <cite>format</cite>, e.g.:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">format_version</span><span class="p">(</span><span class="s1">&#39;1.2.3&#39;</span><span class="p">,</span> <span class="n">ParseVersion</span><span class="o">.</span><span class="n">MAJOR</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_version</span><span class="p">(</span><span class="s1">&#39;1.2.3&#39;</span><span class="p">,</span> <span class="n">ParseVersion</span><span class="o">.</span><span class="n">MINOR</span><span class="p">)</span>
+<span class="go">1.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_version</span><span class="p">(</span><span class="s1">&#39;1.2&#39;</span><span class="p">,</span> <span class="n">ParseVersion</span><span class="o">.</span><span class="n">PATCH</span><span class="p">)</span>
+<span class="go">1.2.0</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1177,19 +1210,6 @@ variables <code class="docutils literal notranslate"><span class="pre">OSC_USER<
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="bci_build.package.versions.to_major_minor_version">
-<span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">to_major_minor_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#bci_build.package.versions.to_major_minor_version" title="Link to this definition">¶</a></dt>
-<dd><p>Convert a valid python packaging version to <code class="docutils literal notranslate"><span class="pre">$major.$minor</span></code> form
-(dropping patch and further release details).</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bci_build.package.versions.to_major_version">
-<span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">to_major_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#bci_build.package.versions.to_major_version" title="Link to this definition">¶</a></dt>
-<dd><p>Return the major version of a valid python packaging version.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="bci_build.package.versions.update_versions">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">update_versions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">osc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Osc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bci_build.package.versions.update_versions" title="Link to this definition">¶</a></dt>
 <dd><p>Fetch all package versions from the build service and return the
@@ -1204,19 +1224,19 @@ stream defined in <code class="xref py py-const docutils literal notranslate"><s
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f360f39d130&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f04b9c0a060&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f3610bc55b0&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f04b95cc170&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f361116f380&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f04b95bcd40&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
