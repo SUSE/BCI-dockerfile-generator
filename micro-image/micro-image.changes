@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 16 15:20:31 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Re-render templates (no functional change)
+
+-------------------------------------------------------------------
 Wed Jun 26 13:57:14 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - README fixes
