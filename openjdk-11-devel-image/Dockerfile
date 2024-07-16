@@ -40,7 +40,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends java-11-openjdk-devel maven curl findutils gawk git-core procps; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends java-11-openjdk-devel maven; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-11-openjdk-11/bin"
 ENV JAVA_HOME="/usr/lib64/jvm/java-11-openjdk-11"
 ENV JAVA_ROOT="/usr/lib64/jvm/java-11-openjdk-11"
