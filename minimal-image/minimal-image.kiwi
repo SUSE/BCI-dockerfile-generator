@@ -28,8 +28,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="bci/bci-minimal"
           tag="%OS_VERSION_ID_SP%"
-          maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%"
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.minimal">
             <label name="org.opencontainers.image.title" value="SLE BCI 15 SP5 Minimal"/>
