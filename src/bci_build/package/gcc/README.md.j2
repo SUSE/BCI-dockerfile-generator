@@ -64,8 +64,8 @@ image ships the C and C++ frontends available as `gcc` and `g++`
 respectively. The following additional frontends can be installed from the
 repository:
 - `gcc{{ image.version }}-fortran` for Fortran support
-{% if (image.version == 7) or (image.is_opensuse) %}- `gcc{{ image.version }}-ada` for the Ada frontend (GNAT)
-{% endif %}{% if image.is_opensuse %}- `gcc{{ image.version }}-go` for the Go frontend
+{% if (image.version == 7) or (image.os_version.is_tumbleweed) %}- `gcc{{ image.version }}-ada` for the Ada frontend (GNAT)
+{% endif %}{% if image.os_version.is_tumbleweed %}- `gcc{{ image.version }}-go` for the Go frontend
 - `gcc{{ image.version }}-objc` and `gcc{{ image.version }}-obj-c++` for the Objective C and Objective C++
 {% if (image.version >= 12) %}- `gcc{{ image.version }}-d` for the frontend to the D Language
 {% endif %}{%- if (image.version >= 13) %}- `gcc{{ image.version }}-m2` for the Modula 2 compiler frontend

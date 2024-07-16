@@ -53,7 +53,7 @@ LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="{{ image.reference }}"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-{%- if image.is_opensuse %}
+{%- if image.os_version.is_tumbleweed %}
 LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL org.opensuse.release-stage="{{ image.release_stage }}"
 {%- else %}
@@ -119,15 +119,15 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-{%- if not image.is_opensuse %}
+{%- if not image.os_version.is_tumbleweed %}
             <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>
 {%- if image.supported_until %}
             <label name="com.suse.supportlevel.until" value="{{ image.supported_until }}"/>
 {%- endif %}
             <label name="com.suse.eula" value="{{ image.eula }}"/>
 {%- endif %}
-            <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.release-stage" value="{{ image.release_stage }}"/>
-            <label name="{% if image.is_opensuse %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
+            <label name="{% if image.os_version.is_tumbleweed %}org.opensuse{% else %}com.suse{% endif %}.release-stage" value="{{ image.release_stage }}"/>
+            <label name="{% if image.os_version.is_tumbleweed %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
           <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
