@@ -14,10 +14,9 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: opensuse/helm:3.15 opensuse/helm:3.15-%RELEASE% opensuse/helm:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="helm-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.5" name="helm-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
@@ -28,7 +27,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="opensuse/helm"
           tag="3.15"
-          additionaltags="3.15-%RELEASE%,latest"
+          additionalnames="opensuse/helm:3.15-%RELEASE%,opensuse/helm:latest"
           maintainer="openSUSE (https://www.opensuse.org/)">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.application.helm">
