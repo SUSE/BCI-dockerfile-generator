@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 16 12:02:10 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- extend package list to cover iso image building
+
+-------------------------------------------------------------------
 Tue Jul 16 08:15:20 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add buildtime version check
