@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 16 08:15:20 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add buildtime version check
+
+-------------------------------------------------------------------
 Fri Jul 12 15:38:53 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - First version of the KIWI Appliance Builder (kiwi) BCI
