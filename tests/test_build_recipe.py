@@ -69,8 +69,8 @@ RUN emacs -Q --batch test.el
       <containerconfig
           name="bci/test"
           tag="27"
-          maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="27-%RELEASE%">
+          additionaltags="27-%RELEASE%"
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
@@ -170,8 +170,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
       <containerconfig
           name="bci/test"
           tag="stable"
-          maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="stable-1.%RELEASE%,%%emacs_ver%%,%%emacs_ver%%-1.%RELEASE%">
+          additionaltags="stable-1.%RELEASE%,%%emacs_ver%%,%%emacs_ver%%-1.%RELEASE%"
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
@@ -265,8 +265,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
       <containerconfig
           name="bci/test"
           tag="29"
-          maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="29-%RELEASE%">
+          additionaltags="29-%RELEASE%"
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
@@ -374,8 +374,8 @@ VOLUME /bin/ /usr/bin/""",
       <containerconfig
           name="opensuse/bci/test"
           tag="28.2"
-          maintainer="invalid@suse.com"
-          additionaltags="28.2-%RELEASE%,28,28-%RELEASE%,latest">
+          additionaltags="28.2-%RELEASE%,28,28-%RELEASE%,latest"
+          maintainer="invalid@suse.com">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
@@ -489,8 +489,8 @@ def test_build_recipe_templates(
       <containerconfig
           name="opensuse/bci/bci-test"
           tag="%OS_VERSION_ID_SP%"
-          maintainer="openSUSE (https://www.opensuse.org/)"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest"
+          maintainer="openSUSE (https://www.opensuse.org/)">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
