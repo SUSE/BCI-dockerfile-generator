@@ -28,8 +28,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="suse/helm"
           tag="3.13"
-          maintainer="SUSE LLC (https://www.suse.com/)"
-          additionaltags="3.13-%RELEASE%,latest">
+          additionaltags="3.13-%RELEASE%,latest"
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.helm">
             <label name="org.opencontainers.image.title" value="SLE Kubernetes Package Manager"/>

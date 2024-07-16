@@ -28,9 +28,9 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="suse/registry"
           tag="%%registry_version%%"
-          maintainer="SUSE LLC (https://www.suse.com/)"
+          additionaltags="%%registry_version%%-%RELEASE%,latest"
           user="registry"
-          additionaltags="%%registry_version%%-%RELEASE%,latest">
+          maintainer="SUSE LLC (https://www.suse.com/)">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.registry">
             <label name="org.opencontainers.image.title" value="SLE OCI Container Registry (Distribution)"/>
