@@ -103,10 +103,10 @@ KIWI_TEMPLATE = jinja2.Template(
       <containerconfig
           name="{{ image.build_tags[0].split(':')[0] }}"
           tag="{{ image.build_tags[0].split(':')[1] }}"
-          maintainer="{{ image.maintainer }}"{% if image.kiwi_additional_tags %}
 {%- if image.entrypoint_user  %}
           user="{{ image.entrypoint_user }}"
 {%- endif %}
+          maintainer="{{ image.maintainer }}"{% if image.kiwi_additional_tags %}
           additionaltags="{{ image.kiwi_additional_tags }}"{% endif %}>
         <labels>
           <suse_label_helper:add_prefix prefix="{{ image.labelprefix }}">
