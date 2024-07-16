@@ -18,9 +18,8 @@ from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
-from bci_build.package.versions import to_major_minor_version
-from bci_build.package.versions import to_major_version
 
 
 def _envsubst_pkg_name(os_version: OsVersion) -> str:
@@ -51,8 +50,8 @@ PCP_CONTAINERS = [
         version=(pcp_ver := get_pkg_version("pcp", os_version)),
         version_in_uid=False,
         additional_versions=[
-            to_major_minor_version(pcp_ver),
-            to_major_version(pcp_ver),
+            format_version(pcp_ver, ParseVersion.MINOR),
+            format_version(pcp_ver, ParseVersion.MAJOR),
         ],
         replacements_via_service=[
             Replacement(
@@ -355,7 +354,7 @@ for filename in (
 
 
 def _get_nginx_kwargs(os_version: OsVersion):
-    nginx_version = to_major_minor_version(get_pkg_version("nginx", os_version))
+    nginx_version = get_pkg_version("nginx", os_version)
 
     version_check_lines = generate_package_version_check("nginx", nginx_version)
 
@@ -499,7 +498,7 @@ HELM_CONTAINERS = [
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version=to_major_minor_version(get_pkg_version("helm", os_version)),
+        version=get_pkg_version("helm", os_version),
         version_in_uid=False,
         license="Apache-2.0",
         package_list=[

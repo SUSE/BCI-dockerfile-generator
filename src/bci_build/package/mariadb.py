@@ -15,7 +15,6 @@ from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
-from bci_build.package.versions import to_major_minor_version
 
 _MARIADB_GOSU = b"""#!/bin/bash
 
@@ -34,8 +33,8 @@ MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
 for os_version in ALL_NONBASE_OS_VERSIONS:  # + [OsVersion.BASALT]:
-    mariadb_pkg_version = get_pkg_version("mariadb", os_version)
-    mariadb_version = to_major_minor_version(mariadb_pkg_version)
+    mariadb_version = get_pkg_version("mariadb", os_version)
+
     if os_version in (OsVersion.BASALT, OsVersion.TUMBLEWEED):
         prefix = ""
         additional_names = []

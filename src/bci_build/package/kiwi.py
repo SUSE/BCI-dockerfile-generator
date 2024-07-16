@@ -4,10 +4,10 @@ from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
+from bci_build.package import ParseVersion
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
-from bci_build.package.versions import to_major_minor_version
-from bci_build.package.versions import to_major_version
 
 KIWI_CONTAINERS = [
     DevelopmentContainer(
@@ -22,8 +22,8 @@ KIWI_CONTAINERS = [
         version=(kiwi_ver := get_pkg_version("python-kiwi", os_version)),
         version_in_uid=False,
         additional_versions=[
-            to_major_minor_version(kiwi_ver),
-            to_major_version(kiwi_ver),
+            (kiwi_minor := format_version(kiwi_ver, ParseVersion.MINOR)),
+            format_version(kiwi_ver, ParseVersion.MAJOR),
         ],
         license="GPL-3.0-or-later",
         package_list=[
@@ -48,7 +48,7 @@ KIWI_CONTAINERS = [
             "timezone",
             "xfsprogs",
         ],
-        custom_end=f"{generate_package_version_check('python3-kiwi', to_major_minor_version(kiwi_ver), 'minor')}",
+        custom_end=f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}",
         build_recipe_type=BuildType.DOCKER,
     )
     for os_version in ALL_NONBASE_OS_VERSIONS

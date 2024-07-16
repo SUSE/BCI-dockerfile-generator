@@ -4,7 +4,9 @@ various code streams in a json file.
 We need to know the version of certain packages in the distribution to be able
 to hardcode it in READMEs as we cannot let the build service create READMEs for
 us (this is a hard to work around limitation of OBS and the
-replace_using_package_version service).
+`replace_using_package_version
+<https://github.com/openSUSE/obs-service-replace_using_package_version>`_
+service).
 
 Therefore we keep a single json file in the code with all packages and their
 version per code stream in the git repository of the following form:
@@ -44,24 +46,58 @@ streams with a dummy version, e.g.:
 Save the file and run the version update. :py:func:`update_versions` will fetch
 the current version for every code stream that is present in the dictionary.
 
+For some packages we do not need to know the full version, to prevent pointless
+automated churn. In such a case, add the additional key ``version_format`` to a
+package dictionary and set the value to the version format limit (e.g. `major`
+or `minor`). The value must correspond to a enum value of
+:py:class:`~bci_build.package.ParseVersion`. Applied to the above example, this
+results in:
+
+.. code-block:: json
+
+   {
+       "nginx": {
+           "parse_version": "minor",
+           "Tumbleweed": "1.25",
+           "6": "1.21",
+           "5": "1.21"
+       }
+   }
+
+
 """
 
 import asyncio
 import json
 from pathlib import Path
+from typing import Literal
+from typing import NoReturn
+from typing import TypedDict
+from typing import overload
 
 from packaging import version
 from py_obs.osc import Osc
 from py_obs.project import fetch_package_info
 
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
+
+_VERS_FMT_KEY = "version_format"
+
+_pkg_version_fields: dict[str, type[ParseVersion] | type[str]] = {
+    _VERS_FMT_KEY: ParseVersion
+}
+for os_ver in OsVersion:
+    _pkg_version_fields[str(os_ver)] = str
+
+_PKG_VERSION_T = TypedDict("_PKG_VERSION_T", fields=_pkg_version_fields, total=False)
+
 
 #: Type for storing versions of packages.
 #: The key is the package name.
 #: The value is a dictionary, where the key is the code stream and the value the
 #: version of the package
-_PACKAGE_VERSIONS_T = dict[str, dict[str, str]]
-
+_PACKAGE_VERSIONS_T = dict[str, _PKG_VERSION_T]
 
 #: Path to the json file where the package versions are stored
 PACKAGE_VERSIONS_JSON_PATH = Path(__file__).parent / "package_versions.json"
@@ -97,17 +133,41 @@ _OBS_PROJECTS: dict[OsVersion, str] = {
 }
 
 
-def to_major_minor_version(ver: str) -> str:
-    """Convert a valid python packaging version to ``$major.$minor`` form
-    (dropping patch and further release details).
+@overload
+def format_version(
+    ver: str,
+    format: Literal[ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH],
+) -> str: ...
+
+
+@overload
+def format_version(
+    ver: str,
+    format: Literal[ParseVersion.PATCH_UPDATE, ParseVersion.OFFSET],
+) -> NoReturn: ...
+
+
+def format_version(ver: str, format: ParseVersion) -> str:
+    """Format the string `ver` to the supplied `format`, e.g.:
+
+    >>> format_version('1.2.3', ParseVersion.MAJOR)
+    1
+    >>> format_version('1.2.3', ParseVersion.MINOR)
+    1.2
+    >>> format_version('1.2', ParseVersion.PATCH)
+    1.2.0
 
     """
-    return f"{(v := version.parse(ver)).major}.{v.minor}"
-
-
-def to_major_version(ver: str) -> str:
-    """Return the major version of a valid python packaging version."""
-    return str(version.parse(ver).major)
+    v = version.parse(ver)
+    match format:
+        case ParseVersion.MAJOR:
+            return str(v.major)
+        case ParseVersion.MINOR:
+            return f"{v.major}.{v.minor}"
+        case ParseVersion.PATCH:
+            return f"{v.major}.{v.minor}.{v.micro}"
+        case _:
+            raise ValueError(f"Invalid version format: {format}")
 
 
 async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
@@ -119,16 +179,27 @@ async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
     tasks = []
     new_versions: dict[str, dict[str, str]] = {}
 
-    async def _fetch_version(pkg: str, os_version: OsVersion) -> None:
-        new_versions[pkg][str(os_version)] = (
+    async def _fetch_version(
+        pkg: str, os_version: OsVersion, version_format: ParseVersion
+    ) -> None:
+        version = (
             await fetch_package_info(osc, prj=_OBS_PROJECTS[os_version], pkg=pkg)
         ).version
+
+        new_versions[pkg][str(os_version)] = format_version(version, version_format)
 
     for pkg, versions in _PACKAGE_VERSIONS.items():
         new_versions[pkg] = {}
 
+        constraint = versions.get(_VERS_FMT_KEY, ParseVersion.PATCH)
         for os_version in versions.keys():
-            tasks.append(_fetch_version(pkg, OsVersion.parse(os_version)))
+            if os_version != _VERS_FMT_KEY:
+                tasks.append(
+                    _fetch_version(pkg, OsVersion.parse(os_version), constraint)
+                )
+
+        if _VERS_FMT_KEY in versions:
+            new_versions[pkg][_VERS_FMT_KEY] = constraint
 
     await asyncio.gather(*tasks)
 
