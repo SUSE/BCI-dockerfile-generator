@@ -1,0 +1,76 @@
+# {{ image.pretty_name }} container image
+
+{% include 'badges.j2' %}
+
+## Description
+
+{% include 'dotnet_description.j2' %}
+
+This image contains the ASP.NET Core and .NET runtimes and libraries,
+and it is optimized for running ASP.NET Core applications in production.
+
+{% include 'dotnet_notice.j2' %}
+
+## Usage
+
+To compile and deploy an application, copy the sources and build the binary:
+
+```Dockerfile
+FROM registry.suse.com/bci/dotnet-sdk:{{ image.version }} AS build
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
+COPY aspnetapp/*.csproj .
+RUN dotnet restore
+
+# copy and publish app and libraries
+COPY aspnetapp/. .
+RUN dotnet publish --no-restore -o /app
+
+# final image
+FROM {{ image.pretty_reference }}
+
+WORKDIR /app
+COPY --from=build /app .
+
+EXPOSE 8080
+
+# uncomment to run as non-root user
+# USER $APP_UID
+
+ENTRYPOINT ["./aspnetapp"]
+```
+
+Build and run the container image:
+
+```ShellSession
+podman build -t my-aspnet-app .
+podman run -it --rm -p 8080:8080 my-aspnet-app
+```
+
+## HTTPS and certificates
+
+ASP.NET Core uses [HTTPS by default](https://docs.microsoft.com/aspnet/core/security/enforcing-ssl).
+You need a valid certificate for production deployments.
+
+To create a self-signed certificate for testing, use the following command:
+
+```ShellSession
+podman run --rm -it -v "$PWD/https":/https:Z \
+    {{ image.registry }}/bci/dotnet-sdk:{{ image.version }} \
+    dotnet dev-certs https -ep /https/aspnetapp.pfx -p <PASSWORD>
+```
+
+To use a certificate and run the container image with ASP.NET Core configured for HTTPS in development or production, use the following command:
+
+```ShellSession
+podman run --rm -it -p 8081:8081 \
+    -e ASPNETCORE_HTTPS_PORTS=8081 \
+    -e ASPNETCORE_Kestrel__Certificates__Default__Password="<PASSWORD>" \
+    -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx \
+    -v "$PWD/https":/https:Z my-apsnet-app
+```
+
+{% include 'dotnet_globalization.j2' %}
+
+{% include 'licensing_and_eula.j2' %}

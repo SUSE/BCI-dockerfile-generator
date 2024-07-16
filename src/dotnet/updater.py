@@ -79,19 +79,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-
-README_MD_TEMPLATE = Template(
-    """# {{ image.title }}
-
-The .NET packages contained in this image come from a 3rd-party repository:
-[packages.microsoft.com](https://packages.microsoft.com).
-
-You can find the respective source code in
-[github.com/dotnet](https://github.com/dotnet). SUSE doesn't provide any support
-or warranties.
-"""
-)
-
 CUSTOM_END_TEMPLATE = Template(
     """{% if image.is_sdk %}# telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1{% endif %}
@@ -200,7 +187,6 @@ class DotNetBCI(DevelopmentContainer):
             "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
             "microsoft.asc": MS_ASC,
             "prod.repo": MS_REPO,
-            "README.md": README_MD_TEMPLATE.render(image=self),
             "LICENSE": LICENSE,
             "_constraints": generate_disk_size_constraints(8),
         }
@@ -395,7 +381,7 @@ for os_version in (OsVersion.SP6,):
                 os_version=os_version,
                 version=ver,
                 name="dotnet-sdk",
-                pretty_name=f".Net {ver} SDK",
+                pretty_name=f".NET SDK {ver}",
                 is_sdk=True,
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-{ver}",
@@ -410,7 +396,7 @@ for os_version in (OsVersion.SP6,):
                 version=ver,
                 name="dotnet-runtime",
                 is_sdk=False,
-                pretty_name=f".NET {ver} runtime",
+                pretty_name=f".NET Runtime {ver}",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-runtime-{ver}",
                 package_list=["dotnet-host"]
@@ -434,7 +420,7 @@ for os_version in (OsVersion.SP6,):
                 os_version=os_version,
                 name="dotnet-aspnet",
                 is_sdk=False,
-                pretty_name=f"ASP.NET {ver} runtime",
+                pretty_name=f"ASP.NET Core Runtime {ver}",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"aspnet-runtime-{ver}",
                 package_list=["dotnet-host"]
