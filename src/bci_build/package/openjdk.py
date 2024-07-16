@@ -53,15 +53,15 @@ def _get_openjdk_kwargs(
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
             "pretty_name": f"OpenJDK {java_version} development",
-            "package_list": [f"java-{java_version}-openjdk-devel", "maven"]
-            + os_version.common_devel_packages,
+            "package_list": [f"java-{java_version}-openjdk-devel", "maven"],
             "cmd": ["/usr/bin/jshell"],
             "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
         }
     return common | {
         "name": "openjdk",
         "pretty_name": f"OpenJDK {java_version} runtime",
-        "package_list": [f"java-{java_version}-openjdk"],
+        "package_list": [f"java-{java_version}-openjdk"]
+        + os_version.common_devel_packages,
     }
 
 
