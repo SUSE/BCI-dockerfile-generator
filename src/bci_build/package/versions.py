@@ -133,19 +133,6 @@ _OBS_PROJECTS: dict[OsVersion, str] = {
 }
 
 
-def to_major_minor_version(ver: str) -> str:
-    """Convert a valid python packaging version to ``$major.$minor`` form
-    (dropping patch and further release details).
-
-    """
-    return f"{(v := version.parse(ver)).major}.{v.minor}"
-
-
-def to_major_version(ver: str) -> str:
-    """Return the major version of a valid python packaging version."""
-    return str(version.parse(ver).major)
-
-
 @overload
 def format_version(
     ver: str,

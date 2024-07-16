@@ -6,11 +6,12 @@ from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
-from bci_build.package.versions import to_major_minor_version
 
 SPACK_CONTAINERS = [
     DevelopmentContainer(
@@ -21,8 +22,9 @@ SPACK_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         logo_url="https://spack.io/assets/images/spack-logo-white.svg",
-        version=to_major_minor_version(
-            spack_pkg_version := get_pkg_version("spack", os_version)
+        version=format_version(
+            spack_pkg_version := get_pkg_version("spack", os_version),
+            ParseVersion.MINOR,
         ),
         additional_versions=[spack_pkg_version],
         version_in_uid=False,
@@ -74,7 +76,7 @@ SPACK_CONTAINERS = [
        /root/.spack/modules.yaml \
     && rm -rf /root/*.* /run/nologin
 
-{generate_package_version_check('spack', spack_pkg_version, 'patch')}
+{generate_package_version_check('spack', spack_pkg_version, ParseVersion.PATCH)}
 
 WORKDIR /root
 SHELL ["docker-shell"]
