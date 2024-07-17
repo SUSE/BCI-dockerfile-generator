@@ -1507,6 +1507,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
+from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
 from .appcontainers import GIT_CONTAINERS  # noqa: E402
@@ -1518,7 +1519,6 @@ from .appcontainers import POSTGRES_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
-from .appcontainers import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
 from .basalt_base import BASALT_BASE  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
