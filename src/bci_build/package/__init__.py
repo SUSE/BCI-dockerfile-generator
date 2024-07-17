@@ -132,10 +132,10 @@ class OsVersion(enum.Enum):
     SP4 = 4
     #: SLE 15 Service Pack 3
     SP3 = 3
+    #: SUSE Linux Framework One
+    SLE16_0 = "16.0"
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
-    #: Adaptable Linux Platform, Basalt project
-    BASALT = "Basalt"
 
     @staticmethod
     def parse(val: str) -> OsVersion:
@@ -149,8 +149,9 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value):
-            return self.value
+        match self.value:
+            case OsVersion.SLE16_0.value | OsVersion.TUMBLEWEED.value:
+                return self.value
         return f"SP{self.value}"
 
     @property
@@ -159,22 +160,22 @@ class OsVersion(enum.Enum):
             # TW has no version by itself and the "openSUSE Tumbleweed" is
             # already part of the base identifier
             return ""
-        if self.value == OsVersion.BASALT.value:
-            return "Adaptable Linux Platform"
+        if self.is_slfo:
+            return "Framework One"
 
         return f"15 SP{self.value}"
 
     @property
     def deployment_branch_name(self) -> str:
-        return (
-            str(self.value)
-            if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.BASALT.value)
-            else f"sle15-sp{self.value}"
-        )
+        if self.is_tumbleweed or self.is_slfo:
+            return str(self.value)
+        if self.is_sle15:
+            return f"sle15-sp{self.value}"
+        raise NotImplementedError("unhandled version {self.value}")
 
     @property
     def lifecycle_data_pkg(self) -> list[str]:
-        if self.value not in (OsVersion.BASALT.value, OsVersion.TUMBLEWEED.value):
+        if self.value not in (OsVersion.SLE16_0.value, OsVersion.TUMBLEWEED.value):
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
@@ -183,7 +184,7 @@ class OsVersion(enum.Enum):
         """Returns a list of common development packages that are needed for
         all development containers"""
         r = set(("findutils", "gawk", "git-core", "curl", "procps"))
-        if self.is_tumbleweed:
+        if self.is_tumbleweed or self.is_slfo:
             r.add("util-linux")
 
         return sorted(list(r))
@@ -197,6 +198,10 @@ class OsVersion(enum.Enum):
             OsVersion.SP6.value,
             OsVersion.SP7.value,
         )
+
+    @property
+    def is_slfo(self) -> bool:
+        return self.value in (OsVersion.SLE16_0.value,)
 
     @property
     def is_tumbleweed(self) -> bool:
@@ -214,16 +219,14 @@ class OsVersion(enum.Enum):
         """
         if self.is_sle15:
             return f"15.{str(self.value)}"
-        # FIXME
-        # if self.is_slcc:
-        #     return "16.0"
-
+        if self.value == OsVersion.SLE16_0.value:
+            return "16.0"
         # Tumbleweed rolls too fast, just use latest
         return "latest"
 
     @property
     def has_container_suseconnect(self) -> bool:
-        return self.is_sle15  # or self.value == OsVersion.SLCC_SLES_16_CONTAINERS
+        return self.is_sle15 or self.is_slfo
 
     @property
     def eula_package_names(self) -> tuple[str, ...]:
@@ -237,7 +240,7 @@ class OsVersion(enum.Enum):
     def release_package_names(self) -> tuple[str, ...]:
         if self.value == OsVersion.TUMBLEWEED.value:
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
-        if self.value == OsVersion.BASALT.value:
+        if self.value == OsVersion.SLE16_0.value:
             return ("ALP-dummy-release",)
         if self.is_ltss:
             return ("sles-ltss-release",)
@@ -269,7 +272,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
-    OsVersion.BASALT,
+    OsVersion.SLE16_0,
 ]
 
 # List of SPs that are already under LTSS
@@ -283,7 +286,7 @@ ALL_OS_VERSIONS: set[OsVersion] = {
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
-    OsVersion.BASALT,
+    OsVersion.SLE16_0,
 ]
 
 
@@ -358,8 +361,6 @@ class Replacement:
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
         return "opensuse/bci"
-    if os_version == OsVersion.BASALT:
-        return "alp/bci"
     if os_version == OsVersion.SP3:
         return "suse/ltss/sle15.3"
     if os_version == OsVersion.SP4:
@@ -590,7 +591,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> str | None:
-        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
             epoch = ""
             if self.os_epoch:
                 epoch = f"{self.os_epoch}."
@@ -614,10 +615,8 @@ class BaseContainerImage(abc.ABC):
             return "openSUSE Tumbleweed"
         elif self.os_version.is_ltss:
             return "SLE LTSS"
-        elif self.os_version.is_sle15:
+        elif self.os_version.is_sle15 or self.os_version.is_slfo:
             return "SLE"
-        elif self.os_version.value == OsVersion.BASALT.value:
-            return "Basalt Project"
 
         raise NotImplementedError(f"Unknown os_version: {self.os_version}")
 
@@ -661,8 +660,6 @@ class BaseContainerImage(abc.ABC):
             return "https://www.opensuse.org"
         if self.os_version.is_ltss:
             return "https://www.suse.com/products/long-term-service-pack-support/"
-        if self.os_version.value == OsVersion.BASALT.value:
-            return "https://susealp.io/"
 
         return "https://www.suse.com/products/base-container-images/"
 
@@ -798,7 +795,7 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        if self.os_version == OsVersion.BASALT:
+        if self.os_version == OsVersion.SLE16_0:
             return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
@@ -1169,7 +1166,7 @@ exit 0
 
     @property
     def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
             return str(datetime.datetime.now().year)
         return f"15.{int(self.os_version.value)}.0"
 
@@ -1462,7 +1459,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
             return "latest"
         return f"15.{os_version}"
 
