@@ -1,29 +1,32 @@
 """Provide an Apache Tomcat container."""
 
-from itertools import product
-
-from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import ApplicationStackContainer
+from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 
-_TOMCAT_VERSIONS = [9, 10]
+from .appcollection import ApplicationCollectionContainer
+
+_TOMCAT_VERSIONS: list[int] = [9, 10]
 assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
 
 TOMCAT_CONTAINERS = [
-    ApplicationStackContainer(
-        name="tomcat",
+    ApplicationCollectionContainer(
+        name="apache-tomcat",
         pretty_name=f"Apache Tomcat {tomcat_major}",
-        package_name=f"tomcat-{tomcat_major}-image",
+        package_name=f"apache-tomcat-{tomcat_major}-image"
+        if os_version.is_tumbleweed
+        else f"sac-apache-tomcat-{tomcat_major}-image",
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
             and tomcat_major == _TOMCAT_VERSIONS[-1]
+            and os_version.is_tumbleweed
         ),
         version=tomcat_major,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         additional_versions=["%%tomcat_version%%", "%%tomcat_minor%%"],
         package_list=[
             tomcat_pkg := (
@@ -71,5 +74,9 @@ WORKDIR $CATALINA_HOME
         entrypoint_user="tomcat",
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
-    for tomcat_major, os_version in product(_TOMCAT_VERSIONS, ALL_NONBASE_OS_VERSIONS)
+    for tomcat_major, os_version in (
+        (10, OsVersion.TUMBLEWEED),
+        (9, OsVersion.TUMBLEWEED),
+        (10, OsVersion.SP6),
+    )
 ]
