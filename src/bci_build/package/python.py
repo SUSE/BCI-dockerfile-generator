@@ -32,27 +32,27 @@ class PythonDevelopmentContainer(DevelopmentContainer):
 
 
 def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
-    is_system_py: bool = py3_ver == (
-        "3.6" if os_version != OsVersion.TUMBLEWEED else "3.11"
-    )
+    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.11")
     py3_ver_nodots = py3_ver.replace(".", "")
 
     py3 = (
-        "python3"
-        if is_system_py and os_version != OsVersion.TUMBLEWEED
-        else f"python{py3_ver_nodots}"
+        "python3" if is_system_py and os_version.is_sle15 else f"python{py3_ver_nodots}"
     )
     py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
-    has_pipx = False
-    has_wheel = True if is_system_py or os_version == OsVersion.TUMBLEWEED else False
-    # Tumbleweed rocks
-    if os_version == OsVersion.TUMBLEWEED:
-        has_pipx = True
-    # Enabled only for Python 3.11 on SLE15 (jsc#PED-5573)
-    if os_version not in (OsVersion.BASALT, OsVersion.TUMBLEWEED) and py3_ver == "3.11":
-        has_pipx = True
+    has_wheel = has_pipx = False
+
+    if os_version.is_tumbleweed:
+        # Tumbleweed rocks
+        has_pipx = has_wheel = True
+    elif os_version.is_sle15:
+        if py3_ver != "3.6":
+            # Enabled only for Python 3.11+ on SLE15 (jsc#PED-5573)
+            has_pipx = True
+        # py3.12 pending discussion
+        if py3_ver not in ("3.12",):
+            has_wheel = True
 
     kwargs = {
         "name": "python",
