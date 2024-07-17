@@ -60,6 +60,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
             "NODE_VERSION": ver,
         },
         "_min_release_counter": 30,
+        "_custom_test_env": "node",
     }
 
 

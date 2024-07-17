@@ -46,6 +46,7 @@ DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 #: that would also remove some package owned directories (not %ghost)
 LOG_CLEAN: str = "rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}"
 
+
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
 
@@ -311,6 +312,10 @@ class BaseContainerImage(abc.ABC):
     #: The registry implementation for which this container is being built.
     _publish_registry: Registry | None = None
 
+    #: A custom name for the test environment if it is not equal to the
+    #: container image's name
+    _custom_test_env: str = ""
+
     @property
     def publish_registry(self) -> Registry:
         assert self._publish_registry
@@ -376,6 +381,20 @@ class BaseContainerImage(abc.ABC):
         container image.
         """
         pass
+
+    @property
+    @abc.abstractmethod
+    def test_marker(self) -> str:
+        """The marker used to identify this image in BCI-Tests"""
+        pass
+
+    @property
+    def test_environment(self) -> str:
+        """The test environment name in BCI-Tests corresponding to this
+        container image
+
+        """
+        return self._custom_test_env or self.name
 
     @property
     def build_name(self) -> str | None:
@@ -1199,6 +1218,12 @@ class DevelopmentContainer(BaseContainerImage):
         return self.publish_registry.registry_prefix(is_application=False)
 
     @property
+    def test_marker(self) -> str:
+        if not self.version_in_uid:
+            return self.name
+        return f"{self.name}_{self.stability_tag or self.tag_version}"
+
+    @property
     def image_type(self) -> ImageType:
         return ImageType.SLE_BCI
 
@@ -1367,6 +1392,13 @@ class OsContainer(BaseContainerImage):
         if os_version == OsVersion.SLE16_0:
             return str(os_version)
         return f"15.{os_version}"
+
+    @property
+    def test_marker(self) -> str:
+        return (
+            f"bci-{self.name}_{OsContainer.version_to_container_os_version(self.os_version)}"
+            + ("-ltss" if self.os_version.is_ltss else "")
+        )
 
     @property
     def uid(self) -> str:
