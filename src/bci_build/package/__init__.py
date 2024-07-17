@@ -767,6 +767,12 @@ test -f /.profile && . /.profile
 echo "Configure image: [$kiwi_iname]..."
 
 #============================================
+# Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
+# which would avoid it being installed by the filesystem package
+#--------------------------------------------
+rpm -e compat-usrmerge-tools || :
+
+#============================================
 # Import repositories' keys if rpm is present
 #--------------------------------------------
 if command -v rpm > /dev/null; then
