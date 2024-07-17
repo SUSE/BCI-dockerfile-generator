@@ -105,28 +105,39 @@ _FIPS_15_SP4_BINARIES: list[str] = [
     for name in ("libgcrypt20", "libgcrypt20-hmac")
 ]
 
-# see grep -c -E "^ *V3.*key ID 39db7c82: OK" *.rpm | wc -l  below
-assert len(_FIPS_15_SP2_BINARIES) == len(_FIPS_15_SP4_BINARIES)
-
 
 def _get_fips_base_custom_end(os_version: OsVersion) -> str:
-    custom_end = ""
+    bins: list[str] = []
+    custom_set_fips_mode: str = (
+        f"{DOCKERFILE_RUN} update-crypto-policies --no-reload --set FIPS\n"
+    )
     match os_version:
         case OsVersion.SP3:
-            bins: list[str] = _FIPS_15_SP2_BINARIES
+            bins = _FIPS_15_SP2_BINARIES
         case OsVersion.SP4:
-            bins: list[str] = _FIPS_15_SP4_BINARIES
-            custom_end += (
-                f"{DOCKERFILE_RUN} update-crypto-policies --no-reload --set FIPS\n"
-            )
+            bins = _FIPS_15_SP4_BINARIES
+        case OsVersion.SP5 | OsVersion.SP6:
+            pass
         case _:
             raise NotImplementedError(f"Unsupported os_version: {os_version}")
+
+    custom_install_bins: str = textwrap.dedent(
+        f"""
+            {DOCKERFILE_RUN} \\
+                [ $(LC_ALL=C rpm --checksig -v *rpm | \\
+                    grep -c -E "^ *V3.*key ID 39db7c82: OK") = {len(bins)} ] \\
+                && rpm -Uvh --oldpackage --force *.rpm \\
+                && rm -vf *.rpm \\
+                && rpmqpack | grep -E '(openssl|libgcrypt)' | xargs zypper -n addlock\n"""
+    )
+
     return (
-        custom_end
-        + "".join(
+        "".join(
             f"#!RemoteAssetUrl: {_FIPS_ASSET_BASEURL}{binary}\nCOPY {os.path.basename(binary)} .\n"
             for binary in bins
         ).strip()
+        + (custom_install_bins if bins else "")
+        + (custom_set_fips_mode if os_version not in (OsVersion.SP3,) else "")
     )
 
 
@@ -134,10 +145,21 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     match os_version:
         case OsVersion.SP3:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
-        case OsVersion.SP4:
+        case OsVersion.SP4 | OsVersion.SP5 | OsVersion.SP6:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
         case _:
             raise NotImplementedError(f"Unsupported os_version: {os_version}")
+
+
+def _get_supported_until_fips(os_version: OsVersion) -> datetime.date:
+    """Returns the end of LTSS for images under LTSS, otherwise end of general support if known"""
+    match os_version:
+        case OsVersion.SP3:
+            return datetime.date(2025, 12, 31)
+        case OsVersion.SP4:
+            return datetime.date(2026, 12, 31)
+        case _:
+            return _SUPPORTED_UNTIL_SLE.get(os_version)
 
 
 FIPS_BASE_CONTAINERS = [
@@ -148,14 +170,10 @@ FIPS_BASE_CONTAINERS = [
         os_version=os_version,
         build_recipe_type=BuildType.DOCKER,
         support_level=SupportLevel.L3,
-        supported_until=(
-            datetime.date(2025, 12, 31)
-            if os_version == OsVersion.SP3
-            else datetime.date(2026, 12, 31)
-        ),
+        supported_until=_get_supported_until_fips(os_version),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=_get_fips_pretty_name(os_version),
-        package_list=["sles-ltss-release"]
+        package_list=[*os_version.release_package_names]
         + (
             ["fipscheck"]
             if os_version == OsVersion.SP3
@@ -166,20 +184,14 @@ FIPS_BASE_CONTAINERS = [
         },
         custom_end=_get_fips_base_custom_end(os_version)
         + textwrap.dedent(
-            f"""
-            {DOCKERFILE_RUN} \\
-                [ $(LC_ALL=C rpm --checksig -v *rpm | \\
-                    grep -c -E "^ *V3.*key ID 39db7c82: OK") = {len(_FIPS_15_SP2_BINARIES)} ] \\
-                && rpm -Uvh --oldpackage --force *.rpm \\
-                && rm -vf *.rpm \\
-                && rpmqpack | grep -E '(openssl|libgcrypt)'  | xargs zypper -n addlock
+            """
             ENV OPENSSL_FIPS=1
             ENV OPENSSL_FORCE_FIPS_MODE=1
             ENV LIBGCRYPT_FORCE_FIPS_MODE=1
             """
         ),
     )
-    for os_version in (OsVersion.SP3, OsVersion.SP4)
+    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP5, OsVersion.SP6)
 ]
 
 

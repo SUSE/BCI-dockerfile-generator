@@ -1,7 +1,9 @@
 {% if image.build_version == '15.3' %}
 # The SUSE Linux Enterprise 15 SP3 LTSS FIPS-140-2 container image
-{% else %}
+{% elif image.build_version == '15.4' %}
 # The SUSE Linux Enterprise 15 SP4 LTSS FIPS-140-3 container image
+{% else %}
+# The SUSE Linux Enterprise FIPS-140-3 container image
 {% endif %}
 {% include 'badges.j2' %}
 
@@ -28,7 +30,7 @@ Similarly, the [FIPS-140-2 certified libgcrypt module](https://csrc.nist.gov/CSR
 is a drop-in replacement for the standard libgcrypt library. It provides the
 same functionality as the standard libgcrypt library, with the additional
 security features enforced to meet FIPS-140-2 requirements.
-{% else %}
+{% elif image.build_version | string == "15.4" %}
 This SUSE Linux Enterprise 15 SP4 LTSS-based container image includes the
 OpenSSL and libgcrypt modules that have been submitted for FIPS 140-3 certification.
 
@@ -44,6 +46,9 @@ features to meet the FIPS 140-3 requirements.
 Similarly, the FIPS 140-3 certified libgcrypt module is designed to provide the
 same functionality as the standard libgcrypt library, with additional security
 features enforced to meet the FIPS 140-3 requirements.
+{% else %}
+This base container image is configured with FIPS mode enabled by default, but
+does not include any certified binaries.
 {% endif %}
 
 ## Usage
@@ -59,6 +64,7 @@ Below is a list of other environment variables that can be used to configure the
 * `OPENSSL_ENFORCE_MODULUS_BITS=1`: Restrict the OpenSSL module to only generate
 the acceptable key sizes of RSA.
 
-
+{%- if image.os_version.is_ltss %}
 {% include 'access_protected_images.j2' %}
+{%- endif %}
 {% include 'licensing_and_eula.j2' %}
