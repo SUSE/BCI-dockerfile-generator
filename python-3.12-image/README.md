@@ -40,7 +40,7 @@ $ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/python:3.12 pyt
 
 ## Additional tools
 
-The Python container image includes [pip](https://pip.pypa.io/), Python Development Headers, and Git.
+The Python container image includes [pip](https://pip.pypa.io/), [pipx](https://pipx.pypa.io/), Python Development Headers, and Git.
 
 ## Licensing
 
