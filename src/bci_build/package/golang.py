@@ -83,6 +83,7 @@ def _get_golang_kwargs(
             # the go binaries are huge and will ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(8)
         },
+        "_min_release_counter": 33,
     }
 
 

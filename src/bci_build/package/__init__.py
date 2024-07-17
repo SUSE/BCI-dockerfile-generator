@@ -517,6 +517,12 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
+    #: Optional build_release setting that will be inserted as the
+    #: ``#!BuildRelease`` magic comment for the build service to ensure that
+    #: the release suffix of a container tag is sequentially increasing (for
+    #: webui sorting)
+    _min_release_counter: int | None = None
+
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -589,22 +595,12 @@ class BaseContainerImage(abc.ABC):
     def build_release(self) -> str | None:
         if self.os_version not in (OsVersion.SP6,):
             return None
-        if "dotnet" in self.build_name:
-            if "8.0" in self.build_name:
-                return "20"
-            if "6.0" in self.build_name:
-                return "32"
-        if "golang" in self.build_name:
-            return "33"
-        if "python" in self.build_name:
-            return "41"
-        if "php" in self.build_name:
-            return "30"
-        if "node" in self.build_name:
-            return "30"
-        if isinstance(self, ApplicationStackContainer):
-            return "35"
-        return None
+
+        return (
+            str(self._min_release_counter)
+            if self._min_release_counter is not None
+            else None
+        )
 
     @property
     def distribution_base_name(self) -> str:
@@ -1426,6 +1422,10 @@ class DevelopmentContainer(BaseContainerImage):
 
 @dataclass
 class ApplicationStackContainer(DevelopmentContainer):
+    def __post_init__(self) -> None:
+        self._min_release_counter = 35
+        super().__post_init__()
+
     @property
     def _registry_prefix(self) -> str:
         if self.os_version.is_tumbleweed:
