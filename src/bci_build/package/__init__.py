@@ -239,6 +239,8 @@ class OsVersion(enum.Enum):
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
         if self.value == OsVersion.BASALT.value:
             return ("ALP-dummy-release",)
+        if self.is_ltss:
+            return ("sles-ltss-release",)
         # if self.is_slcc:
         #     return (f"{str(self.value).lower()}-release",)
 
