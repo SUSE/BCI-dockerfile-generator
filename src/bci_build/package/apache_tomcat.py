@@ -3,17 +3,17 @@
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _SUPPORTED_UNTIL_SLE
+from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
+from bci_build.package import Registry
 from bci_build.package import Replacement
-
-from .appcollection import ApplicationCollectionContainer
 
 _TOMCAT_VERSIONS: list[int] = [9, 10]
 assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
 
 TOMCAT_CONTAINERS = [
-    ApplicationCollectionContainer(
+    ApplicationStackContainer(
         name="apache-tomcat",
         pretty_name="Apache Tomcat",
         package_name=f"apache-tomcat-{tomcat_major}-java-{jre_version}-image"
@@ -27,6 +27,7 @@ TOMCAT_CONTAINERS = [
             and os_version.is_tumbleweed
         ),
         version=f"{tomcat_major}-jre{jre_version}",
+        registry_type=Registry.APP_COLL if not os_version.is_tumbleweed else None,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         additional_versions=[
             f"%%tomcat_version%%-jre{jre_version}",
@@ -51,7 +52,7 @@ TOMCAT_CONTAINERS = [
             ),
         ],
         cmd=[
-            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.BASALT) else 'lib'}/tomcat/server",
+            f"/usr/{'libexec' if os_version in(OsVersion.TUMBLEWEED, OsVersion.BASALT) else 'lib'}/tomcat/server",
             "start",
         ],
         exposes_tcp=[8080],

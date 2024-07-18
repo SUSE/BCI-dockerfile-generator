@@ -119,6 +119,51 @@ class PackageType(enum.Enum):
 
 
 @enum.unique
+class Registry(enum.Enum):
+    """Supported registries for container image distribution"""
+
+    SUSE_COM = "registry.suse.com"
+    APP_COLL = "dp.apps.rancher.io"
+    OPENSUSE_ORG = "registry.opensuse.org"
+
+    def __str__(self) -> str:
+        return self.value
+
+    @property
+    def application_prefix(self) -> str:
+        """Container image prefix for application containers."""
+        match self.value:
+            case Registry.SUSE_COM.value:
+                return "suse"
+            case Registry.APP_COLL.value:
+                return "containers"
+            case Registry.OPENSUSE_ORG.value:
+                return "opensuse"
+
+    @property
+    def development_prefix(self) -> str:
+        """Container image prefix for development containers."""
+        match self.value:
+            case Registry.SUSE_COM.value:
+                return "bci"
+            case Registry.APP_COLL.value:
+                return "containers"
+            case Registry.OPENSUSE_ORG.value:
+                return "opensuse/bci"
+
+    @staticmethod
+    def app_coll_title(title_property):
+        """Decorator that modifies the"""
+
+        def wrapped(self: "BaseContainerImage", *args, **kwargs):
+            if self.registry_type == Registry.APP_COLL:
+                return self.pretty_name
+            return title_property(self, *args, **kwargs)
+
+        return wrapped
+
+
+@enum.unique
 class OsVersion(enum.Enum):
     """Enumeration of the base operating system versions for BCI."""
 
@@ -523,6 +568,12 @@ class BaseContainerImage(abc.ABC):
     #: webui sorting)
     _min_release_counter: int | None = None
 
+    #: The registry via which the container is distributed.
+    #: If no value is specified, then :py:attr:`~Registry.OPENSUSE_ORG` is
+    #: picked for Tumbleweed based containers and
+    #: :py:attr:`~Registry.OPENSUSE_ORG` otherwise.
+    registry_type: Registry | None = None
+
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -553,6 +604,35 @@ class BaseContainerImage(abc.ABC):
             and self.support_level == SupportLevel.L3
         ):
             self.support_level = SupportLevel.TECHPREVIEW
+
+        if not self.registry_type:
+            self.registry_type = (
+                Registry.OPENSUSE_ORG
+                if self.os_version.is_tumbleweed
+                else Registry.SUSE_COM
+            )
+
+        if (
+            self.os_version.is_tumbleweed
+            and self.registry_type != Registry.OPENSUSE_ORG
+        ):
+            raise ValueError(
+                f"Invalid registry for openSUSE Tumbleweed container: {self.registry_type}"
+            )
+
+        if self.os_version.is_sle15 and self.registry_type == Registry.OPENSUSE_ORG:
+            raise ValueError(
+                f"Invalid registry for SLE 15 based container: {self.registry_type}"
+            )
+
+        if self.registry_type == Registry.APP_COLL:
+            # Limit Appcollection stuff to aarch64 and x86_64
+            if not self.exclusive_arch:
+                self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
+            if self.is_latest:
+                raise ValueError(
+                    "Application collection does not support the latest tag"
+                )
 
     @property
     @abc.abstractmethod
@@ -633,11 +713,11 @@ class BaseContainerImage(abc.ABC):
     @property
     def release_stage(self) -> ReleaseStage:
         """This container images' release stage.
-
-        It is :py:attr:`~ReleaseStage.RELEASED` if the container images'
-        operating system version is in the list
-        :py:const:`~bci_build.package.RELEASED_OS_VERSIONS`. Otherwise it
-        is :py:attr:`~ReleaseStage.BETA`.
+        n
+                It is :py:attr:`~ReleaseStage.RELEASED` if the container images'
+                operating system version is in the list
+                :py:const:`~bci_build.package.RELEASED_OS_VERSIONS`. Otherwise it
+                is :py:attr:`~ReleaseStage.BETA`.
 
         """
         if self.os_version in RELEASED_OS_VERSIONS:
@@ -651,6 +731,8 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
+        if self.registry_type == Registry.APP_COLL:
+            return f"https://apps.rancher.io/applications/{self.name}"
         if self.os_version.is_tumbleweed:
             return "https://www.opensuse.org"
         if self.os_version.is_ltss:
@@ -671,13 +753,6 @@ class BaseContainerImage(abc.ABC):
         return "SUSE LLC"
 
     @property
-    def registry(self) -> str:
-        """The registry where the image is available on."""
-        if self.os_version.is_tumbleweed:
-            return "registry.opensuse.org"
-        return "registry.suse.com"
-
-    @property
     def dockerfile_custom_end(self) -> str:
         """This part is appended at the end of the :file:`Dockerfile`. It is either
         generated from :py:attr:`BaseContainerImage.custom_end` or by prepending
@@ -694,8 +769,9 @@ class BaseContainerImage(abc.ABC):
         return ""
 
     @property
+    @abc.abstractmethod
     def _registry_prefix(self) -> str:
-        return _build_tag_prefix(self.os_version)
+        """"""
 
     @staticmethod
     def _cmd_entrypoint_docker(
@@ -1047,6 +1123,7 @@ exit 0
         return description.format(**description_formatters)
 
     @property
+    @Registry.app_coll_title
     def title(self) -> str:
         """The image title that is inserted into the ``org.opencontainers.image.title``
         label.
@@ -1308,9 +1385,8 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def _registry_prefix(self) -> str:
-        if self.os_version.is_tumbleweed:
-            return "opensuse/bci"
-        return "bci"
+        assert self.registry_type
+        return self.registry_type.development_prefix
 
     @property
     def image_type(self) -> ImageType:
@@ -1390,15 +1466,13 @@ class DevelopmentContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}"
+            f"{self.registry_type}/{self._registry_prefix}/{self.name}"
             + f":{self.version_label}-{self._release_suffix}"
         )
 
     @property
     def pretty_reference(self) -> str:
-        return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}"
-        )
+        return f"{self.registry_type}/{self._registry_prefix}/{self.name}:{self.version_label}"
 
     @property
     def build_version(self) -> str | None:
@@ -1428,15 +1502,15 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def _registry_prefix(self) -> str:
-        if self.os_version.is_tumbleweed:
-            return "opensuse"
-        return "suse"
+        assert self.registry_type
+        return self.registry_type.application_prefix
 
     @property
     def image_type(self) -> ImageType:
         return ImageType.APPLICATION
 
     @property
+    @Registry.app_coll_title
     def title(self) -> str:
         return f"{self.distribution_base_name} {self.pretty_name}"
 
@@ -1455,6 +1529,10 @@ class OsContainer(BaseContainerImage):
         if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
             return "latest"
         return f"15.{os_version}"
+
+    @property
+    def _registry_prefix(self) -> str:
+        return _build_tag_prefix(self.os_version)
 
     @property
     def uid(self) -> str:
@@ -1485,11 +1563,11 @@ class OsContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
+        return f"{self.registry_type}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
+        return f"{self.registry_type}/{self._registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
