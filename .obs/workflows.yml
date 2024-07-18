@@ -11,6 +11,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: sac-apache-tomcat-10-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: blackbox_exporter-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -185,14 +189,6 @@ staging_build:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: spack-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: tomcat-10-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: tomcat-9-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
   filters:
     event: pull_request
 
@@ -216,6 +212,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: alertmanager-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: sac-apache-tomcat-10-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: blackbox_exporter-image
@@ -348,12 +347,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: spack-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: tomcat-9-image
   filters:
     event: push
     branches:

@@ -13,30 +13,30 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
-
-#!BuildTag: suse/tomcat:9
-#!BuildTag: suse/tomcat:9-%RELEASE%
-#!BuildTag: suse/tomcat:%%tomcat_version%%
-#!BuildTag: suse/tomcat:%%tomcat_version%%-%RELEASE%
-#!BuildTag: suse/tomcat:%%tomcat_minor%%
-#!BuildTag: suse/tomcat:%%tomcat_minor%%-%RELEASE%
-#!BuildName: suse-tomcat-9
-#!BuildVersion: 15.6.9
+#!ExclusiveArch: aarch64 x86_64
+#!BuildTag: containers/apache-tomcat:10
+#!BuildTag: containers/apache-tomcat:10-%RELEASE%
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-%RELEASE%
+#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%
+#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-%RELEASE%
+#!BuildName: containers-apache-tomcat-10
+#!BuildVersion: 15.6.10
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
 MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.tomcat
-LABEL org.opencontainers.image.title="SLE Apache Tomcat 9"
-LABEL org.opencontainers.image.description="Apache Tomcat 9 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="9"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+# labelprefix=com.suse.application.apache-tomcat
+LABEL org.opencontainers.image.title="Apache Tomcat 10"
+LABEL org.opencontainers.image.description="Apache Tomcat 10 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="10"
+LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-tomcat"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/suse/tomcat:9-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
@@ -46,8 +46,8 @@ LABEL com.suse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomcat.png"
 
-RUN set -euo pipefail; zypper -n in --no-recommends tomcat java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
-ENV TOMCAT_MAJOR="9"
+RUN set -euo pipefail; zypper -n in --no-recommends tomcat10 java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+ENV TOMCAT_MAJOR="10"
 ENV TOMCAT_VERSION="%%tomcat_version%%"
 ENV CATALINA_HOME="/usr/share/tomcat"
 ENV CATALINA_BASE="/usr/share/tomcat"
