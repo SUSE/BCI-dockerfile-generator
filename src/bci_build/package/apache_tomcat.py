@@ -1,8 +1,9 @@
 """Provide an Apache Tomcat container."""
 
+import datetime
+
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import _SUPPORTED_UNTIL_SLE
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
@@ -11,6 +12,38 @@ from .appcollection import ApplicationCollectionContainer
 
 _TOMCAT_VERSIONS: list[int] = [9, 10]
 assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
+
+
+def _get_sac_supported_until(
+    os_version: OsVersion, tomcat_major: int, jre_major: int
+) -> datetime.date:
+    """Return the predicted minimum end of support date for this os/tomcat/jre combination. We pick
+    the minimum time that either the given tomcat or JRE is known to be supported."""
+    if os_version.is_tumbleweed:
+        return None
+
+    # Taken from https://www.suse.com/releasenotes/x86_64/SUSE-SLES/15-SP6/index.html#java-version
+    jre_end_support_dates: dict[int, datetime.date] = {
+        21: datetime.date(2031, 6, 30),
+        17: datetime.date(2027, 12, 31),
+        11: datetime.date(2026, 12, 31),
+    }
+    # We do not have a documented policy, for now we do 3 years from initial publishing
+    tomcat_end_support_dates: dict[int, datetime.date] = {
+        9: datetime.date(2024 + 3, 2, 1),
+        10: datetime.date(2024 + 3, 7, 1),
+    }
+    # If neither is specified we can not determine a minimum
+    if (
+        tomcat_end_support_dates.get(tomcat_major) is None
+        and jre_end_support_dates.get(jre_major) is None
+    ):
+        return None
+    return min(
+        jre_end_support_dates.get(jre_major, datetime.date.max),
+        tomcat_end_support_dates.get(tomcat_major, datetime.date.max),
+    )
+
 
 TOMCAT_CONTAINERS = [
     ApplicationCollectionContainer(
@@ -27,7 +60,9 @@ TOMCAT_CONTAINERS = [
             and os_version.is_tumbleweed
         ),
         version=f"{tomcat_major}-jre{jre_version}",
-        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+        supported_until=_get_sac_supported_until(
+            os_version=os_version, tomcat_major=tomcat_major, jre_major=jre_version
+        ),
         additional_versions=[
             f"%%tomcat_version%%-jre{jre_version}",
             f"%%tomcat_minor%%-jre{jre_version}",
