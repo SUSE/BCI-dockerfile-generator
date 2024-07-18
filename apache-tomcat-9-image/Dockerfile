@@ -14,37 +14,36 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: opensuse/tomcat:10
-#!BuildTag: opensuse/tomcat:10-%RELEASE%
-#!BuildTag: opensuse/tomcat:%%tomcat_version%%
-#!BuildTag: opensuse/tomcat:%%tomcat_version%%-%RELEASE%
-#!BuildTag: opensuse/tomcat:%%tomcat_minor%%
-#!BuildTag: opensuse/tomcat:%%tomcat_minor%%-%RELEASE%
-#!BuildTag: opensuse/tomcat:latest
+#!BuildTag: opensuse/apache-tomcat:9
+#!BuildTag: opensuse/apache-tomcat:9-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-%RELEASE%
 
 FROM opensuse/tumbleweed:latest
 
 MAINTAINER openSUSE (https://www.opensuse.org/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.application.tomcat
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed Apache Tomcat 10"
-LABEL org.opencontainers.image.description="Apache Tomcat 10 container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="10"
+# labelprefix=org.opensuse.application.apache-tomcat
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Apache Tomcat 9"
+LABEL org.opencontainers.image.description="Apache Tomcat 9 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.version="9"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/tomcat:10-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:9-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/tomcat-10-image/README.md"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/apache-tomcat-9-image/README.md"
 LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomcat.png"
 
-RUN set -euo pipefail; zypper -n in --no-recommends tomcat10; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
-ENV TOMCAT_MAJOR="10"
+RUN set -euo pipefail; zypper -n in --no-recommends tomcat; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+ENV TOMCAT_MAJOR="9"
 ENV TOMCAT_VERSION="%%tomcat_version%%"
 ENV CATALINA_HOME="/usr/share/tomcat"
 ENV CATALINA_BASE="/usr/share/tomcat"
