@@ -11,11 +11,19 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: apache-tomcat-10-image
+        source_package: apache-tomcat-10-java-17-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: apache-tomcat-9-image
+        source_package: apache-tomcat-10-java-21-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: apache-tomcat-10-java-22-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: apache-tomcat-9-java-17-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -234,10 +242,16 @@ refresh_devel_BCI:
         package: alertmanager-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: apache-tomcat-10-image
+        package: apache-tomcat-10-java-17-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: apache-tomcat-9-image
+        package: apache-tomcat-10-java-21-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: apache-tomcat-10-java-22-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: apache-tomcat-9-java-17-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: blackbox_exporter-image
