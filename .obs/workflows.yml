@@ -11,6 +11,14 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: apache-tomcat-10-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: apache-tomcat-9-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: blackbox_exporter-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -199,14 +207,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: tomcat-10-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: tomcat-9-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: trivy-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
   filters:
@@ -232,6 +232,12 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: alertmanager-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: apache-tomcat-10-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: apache-tomcat-9-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: blackbox_exporter-image
@@ -373,12 +379,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: spack-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: tomcat-9-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: trivy-image
