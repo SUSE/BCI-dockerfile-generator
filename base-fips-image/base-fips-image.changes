@@ -2,3 +2,60 @@
 Thu Jul 18 15:28:40 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP6 FIPS-140-3 BCI
+
+-------------------------------------------------------------------
+Thu Jul 18 15:28:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the 15 SP5 FIPS-140-3 BCI
+
+-------------------------------------------------------------------
+Fri Jul 12 14:32:07 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- set to L3 supported
+- change crypto-policies to FIPS
+
+-------------------------------------------------------------------
+Tue Jul  9 13:55:44 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- First version of the 15 SP4 FIPS-140-3 BCI (jsc#PED-8763)
+
+-------------------------------------------------------------------
+Wed Jun  5 11:46:26 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- set end of support date
+- README fixes
+- also enforce FIPS mode on libgcrypt
+
+-------------------------------------------------------------------
+Tue May  7 19:16:43 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- inherit the LTSS base container
+- fix log cleanup
+- add README.md
+
+-------------------------------------------------------------------
+Tue Mar  5 07:27:04 UTC 2024 - Danish Prakash <danish.prakash@suse.com>
+
+- Fix labelprefix (bsc#1220378)
+
+-------------------------------------------------------------------
+Tue Oct 17 13:06:57 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- add sles-ltss-release for the LTSS containers (bsc#1216217)
+
+-------------------------------------------------------------------
+Thu Sep 28 14:29:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
+Fri Sep 15 12:47:30 UTC 2023 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the 15 SP3 FIPS-140-2 BCI (jsc#PED-2612)
+  * provides the FIPS-140-2 certified binaries in a BCI base
+    container
