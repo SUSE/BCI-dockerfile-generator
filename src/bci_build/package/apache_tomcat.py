@@ -5,14 +5,14 @@ import datetime
 from bci_build.containercrate import ContainerCrate
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
-
-from .appcollection import ApplicationCollectionContainer
+from bci_build.registry import ApplicationCollectionRegistry
 
 # last version needs to be the newest
 _TOMCAT_VERSIONS: list[str] = ["9", "10.1"]
@@ -51,11 +51,16 @@ def _get_sac_supported_until(
 
 
 TOMCAT_CONTAINERS = [
-    ApplicationCollectionContainer(
+    ApplicationStackContainer(
         name="apache-tomcat",
-        package_name=f"apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
-        if os_version.is_tumbleweed
-        else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-image",
+        package_name=(
+            f"apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
+            if os_version.is_tumbleweed
+            else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
+        ),
+        _publish_registry=(
+            None if os_version.is_tumbleweed else ApplicationCollectionRegistry()
+        ),
         pretty_name="Apache Tomcat",
         custom_description=(
             "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "

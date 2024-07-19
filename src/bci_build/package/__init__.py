@@ -17,6 +17,9 @@ import jinja2
 from packaging import version
 
 from bci_build.containercrate import ContainerCrate
+from bci_build.registry import ApplicationCollectionRegistry
+from bci_build.registry import Registry
+from bci_build.registry import get_registry
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -371,7 +374,6 @@ class Replacement:
         source package.
 
         """
-
         if self.file_name and "readme" in self.file_name.lower():
             raise ValueError(f"Cannot replace variables in {self.file_name}!")
 
@@ -559,6 +561,13 @@ class BaseContainerImage(abc.ABC):
     #: webui sorting)
     _min_release_counter: int | None = None
 
+    #: The registry implementation for which this container is being built.
+    _publish_registry: Registry | None = None
+
+    @property
+    def publish_registry(self):
+        return self._publish_registry
+
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -584,6 +593,16 @@ class BaseContainerImage(abc.ABC):
                 if self.os_version.is_tumbleweed
                 else "SUSE LLC (https://www.suse.com/)"
             )
+        if not self._publish_registry:
+            self._publish_registry = get_registry(self)
+
+        # AppCollection preferences
+        if isinstance(self._publish_registry, ApplicationCollectionRegistry):
+            # Limit to aarch64 and x86_64
+            if not self.exclusive_arch:
+                self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
+            # Disable maintainer listing
+            self.maintainer = None
 
         # limit to tech preview for beta releases
         if (
@@ -680,36 +699,17 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        if self.os_version.is_tumbleweed:
-            return "https://www.opensuse.org"
-        if self.os_version.is_ltss:
-            return "https://www.suse.com/products/long-term-service-pack-support/"
-
-        return "https://www.suse.com/products/base-container-images/"
-
-    @property
-    def vendor(self) -> str:
-        """The vendor that is put into the ``org.opencontainers.image.vendor``
-        label
-
-        """
-        if self.os_version.is_tumbleweed:
-            return "openSUSE Project"
-        return "SUSE LLC"
+        return self._publish_registry.url(container=self)
 
     @property
     def base_image_registry(self) -> str:
         """The registry where the base image is available on."""
-        if self.os_version.is_tumbleweed:
-            return "registry.opensuse.org"
-        return "registry.suse.com"
+        return get_registry(self).registry
 
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        if self.os_version.is_tumbleweed:
-            return "registry.opensuse.org"
-        return "registry.suse.com"
+        return self._publish_registry.registry
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -832,7 +832,10 @@ exit 0
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
         if not self.from_target_image and self.os_version in RELEASED_OS_VERSIONS:
             return f"{self.base_image_registry}/bci/bci-base:15.{self.os_version}"
-        if self.image_type == ImageType.APPLICATION:
+        if (
+            not isinstance(self._publish_registry, ApplicationCollectionRegistry)
+            and self.image_type == ImageType.APPLICATION
+        ):
             return f"suse/sle15:15.{self.os_version}"
 
         return f"bci/bci-base:15.{self.os_version}"
@@ -1433,9 +1436,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def registry_prefix(self) -> str:
-        if self.os_version.is_tumbleweed:
-            return "opensuse/bci"
-        return "bci"
+        return self._publish_registry.registry_prefix(is_application=False)
 
     @property
     def image_type(self) -> ImageType:
@@ -1558,9 +1559,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def registry_prefix(self) -> str:
-        if self.os_version.is_tumbleweed:
-            return "opensuse"
-        return "suse"
+        return self._publish_registry.registry_prefix(is_application=True)
 
     @property
     def image_type(self) -> ImageType:
@@ -1568,6 +1567,8 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def title(self) -> str:
+        if isinstance(self._publish_registry, ApplicationCollectionRegistry):
+            return self.pretty_name
         return f"{self.os_version.distribution_base_name} {self.pretty_name}"
 
     @property

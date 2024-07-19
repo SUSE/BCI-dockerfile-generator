@@ -10,6 +10,7 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
+from bci_build.registry import ApplicationCollectionRegistry
 
 _PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12"]
 
@@ -49,11 +50,11 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         # Tumbleweed rocks
         has_pipx = has_wheel = True
     elif os_version.is_sle15:
-        if py3_ver != "3.6":
+        if py3_ver not in ("3.6", "3.9"):
             # Enabled only for Python 3.11+ on SLE15 (jsc#PED-5573)
             has_pipx = True
         # py3.12 pending discussion
-        if py3_ver not in ("3.12",):
+        if py3_ver not in ("3.12", "3.9"):
             has_wheel = True
 
     kwargs = {
@@ -112,6 +113,9 @@ PYTHON_3_9_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.9", os_version),
         package_name="sac-python-3.9-image",
+        _publish_registry=(
+            None if os_version.is_tumbleweed else ApplicationCollectionRegistry()
+        ),
     )
     for os_version in (OsVersion.SP6,)
 )

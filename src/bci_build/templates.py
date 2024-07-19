@@ -63,7 +63,7 @@ LABEL org.opencontainers.image.description="{{ image.description }}"
 LABEL org.opencontainers.image.version="{{ image.oci_version }}"
 LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
+LABEL org.opencontainers.image.vendor="{{ image.publish_registry.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="{{ image.image_ref_name }}"
 LABEL org.opensuse.reference="{{ image.reference }}"
@@ -120,7 +120,7 @@ KIWI_TEMPLATE = jinja2.Template(
 
 <image schemaversion="7.4" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
-    <author>{{ image.vendor }}</author>
+    <author>{{ image.publish_registry.vendor }}</author>
     <contact>https://www.suse.com/</contact>
     <specification>{{ image.title }} Container Image</specification>
   </description>
@@ -145,7 +145,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
             <label name="org.opencontainers.image.version" value="{{ image.oci_version }}"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
-            <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
+            <label name="org.opencontainers.image.vendor" value="{{ image.publish_registry.vendor }}"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
             <label name="org.opencontainers.image.ref.name" value="{{ image.image_ref_name }}"/>
