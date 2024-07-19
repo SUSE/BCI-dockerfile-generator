@@ -16,6 +16,8 @@ from typing import overload
 import jinja2
 from packaging import version
 
+from bci_build.registry import RegistryABC
+from bci_build.registry import get_registry
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -525,6 +527,13 @@ class BaseContainerImage(abc.ABC):
     #: webui sorting)
     _min_release_counter: int | None = None
 
+    #: The registry implementation for which this container is being built.
+    _publish_registry: RegistryABC | None = None
+
+    @property
+    def publish_registry(self):
+        return self._publish_registry
+
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -548,6 +557,8 @@ class BaseContainerImage(abc.ABC):
                 if self.os_version.is_tumbleweed
                 else "SUSE LLC (https://www.suse.com/)"
             )
+        if not self._publish_registry:
+            self._publish_registry = get_registry(self)
 
         # limit to tech preview for beta releases
         if (
@@ -653,14 +664,7 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        if self.os_version.is_tumbleweed:
-            return "https://www.opensuse.org"
-        if self.os_version.is_ltss:
-            return "https://www.suse.com/products/long-term-service-pack-support/"
-        if self.os_version.value == OsVersion.BASALT.value:
-            return "https://susealp.io/"
-
-        return "https://www.suse.com/products/base-container-images/"
+        return self._publish_registry.url(container=self)
 
     @property
     def vendor(self) -> str:
@@ -668,16 +672,12 @@ class BaseContainerImage(abc.ABC):
         label
 
         """
-        if self.os_version.is_tumbleweed:
-            return "openSUSE Project"
-        return "SUSE LLC"
+        return self._publish_registry.vendor
 
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        if self.os_version.is_tumbleweed:
-            return "registry.opensuse.org"
-        return "registry.suse.com"
+        return self._publish_registry.registry
 
     @property
     def dockerfile_custom_end(self) -> str:

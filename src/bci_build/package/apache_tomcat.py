@@ -3,19 +3,22 @@
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _SUPPORTED_UNTIL_SLE
+from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
-
-from .appcollection import ApplicationCollectionContainer
+from bci_build.registry import ApplicationCollectionRegistry
 
 _TOMCAT_VERSIONS: list[int] = [9, 10]
 assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
 
 TOMCAT_CONTAINERS = [
-    ApplicationCollectionContainer(
+    ApplicationStackContainer(
         name="apache-tomcat",
         pretty_name="Apache Tomcat",
+        _publish_registry=ApplicationCollectionRegistry()
+        if not os_version.is_tumbleweed
+        else None,
         package_name=f"apache-tomcat-{tomcat_major}-java-{jre_version}-image"
         if os_version.is_tumbleweed
         else f"sac-apache-tomcat-{tomcat_major}-java{jre_version}-image",
