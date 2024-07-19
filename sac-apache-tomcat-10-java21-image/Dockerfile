@@ -13,14 +13,14 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
-#!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/apache-tomcat:10-jre21
-#!BuildTag: containers/apache-tomcat:10-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21-%RELEASE%
-#!BuildName: containers-apache-tomcat-10-jre21
+
+#!BuildTag: suse/apache-tomcat:10-jre21
+#!BuildTag: suse/apache-tomcat:10-jre21-%RELEASE%
+#!BuildTag: suse/apache-tomcat:%%tomcat_version%%-jre21
+#!BuildTag: suse/apache-tomcat:%%tomcat_version%%-jre21-%RELEASE%
+#!BuildTag: suse/apache-tomcat:%%tomcat_minor%%-jre21
+#!BuildTag: suse/apache-tomcat:%%tomcat_minor%%-jre21-%RELEASE%
+#!BuildName: suse-apache-tomcat-10-jre21
 #!BuildVersion: 15.6
 #!BuildRelease: 35
 FROM suse/sle15:15.6
@@ -29,14 +29,14 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.apache-tomcat
-LABEL org.opencontainers.image.title="Apache Tomcat"
+LABEL org.opencontainers.image.title="SLE Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="10-jre21"
 LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-tomcat"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:10-jre21-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/suse/apache-tomcat:10-jre21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
