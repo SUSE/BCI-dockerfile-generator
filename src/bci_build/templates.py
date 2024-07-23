@@ -89,10 +89,9 @@ KIWI_TEMPLATE = jinja2.Template(
     """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: {{ image.license }} -->
 <!-- {{ INFOHEADER }}-->
-<!-- OBS-AddTag: {% for tag in image.build_tags -%} {{ tag }} {% endfor -%}-->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.5" name="{{ image.uid }}-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>{{ image.vendor }}</author>
     <contact>https://www.suse.com/</contact>
@@ -103,8 +102,8 @@ KIWI_TEMPLATE = jinja2.Template(
       <containerconfig
           name="{{ image.build_tags[0].split(':')[0] }}"
           tag="{{ image.build_tags[0].split(':')[1] }}"
-{%- if image.kiwi_additional_tags %}
-          additionaltags="{{ image.kiwi_additional_tags }}"
+{%- if image.build_tags|length > 1 %}
+          additionalnames="{% for tag in image.build_tags[1:] %}{{ tag }}{{ "," if not loop.last }}{% endfor %}"
 {%- endif %}
 {%- if image.entrypoint_user  %}
           user="{{ image.entrypoint_user }}"
