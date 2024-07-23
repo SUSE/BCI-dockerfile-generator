@@ -1185,9 +1185,11 @@ exit 0
 
         """
         extra_tags: list[str] = []
-        for buildtag in self.build_tags[1:]:
+        all_tags = self.build_tags
+        first_path = all_tags[0].partition(":")[0]
+        for buildtag in all_tags[1:]:
             path, tag = buildtag.split(":")
-            if path.endswith(self.name):
+            if path.endswith(first_path):
                 extra_tags.append(tag)
 
         return ",".join(extra_tags) if extra_tags else None
