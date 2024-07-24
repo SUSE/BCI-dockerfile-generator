@@ -1,0 +1,216 @@
+-------------------------------------------------------------------
+Wed Jul 24 15:42:57 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- Rerender build recipe using the dockerfile generator
+
+-------------------------------------------------------------------
+Wed Jun  5 08:41:57 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- update to SUSE LLC and use https (it's 2024)
+- use more specific lifecycle url
+- remove deprecated label duplication as those labels are
+  inherited into all derived containers as well causing
+  confusion
+- set supportlevel to released and L3
+- use the base-container-images landing page
+- rename kiwi file to match package name
+- move artifacthub.io labels outside labelling helper to
+  avoid duplication
+
+-------------------------------------------------------------------
+Tue Apr  2 13:44:54 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Switch supportlevel to techpreview until GMC
+
+-------------------------------------------------------------------
+Thu Feb  1 16:42:42 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- switch to SVG logo version
+- update README
+
+-------------------------------------------------------------------
+Thu Jan 25 11:45:28 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- install the default modules (bsc#1219178)
+- add README.md and point to it for artifacthub
+
+-------------------------------------------------------------------
+Thu Nov  9 08:28:23 UTC 2023 - Fabian Vogt <fvogt@suse.com>
+
+- Set rpm.install.excludedocs (bsc#1216983)
+
+-------------------------------------------------------------------
+Mon Oct 23 13:34:14 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- add patterns-base-minimal_base to have the SLE branding
+
+-------------------------------------------------------------------
+Thu Sep  7 07:58:20 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- hardlink the license files to save a bit of space
+
+-------------------------------------------------------------------
+Tue Jul 11 14:18:38 UTC 2023 - Fabian Vogt <fvogt@suse.com>
+
+- Mark image as beta
+
+-------------------------------------------------------------------
+Wed May 24 07:14:25 UTC 2023 - Fabian Vogt <fvogt@suse.com>
+
+- Mark the image as released now (jsc#BCI-40)
+
+-------------------------------------------------------------------
+Tue Feb 28 15:38:40 UTC 2023 - Fabian Vogt <fvogt@suse.com>
+
+- Add BCI debug and source repositories (jsc#BCI-242)
+- Add tar and gzip for simpler use in GitHub actions and similar
+  environments (jsc#PED-3548)
+- Add "set -euxo pipefail" to config.sh
+- Add LICENSE file, remove comment from config.sh
+
+-------------------------------------------------------------------
+Fri Jan 27 16:39:29 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- enable explicit gpg checking on BCI repo (bsc#1207707)
+
+-------------------------------------------------------------------
+Fri Oct 14 08:44:28 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Make the title match BCI (bsc#1195061)
+
+-------------------------------------------------------------------
+Wed Aug 10 11:58:58 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Mark image as beta
+
+-------------------------------------------------------------------
+Mon Jul 18 09:29:21 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Add curl (jsc#SLE-23748) and timezone (bsc#1201537)
+- Enable autorefresh for SLE-BCI explicitly (bsc#1200906)
+
+-------------------------------------------------------------------
+Thu Jun  9 11:19:36 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Mark the image as released now
+- Add labels with BCI prefix as well (bsc#1200373)
+
+-------------------------------------------------------------------
+Fri May 13 08:27:54 UTC 2022 - Frederic Crozat <fcrozat@suse.com>
+
+- Ship skelcd-EULA-bci for SLE BCI EULA.
+
+-------------------------------------------------------------------
+Thu Apr 21 13:26:22 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Add zypper explicitly to work around obs-build bug
+  (gh#openSUSE/obs-build#562)
+- Add com.suse.supportlevel label (jsc#BCI-40)
+
+-------------------------------------------------------------------
+Wed Mar  9 15:39:36 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Mark image as beta
+
+-------------------------------------------------------------------
+Mon Feb  7 14:45:58 UTC 2022 - Fabian Vogt <fvogt@suse.com>
+
+- Add bci/bci-base alias with same tags (jsc#BCI-33)
+- Add some more labels (jsc#BCI-40)
+- Remove "minimal" from the description
+- Add org.opencontainers.image.source label
+- Clean /var/log and /var/cache/zypp more explicitly to keep
+  file ownership intact
+- Remove redundant call to zypper clean
+- Remove /var/log/lastlog explicitly, add comment
+
+-------------------------------------------------------------------
+Fri Jan 14 12:28:34 UTC 2022 - Dan Čermák <dcermak@suse.com>
+
+- Cleanup /var/log, /var/cache/zypp and clear zypper's caches
+
+-------------------------------------------------------------------
+Tue Jun 22 12:17:06 UTC 2021 - Fabian Vogt <fvogt@suse.com>
+
+- Add patterns-base-fips to work also in FIPS environments (bsc#1183154)
+
+-------------------------------------------------------------------
+Fri Jun  4 11:47:46 UTC 2021 - Frederic Crozat <fcrozat@suse.com>
+
+- Add SLE_BCI repository (jsc#SLE-18095)
+
+-------------------------------------------------------------------
+Thu Apr  8 13:14:57 UTC 2021 - Fabian Vogt <fvogt@suse.com>
+
+- Explicitly exclude builds for i586
+
+-------------------------------------------------------------------
+Mon Dec  7 12:54:57 UTC 2020 - Fabian Vogt <fvogt@suse.com>
+
+- Switch to rpm-ndb (jsc#SLE-15587)
+
+-------------------------------------------------------------------
+Fri May  3 09:28:22 UTC 2019 - Fabian Vogt <fvogt@suse.com>
+
+- Don't use <version>%OS_VERSION_ID_SP%.0</version>, it confuses
+  OBS, breaking releasecounter bumping (bsc#1134031)
+
+-------------------------------------------------------------------
+Thu Mar 14 09:47:12 UTC 2019 - Fabian Vogt <fvogt@suse.com>
+
+- Add comment for obsrepositories:/ back to avoid it in Dockerfiles
+
+-------------------------------------------------------------------
+Mon Feb 25 09:39:06 UTC 2019 - Fabian Vogt <fvogt@suse.com>
+
+- Fix org.opencontainers.image prefix in labels (bsc#1126736)
+
+-------------------------------------------------------------------
+Tue Jan 15 09:52:13 UTC 2019 - Fabian Vogt <fvogt@suse.com>
+
+- Replace hardcoded versions with placeholders
+- Remove hardcoded latest tag to not conflict with SP1+ (bsc#1121970)
+
+-------------------------------------------------------------------
+Tue Nov  6 10:46:22 UTC 2018 - Fabian Vogt <fvogt@suse.com>
+
+- Add a tag containing the release (fate#326856, bsc#1118103)
+- Add labels as defined in the wiki by using OBS services (fate#326856, bsc#1118103)
+
+-------------------------------------------------------------------
+Mon Aug  6 13:24:33 UTC 2018 - fvogt@suse.com
+
+- Switch to kubic-locale-archive as alternative to not yet existing
+  glibc-locale-mini (bsc#1103914)
+- Use "latest" as tag directly, "current" is not required anymore
+
+-------------------------------------------------------------------
+Tue Jul 17 08:41:01 UTC 2018 - fvogt@suse.com
+
+- Use the suse.com website as contact
+
+-------------------------------------------------------------------
+Thu Jun 21 07:27:26 UTC 2018 - fvogt@suse.com
+
+- Remove zypp UUID (bsc#1098535)
+
+-------------------------------------------------------------------
+Tue Mar 20 16:06:36 UTC 2018 - fvogt@suse.com
+
+- Change the name+tag to "suse/sle15:current" (bsc#1083671)
+
+-------------------------------------------------------------------
+Fri Mar 16 14:18:53 UTC 2018 - fvogt@suse.com
+
+- Remove iputils (bsc#1085664)
+
+-------------------------------------------------------------------
+Thu Mar 15 15:30:23 UTC 2018 - fvogt@suse.com
+
+- Fix name of the .changes file
+- Set myself as maintainer inside the image
+
+-------------------------------------------------------------------
+Tue Feb 20 13:55:27 UTC 2018 - fvogt@suse.com
+
+- Initial commit based on opensuse-tumbleweed-image
