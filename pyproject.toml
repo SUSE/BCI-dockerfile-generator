@@ -21,6 +21,7 @@ GitPython = ">=3.1"
 
 [tool.poetry.scripts]
 package = "bci_build.package:main"
+regcheck = "bci_build.regcheck:main"
 scratch-build-bot = "staging.bot:main"
 update-versions = "bci_build.package.versions:run_version_update"
 
