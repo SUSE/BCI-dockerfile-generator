@@ -32,20 +32,21 @@ same functionality as the standard libgcrypt library, with the additional
 security features enforced to meet FIPS-140-2 requirements.
 {% elif image.build_version | string == "15.4" %}
 This SUSE Linux Enterprise 15 SP4 LTSS-based container image includes the
-OpenSSL and libgcrypt modules that have been submitted for FIPS 140-3 certification.
+OpenSSL and libgcrypt modules that have been interim validated to FIPS 140-3.
 
-The FIPS 140-3 certification process is currently in progress. The modules are
-designed to meet the FIPS 140-3 requirements and are in the process of being
-certified by the National Institute of Standards and Technology (NIST).
+The [FIPS 140-3 certified OpenSSL module](https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp4725.pdf)
+is a cryptographic module that provides a FIPS 140-3 compliant cryptographic
+library. The module is designed to provide the same functionality as the
+standard OpenSSL library, with additional security features to meet the FIPS
+140-3 requirements. [An interim validation has been issued](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4725)
+by NIST.
 
-The FIPS 140-3 certified OpenSSL module is a cryptographic module that provides
-a FIPS 140-3 compliant cryptographic library. The module is designed to provide
-the same functionality as the standard OpenSSL library, with additional security
-features to meet the FIPS 140-3 requirements.
+Similarly, the [FIPS 140-3 certified libgcrypt module](https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp4722.pdf)
+is designed to provide the same functionality as the standard libgcrypt
+library, with additional security features enforced to meet the FIPS 140-3
+requirements. [An interim validation has been issued](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4722)
+by NIST.
 
-Similarly, the FIPS 140-3 certified libgcrypt module is designed to provide the
-same functionality as the standard libgcrypt library, with additional security
-features enforced to meet the FIPS 140-3 requirements.
 {% else %}
 This base container image is configured with FIPS mode enabled by default, but
 does not include any certified binaries.
