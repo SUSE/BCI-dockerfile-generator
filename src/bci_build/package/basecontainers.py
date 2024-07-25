@@ -208,7 +208,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in os_version.release_package_names
     ]
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.BASALT):
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -292,7 +292,7 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.BASALT:
+    if os_version == OsVersion.SLE16_0:
         prefix = "basalt"
         pretty_prefix = prefix.upper()
     else:
