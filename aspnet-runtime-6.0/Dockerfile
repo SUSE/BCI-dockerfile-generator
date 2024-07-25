@@ -27,8 +27,8 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.aspnet
-LABEL org.opencontainers.image.title="SLE BCI ASP.NET 6.0 runtime"
-LABEL org.opencontainers.image.description="The ASP.NET 6.0 runtime based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+LABEL org.opencontainers.image.title="SLE BCI ASP.NET Core Runtime 6.0"
+LABEL org.opencontainers.image.description="The ASP.NET Core Runtime 6.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 LABEL org.opencontainers.image.version="6.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
