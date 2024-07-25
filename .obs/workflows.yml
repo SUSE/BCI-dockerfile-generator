@@ -27,6 +27,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: opensuse-base-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: blackbox_exporter-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -252,6 +256,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: apache-tomcat-9-java-17-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: opensuse-base-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: blackbox_exporter-image
