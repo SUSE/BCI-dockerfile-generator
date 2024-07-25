@@ -22,7 +22,11 @@ echo "Configure image: [$kiwi_iname]..."
 #======================================
 # Setup baseproduct link
 #--------------------------------------
+{% if os_version.is_tumbleweed -%}
+suseImportBuildKey
+{% else -%}
 suseSetupProduct
+{% endif %}
 
 # don't have duplicate licenses of the same type
 jdupes -1 -L -r /usr/share/licenses
@@ -114,6 +118,8 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         package_name = "sles15-ltss-image"
     elif os_version.is_sle15:
         package_name = "sles15-image"
+    elif os_version.is_tumbleweed:
+        package_name = "opensuse-base-image"
 
     return {
         "name": "base",
@@ -135,21 +141,38 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         },
         "package_list": [
             Package(name=pkg_name, pkg_type=PackageType.IMAGE)
-            for pkg_name in (
-                "bash",
-                "ca-certificates-mozilla",
-                "container-suseconnect",
-                "coreutils",
-                "curl",
-                "gzip",
-                "netcfg",
-                "skelcd-EULA-bci",
-                "sle-module-basesystem-release",
-                "sle-module-server-applications-release",
-                "sle-module-python3-release",
-                "suse-build-key",
-                "tar",
-                "timezone",
+            for pkg_name in sorted(
+                [
+                    "bash",
+                    "ca-certificates-mozilla",
+                    "coreutils",
+                    "curl",
+                    "gzip",
+                    "netcfg",
+                    "openssl",
+                    "shadow",
+                    "tar",
+                    "timezone",
+                ]
+            )
+            + (
+                [
+                    "gawk",
+                    "libcurl-mini4",
+                    "live-add-yast-repos",
+                    "lsb-release",
+                    "openSUSE-build-key",
+                    "procps",
+                ]
+                if os_version.is_tumbleweed
+                else [
+                    "container-suseconnect",
+                    "skelcd-EULA-bci",
+                    "sle-module-basesystem-release",
+                    "sle-module-server-applications-release",
+                    "sle-module-python3-release",
+                    "suse-build-key",
+                ]
             )
         ]
         + [
@@ -160,11 +183,8 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "cracklib-dict-small",
                     "filesystem",
                     "jdupes",
-                    "kubic-locale-archive",
                     "patterns-base-fips",
-                    "rpm-ndb",
                     "shadow",
-                    "sles-release",
                     "zypper",
                 ]
                 + (
@@ -172,6 +192,12 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version not in (OsVersion.SP5,)
                     else []
                 )
+                + (
+                    ["kubic-locale-archive", "rpm-ndb"]
+                    if os_version.is_sle15
+                    else ["glibc-locale-base"]
+                )
+                + [*os_version.release_package_names]
             )
         ],
         "config_sh_script": _get_base_config_sh_script(os_version),
@@ -181,5 +207,6 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 
 # TODO merge in tumbleweed changes and switch to ALL_BASE_OS_VERSIONS
 BASE_CONTAINERS = [
-    Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6,)
+    Sles15Image(**_get_base_kwargs(os_ver))
+    for os_ver in (OsVersion.SP6, OsVersion.TUMBLEWEED)
 ]
