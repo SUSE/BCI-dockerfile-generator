@@ -1,0 +1,51 @@
+# {{ image.pretty_name }} container image
+
+{% include 'badges.j2' %}
+
+## Description
+
+{% include 'dotnet_description.j2' %}
+
+This image contains the .NET runtimes and libraries, and it is optimized for running .NET applications in production.
+
+{% include 'dotnet_notice.j2' %}
+
+## Usage
+
+To deploy an application, copy the sources and build the binary:
+
+```Dockerfile
+FROM registry.suse.com/bci/dotnet-sdk:{{ image.version }} AS build
+
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
+COPY *.csproj .
+RUN dotnet restore
+
+# copy and publish app and libraries
+COPY . .
+RUN dotnet publish --no-restore -c Release -o /app
+
+# final image
+FROM {{ image.pretty_reference }}
+
+WORKDIR /app
+COPY --from=build /app .
+
+# uncomment to run as non-root user
+# USER $APP_UID
+
+ENTRYPOINT ["./dotnetapp"]
+```
+
+Build and run the container image:
+
+```ShellSession
+podman build -t my-dotnet-app .
+podman run -it --rm my-dotnet-app
+```
+
+{% include 'dotnet_globalization.j2' %}
+
+{% include 'licensing_and_eula.j2' %}

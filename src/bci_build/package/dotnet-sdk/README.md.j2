@@ -1,0 +1,69 @@
+# {{ image.pretty_name }} container image
+
+{% include 'badges.j2' %}
+
+## Description
+
+{% include 'dotnet_description.j2' %}
+
+This image contains the .NET SDK, consisting of three parts:
+
+- .NET CLI
+- .NET Runtime
+- ASP.NET Core Runtime
+
+You can use the image to develop, build, and test of .NET and ASP.NET Core applications.
+
+{% include 'dotnet_notice.j2' %}
+
+## Usage
+
+To compile an application, copy the sources and build the binary:
+
+```Dockerfile
+FROM {{ image.pretty_reference }} AS build
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
+COPY *.csproj .
+RUN dotnet restore
+
+# copy and publish app and libraries
+COPY . .
+RUN dotnet publish --no-restore -o /app
+
+# final image
+FROM registry.suse.com/bci/dotnet-runtime:{{ image.version }}
+WORKDIR /app
+COPY --from=build /app .
+
+# uncomment to run as non-root user
+# USER $APP_UID
+
+ENTRYPOINT ["./dotnetapp"]
+```
+
+Build and run the container image:
+
+```ShellSession
+podmanbuild -t my-dotnet-app .
+podman run -it --rm my-dotnet-app
+```
+
+There are situations, where you don't want to run an application inside a container.
+
+To compile the application without running it inside a container, use the following command:
+
+```ShellSession
+podman run --rm -v "$PWD":/app:Z -w /app {{ image.pretty_reference }} dotnet run
+```
+
+To run unit tests in an isolated environment, use the following command:
+
+```ShellSession
+podman run --rm -v "$PWD":/app:Z -w /app/tests {{ image.pretty_reference }} dotnet test --logger:trx
+```
+
+{% include 'dotnet_globalization.j2' %}
+
+{% include 'licensing_and_eula.j2' %}

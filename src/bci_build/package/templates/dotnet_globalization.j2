@@ -1,0 +1,9 @@
+## Globalization
+
+.NET includes [globalization](https://learn.microsoft.com/dotnet/core/extensions/globalization-and-localization) capabilities, including support for processing natural language text, calendars, currency, and timezones. The .NET implementation for these capabilities is based on system libraries available in the container image, such as [International Components for Unicode (ICU)](https://icu.unicode.org/) and [tzdata](https://wikipedia.org/wiki/Tz_database).
+
+It's considered a good practice to pass timezone information into a container via environment variable `TZ`.
+
+```bash
+podman run --rm -it -e TZ="Europe/Berlin" app
+```
