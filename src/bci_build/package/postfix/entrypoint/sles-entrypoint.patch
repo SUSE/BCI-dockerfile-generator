@@ -1,0 +1,29 @@
+359,364d358
+< setup_spamassassin() {
+<     if [ -n "${SPAMASSASSIN_HOST}" ]; then
+< 	set_config_value "smtpd_milters" "unix:/run/spamass-milter/socket"
+<     fi
+< }
+< 
+383,386d376
+< stop_spamassassin() {
+<     terminate /usr/sbin/spamass-milter
+< }
+< 
+405d394
+<     stop_spamassassin
+411,418c400
+<     /usr/sbin/syslogd -n -S -O - &
+<     if [ -n "${SPAMASSASSIN_HOST}" ]; then
+< 	mkdir /run/spamass-milter
+< 	chown sa-milter:postfix /run/spamass-milter
+< 	chmod 751 /run/spamass-milter
+< 	su sa-milter -s /bin/sh -c "/usr/sbin/spamass-milter -p /run/spamass-milter/socket -g postfix -f -- -d ${SPAMASSASSIN_HOST}"
+<     fi
+<     "$@"
+---
+>     /usr/sbin/syslogd -n -S -O - "$@"
+437d418
+< setup_spamassassin
+445a427
+>     echo "[info] refer to postfix manual pages at https://www.postfix.org/postfix-manuals.html"

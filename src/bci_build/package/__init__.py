@@ -1523,6 +1523,7 @@ from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
 from .appcontainers import HELM_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
+from .appcontainers import POSTFIX_CONTAINERS  # noqa: E402
 from .appcontainers import POSTGRES_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
@@ -1580,6 +1581,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *FIPS_BASE_CONTAINERS,
         *MARIADB_CONTAINERS,
         *MARIADB_CLIENT_CONTAINERS,
+        *POSTFIX_CONTAINERS,
         *POSTGRES_CONTAINERS,
         *PROMETHEUS_CONTAINERS,
         *ALERTMANAGER_CONTAINERS,
