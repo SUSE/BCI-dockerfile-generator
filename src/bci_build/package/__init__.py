@@ -83,6 +83,10 @@ class BuildType(enum.Enum):
     def __str__(self) -> str:
         return self.value
 
+    @property
+    def repository_name(self) -> str:
+        return "containers" if self.value == BuildType.DOCKER.value else "images"
+
 
 @enum.unique
 class SupportLevel(enum.Enum):
@@ -530,6 +534,10 @@ class BaseContainerImage(abc.ABC):
     #: webui sorting)
     _min_release_counter: int | None = None
 
+    #: A custom name for the test environment if it is not equal to the
+    #: container image's name
+    _custom_test_env: str = ""
+
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
@@ -578,6 +586,20 @@ class BaseContainerImage(abc.ABC):
 
         """
         pass
+
+    @property
+    @abc.abstractmethod
+    def test_marker(self) -> str:
+        """The marker used to identify this image in BCI-Tests"""
+        pass
+
+    @property
+    def test_environment(self) -> str:
+        """The test environment name in BCI-Tests corresponding to this
+        container image
+
+        """
+        return self._custom_test_env or self.name
 
     @property
     def build_name(self) -> str | None:
@@ -1314,6 +1336,10 @@ class DevelopmentContainer(BaseContainerImage):
             raise ValueError("A language stack container requires a version")
 
     @property
+    def test_marker(self) -> str:
+        return f"{self.name}_{self.stability_tag or self.version}"
+
+    @property
     def _registry_prefix(self) -> str:
         if self.os_version.is_tumbleweed:
             return "opensuse/bci"
@@ -1462,6 +1488,13 @@ class OsContainer(BaseContainerImage):
         if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
             return "latest"
         return f"15.{os_version}"
+
+    @property
+    def test_marker(self) -> str:
+        return (
+            f"{self.name}_{OsContainer.version_to_container_os_version(self.os_version)}"
+            + ("-ltss" if self.os_version.is_ltss else "")
+        )
 
     @property
     def uid(self) -> str:
