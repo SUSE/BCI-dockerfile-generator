@@ -67,6 +67,7 @@ TOMCAT_CONTAINERS = [
             f"%%tomcat_version%%-jre{jre_version}",
             f"%%tomcat_minor%%-jre{jre_version}",
         ],
+        from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
             tomcat_pkg := (
                 "tomcat"
