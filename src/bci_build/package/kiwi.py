@@ -33,6 +33,7 @@ KIWI_CONTAINERS = [
             "gcc",
             "glibc-devel",
             "iproute2",
+            "java-21-openjdk-headless",
             "jing",
             "kiwi-systemdeps-filesystems",
             "kpartx",
