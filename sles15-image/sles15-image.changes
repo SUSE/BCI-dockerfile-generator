@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 29 11:25:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- restore sles15 image uid to avoid have-choice errors
+
+-------------------------------------------------------------------
 Wed Jul 24 15:42:57 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - Rerender build recipe using the dockerfile generator
