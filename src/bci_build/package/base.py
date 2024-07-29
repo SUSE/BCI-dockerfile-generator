@@ -107,6 +107,10 @@ class Sles15Image(OsContainer):
         tags += super().build_tags
         return tags
 
+    @property
+    def uid(self) -> str:
+        return "sles15"
+
 
 def _get_base_kwargs(os_version: OsVersion) -> dict:
     package_name: str = "base-image"
