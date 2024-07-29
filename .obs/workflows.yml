@@ -15,10 +15,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: sles15-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: base-fips-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -199,6 +195,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: sles15-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: spack-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
   filters:
@@ -227,9 +227,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: sac-apache-tomcat-10-java21-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: sles15-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: base-fips-image
@@ -365,6 +362,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: sle15-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: sles15-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: spack-image

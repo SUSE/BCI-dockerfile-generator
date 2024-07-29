@@ -19,7 +19,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
 <!-- OBS-IgnorePackage: rpm -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="base-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="sles15-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
