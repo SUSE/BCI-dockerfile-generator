@@ -27,7 +27,7 @@ By default a simple relayhost postfix instance is started.
 The command to run this container is:
 
 ```sh
-podman run -d --rm --name postfix -p 25:25 -e SMTP_RELAYHOST=smtp.example.com registry.suse.com/suse/postfix:%%postfix_version%%
+podman run -d --rm --name postfix -p 25:25 -e SMTP_RELAYHOST=smtp.example.com dp.apps.rancher.io/containers/postfix:%%postfix_version%%
 ```
 
 In all examples, `podman` can be replaced directly with `docker`.
@@ -119,7 +119,7 @@ podman run -d --rm --name postfix -p "25:25" \
     -e SMTP_USERNAME=mailer \
     -e SMTP_PASSWORD='XXX' \
     -v "/srv/postfix/vmail:/var/spool/vmail:Z" \
-    registry.suse.com/suse/postfix:%%postfix_version%%
+    dp.apps.rancher.io/containers/postfix:%%postfix_version%%
 ```
 
 Will store the mails for the users `user1@example.com`, `user2@example.com`,
@@ -181,7 +181,7 @@ podman run -d --rm --name postfix -p 25:25 \
     -v "/srv/postfix/etc/vhosts:/etc/postfix/vhosts:z,ro" \
     -v "/srv/postfix/etc/vmaps:/etc/postfix/vmaps:z,ro" \
     -v "/srv/postfix/etc/vquota:/etc/postfix/vquota:z,ro" \
-    registry.suse.com/suse/postfix:%%postfix_version%%
+    dp.apps.rancher.io/containers/postfix:%%postfix_version%%
 ```
 
 ### LDAP
@@ -197,7 +197,7 @@ To deliver the mails via a LMTP service, the container needs to know the host
 on which such a service is running:
 
 ```sh
-podman run -d --rm --name postfix -p 25:25 -e MYDESTINATION=example.com -e LMTP=lmtp.example.com registry.suse.com/suse/postfix:%%postfix_version%%
+podman run -d --rm --name postfix -p 25:25 -e MYDESTINATION=example.com -e LMTP=lmtp.example.com dp.apps.rancher.io/containers/postfix:%%postfix_version%%
 ```
 
 ## Licensing

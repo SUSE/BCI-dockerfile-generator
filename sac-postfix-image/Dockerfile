@@ -13,11 +13,10 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
-
-#!BuildTag: suse/postfix:%%postfix_version%%
-#!BuildTag: suse/postfix:%%postfix_version%%-%RELEASE%
-#!BuildTag: suse/postfix:latest
-#!BuildName: suse-postfix-%%postfix_version%%
+#!ExclusiveArch: aarch64 x86_64
+#!BuildTag: containers/postfix:%%postfix_version%%
+#!BuildTag: containers/postfix:%%postfix_version%%-%RELEASE%
+#!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.6
 #!BuildRelease: 35
 FROM suse/sle15:15.6
@@ -26,14 +25,14 @@ MAINTAINER SUSE LLC (https://www.suse.com/)
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postfix
-LABEL org.opencontainers.image.title="SLE Postfix"
+LABEL org.opencontainers.image.title="Postfix"
 LABEL org.opencontainers.image.description="Postfix container is fast and secure mail server, based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%postfix_version%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/postfix"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/suse/postfix:%%postfix_version%%-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/postfix:%%postfix_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
