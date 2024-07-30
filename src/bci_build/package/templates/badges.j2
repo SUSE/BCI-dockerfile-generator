@@ -9,6 +9,10 @@
 ![Long Term Service Pack Support](https://img.shields.io/badge/LTSS-Yes-orange)
 {%- endif %}
 {%- if not image.os_version.is_tumbleweed %}
+{%- if image.os_version.is_sle15 and image.os_version.os_version not in ("15.3", "15.4", "15.5") -%}
+[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+{%- else %}
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+{%- endif %}
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 {%- endif %}
