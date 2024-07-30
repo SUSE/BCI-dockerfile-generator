@@ -1523,7 +1523,6 @@ from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
 from .appcontainers import HELM_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
-from .appcontainers import POSTFIX_CONTAINERS  # noqa: E402
 from .appcontainers import POSTGRES_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
@@ -1545,6 +1544,7 @@ from .mariadb import MARIADB_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
 from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
 from .php import PHP_CONTAINERS  # noqa: E402
+from .postfix import POSTFIX_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
