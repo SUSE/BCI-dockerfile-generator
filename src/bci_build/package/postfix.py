@@ -5,10 +5,11 @@ from pathlib import Path
 from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
+
+from .appcollection import ApplicationCollectionContainer
 
 _POSTFIX_FILES = {}
 for filename in (
@@ -32,13 +33,15 @@ for filename in (
 
 
 POSTFIX_CONTAINERS = [
-    ApplicationStackContainer(
+    ApplicationCollectionContainer(
         name="postfix",
-        package_name="postfix-image",
+        package_name="postfix-image"
+        if os_version.is_tumbleweed
+        else "sac-postfix-image",
         pretty_name="Postfix",
         custom_description="Postfix container is fast and secure mail server, {based_on_container}.",
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION and os_version.is_tumbleweed,
         version="%%postfix_version%%",
         version_in_uid=False,
         replacements_via_service=[
