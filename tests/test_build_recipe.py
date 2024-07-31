@@ -340,7 +340,7 @@ LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime"
+LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"
@@ -389,7 +389,7 @@ VOLUME /bin/ /usr/bin/""",
             <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="org.opensuse.release-stage" value="released"/>
-            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime"/>
+            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime#openSUSE_BCI"/>
             <label name="emacs_version" value="28"/>
             <label name="GCC_version" value="15"/>
           </suse_label_helper:add_prefix>
@@ -504,7 +504,7 @@ def test_build_recipe_templates(
             <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="org.opensuse.release-stage" value="released"/>
-            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime"/>
+            <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime#openSUSE_BCI"/>
           </suse_label_helper:add_prefix>
           <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
           <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
