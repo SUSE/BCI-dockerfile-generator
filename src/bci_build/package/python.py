@@ -119,7 +119,6 @@ PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP6,)
 )
@@ -127,6 +126,5 @@ PYTHON_3_11_CONTAINERS = (
 PYTHON_3_12_CONTAINERS = PythonDevelopmentContainer(
     **_get_python_kwargs("3.12", OsVersion.SP6),
     package_name="python-3.12-image",
-    # Technically it is the latest but we want to prefer the long term Python 3.11
-    is_latest=False,
+    is_latest=OsVersion.SP6 in CAN_BE_LATEST_OS_VERSION,
 )
