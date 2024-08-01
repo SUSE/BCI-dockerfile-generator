@@ -565,25 +565,23 @@ class BaseContainerImage(abc.ABC):
     @property
     @abc.abstractmethod
     def uid(self) -> str:
-        """unique identifier of this image, either its name or ``$name-$version``."""
+        """unique identifier of this image, either its name or ``$name-$tag_version``."""
         pass
 
     @property
     @abc.abstractmethod
-    def version_label(self) -> str:
+    def oci_version(self) -> str:
         """The "main" version label of this image.
 
         It is added as the ``org.opencontainers.image.version`` label to the
-        container image and also added to the
-        :py:attr:`~BaseContainerImage.build_tags`.
-
+        container image.
         """
         pass
 
     @property
     def build_name(self) -> str | None:
         if self.build_tags:
-            build_name = self.build_tags[0]
+            build_name: str = self.build_tags[0]
             if self.is_singleton_image:
                 build_name = build_name.partition(":")[0]
             return build_name.replace("/", ":").replace(":", "-")
@@ -1306,8 +1304,13 @@ exit 0
 
 @dataclass
 class DevelopmentContainer(BaseContainerImage):
-    #: the primary version of the language or application inside this container
+    #: the main version of the language or application inside this container
+    #: used for `org.opencontainers.image.version`
     version: str | int = ""
+
+    #: the version-$variant to use in the first build_tag. defaults to version
+    #: if not set.
+    tag_version: str | None = None
 
     # a rolling stability tag like 'stable' or 'oldstable' that will be added first
     stability_tag: str | None = None
@@ -1322,6 +1325,8 @@ class DevelopmentContainer(BaseContainerImage):
         super().__post_init__()
         if not self.version:
             raise ValueError("A language stack container requires a version")
+        if not self.tag_version:
+            self.tag_version = self.version
 
     @property
     def _registry_prefix(self) -> str:
@@ -1334,12 +1339,12 @@ class DevelopmentContainer(BaseContainerImage):
         return ImageType.SLE_BCI
 
     @property
-    def version_label(self) -> str:
+    def oci_version(self) -> str:
         return str(self.version)
 
     @property
     def uid(self) -> str:
-        return f"{self.name}-{self.version}" if self.version_in_uid else self.name
+        return f"{self.name}-{self.tag_version}" if self.version_in_uid else self.name
 
     @property
     def _stability_suffix(self) -> str:
@@ -1392,7 +1397,7 @@ class DevelopmentContainer(BaseContainerImage):
         tags = []
 
         for name in [self.name] + self.additional_names:
-            ver_labels = [self.version_label]
+            ver_labels: list[str] = [self.tag_version]
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels + self.additional_versions:
@@ -1406,7 +1411,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def image_ref_name(self) -> str:
-        return f"{self.version_label}-{self._release_suffix}"
+        return f"{self.tag_version}-{self._release_suffix}"
 
     @property
     def reference(self) -> str:
@@ -1416,9 +1421,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def pretty_reference(self) -> str:
-        return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.version_label}"
-        )
+        return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.tag_version}"
 
     @property
     def build_version(self) -> str | None:
@@ -1431,7 +1434,7 @@ class DevelopmentContainer(BaseContainerImage):
             # the parent's classes build_version
             try:
                 version.parse(str(self.version))
-                stability_suffix = ""
+                stability_suffix: str = ""
                 if self._stability_suffix:
                     stability_suffix = "." + self._stability_suffix
                 return f"{build_ver}.{self.version}{stability_suffix}"
@@ -1481,7 +1484,7 @@ class OsContainer(BaseContainerImage):
         return self.name
 
     @property
-    def version_label(self) -> str:
+    def oci_version(self) -> str:
         return "%OS_VERSION_ID_SP%.%RELEASE%"
 
     @property
@@ -1498,7 +1501,7 @@ class OsContainer(BaseContainerImage):
         for name in [self.name] + self.additional_names:
             tags += [
                 f"{self._registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
-                f"{self._registry_prefix}/bci-{name}:{self.version_label}",
+                f"{self._registry_prefix}/bci-{name}:{self.image_ref_name}",
             ] + (
                 [f"{self._registry_prefix}/bci-{name}:latest"] if self.is_latest else []
             )
@@ -1506,7 +1509,7 @@ class OsContainer(BaseContainerImage):
 
     @property
     def image_ref_name(self) -> str:
-        return self.version_label
+        return self.oci_version
 
     @property
     def reference(self) -> str:

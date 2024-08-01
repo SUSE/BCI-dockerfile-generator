@@ -59,7 +59,8 @@ TOMCAT_CONTAINERS = [
             and jre_version == 22
             and os_version.is_tumbleweed
         ),
-        version=f"{tomcat_major}-jre{jre_version}",
+        version="%%tomcat_version%%",
+        tag_version=f"{tomcat_major}-jre{jre_version}",
         supported_until=_get_sac_supported_until(
             os_version=os_version, tomcat_major=tomcat_major, jre_major=jre_version
         ),
@@ -86,7 +87,7 @@ TOMCAT_CONTAINERS = [
             ),
         ],
         cmd=[
-            f"/usr/{'libexec' if os_version in( OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
+            f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
             "start",
         ],
         exposes_tcp=[8080],
