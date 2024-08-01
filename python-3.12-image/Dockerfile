@@ -18,6 +18,7 @@
 #!BuildTag: bci/python:3.12-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
+#!BuildTag: bci/python:latest
 #!BuildName: bci-python-3.12
 #!BuildVersion: 15.6.3.12
 #!BuildRelease: 41
