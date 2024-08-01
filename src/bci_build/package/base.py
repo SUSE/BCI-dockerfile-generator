@@ -102,7 +102,7 @@ class Sles15Image(OsContainer):
         tags: list[str] = []
         if self.os_version.is_sle15:
             tags.extend(
-                ("suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.version_label}")
+                ("suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.image_ref_name}")
             )
         tags += super().build_tags
         return tags
