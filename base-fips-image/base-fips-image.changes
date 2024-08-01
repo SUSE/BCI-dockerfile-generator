@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update SLSA badge to v1.0 in README.md
+
+-------------------------------------------------------------------
 Thu Jul 18 15:28:40 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP6 FIPS-140-3 BCI

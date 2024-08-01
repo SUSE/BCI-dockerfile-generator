@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update SLSA badge to v1.0 in README.md
+
+-------------------------------------------------------------------
 Thu Jul 25 10:50:08 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add eol date
