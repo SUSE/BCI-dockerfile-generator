@@ -43,6 +43,7 @@ KIWI_CONTAINERS = [
             "netcat-openbsd",
             "python3-devel",
             "python3-kiwi",
+            "python3-kiwi_stackbuild_plugin",
             "python3-pip",
             "tack",
             "timezone",
