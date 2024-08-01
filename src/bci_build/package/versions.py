@@ -67,17 +67,16 @@ results in:
 
 """
 
-import asyncio
 import json
 from pathlib import Path
 from typing import Literal
 from typing import NoReturn
 from typing import TypedDict
 from typing import overload
+from xml.etree import ElementTree as ET
 
+import requests
 from packaging import version
-from py_obs.osc import Osc
-from py_obs.project import fetch_package_info
 
 from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
@@ -170,23 +169,33 @@ def format_version(ver: str, format: ParseVersion) -> str:
             raise ValueError(f"Invalid version format: {format}")
 
 
-async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
+def fetch_package_version(prj: str, pkg: str) -> str:
+    """Fetch the package information for the given package and project."""
+
+    resp = requests.get(
+        f"https://api.opensuse.org/public/source/{prj}/{pkg}",
+        params={"view": "info", "parse": 1},
+    )
+    resp.raise_for_status()
+    resp_xml = ET.fromstring(resp.content)
+    return resp_xml.find("version").text
+
+
+def update_versions() -> dict[str, dict[str, str]]:
     """Fetch all package versions from the build service and return the
     result. This function fetches all versions for every package and every code
     stream defined in :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS`.
 
     """
-    tasks = []
     new_versions: dict[str, dict[str, str]] = {}
 
-    async def _fetch_version(
+    def _fetch_version(
         pkg: str, os_version: OsVersion, version_format: ParseVersion
     ) -> None:
-        version = (
-            await fetch_package_info(osc, prj=_OBS_PROJECTS[os_version], pkg=pkg)
-        ).version
-
-        new_versions[pkg][str(os_version)] = format_version(version, version_format)
+        new_versions[pkg][str(os_version)] = format_version(
+            fetch_package_version(prj=_OBS_PROJECTS[os_version], pkg=pkg),
+            version_format,
+        )
 
     for pkg, versions in _PACKAGE_VERSIONS.items():
         new_versions[pkg] = {}
@@ -194,14 +203,10 @@ async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
         constraint = versions.get(_VERS_FMT_KEY, ParseVersion.PATCH)
         for os_version in versions.keys():
             if os_version != _VERS_FMT_KEY:
-                tasks.append(
-                    _fetch_version(pkg, OsVersion.parse(os_version), constraint)
-                )
+                _fetch_version(pkg, OsVersion.parse(os_version), constraint)
 
         if _VERS_FMT_KEY in versions:
             new_versions[pkg][_VERS_FMT_KEY] = constraint
-
-    await asyncio.gather(*tasks)
 
     return new_versions
 
@@ -209,19 +214,7 @@ async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
 def run_version_update() -> None:
     """Fetch the new package versions via :py:func:`update_versions` and write
     the result to the package versions json file.
-
-    This function reads in your OBS credentials from the mandatory environment
-    variables ``OSC_USER`` and ``OSC_PASSWORD``.
-
     """
-    osc = Osc.from_env()
-
-    loop = asyncio.get_event_loop()
-
-    try:
-        new_versions = loop.run_until_complete(update_versions(osc))
-    finally:
-        loop.run_until_complete(osc.teardown())
-
+    new_versions = update_versions()
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as versions_json:
         json.dump(new_versions, versions_json, indent=4, sort_keys=True)
