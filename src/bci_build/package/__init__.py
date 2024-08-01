@@ -998,10 +998,19 @@ exit 0
 
     @property
     @abc.abstractmethod
+    def image_ref_name(self) -> str:
+        """The immutable reference for this target under which this image can be pulled. It is used
+        to set the ``org.opencontainers.image.ref.name`` OCI annotation and defaults to
+        ``{self.build_tags[0]}``.
+        """
+        pass
+
+    @property
+    @abc.abstractmethod
     def reference(self) -> str:
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
-        ``{self.registry}/{self.build_tags[0]}``.
+        ``{self.registry}/{self.image_ref_name}``.
 
         """
         pass
@@ -1394,10 +1403,13 @@ class DevelopmentContainer(BaseContainerImage):
         return tags
 
     @property
+    def image_ref_name(self) -> str:
+        return f"{self.version_label}-{self._release_suffix}"
+
+    @property
     def reference(self) -> str:
         return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}"
-            + f":{self.version_label}-{self._release_suffix}"
+            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.image_ref_name}"
         )
 
     @property
@@ -1491,8 +1503,12 @@ class OsContainer(BaseContainerImage):
         return tags
 
     @property
+    def image_ref_name(self) -> str:
+        return self.version_label
+
+    @property
     def reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.version_label}"
+        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.image_ref_name}"
 
     @property
     def pretty_reference(self) -> str:
