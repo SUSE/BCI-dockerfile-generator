@@ -442,8 +442,8 @@ class BaseContainerImage(abc.ABC):
     #: See also :py:class:`~Replacement`
     replacements_via_service: list[Replacement] = field(default_factory=list)
 
-    #: Additional labels that should be added to the image. These are added into
-    #: the ``PREFIXEDLABEL`` section.
+    #: Additional labels that should be added to the image. These are added as labels
+    #  within the "labelprefix" section.
     extra_labels: dict[str, str] = field(default_factory=dict)
 
     #: Packages to be installed inside the container image
