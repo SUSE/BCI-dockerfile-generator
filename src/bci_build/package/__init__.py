@@ -474,7 +474,7 @@ class BaseContainerImage(abc.ABC):
     #: for bash and not for a different shell.
     config_sh_interpreter: str = "/bin/bash"
 
-    #: The maintainer of this image, defaults to SUSE/openSUSE
+    #: The oci image author annoation for this image, defaults to SUSE/openSUSE
     maintainer: str | None = None
 
     #: Additional files that belong into this container-package.
