@@ -293,8 +293,8 @@ KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
     if os_version == OsVersion.SLE16_0:
-        prefix = "basalt"
-        pretty_prefix = prefix.upper()
+        prefix = "sle16"
+        pretty_prefix = "SLE 16"
     else:
         prefix = "sle15"
         pretty_prefix = "SLE 15"
