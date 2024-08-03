@@ -20,6 +20,7 @@ jobs:
         os_version:
           - 6
           - 5
+          - "16.0"
           - Tumbleweed
 
     steps:
