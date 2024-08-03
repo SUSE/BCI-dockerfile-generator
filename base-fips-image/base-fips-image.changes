@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Aug  3 08:57:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
 Thu Jul 18 15:28:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP5 FIPS-140-3 BCI

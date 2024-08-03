@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Aug  3 08:57:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
 Tue Jul 16 10:31:06 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Move devtools into openjdk base image

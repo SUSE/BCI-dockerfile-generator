@@ -20,10 +20,9 @@
 #!BuildVersion: 15.5.17
 FROM bci/openjdk:17
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.openjdk.devel
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI OpenJDK 17 development"
 LABEL org.opencontainers.image.description="OpenJDK 17 development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="17"

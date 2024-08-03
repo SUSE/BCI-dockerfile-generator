@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Aug  3 08:57:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
 Tue Jul 16 15:20:31 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Re-render templates (no functional change)
