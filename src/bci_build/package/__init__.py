@@ -149,9 +149,8 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        match self.value:
-            case OsVersion.SLE16_0.value | OsVersion.TUMBLEWEED.value:
-                return self.value
+        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLE16_0.value):
+            return self.value
         return f"SP{self.value}"
 
     @property
