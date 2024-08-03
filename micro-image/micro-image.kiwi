@@ -28,10 +28,10 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="bci/bci-micro"
           tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%"
-          maintainer="SUSE LLC (https://www.suse.com/)">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.micro">
+            <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
             <label name="org.opencontainers.image.title" value="SLE BCI 15 SP5 Micro"/>
             <label name="org.opencontainers.image.description" value="A micro environment for containers based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>

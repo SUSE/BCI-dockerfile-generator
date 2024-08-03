@@ -20,10 +20,9 @@
 #!BuildVersion: 15.5.11
 FROM bci/bci-base:15.5
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.openjdk
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI OpenJDK 11 runtime"
 LABEL org.opencontainers.image.description="OpenJDK 11 runtime container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="11"
