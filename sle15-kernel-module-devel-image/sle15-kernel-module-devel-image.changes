@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Aug  3 08:57:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
 Wed Jul  3 06:23:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Add supported until date
