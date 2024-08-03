@@ -1400,7 +1400,7 @@ updates:
             for commit in commits:
                 package_names.extend(self._get_changed_packages_by_commit(commit))
 
-            package_names = list(set(package_names))
+            package_names = sorted(set(package_names))
 
         if not package_names:
             raise ValueError(
