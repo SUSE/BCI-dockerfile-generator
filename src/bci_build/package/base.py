@@ -139,21 +139,33 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         },
         "package_list": [
             Package(name=pkg_name, pkg_type=PackageType.IMAGE)
-            for pkg_name in (
-                "bash",
-                "ca-certificates-mozilla",
-                "container-suseconnect",
-                "coreutils",
-                "curl",
-                "gzip",
-                "netcfg",
-                "skelcd-EULA-bci",
-                "sle-module-basesystem-release",
-                "sle-module-server-applications-release",
-                "sle-module-python3-release",
-                "suse-build-key",
-                "tar",
-                "timezone",
+            for pkg_name in sorted(
+                [
+                    "bash",
+                    "ca-certificates-mozilla",
+                    "container-suseconnect",
+                    "coreutils",
+                    "curl",
+                    "gzip",
+                    "netcfg",
+                    "tar",
+                    "timezone",
+                ]
+                + (
+                    [
+                        "sle-module-basesystem-release",
+                        "sle-module-server-applications-release",
+                        "sle-module-python3-release",
+                        "skelcd-EULA-bci",
+                    ]
+                    if os_version.is_sle15
+                    else []
+                )
+                + (
+                    ["openSUSE-build-key"]
+                    if os_version.is_tumbleweed
+                    else ["suse-build-key"]
+                )
             )
         ]
         + [
@@ -164,18 +176,21 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "cracklib-dict-small",
                     "filesystem",
                     "jdupes",
-                    "kubic-locale-archive",
                     "patterns-base-fips",
-                    "rpm-ndb",
                     "shadow",
-                    "sles-release",
                     "zypper",
                 ]
+                + (
+                    ["kubic-locale-archive", "rpm-ndb"]
+                    if os_version.is_sle15
+                    else ["glibc-locale-base"]
+                )
                 + (
                     ["patterns-base-minimal_base"]
                     if os_version not in (OsVersion.SP5,)
                     else []
                 )
+                + [*os_version.release_package_names]
             )
         ],
         "config_sh_script": _get_base_config_sh_script(os_version),
@@ -186,4 +201,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 # TODO merge in tumbleweed changes and switch to ALL_BASE_OS_VERSIONS
 BASE_CONTAINERS = [
     Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6,)
+] + [
+    OsContainer(**_get_base_kwargs(os_version=os_ver))
+    for os_ver in (OsVersion.SLE16_0,)
 ]

@@ -56,6 +56,7 @@ POSTFIX_CONTAINERS = [
                 "cyrus-sasl",
                 "cyrus-sasl-plain",
                 "ed",
+                "gawk",
                 "netcfg",
                 "postfix",
                 "postfix-ldap",
@@ -69,7 +70,7 @@ POSTFIX_CONTAINERS = [
                     "spamass-milter",
                 )
                 if os_version == OsVersion.TUMBLEWEED
-                else ("gawk",)
+                else ()
             )
         ],
         entrypoint=["/entrypoint/entrypoint.sh"],
@@ -87,5 +88,5 @@ HEALTHCHECK --interval=5s --timeout=10s --start-period=30s --retries=3 \
         CMD postfix status
 """,
     )
-    for os_version in set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SLE16_0}
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]

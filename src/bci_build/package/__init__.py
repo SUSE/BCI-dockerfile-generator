@@ -240,7 +240,7 @@ class OsVersion(enum.Enum):
         if self.value == OsVersion.TUMBLEWEED.value:
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
         if self.value == OsVersion.SLE16_0.value:
-            return ("ALP-dummy-release",)
+            return ("SLES-release",)
         if self.is_ltss:
             return ("sles-ltss-release",)
         # if self.is_slcc:
@@ -800,7 +800,7 @@ exit 0
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
         if self.os_version == OsVersion.SLE16_0:
-            return f"{_build_tag_prefix(self.os_version)}/bci-base:latest"
+            return f"{_build_tag_prefix(self.os_version)}/bci-base:{self.os_version}"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
         if self.image_type == ImageType.APPLICATION:
