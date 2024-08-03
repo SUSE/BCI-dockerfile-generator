@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Aug  3 08:56:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
 Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update SLSA badge to v1.0 in README.md

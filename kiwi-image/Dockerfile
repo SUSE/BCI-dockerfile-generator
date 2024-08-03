@@ -25,10 +25,9 @@
 #!BuildVersion: 15.6.9.24.43
 FROM bci/bci-base:15.6
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.kiwi
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI KIWI Appliance Builder (kiwi)"
 LABEL org.opencontainers.image.description="KIWI Appliance Builder (kiwi) container based on the SLE Base Container Image. This container is only supported in privileged mode."
 LABEL org.opencontainers.image.version="9.24.43"

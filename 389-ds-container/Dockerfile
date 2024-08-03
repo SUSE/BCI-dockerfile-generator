@@ -22,10 +22,9 @@
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
-MAINTAINER william.brown@suse.com
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.389-ds
+LABEL org.opencontainers.image.authors="william.brown@suse.com"
 LABEL org.opencontainers.image.title="SLE 389 Directory Server"
 LABEL org.opencontainers.image.description="389 Directory Server container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%389ds_version%%"

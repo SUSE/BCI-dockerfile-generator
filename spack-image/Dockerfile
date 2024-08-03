@@ -23,10 +23,9 @@
 #!BuildVersion: 15.6.0.21
 FROM bci/bci-base:15.6
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.spack
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Spack development"
 LABEL org.opencontainers.image.description="Spack development container for building containerized HPC solution stacks, based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="0.21"

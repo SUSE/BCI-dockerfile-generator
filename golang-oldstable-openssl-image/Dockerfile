@@ -23,10 +23,9 @@
 #!BuildRelease: 33
 FROM bci/bci-base:15.6
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Go 1.20-openssl development"
 LABEL org.opencontainers.image.description="Go 1.20-openssl development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="1.20-openssl"
