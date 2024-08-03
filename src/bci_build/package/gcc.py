@@ -28,9 +28,9 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
         return True
     if os_version.is_sle15 and gcc_version == 13:
         return True
-    # if os_version in (OsVersion.SLCC_DEVELOPMENT, OsVersion.SLCC_PRODUCTION):
-    #     assert gcc_version == 13
-    #     return True
+    if os_version.is_slfo:
+        assert gcc_version == 13
+        return True
     return False
 
 
@@ -39,9 +39,9 @@ def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
         return True
     if os_version.is_sle15 and gcc_version == 7:
         return True
-    # if os_version in (OsVersion.SLCC_DEVELOPMENT, OsVersion.SLCC_PRODUCTION):
-    #     assert gcc_version == 13
-    #     return True
+    if os_version.is_slfo:
+        assert gcc_version == 13
+        return True
     return False
 
 
@@ -98,8 +98,8 @@ GCC_CONTAINERS = [
     for (gcc_version, os_version) in (
         (7, OsVersion.SP6),
         (13, OsVersion.SP6),
-        # (13, OsVersion.SLCC_DEVELOPMENT),
-        # (13, OsVersion.SLCC_PRODUCTION),
+        (13, OsVersion.SLCC_FREE),
+        (13, OsVersion.SLCC_PAID),
         (12, OsVersion.TUMBLEWEED),
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
