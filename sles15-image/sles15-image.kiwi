@@ -30,10 +30,10 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="suse/sle15"
           tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%"
-          maintainer="SUSE LLC (https://www.suse.com/)">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.base">
+            <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
             <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Base"/>
             <label name="org.opencontainers.image.description" value="Image for containers based on %OS_PRETTY_NAME%."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>

@@ -23,10 +23,9 @@
 #!BuildRelease: 32
 FROM bci/bci-base:15.6
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.runtime
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 6.0"
 LABEL org.opencontainers.image.description="The .NET Runtime 6.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 LABEL org.opencontainers.image.version="6.0"

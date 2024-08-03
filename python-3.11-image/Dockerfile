@@ -23,10 +23,9 @@
 #!BuildRelease: 41
 FROM bci/bci-base:15.6
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.python
+LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Python 3.11 development"
 LABEL org.opencontainers.image.description="Python 3.11 development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="3.11"
