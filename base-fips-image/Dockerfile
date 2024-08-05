@@ -38,6 +38,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
 
