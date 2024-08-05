@@ -26,10 +26,7 @@ The package versions are available via the function :py:func:`get_pkg_version`.
 
 The json file is updated via the function :py:func:`run_version_update`. It can
 also be called directly via :command:`poetry run update-versions` and is also
-run in the CI via :file:`.github/workflows/update-versions.yml`. Note that
-:py:func:`run_version_update` reads your OBS credentials from the environment
-variables ``OSC_USER`` and ``OSC_PASSWORD``. The function fails if one of them
-is not present.
+run in the CI via :file:`.github/workflows/update-versions.yml`.
 
 To add a new package to the versions json, add it's package name and all code
 streams with a dummy version, e.g.:
@@ -210,18 +207,12 @@ def run_version_update() -> None:
     """Fetch the new package versions via :py:func:`update_versions` and write
     the result to the package versions json file.
 
-    This function reads in your OBS credentials from the mandatory environment
-    variables ``OSC_USER`` and ``OSC_PASSWORD``.
-
     """
-    osc = Osc.from_env()
+    osc = Osc(public=True)
 
     loop = asyncio.get_event_loop()
 
-    try:
-        new_versions = loop.run_until_complete(update_versions(osc))
-    finally:
-        loop.run_until_complete(osc.teardown())
+    new_versions = loop.run_until_complete(update_versions(osc))
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as versions_json:
         json.dump(new_versions, versions_json, indent=4, sort_keys=True)

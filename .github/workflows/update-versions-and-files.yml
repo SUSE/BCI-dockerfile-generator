@@ -24,9 +24,6 @@ jobs:
 
       - name: run version update
         run: poetry run update-versions
-        env:
-          OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
 
       # update package versions first so that update-files.sh fetches the files
       # based on the new versions
