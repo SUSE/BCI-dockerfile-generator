@@ -39,6 +39,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring lifecycle-data-sle-module-development-tools php8-readline; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

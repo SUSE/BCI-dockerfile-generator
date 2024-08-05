@@ -43,6 +43,7 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomcat.png"
 

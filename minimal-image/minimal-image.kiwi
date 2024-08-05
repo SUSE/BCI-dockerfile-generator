@@ -46,6 +46,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
           <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
         </labels>
