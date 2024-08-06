@@ -1152,10 +1152,7 @@ version per code stream in the git repository of the following form:</p>
 <p>The package versions are available via the function <a class="reference internal" href="#bci_build.package.versions.get_pkg_version" title="bci_build.package.versions.get_pkg_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_pkg_version()</span></code></a>.</p>
 <p>The json file is updated via the function <a class="reference internal" href="#bci_build.package.versions.run_version_update" title="bci_build.package.versions.run_version_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_version_update()</span></code></a>. It can
 also be called directly via <strong class="command">poetry run update-versions</strong> and is also
-run in the CI via <code class="file docutils literal notranslate"><span class="pre">.github/workflows/update-versions.yml</span></code>. Note that
-<a class="reference internal" href="#bci_build.package.versions.run_version_update" title="bci_build.package.versions.run_version_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_version_update()</span></code></a> reads your OBS credentials from the environment
-variables <code class="docutils literal notranslate"><span class="pre">OSC_USER</span></code> and <code class="docutils literal notranslate"><span class="pre">OSC_PASSWORD</span></code>. The function fails if one of them
-is not present.</p>
+run in the CI via <code class="file docutils literal notranslate"><span class="pre">.github/workflows/update-versions.yml</span></code>.</p>
 <p>To add a new package to the versions json, add it’s package name and all code
 streams with a dummy version, e.g.:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1216,8 +1213,6 @@ results in:</p>
 <span class="sig-prename descclassname"><span class="pre">bci_build.package.versions.</span></span><span class="sig-name descname"><span class="pre">run_version_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bci_build.package.versions.run_version_update" title="Link to this definition">¶</a></dt>
 <dd><p>Fetch the new package versions via <a class="reference internal" href="#bci_build.package.versions.update_versions" title="bci_build.package.versions.update_versions"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_versions()</span></code></a> and write
 the result to the package versions json file.</p>
-<p>This function reads in your OBS credentials from the mandatory environment
-variables <code class="docutils literal notranslate"><span class="pre">OSC_USER</span></code> and <code class="docutils literal notranslate"><span class="pre">OSC_PASSWORD</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1235,19 +1230,19 @@ stream defined in <code class="xref py py-const docutils literal notranslate"><s
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f3569ce1e20&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff75f211610&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f3569fb7dd0&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff75fb09730&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f3569540860&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7ff75f385df0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
