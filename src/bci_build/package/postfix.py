@@ -71,7 +71,7 @@ POSTFIX_CONTAINERS = [
                     "spamass-milter",
                 )
                 if os_version == OsVersion.TUMBLEWEED
-                else ()
+                else ("rsyslog", "gawk")
             )
         ],
         entrypoint=["/entrypoint/entrypoint.sh"],
