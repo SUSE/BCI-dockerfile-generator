@@ -16,26 +16,26 @@
 
 #!BuildTag: bci/rust:oldstable
 #!BuildTag: bci/rust:oldstable-2.%RELEASE%
-#!BuildTag: bci/rust:1.78
-#!BuildTag: bci/rust:1.78-2.%RELEASE%
+#!BuildTag: bci/rust:1.79
+#!BuildTag: bci/rust:1.79-2.%RELEASE%
 #!BuildName: bci-rust-oldstable
-#!BuildVersion: 15.6.1.78.2
+#!BuildVersion: 15.6.1.79.2
 FROM bci/bci-base:15.6
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.rust
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
-LABEL org.opencontainers.image.title="SLE BCI Rust 1.78"
-LABEL org.opencontainers.image.description="Rust 1.78 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="1.78"
+LABEL org.opencontainers.image.title="SLE BCI Rust 1.79"
+LABEL org.opencontainers.image.description="Rust 1.79 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="1.79"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.suse.com/bci/rust:1.78-2.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/rust:1.79-2.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2024-08-15"
+LABEL com.suse.supportlevel.until="2024-09-26"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
@@ -43,7 +43,7 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends rust1.78 cargo1.78 lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends rust1.79 cargo1.79 lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV RUST_VERSION="%%RUST_VERSION%%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV CC="/usr/local/bin/gcc"
