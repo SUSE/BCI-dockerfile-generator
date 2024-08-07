@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug  7 16:25:24 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rust 1.80 for stable, rust 1.79 for oldstable
+
+-------------------------------------------------------------------
 Mon Aug  5 11:38:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add OCI reference annotation
