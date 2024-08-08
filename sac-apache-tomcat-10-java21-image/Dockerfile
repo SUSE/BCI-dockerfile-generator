@@ -16,12 +16,12 @@
 #!ExclusiveArch: aarch64 x86_64
 #!BuildTag: containers/apache-tomcat:10-jre21
 #!BuildTag: containers/apache-tomcat:10-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21-%RELEASE%
+#!BuildTag: containers/apache-tomcat:10.1-jre21
+#!BuildTag: containers/apache-tomcat:10.1-jre21-%RELEASE%
+#!BuildTag: containers/apache-tomcat:10.1.25-jre21
+#!BuildTag: containers/apache-tomcat:10.1.25-jre21-%RELEASE%
 #!BuildName: containers-apache-tomcat-10-jre21
-#!BuildVersion: 15.6
+#!BuildVersion: 15.6.10.1.25
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
@@ -30,7 +30,7 @@ FROM suse/sle15:15.6
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="10-jre21"
+LABEL org.opencontainers.image.version="10.1.25"
 LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-tomcat"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
@@ -49,13 +49,15 @@ LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomc
 
 RUN set -euo pipefail; zypper -n in --no-recommends tomcat10 java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV TOMCAT_MAJOR="10"
-ENV TOMCAT_VERSION="%%tomcat_version%%"
+ENV TOMCAT_VERSION="10.1.25"
 ENV CATALINA_HOME="/usr/share/tomcat"
 ENV CATALINA_BASE="/usr/share/tomcat"
 ENV PATH="/usr/share/tomcat/bin:$PATH"
 
 CMD ["/usr/lib/tomcat/server", "start"]
 EXPOSE 8080
+# sanity check that the version from the tag is equal to the version of tomcat10 that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' tomcat10 | cut -d '.' -f -3)" = "10.1.25" ]
 RUN set -euo pipefail; mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat;
 RUN set -euo pipefail; \
     sed -i /etc/tomcat/logging.properties \
