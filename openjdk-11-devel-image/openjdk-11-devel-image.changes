@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  8 19:28:51 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add oci.image.ref.name
+
+-------------------------------------------------------------------
 Thu Aug  8 12:57:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove oci reference annotation again
