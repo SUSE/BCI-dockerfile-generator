@@ -65,7 +65,6 @@ LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL com.suse.release-stage="{{ image.release_stage }}"
 {%- endif %}
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="{{ image.readme_url }}"
 {%- if image.logo_url %}
 LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"
@@ -139,7 +138,6 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="{% if image.os_version.is_tumbleweed %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
           <label name="io.artifacthub.package.logo-url" value="{{ image.logo_url }}"/>{% endif %}
         </labels>
