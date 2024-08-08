@@ -40,6 +40,8 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_BCI_INIT_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_BCI_INIT_DIGEST%"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/pcp-image/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends pcp hostname procps shadow envsubst util-linux-systemd; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

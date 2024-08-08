@@ -37,6 +37,8 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_TUMBLEWEED_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_TUMBLEWEED_DIGEST%"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/rust-oldstable-image/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends rust1.79 cargo1.79; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

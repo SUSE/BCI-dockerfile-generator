@@ -37,6 +37,8 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_TUMBLEWEED_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_TUMBLEWEED_DIGEST%"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/postgres-13-image/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends postgresql13-server findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
