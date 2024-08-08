@@ -21,12 +21,12 @@ _MARIADB_GOSU = b"""#!/bin/bash
 u=$1
 shift
 
-if ! id -u $u > /dev/null 2>&1; then
+if ! id -u "$u" > /dev/null 2>&1; then
     echo "Invalid user: $u"
     exit 1
 fi
 
-setpriv --reuid=$u --regid=$u --clear-groups -- /bin/bash "$@"
+exec setpriv --reuid="$u" --regid="$u" --clear-groups -- "$@"
 """
 
 MARIADB_CONTAINERS = []
