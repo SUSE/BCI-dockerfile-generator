@@ -13,7 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
-#!ExclusiveArch: x86_64
+
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%.%RELEASE%
 #!BuildName: bci-bci-base-fips-%OS_VERSION_ID_SP%
