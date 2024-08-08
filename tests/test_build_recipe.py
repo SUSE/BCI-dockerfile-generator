@@ -45,7 +45,6 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -88,7 +87,6 @@ RUN emacs -Q --batch test.el
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -149,7 +147,6 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -189,7 +186,6 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -245,7 +241,6 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -286,7 +281,6 @@ USER emacs""",
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -347,7 +341,6 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"
 LABEL io.artifacthub.package.logo-url="https://suse.com/assets/emacs-logo.svg"
 LABEL emacs_version="28"
@@ -398,7 +391,6 @@ VOLUME /bin/ /usr/bin/""",
             <label name="emacs_version" value="28"/>
             <label name="GCC_version" value="15"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
           <label name="io.artifacthub.package.logo-url" value="https://suse.com/assets/emacs-logo.svg"/>
         </labels>
@@ -512,7 +504,6 @@ def test_build_recipe_templates(
             <label name="org.opensuse.release-stage" value="released"/>
             <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime#openSUSE_BCI"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.revision" value="%DISTURL%"/>
           <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
           <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
         </labels>
