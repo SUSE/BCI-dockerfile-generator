@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add oci.image.ref.name
+
+-------------------------------------------------------------------
 Thu Aug  8 16:49:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - build base-fips for all architectures
