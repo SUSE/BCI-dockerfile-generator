@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
 Thu Aug  8 08:17:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - fix PID 1 in mariadb container (patch from Daniel Black)
