@@ -14,12 +14,12 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
+#!BuildTag: opensuse/apache-tomcat:10.1.25-jre22
+#!BuildTag: opensuse/apache-tomcat:10.1.25-jre22-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:10.1-jre22
+#!BuildTag: opensuse/apache-tomcat:10.1-jre22-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:10-jre22
 #!BuildTag: opensuse/apache-tomcat:10-jre22-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-jre22
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-jre22-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre22
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre22-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:latest
 
 FROM opensuse/tumbleweed:latest
@@ -29,12 +29,12 @@ FROM opensuse/tumbleweed:latest
 LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="10-jre22"
+LABEL org.opencontainers.image.version="10.1.25"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10-jre22-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10.1.25-jre22-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
@@ -44,13 +44,15 @@ LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomc
 
 RUN set -euo pipefail; zypper -n in --no-recommends tomcat10 java-22-openjdk java-22-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV TOMCAT_MAJOR="10"
-ENV TOMCAT_VERSION="%%tomcat_version%%"
+ENV TOMCAT_VERSION="10.1.25"
 ENV CATALINA_HOME="/usr/share/tomcat"
 ENV CATALINA_BASE="/usr/share/tomcat"
 ENV PATH="/usr/share/tomcat/bin:$PATH"
 
 CMD ["/usr/libexec/tomcat/server", "start"]
 EXPOSE 8080
+# sanity check that the version from the tag is equal to the version of tomcat10 that we expect
+RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' tomcat10 | cut -d '.' -f -3)" = "10.1.25" ]
 RUN set -euo pipefail; mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat;
 RUN set -euo pipefail; \
     sed -i /etc/tomcat/logging.properties \

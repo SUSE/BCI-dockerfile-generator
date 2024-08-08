@@ -1,4 +1,4 @@
-# Tomcat 9-jre17 container image
+# Tomcat 9.0.91 container image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
 ## Description
@@ -22,7 +22,7 @@ To deploy an application, copy the `.war` file into
 `$CATALINA_BASE/webapps` (either during a container build or by bind-mounting
 the directory), and launch the container using the following command:
 ```ShellSession
-$ podman run -d --rm -p 8080:8080 registry.opensuse.org/opensuse/apache-tomcat:9-jre17
+$ podman run -d --rm -p 8080:8080 registry.opensuse.org/opensuse/apache-tomcat:9.0.91-jre17
 ```
 
 The deployed webapp is then accessible via `http://localhost:8080/$webapp_name`.
@@ -39,7 +39,7 @@ follows:
 ```ShellSession
 $ chmod 0777 /path/to/my/app
 $ podman run --rm -d -v /path/to/my/app:/usr/share/tomcat/webapps:z \
-      -p 8080:8080 registry.opensuse.org/opensuse/apache-tomcat:9-jre17
+      -p 8080:8080 registry.opensuse.org/opensuse/apache-tomcat:9.0.91-jre17
 ```
 
 
@@ -55,7 +55,7 @@ options to the container runtime using the `-e` flag:
 ```ShellSession
 $ podman run -it --rm \
       -e JAVA_OPTS="-Xmx1024m" -p 8080:8080 \
-      registry.opensuse.org/opensuse/apache-tomcat:9-jre17
+      registry.opensuse.org/opensuse/apache-tomcat:9.0.91-jre17
 ```
 
 The image ships with `CATALINA_HOME` set to `/usr/share/tomcat`
