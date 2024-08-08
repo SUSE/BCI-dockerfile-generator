@@ -68,12 +68,11 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(
-            package_name=f"{prefix}mariadb-image",
+            name=f"{prefix}mariadb",
+            version=mariadb_version,
             additional_names=additional_names,
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-            name=f"{prefix}mariadb",
-            version=mariadb_version,
             version_in_uid=False,
             pretty_name="MariaDB Server",
             replacements_via_service=[
@@ -135,11 +134,10 @@ COPY gosu /usr/local/bin/gosu
 
     MARIADB_CLIENT_CONTAINERS.append(
         ApplicationStackContainer(
-            package_name=f"{prefix}mariadb-client-image",
+            name=f"{prefix}mariadb-client",
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             version_in_uid=False,
-            name=f"{prefix}mariadb-client",
             additional_names=[f"{name}-client" for name in additional_names],
             version=mariadb_version,
             pretty_name="MariaDB Client",

@@ -15,7 +15,6 @@ _RMT_ENTRYPOINT = (Path(__file__).parent / "rmt-server" / "entrypoint.sh").read_
 RMT_CONTAINERS = [
     ApplicationStackContainer(
         name="rmt-server",
-        package_name="rmt-server-image",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         is_singleton_image=True,

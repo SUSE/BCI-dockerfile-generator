@@ -35,9 +35,7 @@ for filename in (
 POSTFIX_CONTAINERS = [
     ApplicationCollectionContainer(
         name="postfix",
-        package_name="postfix-image"
-        if os_version.is_tumbleweed
-        else "sac-postfix-image",
+        package_name=None if os_version.is_tumbleweed else "sac-postfix-image",
         pretty_name="Postfix",
         custom_description="Postfix container is fast and secure mail server, {based_on_container}.",
         os_version=os_version,

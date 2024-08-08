@@ -376,15 +376,15 @@ class BaseContainerImage(abc.ABC):
     #: defines under which name this image is published.
     name: str
 
+    #: The SLE service pack to which this package belongs
+    os_version: OsVersion
+
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
 
-    #: The name of the package on OBS or IBS in ``devel:BCI:SLE-15-SP$ver`` (on
-    #: OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
-    package_name: str
-
-    #: The SLE service pack to which this package belongs
-    os_version: OsVersion
+    #: Optional a package_name, used for creating the package name on OBS or IBS in
+    # ``devel:BCI:SLE-15-SP$ver`` (on  OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
+    package_name: str | None = None
 
     #: Epoch to use for handling os_version downgrades
     os_epoch: int | None = None
@@ -532,6 +532,8 @@ class BaseContainerImage(abc.ABC):
     def __post_init__(self) -> None:
         self.pretty_name = self.pretty_name.strip()
 
+        if not self.package_name:
+            self.package_name = f"{self.name}-image"
         if not self.package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
         if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
