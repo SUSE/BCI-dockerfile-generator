@@ -42,7 +42,6 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.revision="%DISTURL%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN set -euo pipefail; zypper -n in --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

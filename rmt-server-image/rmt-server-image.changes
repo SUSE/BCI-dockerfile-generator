@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
+Thu Aug  8 12:32:18 UTC 2024 - Natnael Getahun <natnael.getahun@suse.com>
+
+- update rmt.conf to store airgap state in a separate config var.
+
+-------------------------------------------------------------------
 Mon Aug  5 11:38:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add OCI reference annotation

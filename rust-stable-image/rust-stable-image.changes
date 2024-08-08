@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
 Wed Aug  7 16:25:24 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - rust 1.80 for stable, rust 1.79 for oldstable
