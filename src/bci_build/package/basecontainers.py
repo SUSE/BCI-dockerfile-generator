@@ -166,7 +166,7 @@ FIPS_BASE_CONTAINERS = [
     OsContainer(
         name="base-fips",
         package_name="base-fips-image",
-        exclusive_arch=[Arch.X86_64],
+        exclusive_arch=[Arch.X86_64] if os_version.is_ltss else None,
         os_version=os_version,
         build_recipe_type=BuildType.DOCKER,
         support_level=SupportLevel.L3,
