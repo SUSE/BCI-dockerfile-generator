@@ -34,6 +34,7 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="%%blackbox_exporter_patch_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/blackbox_exporter:%%blackbox_exporter_patch_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"

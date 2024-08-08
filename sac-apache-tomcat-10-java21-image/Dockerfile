@@ -35,6 +35,7 @@ LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="10-jre21-%RELEASE%"
 LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:10-jre21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
