@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  8 16:49:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- build base-fips for all architectures
+
+-------------------------------------------------------------------
 Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove oci reference annotation again
