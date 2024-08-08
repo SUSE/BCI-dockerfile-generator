@@ -37,6 +37,7 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="27-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:27-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -79,6 +80,7 @@ RUN emacs -Q --batch test.el
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
+            <label name="org.opencontainers.image.ref.name" value="27-%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:27-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
@@ -140,6 +142,7 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="%%emacs_ver%%-1.%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -179,6 +182,7 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
+            <label name="org.opencontainers.image.ref.name" value="%%emacs_ver%%-1.%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
@@ -234,6 +238,7 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="29-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/test:29-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
@@ -274,6 +279,7 @@ USER emacs""",
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
+            <label name="org.opencontainers.image.ref.name" value="29-%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/test:29-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
@@ -336,6 +342,7 @@ LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="28.2-%RELEASE%"
 LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
@@ -384,6 +391,7 @@ VOLUME /bin/ /usr/bin/""",
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.opensuse.org"/>
+            <label name="org.opencontainers.image.ref.name" value="28.2-%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/test:28.2-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="org.opensuse.release-stage" value="released"/>
@@ -499,6 +507,7 @@ def test_build_recipe_templates(
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.opensuse.org"/>
+            <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="org.opensuse.release-stage" value="released"/>
