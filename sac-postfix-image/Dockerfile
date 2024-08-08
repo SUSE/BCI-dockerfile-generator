@@ -31,6 +31,7 @@ LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/postfix
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="%%postfix_version%%-%RELEASE%"
 LABEL org.opensuse.reference="dp.apps.rancher.io/containers/postfix:%%postfix_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
