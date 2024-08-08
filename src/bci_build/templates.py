@@ -66,6 +66,10 @@ LABEL com.suse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL com.suse.release-stage="{{ image.release_stage }}"
 {%- endif %}
 # endlabelprefix
+{%- if image.from_image_substitution_prefix %}
+LABEL org.opencontainers.image.base.name="{{ image.from_image_substitution_prefix }}_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="{{ image.from_image_substitution_prefix }}_DIGEST%"
+{%- endif %}
 LABEL io.artifacthub.package.readme-url="{{ image.readme_url }}"
 {%- if image.logo_url %}
 LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"
@@ -140,6 +144,10 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="{% if image.os_version.is_tumbleweed %}org.opensuse{% else %}com.suse{% endif %}.lifecycle-url" value="{{ image.lifecycle_url }}"/>
 {{- image.extra_label_xml_lines }}
           </suse_label_helper:add_prefix>
+{%- if image.from_image_substitution_prefix %}
+          <label name="org.opencontainers.image.base.name" value="{{ image.from_image_substitution_prefix }}_REFERENCE%"/>
+          <label name="org.opencontainers.image.base.digest" value="{{ image.from_image_substitution_prefix }}_DIGEST%"/>
+{%- endif %}
           <label name="io.artifacthub.package.readme-url" value="{{ image.readme_url }}"/>{% if image.logo_url %}
           <label name="io.artifacthub.package.logo-url" value="{{ image.logo_url }}"/>{% endif %}
         </labels>
