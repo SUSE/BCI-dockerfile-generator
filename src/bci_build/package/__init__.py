@@ -841,6 +841,15 @@ exit 0
         )
 
     @property
+    def is_base_container_annotation_available(self) -> bool:
+        """return True if the obs-service-kiwi_metainfo_helper can provide base.name/digest annotations."""
+        return bool(
+            self._from_image
+            and not self.os_version.is_tumbleweed
+            and not self.os_version.is_slfo  # waiting for ibs#345975
+        )
+
+    @property
     def dockerfile_from_line(self) -> str:
         if self._from_image is None:
             return ""
