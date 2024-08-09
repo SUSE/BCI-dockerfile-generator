@@ -5,14 +5,34 @@
 <     fi
 < }
 < 
+367c361
+<     pid=$(/bin/pidof "$base")
+---
+>     pid=$(/usr/bin/ps -aux | /usr/bin/grep "$base" | /usr/bin/grep -v grep | /usr/bin/awk '{print $2}' | /usr/bin/tr '\n' ' ')
 383,386d376
 < stop_spamassassin() {
 <     terminate /usr/sbin/spamass-milter
 < }
 < 
+392c382
+<     (   while ! pidof qmgr > /dev/null 2>&1 ; do
+---
+>     (   while ! (ps -aux | grep qmgr | grep -v grep | awk '{print $2}' | tr '\n' ' ') > /dev/null 2>&1; do
+395,397c385,387
+< 	done
+< 	exec postfix flush
+<     ) > /dev/null 2>&1 &
+---
+>         done
+>         exec postfix flush
+>     ) > /dev/null 2>&1 & 
+400c390
+<     terminate /usr/sbin/syslogd
+---
+>     terminate /usr/sbin/rsyslogd
 405d394
 <     stop_spamassassin
-411,418c400
+411,417c400,405
 <     /usr/sbin/syslogd -n -S -O - &
 <     if [ -n "${SPAMASSASSIN_HOST}" ]; then
 < 	mkdir /run/spamass-milter
@@ -20,10 +40,14 @@
 < 	chmod 751 /run/spamass-milter
 < 	su sa-milter -s /bin/sh -c "/usr/sbin/spamass-milter -p /run/spamass-milter/socket -g postfix -f -- -d ${SPAMASSASSIN_HOST}"
 <     fi
-<     "$@"
 ---
->     /usr/sbin/syslogd -n -S -O - "$@"
-437d418
+>     echo '# rsyslog configuration file to log to stdout
+>     module(load="imuxsock")  # provides support for local system logging (e.g. via logger command)
+> 
+>     *.*                         action(type="omfile" file="/var/log/rsyslog.log")' > /entrypoint/rsyslog-stdout.conf
+>     /usr/sbin/rsyslogd -f /entrypoint/rsyslog-stdout.conf -i /var/run/rsyslogd-stdout.pid
+> 
+437d424
 < setup_spamassassin
-445a427
+445a433
 >     echo "[info] refer to postfix manual pages at https://www.postfix.org/postfix-manuals.html"
