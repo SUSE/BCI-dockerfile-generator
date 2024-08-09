@@ -1,0 +1,41 @@
+---
+name: Check the changelogs
+
+on:
+  pull_request:
+
+jobs:
+  changelog-check:
+    name: changelog check
+    runs-on: ubuntu-22.04
+    container: ghcr.io/dcermak/bci-ci:latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: install python dependencies
+        run: poetry install
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
+
+      - name: fetch all branches
+        run: git fetch
+
+      - name: check the changelog
+        run: |
+          poetry run scratch-build-bot \
+              --os-version 16.0 -vvvv \
+              changelog_check \
+                  --base-ref origin/${{ github.base_ref }} \
+                  --head-ref ${{ github.event.pull_request.head.sha }}
+        env:
+          OSC_USER: "irrelevant"
