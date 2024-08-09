@@ -41,7 +41,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
-RUN set -euo pipefail; zypper -n in --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed netcfg postfix postfix-ldap postfix-lmdb timezone; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed netcfg postfix postfix-ldap postfix-lmdb timezone rsyslog gawk; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/entrypoint/entrypoint.sh"]
 CMD ["postfix", "start"]
 EXPOSE 25 465 587
