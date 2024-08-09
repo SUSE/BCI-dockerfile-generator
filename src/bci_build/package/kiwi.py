@@ -12,7 +12,6 @@ from bci_build.package.versions import get_pkg_version
 KIWI_CONTAINERS = [
     DevelopmentContainer(
         name="kiwi",
-        package_name="kiwi-image",
         pretty_name="KIWI Appliance Builder (kiwi)",
         custom_description="{pretty_name} container {based_on_container}. {privileged_only}",
         os_version=os_version,

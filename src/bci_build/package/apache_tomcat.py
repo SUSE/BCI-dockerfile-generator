@@ -48,10 +48,10 @@ def _get_sac_supported_until(
 TOMCAT_CONTAINERS = [
     ApplicationCollectionContainer(
         name="apache-tomcat",
-        pretty_name="Apache Tomcat",
         package_name=f"apache-tomcat-{tomcat_major}-java-{jre_version}-image"
         if os_version.is_tumbleweed
         else f"sac-apache-tomcat-{tomcat_major}-java{jre_version}-image",
+        pretty_name="Apache Tomcat",
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)

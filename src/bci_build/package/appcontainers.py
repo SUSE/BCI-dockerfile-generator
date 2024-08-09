@@ -41,7 +41,6 @@ PCP_CONTAINERS = [
         name="pcp",
         pretty_name="Performance Co-Pilot (pcp)",
         custom_description="{pretty_name} container {based_on_container}. {podman_only}",
-        package_name="pcp-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -99,11 +98,11 @@ _389DS_FILES[_fname] = (Path(__file__).parent / "389-ds" / _fname).read_bytes()
 
 THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
+        name="389-ds",
         package_name="389-ds-container",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version_in_uid=False,
-        name="389-ds",
         support_level=SupportLevel.L3,
         maintainer="william.brown@suse.com",
         pretty_name="389 Directory Server",
@@ -148,10 +147,10 @@ _POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes(
 _POSTGRES_MAJOR_VERSIONS = [16, 15, 14] + [13, 12]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
+        name="postgres",
         package_name=f"postgres-{ver}-image",
         os_version=os_version,
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
-        name="postgres",
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
         package_list=[f"postgresql{ver}-server", "findutils"],
@@ -211,11 +210,10 @@ _PROMETHEUS_PACKAGE_NAME = "golang-github-prometheus-prometheus"
 _PROMETHEUS_PORT = 9090
 PROMETHEUS_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="prometheus-image",
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         name="prometheus",
         pretty_name="Prometheus",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         package_list=[_PROMETHEUS_PACKAGE_NAME, "curl"],
         version="%%prometheus_patch_version%%",
         additional_versions=[
@@ -243,10 +241,9 @@ _ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
 _ALERTMANAGER_PORT = 9093
 ALERTMANAGER_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="alertmanager-image",
+        name="alertmanager",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="alertmanager",
         pretty_name="Alertmanager",
         package_list=[_ALERTMANAGER_PACKAGE_NAME, "curl"],
         version="%%alertmanager_patch_version%%",
@@ -272,10 +269,9 @@ _BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
 _BLACKBOX_PORT = 9115
 BLACKBOX_EXPORTER_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="blackbox_exporter-image",
+        name="blackbox_exporter",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="blackbox_exporter",
         pretty_name="Blackbox Exporter",
         package_list=[_BLACKBOX_EXPORTER_PACKAGE_NAME, "curl"],
         version="%%blackbox_exporter_patch_version%%",
@@ -306,10 +302,9 @@ for filename in ("run.sh", "LICENSE"):
 _GRAFANA_PACKAGE_NAME = "grafana"
 GRAFANA_CONTAINERS = [
     ApplicationStackContainer(
-        package_name="grafana-image",
+        name="grafana",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        name="grafana",
         pretty_name="Grafana",
         license="Apache-2.0",
         package_list=[_GRAFANA_PACKAGE_NAME],
@@ -397,7 +392,6 @@ STOPSIGNAL SIGQUIT
 NGINX_CONTAINERS = [
     ApplicationStackContainer(
         name="rmt-nginx",
-        package_name="rmt-nginx-image",
         pretty_name="NGINX for SUSE RMT",
         **_get_nginx_kwargs(os_version),
     )
@@ -405,7 +399,6 @@ NGINX_CONTAINERS = [
 ] + [
     ApplicationStackContainer(
         name="nginx",
-        package_name="nginx-image",
         pretty_name="NGINX",
         custom_description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}.",
         **_get_nginx_kwargs(os_version),
@@ -418,7 +411,6 @@ GIT_CONTAINERS = [
         name="git",
         os_version=os_version,
         support_level=SupportLevel.L3,
-        package_name="git-image",
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
         custom_description="A micro environment with Git {based_on_container}.",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
@@ -453,8 +445,8 @@ GIT_CONTAINERS = [
 REGISTRY_CONTAINERS = [
     ApplicationStackContainer(
         name="registry",
-        pretty_name="OCI Container Registry (Distribution)",
         package_name="distribution-image",
+        pretty_name="OCI Container Registry (Distribution)",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -494,7 +486,6 @@ HELM_CONTAINERS = [
     ApplicationStackContainer(
         name="helm",
         pretty_name="Kubernetes Package Manager",
-        package_name="helm-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -521,7 +512,6 @@ TRIVY_CONTAINERS = [
     ApplicationStackContainer(
         name="trivy",
         pretty_name="Container Vulnerability Scanner",
-        package_name="trivy-image",
         from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,

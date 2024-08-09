@@ -29,7 +29,6 @@ MICRO_CONTAINERS = [
         os_version=os_version,
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        package_name="micro-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
@@ -69,7 +68,6 @@ INIT_CONTAINERS = [
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
-        package_name="init-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         custom_end=textwrap.dedent(
             f"""
@@ -165,7 +163,6 @@ def _get_supported_until_fips(os_version: OsVersion) -> datetime.date:
 FIPS_BASE_CONTAINERS = [
     OsContainer(
         name="base-fips",
-        package_name="base-fips-image",
         exclusive_arch=[Arch.X86_64] if os_version.is_ltss else None,
         os_version=os_version,
         build_recipe_type=BuildType.DOCKER,
@@ -233,7 +230,6 @@ MINIMAL_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        package_name="minimal-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
@@ -259,7 +255,6 @@ BUSYBOX_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
-        package_name="busybox-image",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
@@ -303,7 +298,6 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
         OsContainer(
             name=f"{prefix}-kernel-module-devel",
             pretty_name=f"{pretty_prefix} Kernel module development",
-            package_name=f"{prefix}-kernel-module-devel-image",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
@@ -331,7 +325,6 @@ OSC_CHECKOUT = (Path(__file__).parent / "gitea-runner" / "osc_checkout").read_by
 GITEA_RUNNER_CONTAINER = OsContainer(
     name="gitea-runner",
     pretty_name="Gitea action runner",
-    package_name="gitea-runner-image",
     os_version=OsVersion.TUMBLEWEED,
     is_latest=True,
     package_list=[
