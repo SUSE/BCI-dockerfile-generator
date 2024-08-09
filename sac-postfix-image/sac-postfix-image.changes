@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  9 07:32:48 UTC 2024 - Priyanka Saggu <priyanka.saggu@suse.com>
+
+- fix SLE entrypoint scripts
+
+-------------------------------------------------------------------
 Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add oci.image.ref.name
