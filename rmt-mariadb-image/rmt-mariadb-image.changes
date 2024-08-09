@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  9 08:05:46 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update entry point scripts from git
+
+-------------------------------------------------------------------
 Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add oci.image.ref.name
