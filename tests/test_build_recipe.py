@@ -46,6 +46,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_SLE15_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_SLE15_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -89,6 +91,8 @@ RUN emacs -Q --batch test.el
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_SLE15_REFERENCE%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_SLE15_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -150,6 +154,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_SLE15_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_SLE15_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -190,6 +196,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_SLE15_REFERENCE%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_SLE15_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -246,6 +254,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_SLE15_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_SLE15_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
@@ -287,6 +297,8 @@ USER emacs""",
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_SLE15_REFERENCE%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_SLE15_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -348,6 +360,8 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_BASE_REFERENCE%"
+LABEL org.opencontainers.image.base.digest="%BASE_BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"
 LABEL io.artifacthub.package.logo-url="https://suse.com/assets/emacs-logo.svg"
 LABEL emacs_version="28"
@@ -399,6 +413,8 @@ VOLUME /bin/ /usr/bin/""",
             <label name="emacs_version" value="28"/>
             <label name="GCC_version" value="15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_BASE_REFERENCE%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
           <label name="io.artifacthub.package.logo-url" value="https://suse.com/assets/emacs-logo.svg"/>
         </labels>

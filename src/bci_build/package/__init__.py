@@ -810,6 +810,23 @@ exit 0
         return f"FROM {self._from_image}"
 
     @property
+    def from_image_substitution_prefix(self) -> str | None:
+        """Return the variable naming prefix for the :py:attr:`BaseContainerImage._from_image,
+        expanded by `obs-service-kiwi_metainfo_helper`."""
+        if self._from_image is None:
+            return None
+
+        varname = (
+            self._from_image.rpartition("/")[2]
+            .partition(":")[0]
+            .upper()
+            .replace("-", "_")
+        )
+        if self.os_version.is_sle15 and "BCI_BASE" in varname:
+            varname = "SLE15"
+        return f"%BASE_{varname}"
+
+    @property
     def kiwi_derived_from_entry(self) -> str:
         if self._from_image is None:
             return ""
