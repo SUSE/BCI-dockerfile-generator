@@ -16,7 +16,6 @@ from bci_build.package.versions import get_pkg_version
 SPACK_CONTAINERS = [
     DevelopmentContainer(
         name="spack",
-        package_name="spack-image",
         pretty_name="Spack development",
         custom_description="{pretty_name} container for building containerized HPC solution stacks, {based_on_container}.",
         os_version=os_version,
