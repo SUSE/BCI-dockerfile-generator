@@ -28,7 +28,7 @@ FROM opensuse/tumbleweed:latest
 LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="10-jre17"
+LABEL org.opencontainers.image.version="%%tomcat_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
