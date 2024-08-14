@@ -44,6 +44,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
 
 RUN set -euo pipefail; zypper -n in --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
