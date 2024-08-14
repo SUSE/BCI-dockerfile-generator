@@ -4,6 +4,11 @@ Wed Aug 14 12:24:53 UTC 2024 - Dirk Müller <dmueller@suse.com>
 - switch to multistage build with micro
 
 -------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
 Wed Aug 14 11:58:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Fix oci.version to be the fully qualified tomcat version

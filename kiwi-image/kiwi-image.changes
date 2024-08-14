@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
 Wed Aug 14 12:19:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add usage warning
