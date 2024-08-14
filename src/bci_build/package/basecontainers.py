@@ -304,19 +304,21 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             os_version=os_version,
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-            package_list=[
-                "kernel-devel",
-                "kernel-syms",
-                "gcc",
-                "kmod",
-                "make",
-                "patch",
-                "gawk",
-                "rpm-build",
-                *os_version.release_package_names,
-            ]
-            # tar is not in bci-base in 15.4, but we need it to unpack tarballs
-            + (["tar"] if os_version == OsVersion.SP4 else []),
+            package_list=(
+                [
+                    "kernel-devel",
+                    "kernel-syms",
+                    "gcc",
+                    "kmod",
+                    "make",
+                    "patch",
+                    "gawk",
+                    "rpm-build",
+                    *os_version.release_package_names,
+                ]
+                # tar is not in bci-base in 15.4, but we need it to unpack tarballs
+                + (["tar"] if os_version == OsVersion.SP4 else [])
+            ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
