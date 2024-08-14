@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:19:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add usage warning
+
+-------------------------------------------------------------------
 Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add oci.image.ref.name
