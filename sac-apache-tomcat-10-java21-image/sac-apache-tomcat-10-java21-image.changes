@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 16:03:33 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- extend description
+
+-------------------------------------------------------------------
 Wed Aug 14 12:24:53 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - switch to multistage build with micro
