@@ -3,10 +3,6 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
-        source_package: base-fips-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: busybox-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
     - branch_package:
@@ -66,9 +62,6 @@ refresh_staging_project:
 
 refresh_devel_BCI:
   steps:
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP5
-        package: base-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: busybox-image
