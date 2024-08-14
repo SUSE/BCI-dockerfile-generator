@@ -50,6 +50,9 @@ KIWI_CONTAINERS = [
         ],
         custom_end=f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}",
         build_recipe_type=BuildType.DOCKER,
+        extra_labels={
+            "usage": "This container requires an openSUSE/SUSE host kernel for full functionality.",
+        },
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
