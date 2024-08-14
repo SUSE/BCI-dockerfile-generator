@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:26:55 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- switch to major version for main tag to have a stable buildname
+
+-------------------------------------------------------------------
 Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first
