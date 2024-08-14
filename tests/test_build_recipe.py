@@ -27,6 +27,8 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildVersion: 15.6.27
 FROM bci/bci-base:15.6
 
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -47,8 +49,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 COPY test.el .
 RUN emacs -Q --batch test.el
 """,
@@ -132,6 +132,8 @@ RUN emacs -Q --batch test.el
 #!BuildVersion: 15.5
 FROM bci/bci-base:15.5
 
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -151,8 +153,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -228,6 +228,8 @@ RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 #!BuildVersion: 15.6.29
 FROM bci/bci-base:15.6
 
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -247,8 +249,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 USER emacs""",
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -332,6 +332,8 @@ USER emacs""",
 
 FROM suse/base:18
 
+RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.test
 LABEL org.opencontainers.image.authors="invalid@suse.com"
@@ -352,8 +354,6 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 LABEL io.artifacthub.package.logo-url="https://suse.com/assets/emacs-logo.svg"
 LABEL emacs_version="28"
 LABEL GCC_version="15"
-
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
 ENV EMACS_VERSION="28"
 ENV GPP_path="/usr/bin/g++"
 

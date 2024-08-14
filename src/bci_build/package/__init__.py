@@ -389,13 +389,18 @@ class BaseContainerImage(abc.ABC):
     #: Epoch to use for handling os_version downgrades
     os_epoch: int | None = None
 
-    #: The container from which this one is derived. defaults to
-    #: ``suse/sle15:15.$SP`` (for SLE) or ``opensuse/tumbleweed:latest`` (for
-    #: Tumbleweed) when an empty string is used.
+    #: The container from which the build stage is running. On SLE15, this defaults to
+    #: ``suse/sle15:15.$SP`` for Application Containers and ``bci/bci-base:15.$SP``
+    #: for all other images. On openSUSE, ``opensuse/tumbleweed:latest`` is used
+    #: when an empty string is used.
     #:
     #: When from image is ``None``, then this image will not be based on
     #: **anything**, i.e. the ``FROM`` line is missing in the ``Dockerfile``.
     from_image: str | None = ""
+
+    #: The container that is used to install this image into. If this is not set, then
+    #: only a single stage build is produced, otherwise a multistage build
+    from_target_image: str | None = None
 
     #: Architectures of this image.
     #:
@@ -807,6 +812,13 @@ exit 0
     def dockerfile_from_line(self) -> str:
         if self._from_image is None:
             return ""
+
+        if self.from_target_image:
+            return (
+                f"FROM {self.from_target_image} AS target\n"
+                f"FROM {self._from_image} AS builder"
+            )
+
         return f"FROM {self._from_image}"
 
     @property
