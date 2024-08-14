@@ -292,6 +292,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
         prefix = "sle16"
         pretty_prefix = "SLE 16"
     else:
+        assert os_version.is_sle15
         prefix = "sle15"
         pretty_prefix = "SLE 15"
 
