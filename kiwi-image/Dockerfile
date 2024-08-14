@@ -14,12 +14,12 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: opensuse/bci/kiwi:10.0.27
-#!BuildTag: opensuse/bci/kiwi:10.0.27-%RELEASE%
-#!BuildTag: opensuse/bci/kiwi:10.0
-#!BuildTag: opensuse/bci/kiwi:10.0-%RELEASE%
 #!BuildTag: opensuse/bci/kiwi:10
 #!BuildTag: opensuse/bci/kiwi:10-%RELEASE%
+#!BuildTag: opensuse/bci/kiwi:10.0
+#!BuildTag: opensuse/bci/kiwi:10.0-%RELEASE%
+#!BuildTag: opensuse/bci/kiwi:10.0.27
+#!BuildTag: opensuse/bci/kiwi:10.0.27-%RELEASE%
 #!BuildTag: opensuse/bci/kiwi:latest
 
 FROM opensuse/tumbleweed:latest
@@ -34,8 +34,8 @@ LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10.0.27-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/kiwi:10.0.27-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/kiwi:10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
