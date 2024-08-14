@@ -22,6 +22,8 @@
 #!BuildRelease: 30
 FROM bci/bci-base:15.6
 
+RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring lifecycle-data-sle-module-development-tools php8-fpm; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.php-fpm
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -41,8 +43,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring lifecycle-data-sle-module-development-tools php8-fpm; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV PHP_VERSION="%%php_version%%"
 ENV PHP_INI_DIR="/etc/php8/"
 ENV PHPIZE_DEPS="php8-devel awk make findutils"

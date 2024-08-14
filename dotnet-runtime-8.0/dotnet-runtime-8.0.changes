@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
 Wed Aug 14 05:58:59 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - new upstream release 8.0.8

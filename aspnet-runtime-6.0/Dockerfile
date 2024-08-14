@@ -23,6 +23,8 @@
 #!BuildRelease: 32
 FROM bci/bci-base:15.6
 
+
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.aspnet
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -43,8 +45,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-
 
 
 RUN mkdir -p /tmp/

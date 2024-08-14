@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:26:55 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- switch to major version for main tag to have a stable buildname
+
+-------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
+Wed Aug 14 12:19:41 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add usage warning
+
+-------------------------------------------------------------------
 Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add oci.image.ref.name

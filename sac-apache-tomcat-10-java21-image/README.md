@@ -15,9 +15,8 @@ that comes with SUSE Linux Enterprise Server. The difference is that logging is
 sent to stdout, meaning that the `podman logs tomcat` command displays Tomcat
 logs.
 
-For security reasons, the image runs as the **tomcat** user. This means that
-additional packages cannot be installed via `zypper`, unless the user becomes
-`root`.
+For security reasons, the image runs as the **tomcat** user and is installed
+on a micro base container without a package manager.
 
 To deploy an application, copy the `.war` file into
 `$CATALINA_BASE/webapps` (either during a container build or by bind-mounting
@@ -62,14 +61,6 @@ $ podman run -it --rm \
 The image ships with `CATALINA_HOME` set to `/usr/share/tomcat`
 and `CATALINA_BASE` set to `/usr/share/tomcat`.
 
-
-## Samples
-
-By default, the sample applications shipped with Tomcat are not installed in
-the container image. Add them by installing one of the following
-packages:
-- tomcat10-webapps
-- tomcat10-admin-webapps
 
 ## Upgrading from Tomcat 9
 

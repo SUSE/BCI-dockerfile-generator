@@ -21,6 +21,8 @@
 #!BuildVersion: 15.6.21
 FROM bci/openjdk:21
 
+RUN set -euo pipefail; zypper -n in --no-recommends java-21-openjdk-devel maven; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.openjdk.devel
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -40,8 +42,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in --no-recommends java-21-openjdk-devel maven; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-21-openjdk-21/bin"
 ENV JAVA_HOME="/usr/lib64/jvm/java-21-openjdk-21"
 ENV JAVA_ROOT="/usr/lib64/jvm/java-21-openjdk-21"
