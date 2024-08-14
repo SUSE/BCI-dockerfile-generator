@@ -61,14 +61,6 @@ The image ships with `CATALINA_HOME` set to `{{ image.env['CATALINA_HOME'] }}`
 and `CATALINA_BASE` set to `{{ image.env['CATALINA_BASE'] }}`.
 
 
-## Samples
-
-By default, the sample applications shipped with Tomcat are not installed in
-the container image. Add them by installing one of the following
-packages:
-- {{ image.package_list[0] }}-webapps
-- {{ image.package_list[0] }}-admin-webapps
-
 {% if image.env['TOMCAT_MAJOR'] > 9 -%}
 ## Upgrading from Tomcat 9
 
