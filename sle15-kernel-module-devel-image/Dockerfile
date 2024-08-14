@@ -20,6 +20,8 @@
 #!BuildVersion: 15.5
 FROM bci/bci-base:15.5
 
+RUN set -euo pipefail; zypper -n in --no-recommends kernel-devel kernel-syms gcc kmod make patch gawk rpm-build sles-release; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.sle15-kernel-module-devel
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -41,5 +43,3 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-
-RUN set -euo pipefail; zypper -n in --no-recommends kernel-devel kernel-syms gcc kmod make patch gawk rpm-build sles-release; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

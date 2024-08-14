@@ -22,6 +22,8 @@
 #!BuildVersion: 15.5.15
 FROM suse/sle15:15.5
 
+RUN set -euo pipefail; zypper -n in --no-recommends postgresql15-server findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postgres
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -41,8 +43,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in --no-recommends postgresql15-server findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV LANG="en_US.utf8"
 ENV PG_MAJOR="15"
 ENV PG_VERSION="%%pg_version%%"

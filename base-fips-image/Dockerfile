@@ -20,6 +20,8 @@
 #!BuildVersion: 15.5
 FROM bci/bci-base:15.5
 
+RUN set -euo pipefail; zypper -n in --no-recommends sles-release crypto-policies-scripts; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.base-fips
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -41,8 +43,6 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
-
-RUN set -euo pipefail; zypper -n in --no-recommends sles-release crypto-policies-scripts; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
 
 ENV OPENSSL_FIPS=1
