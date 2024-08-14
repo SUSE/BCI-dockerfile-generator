@@ -19,10 +19,11 @@ KIWI_CONTAINERS = [
         # kiwi is not L3 supported
         # support_level=SupportLevel.L3,
         version=(kiwi_ver := get_pkg_version("python-kiwi", os_version)),
+        tag_version=format_version(kiwi_ver, ParseVersion.MAJOR),
         version_in_uid=False,
         additional_versions=[
             (kiwi_minor := format_version(kiwi_ver, ParseVersion.MINOR)),
-            format_version(kiwi_ver, ParseVersion.MAJOR),
+            format_version(kiwi_ver, ParseVersion.PATCH),
         ],
         license="GPL-3.0-or-later",
         package_list=[
