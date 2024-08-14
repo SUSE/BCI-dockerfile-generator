@@ -30,7 +30,7 @@ FROM suse/sle15:15.6
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="10-jre21"
+LABEL org.opencontainers.image.version="%%tomcat_version%%"
 LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-tomcat"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
