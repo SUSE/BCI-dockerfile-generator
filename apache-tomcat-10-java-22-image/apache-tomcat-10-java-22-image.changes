@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 14 12:33:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- switch to multistage build
+
+-------------------------------------------------------------------
 Wed Aug 14 12:30:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first
