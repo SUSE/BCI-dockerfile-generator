@@ -45,7 +45,7 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 LABEL org.opencontainers.image.authors="{{ image.maintainer }}"
 LABEL org.opencontainers.image.title="{{ image.title }}"
 LABEL org.opencontainers.image.description="{{ image.description }}"
-LABEL org.opencontainers.image.version="{{ image.version_label }}"
+LABEL org.opencontainers.image.version="{{ image.oci_version }}"
 LABEL org.opencontainers.image.url="{{ image.url }}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
@@ -121,7 +121,7 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.authors" value="{{ image.maintainer }}"/>
             <label name="org.opencontainers.image.title" value="{{ image.title }}"/>
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
-            <label name="org.opencontainers.image.version" value="{{ image.version_label }}"/>
+            <label name="org.opencontainers.image.version" value="{{ image.oci_version }}"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="{{ image.vendor }}"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
