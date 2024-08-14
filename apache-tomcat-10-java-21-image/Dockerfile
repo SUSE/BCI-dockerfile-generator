@@ -21,8 +21,13 @@
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre21
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre21-%RELEASE%
 
-FROM opensuse/tumbleweed:latest
+FROM opensuse/bci/bci-micro:latest AS target
+FROM opensuse/tumbleweed:latest AS builder
+COPY --from=target / /target
 
+RUN set -euo pipefail; zypper --installroot /target --gpg-auto-import-keys  -n in --no-recommends tomcat10 curl sed java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+FROM target
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.apache-tomcat
 LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
@@ -41,8 +46,6 @@ LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/apache-tomcat-10-java-21-image/README.md"
 LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomcat.png"
-
-RUN set -euo pipefail; zypper -n in --no-recommends tomcat10 java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV TOMCAT_MAJOR="10"
 ENV TOMCAT_VERSION="%%tomcat_version%%"
 ENV CATALINA_HOME="/usr/share/tomcat"
