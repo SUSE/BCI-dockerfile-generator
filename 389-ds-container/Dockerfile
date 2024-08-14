@@ -22,6 +22,8 @@
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
+RUN set -euo pipefail; zypper -n in --no-recommends 389-ds timezone openssl nss_synth; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.389-ds
 LABEL org.opencontainers.image.authors="william.brown@suse.com"
@@ -41,8 +43,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in --no-recommends 389-ds timezone openssl nss_synth; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 CMD ["/usr/lib/dirsrv/dscontainer", "-r"]
 EXPOSE 3389 3636
 

@@ -23,6 +23,8 @@
 #!BuildRelease: 33
 FROM bci/bci-base:15.6
 
+RUN set -euo pipefail; zypper -n in --no-recommends go1.21 go1.21-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -42,8 +44,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in --no-recommends go1.21 go1.21-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GOLANG_VERSION="%%golang_version%%"
 ENV GOPATH="/go"
 ENV GOTOOLCHAIN="local"

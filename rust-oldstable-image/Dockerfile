@@ -22,6 +22,8 @@
 #!BuildVersion: 15.6.1.79.2
 FROM bci/bci-base:15.6
 
+RUN set -euo pipefail; zypper -n in --no-recommends rust1.79 cargo1.79 lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.rust
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
@@ -42,8 +44,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-
-RUN set -euo pipefail; zypper -n in --no-recommends rust1.79 cargo1.79 lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV RUST_VERSION="%%RUST_VERSION%%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV CC="/usr/local/bin/gcc"

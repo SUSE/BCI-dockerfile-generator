@@ -14,16 +14,18 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 
-#!BuildTag: bci/kiwi:9.24.43
-#!BuildTag: bci/kiwi:9.24.43-%RELEASE%
-#!BuildTag: bci/kiwi:9.24
-#!BuildTag: bci/kiwi:9.24-%RELEASE%
 #!BuildTag: bci/kiwi:9
 #!BuildTag: bci/kiwi:9-%RELEASE%
+#!BuildTag: bci/kiwi:9.24
+#!BuildTag: bci/kiwi:9.24-%RELEASE%
+#!BuildTag: bci/kiwi:9.24.43
+#!BuildTag: bci/kiwi:9.24.43-%RELEASE%
 #!BuildTag: bci/kiwi:latest
-#!BuildName: bci-kiwi-9.24.43
+#!BuildName: bci-kiwi-9
 #!BuildVersion: 15.6.9.24.43
 FROM bci/bci-base:15.6
+
+RUN set -euo pipefail; zypper -n in --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.kiwi
@@ -35,8 +37,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="9.24.43-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:9.24.43-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="9-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:9-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -45,7 +47,5 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
-
-RUN set -euo pipefail; zypper -n in --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
 RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' python3-kiwi | cut -d '.' -f -2)" = "9.24" ]
