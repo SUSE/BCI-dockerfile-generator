@@ -188,7 +188,8 @@ FIPS_BASE_CONTAINERS = [
             """
         ),
     )
-    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP5, OsVersion.SP6)
+    # SP5 is known to be having a non-working libgcrypt for FIPS mode
+    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP6)
 ]
 
 
