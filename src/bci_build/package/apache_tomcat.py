@@ -54,6 +54,10 @@ TOMCAT_CONTAINERS = [
         if os_version.is_tumbleweed
         else f"sac-apache-tomcat-{tomcat_major}-java{jre_version}-image",
         pretty_name="Apache Tomcat",
+        custom_description=(
+            "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
+            "Jakarta Expression Language, and WebSocket technologies, {based_on_container}."
+        ),
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
