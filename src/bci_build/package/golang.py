@@ -14,9 +14,9 @@ from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 
 _GO_VER_T = Literal["1.20", "1.21", "1.22", "1.23"]
-_GOLANG_VERSIONS: list[_GO_VER_T] = ["1.21", "1.22"]
+_GOLANG_VERSIONS: list[_GO_VER_T] = ["1.22", "1.23"]
 _GOLANG_OPENSSL_VERSIONS: list[_GO_VER_T] = ["1.20", "1.21"]
-_GOLANG_TW_VERSIONS: list[_GO_VER_T] = _GOLANG_VERSIONS + ["1.23"]
+_GOLANG_TW_VERSIONS: list[_GO_VER_T] = _GOLANG_VERSIONS
 _GOLANG_VARIANT_T = Literal["", "-openssl"]
 
 assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
