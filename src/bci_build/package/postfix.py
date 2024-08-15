@@ -69,7 +69,7 @@ POSTFIX_CONTAINERS = [
                     "spamass-milter",
                 )
                 if os_version == OsVersion.TUMBLEWEED
-                else ()
+                else ("gawk",)
             )
         ],
         entrypoint=["/entrypoint/entrypoint.sh"],
