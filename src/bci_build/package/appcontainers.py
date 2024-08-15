@@ -164,6 +164,7 @@ POSTGRES_CONTAINERS = [
             "PG_VERSION": "%%pg_version%%",
             "PGDATA": "/var/lib/pgsql/data",
         },
+        license="PostgreSQL",
         extra_files={
             "docker-entrypoint.sh": _POSTGRES_ENTRYPOINT,
             "LICENSE": _POSTGRES_LICENSE,
@@ -306,7 +307,7 @@ GRAFANA_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name="Grafana",
-        license="Apache-2.0",
+        license="AGPL-3.0-only",
         package_list=[_GRAFANA_PACKAGE_NAME],
         version="%%grafana_patch_version%%",
         additional_versions=["%%grafana_minor_version%%", "%%grafana_major_version%%"],

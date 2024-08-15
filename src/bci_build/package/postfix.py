@@ -74,6 +74,7 @@ POSTFIX_CONTAINERS = [
         ],
         entrypoint=["/entrypoint/entrypoint.sh"],
         cmd=["postfix", "start-fg"],
+        license="(EPL-2.0 OR IPL-1.0) AND MIT",
         extra_files=_POSTFIX_FILES,
         support_level=SupportLevel.TECHPREVIEW,
         exposes_tcp=[25, 465, 587],

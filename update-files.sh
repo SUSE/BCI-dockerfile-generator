@@ -34,7 +34,6 @@ done
 curl -sf -o src/bci_build/package/templates/rmt_helm_chart_readme.j2 https://raw.githubusercontent.com/SUSE/helm-charts/main/rmt-helm/README.md
 
 ### postfix: MIT
-curl -sf -o src/bci_build/package/postfix/entrypoint/LICENSE https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/LICENSE
 curl -sf -o src/bci_build/package/postfix/entrypoint/entrypoint.sh https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/postfix/entrypoint.sh
 curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/smtpd_sender_login_maps https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/postfix/ldap/smtpd_sender_login_maps
 curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/virtual_alias_domains https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/postfix/ldap/virtual_alias_domains
