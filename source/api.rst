@@ -62,3 +62,11 @@ API Documentation
 .. automodule:: staging.build_result
    :members:
    :undoc-members:
+
+
+:py:mod:`staging.project_setup` module
+--------------------------------------
+
+.. automodule:: staging.project_setup
+   :members:
+   :undoc-members:

@@ -93,18 +93,33 @@ GOLANG_CONTAINERS = (
             **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
-        for ver, govariant, sle15sp in product(
-            _GOLANG_VERSIONS, ("",), (OsVersion.SP6,)
+        for ver, govariant, sle15sp in list(
+            product(
+                _GOLANG_VERSIONS,
+                ("",),
+                (OsVersion.SP6, OsVersion.SLCC_PAID),
+            )
         )
+        + [(_GOLANG_VERSIONS[-1], "", OsVersion.SLCC_FREE)]
     ]
     + [
         DevelopmentContainer(
             **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )
-        for ver, govariant, sle15sp in product(
-            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP6,)
+        for ver, govariant, sle15sp in list(
+            product(_GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP6,))
         )
+        # FIXME: add the remaining golang-openssl versions here once they are released
+        + [("1.21", "-openssl", OsVersion.SLCC_PAID)]
+        # only the latest version here
+        + [
+            (
+                _GOLANG_OPENSSL_VERSIONS[-1],
+                "-openssl",
+                OsVersion.SLCC_FREE,
+            )
+        ]
     ]
     + [
         DevelopmentContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))

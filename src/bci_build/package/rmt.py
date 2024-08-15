@@ -39,4 +39,5 @@ RMT_CONTAINERS = [
 """,
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
+    if not os_version.is_slfo
 ]
