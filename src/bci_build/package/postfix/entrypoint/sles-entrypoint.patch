@@ -1,35 +1,65 @@
-363,368d362
-< setup_spamassassin() {
-<     if [ -n "${SPAMASSASSIN_HOST}" ]; then
-< 	set_config_value "smtpd_milters" "unix:/run/spamass-milter/socket"
-<     fi
-< }
-< 
-371c365
-<     pid=$(/bin/pidof "$base")
----
->     pid=$(/usr/bin/ps -aux | /usr/bin/grep "$base" | /usr/bin/grep -v grep | /usr/bin/awk '{print $2}' | /usr/bin/tr '\n' ' ')
-387,390d380
-< stop_spamassassin() {
-<     terminate /usr/sbin/spamass-milter
-< }
-< 
-396c386
-<     (   while ! pidof qmgr > /dev/null 2>&1 ; do
----
->     (   while ! (ps -aux | grep qmgr | grep -v grep | awk '{print $2}' | tr '\n' ' ') > /dev/null 2>&1; do
-408d397
-<     stop_spamassassin
-427d415
-< setup_spamassassin
-433,440d420
-< if [ "$1" = 'postfix' ]; then
-<     if [ -n "${SPAMASSASSIN_HOST}" ]; then
-< 	mkdir /run/spamass-milter
-< 	chown sa-milter:postfix /run/spamass-milter
-< 	chmod 751 /run/spamass-milter
-< 	su sa-milter -s /bin/sh -c "/usr/sbin/spamass-milter -p /run/spamass-milter/socket -g postfix -f -- -d ${SPAMASSASSIN_HOST}"
-<     fi
-< fi
-441a422
-> echo "[info] refer to postfix manual pages at https://www.postfix.org/postfix-manuals.html"
+--- entrypoint.sh	2024-08-15 16:10:04.731013750 +0200
++++ entrypoint.sles.sh	2024-08-15 16:13:02.726848346 +0200
+@@ -360,15 +360,9 @@
+     setup_aliases
+ }
+ 
+-setup_spamassassin() {
+-    if [ -n "${SPAMASSASSIN_HOST}" ]; then
+-	set_config_value "smtpd_milters" "unix:/run/spamass-milter/socket"
+-    fi
+-}
+-
+ terminate() {
+     base=$(basename "$1")
+-    pid=$(/bin/pidof "$base")
++    pid=$(/usr/bin/ps -aux | /usr/bin/grep "$base" | /usr/bin/grep -v grep | /usr/bin/awk '{print $2}' | /usr/bin/tr '\n' ' ')
+ 
+     if [ -n "$pid" ]; then
+ 	echo "Terminating $base..."
+@@ -384,16 +378,12 @@
+     trap stop_daemons TERM INT
+ }
+ 
+-stop_spamassassin() {
+-    terminate /usr/sbin/spamass-milter
+-}
+-
+ stop_postfix() {
+ 
+     typeset -i sec=$1
+     typeset -i ms=$((sec*100))
+ 
+-    (   while ! pidof qmgr > /dev/null 2>&1 ; do
++    (   while ! (ps -aux | grep qmgr | grep -v grep | awk '{print $2}' | tr '\n' ' ') > /dev/null 2>&1; do
+             ((ms-- <= 0)) && break
+             usleep 10000
+ 	done
+@@ -405,7 +395,6 @@
+ 
+ stop_daemons() {
+     stop_postfix "$@"
+-    stop_spamassassin
+ }
+ 
+ #
+@@ -424,18 +413,10 @@
+ # configure postfix even if postfix will not be started, to
+ # allow to see the result with postconf for debugging/testing.
+ configure_postfix
+-setup_spamassassin
+ 
+ # If host mounting /var/spool/postfix, we need to delete the old pid file
+ # before starting services
+ rm -f /var/spool/postfix/pid/master.pid
+ 
+-if [ "$1" = 'postfix' ]; then
+-    if [ -n "${SPAMASSASSIN_HOST}" ]; then
+-	mkdir /run/spamass-milter
+-	chown sa-milter:postfix /run/spamass-milter
+-	chmod 751 /run/spamass-milter
+-	su sa-milter -s /bin/sh -c "/usr/sbin/spamass-milter -p /run/spamass-milter/socket -g postfix -f -- -d ${SPAMASSASSIN_HOST}"
+-    fi
+-fi
++echo "[info] refer to postfix manual pages at https://www.postfix.org/postfix-manuals.html"
+ exec "$@"

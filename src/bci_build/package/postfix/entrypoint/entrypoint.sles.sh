@@ -418,5 +418,5 @@ configure_postfix
 # before starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-exec "$@"
 echo "[info] refer to postfix manual pages at https://www.postfix.org/postfix-manuals.html"
+exec "$@"
