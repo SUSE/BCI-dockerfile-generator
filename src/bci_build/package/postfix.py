@@ -69,11 +69,11 @@ POSTFIX_CONTAINERS = [
                     "spamass-milter",
                 )
                 if os_version == OsVersion.TUMBLEWEED
-                else ("rsyslog", "gawk")
+                else ("gawk",)
             )
         ],
         entrypoint=["/entrypoint/entrypoint.sh"],
-        cmd=["postfix", "start"],
+        cmd=["postfix", "start-fg"],
         extra_files=_POSTFIX_FILES,
         support_level=SupportLevel.TECHPREVIEW,
         exposes_tcp=[25, 465, 587],
