@@ -67,11 +67,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: golang-oldstable-image
+        source_package: golang-stable-openssl-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: golang-stable-openssl-image
+        source_package: golang-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
@@ -268,10 +268,10 @@ refresh_devel_BCI:
         package: golang-oldstable-openssl-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
-        package: golang-oldstable-image
+        package: golang-stable-openssl-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
-        package: golang-stable-openssl-image
+        package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: golang-stable-image
