@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 16 16:00:10 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- add disk space constraints
+
+-------------------------------------------------------------------
 Wed Aug 14 12:26:55 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - switch to major version for main tag to have a stable buildname
