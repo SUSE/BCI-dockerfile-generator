@@ -5,6 +5,7 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
+from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
@@ -53,6 +54,10 @@ KIWI_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         extra_labels={
             "usage": "This container requires an openSUSE/SUSE host kernel for full functionality.",
+        },
+        extra_files={
+            # kiwi pulls in a ton of dependencies and fails on 4GB disk workers
+            "_constraints": generate_disk_size_constraints(8)
         },
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
