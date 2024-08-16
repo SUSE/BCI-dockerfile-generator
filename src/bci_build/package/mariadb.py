@@ -92,8 +92,12 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
                 "findutils",
             ],
             entrypoint=[_ENTRYPOINT_FNAME],
+            license="GPL-2.0-only",
             extra_files={
                 _ENTRYPOINT_FNAME: docker_entrypoint,
+                "LICENSE": (
+                    Path(__file__).parent / "mariadb" / str(mariadb_version) / "LICENSE"
+                ).read_bytes(),
                 "healthcheck.sh": healthcheck,
                 "gosu": _MARIADB_GOSU,
                 "_constraints": generate_disk_size_constraints(11),
