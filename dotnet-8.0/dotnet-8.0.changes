@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Aug 18 13:20:28 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- dotnet sdk update
+
+-------------------------------------------------------------------
 Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first
