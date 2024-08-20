@@ -21,7 +21,7 @@
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
-RUN set -euo pipefail; zypper -n in --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed netcfg postfix postfix-ldap postfix-lmdb timezone gawk; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed gawk netcfg postfix postfix-ldap postfix-lmdb timezone; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postfix
