@@ -14,6 +14,8 @@ from dataclasses import field
 from datetime import datetime
 from datetime import timedelta
 from functools import reduce
+from io import BytesIO
+from pathlib import Path
 from typing import ClassVar
 from typing import Literal
 from typing import TypedDict
@@ -34,10 +36,12 @@ from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
 from dotnet.updater import DOTNET_IMAGES
 from dotnet.updater import DotNetBCI
-from staging.build_result import Arch
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
+from staging.project_setup import ProjectType
+from staging.project_setup import generate_meta
+from staging.project_setup import generate_project_name
 from staging.user import User
 from staging.util import ensure_absent
 from staging.util import get_obs_project_url
@@ -184,6 +188,16 @@ class StagingBot:
         if not self.osc_username:
             raise RuntimeError("osc_username is not set, cannot continue")
 
+    def _read_file_from_branch(self, branch_name: str, file_name: str) -> bytes:
+        tmp = BytesIO()
+        try:
+            git.Repo(Path(__file__).parent.parent.parent).commit(branch_name).tree[
+                file_name
+            ].stream_data(tmp)
+            return tmp.getvalue()
+        except KeyError:
+            raise ValueError(f"File {file_name} not found in branch {branch_name}")
+
     @property
     def _bcis(self) -> Generator[BaseContainerImage, None, None]:
         """Generator yielding all
@@ -196,19 +210,10 @@ class StagingBot:
         all_bcis.sort(key=lambda bci: bci.uid)
         return (bci for bci in all_bcis if bci.os_version == self.os_version)
 
-    def _generate_project_name(self, prefix: str) -> str:
-        assert self.osc_username
-        res = f"home:{self.osc_username}:{prefix}:"
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
-            res += str(self.os_version)
-        else:
-            res += f"SLE-15-SP{str(self.os_version)}"
-        return res
-
     @property
     def continuous_rebuild_project_name(self) -> str:
         """The name of the continuous rebuild project on OBS."""
-        return self._generate_project_name("BCI:CR")
+        return generate_project_name(self.os_version, ProjectType.CR, self.osc_username)
 
     @property
     def staging_project_name(self) -> str:
@@ -222,7 +227,9 @@ class StagingBot:
         - ``BRANCH``: :py:attr:`branch_name`
 
         """
-        return self._generate_project_name("BCI:Staging") + ":" + self.branch_name
+        return generate_project_name(
+            self.os_version, ProjectType.STAGING, self.osc_username, self.branch_name
+        )
 
     @property
     def staging_project_url(self) -> str:
@@ -564,86 +571,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
             "osc" if not self._osc_conf_file else f"osc --config={self._osc_conf_file}"
         )
 
-    async def _generate_test_project_meta(self, target_project_name: str) -> ET.Element:
-        bci_devel_meta = ET.fromstring(
-            await _fetch_bci_devel_project_config(self.os_version, "meta")
-        )
-
-        # write the same project meta as devel:BCI, but replace the 'devel:BCI:*'
-        # with the target project name in the main element and in all repository
-        # path entries
-        bci_devel_meta.attrib["name"] = target_project_name
-
-        # we will remove the helmchartsrepo as we do not need it
-        repo_names = []
-        repos_to_remove = []
-
-        # ppc64le & s390x are mostly busted on TW and just cause pointless
-        # build failures, so we don't build them
-        # Also, we don't use the local architecture, so drop that one always
-        arches_to_drop = [str(Arch.LOCAL)]
-        arches_to_drop.extend(
-            [str(Arch.PPC64LE), str(Arch.S390X)]
-            if self.os_version == OsVersion.TUMBLEWEED
-            else []
-        )
-
-        for elem in bci_devel_meta:
-            if elem.tag == "repository":
-                if "name" in elem.attrib:
-                    if (name := elem.attrib["name"]) in ("helmcharts", "standard"):
-                        if name == "helmcharts":
-                            repos_to_remove.append(elem)
-                        continue
-
-                    repo_names.append(name)
-                else:
-                    raise ValueError(
-                        f"Invalid <repository> element, missing 'name' attribute: {ET.tostring(elem).decode()}"
-                    )
-
-                for repo_elem in elem.iter(tag="path"):
-                    if (
-                        "project" in repo_elem.attrib
-                        and "devel:BCI:" in repo_elem.attrib["project"]
-                    ):
-                        repo_elem.attrib["project"] = target_project_name
-
-                arch_entries = list(elem.iter(tag="arch"))
-                for arch_entry in arch_entries:
-                    if arch_entry.text in arches_to_drop:
-                        elem.remove(arch_entry)
-
-                container_repos = ("containerfile", "images")
-                if name in container_repos:
-                    for repo_name in container_repos:
-                        (bci_devel_prj_path := ET.Element("path")).attrib["project"] = (
-                            _get_bci_project_name(self.os_version)
-                        )
-                        bci_devel_prj_path.attrib["repository"] = repo_name
-
-                        elem.insert(0, bci_devel_prj_path)
-
-        self.repositories = repo_names
-        for repo_to_remove in repos_to_remove:
-            bci_devel_meta.remove(repo_to_remove)
-
-        person = ET.Element(
-            "person", {"userid": self.osc_username, "role": "maintainer"}
-        )
-        bci_devel_meta.append(person)
-
-        return bci_devel_meta
-
     async def _send_prj_meta(
-        self, target_project_name: str, prj_meta: ET.Element
+        self, target_project_name: str, prj_meta: ET.Element | str
     ) -> None:
         """Set the meta of the project on OBS with the name
         ``target_project_name`` to the config ``prj_meta``.
 
         """
         async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_meta:
-            await tmp_meta.write(ET.tostring(prj_meta))
+            if isinstance(prj_meta, str):
+                await tmp_meta.write(prj_meta.encode())
+            else:
+                await tmp_meta.write(ET.tostring(prj_meta))
             await tmp_meta.flush()
 
             async def _send_prj_meta():
@@ -662,52 +601,37 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         then its configuration (= ``meta`` in OBS jargon) will be updated.
 
         """
-        meta = await self._generate_test_project_meta(
-            self.continuous_rebuild_project_name
+        prj_name, meta = generate_meta(
+            self.os_version, ProjectType.CR, self.osc_username
         )
-        (
-            scmsync := ET.Element("scmsync")
-        ).text = f"https://github.com/SUSE/bci-dockerfile-generator#{self.deployment_branch_name}"
-        meta.append(scmsync)
-        await self._send_prj_meta(self.continuous_rebuild_project_name, meta)
+        await self._send_prj_meta(prj_name, meta)
 
     async def write_staging_project_configs(self) -> None:
         """Submit the ``prjconf`` and ``meta`` to the test project on OBS.
 
-        The ``prjconf`` is taken directly from the development project on OBS
-        (``devel:BCI:*``).
+        The ``meta`` is generated using a template via
+        py.func:`~staging.project_setup.generate_project_name`.
 
-        The ``meta`` has to be modified slightly:
+        The ``prjconf`` is taken from the file:`_config` file in the deployment
+        branch.
 
-        - we remove the ``helmcharts`` repository (we don't create anything for
-          that repo, so not worth creating it)
-        - change the path from ``devel:BCI:*`` to the staging project name
-        - add the bot user as the maintainer (otherwise you can't do anything in
-          the project anymore…)
-
-        Then we send the ``meta`` and then the ``prjconf``.
         """
-        confs: _ProjectConfigs = {}
 
-        async def _fetch_prjconf():
-            confs["prjconf"] = await _fetch_bci_devel_project_config(
-                self.os_version, "prjconf"
-            )
+        prj_name, prj_meta = generate_meta(
+            self.os_version, ProjectType.STAGING, self.osc_username, self.branch_name
+        )
 
-        async def _fetch_prj():
-            confs["meta"] = await self._generate_test_project_meta(
-                self.staging_project_name
-            )
-
-        await asyncio.gather(_fetch_prj(), _fetch_prjconf())
+        prjconf = self._read_file_from_branch(
+            f"origin/{self.deployment_branch_name}", "_config"
+        )
 
         # First set the project meta! This will create the project if it does not
         # exist already, if we do it asynchronously, then the prjconf might be
         # written before the project exists, which fails
-        await self._send_prj_meta(self.staging_project_name, confs["meta"])
+        await self._send_prj_meta(prj_name, prj_meta)
 
-        async with aiofiles.tempfile.NamedTemporaryFile(mode="w") as tmp_prjconf:
-            await tmp_prjconf.write(confs["prjconf"])
+        async with aiofiles.tempfile.NamedTemporaryFile(mode="wb") as tmp_prjconf:
+            await tmp_prjconf.write(prjconf)
             await tmp_prjconf.flush()
             await self._run_cmd(
                 f"{self._osc} meta prjconf --file={tmp_prjconf.name} {self.staging_project_name}"

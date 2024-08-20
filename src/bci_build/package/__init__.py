@@ -176,6 +176,13 @@ class OsVersion(enum.Enum):
         raise NotImplementedError(f"Unknown os_version: {self.value}")
 
     @property
+    def full_os_name(self) -> str:
+        if self.is_tumbleweed:
+            return self.distribution_base_name
+
+        return f"{self.distribution_base_name} {self.pretty_os_version_no_dash}"
+
+    @property
     def deployment_branch_name(self) -> str:
         if self.is_tumbleweed or self.is_slfo:
             return str(self.value)
