@@ -152,6 +152,15 @@ _OSC_USERNAME = "foobar"
     <arch>s390x</arch>
     <arch>ppc64le</arch>
   </repository>
+  <repository name="product">
+    <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
   <repository name="containerfile">
     <path project="{prj_name}" repository="images"/>
     <path project="{prj_name}" repository="standard"/>
@@ -194,6 +203,15 @@ _OSC_USERNAME = "foobar"
   </repository>
   <repository name="images">
     <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="product">
+    <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="images"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>

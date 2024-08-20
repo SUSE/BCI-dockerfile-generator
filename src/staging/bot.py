@@ -1456,6 +1456,9 @@ updates:
             prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
         )
 
+        await self._run_cmd(f"""{self._osc} meta attribute {prj_name} -a OSRT:Config --set 'main-repo = standard
+pkglistgen-archs = ppc64le s390x aarch64 x86_64'""")
+
     async def configure_devel_bci_package(self, package_name: str) -> None:
         bci = [b for b in self._bcis if b.package_name == package_name]
 
