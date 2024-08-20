@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 20 10:08:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Re-render templates
+
+-------------------------------------------------------------------
 Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add oci.image.ref.name
