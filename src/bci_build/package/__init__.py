@@ -160,7 +160,7 @@ class OsVersion(enum.Enum):
             # already part of the base identifier
             return ""
         if self.is_slfo:
-            return "Framework One"
+            return "16"
 
         return f"15 SP{self.value}"
 
