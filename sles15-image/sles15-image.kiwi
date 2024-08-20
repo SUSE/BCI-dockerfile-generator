@@ -85,8 +85,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="netcfg"/>
     <package name="skelcd-EULA-bci"/>
     <package name="sle-module-basesystem-release"/>
-    <package name="sle-module-server-applications-release"/>
     <package name="sle-module-python3-release"/>
+    <package name="sle-module-server-applications-release"/>
     <package name="suse-build-key"/>
     <package name="tar"/>
     <package name="timezone"/>
