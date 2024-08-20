@@ -1,0 +1,67 @@
+---
+staging_build:
+  steps:
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: base-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: busybox-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: init-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: micro-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: minimal-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: sle16-kernel-module-devel-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
+  filters:
+    event: pull_request
+
+refresh_staging_project:
+  steps:
+    - trigger_services:
+        project: home:defolos:BCI:CR:16.0
+        package: _project
+  filters:
+    event: push
+    branches:
+      only:
+        - 16.0
+
+
+refresh_devel_BCI:
+  steps:
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: base-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: busybox-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: init-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: micro-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: minimal-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: sle16-kernel-module-devel-image
+  filters:
+    event: push
+    branches:
+      only:
+        - 16.0
