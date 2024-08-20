@@ -16,7 +16,6 @@ from bci_build.package import generate_disk_size_constraints
 _GO_VER_T = Literal["1.20", "1.21", "1.22", "1.23"]
 _GOLANG_VERSIONS: list[_GO_VER_T] = ["1.22", "1.23"]
 _GOLANG_OPENSSL_VERSIONS: list[_GO_VER_T] = ["1.20", "1.21"]
-_GOLANG_TW_VERSIONS: list[_GO_VER_T] = _GOLANG_VERSIONS
 _GOLANG_VARIANT_T = Literal["", "-openssl"]
 
 assert len(_GOLANG_VERSIONS) == 2, "Only two golang versions must be supported"
@@ -33,11 +32,6 @@ def _get_golang_kwargs(
         is_stable = ver == _GOLANG_OPENSSL_VERSIONS[-1]
 
     stability_tag = f"oldstable{variant}"
-    if (
-        _GOLANG_TW_VERSIONS[-1] != _GOLANG_VERSIONS[-1]
-        and ver == _GOLANG_TW_VERSIONS[-1]
-    ):
-        stability_tag = f"unstable{variant}"
     if is_stable:
         stability_tag = f"stable{variant}"
 
@@ -108,6 +102,6 @@ GOLANG_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))
-        for ver in set(_GOLANG_VERSIONS + _GOLANG_TW_VERSIONS)
+        for ver in _GOLANG_VERSIONS
     ]
 )
