@@ -62,7 +62,7 @@ label.</p>
 <p>It is generated from <a class="reference internal" href="#bci_build.package.BaseContainerImage.pretty_name" title="bci_build.package.BaseContainerImage.pretty_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.pretty_name</span></code></a> as
 follows: <code class="docutils literal notranslate"><span class="pre">&quot;{distribution_base_name}</span> <span class="pre">BCI</span> <span class="pre">{self.pretty_name}&quot;</span></code>, where
 <code class="docutils literal notranslate"><span class="pre">distribution_base_name</span></code> is taken from
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">distribution_base_name</span></code>.</p>
+<a class="reference internal" href="#bci_build.package.OsVersion.distribution_base_name" title="bci_build.package.OsVersion.distribution_base_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">distribution_base_name</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -228,11 +228,6 @@ expand the custom description with the following options:</p>
 <p>Otherwise it reuses
 <a class="reference internal" href="#bci_build.package.BaseContainerImage.pretty_name" title="bci_build.package.BaseContainerImage.pretty_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.pretty_name</span></code></a> to generate a description.</p>
 </dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="bci_build.package.BaseContainerImage.distribution_base_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distribution_base_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#bci_build.package.BaseContainerImage.distribution_base_name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bci_build.package.BaseContainerImage.dockerfile_custom_end">
@@ -606,7 +601,7 @@ label.</p>
 <p>It is generated from <a class="reference internal" href="#bci_build.package.BaseContainerImage.pretty_name" title="bci_build.package.BaseContainerImage.pretty_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.pretty_name</span></code></a> as
 follows: <code class="docutils literal notranslate"><span class="pre">&quot;{distribution_base_name}</span> <span class="pre">BCI</span> <span class="pre">{self.pretty_name}&quot;</span></code>, where
 <code class="docutils literal notranslate"><span class="pre">distribution_base_name</span></code> is taken from
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">distribution_base_name</span></code>.</p>
+<a class="reference internal" href="#bci_build.package.OsVersion.distribution_base_name" title="bci_build.package.OsVersion.distribution_base_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">distribution_base_name</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -922,8 +917,18 @@ all development containers</p>
 <dd></dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="bci_build.package.OsVersion.distribution_base_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distribution_base_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#bci_build.package.OsVersion.distribution_base_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="bci_build.package.OsVersion.eula_package_names">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eula_package_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bci_build.package.OsVersion.eula_package_names" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bci_build.package.OsVersion.full_os_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full_os_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#bci_build.package.OsVersion.full_os_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1265,19 +1270,19 @@ stream defined in <code class="xref py py-const docutils literal notranslate"><s
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2b3f88c7a0&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8d765f47a0&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2b3de46660&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8d747e0560&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2b3e697bf0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f8d744d8710&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
@@ -1310,6 +1315,21 @@ project
 this is usually only necessary during the early stages of a new SLE service
 pack when autobuild has not yet synced the binaries of the container images
 from IBS to OBS</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.bot.ProjectConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.bot.</span></span><span class="sig-name descname"><span class="pre">ProjectConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.bot.ProjectConfig" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.ProjectConfig.META">
+<span class="sig-name descname"><span class="pre">META</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'prj'</span></em><a class="headerlink" href="#staging.bot.ProjectConfig.META" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.bot.ProjectConfig.PRJCONF">
+<span class="sig-name descname"><span class="pre">PRJCONF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'prjconf'</span></em><a class="headerlink" href="#staging.bot.ProjectConfig.PRJCONF" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1383,6 +1403,16 @@ ASCII characters appended.</p>
 <dt class="sig sig-object py" id="staging.bot.StagingBot.configure_devel_bci_package">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_devel_bci_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.configure_devel_bci_package" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="staging.bot.StagingBot.configure_devel_bci_project">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_devel_bci_project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.configure_devel_bci_project" title="Link to this definition">¶</a></dt>
+<dd><p>Adjust to project meta of the devel project on OBS to match the
+template generated via
+<a class="reference internal" href="#staging.project_setup.generate_meta" title="staging.project_setup.generate_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">staging.project_setup.generate_meta()</span></code></a>. Additionally set the
+project meta from the file <code class="file docutils literal notranslate"><span class="pre">_config</span></code> in the deployment branch and
+set the <cite>OSRT:Config</cite> attribute for pkglistgen to function as expected.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="staging.bot.StagingBot.continuous_rebuild_project_name">
@@ -1641,17 +1671,10 @@ will be added</p></li>
 <dt class="sig sig-object py" id="staging.bot.StagingBot.write_staging_project_configs">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_staging_project_configs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#staging.bot.StagingBot.write_staging_project_configs" title="Link to this definition">¶</a></dt>
 <dd><p>Submit the <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> and <code class="docutils literal notranslate"><span class="pre">meta</span></code> to the test project on OBS.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> is taken directly from the development project on OBS
-(<code class="docutils literal notranslate"><span class="pre">devel:BCI:*</span></code>).</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">meta</span></code> has to be modified slightly:</p>
-<ul class="simple">
-<li><p>we remove the <code class="docutils literal notranslate"><span class="pre">helmcharts</span></code> repository (we don’t create anything for
-that repo, so not worth creating it)</p></li>
-<li><p>change the path from <code class="docutils literal notranslate"><span class="pre">devel:BCI:*</span></code> to the staging project name</p></li>
-<li><p>add the bot user as the maintainer (otherwise you can’t do anything in
-the project anymore…)</p></li>
-</ul>
-<p>Then we send the <code class="docutils literal notranslate"><span class="pre">meta</span></code> and then the <code class="docutils literal notranslate"><span class="pre">prjconf</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">meta</span></code> is generated using a template via
+py.func:<cite>~staging.project_setup.generate_project_name</cite>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> is taken from the file:<cite>_config</cite> file in the deployment
+branch.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1826,6 +1849,39 @@ otherwise a <a class="reference external" href="https://docs.python.org/3/librar
 <dd></dd></dl>
 
 </section>
+<section id="module-staging.project_setup">
+<span id="staging-project-setup-module"></span><h2><a class="reference internal" href="#module-staging.project_setup" title="staging.project_setup"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.project_setup</span></code></a> module<a class="headerlink" href="#module-staging.project_setup" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="staging.project_setup.ProjectType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">staging.project_setup.</span></span><span class="sig-name descname"><span class="pre">ProjectType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#staging.project_setup.ProjectType" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="staging.project_setup.ProjectType.CR">
+<span class="sig-name descname"><span class="pre">CR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#staging.project_setup.ProjectType.CR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.project_setup.ProjectType.DEVEL">
+<span class="sig-name descname"><span class="pre">DEVEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#staging.project_setup.ProjectType.DEVEL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="staging.project_setup.ProjectType.STAGING">
+<span class="sig-name descname"><span class="pre">STAGING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#staging.project_setup.ProjectType.STAGING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="staging.project_setup.generate_meta">
+<span class="sig-prename descclassname"><span class="pre">staging.project_setup.</span></span><span class="sig-name descname"><span class="pre">generate_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#staging.project_setup.ProjectType" title="staging.project_setup.ProjectType"><span class="pre">ProjectType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">osc_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#staging.project_setup.generate_meta" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="staging.project_setup.generate_project_name">
+<span class="sig-prename descclassname"><span class="pre">staging.project_setup.</span></span><span class="sig-name descname"><span class="pre">generate_project_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bci_build.package.OsVersion" title="bci_build.package.OsVersion"><span class="pre">OsVersion</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#staging.project_setup.ProjectType" title="staging.project_setup.ProjectType"><span class="pre">ProjectType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">osc_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#staging.project_setup.generate_project_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
 </section>
 
 
@@ -1866,6 +1922,7 @@ otherwise a <a class="reference external" href="https://docs.python.org/3/librar
 <li class="toctree-l2"><a class="reference internal" href="#module-staging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.bot</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.build_result</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-staging.project_setup"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.project_setup</span></code> module</a></li>
 </ul>
 </li>
 </ul>

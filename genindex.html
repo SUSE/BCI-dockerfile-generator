@@ -177,17 +177,21 @@
       </ul></li>
       <li><a href="api.html#bci_build.package.OsVersion.common_devel_packages">common_devel_packages (bci_build.package.OsVersion property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.BaseContainerImage.config_sh">config_sh (bci_build.package.BaseContainerImage property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.BaseContainerImage.config_sh_interpreter">config_sh_interpreter (bci_build.package.BaseContainerImage attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.config_sh_script">config_sh_script (bci_build.package.BaseContainerImage attribute)</a>
 </li>
       <li><a href="api.html#staging.bot.StagingBot.configure_devel_bci_package">configure_devel_bci_package() (staging.bot.StagingBot method)</a>
 </li>
+      <li><a href="api.html#staging.bot.StagingBot.configure_devel_bci_project">configure_devel_bci_project() (staging.bot.StagingBot method)</a>
+</li>
       <li><a href="api.html#staging.bot.StagingBot.continuous_rebuild_project_name">continuous_rebuild_project_name (staging.bot.StagingBot property)</a>
+</li>
+      <li><a href="api.html#staging.project_setup.ProjectType.CR">CR (staging.project_setup.ProjectType attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.custom_description">custom_description (bci_build.package.BaseContainerImage attribute)</a>
 </li>
@@ -213,6 +217,8 @@
 </li>
       <li><a href="api.html#staging.build_result.PackageBuildResult.detail_message">detail_message (staging.build_result.PackageBuildResult attribute)</a>
 </li>
+      <li><a href="api.html#staging.project_setup.ProjectType.DEVEL">DEVEL (staging.project_setup.ProjectType attribute)</a>
+</li>
       <li><a href="api.html#bci_build.package.DevelopmentContainer">DevelopmentContainer (class in bci_build.package)</a>
 </li>
       <li><a href="api.html#staging.build_result.RepositoryBuildResult.dirty">dirty (staging.build_result.RepositoryBuildResult attribute)</a>
@@ -221,7 +227,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#bci_build.package.BaseContainerImage.distribution_base_name">distribution_base_name (bci_build.package.BaseContainerImage property)</a>
+      <li><a href="api.html#bci_build.package.OsVersion.distribution_base_name">distribution_base_name (bci_build.package.OsVersion property)</a>
 </li>
       <li><a href="api.html#bci_build.package.BuildType.DOCKER">DOCKER (bci_build.package.BuildType attribute)</a>
 </li>
@@ -306,10 +312,10 @@
 </li>
       <li><a href="api.html#staging.build_result.PackageStatusCode.FINISHED">FINISHED (staging.build_result.PackageStatusCode attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#staging.bot.StagingBot.force_rebuild">force_rebuild() (staging.bot.StagingBot method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.versions.format_version">format_version() (in module bci_build.package.versions)</a>
 </li>
       <li><a href="api.html#staging.bot.StagingBot.from_env_file">from_env_file() (staging.bot.StagingBot static method)</a>
@@ -322,6 +328,8 @@
 </li>
       <li><a href="api.html#bci_build.package.BaseContainerImage.from_target_image">from_target_image (bci_build.package.BaseContainerImage attribute)</a>
 </li>
+      <li><a href="api.html#bci_build.package.OsVersion.full_os_name">full_os_name (bci_build.package.OsVersion property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -330,8 +338,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.generate_disk_size_constraints">generate_disk_size_constraints() (in module bci_build.package)</a>
 </li>
+      <li><a href="api.html#staging.project_setup.generate_meta">generate_meta() (in module staging.project_setup)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#staging.project_setup.generate_project_name">generate_project_name() (in module staging.project_setup)</a>
+</li>
       <li><a href="api.html#staging.bot.StagingBot.get_packages_without_changelog_addition">get_packages_without_changelog_addition() (staging.bot.StagingBot method)</a>
 </li>
       <li><a href="api.html#bci_build.package.versions.get_pkg_version">get_pkg_version() (in module bci_build.package.versions)</a>
@@ -460,6 +472,8 @@
 </li>
       <li><a href="api.html#staging.bot.StagingBot.MAX_WAIT_TIME_SEC">MAX_WAIT_TIME_SEC (staging.bot.StagingBot attribute)</a>
 </li>
+      <li><a href="api.html#staging.bot.ProjectConfig.META">META (staging.bot.ProjectConfig attribute)</a>
+</li>
       <li><a href="api.html#bci_build.package.ParseVersion.MINOR">MINOR (bci_build.package.ParseVersion attribute)</a>
 </li>
       <li>
@@ -481,6 +495,8 @@
         <li><a href="api.html#module-staging.bot">staging.bot</a>
 </li>
         <li><a href="api.html#module-staging.build_result">staging.build_result</a>
+</li>
+        <li><a href="api.html#module-staging.project_setup">staging.project_setup</a>
 </li>
       </ul></li>
   </ul></td>
@@ -579,10 +595,10 @@
 </li>
       <li><a href="api.html#bci_build.package.Replacement.parse_version">parse_version (bci_build.package.Replacement attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.ParseVersion">ParseVersion (class in bci_build.package)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#bci_build.package.ParseVersion.PATCH">PATCH (bci_build.package.ParseVersion attribute)</a>
 </li>
       <li><a href="api.html#bci_build.package.ParseVersion.PATCH_UPDATE">PATCH_UPDATE (bci_build.package.ParseVersion attribute)</a>
@@ -607,7 +623,13 @@
         <li><a href="api.html#bci_build.package.OsContainer.pretty_reference">(bci_build.package.OsContainer property)</a>
 </li>
       </ul></li>
+      <li><a href="api.html#staging.bot.ProjectConfig.PRJCONF">PRJCONF (staging.bot.ProjectConfig attribute)</a>
+</li>
       <li><a href="api.html#staging.build_result.RepositoryBuildResult.project">project (staging.build_result.RepositoryBuildResult attribute)</a>
+</li>
+      <li><a href="api.html#staging.bot.ProjectConfig">ProjectConfig (class in staging.bot)</a>
+</li>
+      <li><a href="api.html#staging.project_setup.ProjectType">ProjectType (class in staging.project_setup)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -695,8 +717,6 @@
 </li>
       <li><a href="api.html#bci_build.package.DevelopmentContainer.stability_tag">stability_tag (bci_build.package.DevelopmentContainer attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     staging
 
@@ -704,6 +724,10 @@
         <li><a href="api.html#module-staging">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#staging.project_setup.ProjectType.STAGING">STAGING (staging.project_setup.ProjectType attribute)</a>
+</li>
       <li>
     staging.bot
 
@@ -716,6 +740,13 @@
 
       <ul>
         <li><a href="api.html#module-staging.build_result">module</a>
+</li>
+      </ul></li>
+      <li>
+    staging.project_setup
+
+      <ul>
+        <li><a href="api.html#module-staging.project_setup">module</a>
 </li>
       </ul></li>
       <li><a href="api.html#staging.bot.StagingBot.staging_project_name">staging_project_name (staging.bot.StagingBot property)</a>
