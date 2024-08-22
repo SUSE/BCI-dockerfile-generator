@@ -160,9 +160,27 @@ class OsVersion(enum.Enum):
             # already part of the base identifier
             return ""
         if self.is_slfo:
-            return "Framework One"
+            return "16"
 
         return f"15 SP{self.value}"
+
+    @property
+    def distribution_base_name(self) -> str:
+        if self.is_tumbleweed:
+            return "openSUSE Tumbleweed"
+        elif self.is_ltss:
+            return "SLE LTSS"
+        elif self.is_sle15 or self.is_slfo:
+            return "SLE"
+
+        raise NotImplementedError(f"Unknown os_version: {self.value}")
+
+    @property
+    def full_os_name(self) -> str:
+        if self.is_tumbleweed:
+            return self.distribution_base_name
+
+        return f"{self.distribution_base_name} {self.pretty_os_version_no_dash}"
 
     @property
     def deployment_branch_name(self) -> str:
@@ -614,17 +632,6 @@ class BaseContainerImage(abc.ABC):
         )
 
     @property
-    def distribution_base_name(self) -> str:
-        if self.os_version.is_tumbleweed:
-            return "openSUSE Tumbleweed"
-        elif self.os_version.is_ltss:
-            return "SLE LTSS"
-        elif self.os_version.is_sle15 or self.os_version.is_slfo:
-            return "SLE"
-
-        raise NotImplementedError(f"Unknown os_version: {self.os_version}")
-
-    @property
     def eula(self) -> str:
         """EULA covering this image. can be ``sle-eula`` or ``sle-bci``."""
         if self.os_version.is_ltss:
@@ -1060,7 +1067,7 @@ exit 0
         description_formatters = {
             "pretty_name": self.pretty_name,
             "based_on_container": (
-                f"based on the {self.distribution_base_name} Base Container Image"
+                f"based on the {self.os_version.distribution_base_name} Base Container Image"
             ),
             "podman_only": "This container is only supported with podman.",
             "privileged_only": "This container is only supported in privileged mode.",
@@ -1079,10 +1086,10 @@ exit 0
         It is generated from :py:attr:`BaseContainerImage.pretty_name` as
         follows: ``"{distribution_base_name} BCI {self.pretty_name}"``, where
         ``distribution_base_name`` is taken from
-        :py:attr:`~ImageProperties.distribution_base_name`.
+        :py:attr:`~OsVersion.distribution_base_name`.
 
         """
-        return f"{self.distribution_base_name} BCI {self.pretty_name}"
+        return f"{self.os_version.distribution_base_name} BCI {self.pretty_name}"
 
     @property
     def readme_path(self) -> str:
@@ -1473,7 +1480,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def title(self) -> str:
-        return f"{self.distribution_base_name} {self.pretty_name}"
+        return f"{self.os_version.distribution_base_name} {self.pretty_name}"
 
     @property
     def eula(self) -> str:
