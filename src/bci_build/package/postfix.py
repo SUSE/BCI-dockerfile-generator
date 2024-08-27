@@ -6,6 +6,7 @@ from bci_build.package import ALL_NONBASE_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import OsVersion
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 
@@ -46,7 +47,7 @@ POSTFIX_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%postfix_version%%",
                 package_name="postfix",
-                parse_version="minor",
+                parse_version=ParseVersion.MINOR,
             )
         ],
         package_list=[
