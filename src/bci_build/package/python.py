@@ -105,7 +105,7 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP6,)
 )
 
-_PYTHON_TW_VERSIONS: _PYTHON_VERSIONS = ("3.10", "3.12", "3.11")
+_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.10", "3.12", "3.11")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
