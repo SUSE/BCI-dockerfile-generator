@@ -88,7 +88,7 @@ GOLANG_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for ver, govariant, sle15sp in product(
-            _GOLANG_VERSIONS, ("",), (OsVersion.SP6,)
+            _GOLANG_VERSIONS, ("",), (OsVersion.SP6, OsVersion.SP7)
         )
     ]
     + [
@@ -97,7 +97,7 @@ GOLANG_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for ver, govariant, sle15sp in product(
-            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP6,)
+            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP6, OsVersion.SP7)
         )
     ]
     + [
