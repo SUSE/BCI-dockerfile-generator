@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 27 12:29:03 UTC 2024 - Marcus Meissner <meissner@suse.com>
+
+- Force GNUTLS FIPS mode too
+
+-------------------------------------------------------------------
 Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first
