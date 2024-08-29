@@ -1,0 +1,81 @@
+# Spack 0.21 container image
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+[![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
+
+## Description
+Spack is a package manager for supercomputers. It provides build recipes
+for more than 6000 software components, and it allows to build entire
+HPC application stacks with little to no prerequisites.
+
+This container image serves as a build environment for a `Dockerfile`
+or an `apptainter.def` file created by `spack containerize`. It can be
+used to run spack commands directly as well. Doing this may require to
+bind-mount local directories into the container.
+
+## Usage
+This image may be used to build and containerize application stacks using
+Spack. The stack is installed in a base container such as SLE BCI Base.
+To build a containerized application stack, create the file `spack.yaml`
+in an empty directory with the following content:
+```yaml
+spack:
+  specs:
+  - <application spec>
+
+  container:
+    format: <container_format>
+    images:
+      build: "registry.suse.com/bci/spack:0.21"
+      final: "registry.suse.com/bci/bci-base:latest"
+    os_packages:
+      command: zypper
+      build:
+      - <additional packages for building>
+      final:
+      - <additional packages for final container>
+```
+Replace 'application spec' with the actual application name, and provide optional
+build specifications (for details see the
+[Spack documentation](https://spack.readthedocs.io/en/latest/)).
+The 'container_format' can be either `docker` for a docker/OCI container
+image or `singularity` for a Singularity/Apptainer container image.
+The `os_packages` section is optional. Here you may specify additional
+packages to install in the build container or in the final
+runtime container image.
+To build an Apptainer container, run the following commands in the same
+directory:
+```ShellSession
+$ spack containerize > apptainer.def
+$ apptainer build apptainer.sif apptainer.def
+```
+This builds `apptainer.sif` as the final Singularity/Apptainer image that can then be run as follows:
+```ShellSession
+$ apptainer exec ./apptainer.sif <command line ...>
+```
+To build a docker/OCI container, run the following commands:
+```ShellSession
+$ spack containerize > Containerfile
+$ podman build -t <target_name> --format=docker .
+```
+This builds a Docker container that you can run as follows:
+```
+$ podman run -it --rm <target_name> <command line ...>
+```
+If you do not have a local installation of Spack, you can use this container
+to run Spack commands - like `spack containerize`:
+```ShellSession
+$ podman run -v $(pwd):/root:Z --rm registry.suse.com/bci/spack:0.21 containerize > Containerfile
+```
+For further information, refer to the
+[Spack documentation on container images](https://spack.readthedocs.io/en/latest/containers.html).
+## Licensing
+
+`SPDX-License-Identifier: MIT`
+
+This documentation and the build recipe are licensed as MIT.
+The container itself contains various software components under various open source licenses listed in the associated
+Software Bill of Materials (SBOM).
+
+This image is a tech preview. Do not use it for production.
+Your feedback is welcome.
+Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
