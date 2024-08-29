@@ -2,33 +2,39 @@
     "helm": {
         "5": "3.13",
         "6": "3.13",
+        "7": "3.13",
         "Tumbleweed": "3.15",
         "version_format": "minor"
     },
     "mariadb": {
         "5": "10.6",
         "6": "10.11",
+        "7": "10.11",
         "Tumbleweed": "11.4",
         "version_format": "minor"
     },
     "nginx": {
         "5": "1.21",
         "6": "1.21",
+        "7": "1.21",
         "Tumbleweed": "1.27",
         "version_format": "minor"
     },
     "pcp": {
         "5": "5.2.5",
         "6": "5.3.7",
+        "7": "5.3.7",
         "Tumbleweed": "6.2.1"
     },
     "python-kiwi": {
         "5": "9.24.43",
         "6": "9.24.43",
+        "7": "9.24.43",
         "Tumbleweed": "10.1.2"
     },
     "spack": {
         "6": "0.21.2",
+        "7": "0.21.2",
         "Tumbleweed": "0.22.1"
     }
 }

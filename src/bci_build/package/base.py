@@ -200,7 +200,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 
 # TODO merge in tumbleweed changes and switch to ALL_BASE_OS_VERSIONS
 BASE_CONTAINERS = [
-    Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6,)
+    Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6, OsVersion.SP7)
 ] + [
     OsContainer(**_get_base_kwargs(os_version=os_ver))
     for os_ver in (OsVersion.SLE16_0,)

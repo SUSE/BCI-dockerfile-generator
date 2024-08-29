@@ -16,6 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os_version:
+          - 7
           - 6
           - 5
           - "16.0"
