@@ -125,21 +125,32 @@ def generate_meta(
     with_helmcharts_repo = project_type == ProjectType.DEVEL and not os_version.is_slfo
 
     repository_paths: tuple[tuple[str, str], ...]
-    if os_version.is_sle15:
-        repository_paths = (
-            ("SUSE:Registry", "standard"),
-            (f"SUSE:SLE-15-SP{str(os_version)}:Update", "standard"),
-        )
-    elif os_version.is_slfo:
-        repository_paths = (
-            ("SUSE:SLFO:Products:SLES:16.0", "standard"),
-            ("SUSE:SLFO:Main:Build", "standard"),
-        )
-        if project_type in (ProjectType.CR, ProjectType.STAGING):
+    if os_version.is_sle15 or os_version.is_slfo:
+        if os_version.is_sle15:
+            first_prj = "SUSE:Registry"
+            last_prj = f"SUSE:SLE-15-SP{str(os_version)}:Update"
+        else:
+            assert os_version.is_slfo
+            first_prj = "SUSE:SLFO:Products:SLES:16.0"
+            last_prj = "SUSE:SLFO:Main:Build"
+
+        repository_paths: tuple[tuple[str, str], ...] = ((first_prj, "standard"),)
+        if (os_version.is_slfo or os_version.is_sle15) and (
+            project_type == ProjectType.STAGING
+        ):
             repository_paths += (
-                (generate_project_name(os_version, ProjectType.DEVEL, ""), "standard"),
+                (
+                    devel_prj := generate_project_name(
+                        os_version, ProjectType.DEVEL, ""
+                    ),
+                    "containerfile",
+                ),
+                (devel_prj, "images"),
+                (devel_prj, "standard"),
             )
+        repository_paths += ((last_prj, "standard"),)
     else:
+        assert os_version.is_tumbleweed
         repository_paths = (
             ("openSUSE:Factory", "images"),
             ("openSUSE:Factory:ARM", "images"),
