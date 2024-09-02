@@ -194,8 +194,10 @@ _OSC_USERNAME = "foobar"
   </debuginfo>
   <repository name="standard">
     <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
-    <path project="SUSE:SLFO:Main:Build" repository="standard"/>
+    <path project="devel:BCI:16.0" repository="containerfile"/>
+    <path project="devel:BCI:16.0" repository="images"/>
     <path project="devel:BCI:16.0" repository="standard"/>
+    <path project="SUSE:SLFO:Main:Build" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
@@ -212,6 +214,56 @@ _OSC_USERNAME = "foobar"
   <repository name="product">
     <path project="{prj_name}" repository="containerfile"/>
     <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="containerfile">
+    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+</project>""",
+        ),
+        (
+            OsVersion.SP7,
+            ProjectType.STAGING,
+            (branch := "7-400"),
+            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:SLE-15-SP7:{branch}"),
+            f"""<project name="{prj_name}">
+  <title>Staging project for SLE 15 SP7</title>
+  <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SLE 15 SP7</description>
+  <person userid="avicenzi" role="maintainer"/>
+  <person userid="dancermak" role="maintainer"/>
+  <person userid="{_OSC_USERNAME}" role="maintainer"/>
+
+  <build>
+    <enable/>
+  </build>
+  <publish>
+    <enable/>
+  </publish>
+  <debuginfo>
+    <enable/>
+  </debuginfo>
+  <repository name="standard">
+    <path project="SUSE:Registry" repository="standard"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="containerfile"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="images"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="standard"/>
+    <path project="SUSE:SLE-15-SP7:Update" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="images">
+    <path project="{prj_name}" repository="containerfile"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
