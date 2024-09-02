@@ -195,7 +195,10 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     )
     for ver, os_version in (
         [(15, variant) for variant in (OsVersion.SP5, OsVersion.TUMBLEWEED)]
-        + [(16, variant) for variant in (OsVersion.SP6, OsVersion.TUMBLEWEED)]
+        + [
+            (16, variant)
+            for variant in (OsVersion.SP6, OsVersion.SP7, OsVersion.TUMBLEWEED)
+        ]
     )
     + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
 ]
