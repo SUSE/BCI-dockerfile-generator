@@ -10,7 +10,7 @@ such as garbage collection, type safety, certain dynamic-typing capabilities,
 additional built-in types (for example, variable-length arrays and key-value
 maps) as well as a large standard library.
 
-{%- if image.version.endswith('-openssl') %}
+{%- if image.tag_version.endswith('-openssl') %}
 
 ## FIPS 140-3
 
@@ -126,7 +126,7 @@ the resulting application. See the [SLE BCI use with Go
 documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
 for further details.
 
-{%- if image.version.endswith('-openssl') %}
+{%- if image.tag_version.endswith('-openssl') %}
 
 ## FIPS 140-3
 
@@ -145,7 +145,7 @@ import _ "crypto/tls/fipsonly"
 In addition to the standard SLE BCI development packages, the following tools
 are included in the image:
 
-- go{{ image.version }}-race
+- go{{ image.tag_version }}-race
 - make
 
 {% include 'licensing_and_eula.j2' %}

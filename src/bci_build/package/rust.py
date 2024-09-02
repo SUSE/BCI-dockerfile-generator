@@ -53,7 +53,9 @@ RUST_CONTAINERS = [
             f"cargo{rust_version}",
         ]
         + os_version.lifecycle_data_pkg,
-        version=rust_version,
+        version="%%RUST_VERSION%%",
+        tag_version=rust_version,
+        additional_versions=["%%RUST_VERSION%%"],
         env={
             "RUST_VERSION": "%%RUST_VERSION%%",
             "CARGO_VERSION": "%%CARGO_VERSION%%",
