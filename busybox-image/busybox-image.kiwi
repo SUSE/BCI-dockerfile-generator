@@ -21,7 +21,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE BCI Framework One BusyBox Container Image</specification>
+    <specification>SLE BCI 16 BusyBox Container Image</specification>
   </description>
   <preferences>
     <type image="docker">
@@ -32,8 +32,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.busybox">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
-            <label name="org.opencontainers.image.title" value="SLE BCI Framework One BusyBox"/>
-            <label name="org.opencontainers.image.description" value="Framework One BusyBox container based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI 16 BusyBox"/>
+            <label name="org.opencontainers.image.description" value="16 BusyBox container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
