@@ -1448,17 +1448,18 @@ class DevelopmentContainer(BaseContainerImage):
     def build_version(self) -> str | None:
         build_ver = super().build_version
         if build_ver:
-            # if self.version is a numeric version and not a macro, then
+            container_version: str = self.tag_version
+            # if container_version is a numeric version and not a macro, then
             # version.parse() returns a `Version` object => then we concatenate
             # it with the existing build_version
             # for non PEP440 versions, we'll get an exception and just return
             # the parent's classes build_version
             try:
-                version.parse(str(self.version))
+                version.parse(str(container_version))
                 stability_suffix: str = ""
                 if self._stability_suffix:
                     stability_suffix = "." + self._stability_suffix
-                return f"{build_ver}.{self.version}{stability_suffix}"
+                return f"{build_ver}.{container_version}{stability_suffix}"
             except version.InvalidVersion:
                 return build_ver
         return None
