@@ -196,6 +196,7 @@ class DotNetBCI(DevelopmentContainer):
         self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
 
         self._min_release_counter = {"8.0": 20, "6.0": 32}[str(self.version)]
+        self._custom_test_env = "dotnet"
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and

@@ -187,6 +187,7 @@ zypper -n in ${{extensions[*]}}
         },
         custom_end=custom_end,
         _min_release_counter=30,
+        _custom_test_env="php",
     )
 
 
