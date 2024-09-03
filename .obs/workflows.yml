@@ -23,6 +23,30 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: aspnet-runtime-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: aspnet-runtime-8.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: dotnet-runtime-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: dotnet-runtime-8.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: dotnet-6.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: dotnet-8.0
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: gcc-13-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -111,6 +135,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: postgres-16-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: prometheus-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -191,6 +219,24 @@ refresh_devel_BCI:
         package: busybox-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: aspnet-runtime-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: aspnet-runtime-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: dotnet-runtime-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: dotnet-runtime-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: dotnet-6.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: dotnet-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: gcc-13-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -255,6 +301,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: sac-postfix-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: postgres-16-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: prometheus-image

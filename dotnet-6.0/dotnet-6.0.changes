@@ -1,0 +1,244 @@
+-------------------------------------------------------------------
+Tue Sep  3 08:26:54 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- SP7 version of the package
+
+-------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
+Wed Aug 14 05:57:58 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- new upstream release 6.0.33
+
+-------------------------------------------------------------------
+Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add oci.image.ref.name
+
+-------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
+Mon Aug  5 11:38:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add OCI reference annotation
+
+-------------------------------------------------------------------
+Sat Aug  3 08:56:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
+Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update SLSA badge to v1.0 in README.md
+
+-------------------------------------------------------------------
+Thu Jul 25 14:44:10 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- extend README
+
+-------------------------------------------------------------------
+Wed Jul 10 08:17:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- New version 6.0.32
+
+-------------------------------------------------------------------
+Tue Jul  2 11:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set buildrelease to make lang and app containers newer than sp5
+
+-------------------------------------------------------------------
+Wed Jun 12 10:12:27 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add EoL dates aligned with upstream
+
+-------------------------------------------------------------------
+Wed Jun  5 16:34:41 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- lock dotnet-host only within the minor version
+
+-------------------------------------------------------------------
+Wed Jun  5 15:10:31 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Don't add artifacthub labels into labelprefix section
+
+-------------------------------------------------------------------
+Mon Jun  3 15:53:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set release stage to released, which updates READMEs and support status to its final state
+
+-------------------------------------------------------------------
+Fri May 31 09:11:58 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.31
+
+-------------------------------------------------------------------
+Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
+Wed May 15 06:40:51 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- update to 6.0.30
+
+-------------------------------------------------------------------
+Wed Apr 10 06:21:58 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- new release 6.0.29
+
+-------------------------------------------------------------------
+Wed Mar 13 07:57:54 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.28
+
+-------------------------------------------------------------------
+Fri Mar  1 12:29:57 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Explicitly add the libopenssl1_1 dependency
+
+-------------------------------------------------------------------
+Wed Feb 14 08:27:41 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.27
+
+-------------------------------------------------------------------
+Tue Feb  6 11:06:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Simplify copy of the repository during build
+
+-------------------------------------------------------------------
+Sat Feb  3 10:25:19 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update link to bci specific landing page
+
+-------------------------------------------------------------------
+Wed Jan 17 14:30:09 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Add initial README stub
+
+-------------------------------------------------------------------
+Thu Jan 11 07:49:21 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.26
+
+-------------------------------------------------------------------
+Tue Jan  9 16:47:44 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Remove obsolete com.suse.image-type label
+
+-------------------------------------------------------------------
+Tue Jan  2 08:30:24 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update year to 2024
+
+-------------------------------------------------------------------
+Wed Nov 15 11:26:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.25
+
+-------------------------------------------------------------------
+Wed Oct 25 07:40:58 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.24
+
+-------------------------------------------------------------------
+Wed Oct 11 09:25:32 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.23
+
+-------------------------------------------------------------------
+Thu Sep 28 14:29:18 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add copyright and description header
+
+-------------------------------------------------------------------
+Fri Sep 22 09:32:25 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- add buildname when buildversion is set otherwise OBS ignores it
+
+-------------------------------------------------------------------
+Fri Sep 15 15:53:04 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- new runtime-deps release
+
+-------------------------------------------------------------------
+Wed Sep 13 04:50:30 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- New upstream release
+
+-------------------------------------------------------------------
+Wed Aug  9 06:29:29 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.21
+
+-------------------------------------------------------------------
+Wed Jul 12 08:19:28 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.20
+
+-------------------------------------------------------------------
+Fri Jun 23 13:44:59 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- label capitalization and other cleanups
+
+-------------------------------------------------------------------
+Fri Jun 23 06:47:27 UTC 2023 - Dirk Mueller <dmueller@suse.com>
+
+- update to latest dotnet release 6.0.19
+
+-------------------------------------------------------------------
+Thu Jun 15 13:44:18 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Set BuildVersion so that containers sort higher than those from SP4
+
+-------------------------------------------------------------------
+Wed Jun 14 07:07:08 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.18
+
+-------------------------------------------------------------------
+Tue Jun 13 15:45:53 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Mark SP5 based containers as released
+
+-------------------------------------------------------------------
+Tue May 30 06:51:30 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Fix lifecycle url
+
+-------------------------------------------------------------------
+Wed Apr 12 10:21:41 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.16
+
+-------------------------------------------------------------------
+Wed Mar 15 07:50:50 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.15
+
+-------------------------------------------------------------------
+Wed Mar  8 11:00:02 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Update package download URLs
+
+-------------------------------------------------------------------
+Fri Mar  3 07:27:34 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- Add org.opencontainers.image.source label set to %SOURCEURL%
+
+-------------------------------------------------------------------
+Wed Feb 15 13:25:20 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 6.0.14
+
+-------------------------------------------------------------------
+Tue Feb  7 10:07:46 UTC 2023 - Dan Čermák <dcermak@suse.com>
+
+- First version of the .Net 6.0 container
