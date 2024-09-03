@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  3 08:11:02 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- update entrypoint scripts from upstream
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the MariaDB Server BCI

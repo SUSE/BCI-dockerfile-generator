@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  3 08:11:02 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- update entrypoint scripts from upstream
+
+-------------------------------------------------------------------
 Mon Sep 02 14:19:06 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the .NET SDK 8.0 BCI
