@@ -1,9 +1,134 @@
 -------------------------------------------------------------------
-Tue Sep  3 08:11:02 UTC 2024 - Dan Čermák <dcermak@suse.com>
+Tue Sep  3 08:26:33 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
-- update entrypoint scripts from upstream
+- SP7 version of the package
 
 -------------------------------------------------------------------
-Mon Sep 02 14:19:06 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
-- First version of the ASP.NET Core Runtime 8.0 BCI
+- install packages first
+
+-------------------------------------------------------------------
+Wed Aug 14 05:58:59 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- new upstream release 8.0.8
+
+-------------------------------------------------------------------
+Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add oci.image.ref.name
+
+-------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
+Mon Aug  5 11:38:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add OCI reference annotation
+
+-------------------------------------------------------------------
+Sat Aug  3 08:56:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
+Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update SLSA badge to v1.0 in README.md
+
+-------------------------------------------------------------------
+Thu Jul 25 14:44:10 UTC 2024 - Alexandre Vicenzi <alexandre.vicenzi@suse.com>
+
+- extend README
+
+-------------------------------------------------------------------
+Wed Jul 10 08:17:52 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- New version 8.0.7
+
+-------------------------------------------------------------------
+Tue Jul  2 11:27:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set buildrelease to make lang and app containers newer than sp5
+
+-------------------------------------------------------------------
+Tue Jun 25 10:05:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- move latest tag to sp6 based containers
+
+-------------------------------------------------------------------
+Wed Jun 12 10:12:27 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add EoL dates aligned with upstream
+
+-------------------------------------------------------------------
+Wed Jun  5 16:34:41 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- lock dotnet-host only within the minor version
+
+-------------------------------------------------------------------
+Wed Jun  5 15:10:31 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Don't add artifacthub labels into labelprefix section
+
+-------------------------------------------------------------------
+Mon Jun  3 15:53:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set release stage to released, which updates READMEs and support status to its final state
+
+-------------------------------------------------------------------
+Fri May 31 09:11:28 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 8.0.6
+
+-------------------------------------------------------------------
+Wed May 15 15:50:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Switch FROM build tag from suse/sle15 to bci/bci-base
+
+-------------------------------------------------------------------
+Wed May 15 06:41:20 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- update to 8.0.5
+
+-------------------------------------------------------------------
+Wed Apr 10 06:21:38 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- New release 8.0.4
+
+-------------------------------------------------------------------
+Wed Mar 13 07:58:32 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 8.0.3
+
+-------------------------------------------------------------------
+Fri Mar  1 12:29:57 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Explicitly add the libopenssl1_1 dependency
+
+-------------------------------------------------------------------
+Wed Feb 14 08:28:41 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- New upstream release 8.0.2
+
+-------------------------------------------------------------------
+Tue Feb  6 11:06:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add app user and environment variables for .Net 8
+
+-------------------------------------------------------------------
+Sat Feb  3 10:25:19 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update link to bci specific landing page
+
+-------------------------------------------------------------------
+Wed Jan 17 14:30:09 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Add initial README stub
+
+-------------------------------------------------------------------
+Thu Jan 11 09:24:13 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the ASP.NET 8.0 runtime BCI
