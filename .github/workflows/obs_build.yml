@@ -12,12 +12,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        no_build:
+          - false
         os_version:
           - 7
           - 6
           - 5
           - "16.0"
           - Tumbleweed
+
+        include:
+          - os_version: 3
+            no_build: true
+          - os_version: 4
+            no_build: true
 
     steps:
       # we need all branches for the build checks
@@ -83,7 +91,7 @@ jobs:
               --os-version ${{ matrix.os_version }} \
               --branch-name="${{ matrix.os_version }}-${{ github.event.pull_request.number }}" \
               -vvvv \
-              scratch_build \
+              ${{ matrix.no_build && 'commit_state' || 'scratch_build' }} \
                 --commit-message='Test build for #${{ github.event.pull_request.number }}' \
             | tee info
           if grep -q "No changes" info; then
@@ -106,19 +114,20 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           # !!! if you change the body, then you must adjust StagingBot.from_github_comment() !!!
           body: |
-            Created a staging project on OBS for ${{ matrix.os_version }}: [${{ env.PROJECT_NAME }}](${{ env.PROJECT_URL }})
+            Rendered the templates for ${{ matrix.os_version }}
             Changes pushed to branch [`${{ env.BRANCH_NAME }}`](https://github.com/SUSE/BCI-dockerfile-generator/tree/${{ env.BRANCH_NAME }}) as commit [`${{ env.DEPLOYMENT_COMMIT_HASH }}`](https://github.com/SUSE/BCI-dockerfile-generator/commit/${{ env.DEPLOYMENT_COMMIT_HASH }})
+            ${{ (matrix.no_build || format('Created a staging project on OBS: [{0}]({1})', env.PROJECT_NAME, env.PROJECT_URL)) && '' }}
 
       - name: wait for the build to finish
         run: poetry run scratch-build-bot -vvvv wait
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
-        if: env.no_change != 'true'
+        if: ${{ (env.no_change != 'true') && (! matrix.no_build) }}
 
       - name: Install crane to list images on the registry
         uses: imjasonh/setup-crane@v0.4
-        if: env.no_change != 'true'
+        if: ${{ (env.no_change != 'true') && (! matrix.no_build) }}
 
       - name: retrieve the build result
         run: |
@@ -150,10 +159,10 @@ jobs:
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
-        if: env.no_change != 'true'
+        if: ${{ (env.no_change != 'true') && (! matrix.no_build) }}
 
       - name: report the finished build
-        if: env.no_change != 'true'
+        if: ${{ (env.no_change != 'true') && (! matrix.no_build) }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -167,7 +176,7 @@ jobs:
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "defolos"
-        if: env.no_change != 'true'
+        if: ${{ (env.no_change != 'true') && (! matrix.no_build) }}
 
       - name: cleanup the branches if no functional changes were commited or the build was cancelled
         run: poetry run scratch-build-bot -vvvv -l cleanup
