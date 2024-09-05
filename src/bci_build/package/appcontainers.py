@@ -421,13 +421,24 @@ GIT_CONTAINERS = [
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%git_version%%",
+        tag_version="%%git_minor_version%%",
+        additional_versions=["%%git_major_version%%", "%%git_version%%"],
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%git_version%%",
                 package_name="git-core",
+            ),
+            Replacement(
+                regex_in_build_description="%%git_major_version%%",
+                package_name="git-core",
+                parse_version=ParseVersion.MAJOR,
+            ),
+            Replacement(
+                regex_in_build_description="%%git_minor_version%%",
+                package_name="git-core",
                 parse_version=ParseVersion.MINOR,
-            )
+            ),
         ],
         license="GPL-2.0-only",
         package_list=[
