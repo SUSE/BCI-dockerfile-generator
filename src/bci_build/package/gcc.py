@@ -35,7 +35,7 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
 
 
 def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
-    if os_version == OsVersion.TUMBLEWEED and gcc_version == 13:
+    if os_version == OsVersion.TUMBLEWEED and gcc_version == 14:
         return True
     if os_version.is_sle15 and gcc_version == 7:
         return True
