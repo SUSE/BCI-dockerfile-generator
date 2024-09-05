@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  4 11:25:45 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- update healtcheck.sh script from upstream
+
+-------------------------------------------------------------------
 Tue Sep  3 08:11:02 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - update entrypoint scripts from upstream
