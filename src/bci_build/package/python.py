@@ -57,8 +57,9 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     kwargs = {
         "name": "python",
         "pretty_name": f"Python {py3_ver} development",
-        "version": py3_ver,
-        "additional_versions": ["3"],
+        "version": py3_ver_replacement,
+        "tag_version": py3_ver,
+        "additional_versions": ["3", py3_ver_replacement],
         "env": {
             "PYTHON_VERSION": py3_ver_replacement,
             "PATH": "$PATH:/root/.local/bin",
