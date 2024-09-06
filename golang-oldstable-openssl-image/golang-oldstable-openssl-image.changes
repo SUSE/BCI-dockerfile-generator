@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  6 11:29:43 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use full version in version label
+
+-------------------------------------------------------------------
 Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first

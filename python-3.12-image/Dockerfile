@@ -18,6 +18,8 @@
 #!BuildTag: bci/python:3.12-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
+#!BuildTag: bci/python:%%py312_ver%%
+#!BuildTag: bci/python:%%py312_ver%%-%RELEASE%
 #!BuildTag: bci/python:latest
 #!BuildName: bci-python-3.12
 #!BuildVersion: 15.6.3.12
@@ -31,7 +33,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends python312-devel python312 py
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Python 3.12 development"
 LABEL org.opencontainers.image.description="Python 3.12 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="3.12"
+LABEL org.opencontainers.image.version="%%py312_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"

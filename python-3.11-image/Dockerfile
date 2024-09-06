@@ -18,6 +18,8 @@
 #!BuildTag: bci/python:3.11-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
+#!BuildTag: bci/python:%%py311_ver%%
+#!BuildTag: bci/python:%%py311_ver%%-%RELEASE%
 #!BuildName: bci-python-3.11
 #!BuildVersion: 15.6.3.11
 #!BuildRelease: 41
@@ -30,7 +32,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends python311-devel python311 py
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Python 3.11 development"
 LABEL org.opencontainers.image.description="Python 3.11 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="3.11"
+LABEL org.opencontainers.image.version="%%py311_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"

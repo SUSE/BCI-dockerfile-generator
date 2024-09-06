@@ -18,6 +18,8 @@
 #!BuildTag: bci/python:3.6-%RELEASE%
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:3-%RELEASE%
+#!BuildTag: bci/python:%%py36_ver%%
+#!BuildTag: bci/python:%%py36_ver%%-%RELEASE%
 #!BuildName: bci-python-3.6
 #!BuildVersion: 15.6.3.6
 #!BuildRelease: 41
@@ -30,7 +32,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends python3-devel python3 python
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Python 3.6 development"
 LABEL org.opencontainers.image.description="Python 3.6 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="3.6"
+LABEL org.opencontainers.image.version="%%py36_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
