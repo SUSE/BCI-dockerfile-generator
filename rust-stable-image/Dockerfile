@@ -18,6 +18,8 @@
 #!BuildTag: bci/rust:stable-1.%RELEASE%
 #!BuildTag: bci/rust:1.80
 #!BuildTag: bci/rust:1.80-1.%RELEASE%
+#!BuildTag: bci/rust:%%RUST_VERSION%%
+#!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
 #!BuildTag: bci/rust:latest
 #!BuildName: bci-rust-stable
 #!BuildVersion: 15.6.1.80.1
@@ -30,7 +32,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends rust1.80 cargo1.80 lifecycle
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Rust 1.80"
 LABEL org.opencontainers.image.description="Rust 1.80 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="1.80"
+LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
