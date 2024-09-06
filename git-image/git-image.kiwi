@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: suse/git:%%git_version%% suse/git:%%git_version%%-%RELEASE% suse/git:latest -->
+<!-- OBS-AddTag: suse/git:%%git_minor_version%% suse/git:%%git_minor_version%%-%RELEASE% suse/git:%%git_major_version%% suse/git:%%git_major_version%%-%RELEASE% suse/git:%%git_version%% suse/git:%%git_version%%-%RELEASE% suse/git:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="git-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -27,8 +27,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.6">
       <containerconfig
           name="suse/git"
-          tag="%%git_version%%"
-          additionaltags="%%git_version%%-%RELEASE%,latest">
+          tag="%%git_minor_version%%"
+          additionaltags="%%git_minor_version%%-%RELEASE%,%%git_major_version%%,%%git_major_version%%-%RELEASE%,%%git_version%%,%%git_version%%-%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.git">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
@@ -39,8 +39,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
-            <label name="org.opencontainers.image.ref.name" value="%%git_version%%-%RELEASE%"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/suse/git:%%git_version%%-%RELEASE%"/>
+            <label name="org.opencontainers.image.ref.name" value="%%git_minor_version%%-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/suse/git:%%git_minor_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="l3"/>
             <label name="com.suse.eula" value="sle-eula"/>
