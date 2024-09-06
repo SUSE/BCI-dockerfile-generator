@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  6 11:29:43 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use full version in version label
+
+-------------------------------------------------------------------
 Fri Aug 16 16:00:10 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - add disk space constraints
