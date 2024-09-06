@@ -18,6 +18,8 @@
 #!BuildTag: bci/golang:stable-1.%RELEASE%
 #!BuildTag: bci/golang:1.23
 #!BuildTag: bci/golang:1.23-1.%RELEASE%
+#!BuildTag: bci/golang:%%golang_version%%
+#!BuildTag: bci/golang:%%golang_version%%-1.%RELEASE%
 #!BuildName: bci-golang-stable
 #!BuildVersion: 15.7.1.23.1
 FROM bci/bci-base:15.7
@@ -29,7 +31,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends go1.23 go1.23-doc make curl 
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Go 1.23 development"
 LABEL org.opencontainers.image.description="Go 1.23 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="1.23"
+LABEL org.opencontainers.image.version="%%golang_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
