@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  6 11:29:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use full version in version label
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Rust 1.79 BCI

@@ -16,8 +16,12 @@
 
 #!BuildTag: bci/nodejs:20
 #!BuildTag: bci/nodejs:20-%RELEASE%
+#!BuildTag: bci/nodejs:%%nodejs_version%%
+#!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:20
 #!BuildTag: bci/node:20-%RELEASE%
+#!BuildTag: bci/node:%%nodejs_version%%
+#!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.7.20
 FROM bci/bci-base:15.7
@@ -29,7 +33,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends nodejs20 npm20 update-altern
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI Node.js 20 development"
 LABEL org.opencontainers.image.description="Node.js 20 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="20"
+LABEL org.opencontainers.image.version="%%nodejs_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
