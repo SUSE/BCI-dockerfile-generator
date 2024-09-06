@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  6 08:23:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Use the major-minor version as the main tag
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP7 with Git BCI
