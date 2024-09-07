@@ -26,14 +26,15 @@ POSTGRES_CONTAINERS = [
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
         package_list=[f"postgresql{ver}-server", "findutils"],
-        version=ver,
-        additional_versions=["%%pg_version%%"],
+        version="%%pg_patch_version%%",
+        tag_version=ver,
+        additional_versions=["%%pg_minor_version%%", "%%pg_patch_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
         cmd=["postgres"],
         env={
             "LANG": "en_US.utf8",
             "PG_MAJOR": f"{ver}",
-            "PG_VERSION": "%%pg_version%%",
+            "PG_VERSION": "%%pg_minor_version%%",
             "PGDATA": "/var/lib/pgsql/data",
         },
         license="PostgreSQL",
@@ -45,10 +46,14 @@ POSTGRES_CONTAINERS = [
         },
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%pg_version%%",
+                regex_in_build_description="%%pg_minor_version%%",
                 package_name=f"postgresql{ver}-server",
                 parse_version=ParseVersion.MINOR,
-            )
+            ),
+            Replacement(
+                regex_in_build_description="%%pg_patch_version%%",
+                package_name=f"postgresql{ver}-server",
+            ),
         ],
         volumes=["$PGDATA"],
         exposes_tcp=[5432],
