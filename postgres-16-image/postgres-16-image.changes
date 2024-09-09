@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  9 07:23:19 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set full version on labels and tags
+
+-------------------------------------------------------------------
 Tue Sep  3 08:11:02 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - update entrypoint scripts from upstream
