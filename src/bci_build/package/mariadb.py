@@ -26,7 +26,7 @@ if ! id -u "$u" > /dev/null 2>&1; then
     exit 1
 fi
 
-exec setpriv --reuid="$u" --regid="$u" --clear-groups -- "$@"
+exec setpriv --pdeathsig=keep --reuid="$u" --regid="$u" --clear-groups -- "$@"
 """
 
 MARIADB_CONTAINERS = []
@@ -90,6 +90,7 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
                 "timezone",
                 "util-linux",
                 "findutils",
+                "zstd",
             ],
             entrypoint=[_ENTRYPOINT_FNAME],
             license="GPL-2.0-only",
