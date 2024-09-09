@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  9 13:55:43 UTC 2024 - Madhankumar Chellamuthu <madhankumar.chellamuthu@suse.com>
+
+- add zstd for the upgrade scenario and fix signal handling
+
+-------------------------------------------------------------------
 Wed Sep  4 11:25:45 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - update healtcheck.sh script from upstream
