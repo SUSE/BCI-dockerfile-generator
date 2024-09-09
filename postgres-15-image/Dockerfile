@@ -16,8 +16,10 @@
 
 #!BuildTag: suse/postgres:15
 #!BuildTag: suse/postgres:15-%RELEASE%
-#!BuildTag: suse/postgres:%%pg_version%%
-#!BuildTag: suse/postgres:%%pg_version%%-%RELEASE%
+#!BuildTag: suse/postgres:%%pg_minor_version%%
+#!BuildTag: suse/postgres:%%pg_minor_version%%-%RELEASE%
+#!BuildTag: suse/postgres:%%pg_patch_version%%
+#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
 #!BuildName: suse-postgres-15
 #!BuildVersion: 15.5.15
 FROM suse/sle15:15.5
@@ -29,7 +31,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends postgresql15-server findutil
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE PostgreSQL 15"
 LABEL org.opencontainers.image.description="PostgreSQL 15 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="15"
+LABEL org.opencontainers.image.version="%%pg_patch_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
@@ -45,7 +47,7 @@ LABEL com.suse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV LANG="en_US.utf8"
 ENV PG_MAJOR="15"
-ENV PG_VERSION="%%pg_version%%"
+ENV PG_VERSION="%%pg_minor_version%%"
 ENV PGDATA="/var/lib/pgsql/data"
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
