@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: bci/bci-micro:%OS_VERSION_ID_SP% bci/bci-micro:%OS_VERSION_ID_SP%.%RELEASE% bci/bci-micro:latest -->
+<!-- OBS-AddTag: bci/bci-micro:%OS_VERSION_ID_SP% bci/bci-micro:%OS_VERSION_ID_SP%.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="micro-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -28,7 +28,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="bci/bci-micro"
           tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.micro">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>

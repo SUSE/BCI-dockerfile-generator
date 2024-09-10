@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 10 15:08:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove latest tag from unreleased sle16 containers
+
+-------------------------------------------------------------------
 Fri Aug 23 10:39:00 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - Correct distribution name
