@@ -155,6 +155,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: podman-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: postfix-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -352,6 +356,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: php-fpm8-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: podman-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postfix-image
