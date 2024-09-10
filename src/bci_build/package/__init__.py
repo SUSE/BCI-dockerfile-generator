@@ -305,7 +305,6 @@ ALL_OS_VERSIONS: set[OsVersion] = {
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
-    OsVersion.SLE16_0,
 ]
 
 
