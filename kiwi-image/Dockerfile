@@ -20,7 +20,6 @@
 #!BuildTag: bci/kiwi:10.1-%RELEASE%
 #!BuildTag: bci/kiwi:10.1.5
 #!BuildTag: bci/kiwi:10.1.5-%RELEASE%
-#!BuildTag: bci/kiwi:latest
 
 FROM bci/bci-base:16.0
 
