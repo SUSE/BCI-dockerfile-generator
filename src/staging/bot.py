@@ -1,5 +1,6 @@
 import asyncio
 import itertools
+import json
 import os
 import random
 import string
@@ -30,6 +31,7 @@ from obs_package_update.util import CommandError
 from obs_package_update.util import CommandResult
 from obs_package_update.util import RunCommand
 from obs_package_update.util import retry_async_run_cmd
+from oras.client import OrasClient
 
 from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
@@ -1089,6 +1091,52 @@ updates:
             flattened_file_list.extend(file_list)
         return flattened_file_list
 
+    def fetch_container_urls(self) -> list[str]:
+        """Fetch the full urls to all published containers in the staging
+        project including their most relevant tag (either ``latest`` or the
+        first tag). Querying a staging project without published images results
+        in a ``RuntimeError``.
+
+        """
+        client = OrasClient("registry.opensuse.org")
+        all_repos = json.loads(
+            client.do_request(f"{client.prefix}://{client.hostname}/v2/_catalog").text
+        )["repositories"]
+
+        registry_prefix = self.staging_project_name.lower().replace(":", "/")
+
+        ctr_image_paths = [
+            image_path
+            for image_path in all_repos
+            if image_path.startswith(registry_prefix)
+        ]
+
+        if not ctr_image_paths:
+            raise RuntimeError(f"No images published with the prefix {registry_prefix}")
+
+        full_urls = []
+        for ctr_path in ctr_image_paths:
+            tags = client.get_tags(ctr_path)
+            if "latest" in tags:
+                tag = "latest"
+            else:
+                tag = tags[0]
+            full_urls.append(f"{client.hostname}/{ctr_path}:{tag}")
+
+        return full_urls
+
+    def container_urls_html(self) -> str:
+        """Pretty print the output of :py:func:`StagingBot.fetch_container_urls`
+        wrapped in a ``<details></details>`` HTML element for GitHub.
+
+        """
+        urls = self.fetch_container_urls()
+        return (
+            "<details><summary>The following images can be pulled from the staging project:</summary>\n\n"
+            + ("\n".join(f"- `{url}`" for url in urls))
+            + "\n</details>"
+        )
+
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
         return RepositoryBuildResult.from_resultlist(
@@ -1526,6 +1574,7 @@ def main() -> None:
         "setup_obs_package",
         "setup_obs_project",
         "find_missing_packages",
+        "get_container_urls",
     ]
 
     parser = argparse.ArgumentParser()
@@ -1708,6 +1757,11 @@ comma-separated list. The package list is taken from the environment variable
         help="Find all packages that are in the deployment branch and are missing from `devel:BCI:*` on OBS",
     )
 
+    subparsers.add_parser(
+        "get_container_urls",
+        help="Get the full urls to the containers built in the staging project",
+    )
+
     loop = asyncio.get_event_loop()
     args = parser.parse_args()
 
@@ -1859,6 +1913,13 @@ comma-separated list. The package list is taken from the environment variable
                 return ", ".join(await bot.find_missing_packages_on_obs())
 
             coro = _pkgs_as_str()
+
+        elif action == "get_container_urls":
+
+            async def _get_container_urls() -> str:
+                return bot.container_urls_html()
+
+            coro = _get_container_urls()
 
         else:
             assert False, f"invalid action: {action}"

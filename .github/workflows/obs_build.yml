@@ -140,11 +140,7 @@ jobs:
 
           echo >> $GITHUB_ENV
           echo >> $GITHUB_ENV
-          echo "<details><summary>The following images can be pulled from the staging project:</summary>" >> $GITHUB_ENV
-          # newline to make markdown happy
-          echo >> $GITHUB_ENV
-          for img in $(crane catalog registry.opensuse.org | grep "^${REGISTRY_PREFIX}"); do echo "- \`registry.opensuse.org/${img}\`" >> $GITHUB_ENV; done
-          echo "</details>" >> $GITHUB_ENV
+          poetry run scratch-build-bot get_container_urls >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
         id: query_build_result
         env:
