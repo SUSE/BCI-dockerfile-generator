@@ -27,8 +27,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
 DOCKERFILE_TEMPLATE = jinja2.Template(
     """# SPDX-License-Identifier: {{ image.license }}
 {{ INFOHEADER }}
-{% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}
-{%- endif %}
+#!UseOBSRepositories
+{% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}{%- endif %}
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
