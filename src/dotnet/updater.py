@@ -356,7 +356,7 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
     return version == _LATEST_DOTNET_VERSION and os_version in CAN_BE_LATEST_OS_VERSION
 
 
-DOTNET_IMAGES: list[DotNetBCI] = []
+DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 for os_version in (OsVersion.SP6, OsVersion.SP7):
     for ver in _DOTNET_VERSIONS:
@@ -377,7 +377,7 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         ):
             package_list.append(f"{pkg}-{ver}")
 
-        DOTNET_IMAGES.append(
+        DOTNET_CONTAINERS.append(
             DotNetBCI(
                 os_version=os_version,
                 tag_version=ver,
@@ -390,7 +390,7 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
             )
         )
 
-    DOTNET_IMAGES.extend(
+    DOTNET_CONTAINERS.extend(
         [
             DotNetBCI(
                 os_version=os_version,
@@ -414,7 +414,7 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         ]
     )
 
-    DOTNET_IMAGES.extend(
+    DOTNET_CONTAINERS.extend(
         [
             DotNetBCI(
                 tag_version=ver,
