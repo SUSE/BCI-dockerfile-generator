@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import Arch
+from bci_build.package import OsVersion
 
 
 @dataclass
@@ -33,6 +34,13 @@ class ApplicationCollectionContainer(ApplicationStackContainer):
         if self.os_version.is_tumbleweed:
             return super().title
         return self.pretty_name
+
+    @property
+    def _from_image(self) -> str | None:
+        if self.os_version.is_tumbleweed or self.os_version == OsVersion.SLE16_0:
+            return super()._from_image
+
+        return f"bci/bci-base:15.{self.os_version}"
 
     def __post_init__(self) -> None:
         super().__post_init__()
