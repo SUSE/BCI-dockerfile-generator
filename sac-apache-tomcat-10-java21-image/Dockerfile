@@ -24,7 +24,7 @@
 #!BuildVersion: 15.6
 #!BuildRelease: 35
 FROM bci/bci-micro:15.6 AS target
-FROM suse/sle15:15.6 AS builder
+FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; zypper --installroot /target --gpg-auto-import-keys  -n in --no-recommends tomcat10 curl sed java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}

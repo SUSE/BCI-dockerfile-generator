@@ -19,7 +19,7 @@
 #!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.6
 #!BuildRelease: 35
-FROM suse/sle15:15.6
+FROM bci/bci-base:15.6
 
 RUN set -euo pipefail; zypper -n in --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed gawk netcfg postfix postfix-ldap postfix-lmdb timezone; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
