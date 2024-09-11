@@ -23,7 +23,7 @@
 #!BuildName: containers-apache-tomcat-10-jre21
 #!BuildVersion: 15.7
 FROM bci/bci-micro:15.7 AS target
-FROM suse/sle15:15.7 AS builder
+FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; zypper --installroot /target --gpg-auto-import-keys  -n in --no-recommends tomcat10 curl sed java-21-openjdk java-21-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
