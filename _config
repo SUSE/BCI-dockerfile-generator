@@ -18,5 +18,8 @@ Patterntype: none
 %endif
 %endif
 
+# Prefer the released image from the registry
+Prefer: -container:micro-image -container:opensuse-tumbleweed-image-docker
+
 # don't rebuild with every release:
 # Substitute: distribution-release openSUSE-release-mini
