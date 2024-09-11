@@ -686,6 +686,13 @@ class BaseContainerImage(abc.ABC):
         return "SUSE LLC"
 
     @property
+    def base_image_registry(self) -> str:
+        """The registry where the base image is available on."""
+        if self.os_version.is_tumbleweed:
+            return "registry.opensuse.org"
+        return "registry.suse.com"
+
+    @property
     def registry(self) -> str:
         """The registry where the image is available on."""
         if self.os_version.is_tumbleweed:
@@ -823,7 +830,7 @@ exit 0
 
         if self.from_target_image:
             return (
-                f"FROM {self.from_target_image} AS target\n"
+                f"FROM {self.base_image_registry}/{self.from_target_image} AS target\n"
                 f"FROM {self._from_image} AS builder"
             )
 
