@@ -18,6 +18,7 @@ aiofiles = ">=22.1"
 obs-package-update = { git = "https://github.com/dcermak/obs-package-update", branch = "main" }
 py-obs = { git = "https://github.com/dcermak/py-obs", branch = "main" }
 GitPython = ">=3.1"
+oras = ">=0.2.2"
 
 [tool.poetry.scripts]
 package = "bci_build.package:main"
