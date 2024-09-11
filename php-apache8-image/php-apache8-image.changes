@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 11 08:07:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use full version in php container labels
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the PHP-Apache 8 BCI
