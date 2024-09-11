@@ -36,25 +36,31 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
 {% for prj, repo in repository_paths %}    <path project="{{ prj }}" repository="{{ repo }}"/>
 {% endfor %}    <arch>x86_64</arch>
     <arch>aarch64</arch>
-{% if with_all_arches %}    <arch>s390x</arch>
-    <arch>ppc64le</arch>{% endif %}
+{%- if with_all_arches %}
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+{%- endif %}
   </repository>
   <repository name="images">
     <path project="{{ project_name }}" repository="containerfile"/>
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
-    <arch>aarch64</arch>{% if with_all_arches %}
+    <arch>aarch64</arch>
+{%- if with_all_arches %}
     <arch>s390x</arch>
-    <arch>ppc64le</arch>{% endif %}
+    <arch>ppc64le</arch>
+{%- endif %}
   </repository>{% if with_product_repo %}
   <repository name="product">
     <path project="{{ project_name }}" repository="containerfile"/>
     <path project="{{ project_name }}" repository="images"/>
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
-    <arch>aarch64</arch>{% if with_all_arches %}
+    <arch>aarch64</arch>
+{%- if with_all_arches %}
     <arch>s390x</arch>
-    <arch>ppc64le</arch>{% endif %}
+    <arch>ppc64le</arch>
+{%- endif %}
   </repository>{% endif %}{% if with_helmcharts_repo %}
   <repository name="helmcharts">
     <path project="{{ project_name }}" repository="standard"/>
@@ -64,9 +70,11 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
     <path project="{{ project_name }}" repository="images"/>
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
-    <arch>aarch64</arch>{% if with_all_arches %}
+    <arch>aarch64</arch>
+{%- if with_all_arches %}
     <arch>s390x</arch>
-    <arch>ppc64le</arch>{% endif %}
+    <arch>ppc64le</arch>
+{%- endif %}
   </repository>
 </project>
 """)
