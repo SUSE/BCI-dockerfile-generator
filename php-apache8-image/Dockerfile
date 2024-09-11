@@ -16,6 +16,8 @@
 
 #!BuildTag: bci/php-apache:8
 #!BuildTag: bci/php-apache:8-%RELEASE%
+#!BuildTag: bci/php-apache:%%php_version%%
+#!BuildTag: bci/php-apache:%%php_version%%-%RELEASE%
 #!BuildTag: bci/php-apache:latest
 #!BuildName: bci-php-apache-8
 #!BuildVersion: 15.6.8
@@ -29,7 +31,7 @@ RUN set -euo pipefail; zypper -n in php8 php8-cli php-composer2 php8-curl php8-z
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI PHP-Apache 8"
 LABEL org.opencontainers.image.description="PHP-Apache 8 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="8"
+LABEL org.opencontainers.image.version="%%php_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
