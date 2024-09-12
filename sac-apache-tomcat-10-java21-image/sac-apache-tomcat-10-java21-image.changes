@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 06:14:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use redistributable base container
+
+-------------------------------------------------------------------
 Wed Aug 14 16:03:33 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - extend description
