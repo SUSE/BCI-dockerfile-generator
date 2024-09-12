@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:09 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Tue Sep 10 15:08:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove latest tag from unreleased sle16 containers
