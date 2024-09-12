@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
+#!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 #!BuildTag: bci/openjdk-devel:17
 #!BuildTag: bci/openjdk-devel:17-%RELEASE%
