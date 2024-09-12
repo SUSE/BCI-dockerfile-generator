@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:09 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Thu Sep 12 06:20:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - new kiwi version
