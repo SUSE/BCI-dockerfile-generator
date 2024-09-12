@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 06:13:49 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use redistributable base container
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Postfix BCI
