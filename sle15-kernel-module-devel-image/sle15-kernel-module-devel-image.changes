@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Sun Aug 18 13:33:30 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - extend README
