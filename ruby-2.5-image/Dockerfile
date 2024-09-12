@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
+#!UseOBSRepositories
 
 #!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2.5-%RELEASE%
