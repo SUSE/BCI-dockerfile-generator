@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Sun Aug 18 13:20:28 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - dotnet sdk update

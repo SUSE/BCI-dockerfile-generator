@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Tue Aug 27 12:29:03 UTC 2024 - Marcus Meissner <meissner@suse.com>
 
 - Force GNUTLS FIPS mode too

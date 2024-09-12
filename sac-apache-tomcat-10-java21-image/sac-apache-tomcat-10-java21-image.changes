@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Thu Sep 12 06:14:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - use redistributable base container

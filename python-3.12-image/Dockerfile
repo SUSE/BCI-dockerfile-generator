@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
+#!UseOBSRepositories
 
 #!BuildTag: bci/python:3.12
 #!BuildTag: bci/python:3.12-%RELEASE%

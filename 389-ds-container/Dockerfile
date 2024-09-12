@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
+#!UseOBSRepositories
 
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
