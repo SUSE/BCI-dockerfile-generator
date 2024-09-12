@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 06:35:33 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set full version in labels of mariadb* container
+
+-------------------------------------------------------------------
 Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the MariaDB Client BCI
