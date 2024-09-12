@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 10:37:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
 Tue Sep  3 08:27:42 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - SP7 version of the package
