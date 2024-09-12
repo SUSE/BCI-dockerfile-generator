@@ -26,7 +26,7 @@ VALKEY_CONTAINERS = [
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%redis_version%%", package_name="valkey"
+                regex_in_build_description="%%valkey_version%%", package_name="valkey"
             )
         ],
         license="Apache-2.0",
