@@ -18,8 +18,8 @@
 #!BuildTag: bci/kiwi:10-%RELEASE%
 #!BuildTag: bci/kiwi:10.1
 #!BuildTag: bci/kiwi:10.1-%RELEASE%
-#!BuildTag: bci/kiwi:10.1.5
-#!BuildTag: bci/kiwi:10.1.5-%RELEASE%
+#!BuildTag: bci/kiwi:10.1.8
+#!BuildTag: bci/kiwi:10.1.8-%RELEASE%
 
 FROM bci/bci-base:16.0
 
@@ -30,7 +30,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends checkmedia dracut-kiwi-oem-r
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI KIWI Appliance Builder (kiwi)"
 LABEL org.opencontainers.image.description="KIWI Appliance Builder (kiwi) container based on the SLE Base Container Image. This container is only supported in privileged mode."
-LABEL org.opencontainers.image.version="10.1.5"
+LABEL org.opencontainers.image.version="10.1.8"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
