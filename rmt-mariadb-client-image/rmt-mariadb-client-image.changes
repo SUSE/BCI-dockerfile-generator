@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 06:35:48 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set full version in labels of mariadb* container
+
+-------------------------------------------------------------------
 Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install packages first
