@@ -20,6 +20,7 @@ from bci_build.templates import KIWI_TEMPLATE
         (
             """# SPDX-License-Identifier: MIT
 # Copyright header
+#!UseOBSRepositories
 
 #!BuildTag: bci/test:27
 #!BuildTag: bci/test:27-%RELEASE%
@@ -123,6 +124,7 @@ RUN emacs -Q --batch test.el
         (
             """# SPDX-License-Identifier: MIT
 # Copyright header
+#!UseOBSRepositories
 
 #!BuildTag: bci/test:stable
 #!BuildTag: bci/test:stable-1.%RELEASE%
@@ -221,6 +223,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
         (
             """# SPDX-License-Identifier: MIT
 # Copyright header
+#!UseOBSRepositories
 
 #!BuildTag: bci/test:29
 #!BuildTag: bci/test:29-%RELEASE%
@@ -318,6 +321,7 @@ USER emacs""",
         (
             """# SPDX-License-Identifier: BSD
 # Copyright header
+#!UseOBSRepositories
 #!ExclusiveArch: x86_64 s390x
 #!BuildTag: opensuse/bci/test:28.2
 #!BuildTag: opensuse/bci/test:28.2-%RELEASE%
