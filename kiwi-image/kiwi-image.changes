@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 12 06:20:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- new kiwi version
+
+-------------------------------------------------------------------
 Tue Sep 10 15:08:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove latest tag from unreleased sle16 containers
