@@ -6,18 +6,18 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
-from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
 
 from .appcollection import ApplicationCollectionContainer
 
-_TOMCAT_VERSIONS: list[int] = [9, 10]
-assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS)
+# last version needs to be the newest
+_TOMCAT_VERSIONS: list[str] = ["9", "10.1"]
+assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS, key=float)
 
 
 def _get_sac_supported_until(
-    os_version: OsVersion, tomcat_major: int, jre_major: int
+    os_version: OsVersion, tomcat_ver: str, jre_major: int
 ) -> datetime.date:
     """Return the predicted minimum end of support date for this os/tomcat/jre combination. We pick
     the minimum time that either the given tomcat or JRE is known to be supported."""
@@ -31,28 +31,28 @@ def _get_sac_supported_until(
         11: datetime.date(2026, 12, 31),
     }
     # We do not have a documented policy, for now we do 3 years from initial publishing
-    tomcat_end_support_dates: dict[int, datetime.date] = {
-        9: datetime.date(2024 + 3, 2, 1),
-        10: datetime.date(2024 + 3, 7, 1),
+    tomcat_end_support_dates: dict[str, datetime.date] = {
+        "9": datetime.date(2024 + 3, 2, 1),
+        "10.1": datetime.date(2024 + 3, 7, 1),
     }
     # If neither is specified we can not determine a minimum
     if (
-        tomcat_end_support_dates.get(tomcat_major) is None
+        tomcat_end_support_dates.get(tomcat_ver) is None
         and jre_end_support_dates.get(jre_major) is None
     ):
         return None
     return min(
         jre_end_support_dates.get(jre_major, datetime.date.max),
-        tomcat_end_support_dates.get(tomcat_major, datetime.date.max),
+        tomcat_end_support_dates.get(tomcat_ver, datetime.date.max),
     )
 
 
 TOMCAT_CONTAINERS = [
     ApplicationCollectionContainer(
         name="apache-tomcat",
-        package_name=f"apache-tomcat-{tomcat_major}-java-{jre_version}-image"
+        package_name=f"apache-tomcat-{tomcat_ver.partition('.')[0]}-java-{jre_version}-image"
         if os_version.is_tumbleweed
-        else f"sac-apache-tomcat-{tomcat_major}-java{jre_version}-image",
+        else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-java{jre_version}-image",
         pretty_name="Apache Tomcat",
         custom_description=(
             "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
@@ -61,25 +61,22 @@ TOMCAT_CONTAINERS = [
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
-            and tomcat_major == _TOMCAT_VERSIONS[-1]
+            and tomcat_ver == _TOMCAT_VERSIONS[-1]
             and jre_version == 22
             and os_version.is_tumbleweed
         ),
         version="%%tomcat_version%%",
-        tag_version=f"{tomcat_major}-openjdk{jre_version}",
+        tag_version=f"{tomcat_ver}-openjdk{jre_version}",
         supported_until=_get_sac_supported_until(
-            os_version=os_version, tomcat_major=tomcat_major, jre_major=jre_version
+            os_version=os_version, tomcat_ver=tomcat_ver, jre_major=jre_version
         ),
-        additional_versions=[
-            f"%%tomcat_version%%-openjdk{jre_version}",
-            f"%%tomcat_minor%%-openjdk{jre_version}",
-        ],
+        additional_versions=[f"%%tomcat_version%%-openjdk{jre_version}"],
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
             tomcat_pkg := (
                 "tomcat"
-                if tomcat_major == _TOMCAT_VERSIONS[0]
-                else f"tomcat{tomcat_major}"
+                if tomcat_ver == _TOMCAT_VERSIONS[0]
+                else f"tomcat{tomcat_ver.partition('.')[0]}"
             ),
             # currently needed by testsuite
             "curl",
@@ -91,11 +88,6 @@ TOMCAT_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%tomcat_version%%", package_name=tomcat_pkg
             ),
-            Replacement(
-                regex_in_build_description="%%tomcat_minor%%",
-                package_name=tomcat_pkg,
-                parse_version=ParseVersion.MINOR,
-            ),
         ],
         cmd=[
             f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
@@ -103,7 +95,7 @@ TOMCAT_CONTAINERS = [
         ],
         exposes_tcp=[8080],
         env={
-            "TOMCAT_MAJOR": tomcat_major,
+            "TOMCAT_MAJOR": int(tomcat_ver.partition(".")[0]),
             "TOMCAT_VERSION": "%%tomcat_version%%",
             "CATALINA_HOME": (_CATALINA_HOME := "/usr/share/tomcat"),
             "CATALINA_BASE": _CATALINA_HOME,
@@ -121,13 +113,12 @@ WORKDIR $CATALINA_HOME
         entrypoint_user="tomcat",
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
-    for tomcat_major, os_version, jre_version in (
-        (10, OsVersion.TUMBLEWEED, 22),
-        (10, OsVersion.TUMBLEWEED, 21),
-        (10, OsVersion.TUMBLEWEED, 17),
-        (9, OsVersion.TUMBLEWEED, 17),
-        (10, OsVersion.SP6, 21),
-        # can't build for SP7 yet because base container is not yet released
-        # (10, OsVersion.SP7, 21),
+    for tomcat_ver, os_version, jre_version in (
+        ("10.1", OsVersion.TUMBLEWEED, 22),
+        ("10.1", OsVersion.TUMBLEWEED, 21),
+        ("10.1", OsVersion.TUMBLEWEED, 17),
+        ("9", OsVersion.TUMBLEWEED, 17),
+        ("10.1", OsVersion.SP6, 21),
+        # (10.1, OsVersion.SP7, 21),
     )
 ]
