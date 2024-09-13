@@ -249,8 +249,9 @@ class OsVersion(enum.Enum):
     def eula_package_names(self) -> tuple[str, ...]:
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
-        # if self.is_slcc:
-        #     return (f"skelcd-EULA-{str(self.value).lower()}",)
+        # TODO: switch to skelcd-EULA-bci when SLES 16 is released
+        if self.value == OsVersion.SLE16_0.value:
+            return ("skelcd-EULA-SLES",)
         return ()
 
     @property
