@@ -24,7 +24,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <specification>SLE BCI 16 Minimal Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#latest">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#16.0">
       <containerconfig
           name="bci/bci-minimal"
           tag="%OS_VERSION_ID_SP%"
