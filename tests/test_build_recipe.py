@@ -340,12 +340,10 @@ Copyright header
 #!BuildTag: opensuse/bci/test:28.2
 #!BuildTag: opensuse/bci/test:28.2-%RELEASE%
 #!BuildTag: opensuse/bci/test:28
-#!BuildTag: opensuse/bci/test:28-%RELEASE%
 #!BuildTag: opensuse/bci/test:latest
 #!BuildTag: opensuse/bci/emacs:28.2
 #!BuildTag: opensuse/bci/emacs:28.2-%RELEASE%
 #!BuildTag: opensuse/bci/emacs:28
-#!BuildTag: opensuse/bci/emacs:28-%RELEASE%
 #!BuildTag: opensuse/bci/emacs:latest
 
 FROM suse/base:18
@@ -385,7 +383,7 @@ VOLUME /bin/ /usr/bin/""",
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:28-%RELEASE% opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:28-%RELEASE% opensuse/bci/emacs:latest -->
+<!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:latest -->
 <!-- OBS-ExclusiveArch: x86_64 s390x -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -400,7 +398,7 @@ Copyright header
       <containerconfig
           name="opensuse/bci/test"
           tag="28.2"
-          additionaltags="28.2-%RELEASE%,28,28-%RELEASE%,latest">
+          additionaltags="28.2-%RELEASE%,28,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.authors" value="invalid@suse.com"/>

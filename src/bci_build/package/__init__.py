@@ -1444,11 +1444,14 @@ class DevelopmentContainer(BaseContainerImage):
             ver_labels: list[str] = [self.tag_version]
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
-            for ver_label in ver_labels + self.additional_versions:
+            for ver_label in ver_labels:
                 tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
                 tags += [
                     f"{self._registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 ]
+            for ver_label in self.additional_versions:
+                tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
+
             if self.is_latest:
                 tags += [f"{self._registry_prefix}/{name}:latest"]
         return tags
