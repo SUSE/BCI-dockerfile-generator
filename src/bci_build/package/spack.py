@@ -21,10 +21,8 @@ SPACK_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         logo_url="https://spack.io/assets/images/spack-logo-white.svg",
-        version=format_version(
-            spack_pkg_version := get_pkg_version("spack", os_version),
-            ParseVersion.MINOR,
-        ),
+        version=(spack_pkg_version := get_pkg_version("spack", os_version)),
+        tag_version=format_version(spack_pkg_version, ParseVersion.MINOR),
         additional_versions=[spack_pkg_version],
         version_in_uid=False,
         package_list=[
