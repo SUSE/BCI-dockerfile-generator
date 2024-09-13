@@ -8,6 +8,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsVersion
+from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
@@ -34,7 +35,8 @@ def _get_openjdk_kwargs(
         # Hardcoding /usr/lib64 in JAVA_HOME atm
         "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],
         "env": JAVA_ENV,
-        "version": java_version,
+        "tag_version": java_version,
+        "version": "%%java_version%%",
         "os_version": os_version,
         "is_latest": is_latest,
         "package_name": f"openjdk-{java_version}"
@@ -44,6 +46,16 @@ def _get_openjdk_kwargs(
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
         },
+        "replacements_via_service": [
+            Replacement(
+                regex_in_build_description="%%java_version%%",
+                package_name=(
+                    f"java-{java_version}-openjdk-devel"
+                    if devel
+                    else f"java-{java_version}-openjdk"
+                ),
+            ),
+        ],
         # smoke test for container environment variables
         "custom_end": f"""{DOCKERFILE_RUN} [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]""",
     }
