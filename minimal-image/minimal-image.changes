@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 13 09:56:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove trailing whitespace
+
+-------------------------------------------------------------------
 Tue Sep 10 15:08:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove latest tag from unreleased sle16 containers
