@@ -170,7 +170,7 @@ FIPS_BASE_CONTAINERS = [
         supported_until=_get_supported_until_fips(os_version),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=_get_fips_pretty_name(os_version),
-        package_list=[*os_version.release_package_names]
+        package_list=[*os_version.release_package_names, "coreutils"]
         + (
             ["fipscheck"]
             if os_version == OsVersion.SP3

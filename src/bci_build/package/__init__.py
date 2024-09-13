@@ -261,8 +261,6 @@ class OsVersion(enum.Enum):
             return ("SLES-release",)
         if self.is_ltss:
             return ("sles-ltss-release",)
-        # if self.is_slcc:
-        #     return (f"{str(self.value).lower()}-release",)
 
         assert self.is_sle15
         return ("sles-release",)
