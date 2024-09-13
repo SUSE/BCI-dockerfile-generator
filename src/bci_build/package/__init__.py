@@ -1496,8 +1496,10 @@ class ApplicationStackContainer(DevelopmentContainer):
 class OsContainer(BaseContainerImage):
     @staticmethod
     def version_to_container_os_version(os_version: OsVersion) -> str:
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
+        if os_version == OsVersion.TUMBLEWEED:
             return "latest"
+        if os_version == OsVersion.SLE16_0:
+            return str(os_version)
         return f"15.{os_version}"
 
     @property
