@@ -19,7 +19,9 @@ from bci_build.templates import KIWI_TEMPLATE
     [
         (
             """# SPDX-License-Identifier: MIT
+
 # Copyright header
+
 #!UseOBSRepositories
 
 #!BuildTag: bci/test:27
@@ -55,7 +57,9 @@ RUN emacs -Q --batch test.el
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-<!-- Copyright header-->
+<!--
+Copyright header
+-->
 <!-- OBS-AddTag: bci/test:27 bci/test:27-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -123,7 +127,9 @@ RUN emacs -Q --batch test.el
         ),
         (
             """# SPDX-License-Identifier: MIT
+
 # Copyright header
+
 #!UseOBSRepositories
 
 #!BuildTag: bci/test:stable
@@ -158,7 +164,9 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-<!-- Copyright header-->
+<!--
+Copyright header
+-->
 <!-- OBS-AddTag: bci/test:stable bci/test:stable-1.%RELEASE% bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-1.%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -222,7 +230,9 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
         ),
         (
             """# SPDX-License-Identifier: MIT
+
 # Copyright header
+
 #!UseOBSRepositories
 
 #!BuildTag: bci/test:29
@@ -255,7 +265,9 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 USER emacs""",
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
-<!-- Copyright header-->
+<!--
+Copyright header
+-->
 <!-- OBS-AddTag: bci/test:29 bci/test:29-%RELEASE% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -320,7 +332,9 @@ USER emacs""",
         ),
         (
             """# SPDX-License-Identifier: BSD
+
 # Copyright header
+
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 s390x
 #!BuildTag: opensuse/bci/test:28.2
@@ -368,7 +382,9 @@ RUN emacs -Q --batch
 VOLUME /bin/ /usr/bin/""",
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: BSD -->
-<!-- Copyright header-->
+<!--
+Copyright header
+-->
 <!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:28-%RELEASE% opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:28-%RELEASE% opensuse/bci/emacs:latest -->
 <!-- OBS-ExclusiveArch: x86_64 s390x -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
@@ -485,7 +501,9 @@ def test_build_recipe_templates(
     [
         (
             """<?xml version="1.0" encoding="utf-8"?>\n<!-- SPDX-License-Identifier: MIT -->
-<!-- Copyright header-->
+<!--
+Copyright header
+-->
 <!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE% opensuse/bci/bci-test:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
