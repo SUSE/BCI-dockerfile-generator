@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 13 09:55:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove trailing whitespace
+
+-------------------------------------------------------------------
 Fri Sep  6 08:23:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Use the major-minor version as the main tag
