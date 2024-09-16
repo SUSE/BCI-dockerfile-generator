@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 16 08:37:25 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add SLES EULA into the container image
+
+-------------------------------------------------------------------
 Fri Sep 13 09:56:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Remove trailing whitespace
