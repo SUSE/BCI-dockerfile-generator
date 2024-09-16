@@ -91,7 +91,7 @@ COPY {{ pkg.name }} /tmp/
 {% endfor %}
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper --non-interactive install --no-recommends sles-release
+RUN zypper --non-interactive install --no-recommends coreutils sles-release
 
 # Importing MS GPG keys
 COPY microsoft.asc /tmp
