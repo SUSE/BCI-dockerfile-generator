@@ -486,3 +486,95 @@ TRIVY_CONTAINERS = [
     )
     for os_version in (OsVersion.TUMBLEWEED,)
 ]
+
+
+_PODMAN_FILES = {"podman-containers.conf": "", "containers.conf": "", "LICENSE": ""}
+
+for fname in _PODMAN_FILES:
+    _PODMAN_FILES[fname] = (Path(__file__).parent / "podman" / fname).read_text()
+
+# upstreams confainers.conf pre-configures podman to use crun, but we ship runc
+# in SLES, so we have to override that
+_TW_CTR_CONF = _PODMAN_FILES["containers.conf"]
+_PODMAN_SLES_FILES = {**_PODMAN_FILES}
+_PODMAN_SLES_FILES["containers.conf"] = _TW_CTR_CONF.replace("crun", "runc")
+
+_PODMAN_VERS_REGEX = "%%podman_version%%"
+
+PODMAN_CONTAINERS = [
+    ApplicationStackContainer(
+        name="podman",
+        pretty_name="Podman",
+        license="Apache-2.0",
+        version_in_uid=False,
+        version=_PODMAN_VERS_REGEX,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description=_PODMAN_VERS_REGEX, package_name="podman"
+            )
+        ],
+        os_version=os_version,
+        extra_files=(
+            _PODMAN_FILES if os_version == OsVersion.TUMBLEWEED else _PODMAN_SLES_FILES
+        ),
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        logo_url="https://raw.githubusercontent.com/containers/common/main/logos/podman-logo-full-vert.png",
+        package_list=(
+            ["podman", "fuse-overlayfs"]
+            + (
+                # explicitly require libcontainers-common dependencies to make OBS build
+                [
+                    "libcontainers-common",
+                    "libcontainers-default-policy",
+                    "libcontainers-sles-mounts",
+                ]
+                if os_version != OsVersion.TUMBLEWEED
+                else []
+            )
+        ),
+        custom_end=r"""RUN useradd -U podman && \
+    echo -e "podman:1:999\npodman:1001:64535" > /etc/subuid && \
+    echo -e "podman:1:999\npodman:1001:64535" > /etc/subgid
+
+COPY containers.conf /etc/containers/containers.conf
+COPY podman-containers.conf /home/podman/.config/containers/containers.conf
+
+RUN mkdir -p /home/podman/.local/share/containers && \
+    chown podman:podman -R /home/podman && \
+    chmod 0644 /etc/containers/containers.conf
+
+"""
+        + (
+            "RUN cp /usr/share/containers/storage.conf /etc/containers/storage.conf"
+            if os_version == OsVersion.TUMBLEWEED
+            else ""
+        )
+        + r"""
+# Copy & modify the defaults to provide reference if runtime changes needed.
+# Changes here are required for running with fuse-overlay storage inside container.
+RUN sed -i -e 's|^#mount_program|mount_program|g' \
+           -e '/additionalimage.*/a "/var/lib/shared",' \
+           -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' \
+           /etc/containers/storage.conf
+
+VOLUME /var/lib/containers
+VOLUME /home/podman/.local/share/containers
+
+RUN mkdir -p /var/lib/shared/overlay-images \
+             /var/lib/shared/overlay-layers \
+             /var/lib/shared/vfs-images \
+             /var/lib/shared/vfs-layers && \
+    touch /var/lib/shared/overlay-images/images.lock && \
+    touch /var/lib/shared/overlay-layers/layers.lock && \
+    touch /var/lib/shared/vfs-images/images.lock && \
+    touch /var/lib/shared/vfs-layers/layers.lock
+
+# fix capabilities of newuidmap & newgidmap
+RUN permctl --system
+
+ENV _CONTAINERS_USERNS_CONFIGURED="" \
+    BUILDAH_ISOLATION=chroot
+""",
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+]
