@@ -1028,7 +1028,7 @@ exit 0
 
     @property
     @abc.abstractmethod
-    def reference(self) -> str:
+    def reference(self) -> str | None:
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
         ``{self.registry}/{self.image_ref_name}``.
@@ -1435,7 +1435,7 @@ class DevelopmentContainer(BaseContainerImage):
         return f"{self.tag_version}-{self._release_suffix}"
 
     @property
-    def reference(self) -> str:
+    def reference(self) -> str | None:
         return (
             f"{self.registry}/{self._registry_prefix}/{self.name}:{self.image_ref_name}"
         )
@@ -1536,7 +1536,7 @@ class OsContainer(BaseContainerImage):
         return self.oci_version
 
     @property
-    def reference(self) -> str:
+    def reference(self) -> str | None:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.image_ref_name}"
 
     @property

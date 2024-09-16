@@ -57,7 +57,9 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="{{ image.vendor }}"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="{{ image.image_ref_name }}"
+{%- if image.reference %}
 LABEL org.opensuse.reference="{{ image.reference }}"
+{%- endif %}
 LABEL org.openbuildservice.disturl="%DISTURL%"
 {%- if image.os_version.is_tumbleweed %}
 LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
@@ -134,7 +136,9 @@ KIWI_TEMPLATE = jinja2.Template(
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="{{ image.url }}"/>
             <label name="org.opencontainers.image.ref.name" value="{{ image.image_ref_name }}"/>
+{%- if image.reference %}
             <label name="org.opensuse.reference" value="{{ image.reference }}"/>
+{%- endif %}
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
 {%- if not image.os_version.is_tumbleweed %}
             <label name="com.suse.supportlevel" value="{{ image.support_level }}"/>

@@ -42,6 +42,12 @@ class ApplicationCollectionContainer(ApplicationStackContainer):
 
         return f"bci/bci-base:15.{self.os_version}"
 
+    @property
+    def reference(self) -> str | None:
+        if self.os_version.is_tumbleweed:
+            return super().reference
+        return None
+
     def __post_init__(self) -> None:
         super().__post_init__()
         # Limit Appcollection stuff to aarch64 and x86_64
