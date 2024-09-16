@@ -48,7 +48,9 @@ COPY --from=target / /target
 COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
+{%- if image.maintainer %}
 LABEL org.opencontainers.image.authors="{{ image.maintainer }}"
+{%- endif %}
 LABEL org.opencontainers.image.title="{{ image.title }}"
 LABEL org.opencontainers.image.description="{{ image.description }}"
 LABEL org.opencontainers.image.version="{{ image.oci_version }}"
@@ -125,7 +127,9 @@ KIWI_TEMPLATE = jinja2.Template(
 {#- NOTE: eye sight chart: this has a closing element character '>' here: ----> -#} >
         <labels>
           <suse_label_helper:add_prefix prefix="{{ image.labelprefix }}">
+{%- if image.maintainer %}
             <label name="org.opencontainers.image.authors" value="{{ image.maintainer }}"/>
+{%- endif %}
             <label name="org.opencontainers.image.title" value="{{ image.title }}"/>
             <label name="org.opencontainers.image.description" value="{{ image.description }}"/>
             <label name="org.opencontainers.image.version" value="{{ image.oci_version }}"/>

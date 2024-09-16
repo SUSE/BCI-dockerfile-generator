@@ -47,3 +47,5 @@ class ApplicationCollectionContainer(ApplicationStackContainer):
         # Limit Appcollection stuff to aarch64 and x86_64
         if not self.os_version.is_tumbleweed and not self.exclusive_arch:
             self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
+        # Disable maintainer listing
+        self.maintainer = None
