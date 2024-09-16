@@ -150,13 +150,13 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "netcfg",
                     "tar",
                     "timezone",
+                    *os_version.eula_package_names,
                 ]
                 + (
                     [
                         "sle-module-basesystem-release",
                         "sle-module-server-applications-release",
                         "sle-module-python3-release",
-                        "skelcd-EULA-bci",
                     ]
                     if os_version.is_sle15
                     else []
