@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 16 08:15:55 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use full version
+
+-------------------------------------------------------------------
 Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set useobsrepositories explicitly

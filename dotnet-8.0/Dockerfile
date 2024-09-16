@@ -75,7 +75,7 @@ COPY dotnet-sdk-8.0-8.0.401-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper --non-interactive install --no-recommends sles-release
+RUN zypper --non-interactive install --no-recommends coreutils sles-release
 
 # Importing MS GPG keys
 COPY microsoft.asc /tmp
