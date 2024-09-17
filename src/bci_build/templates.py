@@ -43,9 +43,18 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 COPY --from=target / /target
 {%- endif %}
 
-{% if image.packages %}{{ DOCKERFILE_RUN }} zypper{% if image.from_target_image %} --installroot /target --gpg-auto-import-keys {% endif %} -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
-{% if image.from_target_image %}FROM {{ image.base_image_registry }}/{{ image.from_target_image }}
-COPY --from=builder /target /{% endif %}
+{%- if image.packages %}
+{%- if image.from_target_image %}
+# glibc needs /proc/self/fd/... for some operations, so make sure /proc is available.
+{{ DOCKERFILE_RUN }} mkdir -p /target/proc && mount --bind /proc /target/proc
+{%- endif %}
+{{ DOCKERFILE_RUN }} zypper{% if image.from_target_image %} --installroot /target --gpg-auto-import-keys {% endif %} -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}
+{%- endif %}
+{%- if image.from_target_image %}
+{{ DOCKERFILE_RUN }} umount /target/proc
+FROM {{ image.base_image_registry }}/{{ image.from_target_image }}
+COPY --from=builder /target /
+{%- endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
 {%- if image.maintainer %}
