@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 17 06:37:39 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove author label
+- Make the last stage a fully qualified reference to the registry
+
+-------------------------------------------------------------------
 Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set useobsrepositories explicitly
