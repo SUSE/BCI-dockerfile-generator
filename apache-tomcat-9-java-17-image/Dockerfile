@@ -22,16 +22,15 @@
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre17
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre17-%RELEASE%
 
-FROM opensuse/bci/bci-micro:latest AS target
+FROM registry.opensuse.org/opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; zypper --installroot /target --gpg-auto-import-keys  -n in --no-recommends tomcat curl sed java-17-openjdk java-17-openjdk-headless; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
-FROM target
+FROM registry.opensuse.org/opensuse/bci/bci-micro:latest
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.apache-tomcat
-LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed Apache Tomcat"
 LABEL org.opencontainers.image.description="Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, Jakarta Expression Language, and WebSocket technologies, based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%tomcat_version%%"
