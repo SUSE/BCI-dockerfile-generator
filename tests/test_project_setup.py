@@ -280,6 +280,52 @@ _OSC_USERNAME = "foobar"
   </repository>
 </project>""",
         ),
+        (
+            OsVersion.TUMBLEWEED,
+            ProjectType.STAGING,
+            (branch := "7-777"),
+            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:Tumbleweed:{branch}"),
+            f"""<project name="{prj_name}">
+  <title>Staging project for openSUSE Tumbleweed</title>
+  <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for openSUSE Tumbleweed</description>
+  <person userid="avicenzi" role="maintainer"/>
+  <person userid="dancermak" role="maintainer"/>
+  <person userid="{_OSC_USERNAME}" role="maintainer"/>
+
+  <build>
+    <enable/>
+  </build>
+  <publish>
+    <enable/>
+  </publish>
+  <debuginfo>
+    <enable/>
+  </debuginfo>
+  <repository name="standard">
+    <path project="openSUSE:Registry" repository="standard"/>
+    <path project="openSUSE:Factory" repository="images"/>
+    <path project="openSUSE:Factory:ARM" repository="images"/>
+    <path project="openSUSE:Factory:ARM" repository="standard"/>
+    <path project="openSUSE:Factory:PowerPC" repository="standard"/>
+    <path project="openSUSE:Factory:zSystems" repository="standard"/>
+    <path project="openSUSE:Factory" repository="snapshot"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+  </repository>
+  <repository name="images">
+    <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+  </repository>
+  <repository name="containerfile">
+    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+  </repository>
+</project>""",
+        ),
     ],
 )
 def test_project_meta(
