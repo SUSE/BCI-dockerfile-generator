@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 17 07:19:04 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Set the full .Net version for the org.opencontainers.image.version label
+
+-------------------------------------------------------------------
 Mon Sep 16 08:22:54 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install coreutils to avoid ambiguity with busybox-coreutils
