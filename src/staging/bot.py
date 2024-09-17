@@ -37,8 +37,7 @@ from bci_build.logger import LOGGER
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
 from bci_build.package import OsVersion
-from dotnet.updater import DOTNET_IMAGES
-from dotnet.updater import DotNetBCI
+from dotnet.updater import DOTNET_CONTAINERS
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
@@ -220,7 +219,7 @@ class StagingBot:
         instance.
 
         """
-        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_IMAGES
+        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_CONTAINERS
         all_bcis.sort(key=lambda bci: bci.uid)
         return (bci for bci in all_bcis if bci.os_version == self.os_version)
 
@@ -1012,9 +1011,6 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
                 await asyncio.gather(*to_remove)
 
-                if isinstance(bci_pkg, DotNetBCI):
-                    bci_pkg.generate_custom_end()
-
                 return [
                     f"{bci_pkg.package_name}/{fname}"
                     for fname in await bci_pkg.write_files_to_folder(dest)
@@ -1745,7 +1741,7 @@ comma-separated list. The package list is taken from the environment variable
         type=str,
         help="Name of the package to configure on OBS",
         choices=list({bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values()})
-        + [dotnet_img.package_name for dotnet_img in DOTNET_IMAGES],
+        + [dotnet_img.package_name for dotnet_img in DOTNET_CONTAINERS],
     )
 
     subparsers.add_parser(

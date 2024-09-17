@@ -585,6 +585,12 @@ class BaseContainerImage(abc.ABC):
         ):
             self.support_level = SupportLevel.TECHPREVIEW
 
+    @abc.abstractmethod
+    def prepare_template(self) -> None:
+        """Hook to do delayed expensive work prior template rendering"""
+
+        pass
+
     @property
     @abc.abstractmethod
     def uid(self) -> str:
@@ -1233,6 +1239,8 @@ exit 0
         files = ["_service"]
         tasks = []
 
+        self.prepare_template()
+
         async def write_file_to_dest(fname: str, contents: str | bytes) -> None:
             await write_to_file(os.path.join(dest, fname), contents)
 
@@ -1349,10 +1357,17 @@ class DevelopmentContainer(BaseContainerImage):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        if not self.version:
-            raise ValueError("A language stack container requires a version")
-        if not self.tag_version:
+
+        if self.version and not self.tag_version:
             self.tag_version = self.version
+        if not self.tag_version:
+            raise ValueError("A development container requires a tag_version")
+
+    def prepare_template(self) -> None:
+        """Hook to do delayed expensive work prior template rendering"""
+        super().prepare_template()
+        if not self.version:
+            raise ValueError("A development container requires a version")
 
     @property
     def _registry_prefix(self) -> str:
@@ -1547,6 +1562,10 @@ class OsContainer(BaseContainerImage):
     @property
     def pretty_reference(self) -> str:
         return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
+
+    def prepare_template(self) -> None:
+        """Hook to do delayed expensive work prior template rendering"""
+        pass
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:

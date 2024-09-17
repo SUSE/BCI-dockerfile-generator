@@ -16,7 +16,7 @@ and it is optimized for running ASP.NET Core applications in production.
 To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:{{ image.version }} AS build
+FROM registry.suse.com/bci/dotnet-sdk:{{ image.tag_version }} AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
@@ -57,7 +57,7 @@ To create a self-signed certificate for testing, use the following command:
 
 ```ShellSession
 podman run --rm -it -v "$PWD/https":/https:Z \
-    {{ image.registry }}/bci/dotnet-sdk:{{ image.version }} \
+    {{ image.registry }}/bci/dotnet-sdk:{{ image.tag_version }} \
     dotnet dev-certs https -ep /https/aspnetapp.pfx -p <PASSWORD>
 ```
 

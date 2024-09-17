@@ -166,22 +166,22 @@ class DotNetBCI(DevelopmentContainer):
 
         # https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/aspnet-port
         self.use_nonprivileged_user = False
-        if self.version != "6.0":
+        if self.tag_version != "6.0":
             self.use_nonprivileged_user = True
 
         self.custom_description = f"The {self.pretty_name} based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 
-        ver = version.parse(str(self.version))
+        ver = version.parse(str(self.tag_version))
 
         # Set the lifecycle information taken from
         # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
         self.supported_until = {
             "6.0": datetime.date(2024, 11, 12),
             "8.0": datetime.date(2026, 11, 10),
-        }.get(str(self.version))
+        }.get(str(self.tag_version))
         assert (
             self.supported_until
-        ), f".Net version missing in lifecycle information: {self.version}"
+        ), f".Net version missing in lifecycle information: {self.tag_version}"
 
         self.extra_files = {
             "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
@@ -192,10 +192,8 @@ class DotNetBCI(DevelopmentContainer):
         }
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
-
         self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
-
-        self._min_release_counter = {"8.0": 20, "6.0": 32}[str(self.version)]
+        self._min_release_counter = {"8.0": 20, "6.0": 32}[str(self.tag_version)]
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
@@ -257,11 +255,11 @@ class DotNetBCI(DevelopmentContainer):
             matching_pkg = [
                 pkg
                 for pkg in pkgs_per_arch
-                if pkg.version[: len(str(self.version))] == self.version
+                if pkg.version[: len(str(self.tag_version))] == self.tag_version
             ]
             self._logger.debug(
                 "found the following packages matching dotnet-host version %d: %s",
-                self.version,
+                self.tag_version,
                 matching_pkg,
             )
             latest_pkg = sorted(
@@ -315,7 +313,7 @@ class DotNetBCI(DevelopmentContainer):
                     )
             return ver
 
-    def generate_custom_end(self) -> None:
+    def prepare_template(self) -> None:
         assert self.package_list
         if not DotNetBCI._base:
             DotNetBCI._base = dnf.Base()
@@ -327,17 +325,20 @@ class DotNetBCI(DevelopmentContainer):
             DotNetBCI._base.fill_sack()
 
         pkgs = self._fetch_packages()
-
-        if new_version := self._guess_version_from_pkglist(pkgs):
+        self.version = self._guess_version_from_pkglist(pkgs)
+        if self.version:
             assert not self.additional_versions, f"additional_versions property must be unset, but got {self.additional_versions}"
-            self.additional_versions = [new_version]
+            self.additional_versions = [self.version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
-            dotnet_version=new_version,
+            dotnet_version=self.version,
         )
+
         self.package_list = []
+
+        super().prepare_template()
 
 
 _DOTNET_VERSION_T = Literal["6.0", "8.0"]
@@ -355,7 +356,7 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
     return version == _LATEST_DOTNET_VERSION and os_version in CAN_BE_LATEST_OS_VERSION
 
 
-DOTNET_IMAGES: list[DotNetBCI] = []
+DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 for os_version in (OsVersion.SP6, OsVersion.SP7):
     for ver in _DOTNET_VERSIONS:
@@ -376,10 +377,10 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         ):
             package_list.append(f"{pkg}-{ver}")
 
-        DOTNET_IMAGES.append(
+        DOTNET_CONTAINERS.append(
             DotNetBCI(
                 os_version=os_version,
-                version=ver,
+                tag_version=ver,
                 name="dotnet-sdk",
                 pretty_name=f".NET SDK {ver}",
                 is_sdk=True,
@@ -389,11 +390,11 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
             )
         )
 
-    DOTNET_IMAGES.extend(
+    DOTNET_CONTAINERS.extend(
         [
             DotNetBCI(
                 os_version=os_version,
-                version=ver,
+                tag_version=ver,
                 name="dotnet-runtime",
                 is_sdk=False,
                 pretty_name=f".NET Runtime {ver}",
@@ -413,10 +414,10 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         ]
     )
 
-    DOTNET_IMAGES.extend(
+    DOTNET_CONTAINERS.extend(
         [
             DotNetBCI(
-                version=ver,
+                tag_version=ver,
                 os_version=os_version,
                 name="dotnet-aspnet",
                 is_sdk=False,
