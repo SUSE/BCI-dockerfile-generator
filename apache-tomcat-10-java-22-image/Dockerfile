@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/apache-tomcat:10-jre22
-#!BuildTag: opensuse/apache-tomcat:10-jre22-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-jre22
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-jre22-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre22
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-jre22-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:10-openjdk22
+#!BuildTag: opensuse/apache-tomcat:10-openjdk22-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk22
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk22-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk22
+#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk22-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:latest
 
 FROM registry.opensuse.org/opensuse/bci/bci-micro:latest AS target
@@ -40,8 +40,8 @@ LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10-jre22-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10-jre22-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10-openjdk22-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10-openjdk22-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
