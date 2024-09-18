@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 18 16:42:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rename flavor to openjdk
+
+-------------------------------------------------------------------
 Tue Sep 17 06:37:39 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Remove author label
