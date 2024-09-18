@@ -1032,6 +1032,8 @@ exit 0
         """The primary URL via which this image can be pulled. It is used to set the
         ``org.opensuse.reference`` label and defaults to
         ``{self.registry}/{self.image_ref_name}``.
+        
+        The ``org.opensuse.reference`` label is omitted, if ``None`` is returned.
 
         """
         pass
