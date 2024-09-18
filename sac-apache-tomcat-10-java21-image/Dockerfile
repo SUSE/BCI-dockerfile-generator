@@ -15,13 +15,13 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/apache-tomcat:10-jre21
-#!BuildTag: containers/apache-tomcat:10-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-jre21-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21
-#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-jre21-%RELEASE%
-#!BuildName: containers-apache-tomcat-10-jre21
+#!BuildTag: containers/apache-tomcat:10-openjdk21
+#!BuildTag: containers/apache-tomcat:10-openjdk21-%RELEASE%
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk21
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk21-%RELEASE%
+#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-openjdk21
+#!BuildTag: containers/apache-tomcat:%%tomcat_minor%%-openjdk21-%RELEASE%
+#!BuildName: containers-apache-tomcat-10-openjdk21
 #!BuildVersion: 15.6
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
@@ -40,8 +40,8 @@ LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10-jre21-%RELEASE%"
-LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:10-jre21-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10-openjdk21-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:10-openjdk21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2027-07-01"
