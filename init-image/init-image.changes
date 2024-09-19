@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 19 15:50:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install SLES-release to avoid have-choice errors
+
+-------------------------------------------------------------------
 Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set useobsrepositories explicitly
