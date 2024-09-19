@@ -15,6 +15,7 @@ Binarytype: rpm
 %else
 %if "%_repository" == "containerfile"
 Type: docker
+BuildEngine: podman
 PreInstall: cni
 
 %else
@@ -44,8 +45,6 @@ Ignore: krb5-mini:this-is-only-for-build-envs
 BuildFlags: excludebuild:rpm
 
 Prefer: -postgresql16-devel-mini
-Prefer: -ALP-dummy-release
-Prefer: -SLES-SAP-release
 
 # prevent gdb from pulling in python 3.11 & 3.12 at the same time
 Substitute: obs:cli_debug_packages less
