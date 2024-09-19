@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 19 13:41:14 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install SLES-release to avoid have-choice errors
+
+-------------------------------------------------------------------
 Wed Sep 18 15:53:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - adjust for new kiwi version
