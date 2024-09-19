@@ -50,6 +50,7 @@ KIWI_CONTAINERS = [
             "timezone",
             "xorriso",
             "xz",
+            *os_version.release_package_names,
         ],
         custom_end=f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}",
         build_recipe_type=BuildType.DOCKER,

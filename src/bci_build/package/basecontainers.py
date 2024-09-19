@@ -63,7 +63,7 @@ INIT_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
-        package_list=["systemd", "gzip"],
+        package_list=["systemd", "gzip", *os_version.release_package_names],
         cmd=["/usr/lib/systemd/systemd"],
         extra_labels={
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
