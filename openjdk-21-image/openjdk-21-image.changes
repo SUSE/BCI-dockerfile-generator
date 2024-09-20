@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 20 11:50:28 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set full version on oci labels
+
+-------------------------------------------------------------------
 Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set useobsrepositories explicitly
