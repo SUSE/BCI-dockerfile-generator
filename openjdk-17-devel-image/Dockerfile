@@ -28,7 +28,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends java-17-openjdk-devel maven;
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI OpenJDK 17 development"
 LABEL org.opencontainers.image.description="OpenJDK 17 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="17"
+LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
