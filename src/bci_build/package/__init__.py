@@ -1590,6 +1590,7 @@ from .appcontainers import GIT_CONTAINERS  # noqa: E402
 from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
 from .appcontainers import HELM_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
+from .appcontainers import OSC_CONTAINER  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
@@ -1663,6 +1664,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *TOMCAT_CONTAINERS,
         *GCC_CONTAINERS,
         *SPACK_CONTAINERS,
+        OSC_CONTAINER,
     )
 }
 
