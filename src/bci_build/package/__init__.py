@@ -834,10 +834,13 @@ exit 0
             return ""
 
         if self.from_target_image:
-            return (
-                f"FROM {self.base_image_registry}/{self.from_target_image} AS target\n"
-                f"FROM {self._from_image} AS builder"
+            # build against the released container on SLE for proper base.digest/name generation
+            target: str = (
+                self.from_target_image
+                if self.os_version.is_tumbleweed
+                else f"{self.base_image_registry}/{self.from_target_image}"
             )
+            return f"FROM {target} AS target\nFROM {self._from_image} AS builder"
 
         return f"FROM {self._from_image}"
 
