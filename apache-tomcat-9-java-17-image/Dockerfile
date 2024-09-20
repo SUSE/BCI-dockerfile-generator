@@ -19,8 +19,6 @@
 #!BuildTag: opensuse/apache-tomcat:9-openjdk17-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk17
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk17-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk17
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk17-%RELEASE%
 
 FROM registry.opensuse.org/opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder

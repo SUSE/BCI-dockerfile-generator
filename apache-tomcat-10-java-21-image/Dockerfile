@@ -15,12 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/apache-tomcat:10-openjdk21
-#!BuildTag: opensuse/apache-tomcat:10-openjdk21-%RELEASE%
+#!BuildTag: opensuse/apache-tomcat:10.1-openjdk21
+#!BuildTag: opensuse/apache-tomcat:10.1-openjdk21-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk21
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk21-%RELEASE%
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk21
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_minor%%-openjdk21-%RELEASE%
 
 FROM registry.opensuse.org/opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
@@ -39,8 +37,8 @@ LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10-openjdk21-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10-openjdk21-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.1-openjdk21-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/apache-tomcat:10.1-openjdk21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
