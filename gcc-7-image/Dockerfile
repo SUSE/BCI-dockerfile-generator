@@ -17,8 +17,8 @@
 
 #!BuildTag: bci/gcc:7
 #!BuildTag: bci/gcc:7-%RELEASE%
-#!BuildTag: bci/gcc:%%gcc_version%%
-#!BuildTag: bci/gcc:%%gcc_version%%-%RELEASE%
+#!BuildTag: bci/gcc:%%gcc_minor_version%%
+#!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.7.7
 FROM bci/bci-base:15.7
@@ -30,7 +30,7 @@ RUN set -euo pipefail; zypper -n in --no-recommends gcc7 gcc7-c++ make gcc gcc-c
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI GNU Compiler Collection"
 LABEL org.opencontainers.image.description="GNU Compiler Collection container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="7"
+LABEL org.opencontainers.image.version="%%gcc_minor_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
@@ -44,5 +44,5 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV GCC_VERSION="%%gcc_version%%"
+ENV GCC_VERSION="%%gcc_minor_version%%"
 
