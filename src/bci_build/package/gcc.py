@@ -50,7 +50,8 @@ GCC_CONTAINERS = [
         name="gcc",
         package_name=f"gcc-{gcc_version}-image",
         os_version=os_version,
-        version=gcc_version,
+        version="%%gcc_minor_version%%",
+        tag_version=gcc_version,
         support_level=(
             SupportLevel.L3 if not os_version.is_sle15 else SupportLevel.TECHPREVIEW
         ),
@@ -76,13 +77,13 @@ GCC_CONTAINERS = [
         ),
         replacements_via_service=[
             Replacement(
-                regex_in_build_description="%%gcc_version%%",
+                regex_in_build_description="%%gcc_minor_version%%",
                 package_name=gcc_pkg,
                 parse_version=ParseVersion.MINOR,
-            )
+            ),
         ],
-        env={"GCC_VERSION": "%%gcc_version%%"},
-        additional_versions=["%%gcc_version%%"],
+        env={"GCC_VERSION": "%%gcc_minor_version%%"},
+        additional_versions=["%%gcc_minor_version%%"],
         extra_files={"_constraints": generate_disk_size_constraints(6)},
         custom_end=(
             rf"""# symlink all versioned gcc & g++ binaries to unversioned
