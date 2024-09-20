@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 20 07:29:26 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove major version tag
+
+-------------------------------------------------------------------
 Wed Sep 18 16:43:21 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - rename flavor to openjdk
