@@ -148,6 +148,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "curl",
                     "gzip",
                     "netcfg",
+                    "openssl-3",
                     "tar",
                     "timezone",
                     *os_version.eula_package_names,
