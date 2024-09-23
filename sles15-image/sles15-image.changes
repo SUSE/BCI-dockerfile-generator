@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 23 17:22:46 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- explicitly install openssl cli package
+
+-------------------------------------------------------------------
 Fri Sep 13 09:55:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Remove trailing whitespace
