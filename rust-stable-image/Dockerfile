@@ -20,7 +20,6 @@
 #!BuildTag: bci/rust:1.81
 #!BuildTag: bci/rust:1.81-1.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
 #!BuildName: bci-rust-stable
 #!BuildVersion: 15.7.1.81.1
 FROM bci/bci-base:15.7

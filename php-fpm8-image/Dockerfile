@@ -18,7 +18,6 @@
 #!BuildTag: bci/php-fpm:8
 #!BuildTag: bci/php-fpm:8-%RELEASE%
 #!BuildTag: bci/php-fpm:%%php_version%%
-#!BuildTag: bci/php-fpm:%%php_version%%-%RELEASE%
 #!BuildName: bci-php-fpm-8
 #!BuildVersion: 15.7.8
 FROM bci/bci-base:15.7
