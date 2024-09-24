@@ -829,18 +829,24 @@ exit 0
         return f"bci/bci-base:15.{self.os_version}"
 
     @property
+    def dockerfile_from_target_ref(self) -> str:
+        """Provide the reference for the target image if multistage build is used, empty string otherwise."""
+        if not self.from_target_image:
+            return ""
+        # build against the released container on SLE for proper base.digest/name generation
+        return (
+            self.from_target_image
+            if self.os_version.is_tumbleweed
+            else f"{self.base_image_registry}/{self.from_target_image}"
+        )
+
+    @property
     def dockerfile_from_line(self) -> str:
         if self._from_image is None:
             return ""
 
         if self.from_target_image:
-            # build against the released container on SLE for proper base.digest/name generation
-            target: str = (
-                self.from_target_image
-                if self.os_version.is_tumbleweed
-                else f"{self.base_image_registry}/{self.from_target_image}"
-            )
-            return f"FROM {target} AS target\nFROM {self._from_image} AS builder"
+            return f"FROM {self.dockerfile_from_target_ref} AS target\nFROM {self._from_image} AS builder"
 
         return f"FROM {self._from_image}"
 
