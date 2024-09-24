@@ -53,6 +53,7 @@ POSTGRES_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%pg_patch_version%%",
                 package_name=f"postgresql{ver}-server",
+                parse_version=ParseVersion.PATCH,
             ),
         ],
         volumes=["$PGDATA"],
