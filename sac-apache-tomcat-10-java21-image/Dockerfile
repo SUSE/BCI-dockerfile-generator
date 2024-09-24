@@ -18,7 +18,6 @@
 #!BuildTag: containers/apache-tomcat:10.1-openjdk21
 #!BuildTag: containers/apache-tomcat:10.1-openjdk21-%RELEASE%
 #!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk21
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk21-%RELEASE%
 #!BuildName: containers-apache-tomcat-10.1-openjdk21
 #!BuildVersion: 15.6
 #!BuildRelease: 35

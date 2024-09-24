@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-runtime:8.0
 #!BuildTag: bci/dotnet-runtime:8.0-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:8.0.8
-#!BuildTag: bci/dotnet-runtime:8.0.8-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:latest
 #!BuildName: bci-dotnet-runtime-8.0
 #!BuildVersion: 15.6.8.0

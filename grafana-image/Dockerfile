@@ -18,9 +18,7 @@
 #!BuildTag: suse/grafana:%%grafana_patch_version%%
 #!BuildTag: suse/grafana:%%grafana_patch_version%%-%RELEASE%
 #!BuildTag: suse/grafana:%%grafana_minor_version%%
-#!BuildTag: suse/grafana:%%grafana_minor_version%%-%RELEASE%
 #!BuildTag: suse/grafana:%%grafana_major_version%%
-#!BuildTag: suse/grafana:%%grafana_major_version%%-%RELEASE%
 #!BuildTag: suse/grafana:latest
 #!BuildName: suse-grafana-%%grafana_patch_version%%
 #!BuildVersion: 15.6
