@@ -18,7 +18,6 @@
 #!BuildTag: bci/gcc:7
 #!BuildTag: bci/gcc:7-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
-#!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.7.7
 FROM bci/bci-base:15.7

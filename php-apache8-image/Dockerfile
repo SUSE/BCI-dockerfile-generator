@@ -18,7 +18,6 @@
 #!BuildTag: bci/php-apache:8
 #!BuildTag: bci/php-apache:8-%RELEASE%
 #!BuildTag: bci/php-apache:%%php_version%%
-#!BuildTag: bci/php-apache:%%php_version%%-%RELEASE%
 #!BuildName: bci-php-apache-8
 #!BuildVersion: 15.7.8
 FROM bci/bci-base:15.7

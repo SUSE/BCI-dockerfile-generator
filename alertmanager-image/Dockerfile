@@ -18,7 +18,6 @@
 #!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%
 #!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%-%RELEASE%
 #!BuildTag: suse/alertmanager:%%alertmanager_minor_version%%
-#!BuildTag: suse/alertmanager:%%alertmanager_minor_version%%-%RELEASE%
 #!BuildName: suse-alertmanager-%%alertmanager_patch_version%%
 #!BuildVersion: 15.7
 FROM suse/sle15:15.7

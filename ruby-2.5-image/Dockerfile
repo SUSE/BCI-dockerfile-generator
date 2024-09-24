@@ -18,7 +18,6 @@
 #!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2.5-%RELEASE%
 #!BuildTag: bci/ruby:2
-#!BuildTag: bci/ruby:2-%RELEASE%
 #!BuildName: bci-ruby-2.5
 #!BuildVersion: 15.7.2.5
 FROM bci/bci-base:15.7

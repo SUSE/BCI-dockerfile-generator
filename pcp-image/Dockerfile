@@ -18,9 +18,7 @@
 #!BuildTag: suse/pcp:5.3.7
 #!BuildTag: suse/pcp:5.3.7-%RELEASE%
 #!BuildTag: suse/pcp:5.3
-#!BuildTag: suse/pcp:5.3-%RELEASE%
 #!BuildTag: suse/pcp:5
-#!BuildTag: suse/pcp:5-%RELEASE%
 #!BuildName: suse-pcp-5.3.7
 #!BuildVersion: 15.7.5.3.7
 FROM bci/bci-init:15.7

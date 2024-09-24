@@ -18,7 +18,6 @@
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_patch_version%%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_patch_version%%-%RELEASE%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_minor_version%%
-#!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_minor_version%%-%RELEASE%
 #!BuildName: suse-blackbox_exporter-%%blackbox_exporter_patch_version%%
 #!BuildVersion: 15.7
 FROM suse/sle15:15.7

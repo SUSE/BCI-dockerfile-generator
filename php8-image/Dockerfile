@@ -18,7 +18,6 @@
 #!BuildTag: bci/php:8
 #!BuildTag: bci/php:8-%RELEASE%
 #!BuildTag: bci/php:%%php_version%%
-#!BuildTag: bci/php:%%php_version%%-%RELEASE%
 #!BuildName: bci-php-8
 #!BuildVersion: 15.7.8
 FROM bci/bci-base:15.7
