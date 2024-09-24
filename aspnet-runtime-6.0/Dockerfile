@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-aspnet:6.0
 #!BuildTag: bci/dotnet-aspnet:6.0-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:6.0.33
-#!BuildTag: bci/dotnet-aspnet:6.0.33-%RELEASE%
 #!BuildName: bci-dotnet-aspnet-6.0
 #!BuildVersion: 15.6.6.0
 #!BuildRelease: 32

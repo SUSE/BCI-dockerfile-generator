@@ -20,7 +20,6 @@
 #!BuildTag: bci/golang:1.22
 #!BuildTag: bci/golang:1.22-2.%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:%%golang_version%%-2.%RELEASE%
 #!BuildName: bci-golang-oldstable
 #!BuildVersion: 15.6.1.22.2
 #!BuildRelease: 33

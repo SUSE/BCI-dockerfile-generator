@@ -18,9 +18,7 @@
 #!BuildTag: suse/postgres:16
 #!BuildTag: suse/postgres:16-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildTag: suse/postgres:%%pg_minor_version%%-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_patch_version%%
-#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
 #!BuildTag: suse/postgres:latest
 #!BuildName: suse-postgres-16
 #!BuildVersion: 15.6.16

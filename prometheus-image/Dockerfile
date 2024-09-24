@@ -18,9 +18,7 @@
 #!BuildTag: suse/prometheus:%%prometheus_patch_version%%
 #!BuildTag: suse/prometheus:%%prometheus_patch_version%%-%RELEASE%
 #!BuildTag: suse/prometheus:%%prometheus_minor_version%%
-#!BuildTag: suse/prometheus:%%prometheus_minor_version%%-%RELEASE%
 #!BuildTag: suse/prometheus:%%prometheus_major_version%%
-#!BuildTag: suse/prometheus:%%prometheus_major_version%%-%RELEASE%
 #!BuildTag: suse/prometheus:latest
 #!BuildName: suse-prometheus-%%prometheus_patch_version%%
 #!BuildVersion: 15.6

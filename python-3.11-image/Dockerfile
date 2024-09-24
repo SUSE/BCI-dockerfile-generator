@@ -18,9 +18,7 @@
 #!BuildTag: bci/python:3.11
 #!BuildTag: bci/python:3.11-%RELEASE%
 #!BuildTag: bci/python:3
-#!BuildTag: bci/python:3-%RELEASE%
 #!BuildTag: bci/python:%%py311_ver%%
-#!BuildTag: bci/python:%%py311_ver%%-%RELEASE%
 #!BuildName: bci-python-3.11
 #!BuildVersion: 15.6.3.11
 #!BuildRelease: 41
