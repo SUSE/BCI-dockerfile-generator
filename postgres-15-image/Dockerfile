@@ -18,9 +18,7 @@
 #!BuildTag: suse/postgres:15
 #!BuildTag: suse/postgres:15-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildTag: suse/postgres:%%pg_minor_version%%-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_patch_version%%
-#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
 #!BuildName: suse-postgres-15
 #!BuildVersion: 15.5.15
 FROM suse/sle15:15.5
