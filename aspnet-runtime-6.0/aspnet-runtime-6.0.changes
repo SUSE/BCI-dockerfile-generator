@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 24 20:00:29 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove release tags for additional_versions
+
+-------------------------------------------------------------------
 Tue Sep 17 07:18:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - Set the full .Net version for the org.opencontainers.image.version label
