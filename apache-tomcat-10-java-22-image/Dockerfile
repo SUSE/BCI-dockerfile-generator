@@ -18,7 +18,6 @@
 #!BuildTag: opensuse/apache-tomcat:10.1-openjdk22
 #!BuildTag: opensuse/apache-tomcat:10.1-openjdk22-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk22
-#!BuildTag: opensuse/apache-tomcat:%%tomcat_version%%-openjdk22-%RELEASE%
 #!BuildTag: opensuse/apache-tomcat:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
