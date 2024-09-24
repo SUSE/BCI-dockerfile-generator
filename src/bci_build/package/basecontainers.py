@@ -6,6 +6,7 @@ import textwrap
 from pathlib import Path
 
 from bci_build.package import ALL_BASE_OS_VERSIONS
+from bci_build.package import ALL_OS_LTSS_VERSIONS
 from bci_build.package import ALL_OS_VERSIONS
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -168,7 +169,9 @@ FIPS_BASE_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         support_level=SupportLevel.L3,
         supported_until=_get_supported_until_fips(os_version),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(
+            os_version in CAN_BE_LATEST_OS_VERSION or os_version in ALL_OS_LTSS_VERSIONS
+        ),
         pretty_name=_get_fips_pretty_name(os_version),
         package_list=[*os_version.release_package_names, "coreutils"]
         + (
