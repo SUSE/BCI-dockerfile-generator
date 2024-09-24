@@ -15,17 +15,19 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # release dates are coming from upstream - https://raw.githubusercontent.com/rust-lang/rust/master/RELEASES.md
 # we expect a new release every 6 weeks, two releases are supported at any point in time
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
+_RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
-    "1.80": datetime.date(2024, 7, 25) + datetime.timedelta(weeks=6 + 6 + 3),
-    "1.79": datetime.date(2024, 6, 13) + datetime.timedelta(weeks=6 + 6 + 3),
-    "1.78": datetime.date(2024, 5, 2) + datetime.timedelta(weeks=6 + 6 + 3),
-    "1.77": datetime.date(2024, 3, 21) + datetime.timedelta(weeks=6 + 6 + 3),
-    "1.76": datetime.date(2024, 2, 8) + datetime.timedelta(weeks=6 + 6 + 3),
-    "1.75": datetime.date(2023, 12, 28) + datetime.timedelta(weeks=6 + 6 + 3),
+    "1.81": datetime.date(2024, 9, 5) + _RUST_SUPPORT_OVERLAP,
+    "1.80": datetime.date(2024, 7, 25) + _RUST_SUPPORT_OVERLAP,
+    "1.79": datetime.date(2024, 6, 13) + _RUST_SUPPORT_OVERLAP,
+    "1.78": datetime.date(2024, 5, 2) + _RUST_SUPPORT_OVERLAP,
+    "1.77": datetime.date(2024, 3, 21) + _RUST_SUPPORT_OVERLAP,
+    "1.76": datetime.date(2024, 2, 8) + _RUST_SUPPORT_OVERLAP,
+    "1.75": datetime.date(2023, 12, 28) + _RUST_SUPPORT_OVERLAP,
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.79", "1.80"]
+_RUST_VERSIONS = ["1.80", "1.81"]
 
 assert (
     len(_RUST_VERSIONS) == 2
