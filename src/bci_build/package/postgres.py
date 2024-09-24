@@ -25,7 +25,7 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=[f"postgresql{ver}-server", "findutils"],
+        package_list=["libpq5", f"postgresql{ver}-server", "findutils"],
         version="%%pg_patch_version%%",
         tag_version=ver,
         additional_versions=["%%pg_minor_version%%", "%%pg_patch_version%%"],
