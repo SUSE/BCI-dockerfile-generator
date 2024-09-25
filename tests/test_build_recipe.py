@@ -30,7 +30,10 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildVersion: 15.6.27
 FROM bci/bci-base:15.6
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+RUN \\
+    zypper -n install --no-recommends gcc emacs; \\
+    zypper -n clean; \\
+    ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -140,7 +143,10 @@ RUN emacs -Q --batch test.el
 #!BuildVersion: 15.5
 FROM bci/bci-base:15.5
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+RUN \\
+    zypper -n install --no-recommends gcc emacs; \\
+    zypper -n clean; \\
+    ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -241,7 +247,10 @@ Copyright header
 #!BuildVersion: 15.6.29
 FROM bci/bci-base:15.6
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+RUN \\
+    zypper -n install --no-recommends gcc emacs; \\
+    zypper -n clean; \\
+    ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -348,7 +357,10 @@ Copyright header
 
 FROM suse/base:18
 
-RUN zypper -n in --no-recommends gcc emacs; zypper -n clean; ##LOGCLEAN##
+RUN \\
+    zypper -n install --no-recommends gcc emacs; \\
+    zypper -n clean; \\
+    ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.test

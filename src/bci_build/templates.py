@@ -43,7 +43,14 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 COPY --from=target / /target
 {%- endif %}
 
-{% if image.packages %}{{ DOCKERFILE_RUN }} zypper{% if image.from_target_image %} --installroot /target --gpg-auto-import-keys {% endif %} -n in {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; zypper -n clean; {{ LOG_CLEAN }}{% endif %}
+{% if image.packages %}{{ DOCKERFILE_RUN }} \\
+    zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; \\
+    {%- if image.packages_to_delete %}
+    zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}; \\
+    {%- endif %}
+    zypper -n clean; \\
+    {{ LOG_CLEAN }}
+{%- endif %}
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
 COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
