@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 25 17:12:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
 Thu Sep 19 15:50:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install openSUSE-release package to avoid have-choice errors
