@@ -16,7 +16,7 @@ _POSTGRES_ENTRYPOINT = (
 _POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes()
 
 # first list the SLE15 versions, then the TW specific versions
-_POSTGRES_MAJOR_VERSIONS = [16, 15, 14] + [13, 12]
+_POSTGRES_MAJOR_VERSIONS = [16, 15, 14] + [17, 13, 12]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         name="postgres",
@@ -25,7 +25,7 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=[f"postgresql{ver}-server", "findutils"],
+        package_list=["libpq5", f"postgresql{ver}-server", "findutils"],
         version="%%pg_patch_version%%",
         tag_version=ver,
         additional_versions=["%%pg_minor_version%%", "%%pg_patch_version%%"],
@@ -53,6 +53,7 @@ POSTGRES_CONTAINERS = [
             Replacement(
                 regex_in_build_description="%%pg_patch_version%%",
                 package_name=f"postgresql{ver}-server",
+                parse_version=ParseVersion.PATCH,
             ),
         ],
         volumes=["$PGDATA"],
@@ -77,5 +78,5 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             for variant in (OsVersion.SP6, OsVersion.SP7, OsVersion.TUMBLEWEED)
         ]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13, 12)]
+    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (17, 14, 13, 12)]
 ]

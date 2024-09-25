@@ -302,7 +302,6 @@ _OSC_USERNAME = "foobar"
     <enable/>
   </debuginfo>
   <repository name="standard">
-    <path project="openSUSE:Registry" repository="standard"/>
     <path project="openSUSE:Factory" repository="images"/>
     <path project="openSUSE:Factory:ARM" repository="images"/>
     <path project="openSUSE:Factory:ARM" repository="standard"/>
