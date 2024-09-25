@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 25 17:12:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
 Mon Sep 16 08:22:54 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - install coreutils to avoid ambiguity with busybox-coreutils
