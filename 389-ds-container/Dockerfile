@@ -23,7 +23,10 @@
 #!BuildRelease: 35
 FROM suse/sle15:15.6
 
-RUN set -euo pipefail; zypper -n in --no-recommends 389-ds timezone openssl nss_synth; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends 389-ds timezone openssl nss_synth; \
+    zypper -n clean; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.389-ds
