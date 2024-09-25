@@ -23,7 +23,10 @@
 #!BuildVersion: 15.6.2.5
 FROM bci/bci-base:15.6
 
-RUN set -euo pipefail; zypper -n in --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; \
+    zypper -n clean; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.ruby
