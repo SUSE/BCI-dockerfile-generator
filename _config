@@ -54,8 +54,8 @@ Patterntype: none
 BuildFlags: sbom:cyclonedx
 BuildFlags: sbom:spdx
 PublishFlags: withsbom
-Substitute: system-packages:podman kmod kernel-default podman buildah createrepo_c umoci skopeo 
-Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-default createrepo_c umoci skopeo 
+Substitute: system-packages:podman kmod kernel-default podman buildah createrepo_c umoci skopeo container-build-checks-vendor-SUSE container-build-checks-strict
+Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-default createrepo_c umoci skopeo container-build-checks-vendor-SUSE container-build-checks-strict
 # END SBOM CHANGES
 
 # temporary workaround until we can drop the SUSE:Registry repository path
