@@ -15,34 +15,34 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/postgres:12
-#!BuildTag: opensuse/postgres:12-%RELEASE%
+#!BuildTag: opensuse/postgres:17
+#!BuildTag: opensuse/postgres:17-%RELEASE%
 #!BuildTag: opensuse/postgres:%%pg_minor_version%%
 #!BuildTag: opensuse/postgres:%%pg_patch_version%%
 
 FROM opensuse/tumbleweed:latest
 
-RUN set -euo pipefail; zypper -n in --no-recommends libpq5 postgresql12-server findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends libpq5 postgresql17-server findutils; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.postgres
 LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed PostgreSQL 12"
-LABEL org.opencontainers.image.description="PostgreSQL 12 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed PostgreSQL 17"
+LABEL org.opencontainers.image.description="PostgreSQL 17 container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%pg_patch_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="12-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/postgres:12-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="17-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/postgres:17-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/postgres-12-image/README.md"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/postgres-17-image/README.md"
 ENV LANG="en_US.utf8"
-ENV PG_MAJOR="12"
+ENV PG_MAJOR="17"
 ENV PG_VERSION="%%pg_minor_version%%"
 ENV PGDATA="/var/lib/pgsql/data"
 
@@ -55,7 +55,7 @@ RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
     install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
-    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql12/postgresql.conf.sample
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql17/postgresql.conf.sample
 
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
