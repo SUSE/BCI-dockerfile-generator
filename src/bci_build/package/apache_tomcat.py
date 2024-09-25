@@ -6,6 +6,8 @@ from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import OsContainer
 from bci_build.package import OsVersion
+from bci_build.package import Package
+from bci_build.package import PackageType
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
 
@@ -82,6 +84,7 @@ TOMCAT_CONTAINERS = [
             "curl",
             # currently needed by custom_end
             "sed",
+            Package("util-linux", PackageType.DELETE),
         ]
         + [f"java-{jre_version}-openjdk", f"java-{jre_version}-openjdk-headless"],
         replacements_via_service=[

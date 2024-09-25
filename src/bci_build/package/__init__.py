@@ -864,12 +864,27 @@ exit 0
         :command:`zypper in`.
 
         """
+        packages_to_install: list[str] = []
         for pkg in self.package_list:
-            if isinstance(pkg, Package) and pkg.pkg_type != PackageType.IMAGE:
-                raise ValueError(
-                    f"Cannot add a package of type {pkg.pkg_type} into a Dockerfile based build."
-                )
-        return " ".join(str(pkg) for pkg in self.package_list)
+            if isinstance(pkg, Package):
+                if pkg.pkg_type == PackageType.DELETE:
+                    continue
+                if pkg.pkg_type != PackageType.IMAGE:
+                    raise ValueError(
+                        f"Cannot add a package of type {pkg.pkg_type} into a Dockerfile based build."
+                    )
+            packages_to_install.append(str(pkg))
+        return " ".join(packages_to_install)
+
+    @property
+    def packages_to_delete(self) -> str:
+        """The list of packages joined that can be passed to zypper -n rm after an install`."""
+        packages_to_delete: list[str] = [
+            str(pkg)
+            for pkg in self.package_list
+            if (isinstance(pkg, Package) and pkg.pkg_type == PackageType.DELETE)
+        ]
+        return " ".join(packages_to_delete)
 
     @overload
     def _kiwi_volumes_expose(
