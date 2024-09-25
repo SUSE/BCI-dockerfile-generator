@@ -25,7 +25,7 @@
 #!BuildRelease: 33
 FROM bci/bci-base:15.6
 
-RUN set -euo pipefail; zypper -n in --no-recommends go1.22 go1.22-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends go1.22 go1.22-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
@@ -56,6 +56,6 @@ ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin
 #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
 RUN set -euo pipefail; if zypper -n install go1.22-race; then zypper -n clean; fi
 RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
-RUN set -euo pipefail; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 WORKDIR /go
 
