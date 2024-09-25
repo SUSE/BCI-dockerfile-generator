@@ -25,7 +25,10 @@
 #!BuildVersion: 15.7.20
 FROM bci/bci-base:15.7
 
-RUN set -euo pipefail; zypper -n in --no-recommends nodejs20 npm20 update-alternatives curl findutils gawk git-core procps; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends nodejs20 npm20 update-alternatives curl findutils gawk git-core procps; \
+    zypper -n clean; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.nodejs

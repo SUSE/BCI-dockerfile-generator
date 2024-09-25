@@ -21,7 +21,10 @@
 #!BuildVersion: 15.7
 FROM bci/bci-base:15.7
 
-RUN set -euo pipefail; zypper -n in --no-recommends kernel-devel kernel-syms gcc kmod make patch gawk rpm-build sles-release; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends kernel-devel kernel-syms gcc kmod make patch gawk rpm-build sles-release; \
+    zypper -n clean; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.sle15-kernel-module-devel
