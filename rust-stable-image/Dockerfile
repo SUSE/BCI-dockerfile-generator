@@ -24,7 +24,10 @@
 
 FROM opensuse/tumbleweed:latest
 
-RUN set -euo pipefail; zypper -n in --no-recommends rust1.81 cargo1.81; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends rust1.81 cargo1.81; \
+    zypper -n clean; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.rust
