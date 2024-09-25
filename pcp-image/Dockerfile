@@ -23,7 +23,7 @@
 #!BuildVersion: 15.7.5.3.7
 FROM bci/bci-init:15.7
 
-RUN set -euo pipefail; zypper -n in --no-recommends pcp hostname procps shadow gettext-runtime util-linux-systemd; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends pcp hostname procps shadow gettext-runtime util-linux-systemd; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.pcp

@@ -23,7 +23,7 @@
 #!BuildVersion: 15.7.3.12
 FROM bci/bci-base:15.7
 
-RUN set -euo pipefail; zypper -n in --no-recommends python312-devel python312 python312-pip curl findutils gawk git-core procps python312-pipx lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends python312-devel python312 python312-pip curl findutils gawk git-core procps python312-pipx lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.python

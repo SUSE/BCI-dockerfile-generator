@@ -22,7 +22,7 @@
 #!BuildVersion: 15.7.13
 FROM bci/bci-base:15.7
 
-RUN set -euo pipefail; zypper -n in --no-recommends gcc13 gcc13-c++ make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends gcc13 gcc13-c++ make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; zypper -n clean; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.gcc
