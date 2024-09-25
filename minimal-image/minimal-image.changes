@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 25 17:12:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
 Fri Sep 13 14:23:26 UTC 2024 - Dan Čermák <dcermak@suse.com>
 
 - use tag_version not latest

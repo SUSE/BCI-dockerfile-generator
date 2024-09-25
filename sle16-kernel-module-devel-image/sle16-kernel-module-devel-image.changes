@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 25 17:12:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
 Thu Sep 12 10:37:09 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - set useobsrepositories explicitly

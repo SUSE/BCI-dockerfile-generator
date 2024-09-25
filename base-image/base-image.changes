@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 25 17:12:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
 Mon Sep 23 17:22:39 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - explicitly install openssl cli package
