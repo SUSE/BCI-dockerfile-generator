@@ -53,7 +53,8 @@ ENV PATH="/usr/share/tomcat/bin:$PATH"
 
 CMD ["/usr/libexec/tomcat/server", "start"]
 EXPOSE 8080
-RUN set -euo pipefail; mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat;
+RUN set -euo pipefail; mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat
+RUN set -euo pipefail; ln -s /usr/share/tomcat /usr/local/tomcat
 RUN set -euo pipefail; \
     sed -i /etc/tomcat/logging.properties \
         -e 's|org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.handlers =.*|org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = java.util.logging.ConsoleHandler|' \
