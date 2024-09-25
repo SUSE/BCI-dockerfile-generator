@@ -101,7 +101,8 @@ TOMCAT_CONTAINERS = [
             "CATALINA_BASE": _CATALINA_HOME,
             "PATH": f"{_CATALINA_HOME}/bin:$PATH",
         },
-        custom_end=rf"""{DOCKERFILE_RUN} mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat;
+        custom_end=rf"""{DOCKERFILE_RUN} mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat
+{DOCKERFILE_RUN} ln -s {_CATALINA_HOME} /usr/local/tomcat
 {DOCKERFILE_RUN} \
     sed -i /etc/tomcat/logging.properties \
         -e 's|org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.handlers =.*|org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = java.util.logging.ConsoleHandler|' \
