@@ -35,7 +35,7 @@ COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.apache-tomcat
 LABEL org.opencontainers.image.title="Apache Tomcat"
-LABEL org.opencontainers.image.description="Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, Jakarta Expression Language, and WebSocket technologies, based on the SLE Base Container Image."
+LABEL org.opencontainers.image.description="Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, Jakarta Expression Language, and WebSocket technologies."
 LABEL org.opencontainers.image.version="%%tomcat_version%%"
 LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-tomcat"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
