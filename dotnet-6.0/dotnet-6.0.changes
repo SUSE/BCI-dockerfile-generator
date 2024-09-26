@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 26 09:56:33 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
 Wed Sep 25 17:12:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - improved log cleaning
