@@ -765,23 +765,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
                 will be added
 
         """
-        tasks = [
-            self._write_pkg_meta(
-                bci,
-                git_branch_name=git_branch_name,
-                target_obs_project=target_obs_project,
-            )
-            for bci in packages
-        ]
-
+        tasks = []
+        pkg_metas_to_generate = set()
         for bci in packages:
-            tasks.append(
-                self._write_pkg_meta(
-                    bci,
-                    git_branch_name=git_branch_name,
-                    target_obs_project=target_obs_project,
+            if bci.package_name not in pkg_metas_to_generate:
+                pkg_metas_to_generate.add(bci.package_name)
+                tasks.append(
+                    self._write_pkg_meta(
+                        bci,
+                        git_branch_name=git_branch_name,
+                        target_obs_project=target_obs_project,
+                    )
                 )
-            )
 
         await asyncio.gather(*tasks)
 

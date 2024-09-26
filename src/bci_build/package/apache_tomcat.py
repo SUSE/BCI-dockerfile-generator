@@ -2,6 +2,7 @@
 
 import datetime
 
+from bci_build.containercrate import ContainerCrate
 from bci_build.package import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import OsContainer
@@ -52,9 +53,9 @@ def _get_sac_supported_until(
 TOMCAT_CONTAINERS = [
     ApplicationCollectionContainer(
         name="apache-tomcat",
-        package_name=f"apache-tomcat-{tomcat_ver.partition('.')[0]}-java-{jre_version}-image"
+        package_name=f"apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
         if os_version.is_tumbleweed
-        else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-java{jre_version}-image",
+        else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-image",
         pretty_name="Apache Tomcat",
         custom_description=(
             "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
@@ -73,6 +74,7 @@ TOMCAT_CONTAINERS = [
         supported_until=_get_sac_supported_until(
             os_version=os_version, tomcat_ver=tomcat_ver, jre_major=jre_version
         ),
+        build_flavor=f"openjdk{jre_version}",
         additional_versions=[f"%%tomcat_version%%-openjdk{jre_version}"],
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
@@ -124,6 +126,9 @@ WORKDIR $CATALINA_HOME
         ("10.1", OsVersion.TUMBLEWEED, 17),
         ("9", OsVersion.TUMBLEWEED, 17),
         ("10.1", OsVersion.SP6, 21),
+        ("10.1", OsVersion.SP6, 17),
         # (10.1, OsVersion.SP7, 21),
     )
 ]
+
+TOMCAT_CRATE = ContainerCrate(TOMCAT_CONTAINERS)

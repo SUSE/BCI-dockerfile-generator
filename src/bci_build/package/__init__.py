@@ -16,6 +16,7 @@ from typing import overload
 import jinja2
 from packaging import version
 
+from bci_build.containercrate import ContainerCrate
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -457,6 +458,12 @@ class BaseContainerImage(abc.ABC):
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
         default_factory=dict
     )
+
+    #: build flavors to produce for this container variant
+    build_flavor: str | None = None
+
+    #: create that this container is part of
+    crate: ContainerCrate = None
 
     #: Add any replacements via `obs-service-replace_using_package_version
     #: <https://github.com/openSUSE/obs-service-replace_using_package_version>`_
@@ -1156,8 +1163,12 @@ exit 0
         return f"{self.os_version.distribution_base_name} BCI {self.pretty_name}"
 
     @property
+    def readme_name(self) -> str:
+        return f"README.{self.build_flavor}.md" if self.build_flavor else "README.md"
+
+    @property
     def readme_path(self) -> str:
-        return f"{self.package_name}/README.md"
+        return f"{self.package_name}/{self.readme_name}"
 
     @property
     def readme_url(self) -> str:
@@ -1168,7 +1179,7 @@ exit 0
         if self.os_version.is_tumbleweed:
             return f"https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/{self.os_version.deployment_branch_name}/{self.readme_path}"
 
-        return "%SOURCEURL%/README.md"
+        return f"%SOURCEURL%/{self.readme_name}"
 
     @property
     def readme(self) -> str:
@@ -1296,14 +1307,17 @@ exit 0
             await write_to_file(os.path.join(dest, fname), contents)
 
         if self.build_recipe_type == BuildType.DOCKER:
-            fname = "Dockerfile"
             infoheader = textwrap.indent(INFOHEADER_TEMPLATE, "# ")
+            fname = (
+                f"Dockerfile.{self.build_flavor}" if self.build_flavor else "Dockerfile"
+            )
 
             dockerfile = DOCKERFILE_TEMPLATE.render(
                 image=self,
                 INFOHEADER=infoheader,
                 DOCKERFILE_RUN=DOCKERFILE_RUN,
                 LOG_CLEAN=LOG_CLEAN,
+                BUILD_FLAVOR=self.build_flavor,
             )
             if dockerfile[-1] != "\n":
                 dockerfile += "\n"
@@ -1329,6 +1343,11 @@ exit 0
             assert (
                 False
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
+
+        if self.build_flavor:
+            mname = "_multibuild"
+            tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
+            files.append(mname)
 
         tasks.append(
             write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
@@ -1367,8 +1386,8 @@ exit 0
             tasks.append(write_file_to_dest(fname, contents))
 
         if "README.md" not in self.extra_files:
-            files.append("README.md")
-            tasks.append(write_file_to_dest("README.md", self.readme))
+            files.append(self.readme_name)
+            tasks.append(write_file_to_dest(self.readme_name, self.readme))
 
         await asyncio.gather(*tasks)
 
