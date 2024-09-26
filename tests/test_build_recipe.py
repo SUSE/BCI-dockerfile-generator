@@ -54,6 +54,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 COPY test.el .
 RUN emacs -Q --batch test.el
@@ -97,6 +99,8 @@ Copyright header
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -166,6 +170,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 """,
             """<?xml version="1.0" encoding="utf-8"?>
@@ -206,6 +212,8 @@ Copyright header
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
@@ -270,6 +278,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 USER emacs""",
             """<?xml version="1.0" encoding="utf-8"?>
@@ -311,6 +321,8 @@ Copyright header
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
