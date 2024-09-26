@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 26 09:56:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
 Thu Sep 26 09:48:43 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove SLE BCI advertising for appcol
