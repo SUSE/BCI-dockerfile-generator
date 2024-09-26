@@ -44,6 +44,8 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-17-openjdk-17/bin"
 ENV JAVA_HOME="/usr/lib64/jvm/java-17-openjdk-17"
