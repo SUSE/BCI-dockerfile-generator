@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 26 09:56:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
 Wed Sep 25 17:36:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - rerender installation step in multiple lines, allow uninstalling optional packages
