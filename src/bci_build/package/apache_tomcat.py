@@ -58,8 +58,9 @@ TOMCAT_CONTAINERS = [
         pretty_name="Apache Tomcat",
         custom_description=(
             "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
-            "Jakarta Expression Language, and WebSocket technologies, {based_on_container}."
-        ),
+            "Jakarta Expression Language, and WebSocket technologies"
+        )
+        + (", {based_on_container}." if os_version.is_tumbleweed else "."),
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
