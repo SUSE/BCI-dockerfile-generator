@@ -11,12 +11,14 @@ from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 
-_PYTHON_VERSIONS = Literal["3.6", "3.10", "3.11", "3.12"]
+_PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12"]
 
 # The lifecycle is handcrafted by the SUSE Python maintainers
 _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     # Actually end of general support of SLE15, SP7 is the last known SP
     "3.6": _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
+    # per jsc#PED-10823
+    "3.9": datetime.datetime(2027, 12, 31),
     # only openSUSE
     "3.10": None,
     # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
@@ -102,6 +104,14 @@ PYTHON_3_6_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
+    )
+    for os_version in (OsVersion.SP6,)
+)
+
+PYTHON_3_9_CONTAINERS = (
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.9", os_version),
+        package_name="sac-python-3.9-image",
     )
     for os_version in (OsVersion.SP6,)
 )
