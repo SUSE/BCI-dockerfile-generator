@@ -32,7 +32,7 @@ To compile and deploy an application, copy the sources and build the application
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.suse.com/bci/openjdk-devel:{{ image.tag_version }}  as build
+FROM {{ image.registry }}/{{ image.registry_prefix }}/openjdk-devel:{{ image.tag_version }}  as build
 
 WORKDIR /app
 

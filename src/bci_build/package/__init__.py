@@ -721,7 +721,7 @@ class BaseContainerImage(abc.ABC):
         return ""
 
     @property
-    def _registry_prefix(self) -> str:
+    def registry_prefix(self) -> str:
         return _build_tag_prefix(self.os_version)
 
     @staticmethod
@@ -1403,7 +1403,7 @@ class DevelopmentContainer(BaseContainerImage):
             raise ValueError("A development container requires a version")
 
     @property
-    def _registry_prefix(self) -> str:
+    def registry_prefix(self) -> str:
         if self.os_version.is_tumbleweed:
             return "opensuse/bci"
         return "bci"
@@ -1475,15 +1475,15 @@ class DevelopmentContainer(BaseContainerImage):
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
-                tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
+                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
                 tags += [
-                    f"{self._registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
+                    f"{self.registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 ]
             for ver_label in self.additional_versions:
-                tags += [f"{self._registry_prefix}/{name}:{ver_label}"]
+                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
 
             if self.is_latest:
-                tags += [f"{self._registry_prefix}/{name}:latest"]
+                tags += [f"{self.registry_prefix}/{name}:latest"]
         return tags
 
     @property
@@ -1493,12 +1493,12 @@ class DevelopmentContainer(BaseContainerImage):
     @property
     def reference(self) -> str:
         return (
-            f"{self.registry}/{self._registry_prefix}/{self.name}:{self.image_ref_name}"
+            f"{self.registry}/{self.registry_prefix}/{self.name}:{self.image_ref_name}"
         )
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/{self.name}:{self.tag_version}"
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.tag_version}"
 
     @property
     def build_version(self) -> str | None:
@@ -1528,7 +1528,7 @@ class ApplicationStackContainer(DevelopmentContainer):
         super().__post_init__()
 
     @property
-    def _registry_prefix(self) -> str:
+    def registry_prefix(self) -> str:
         if self.os_version.is_tumbleweed:
             return "opensuse"
         return "suse"
@@ -1580,10 +1580,10 @@ class OsContainer(BaseContainerImage):
 
         for name in [self.name] + self.additional_names:
             tags += [
-                f"{self._registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
-                f"{self._registry_prefix}/bci-{name}:{self.image_ref_name}",
+                f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
+                f"{self.registry_prefix}/bci-{name}:{self.image_ref_name}",
             ] + (
-                [f"{self._registry_prefix}/bci-{name}:latest"] if self.is_latest else []
+                [f"{self.registry_prefix}/bci-{name}:latest"] if self.is_latest else []
             )
         return tags
 
@@ -1593,11 +1593,11 @@ class OsContainer(BaseContainerImage):
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.image_ref_name}"
+        return f"{self.registry}/{self.registry_prefix}/bci-{self.name}:{self.image_ref_name}"
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self._registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
+        return f"{self.registry}/{self.registry_prefix}/bci-{self.name}:{self.os_version.os_version}"
 
     def prepare_template(self) -> None:
         """Hook to do delayed expensive work prior template rendering"""

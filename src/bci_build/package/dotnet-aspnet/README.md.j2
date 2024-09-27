@@ -16,7 +16,7 @@ and it is optimized for running ASP.NET Core applications in production.
 To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:{{ image.tag_version }} AS build
+FROM {{ image.registry }}/{{ image.registry_prefix }}/dotnet-sdk:{{ image.tag_version }} AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
