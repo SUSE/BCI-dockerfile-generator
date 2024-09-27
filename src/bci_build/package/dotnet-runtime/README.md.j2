@@ -15,7 +15,7 @@ This image contains the .NET runtimes and libraries, and it is optimized for run
 To deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:{{ image.tag_version }} AS build
+FROM {{ image.registry }}/{{ image.registry_prefix }}/dotnet-sdk:{{ image.tag_version }} AS build
 
 WORKDIR /source
 

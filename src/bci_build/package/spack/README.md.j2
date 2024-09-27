@@ -25,7 +25,7 @@ spack:
     format: <container_format>
     images:
       build: "{{ image.pretty_reference }}"
-      final: "registry.suse.com/bci/bci-base:latest"
+      final: "{{ image.registry }}/{{ image.registry_prefix }}/bci-base:latest"
     os_packages:
       command: zypper
       build:

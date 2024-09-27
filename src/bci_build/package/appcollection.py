@@ -12,9 +12,9 @@ class ApplicationCollectionContainer(ApplicationStackContainer):
     """Containers for the Rancher Application Collection Distribution Platform."""
 
     @property
-    def _registry_prefix(self) -> str:
+    def registry_prefix(self) -> str:
         if self.os_version.is_tumbleweed:
-            return super()._registry_prefix
+            return super().registry_prefix
         return "containers"
 
     @property

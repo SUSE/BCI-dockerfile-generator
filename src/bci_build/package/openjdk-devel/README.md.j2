@@ -30,7 +30,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.suse.com/bci/openjdk:{{ image.tag_version }}
+FROM {{ image.registry }}/{{ image.registry_prefix }}/openjdk:{{ image.tag_version }}
 
 WORKDIR /app
 
