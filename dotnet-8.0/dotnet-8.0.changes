@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Sep 28 08:16:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- fix registry references in READMEs
+
+-------------------------------------------------------------------
 Sat Sep 28 08:14:30 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - update to 8.0.402 release:
