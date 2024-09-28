@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Sep 28 08:15:08 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- fix registry references in READMEs
+
+-------------------------------------------------------------------
 Thu Sep 26 09:56:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add org.opencontainers.image.base.* labels
