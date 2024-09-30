@@ -21,7 +21,7 @@
 #!BuildTag: bci/gcc:latest
 #!BuildName: bci-gcc-13
 #!BuildVersion: 15.6.13
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc13 gcc13-c++ make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \

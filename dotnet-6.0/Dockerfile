@@ -21,7 +21,7 @@
 #!BuildName: bci-dotnet-sdk-6.0
 #!BuildVersion: 15.6.6.0
 #!BuildRelease: 32
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 
 

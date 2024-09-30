@@ -22,7 +22,7 @@
 #!BuildName: bci-php-8
 #!BuildVersion: 15.6.8
 #!BuildRelease: 30
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring lifecycle-data-sle-module-development-tools php8-readline; \

@@ -23,7 +23,7 @@
 #!BuildName: suse-postgres-16
 #!BuildVersion: 15.6.16
 #!BuildRelease: 35
-FROM suse/sle15:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends libpq5 postgresql16-server findutils; \

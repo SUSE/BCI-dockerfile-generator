@@ -21,7 +21,7 @@
 #!BuildTag: bci/ruby:latest
 #!BuildName: bci-ruby-2.5
 #!BuildVersion: 15.6.2.5
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends ruby2.5 ruby2.5-rubygem-bundler ruby2.5-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; \

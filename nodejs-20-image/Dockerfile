@@ -26,7 +26,7 @@
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
 #!BuildRelease: 30
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends nodejs20 npm20 update-alternatives curl findutils gawk git-core procps; \
