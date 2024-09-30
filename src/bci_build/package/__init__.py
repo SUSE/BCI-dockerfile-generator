@@ -874,10 +874,13 @@ exit 0
     def kiwi_derived_from_entry(self) -> str:
         if self._from_image is None:
             return ""
-        # Adjust for the absolutely braindamaged format that OBS expects to reference
+        # Adjust for the special format that OBS expects to reference
         # external images
         if self.is_base_container_annotation_available:
-            return f" derived_from=\"obs://SUSE:Registry/standard/{self._from_image.replace('registry.suse.com/','').replace(':', '#')}\""
+            repo: str = self._from_image.replace("registry.suse.com/", "").replace(
+                ":", "#"
+            )
+            return f' derived_from="obs://SUSE:Registry/standard/{repo}"'
         return (
             f" derived_from=\"obsrepositories:/{self._from_image.replace(':', '#')}\""
         )

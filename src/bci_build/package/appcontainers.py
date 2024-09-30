@@ -15,6 +15,7 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
+from bci_build.package.helpers import generate_from_image
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
@@ -350,7 +351,7 @@ GIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         pretty_name=f"{os_version.pretty_os_version_no_dash} with Git",
         custom_description="A micro environment with Git {based_on_container}.",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=generate_from_image(os_version, "bci-micro"),
         build_recipe_type=BuildType.KIWI,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%git_version%%",
@@ -395,7 +396,7 @@ REGISTRY_CONTAINERS = [
         name="registry",
         package_name="distribution-image",
         pretty_name="OCI Container Registry (Distribution)",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=generate_from_image(os_version, "bci-micro"),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
@@ -434,7 +435,7 @@ HELM_CONTAINERS = [
     ApplicationStackContainer(
         name="helm",
         pretty_name="Kubernetes Package Manager",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=generate_from_image(os_version, "bci-micro"),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version=get_pkg_version("helm", os_version),
@@ -460,7 +461,7 @@ TRIVY_CONTAINERS = [
     ApplicationStackContainer(
         name="trivy",
         pretty_name="Container Vulnerability Scanner",
-        from_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        from_image=generate_from_image(os_version, "bci-micro"),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%trivy_version%%",
