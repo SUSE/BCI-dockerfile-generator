@@ -15,7 +15,6 @@ Prefer: -libudev-mini1
 Prefer: -udev-mini
 Prefer: kiwi-boot-requires
 Prefer: sles-release
-Prefer: sles-release-MINI
 Prefer: python3-kiwi
 
 # needed for busybox image building (at minimum)
