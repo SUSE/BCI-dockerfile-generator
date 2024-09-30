@@ -19,7 +19,7 @@
 #!BuildTag: bci/openjdk:17-%RELEASE%
 #!BuildName: bci-openjdk-17
 #!BuildVersion: 15.5.17
-FROM bci/bci-base:15.5
+FROM registry.suse.com/bci/bci-base:15.5
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-17-openjdk curl findutils gawk git-core procps; \
