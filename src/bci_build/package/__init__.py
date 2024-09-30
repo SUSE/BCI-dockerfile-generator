@@ -823,6 +823,8 @@ exit 0
             return f"{_build_tag_prefix(self.os_version)}/bci-base:{self.os_version}"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
+        if not self.from_target_image and self.os_version in RELEASED_OS_VERSIONS:
+            return f"{self.base_image_registry}/bci/bci-base:15.{self.os_version}"
         if self.image_type == ImageType.APPLICATION:
             return f"suse/sle15:15.{self.os_version}"
 
@@ -836,7 +838,10 @@ exit 0
         # build against the released container on SLE for proper base.digest/name generation
         return (
             self.from_target_image
-            if self.os_version.is_tumbleweed
+            if (
+                self.os_version.is_tumbleweed
+                or self.os_version not in RELEASED_OS_VERSIONS
+            )
             else f"{self.base_image_registry}/{self.from_target_image}"
         )
 
