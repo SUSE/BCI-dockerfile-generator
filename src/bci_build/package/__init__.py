@@ -655,6 +655,7 @@ exit 0
             self.from_target_image
             if (
                 self.os_version.is_tumbleweed
+                or self.from_target_image.startswith(self.base_image_registry)
                 or self.os_version not in RELEASED_OS_VERSIONS
             )
             else f"{self.base_image_registry}/{self.from_target_image}"
