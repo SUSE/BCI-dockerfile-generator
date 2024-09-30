@@ -1295,29 +1295,21 @@ exit 0
             if dockerfile[-1] != "\n":
                 dockerfile += "\n"
 
-            tasks.append(asyncio.ensure_future(write_file_to_dest(fname, dockerfile)))
+            tasks.append(write_file_to_dest(fname, dockerfile))
             files.append(fname)
 
         elif self.build_recipe_type == BuildType.KIWI:
             fname = f"{self.package_name}.kiwi"
             tasks.append(
-                asyncio.ensure_future(
-                    write_file_to_dest(
-                        fname,
-                        KIWI_TEMPLATE.render(
-                            image=self, INFOHEADER=INFOHEADER_TEMPLATE
-                        ),
-                    )
+                write_file_to_dest(
+                    fname,
+                    KIWI_TEMPLATE.render(image=self, INFOHEADER=INFOHEADER_TEMPLATE),
                 )
             )
             files.append(fname)
 
             if self.config_sh:
-                tasks.append(
-                    asyncio.ensure_future(
-                        write_file_to_dest("config.sh", self.config_sh)
-                    )
-                )
+                tasks.append(write_file_to_dest("config.sh", self.config_sh))
                 files.append("config.sh")
 
         else:
@@ -1326,9 +1318,7 @@ exit 0
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
 
         tasks.append(
-            asyncio.ensure_future(
-                write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
-            )
+            write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
         )
 
         changes_file_name = self.package_name + ".changes"
@@ -1348,15 +1338,13 @@ exit 0
                 ):
                     name_to_include += f" {ver}"
             tasks.append(
-                asyncio.ensure_future(
-                    write_file_to_dest(
-                        changes_file_name,
-                        f"""-------------------------------------------------------------------
+                write_file_to_dest(
+                    changes_file_name,
+                    f"""-------------------------------------------------------------------
 {datetime.datetime.now(tz=datetime.timezone.utc).strftime("%a %b %d %X %Z %Y")} - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the {name_to_include} BCI
 """,
-                    )
                 )
             )
             files.append(changes_file_name)
