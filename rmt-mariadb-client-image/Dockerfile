@@ -24,7 +24,7 @@
 #!BuildName: suse-rmt-mariadb-client-10.11
 #!BuildVersion: 15.6.10.11
 #!BuildRelease: 35
-FROM suse/sle15:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends mariadb-client; \

@@ -22,7 +22,7 @@
 #!BuildTag: bci/rust:%%RUST_VERSION%%
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 15.6.1.80.2
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends rust1.80 cargo1.80 lifecycle-data-sle-module-development-tools; \

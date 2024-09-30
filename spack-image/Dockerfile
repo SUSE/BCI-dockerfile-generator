@@ -21,7 +21,7 @@
 #!BuildTag: bci/spack:latest
 #!BuildName: bci-spack-0.21
 #!BuildVersion: 15.6.0.21
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install spack bison cmake-full flex libtool makeinfo patchelf lsb-release zstd libzip-devel libcurl-devel libopenssl-devel ncurses-devel tack xz-devel; \

@@ -20,7 +20,7 @@
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.6.7
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc7 gcc7-c++ make gcc gcc-c++ curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \

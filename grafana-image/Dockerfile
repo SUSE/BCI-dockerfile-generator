@@ -23,7 +23,7 @@
 #!BuildName: suse-grafana-%%grafana_patch_version%%
 #!BuildVersion: 15.6
 #!BuildRelease: 35
-FROM suse/sle15:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends grafana; \

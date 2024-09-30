@@ -22,7 +22,7 @@
 #!BuildName: bci-python-3.11
 #!BuildVersion: 15.6.3.11
 #!BuildRelease: 41
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends python311-devel python311 python311-pip curl findutils gawk git-core procps python311-wheel python311-pipx lifecycle-data-sle-module-development-tools; \

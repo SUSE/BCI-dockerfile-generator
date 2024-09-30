@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 30 14:33:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- derive from released base container for correct base digest annotations
+
+-------------------------------------------------------------------
 Sat Sep 28 08:16:47 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - fix registry references in READMEs

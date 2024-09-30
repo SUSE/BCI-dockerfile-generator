@@ -20,7 +20,7 @@
 #!BuildTag: bci/bci-base-fips:latest
 #!BuildName: bci-bci-base-fips-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends sles-release coreutils crypto-policies-scripts; \

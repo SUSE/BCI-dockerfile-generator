@@ -20,7 +20,7 @@
 #!BuildTag: bci/openjdk:latest
 #!BuildName: bci-openjdk-21
 #!BuildVersion: 15.6.21
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-21-openjdk curl findutils gawk git-core procps; \
