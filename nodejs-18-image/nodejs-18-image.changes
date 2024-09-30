@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 30 14:33:57 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- derive from released base container for correct base digest annotations
+
+-------------------------------------------------------------------
 Thu Sep 26 09:56:44 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add org.opencontainers.image.base.* labels

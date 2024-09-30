@@ -21,7 +21,7 @@
 #!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildName: suse-postgres-15
 #!BuildVersion: 15.5.15
-FROM suse/sle15:15.5
+FROM registry.suse.com/bci/bci-base:15.5
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends libpq5 postgresql15-server findutils; \

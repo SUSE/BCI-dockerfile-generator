@@ -23,7 +23,7 @@
 #!BuildTag: bci/node:%%nodejs_version%%
 #!BuildName: bci-nodejs-18
 #!BuildVersion: 15.5.18
-FROM bci/bci-base:15.5
+FROM registry.suse.com/bci/bci-base:15.5
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends nodejs18 npm18 update-alternatives curl findutils gawk git-core procps; \
