@@ -880,7 +880,7 @@ exit 0
             repo: str = self._from_image.replace("registry.suse.com/", "").replace(
                 ":", "#"
             )
-            return f' derived_from="obs://SUSE:Registry/standard/{repo}"'
+            return f' derived_from="obsrepositories:/{repo}"'
         return (
             f" derived_from=\"obsrepositories:/{self._from_image.replace(':', '#')}\""
         )
