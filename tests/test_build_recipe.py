@@ -28,7 +28,7 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildTag: bci/test:27-%RELEASE%
 #!BuildName: bci-test-27
 #!BuildVersion: 15.6.27
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs; \\
@@ -75,7 +75,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
+    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="27"
@@ -145,7 +145,7 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildName: bci-test-stable
 #!BuildVersion: 15.5
-FROM bci/bci-base:15.5
+FROM registry.suse.com/bci/bci-base:15.5
 
 RUN \\
     zypper -n install --no-recommends gcc emacs; \\
@@ -189,7 +189,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.5">
+    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.5">
       <containerconfig
           name="bci/test"
           tag="stable"
@@ -253,7 +253,7 @@ Copyright header
 #!BuildTag: bci/test:29-%RELEASE%
 #!BuildName: bci-test-29
 #!BuildVersion: 15.6.29
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs; \\
@@ -297,7 +297,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
+    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="29"

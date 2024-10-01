@@ -848,8 +848,14 @@ exit 0
     @property
     def is_base_container_annotation_available(self) -> bool:
         """return True if the obs-service-kiwi_metainfo_helper can provide base.name/digest annotations."""
+        _from_image = self._from_image
         return bool(
-            self._from_image
+            _from_image
+            and self.os_version in RELEASED_OS_VERSIONS
+            and (
+                self.from_target_image
+                or _from_image.startswith(self.base_image_registry)
+            )
             and not self.os_version.is_tumbleweed
             and not self.os_version.is_slfo  # waiting for ibs#345975
         )
@@ -868,6 +874,13 @@ exit 0
     def kiwi_derived_from_entry(self) -> str:
         if self._from_image is None:
             return ""
+        # Adjust for the special format that OBS expects to reference
+        # external images
+        if self.is_base_container_annotation_available:
+            repo: str = self._from_image.replace("registry.suse.com/", "").replace(
+                ":", "#"
+            )
+            return f' derived_from="obs://SUSE:Registry/standard/{repo}"'
         return (
             f" derived_from=\"obsrepositories:/{self._from_image.replace(':', '#')}\""
         )
