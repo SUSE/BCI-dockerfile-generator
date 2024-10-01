@@ -144,8 +144,8 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildName: bci-test-stable
-#!BuildVersion: 15.5
-FROM registry.suse.com/bci/bci-base:15.5
+#!BuildVersion: 15.7
+FROM bci/bci-base:15.7
 
 RUN \\
     zypper -n install --no-recommends gcc emacs; \\
@@ -168,10 +168,8 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="released"
+LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
-LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 """,
             """<?xml version="1.0" encoding="utf-8"?>
@@ -189,7 +187,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.5">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
       <containerconfig
           name="bci/test"
           tag="stable"
@@ -209,16 +207,14 @@ Copyright header
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
-            <label name="com.suse.release-stage" value="released"/>
+            <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
-          <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
-          <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
         </labels>
       </containerconfig>
     </type>
-    <version>15.5.0</version>
+    <version>15.7.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
@@ -238,7 +234,7 @@ Copyright header
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 stability_tag="stable",
-                os_version=OsVersion.SP5,
+                os_version=OsVersion.SP7,
                 version="%%emacs_ver%%",
             ),
         ),
