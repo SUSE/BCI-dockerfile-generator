@@ -57,12 +57,6 @@ Substitute: system-packages:podman kmod kernel-default podman buildah createrepo
 Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-default createrepo_c umoci skopeo 
 # END SBOM CHANGES
 
-# temporary workaround until we can drop the SUSE:Registry repository path
-Prefer: -container:bci_openjdk:11
-Prefer: -container:bci_openjdk:17
-Prefer: -container:bci_bci-busybox:15.6
-Prefer: -container:bci_bci-init:15.6
-Prefer: -container:bci-bci-micro-15.6
-Prefer: -container:bci_bci-base:15.6
-Prefer: -container:suse-sle15-15.6
-Prefer: -container:bci-bci-base-15.6
+# prefer the released containers
+Prefer: -container:micro-image
+Prefer: -container:sles15-image
