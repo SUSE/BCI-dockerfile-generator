@@ -75,7 +75,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.6">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="27"
@@ -189,7 +189,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.5">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.5">
       <containerconfig
           name="bci/test"
           tag="stable"
@@ -297,7 +297,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-base#15.6">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
           tag="29"
