@@ -655,9 +655,18 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         # written before the project exists, which fails
         await self._send_prj_config(prj_name, prj_meta, ProjectConfig.META)
 
-        await self._send_prj_config(
-            prj_name, self._devel_project_prjconf, ProjectConfig.PRJCONF
-        )
+        # take the prjconf from the current PR branch and not from the
+        # deployment branch
+        # => allows to fixup & test things in staging projects without having
+        # access to the project on OBS. git access is sufficient
+        try:
+            prjconf = self._read_file_from_branch(self.branch_name, "_config")
+        except ValueError:
+            # the branch is not there for $reasons
+            # fallback to the devel project prjconf
+            prjconf = self._devel_project_prjconf
+
+        await self._send_prj_config(prj_name, prjconf, ProjectConfig.PRJCONF)
 
     def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
         return (
