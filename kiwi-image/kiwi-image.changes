@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  1 10:40:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- install the common devel tools into the kiwi container
+
+-------------------------------------------------------------------
 Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove org.opencontainers.image.base for unreleased versions
