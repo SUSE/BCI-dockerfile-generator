@@ -1524,9 +1524,7 @@ pkglistgen-archs = ppc64le s390x aarch64 x86_64'""")
                 + (", ".join(b.package_name for b in self._bcis))
             )
 
-        assert (
-            len(bci) == 1
-        ), f"Got {len(bci)} packages with the name {package_name}: {bci}"
+        assert len(bci) >= 1, f"Got no packages with the name {package_name}"
 
         await self._write_pkg_meta(
             bci[0],
