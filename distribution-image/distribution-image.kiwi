@@ -24,7 +24,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <specification>SLE OCI Container Registry (Distribution) Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.6">
+    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-micro#15.6">
       <containerconfig
           name="suse/registry"
           tag="%%registry_version%%"

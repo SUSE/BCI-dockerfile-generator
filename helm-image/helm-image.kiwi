@@ -24,7 +24,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <specification>SLE Kubernetes Package Manager Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.6">
+    <type image="docker" derived_from="obs://SUSE:Registry/standard/bci/bci-micro#15.6">
       <containerconfig
           name="suse/helm"
           tag="3.13"
