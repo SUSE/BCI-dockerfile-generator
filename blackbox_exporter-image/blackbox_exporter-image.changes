@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove org.opencontainers.image.base for unreleased versions
+
+-------------------------------------------------------------------
 Thu Sep 26 09:56:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - add org.opencontainers.image.base.* labels
