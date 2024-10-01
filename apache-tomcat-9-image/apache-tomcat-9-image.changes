@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  1 15:12:56 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- rename to apache-tomcat-9-image, use _multibuild
+
+-------------------------------------------------------------------
 Wed Sep 25 17:36:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - rerender installation step in multiple lines, allow uninstalling optional packages
@@ -39,7 +44,7 @@ Wed Sep 18 16:43:21 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 - rename flavor to openjdk
 
 -------------------------------------------------------------------
-Wed Sep 18 16:35:08 UTC 2024 - Dirk Müller <dmueller@suse.com>
+Wed Sep 18 16:35:09 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - use released containers as buildtarget in multistage
 
@@ -52,11 +57,6 @@ Thu Sep 12 10:37:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 Wed Aug 14 16:03:10 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - extend description
-
--------------------------------------------------------------------
-Wed Aug 14 12:33:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- switch to multistage build
 
 -------------------------------------------------------------------
 Wed Aug 14 12:30:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
@@ -96,4 +96,4 @@ Wed Jul 31 12:06:44 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 -------------------------------------------------------------------
 Thu Jul 18 10:56:33 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
-- First version of the Apache Tomcat 10-jre22 BCI
+- First version of the Apache Tomcat 9-jre17 BCI
