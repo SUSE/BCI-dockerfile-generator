@@ -1,6 +1,7 @@
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import RELEASED_OS_VERSIONS
 from bci_build.package import OsContainer
+from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import _build_tag_prefix
 
@@ -30,7 +31,7 @@ def generate_package_version_check(
 {DOCKERFILE_RUN} [ "$(rpm -q --qf '%{{version}}' {pkg_name} | cut -d '.' -f -{cut_count})" = "{pkg_version}" ]"""
 
 
-def generate_from_image(os_version, container_name) -> str:
+def generate_from_image_tag(os_version: OsVersion, container_name: str) -> str:
     repo = f"{_build_tag_prefix(os_version)}/{container_name}:{OsContainer.version_to_container_os_version(os_version)}"
     if not os_version.is_tumbleweed and os_version in RELEASED_OS_VERSIONS:
         return f"registry.suse.com/{repo}"
