@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  1 10:40:52 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- install the common devel tools into the kiwi container
+
+-------------------------------------------------------------------
 Mon Sep 30 14:33:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - derive from released base container for correct base digest annotations
