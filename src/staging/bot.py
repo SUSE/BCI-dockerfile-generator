@@ -64,9 +64,15 @@ OS_VERSION_ENVVAR_NAME = "OS_VERSION"
 #: environment variable from which the password of the bot's user is taken
 OSC_PASSWORD_ENVVAR_NAME = "OSC_PASSWORD"
 
+#: full name of the bot account performing git actions
+GIT_COMMITTER_NAME = "SUSE Update Bot"
+
+#: email address of the bot account performing git actions
+GIT_COMMITTER_EMAIL = "bci-internal@suse.de"
+
 _GIT_COMMIT_ENV = {
-    "GIT_COMMITTER_NAME": "SUSE Update Bot",
-    "GIT_COMMITTER_EMAIL": "bci-internal@suse.de",
+    "GIT_COMMITTER_NAME": GIT_COMMITTER_NAME,
+    "GIT_COMMITTER_EMAIL": GIT_COMMITTER_EMAIL,
 }
 
 #: tuple of OsVersion that need the base container to be linked into the staging
@@ -1361,12 +1367,10 @@ updates:
         return res - {ancestor_commit}
 
     async def add_changelog_entry(
-        self, entry: str, username: str, package_names: list[str] | None
+        self, entry: str, package_names: list[str] | None
     ) -> str:
         target_branch_name = f"for-deploy-{self.os_version}"
         entry = entry.replace('"', r"\"")
-
-        user = await self._fetch_user(username)
 
         if not package_names:
             commits = self._get_commit_range_between_refs(
@@ -1404,7 +1408,10 @@ updates:
                 tasks.append(
                     run_in_worktree(
                         f'/usr/lib/build/vc -m "{entry}" {package_name}.changes',
-                        env={"VC_REALNAME": user.realname, "VC_MAILADDR": user.email},
+                        env={
+                            "VC_REALNAME": GIT_COMMITTER_NAME,
+                            "VC_MAILADDR": GIT_COMMITTER_EMAIL,
+                        },
                         cwd=os.path.join(worktree_dir, package_name),
                     )
                 )
@@ -1422,8 +1429,8 @@ updates:
                 f"git commit -m '{commit_msg}'",
                 env={
                     **_GIT_COMMIT_ENV,
-                    "GIT_AUTHOR_NAME": user.realname,
-                    "GIT_AUTHOR_EMAIL": user.email,
+                    "GIT_AUTHOR_NAME": GIT_COMMITTER_NAME,
+                    "GIT_AUTHOR_EMAIL": GIT_COMMITTER_EMAIL,
                     **os.environ,
                 },
             )
@@ -1684,12 +1691,6 @@ def main() -> None:
         "add_changelog_entry",
         help="Add a changelog entry to the specified packages to the 'for-deploy-$deploment_branch' branch",
     )
-    changelog_parser.add_argument(
-        "--user",
-        nargs=1,
-        type=str,
-        help="The OBS user as who the changelog entry shall be made",
-    )
     _PACKAGES_ARG_ENV_VAR = "PACKAGES"
     changelog_parser.add_argument(
         "--packages",
@@ -1861,7 +1862,6 @@ comma-separated list. The package list is taken from the environment variable
 
         elif action == "add_changelog_entry":
             changelog_entry = " ".join(args.entry)
-            username = args.user[0]
             pkg_names = None
             if (packages_len := len(args.packages)) == 1:
                 if pkgs_csv := args.packages[0]:
@@ -1870,7 +1870,7 @@ comma-separated list. The package list is taken from the environment variable
                 pkg_names = args.packages
 
             coro = bot.add_changelog_entry(
-                entry=changelog_entry, username=username, package_names=pkg_names
+                entry=changelog_entry, package_names=pkg_names
             )
 
         elif action == "changelog_check":

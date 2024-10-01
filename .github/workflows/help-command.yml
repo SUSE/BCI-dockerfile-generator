@@ -16,4 +16,4 @@ jobs:
             > Command | Description
             > --- | ---
             > /help | Print this message
-            > /vc user=$user [packages=$pkg] $changelog_entry | Appends the given changelog entry as the provided user to the packages in the current branch.
+            > /vc [packages=$pkg] $changelog_entry | Appends the given changelog entry to the packages in the current branch.
