@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove org.opencontainers.image.base for unreleased versions
+
+-------------------------------------------------------------------
 Sat Sep 28 08:15:08 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - update to 8.0.402:

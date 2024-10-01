@@ -45,8 +45,6 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
-LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]
 CMD ["--config.file=/etc/prometheus/blackbox.yml"]
