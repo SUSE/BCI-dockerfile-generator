@@ -1,4 +1,115 @@
 -------------------------------------------------------------------
-Tue Oct 01 15:05:20 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+Tue Oct  1 15:09:45 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
-- First version of the Apache Tomcat %%tomcat_version%% BCI
+- rename to sac-apache-tomcat-10-image
+
+-------------------------------------------------------------------
+Thu Sep 26 09:56:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
+Thu Sep 26 09:48:43 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove SLE BCI advertising for appcol
+
+-------------------------------------------------------------------
+Wed Sep 25 17:36:42 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rerender installation step in multiple lines, allow uninstalling optional packages
+
+-------------------------------------------------------------------
+Wed Sep 25 17:12:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
+Wed Sep 25 16:59:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add compatibility symlink
+
+-------------------------------------------------------------------
+Tue Sep 24 20:00:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove release tags for additional_versions
+
+-------------------------------------------------------------------
+Fri Sep 20 07:29:48 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove major version tag
+
+-------------------------------------------------------------------
+Wed Sep 18 16:42:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rename flavor to openjdk
+
+-------------------------------------------------------------------
+Tue Sep 17 06:37:39 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove author label
+- Make the last stage a fully qualified reference to the registry
+
+-------------------------------------------------------------------
+Thu Sep 12 10:37:23 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
+Thu Sep 12 06:14:17 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- use redistributable base container
+
+-------------------------------------------------------------------
+Wed Aug 14 16:03:33 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- extend description
+
+-------------------------------------------------------------------
+Wed Aug 14 12:24:53 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- switch to multistage build with micro
+
+-------------------------------------------------------------------
+Wed Aug 14 12:20:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install packages first
+
+-------------------------------------------------------------------
+Wed Aug 14 11:58:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Fix oci.version to be the fully qualified tomcat version
+
+-------------------------------------------------------------------
+Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add oci.image.ref.name
+
+-------------------------------------------------------------------
+Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove oci reference annotation again
+
+-------------------------------------------------------------------
+Mon Aug  5 11:38:11 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add OCI reference annotation
+
+-------------------------------------------------------------------
+Sat Aug  3 08:56:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set OCI.authors attribute instead of deprecated MAINTAINER
+
+-------------------------------------------------------------------
+Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- update SLSA badge to v1.0 in README.md
+
+-------------------------------------------------------------------
+Thu Jul 25 10:50:08 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add eol date
+
+-------------------------------------------------------------------
+Thu Jul 18 10:56:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the Apache Tomcat 10-jre21 BCI
