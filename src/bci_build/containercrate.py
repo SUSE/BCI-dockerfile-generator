@@ -22,7 +22,7 @@ class ContainerCrate:
                 raise ValueError("Container is already part of a ContainerCrate")
             container.crate = self
 
-    def all_build_flavors(self, container):
+    def all_build_flavors(self, container) -> list[str]:
         """Return all build flavors for this container in the crate"""
         return sorted(
             self._all_build_flavors.get(
@@ -30,7 +30,14 @@ class ContainerCrate:
             )
         )
 
-    def multibuild(self, container):
+    def default_dockerfile(self) -> str:
+        """Return a default Dockerfile to disable build on default flavor."""
+        return """#!ExclusiveArch: do-not-build
+
+# For this container we only build the Dockerfile.$flavor builds.
+"""
+
+    def multibuild(self, container) -> str:
         """Return the _multibuild file string to write for this ContainerCrate."""
         flavors: str = "\n".join(
             " " * 4 + f"<package>{pkg}</package>"
