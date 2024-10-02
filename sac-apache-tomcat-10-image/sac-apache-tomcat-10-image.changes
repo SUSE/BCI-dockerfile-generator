@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Oct  1 15:09:45 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
-- rename to sac-apache-tomcat-10-image
+- rename sac-apache-tomcat-10-java21-image to sac-apache-tomcat-10-image
 
 -------------------------------------------------------------------
 Thu Sep 26 09:56:34 UTC 2024 - Dirk Mueller <dmueller@suse.com>
