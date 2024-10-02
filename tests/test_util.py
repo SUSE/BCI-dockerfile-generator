@@ -1,5 +1,5 @@
 import pathlib
-
+import os
 import aiofiles.os
 import pytest
 
@@ -34,15 +34,23 @@ async def test_ensure_directory_absent(tmp_path: pathlib.Path):
 
 
 @pytest.mark.asyncio
-async def test_ensure_file_absent_when_open_for_reading(tmp_path: pathlib.Path):
-    path = tmp_path / "test_file"
-    async with aiofiles.open(path, "w") as test_file:
-        await test_file.write("foobar")
+async def test_ensure_absent_on_directory_without_write_permissions(
+    tmp_path: pathlib.Path,
+):
+    # Create a directory
+    path = tmp_path / "test_dir"
+    await aiofiles.os.mkdir(path)
 
-    # Open the file for reading
-    async with aiofiles.open(path, "r"):
-        pass  # Simply open and close the file
+    # Change permissions to remove write access (read and execute only)
+    os.chmod(path, 0o500)
 
-    # Ensure the file is removed
+    # Try to remove the directory - should raise a PermissionError or OSError
+    with pytest.raises((PermissionError, OSError)):
+        await ensure_absent(path)
+
+    # Clean up by restoring write permissions to allow removal after test
+    os.chmod(path, 0o700)
     await ensure_absent(path)
+
+    # Ensure the directory was successfully cleaned up
     assert not await aiofiles.os.path.exists(path)
