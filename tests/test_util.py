@@ -32,12 +32,13 @@ async def test_ensure_directory_absent(tmp_path: pathlib.Path):
     await ensure_absent(path)
     assert not await aiofiles.os.path.exists(path)
 
+
 @pytest.mark.asyncio
 async def test_ensure_file_absent_when_open_for_reading(tmp_path: pathlib.Path):
     path = tmp_path / "test_file"
     async with aiofiles.open(path, "w") as test_file:
         await test_file.write("foobar")
-    
+
     # Open the file for reading
     async with aiofiles.open(path, "r"):
         pass  # Simply open and close the file
