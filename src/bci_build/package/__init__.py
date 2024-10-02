@@ -1345,6 +1345,10 @@ exit 0
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
 
         if self.build_flavor:
+            dfile = "Dockerfile"
+            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile()))
+            files.append(dfile)
+
             mname = "_multibuild"
             tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
             files.append(mname)
