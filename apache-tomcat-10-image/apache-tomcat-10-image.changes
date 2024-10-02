@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  2 12:31:14 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- add dummy Dockerfile for tricking the bots
+
+-------------------------------------------------------------------
 Tue Oct  1 15:12:17 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - rename to apache-tomcat-10-image; use _multibuild
