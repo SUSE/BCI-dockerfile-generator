@@ -92,4 +92,17 @@ async def test_ensure_absent_called_on_symlink(tmp_path: pathlib.Path):
 
     # Original file should still exist
     assert await aiofiles.os.path.exists(path)
+    
+@pytest.mark.asyncio
+async def test_ensure_absent_removes_nested_empty_directory(tmp_path: pathlib.Path):
+    # Create a nested directory structure
+    path = tmp_path / "dir1" / "dir2"
+    await aiofiles.os.makedirs(path)
+
+    # Ensure the nested directory is removed
+    await ensure_absent(path)
+    assert not await aiofiles.os.path.exists(path)
+
+    # Ensure parent directory still exists
+    assert await aiofiles.os.path.exists(tmp_path / "dir1")
 
