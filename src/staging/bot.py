@@ -34,9 +34,9 @@ from obs_package_update.util import retry_async_run_cmd
 from oras.client import OrasClient
 
 from bci_build.logger import LOGGER
+from bci_build.osversion import OsVersion
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
-from bci_build.package import OsVersion
 from dotnet.updater import DOTNET_CONTAINERS
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
@@ -1560,7 +1560,7 @@ def main() -> None:
     import sys
     from typing import Any
 
-    from bci_build.package import ALL_OS_VERSIONS
+    from bci_build.osversion import ALL_OS_VERSIONS
     from staging.build_result import is_build_failed
     from staging.build_result import render_as_markdown
 

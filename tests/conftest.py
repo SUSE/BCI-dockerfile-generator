@@ -9,11 +9,11 @@ import pytest
 from _pytest.fixtures import SubRequest
 from _pytest.python import Metafunc
 
+from bci_build.osversion import OsVersion
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BaseContainerImage
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsContainer
-from bci_build.package import OsVersion
 
 BCI_CLASSES = [OsContainer, DevelopmentContainer, ApplicationStackContainer]
 

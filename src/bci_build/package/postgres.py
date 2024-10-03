@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
+from bci_build.osversion import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel

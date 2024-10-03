@@ -22,10 +22,10 @@ from jinja2 import Template
 from packaging import version
 
 from bci_build.logger import LOGGER
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import OsVersion
 from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
-from bci_build.package import OsVersion
 from bci_build.package import generate_disk_size_constraints
 from staging.build_result import Arch
 

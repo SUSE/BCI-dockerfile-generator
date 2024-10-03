@@ -5,6 +5,8 @@ from abc import ABC
 from abc import abstractmethod
 from dataclasses import dataclass
 
+from bci_build.osversion import OsVersion
+
 
 @dataclass(frozen=True, kw_only=True)
 class Registry(ABC):
