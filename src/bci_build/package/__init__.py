@@ -22,7 +22,7 @@ from bci_build.osversion import RELEASED_OS_VERSIONS
 from bci_build.osversion import OsVersion
 from bci_build.registry import ApplicationCollectionRegistry
 from bci_build.registry import Registry
-from bci_build.registry import get_registry
+from bci_build.registry import publish_registry
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -399,7 +399,7 @@ class BaseContainerImage(abc.ABC):
                 else "SUSE LLC (https://www.suse.com/)"
             )
         if not self._publish_registry:
-            self._publish_registry = get_registry(self)
+            self._publish_registry = publish_registry(self.os_version)
 
         # AppCollection preferences
         if isinstance(self._publish_registry, ApplicationCollectionRegistry):
@@ -509,7 +509,7 @@ class BaseContainerImage(abc.ABC):
     @property
     def base_image_registry(self) -> str:
         """The registry where the base image is available on."""
-        return get_registry(self).registry
+        return publish_registry(self.os_version).registry
 
     @property
     def registry(self) -> str:

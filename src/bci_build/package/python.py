@@ -10,7 +10,7 @@ from bci_build.osversion import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
-from bci_build.registry import ApplicationCollectionRegistry
+from bci_build.registry import publish_registry
 
 _PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12"]
 
@@ -113,9 +113,7 @@ PYTHON_3_9_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.9", os_version),
         package_name="sac-python-3.9-image",
-        _publish_registry=(
-            None if os_version.is_tumbleweed else ApplicationCollectionRegistry()
-        ),
+        _publish_registry=publish_registry(os_version, app_collection=True),
     )
     for os_version in (OsVersion.SP6,)
 )

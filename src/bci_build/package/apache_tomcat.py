@@ -12,7 +12,7 @@ from bci_build.package import Package
 from bci_build.package import PackageType
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
-from bci_build.registry import ApplicationCollectionRegistry
+from bci_build.registry import publish_registry
 
 # last version needs to be the newest
 _TOMCAT_VERSIONS: list[str] = ["9", "10.1"]
@@ -58,9 +58,7 @@ TOMCAT_CONTAINERS = [
             if os_version.is_tumbleweed
             else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
         ),
-        _publish_registry=(
-            None if os_version.is_tumbleweed else ApplicationCollectionRegistry()
-        ),
+        _publish_registry=publish_registry(os_version, app_collection=True),
         pretty_name="Apache Tomcat",
         custom_description=(
             "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
