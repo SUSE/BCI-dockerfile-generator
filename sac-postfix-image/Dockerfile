@@ -20,7 +20,7 @@
 #!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.6
 #!BuildRelease: 35
-FROM bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed gawk netcfg postfix postfix-ldap postfix-lmdb timezone; \
@@ -44,6 +44,8 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["/entrypoint/entrypoint.sh"]
 CMD ["postfix", "start-fg"]
