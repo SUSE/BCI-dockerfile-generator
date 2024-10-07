@@ -20,7 +20,7 @@ class Registry(ABC):
 
     @staticmethod
     @abstractmethod
-    def url(self, container) -> str:
+    def url(container) -> str:
         pass
 
     @staticmethod
