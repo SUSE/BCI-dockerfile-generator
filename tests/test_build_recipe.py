@@ -2,11 +2,11 @@ from datetime import date
 
 import pytest
 
+from bci_build.osversion import OsVersion
 from bci_build.package import Arch
 from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsContainer
-from bci_build.package import OsVersion
 from bci_build.package import Package
 from bci_build.package import PackageType
 from bci_build.package import SupportLevel

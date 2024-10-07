@@ -4,11 +4,11 @@ import textwrap
 from itertools import product
 from typing import Literal
 
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
-from bci_build.package import OsVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints

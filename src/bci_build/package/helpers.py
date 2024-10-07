@@ -1,7 +1,7 @@
+from bci_build.osversion import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import RELEASED_OS_VERSIONS
 from bci_build.package import OsContainer
-from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import _build_tag_prefix
 

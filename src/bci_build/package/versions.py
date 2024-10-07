@@ -76,7 +76,7 @@ from packaging import version
 from py_obs.osc import Osc
 from py_obs.project import fetch_package_info
 
-from bci_build.package import OsVersion
+from bci_build.osversion import OsVersion
 from bci_build.package import ParseVersion
 
 _VERS_FMT_KEY = "version_format"

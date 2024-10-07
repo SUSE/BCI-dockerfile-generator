@@ -1,10 +1,10 @@
 """KIWI Appliances Builder SDK container for easy appliance building on SLE Micro."""
 
-from bci_build.package import ALL_NONBASE_OS_VERSIONS
-from bci_build.package import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import ALL_NONBASE_OS_VERSIONS
+from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
+from bci_build.osversion import OsVersion
 from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
-from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
