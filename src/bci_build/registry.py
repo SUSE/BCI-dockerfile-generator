@@ -5,7 +5,7 @@ from abc import ABC
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from bci_build.osversion import OsVersion
+from bci_build.os_version import OsVersion
 
 
 @dataclass(frozen=True, kw_only=True)

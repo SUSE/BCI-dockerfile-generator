@@ -1,6 +1,6 @@
 import pytest
 
-from bci_build.osversion import OsVersion
+from bci_build.os_version import OsVersion
 from staging.project_setup import ProjectType
 from staging.project_setup import generate_meta
 

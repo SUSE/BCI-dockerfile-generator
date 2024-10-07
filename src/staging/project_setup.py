@@ -4,7 +4,7 @@ from enum import unique
 
 import jinja2
 
-from bci_build.osversion import OsVersion
+from bci_build.os_version import OsVersion
 
 USERS_FOR_PRODUCTION = [
     "avicenzi",

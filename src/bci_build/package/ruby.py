@@ -2,8 +2,8 @@
 
 from typing import Literal
 
-from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
-from bci_build.osversion import OsVersion
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
