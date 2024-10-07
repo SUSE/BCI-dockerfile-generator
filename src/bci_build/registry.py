@@ -90,7 +90,7 @@ class openSUSERegistry(Registry):
 def publish_registry(
     os_version: OsVersion, *, app_collection: bool = False
 ) -> Registry:
-    """Return the appropriate registry for the container."""
+    """Return the appropriate registry for the operating system version."""
     if os_version.is_tumbleweed:
         return openSUSERegistry()
     if app_collection:
