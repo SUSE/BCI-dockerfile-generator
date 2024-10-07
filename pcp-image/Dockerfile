@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/pcp:5.3.7
-#!BuildTag: suse/pcp:5.3.7-%RELEASE%
-#!BuildTag: suse/pcp:5.3
-#!BuildTag: suse/pcp:5
-#!BuildName: suse-pcp-5.3.7
-#!BuildVersion: 15.7.5.3.7
+#!BuildTag: suse/pcp:6.2.0
+#!BuildTag: suse/pcp:6.2.0-%RELEASE%
+#!BuildTag: suse/pcp:6.2
+#!BuildTag: suse/pcp:6
+#!BuildName: suse-pcp-6.2.0
+#!BuildVersion: 15.7.6.2.0
 FROM bci/bci-init:15.7
 
 RUN set -euo pipefail; \
@@ -33,13 +33,13 @@ RUN set -euo pipefail; \
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE Performance Co-Pilot (pcp)"
 LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container based on the SLE Base Container Image. This container is only supported with podman."
-LABEL org.opencontainers.image.version="5.3.7"
+LABEL org.opencontainers.image.version="6.2.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="5.3.7-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/pcp:5.3.7-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="6.2.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/pcp:6.2.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
