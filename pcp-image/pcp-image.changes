@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct  7 07:49:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for new PCP version
+
+-------------------------------------------------------------------
 Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove org.opencontainers.image.base for unreleased versions
