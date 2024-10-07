@@ -21,7 +21,7 @@ assert _TOMCAT_VERSIONS == sorted(_TOMCAT_VERSIONS, key=float)
 
 def _get_sac_supported_until(
     os_version: OsVersion, tomcat_ver: str, jre_major: int
-) -> datetime.date:
+) -> datetime.date | None:
     """Return the predicted minimum end of support date for this os/tomcat/jre combination. We pick
     the minimum time that either the given tomcat or JRE is known to be supported."""
     if os_version.is_tumbleweed:
