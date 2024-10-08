@@ -21,7 +21,6 @@ from bci_build.container_attributes import ImageType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import ReleaseStage
 from bci_build.container_attributes import SupportLevel
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import RELEASED_OS_VERSIONS
 from bci_build.os_version import OsVersion
@@ -202,9 +201,6 @@ class BaseContainerImage(ObsPackage):
 
     #: build flavors to produce for this container variant
     build_flavor: str | None = None
-
-    #: create that this container is part of
-    crate: ContainerCrate = None
 
     #: Add any replacements via `obs-service-replace_using_package_version
     #: <https://github.com/openSUSE/obs-service-replace_using_package_version>`_
@@ -1102,15 +1098,6 @@ exit 0
             assert (
                 False
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
-
-        if self.build_flavor:
-            dfile = "Dockerfile"
-            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile()))
-            files.append(dfile)
-
-            mname = "_multibuild"
-            tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
-            files.append(mname)
 
         if with_service_file:
             tasks.append(self._write_service_file(dest))

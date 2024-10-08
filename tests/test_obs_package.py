@@ -1,7 +1,7 @@
 from bci_build.container_attributes import BuildType
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
+from bci_build.package.obs_package import MultiBuildObsPackage
 
 _BASE_KWARGS = {
     "name": "test",
@@ -14,16 +14,20 @@ _BASE_KWARGS = {
 
 
 def test_multibuild_with_multi_flavor_docker():
-    containers = [
-        DevelopmentContainer(
-            **_BASE_KWARGS,
-            build_recipe_type=BuildType.DOCKER,
-            build_flavor=flavor,
-        )
-        for flavor in ("flavor1", "flavor2")
-    ]
+    pkg = MultiBuildObsPackage(
+        package_name="test",
+        bcis=[
+            DevelopmentContainer(
+                **_BASE_KWARGS,
+                build_recipe_type=BuildType.DOCKER,
+                build_flavor=flavor,
+            )
+            for flavor in ("flavor1", "flavor2")
+        ],
+        os_version=_BASE_KWARGS["os_version"],
+    )
     assert (
-        ContainerCrate(containers).multibuild(containers[0])
+        pkg.multibuild
         == """<multibuild>
     <package>flavor1</package>
     <package>flavor2</package>
