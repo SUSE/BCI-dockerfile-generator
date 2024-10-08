@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  8 11:38:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch postfix to multi-stage micro based build
+
+-------------------------------------------------------------------
 Mon Oct  7 14:34:59 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - build against published base container for the base annotations.
