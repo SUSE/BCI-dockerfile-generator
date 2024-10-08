@@ -86,8 +86,6 @@ TOMCAT_CONTAINERS = [
                 if tomcat_ver == _TOMCAT_VERSIONS[0]
                 else f"tomcat{tomcat_ver.partition('.')[0]}"
             ),
-            # used by the startup scripts but not required (workaround bsc#1231347)
-            "which",
             # currently needed by testsuite
             "curl",
             # currently needed by custom_end
