@@ -25,6 +25,7 @@ from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import RELEASED_OS_VERSIONS
 from bci_build.os_version import OsVersion
+from bci_build.package.obs_package import ObsPackage
 from bci_build.registry import ApplicationCollectionRegistry
 from bci_build.registry import Registry
 from bci_build.registry import publish_registry
@@ -32,7 +33,6 @@ from bci_build.service import Service
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
-from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import write_to_file
 
 _BASH_SET: str = "set -euo pipefail"
@@ -135,23 +135,16 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
     return "bci"
 
 
-@dataclass
-class BaseContainerImage(abc.ABC):
+@dataclass(kw_only=True)
+class BaseContainerImage(ObsPackage):
     """Base class for all Base Containers."""
 
     #: Name of this image. It is used to generate the build tags, i.e. it
     #: defines under which name this image is published.
     name: str
 
-    #: The SLE service pack to which this package belongs
-    os_version: OsVersion
-
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
-
-    #: Optional a package_name, used for creating the package name on OBS or IBS in
-    # ``devel:BCI:SLE-15-SP$ver`` (on  OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
-    package_name: str | None = None
 
     #: Epoch to use for handling os_version downgrades
     os_epoch: int | None = None
@@ -316,6 +309,8 @@ class BaseContainerImage(abc.ABC):
         return self._publish_registry
 
     def __post_init__(self) -> None:
+        super().__post_init__()
+
         self.pretty_name = self.pretty_name.strip()
 
         if not self.package_name:
@@ -327,11 +322,6 @@ class BaseContainerImage(abc.ABC):
         if self.config_sh_script and self.custom_end:
             raise ValueError(
                 "Cannot specify both a custom_end and a config.sh script! Use just config_sh_script."
-            )
-
-        if self.build_recipe_type is None:
-            self.build_recipe_type = (
-                BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
         if not self.maintainer:
@@ -362,12 +352,6 @@ class BaseContainerImage(abc.ABC):
     def prepare_template(self) -> None:
         """Hook to do delayed expensive work prior template rendering"""
 
-        pass
-
-    @property
-    @abc.abstractmethod
-    def uid(self) -> str:
-        """unique identifier of this image, either its name or ``$name-$tag_version``."""
         pass
 
     @property
@@ -1046,12 +1030,34 @@ exit 0
 
         return ",".join(extra_tags) if extra_tags else None
 
-    async def write_files_to_folder(self, dest: str) -> list[str]:
+    @property
+    def services(self) -> tuple[Service, ...]:
+        if not self.replacements_via_service:
+            return ()
+
+        if self.build_recipe_type == BuildType.DOCKER:
+            if self.build_flavor:
+                default_file_name = f"Dockerfile.{self.build_flavor}"
+            else:
+                default_file_name = "Dockerfile"
+        elif self.build_recipe_type == BuildType.KIWI:
+            default_file_name = f"{self.package_name}.kiwi"
+        else:
+            raise ValueError(f"invalid build recipe type: {self.build_recipe_type}")
+
+        return tuple(
+            replacement.to_service(default_file_name)
+            for replacement in self.replacements_via_service
+        )
+
+    async def write_files_to_folder(
+        self, dest: str, *, with_service_file: bool = True
+    ) -> list[str]:
         """Writes all files required to build this image into the destination folder and
         returns the filenames (not full paths) that were written to the disk.
 
         """
-        files = ["_service"]
+        files = ["_service"] if with_service_file else []
         tasks = []
 
         self.prepare_template()
@@ -1106,9 +1112,8 @@ exit 0
             tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
             files.append(mname)
 
-        tasks.append(
-            write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
-        )
+        if with_service_file:
+            tasks.append(self._write_service_file(dest))
 
         changes_file_name = self.package_name + ".changes"
         if not (Path(dest) / changes_file_name).exists():
@@ -1474,7 +1479,7 @@ from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 
-ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
+ALL_CONTAINER_IMAGE_NAMES: dict[str, ObsPackage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         *BASE_CONTAINERS,
@@ -1521,7 +1526,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
-    key=lambda bci: f"{ALL_CONTAINER_IMAGE_NAMES[bci].os_version}-{ALL_CONTAINER_IMAGE_NAMES[bci].name}",
+    key=lambda bci: f"{ALL_CONTAINER_IMAGE_NAMES[bci].os_version}-{ALL_CONTAINER_IMAGE_NAMES[bci].uid}",
 )
 
 

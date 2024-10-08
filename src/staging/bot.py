@@ -36,7 +36,7 @@ from oras.client import OrasClient
 from bci_build.logger import LOGGER
 from bci_build.os_version import OsVersion
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
-from bci_build.package import BaseContainerImage
+from bci_build.package.obs_package import ObsPackage
 from dotnet.updater import DOTNET_CONTAINERS
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
@@ -218,7 +218,7 @@ class StagingBot:
         )
 
     @property
-    def _bcis(self) -> Generator[BaseContainerImage, None, None]:
+    def _bcis(self) -> Generator[ObsPackage, None, None]:
         """Generator yielding all
         :py:class:`~bci_build.package.BaseContainerImage` that have the same
         :py:attr:`~bci_build.package.BaseContainerImage.os_version` as this bot
@@ -284,7 +284,7 @@ class StagingBot:
         self._packages = pkgs
 
     @property
-    def bcis(self) -> Generator[BaseContainerImage, None, None]:
+    def bcis(self) -> Generator[ObsPackage, None, None]:
         """Generator for creating an iterable yielding all
         :py:class:`~bci_build.package.BaseContainerImage` that are in the bot's
         staging project.
@@ -715,7 +715,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         await asyncio.gather(*tasks)
 
     async def _write_pkg_meta(
-        self, bci_pkg: BaseContainerImage, target_obs_project: str, git_branch_name
+        self, bci_pkg: ObsPackage, target_obs_project: str, git_branch_name
     ) -> None:
         """Write the package ``_meta`` of the package with the name of the
         ``bci_pkg`` in the ``target_obs_project`` to be synced from the git
@@ -758,7 +758,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
     async def write_pkg_configs(
         self,
-        packages: Iterable[BaseContainerImage],
+        packages: Iterable[ObsPackage],
         git_branch_name: str,
         target_obs_project: str,
     ) -> None:
@@ -1008,7 +1008,7 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
 
         for bci in self.bcis:
 
-            async def write_files(bci_pkg: BaseContainerImage, dest: str) -> list[str]:
+            async def write_files(bci_pkg: ObsPackage, dest: str) -> list[str]:
                 await aiofiles.os.makedirs(dest, exist_ok=True)
 
                 # remove everything *but* the changes file (.changes is not
