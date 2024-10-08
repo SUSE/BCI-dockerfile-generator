@@ -19,13 +19,16 @@
 #!BuildTag: containers/postfix:%%postfix_version%%-%RELEASE%
 #!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.7
-FROM bci/bci-base:15.7
+FROM bci/bci-micro:15.7 AS target
+FROM bci/bci-base:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends ca-certificates-mozilla cyrus-sasl cyrus-sasl-plain ed gawk netcfg postfix postfix-ldap postfix-lmdb timezone; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends ca-certificates-mozilla curl cyrus-sasl cyrus-sasl-plain ed findutils gawk grep netcfg openldap2 openldap2-client postfix postfix-ldap postfix-lmdb sed timezone; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+FROM bci/bci-micro:15.7
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postfix
 LABEL org.opencontainers.image.title="Postfix"
