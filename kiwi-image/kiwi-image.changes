@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct  8 11:34:06 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- set a higher min release after the buildversion change
+
+-------------------------------------------------------------------
 Tue Oct  1 10:40:52 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - install the common devel tools into the kiwi container
