@@ -4,12 +4,12 @@ import datetime
 from dataclasses import dataclass
 from typing import Literal
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
-from bci_build.package import SupportLevel
 from bci_build.registry import publish_registry
 
 _PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12"]

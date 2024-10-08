@@ -2,13 +2,13 @@ import enum
 from itertools import product
 from typing import Literal
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
-from bci_build.package import SupportLevel
 
 
 @enum.unique

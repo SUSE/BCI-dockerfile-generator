@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from dataclasses import field
 
-from bci_build.package import Arch
+from bci_build.container_attributes import Arch
 from staging.util import get_obs_project_url
 
 

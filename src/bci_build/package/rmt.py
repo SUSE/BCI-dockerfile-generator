@@ -2,11 +2,11 @@
 
 from pathlib import Path
 
+from bci_build.container_attributes import BuildType
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import BuildType
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 

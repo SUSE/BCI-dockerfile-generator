@@ -5,6 +5,10 @@ import os
 import textwrap
 from pathlib import Path
 
+from bci_build.container_attributes import Arch
+from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import PackageType
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_BASE_OS_VERSIONS
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import ALL_OS_VERSIONS
@@ -12,12 +16,8 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import Arch
-from bci_build.package import BuildType
 from bci_build.package import OsContainer
 from bci_build.package import Package
-from bci_build.package import PackageType
-from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
 
