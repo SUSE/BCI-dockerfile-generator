@@ -28,6 +28,7 @@ from bci_build.os_version import OsVersion
 from bci_build.registry import ApplicationCollectionRegistry
 from bci_build.registry import Registry
 from bci_build.registry import publish_registry
+from bci_build.service import Service
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import INFOHEADER_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
@@ -106,6 +107,21 @@ class Replacement:
             raise ValueError("regex_in_build_description must be in the form %%foo%%")
         if self.file_name and "readme" in self.file_name.lower():
             raise ValueError(f"Cannot replace variables in {self.file_name}!")
+
+    def to_service(self, default_file_name: str) -> Service:
+        """Convert this replacement into a
+        :py:class:`~bci__build.service.Service`.
+
+        """
+        return Service(
+            name="replace_using_package_version",
+            param=[
+                ("file", self.file_name or default_file_name),
+                ("regex", self.regex_in_build_description),
+                ("package", self.package_name),
+            ]
+            + ([("parse-version", self.parse_version)] if self.parse_version else []),
+        )
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
