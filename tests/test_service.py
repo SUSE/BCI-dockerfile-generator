@@ -1,10 +1,25 @@
+import pytest
+
 from bci_build.container_attributes import BuildType
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.service import Service
 from bci_build.templates import SERVICE_TEMPLATE
+
+
+def test_service_without_params_as_xml():
+    assert """<service name="foo" mode="buildtime" />""" == str(Service(name="foo"))
+
+
+def test_service_with_params_as_xml():
+    assert (
+        """<service name="foo" mode="buildtime"><param name="baz">bar</param><param name="baz">foo</param></service>"""
+        == str(Service(name="foo", param=[("baz", "bar"), ("baz", "foo")]))
+    )
+
 
 _BASE_KWARGS = {
     "name": "test",
