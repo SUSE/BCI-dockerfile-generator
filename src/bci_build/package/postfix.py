@@ -10,6 +10,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.registry import ApplicationCollectionRegistry
 
 _POSTFIX_FILES = {}
@@ -44,6 +45,7 @@ POSTFIX_CONTAINERS = [
         custom_description="Postfix container is fast and secure mail server, {based_on_container}.",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION and os_version.is_tumbleweed,
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version="%%postfix_version%%",
         version_in_uid=False,
         replacements_via_service=[
@@ -57,14 +59,20 @@ POSTFIX_CONTAINERS = [
             name
             for name in (
                 "ca-certificates-mozilla",
+                "curl",
                 "cyrus-sasl",
                 "cyrus-sasl-plain",
                 "ed",
+                "findutils",
                 "gawk",
+                "grep",
                 "netcfg",
+                "openldap2",
+                "openldap2-client",
                 "postfix",
                 "postfix-ldap",
                 "postfix-lmdb",
+                "sed",
                 "timezone",
             )
             + (
