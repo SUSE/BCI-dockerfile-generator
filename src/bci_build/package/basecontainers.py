@@ -189,6 +189,7 @@ FIPS_BASE_CONTAINERS = [
             ENV OPENSSL_FORCE_FIPS_MODE=1
             ENV LIBGCRYPT_FORCE_FIPS_MODE=1
             ENV GNUTLS_FORCE_FIPS_MODE=1
+            ENV LIBICA_FIPS_FLAG=1
             """
         ),
     )
