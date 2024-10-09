@@ -24,8 +24,8 @@ from bci_build.templates import KIWI_TEMPLATE
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/test:27
 #!BuildTag: bci/test:27-%RELEASE%
+#!BuildTag: bci/test:27
 #!BuildName: bci-test-27
 #!BuildVersion: 15.6.27
 FROM registry.suse.com/bci/bci-base:15.6
@@ -65,7 +65,7 @@ RUN emacs -Q --batch test.el
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: bci/test:27 bci/test:27-%RELEASE% -->
+<!-- OBS-AddTag: bci/test:27-%RELEASE% bci/test:27 -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="test-27-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -78,8 +78,8 @@ Copyright header
     <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
-          tag="27"
-          additionaltags="27-%RELEASE%">
+          tag="27-%RELEASE%"
+          additionaltags="27">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
@@ -139,10 +139,10 @@ RUN emacs -Q --batch test.el
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/test:stable
 #!BuildTag: bci/test:stable-1.%RELEASE%
-#!BuildTag: bci/test:%%emacs_ver%%
+#!BuildTag: bci/test:stable
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
+#!BuildTag: bci/test:%%emacs_ver%%
 #!BuildName: bci-test-stable
 #!BuildVersion: 15.7
 FROM bci/bci-base:15.7
@@ -177,7 +177,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: bci/test:stable bci/test:stable-1.%RELEASE% bci/test:%%emacs_ver%% bci/test:%%emacs_ver%%-1.%RELEASE% -->
+<!-- OBS-AddTag: bci/test:stable-1.%RELEASE% bci/test:stable bci/test:%%emacs_ver%%-1.%RELEASE% bci/test:%%emacs_ver%% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="test-%%emacs_ver%%-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -190,8 +190,8 @@ Copyright header
     <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
       <containerconfig
           name="bci/test"
-          tag="stable"
-          additionaltags="stable-1.%RELEASE%,%%emacs_ver%%,%%emacs_ver%%-1.%RELEASE%">
+          tag="stable-1.%RELEASE%"
+          additionaltags="stable,%%emacs_ver%%-1.%RELEASE%,%%emacs_ver%%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
@@ -245,8 +245,8 @@ Copyright header
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/test:29
 #!BuildTag: bci/test:29-%RELEASE%
+#!BuildTag: bci/test:29
 #!BuildName: bci-test-29
 #!BuildVersion: 15.6.29
 FROM registry.suse.com/bci/bci-base:15.6
@@ -283,7 +283,7 @@ USER emacs""",
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: bci/test:29 bci/test:29-%RELEASE% -->
+<!-- OBS-AddTag: bci/test:29-%RELEASE% bci/test:29 -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="test-29-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -296,8 +296,8 @@ Copyright header
     <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
       <containerconfig
           name="bci/test"
-          tag="29"
-          additionaltags="29-%RELEASE%"
+          tag="29-%RELEASE%"
+          additionaltags="29"
           user="emacs">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
@@ -354,12 +354,12 @@ Copyright header
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 s390x
-#!BuildTag: opensuse/bci/test:28.2
 #!BuildTag: opensuse/bci/test:28.2-%RELEASE%
+#!BuildTag: opensuse/bci/test:28.2
 #!BuildTag: opensuse/bci/test:28
 #!BuildTag: opensuse/bci/test:latest
-#!BuildTag: opensuse/bci/emacs:28.2
 #!BuildTag: opensuse/bci/emacs:28.2-%RELEASE%
+#!BuildTag: opensuse/bci/emacs:28.2
 #!BuildTag: opensuse/bci/emacs:28
 #!BuildTag: opensuse/bci/emacs:latest
 
@@ -403,7 +403,7 @@ VOLUME /bin/ /usr/bin/""",
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: opensuse/bci/test:28.2 opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28 opensuse/bci/test:latest opensuse/bci/emacs:28.2 opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28 opensuse/bci/emacs:latest -->
+<!-- OBS-AddTag: opensuse/bci/test:28.2-%RELEASE% opensuse/bci/test:28.2 opensuse/bci/test:28 opensuse/bci/test:latest opensuse/bci/emacs:28.2-%RELEASE% opensuse/bci/emacs:28.2 opensuse/bci/emacs:28 opensuse/bci/emacs:latest -->
 <!-- OBS-ExclusiveArch: x86_64 s390x -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
@@ -417,8 +417,8 @@ Copyright header
     <type image="docker" derived_from="obsrepositories:/suse/base#18">
       <containerconfig
           name="opensuse/bci/test"
-          tag="28.2"
-          additionaltags="28.2-%RELEASE%,28,latest">
+          tag="28.2-%RELEASE%"
+          additionaltags="28.2,28,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.authors" value="invalid@suse.com"/>
@@ -522,7 +522,7 @@ def test_build_recipe_templates(
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:%OS_VERSION_ID_SP%-%RELEASE% opensuse/bci/bci-test:latest -->
+<!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP%-%RELEASE% opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="test-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -535,8 +535,8 @@ Copyright header
     <type image="docker">
       <containerconfig
           name="opensuse/bci/bci-test"
-          tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%-%RELEASE%,latest">
+          tag="%OS_VERSION_ID_SP%-%RELEASE%"
+          additionaltags="%OS_VERSION_ID_SP%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.authors" value="openSUSE (https://www.opensuse.org/)"/>
