@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  9 05:45:41 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- new version 6.0.35
+
+-------------------------------------------------------------------
 Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - remove org.opencontainers.image.base for unreleased versions
