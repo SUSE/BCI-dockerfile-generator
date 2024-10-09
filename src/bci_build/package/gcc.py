@@ -83,7 +83,6 @@ GCC_CONTAINERS = [
             ),
         ],
         env={"GCC_VERSION": "%%gcc_minor_version%%"},
-        additional_versions=["%%gcc_minor_version%%"],
         extra_files={"_constraints": generate_disk_size_constraints(6)},
         custom_end=(
             rf"""# symlink all versioned gcc & g++ binaries to unversioned

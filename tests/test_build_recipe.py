@@ -7,9 +7,12 @@ from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import OsVersion
+from bci_build.package import ApplicationStackContainer
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsContainer
 from bci_build.package import Package
+from bci_build.package import _build_tag_prefix
+from bci_build.registry import publish_registry
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 
@@ -606,3 +609,82 @@ Copyright header
 )
 def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
     assert KIWI_TEMPLATE.render(image=image, INFOHEADER="Copyright header") == kiwi_xml
+
+
+@pytest.mark.parametrize(
+    "dockerfile,image",
+    [
+        (
+            """# SPDX-License-Identifier: MIT
+
+# Copyright header
+
+#!UseOBSRepositories
+#!ExclusiveArch: aarch64 x86_64
+#!BuildTag: containers/test:%%emacs_version%%-%RELEASE%
+#!BuildTag: containers/test:%%emacs_version%%
+#!BuildTag: containers/test:42-%RELEASE%
+#!BuildTag: containers/test:42
+#!ForceMultiVersion
+#!BuildName: containers-test-42
+#!BuildVersion: %%emacs_version%%
+#!BuildRelease: 35
+FROM registry.suse.com/bci/bci-micro:15.6 AS target
+FROM bci/bci-base:15.6 AS builder
+COPY --from=target / /target
+
+RUN \\
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
+    zypper -n clean; \\
+    ##LOGCLEAN##
+FROM registry.suse.com/bci/bci-micro:15.6
+COPY --from=builder /target /
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=com.suse.application.test
+LABEL org.opencontainers.image.title="Test"
+LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%emacs_version%%"
+LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/test"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="%%emacs_version%%-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/test:%%emacs_version%%-%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel.until="2024-02-01"
+LABEL com.suse.eula="sle-eula"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+LABEL com.suse.release-stage="released"
+# endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+""",
+            ApplicationStackContainer(
+                name="test",
+                pretty_name="Test",
+                supported_until=date(2024, 2, 1),
+                package_list=["emacs"],
+                package_name="test-image",
+                os_version=(os_version := OsVersion.SP6),
+                _publish_registry=publish_registry(os_version, app_collection=True),
+                from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+                version="%%emacs_version%%",
+                tag_version=42,
+            ),
+        )
+    ],
+)
+def test_appcollection_app_templates(
+    dockerfile: str, image: ApplicationStackContainer
+) -> None:
+    assert (
+        DOCKERFILE_TEMPLATE.render(
+            DOCKERFILE_RUN="RUN",
+            image=image,
+            INFOHEADER="# Copyright header",
+            LOG_CLEAN="##LOGCLEAN##",
+        )
+        == dockerfile
+    )

@@ -73,13 +73,12 @@ TOMCAT_CONTAINERS = [
             and os_version.is_tumbleweed
         ),
         version="%%tomcat_version%%",
+        tag_version=tomcat_ver,
+        build_flavor=f"openjdk{jre_version}",
         _min_release_counter=None if not os_version.is_sle15 else 55,
-        tag_version=f"{tomcat_ver}-openjdk{jre_version}",
         supported_until=_get_sac_supported_until(
             os_version=os_version, tomcat_ver=tomcat_ver, jre_major=jre_version
         ),
-        build_flavor=f"openjdk{jre_version}",
-        additional_versions=[f"%%tomcat_version%%-openjdk{jre_version}"],
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
             tomcat_pkg := (
