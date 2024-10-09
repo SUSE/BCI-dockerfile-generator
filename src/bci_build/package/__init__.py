@@ -370,7 +370,8 @@ class BaseContainerImage(abc.ABC):
     _publish_registry: Registry | None = None
 
     @property
-    def publish_registry(self):
+    def publish_registry(self) -> Registry:
+        assert self._publish_registry
         return self._publish_registry
 
     def __post_init__(self) -> None:
@@ -504,7 +505,7 @@ class BaseContainerImage(abc.ABC):
         ``org.opencontainers.image.url`` label
 
         """
-        return self._publish_registry.url(container=self)
+        return self.publish_registry.url(container=self)
 
     @property
     def base_image_registry(self) -> str:
@@ -514,7 +515,7 @@ class BaseContainerImage(abc.ABC):
     @property
     def registry(self) -> str:
         """The registry where the image is available on."""
-        return self._publish_registry.registry
+        return self.publish_registry.registry
 
     @property
     def dockerfile_custom_end(self) -> str:
@@ -1242,7 +1243,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def registry_prefix(self) -> str:
-        return self._publish_registry.registry_prefix(is_application=False)
+        return self.publish_registry.registry_prefix(is_application=False)
 
     @property
     def image_type(self) -> ImageType:
@@ -1365,7 +1366,7 @@ class ApplicationStackContainer(DevelopmentContainer):
 
     @property
     def registry_prefix(self) -> str:
-        return self._publish_registry.registry_prefix(is_application=True)
+        return self.publish_registry.registry_prefix(is_application=True)
 
     @property
     def image_type(self) -> ImageType:
