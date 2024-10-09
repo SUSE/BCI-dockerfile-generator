@@ -17,10 +17,15 @@ class Registry(ABC):
     """Abstract Base Class for defining Registry specific content."""
 
     _: dataclasses.KW_ONLY
+
     """The base hostname for this registry instance"""
     registry: str
+
     """The vendor that is put into the ``org.opencontainers.image.vendor`` label"""
     vendor: str
+
+    """enforce sequential release numbers even across version chagnes."""
+    force_multiversion: bool = False
 
     @staticmethod
     @abstractmethod
@@ -44,7 +49,9 @@ class ApplicationCollectionRegistry(Registry):
     """Registry for the Rancher Application Collection Distribution Platform."""
 
     def __init__(self):
-        super().__init__(registry="dp.apps.rancher.io", vendor="SUSE LLC")
+        super().__init__(
+            registry="dp.apps.rancher.io", vendor="SUSE LLC", force_multiversion=True
+        )
 
     @staticmethod
     def url(container: "BaseContainerImage") -> str:

@@ -32,6 +32,8 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}
 {% endfor -%}
+{%- if image.publish_registry.force_multiversion -%}#!ForceMultiVersion
+{% endif -%}
 {% if image.build_version %}#!BuildName: {{ image.build_name }}
 #!BuildVersion: {{ image.build_version }}
 {%- endif %}
