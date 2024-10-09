@@ -67,8 +67,6 @@ POSTFIX_CONTAINERS = [
                 "gawk",
                 "grep",
                 "netcfg",
-                "openldap2",
-                "openldap2-client",
                 "postfix",
                 "postfix-ldap",
                 "postfix-lmdb",
@@ -77,9 +75,12 @@ POSTFIX_CONTAINERS = [
             )
             + (
                 (
+                    "openldap2",
+                    "openldap2-client",
                     "mandoc",
                     "spamassassin-spamc",
                     "spamass-milter",
+                    "tar",
                 )
                 if os_version == OsVersion.TUMBLEWEED
                 else ()
