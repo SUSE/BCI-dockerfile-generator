@@ -80,6 +80,7 @@ POSTFIX_CONTAINERS = [
                     "mandoc",
                     "spamassassin-spamc",
                     "spamass-milter",
+                    "gzip",
                     "tar",
                 )
                 if os_version == OsVersion.TUMBLEWEED
