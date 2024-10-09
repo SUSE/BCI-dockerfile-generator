@@ -5,12 +5,12 @@ import os
 import textwrap
 from pathlib import Path
 
-from bci_build.osversion import ALL_BASE_OS_VERSIONS
-from bci_build.osversion import ALL_OS_LTSS_VERSIONS
-from bci_build.osversion import ALL_OS_VERSIONS
-from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
-from bci_build.osversion import _SUPPORTED_UNTIL_SLE
-from bci_build.osversion import OsVersion
+from bci_build.os_version import ALL_BASE_OS_VERSIONS
+from bci_build.os_version import ALL_OS_LTSS_VERSIONS
+from bci_build.os_version import ALL_OS_VERSIONS
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import _SUPPORTED_UNTIL_SLE
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import Arch
 from bci_build.package import BuildType

@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from bci_build.osversion import ALL_NONBASE_OS_VERSIONS
-from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import BuildType

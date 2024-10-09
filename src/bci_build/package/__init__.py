@@ -17,9 +17,9 @@ import jinja2
 from packaging import version
 
 from bci_build.containercrate import ContainerCrate
-from bci_build.osversion import ALL_OS_LTSS_VERSIONS
-from bci_build.osversion import RELEASED_OS_VERSIONS
-from bci_build.osversion import OsVersion
+from bci_build.os_version import ALL_OS_LTSS_VERSIONS
+from bci_build.os_version import RELEASED_OS_VERSIONS
+from bci_build.os_version import OsVersion
 from bci_build.registry import ApplicationCollectionRegistry
 from bci_build.registry import Registry
 from bci_build.registry import publish_registry

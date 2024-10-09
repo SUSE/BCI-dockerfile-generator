@@ -3,8 +3,8 @@
 import datetime
 from itertools import product
 
-from bci_build.osversion import ALL_NONBASE_OS_VERSIONS
-from bci_build.osversion import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.package import SupportLevel
