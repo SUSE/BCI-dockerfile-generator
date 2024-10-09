@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  9 05:45:43 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- new version 6.0.35
+
+-------------------------------------------------------------------
 Mon Sep 30 14:33:45 UTC 2024 - Dirk Mueller <dmueller@suse.com>
 
 - derive from released base container for correct base digest annotations
