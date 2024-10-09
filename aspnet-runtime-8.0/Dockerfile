@@ -17,7 +17,7 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-aspnet:8.0
 #!BuildTag: bci/dotnet-aspnet:8.0-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:8.0.8
+#!BuildTag: bci/dotnet-aspnet:8.0.10
 #!BuildTag: bci/dotnet-aspnet:latest
 #!BuildName: bci-dotnet-aspnet-8.0
 #!BuildVersion: 15.6.8.0
@@ -31,7 +31,7 @@ FROM registry.suse.com/bci/bci-base:15.6
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI ASP.NET Core Runtime 8.0"
 LABEL org.opencontainers.image.description="The ASP.NET Core Runtime 8.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="8.0.8"
+LABEL org.opencontainers.image.version="8.0.10"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
@@ -52,16 +52,16 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.8-1.x86_64.rpm
-COPY dotnet-host-8.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.8-1.x86_64.rpm
-COPY dotnet-hostfxr-8.0-8.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.8-1.x86_64.rpm
-COPY dotnet-runtime-deps-8.0-8.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.8-1.x86_64.rpm
-COPY dotnet-runtime-8.0-8.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.8-1.x86_64.rpm
-COPY aspnetcore-runtime-8.0-8.0.8-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.10-1.x86_64.rpm
+COPY dotnet-host-8.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.10-1.x86_64.rpm
+COPY dotnet-hostfxr-8.0-8.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.10-1.x86_64.rpm
+COPY dotnet-runtime-deps-8.0-8.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.10-1.x86_64.rpm
+COPY dotnet-runtime-8.0-8.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.10-1.x86_64.rpm
+COPY aspnetcore-runtime-8.0-8.0.10-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -80,7 +80,7 @@ RUN rm -rf /tmp/* && zypper clean && rm -rf {/target,}/var/log/{alternatives.log
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=8.0.8
+ENV DOTNET_VERSION=8.0.10
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
