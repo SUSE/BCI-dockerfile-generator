@@ -6,6 +6,8 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+import packaging
+
 from bci_build.os_version import OsVersion
 
 if TYPE_CHECKING:
@@ -44,6 +46,26 @@ class Registry(ABC):
 
         """
 
+    @staticmethod
+    def build_version(base_version, container: "BaseContainerImage") -> str:
+        """Return the build version to set for this container build."""
+        container_version: str = (
+            container._variant if container.branch_version else container.tag_version
+        )
+        # if container_version is a numeric version and not a macro, then
+        # version.parse() returns a `Version` object => then we concatenate
+        # it with the existing build_version
+        # for non PEP440 versions, we'll get an exception and just return
+        # the parent's classes build_version
+        try:
+            packaging.version.parse(str(container_version))
+            stability_suffix: str = ""
+            if container._stability_suffix:
+                stability_suffix = "." + container._stability_suffix
+            return f"{base_version}.{container_version}{stability_suffix}"
+        except packaging.version.InvalidVersion:
+            return base_version
+
 
 class ApplicationCollectionRegistry(Registry):
     """Registry for the Rancher Application Collection Distribution Platform."""
@@ -60,6 +82,10 @@ class ApplicationCollectionRegistry(Registry):
     @staticmethod
     def registry_prefix(*, is_application: bool) -> str:
         return "containers"
+
+    @staticmethod
+    def build_version(base_version, container: "BaseContainerImage") -> str:
+        return container.version
 
 
 class SUSERegistry(Registry):

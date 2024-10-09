@@ -14,7 +14,6 @@ from typing import Literal
 from typing import overload
 
 import jinja2
-from packaging import version
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
@@ -1141,9 +1140,13 @@ class DevelopmentContainer(BaseContainerImage):
     #: used for `org.opencontainers.image.version`
     version: str | int = ""
 
-    #: the version-$variant to use in the first build_tag. defaults to version
-    #: if not set.
+    #: the version-$variant to use in the first build_tag. defaults to version(-$build_flavor)
+    #: if not set. Deprecated; use branch_version instead.
     tag_version: str | None = None
+
+    #: the version branch for this container to disambiguate the build name and uid
+    #: defaults to tag_version if not set.
+    branch_version: str | None = None
 
     # a rolling stability tag like 'stable' or 'oldstable' that will be added first
     stability_tag: str | None = None
@@ -1158,7 +1161,11 @@ class DevelopmentContainer(BaseContainerImage):
         super().__post_init__()
 
         if self.version and not self.tag_version:
-            self.tag_version = self.version
+            self.tag_version = (
+                f"{self.version}-{self.build_flavor}"
+                if self.build_flavor
+                else self.version
+            )
         if not self.tag_version:
             raise ValueError("A development container requires a tag_version")
 
@@ -1181,8 +1188,20 @@ class DevelopmentContainer(BaseContainerImage):
         return str(self.version)
 
     @property
+    def _variant(self) -> str:
+        """return the variant of this container in the name/branch/flavor hierarchy."""
+        branch_version = (
+            self.branch_version if self.branch_version else self.tag_version
+        )
+        return (
+            f"{branch_version}-{self.build_flavor}"
+            if self.build_flavor
+            else branch_version
+        )
+
+    @property
     def uid(self) -> str:
-        return f"{self.name}-{self.tag_version}" if self.version_in_uid else self.name
+        return f"{self.name}-{self._variant}" if self.version_in_uid else self.name
 
     @property
     def _stability_suffix(self) -> str:
@@ -1262,26 +1281,30 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.tag_version}"
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self._variant}"
+
+    @property
+    def build_name(self) -> str | None:
+        """Handles a build_name with respecting branch_version."""
+        if self.build_tags:
+            # build_tags[0] is with -RELEASE suffix, build_tags[1] without
+            assert _RELEASE_PLACEHOLDER in self.build_tags[0]
+            assert _RELEASE_PLACEHOLDER not in self.build_tags[1]
+            build_name: str = self.build_tags[1]
+            # Prefer branch_version over build_tags[0] (which is tag_version derived)
+            if self.branch_version:
+                build_name = f"{self.registry_prefix}/{self.name}-{self._variant}"
+            if self.is_singleton_image:
+                build_name = build_name.partition(":")[0]
+            return build_name.replace("/", ":").replace(":", "-")
+
+        return None
 
     @property
     def build_version(self) -> str | None:
         build_ver = super().build_version
         if build_ver:
-            container_version: str = self.tag_version
-            # if container_version is a numeric version and not a macro, then
-            # version.parse() returns a `Version` object => then we concatenate
-            # it with the existing build_version
-            # for non PEP440 versions, we'll get an exception and just return
-            # the parent's classes build_version
-            try:
-                version.parse(str(container_version))
-                stability_suffix: str = ""
-                if self._stability_suffix:
-                    stability_suffix = "." + self._stability_suffix
-                return f"{build_ver}.{container_version}{stability_suffix}"
-            except version.InvalidVersion:
-                return build_ver
+            return self.publish_registry.build_version(build_ver, self)
         return None
 
 
