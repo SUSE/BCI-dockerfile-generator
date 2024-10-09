@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  9 08:36:54 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove openldap2 packages from the container image
+
+-------------------------------------------------------------------
 Tue Oct  8 11:38:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch postfix to multi-stage micro based build
