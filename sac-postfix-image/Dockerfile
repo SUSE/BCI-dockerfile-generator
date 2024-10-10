@@ -17,6 +17,7 @@
 #!ExclusiveArch: aarch64 x86_64
 #!BuildTag: containers/postfix:%%postfix_version%%
 #!BuildTag: containers/postfix:%%postfix_version%%-%RELEASE%
+#!ForceMultiVersion
 #!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.7
 FROM bci/bci-micro:15.7 AS target
