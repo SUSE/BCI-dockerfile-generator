@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: suse/sle15:%OS_VERSION_ID_SP% suse/sle15:%OS_VERSION_ID_SP%.%RELEASE% bci/bci-base:%OS_VERSION_ID_SP% bci/bci-base:%OS_VERSION_ID_SP%.%RELEASE% -->
+<!-- OBS-AddTag: suse/sle15:%OS_VERSION_ID_SP% suse/sle15:%OS_VERSION_ID_SP%-%RELEASE% bci/bci-base:%OS_VERSION_ID_SP% bci/bci-base:%OS_VERSION_ID_SP%-%RELEASE% -->
 <!-- OBS-ExclusiveArch: aarch64 x86_64 ppc64le s390x -->
 <!-- OBS-IgnorePackage: rpm -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
@@ -30,19 +30,19 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
       <containerconfig
           name="suse/sle15"
           tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%">
+          additionaltags="%OS_VERSION_ID_SP%-%RELEASE%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.base">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
             <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Base"/>
             <label name="org.opencontainers.image.description" value="Image for containers based on %OS_PRETTY_NAME%."/>
-            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
-            <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/bci/bci-base:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/bci/bci-base:%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
