@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 10 07:35:51 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set ForceMultiVersion to ensure sequentially increasing release numbers
+
+-------------------------------------------------------------------
 Mon Oct 07 13:59:47 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Python 3.9 development %%py39_ver%% BCI

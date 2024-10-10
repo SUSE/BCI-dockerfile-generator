@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 10 07:35:51 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set ForceMultiVersion to ensure sequentially increasing release numbers
+
+-------------------------------------------------------------------
 Wed Oct  9 08:36:54 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Remove openldap2 packages from the container image
