@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/postgres:15
 #!BuildTag: suse/postgres:15-%RELEASE%
+#!BuildTag: suse/postgres:15
 #!BuildTag: suse/postgres:%%pg_minor_version%%
 #!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildName: suse-postgres-15

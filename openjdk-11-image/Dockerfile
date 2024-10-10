@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
-#!BuildTag: bci/openjdk:11
 #!BuildTag: bci/openjdk:11-%RELEASE%
+#!BuildTag: bci/openjdk:11
 #!BuildName: bci-openjdk-11
 #!BuildVersion: 15.5.11
 FROM registry.suse.com/bci/bci-base:15.5

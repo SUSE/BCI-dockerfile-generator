@@ -15,11 +15,11 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/nodejs:18
 #!BuildTag: bci/nodejs:18-%RELEASE%
+#!BuildTag: bci/nodejs:18
 #!BuildTag: bci/nodejs:%%nodejs_version%%
-#!BuildTag: bci/node:18
 #!BuildTag: bci/node:18-%RELEASE%
+#!BuildTag: bci/node:18
 #!BuildTag: bci/node:%%nodejs_version%%
 #!BuildName: bci-nodejs-18
 #!BuildVersion: 15.5.18
