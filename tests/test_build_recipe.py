@@ -2,14 +2,14 @@ from datetime import date
 
 import pytest
 
+from bci_build.container_attributes import Arch
+from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import PackageType
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import OsVersion
-from bci_build.package import Arch
-from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
 from bci_build.package import OsContainer
 from bci_build.package import Package
-from bci_build.package import PackageType
-from bci_build.package import SupportLevel
 from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import KIWI_TEMPLATE
 

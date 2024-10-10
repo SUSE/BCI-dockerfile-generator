@@ -4,12 +4,12 @@ import os
 from itertools import product
 from typing import Literal
 
+from bci_build.container_attributes import Arch
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import Arch
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
-from bci_build.package import SupportLevel
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
 

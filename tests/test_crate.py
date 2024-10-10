@@ -1,6 +1,6 @@
+from bci_build.container_attributes import BuildType
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
-from bci_build.package import BuildType
 from bci_build.package import DevelopmentContainer
 
 _BASE_KWARGS = {

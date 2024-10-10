@@ -2,12 +2,12 @@
 
 from pathlib import Path
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
-from bci_build.package import SupportLevel
 from bci_build.package import generate_disk_size_constraints
 
 _POSTGRES_ENTRYPOINT = (

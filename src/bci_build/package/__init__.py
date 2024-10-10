@@ -16,6 +16,12 @@ from typing import overload
 import jinja2
 from packaging import version
 
+from bci_build.container_attributes import Arch
+from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import ImageType
+from bci_build.container_attributes import PackageType
+from bci_build.container_attributes import ReleaseStage
+from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import RELEASED_OS_VERSIONS
@@ -38,91 +44,6 @@ DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 #: Remove various log files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
 LOG_CLEAN: str = "rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}"
-
-
-@enum.unique
-class Arch(enum.Enum):
-    """Architectures of packages on OBS"""
-
-    X86_64 = "x86_64"
-    AARCH64 = "aarch64"
-    PPC64LE = "ppc64le"
-    S390X = "s390x"
-    LOCAL = "local"
-
-    def __str__(self) -> str:
-        return self.value
-
-
-@enum.unique
-class ReleaseStage(enum.Enum):
-    """Values for the ``release-stage`` label of a BCI"""
-
-    BETA = "beta"
-    RELEASED = "released"
-
-    def __str__(self) -> str:
-        return self.value
-
-
-@enum.unique
-class ImageType(enum.Enum):
-    """Values of the ``image-type`` label of a BCI"""
-
-    LTSS = "ltss"
-    SLE_BCI = "sle-bci"
-    APPLICATION = "application"
-
-    def __str__(self) -> str:
-        return self.value
-
-
-@enum.unique
-class BuildType(enum.Enum):
-    """Options for how the image is build, either as a kiwi build or from a
-    :file:`Dockerfile`.
-
-    """
-
-    DOCKER = "docker"
-    KIWI = "kiwi"
-
-    def __str__(self) -> str:
-        return self.value
-
-
-@enum.unique
-class SupportLevel(enum.Enum):
-    """Potential values of the ``com.suse.supportlevel`` label."""
-
-    L2 = "l2"
-    L3 = "l3"
-    #: Additional Customer Contract
-    ACC = "acc"
-    UNSUPPORTED = "unsupported"
-    TECHPREVIEW = "techpreview"
-
-    def __str__(self) -> str:
-        return self.value
-
-
-@enum.unique
-class PackageType(enum.Enum):
-    """Package types that are supported by kiwi, see
-    `<https://osinside.github.io/kiwi/concept_and_workflow/packages.html>`_ for
-    further details.
-
-    Note that these are only supported for kiwi builds.
-
-    """
-
-    DELETE = "delete"
-    UNINSTALL = "uninstall"
-    BOOTSTRAP = "bootstrap"
-    IMAGE = "image"
-
-    def __str__(self) -> str:
-        return self.value
 
 
 @dataclass
