@@ -21,7 +21,7 @@
 #!BuildTag: containers/python:%%py39_ver%%
 #!ForceMultiVersion
 #!BuildName: containers-python-3.9
-#!BuildVersion: 15.6.3.9
+#!BuildVersion: %%py39_ver%%
 #!BuildRelease: 41
 FROM registry.suse.com/bci/bci-base:15.6
 
