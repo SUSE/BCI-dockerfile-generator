@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
-#!BuildTag: bci/openjdk-devel:21
 #!BuildTag: bci/openjdk-devel:21-%RELEASE%
+#!BuildTag: bci/openjdk-devel:21
 #!BuildTag: bci/openjdk-devel:latest
 #!BuildName: bci-openjdk-devel-21
 #!BuildVersion: 15.6.21

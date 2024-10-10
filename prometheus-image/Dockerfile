@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/prometheus:%%prometheus_patch_version%%
 #!BuildTag: suse/prometheus:%%prometheus_patch_version%%-%RELEASE%
+#!BuildTag: suse/prometheus:%%prometheus_patch_version%%
 #!BuildTag: suse/prometheus:%%prometheus_minor_version%%
 #!BuildTag: suse/prometheus:%%prometheus_major_version%%
 #!BuildTag: suse/prometheus:latest

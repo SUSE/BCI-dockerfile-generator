@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/gcc:7
 #!BuildTag: bci/gcc:7-%RELEASE%
+#!BuildTag: bci/gcc:7
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.6.7

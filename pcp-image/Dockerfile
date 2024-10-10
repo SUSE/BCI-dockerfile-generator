@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/pcp:6.2.0
 #!BuildTag: suse/pcp:6.2.0-%RELEASE%
+#!BuildTag: suse/pcp:6.2.0
 #!BuildTag: suse/pcp:6.2
 #!BuildTag: suse/pcp:6
 #!BuildTag: suse/pcp:latest

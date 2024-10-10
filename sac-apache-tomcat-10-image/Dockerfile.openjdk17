@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/apache-tomcat:10.1-openjdk17
 #!BuildTag: containers/apache-tomcat:10.1-openjdk17-%RELEASE%
+#!BuildTag: containers/apache-tomcat:10.1-openjdk17
 #!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk17
 #!ForceMultiVersion
 #!BuildName: containers-apache-tomcat-10.1-openjdk17

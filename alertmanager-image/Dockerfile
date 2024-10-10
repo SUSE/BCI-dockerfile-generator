@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%
 #!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%-%RELEASE%
+#!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%
 #!BuildTag: suse/alertmanager:%%alertmanager_minor_version%%
 #!BuildTag: suse/alertmanager:latest
 #!BuildName: suse-alertmanager-%%alertmanager_patch_version%%

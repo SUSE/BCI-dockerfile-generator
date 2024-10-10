@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/postfix:%%postfix_version%%
 #!BuildTag: containers/postfix:%%postfix_version%%-%RELEASE%
+#!BuildTag: containers/postfix:%%postfix_version%%
 #!ForceMultiVersion
 #!BuildName: containers-postfix-%%postfix_version%%
 #!BuildVersion: 15.6
