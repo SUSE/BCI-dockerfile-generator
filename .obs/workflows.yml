@@ -11,14 +11,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: sac-apache-tomcat-10-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: sac-apache-tomcat-10-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: base-fips-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -199,6 +191,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: sac-apache-tomcat-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: sle15-kernel-module-devel-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -232,12 +228,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: alertmanager-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: sac-apache-tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: sac-apache-tomcat-10-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: base-fips-image
@@ -373,6 +363,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: rust-stable-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: sac-apache-tomcat-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: sle15-kernel-module-devel-image
