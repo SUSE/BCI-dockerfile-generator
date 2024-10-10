@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
+#!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildName: suse-389-ds-%%389ds_version%%
 #!BuildVersion: 15.7
 FROM suse/sle15:15.7

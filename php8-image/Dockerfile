@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/php:8
 #!BuildTag: bci/php:8-%RELEASE%
+#!BuildTag: bci/php:8
 #!BuildTag: bci/php:%%php_version%%
 #!BuildName: bci-php-8
 #!BuildVersion: 15.7.8

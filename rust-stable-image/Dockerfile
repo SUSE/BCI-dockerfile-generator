@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/rust:stable
 #!BuildTag: bci/rust:stable-1.%RELEASE%
-#!BuildTag: bci/rust:1.81
+#!BuildTag: bci/rust:stable
 #!BuildTag: bci/rust:1.81-1.%RELEASE%
+#!BuildTag: bci/rust:1.81
 #!BuildTag: bci/rust:%%RUST_VERSION%%
 #!BuildName: bci-rust-stable
 #!BuildVersion: 15.7.1.81.1

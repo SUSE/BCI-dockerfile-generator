@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/python:3.12
 #!BuildTag: bci/python:3.12-%RELEASE%
+#!BuildTag: bci/python:3.12
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:%%py312_ver%%
 #!BuildName: bci-python-3.12

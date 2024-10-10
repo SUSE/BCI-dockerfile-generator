@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/kiwi:9
 #!BuildTag: bci/kiwi:9-%RELEASE%
+#!BuildTag: bci/kiwi:9
 #!BuildTag: bci/kiwi:9.24
 #!BuildTag: bci/kiwi:9.24.43
 #!BuildName: bci-kiwi-9

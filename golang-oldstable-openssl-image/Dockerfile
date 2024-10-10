@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/golang:oldstable-openssl
 #!BuildTag: bci/golang:oldstable-openssl-%RELEASE%
-#!BuildTag: bci/golang:1.20-openssl
+#!BuildTag: bci/golang:oldstable-openssl
 #!BuildTag: bci/golang:1.20-openssl-%RELEASE%
+#!BuildTag: bci/golang:1.20-openssl
 #!BuildTag: bci/golang:%%golang_version%%
 #!BuildName: bci-golang-oldstable-openssl
 #!BuildVersion: 15.7

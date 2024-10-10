@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/golang:stable
 #!BuildTag: bci/golang:stable-1.%RELEASE%
-#!BuildTag: bci/golang:1.23
+#!BuildTag: bci/golang:stable
 #!BuildTag: bci/golang:1.23-1.%RELEASE%
+#!BuildTag: bci/golang:1.23
 #!BuildTag: bci/golang:%%golang_version%%
 #!BuildName: bci-golang-stable
 #!BuildVersion: 15.7.1.23.1

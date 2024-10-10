@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/rmt-mariadb:10.11
 #!BuildTag: suse/rmt-mariadb:10.11-%RELEASE%
-#!BuildTag: suse/mariadb:10.11
+#!BuildTag: suse/rmt-mariadb:10.11
 #!BuildTag: suse/mariadb:10.11-%RELEASE%
+#!BuildTag: suse/mariadb:10.11
 #!BuildName: suse-rmt-mariadb-10.11
 #!BuildVersion: 15.7.10.11
 FROM suse/sle15:15.7
