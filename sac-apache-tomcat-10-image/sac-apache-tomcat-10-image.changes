@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 10 07:35:51 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set ForceMultiVersion to ensure sequentially increasing release numbers
+
+-------------------------------------------------------------------
 Mon Oct  7 20:50:39 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - add which to the tomcat containers (bsc#1231347)
