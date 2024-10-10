@@ -19,6 +19,7 @@
 #!BuildTag: containers/python:3.9-%RELEASE%
 #!BuildTag: containers/python:3
 #!BuildTag: containers/python:%%py39_ver%%
+#!ForceMultiVersion
 #!BuildName: containers-python-3.9
 #!BuildVersion: 15.6.3.9
 #!BuildRelease: 41
