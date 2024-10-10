@@ -363,7 +363,8 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_name(self) -> str | None:
         if self.build_tags:
-            build_name: str = self.build_tags[0]
+            # build_tags[0] is with -RELEASE suffix, build_tags[1] without
+            build_name: str = self.build_tags[1]
             if self.is_singleton_image:
                 build_name = build_name.partition(":")[0]
             return build_name.replace("/", ":").replace(":", "-")
@@ -1233,10 +1234,10 @@ class DevelopmentContainer(BaseContainerImage):
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
-                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
                 tags += [
                     f"{self.registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 ]
+                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
             for ver_label in self.additional_versions:
                 tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
 
@@ -1338,8 +1339,8 @@ class OsContainer(BaseContainerImage):
 
         for name in [self.name] + self.additional_names:
             tags += [
-                f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
                 f"{self.registry_prefix}/bci-{name}:{self.image_ref_name}",
+                f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
             ] + (
                 [f"{self.registry_prefix}/bci-{name}:latest"] if self.is_latest else []
             )
