@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%.%RELEASE%
+#!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-base-fips:latest
 #!BuildName: bci-bci-base-fips-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6

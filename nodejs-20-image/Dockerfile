@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/nodejs:20
 #!BuildTag: bci/nodejs:20-%RELEASE%
+#!BuildTag: bci/nodejs:20
 #!BuildTag: bci/nodejs:%%nodejs_version%%
 #!BuildTag: bci/nodejs:latest
-#!BuildTag: bci/node:20
 #!BuildTag: bci/node:20-%RELEASE%
+#!BuildTag: bci/node:20
 #!BuildTag: bci/node:%%nodejs_version%%
 #!BuildTag: bci/node:latest
 #!BuildName: bci-nodejs-20

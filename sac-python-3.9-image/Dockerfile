@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/python:3.9
 #!BuildTag: containers/python:3.9-%RELEASE%
+#!BuildTag: containers/python:3.9
 #!BuildTag: containers/python:3
 #!BuildTag: containers/python:%%py39_ver%%
 #!ForceMultiVersion

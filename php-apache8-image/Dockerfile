@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/php-apache:8
 #!BuildTag: bci/php-apache:8-%RELEASE%
+#!BuildTag: bci/php-apache:8
 #!BuildTag: bci/php-apache:%%php_version%%
 #!BuildTag: bci/php-apache:latest
 #!BuildName: bci-php-apache-8
