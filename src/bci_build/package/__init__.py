@@ -1282,7 +1282,8 @@ class DevelopmentContainer(BaseContainerImage):
 @dataclass
 class ApplicationStackContainer(DevelopmentContainer):
     def __post_init__(self) -> None:
-        self._min_release_counter = 35
+        if self._min_release_counter is None:
+            self._min_release_counter = 35
         super().__post_init__()
 
     @property
