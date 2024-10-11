@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: bci/spack:0.21
 #!BuildTag: bci/spack:0.21-%RELEASE%
+#!BuildTag: bci/spack:0.21
 #!BuildTag: bci/spack:0.21.2
 #!BuildTag: bci/spack:latest
 #!BuildName: bci-spack-0.21

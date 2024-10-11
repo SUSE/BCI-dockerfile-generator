@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-runtime:8.0
 #!BuildTag: bci/dotnet-runtime:8.0-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:8.0
 #!BuildTag: bci/dotnet-runtime:8.0.10
 #!BuildTag: bci/dotnet-runtime:latest
 #!BuildName: bci-dotnet-runtime-8.0

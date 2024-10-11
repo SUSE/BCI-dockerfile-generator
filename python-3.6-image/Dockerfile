@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/python:3.6
 #!BuildTag: bci/python:3.6-%RELEASE%
+#!BuildTag: bci/python:3.6
 #!BuildTag: bci/python:3
 #!BuildTag: bci/python:%%py36_ver%%
 #!BuildName: bci-python-3.6

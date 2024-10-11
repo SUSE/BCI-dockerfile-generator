@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 11 15:13:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
 Tue Oct  1 15:00:41 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - go back to obsrepositories:/

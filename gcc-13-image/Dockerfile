@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/gcc:13
 #!BuildTag: bci/gcc:13-%RELEASE%
+#!BuildTag: bci/gcc:13
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildTag: bci/gcc:latest
 #!BuildName: bci-gcc-13

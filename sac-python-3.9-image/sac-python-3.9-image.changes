@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 11 15:13:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
 Thu Oct 10 07:35:51 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Set ForceMultiVersion to ensure sequentially increasing release numbers

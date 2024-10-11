@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/rmt-nginx:1.21
 #!BuildTag: suse/rmt-nginx:1.21-%RELEASE%
+#!BuildTag: suse/rmt-nginx:1.21
 #!BuildTag: suse/rmt-nginx:latest
 #!BuildName: suse-rmt-nginx-1.21
 #!BuildVersion: 15.6.1.21

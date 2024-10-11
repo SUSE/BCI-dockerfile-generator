@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2.5-%RELEASE%
+#!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2
 #!BuildTag: bci/ruby:latest
 #!BuildName: bci-ruby-2.5
