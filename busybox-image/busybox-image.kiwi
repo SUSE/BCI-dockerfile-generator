@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: bci/bci-busybox:%OS_VERSION_ID_SP% bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE% -->
+<!-- OBS-AddTag: bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE% bci/bci-busybox:%OS_VERSION_ID_SP% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="busybox-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -27,8 +27,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <type image="docker">
       <containerconfig
           name="bci/bci-busybox"
-          tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%-%RELEASE%">
+          tag="%OS_VERSION_ID_SP%-%RELEASE%"
+          additionaltags="%OS_VERSION_ID_SP%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.busybox">
             <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
