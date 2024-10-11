@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 11 15:13:11 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
 Wed Oct  9 05:33:48 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - new version 8.0.10

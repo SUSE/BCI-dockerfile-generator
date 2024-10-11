@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/postgres:16
 #!BuildTag: suse/postgres:16-%RELEASE%
+#!BuildTag: suse/postgres:16
 #!BuildTag: suse/postgres:%%pg_minor_version%%
 #!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildTag: suse/postgres:latest

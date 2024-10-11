@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: suse/registry:%%registry_version%% suse/registry:%%registry_version%%-%RELEASE% -->
+<!-- OBS-AddTag: suse/registry:%%registry_version%%-%RELEASE% suse/registry:%%registry_version%% -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="registry-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -27,8 +27,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.7">
       <containerconfig
           name="suse/registry"
-          tag="%%registry_version%%"
-          additionaltags="%%registry_version%%-%RELEASE%"
+          tag="%%registry_version%%-%RELEASE%"
+          additionaltags="%%registry_version%%"
           user="registry">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.registry">
