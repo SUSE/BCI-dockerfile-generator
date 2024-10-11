@@ -16,7 +16,7 @@
 #!UseOBSRepositories
 
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
-#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%
+#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.7
 FROM bci/bci-base:15.7
@@ -31,13 +31,13 @@ RUN set -euo pipefail; \
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI 15 SP7 Init"
 LABEL org.opencontainers.image.description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman."
-LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%.%RELEASE%"
+LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2031-07-31"
