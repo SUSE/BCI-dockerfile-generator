@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-aspnet:6.0
 #!BuildTag: bci/dotnet-aspnet:6.0-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:6.0
 #!BuildTag: bci/dotnet-aspnet:6.0.35
 #!BuildName: bci-dotnet-aspnet-6.0
 #!BuildVersion: 15.7.6.0
