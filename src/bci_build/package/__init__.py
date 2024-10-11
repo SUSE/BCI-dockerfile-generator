@@ -45,6 +45,9 @@ DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 #: that would also remove some package owned directories (not %ghost)
 LOG_CLEAN: str = "rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}"
 
+#: The string to use as a placeholder for the build source services to put in the release number
+_RELEASE_PLACEHOLDER = "%RELEASE%"
+
 
 @dataclass
 class Package:
@@ -363,7 +366,10 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_name(self) -> str | None:
         if self.build_tags:
-            build_name: str = self.build_tags[0]
+            # build_tags[0] is with -RELEASE suffix, build_tags[1] without
+            assert _RELEASE_PLACEHOLDER in self.build_tags[0]
+            assert _RELEASE_PLACEHOLDER not in self.build_tags[1]
+            build_name: str = self.build_tags[1]
             if self.is_singleton_image:
                 build_name = build_name.partition(":")[0]
             return build_name.replace("/", ":").replace(":", "-")
@@ -1221,8 +1227,8 @@ class DevelopmentContainer(BaseContainerImage):
     @property
     def _release_suffix(self) -> str:
         if self._stability_suffix:
-            return f"{self._stability_suffix}.%RELEASE%"
-        return "%RELEASE%"
+            return f"{self._stability_suffix}.{_RELEASE_PLACEHOLDER}"
+        return f"{_RELEASE_PLACEHOLDER}"
 
     @property
     def build_tags(self) -> list[str]:
@@ -1233,10 +1239,10 @@ class DevelopmentContainer(BaseContainerImage):
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
-                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
                 tags += [
                     f"{self.registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 ]
+                tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
             for ver_label in self.additional_versions:
                 tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
 
@@ -1326,9 +1332,9 @@ class OsContainer(BaseContainerImage):
     def oci_version(self) -> str:
         # use the more standard VERSION-RELEASE scheme we use everywhere else for new containers
         if self.os_version not in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6):
-            return "%OS_VERSION_ID_SP%-%RELEASE%"
+            return f"%OS_VERSION_ID_SP%-{_RELEASE_PLACEHOLDER}"
 
-        return "%OS_VERSION_ID_SP%.%RELEASE%"
+        return f"%OS_VERSION_ID_SP%.{_RELEASE_PLACEHOLDER}"
 
     @property
     def image_type(self) -> ImageType:
@@ -1343,8 +1349,8 @@ class OsContainer(BaseContainerImage):
 
         for name in [self.name] + self.additional_names:
             tags += [
-                f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
                 f"{self.registry_prefix}/bci-{name}:{self.image_ref_name}",
+                f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%",
             ] + (
                 [f"{self.registry_prefix}/bci-{name}:latest"] if self.is_latest else []
             )
