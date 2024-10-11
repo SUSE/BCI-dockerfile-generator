@@ -522,7 +522,7 @@ def test_build_recipe_templates(
 <!--
 Copyright header
 -->
-<!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE% opensuse/bci/bci-test:latest -->
+<!-- OBS-AddTag: opensuse/bci/bci-test:%OS_VERSION_ID_SP% opensuse/bci/bci-test:%OS_VERSION_ID_SP%-%RELEASE% opensuse/bci/bci-test:latest -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="test-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -536,19 +536,19 @@ Copyright header
       <containerconfig
           name="opensuse/bci/bci-test"
           tag="%OS_VERSION_ID_SP%"
-          additionaltags="%OS_VERSION_ID_SP%.%RELEASE%,latest">
+          additionaltags="%OS_VERSION_ID_SP%-%RELEASE%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.authors" value="openSUSE (https://www.opensuse.org/)"/>
             <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
             <label name="org.opencontainers.image.description" value="A test environment for containers."/>
-            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.opensuse.org"/>
-            <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
-            <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/bci-test:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.opensuse.org/opensuse/bci/bci-test:%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="org.opensuse.release-stage" value="released"/>
             <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime#openSUSE_BCI"/>

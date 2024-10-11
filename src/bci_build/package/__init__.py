@@ -1324,6 +1324,10 @@ class OsContainer(BaseContainerImage):
 
     @property
     def oci_version(self) -> str:
+        # use the more standard VERSION-RELEASE scheme we use everywhere else for new containers
+        if self.os_version not in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6):
+            return "%OS_VERSION_ID_SP%-%RELEASE%"
+
         return "%OS_VERSION_ID_SP%.%RELEASE%"
 
     @property
