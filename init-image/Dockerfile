@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 
 FROM bci/bci-base:16.0
 
