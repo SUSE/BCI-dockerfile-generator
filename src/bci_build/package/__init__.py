@@ -102,6 +102,8 @@ class Replacement:
         source package.
 
         """
+        if "%%" not in self.regex_in_build_description:
+            raise ValueError("regex_in_build_description must be in the form %%foo%%")
         if self.file_name and "readme" in self.file_name.lower():
             raise ValueError(f"Cannot replace variables in {self.file_name}!")
 
@@ -1163,11 +1165,8 @@ class DevelopmentContainer(BaseContainerImage):
             )
 
         if self.version and not self.tag_version:
-            self.tag_version = (
-                f"{self.version}-{self.build_flavor}"
-                if self.build_flavor
-                else self.version
-            )
+            self.tag_version = self._version_variant
+
         if not self.tag_version:
             raise ValueError("A development container requires a tag_version")
 
@@ -1195,7 +1194,14 @@ class DevelopmentContainer(BaseContainerImage):
         return str(self.version)
 
     @property
-    def _variant(self) -> str:
+    def _version_variant(self) -> str:
+        """return the version-build_flavor or version."""
+        return (
+            f"{self.version}-{self.build_flavor}" if self.build_flavor else self.version
+        )
+
+    @property
+    def _tag_variant(self) -> str:
         """return the tag_version-build_flavor or tag_version."""
         return (
             f"{self.tag_version}-{self.build_flavor}"
@@ -1205,7 +1211,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def uid(self) -> str:
-        return f"{self.name}-{self._variant}" if self.version_in_uid else self.name
+        return f"{self.name}-{self._tag_variant}" if self.version_in_uid else self.name
 
     @property
     def _stability_suffix(self) -> str:
@@ -1258,13 +1264,9 @@ class DevelopmentContainer(BaseContainerImage):
         tags = []
 
         for name in [self.name] + self.additional_names:
-            ver_labels: list[str] = [
-                f"{self.version}-{self.build_flavor}"
-                if self.build_flavor
-                else self.version
-            ]
-            if self.version != self.tag_version:
-                ver_labels.append(self._variant)
+            ver_labels: list[str] = [self._version_variant]
+            if self._version_variant != self._tag_variant:
+                ver_labels.append(self._tag_variant)
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
@@ -1281,8 +1283,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def image_ref_name(self) -> str:
-        variant: str = f"-{self.build_flavor}" if self.build_flavor else ""
-        return f"{self.version}{variant}-{self._release_suffix}"
+        return f"{self._version_variant}-{self._release_suffix}"
 
     @property
     def reference(self) -> str:
@@ -1292,13 +1293,13 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self._variant}"
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self._tag_variant}"
 
     @property
     def build_name(self) -> str | None:
         """Create a stable BuildName, either by using stability_tag or by falling back to _variant."""
         if self.build_tags:
-            build_name = f"{self.registry_prefix}/{self.name}-{self._variant}"
+            build_name = f"{self.registry_prefix}/{self.name}-{self._tag_variant}"
             if self.stability_tag:
                 build_name = f"{self.registry_prefix}/{self.name}-{self.stability_tag}"
             if self.is_singleton_image:
