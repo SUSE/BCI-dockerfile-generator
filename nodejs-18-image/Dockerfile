@@ -15,12 +15,14 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
+#!BuildTag: bci/nodejs:%%nodejs_version%%
 #!BuildTag: bci/nodejs:18-%RELEASE%
 #!BuildTag: bci/nodejs:18
-#!BuildTag: bci/nodejs:%%nodejs_version%%
+#!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
+#!BuildTag: bci/node:%%nodejs_version%%
 #!BuildTag: bci/node:18-%RELEASE%
 #!BuildTag: bci/node:18
-#!BuildTag: bci/node:%%nodejs_version%%
 #!BuildName: bci-nodejs-18
 #!BuildVersion: 15.5.18
 FROM registry.suse.com/bci/bci-base:15.5
@@ -40,8 +42,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="18-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/nodejs:18-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%nodejs_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/nodejs:%%nodejs_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2024-12-31"
