@@ -15,10 +15,11 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: bci/python:%%py36_ver%%-%RELEASE%
+#!BuildTag: bci/python:%%py36_ver%%
 #!BuildTag: bci/python:3.6-%RELEASE%
 #!BuildTag: bci/python:3.6
 #!BuildTag: bci/python:3
-#!BuildTag: bci/python:%%py36_ver%%
 #!BuildName: bci-python-3.6
 #!BuildVersion: 15.6.3.6
 #!BuildRelease: 41
@@ -39,8 +40,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="3.6-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/python:3.6-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%py36_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/python:%%py36_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2031-07-31"

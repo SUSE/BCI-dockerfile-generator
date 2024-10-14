@@ -15,10 +15,11 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
+#!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildTag: suse/postgres:16-%RELEASE%
 #!BuildTag: suse/postgres:16
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildTag: suse/postgres:latest
 #!BuildName: suse-postgres-16
 #!BuildVersion: 15.6.16
@@ -40,8 +41,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="16-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/postgres:16-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%pg_patch_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/postgres:%%pg_patch_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="acc"
 LABEL com.suse.eula="sle-eula"

@@ -15,9 +15,10 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
+#!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildTag: bci/gcc:7-%RELEASE%
 #!BuildTag: bci/gcc:7
-#!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildName: bci-gcc-7
 #!BuildVersion: 15.6.7
 FROM registry.suse.com/bci/bci-base:15.6
@@ -37,8 +38,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="7-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/gcc:7-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
