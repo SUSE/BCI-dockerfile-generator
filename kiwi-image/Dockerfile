@@ -15,10 +15,11 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: bci/kiwi:10.1.10-%RELEASE%
+#!BuildTag: bci/kiwi:10.1.10
 #!BuildTag: bci/kiwi:10-%RELEASE%
 #!BuildTag: bci/kiwi:10
 #!BuildTag: bci/kiwi:10.1
-#!BuildTag: bci/kiwi:10.1.10
 
 FROM bci/bci-base:16.0
 
@@ -37,8 +38,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:10-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.1.10-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:10.1.10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
