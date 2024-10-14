@@ -16,10 +16,9 @@ Normally, you'd want to compile an application and distribute it as part of a
 custom container image. To do this, create a `Dockerfile` similar to the one
 below. The `Dockerfile` uses this image to build a custom container image,
 copies the sources to a working directory, and compiles the application:
-{%- set reference_no_release = (image.reference | replace("-%RELEASE%", "") ) %}
 
 ```Dockerfile
-FROM {{ reference_no_release }}
+FROM {{ image.pretty_reference }}
 WORKDIR /src/
 COPY . /src/
 RUN gcc main.c src1.c src2.c
@@ -30,7 +29,7 @@ It is also possible to compile a static binary with gcc as part of a multistage
 build:
 
 ```Dockerfile
-FROM {{ reference_no_release }} as builder
+FROM {{ image.pretty_reference }} as builder
 WORKDIR /src/
 COPY . /src/
 RUN gcc -o app main.c src1.c src2.c
@@ -80,13 +79,13 @@ practical. One way to do this is to mount the working directory of an
 application into the launched container and compile the application there:
 
 ```bash
-podman run --rm -it -v $(pwd):/src/:Z {{ reference_no_release }} \
+podman run --rm -it -v $(pwd):/src/:Z {{ image.pretty_reference }} \
     gcc -o /src/app.out /src/*.c
 ```
 or by invoking `make`
 ```bash
 podman run --rm -it -v $(pwd):/src/:Z --workdir /src/ \
-    {{ reference_no_release }} \
+    {{ image.pretty_reference }} \
     make
 ```
 

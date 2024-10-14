@@ -328,7 +328,6 @@ class DotNetBCI(DevelopmentContainer):
         self.version = self._guess_version_from_pkglist(pkgs)
         if self.version:
             assert not self.additional_versions, f"additional_versions property must be unset, but got {self.additional_versions}"
-            self.additional_versions = [self.version]
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,

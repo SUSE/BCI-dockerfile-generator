@@ -33,7 +33,7 @@ Alternatively, you can mount the application's source code directly into the
 container:
 
 ```ShellSession
-$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z {{ image.reference }}
+$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z {{ image.pretty_reference }}
 ```
 
 {% include 'php_common.j2' %}

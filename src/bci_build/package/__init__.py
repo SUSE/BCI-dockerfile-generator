@@ -14,7 +14,6 @@ from typing import Literal
 from typing import overload
 
 import jinja2
-from packaging import version
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
@@ -103,6 +102,8 @@ class Replacement:
         source package.
 
         """
+        if "%%" not in self.regex_in_build_description:
+            raise ValueError("regex_in_build_description must be in the form %%foo%%")
         if self.file_name and "readme" in self.file_name.lower():
             raise ValueError(f"Cannot replace variables in {self.file_name}!")
 
@@ -1141,8 +1142,8 @@ class DevelopmentContainer(BaseContainerImage):
     #: used for `org.opencontainers.image.version`
     version: str | int = ""
 
-    #: the version-$variant to use in the first build_tag. defaults to version
-    #: if not set.
+    #: the floating tag version-$variant to add to the tags if set. used to determine
+    #: a stable buildname
     tag_version: str | None = None
 
     # a rolling stability tag like 'stable' or 'oldstable' that will be added first
@@ -1157,10 +1158,22 @@ class DevelopmentContainer(BaseContainerImage):
     def __post_init__(self) -> None:
         super().__post_init__()
 
+        # we use tag_version in pretty_reference for README's where we can not replace placeholders
+        if self.tag_version and "%%" in str(self.tag_version):
+            raise ValueError(
+                f"{self.name}: tag_version {self.tag_version} must be a literal not a placeholder."
+            )
+
         if self.version and not self.tag_version:
-            self.tag_version = self.version
+            self.tag_version = self._version_variant
+
         if not self.tag_version:
             raise ValueError("A development container requires a tag_version")
+
+        if self.version in self.additional_versions:
+            raise ValueError(
+                f"{self.name}: Duplicated version {self.version} in additional_versions"
+            )
 
     def prepare_template(self) -> None:
         """Hook to do delayed expensive work prior template rendering"""
@@ -1181,8 +1194,24 @@ class DevelopmentContainer(BaseContainerImage):
         return str(self.version)
 
     @property
+    def _version_variant(self) -> str:
+        """return the version-build_flavor or version."""
+        return (
+            f"{self.version}-{self.build_flavor}" if self.build_flavor else self.version
+        )
+
+    @property
+    def _tag_variant(self) -> str:
+        """return the tag_version-build_flavor or tag_version."""
+        return (
+            f"{self.tag_version}-{self.build_flavor}"
+            if self.build_flavor
+            else self.tag_version
+        )
+
+    @property
     def uid(self) -> str:
-        return f"{self.name}-{self.tag_version}" if self.version_in_uid else self.name
+        return f"{self.name}-{self._tag_variant}" if self.version_in_uid else self.name
 
     @property
     def _stability_suffix(self) -> str:
@@ -1235,7 +1264,9 @@ class DevelopmentContainer(BaseContainerImage):
         tags = []
 
         for name in [self.name] + self.additional_names:
-            ver_labels: list[str] = [self.tag_version]
+            ver_labels: list[str] = [self._version_variant]
+            if self._version_variant != self._tag_variant:
+                ver_labels.append(self._tag_variant)
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
@@ -1252,7 +1283,7 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def image_ref_name(self) -> str:
-        return f"{self.tag_version}-{self._release_suffix}"
+        return f"{self._version_variant}-{self._release_suffix}"
 
     @property
     def reference(self) -> str:
@@ -1262,26 +1293,26 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.tag_version}"
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self._tag_variant}"
+
+    @property
+    def build_name(self) -> str | None:
+        """Create a stable BuildName, either by using stability_tag or by falling back to _variant."""
+        if self.build_tags:
+            build_name = f"{self.registry_prefix}/{self.name}-{self._tag_variant}"
+            if self.stability_tag:
+                build_name = f"{self.registry_prefix}/{self.name}-{self.stability_tag}"
+            if self.is_singleton_image:
+                build_name = build_name.partition(":")[0]
+            return build_name.replace("/", ":").replace(":", "-")
+
+        return None
 
     @property
     def build_version(self) -> str | None:
         build_ver = super().build_version
         if build_ver:
-            container_version: str = self.tag_version
-            # if container_version is a numeric version and not a macro, then
-            # version.parse() returns a `Version` object => then we concatenate
-            # it with the existing build_version
-            # for non PEP440 versions, we'll get an exception and just return
-            # the parent's classes build_version
-            try:
-                version.parse(str(container_version))
-                stability_suffix: str = ""
-                if self._stability_suffix:
-                    stability_suffix = "." + self._stability_suffix
-                return f"{build_ver}.{container_version}{stability_suffix}"
-            except version.InvalidVersion:
-                return build_ver
+            return self.publish_registry.build_version(build_ver, self)
         return None
 
 

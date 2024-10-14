@@ -36,10 +36,10 @@ def test_service_with_replacement_kiwi():
                 build_recipe_type=BuildType.KIWI,
                 replacements_via_service=[
                     Replacement(
-                        regex_in_build_description="re", package_name="coreutils"
+                        regex_in_build_description="%%re%%", package_name="coreutils"
                     ),
                     Replacement(
-                        regex_in_build_description="re",
+                        regex_in_build_description="%%re%%",
                         package_name="coreutils",
                         file_name="replacementfile",
                     ),
@@ -51,12 +51,12 @@ def test_service_with_replacement_kiwi():
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">test-image.kiwi</param>
-    <param name="regex">re</param>
+    <param name="regex">%%re%%</param>
     <param name="package">coreutils</param>
   </service>
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">replacementfile</param>
-    <param name="regex">re</param>
+    <param name="regex">%%re%%</param>
     <param name="package">coreutils</param>
   </service>
 </services>"""

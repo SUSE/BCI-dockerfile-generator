@@ -42,7 +42,6 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "additional_names": ["node"],
         "version": node_version_replacement,
         "tag_version": str(ver),
-        "additional_versions": [node_version_replacement],
         "package_list": [
             f"nodejs{ver}",
             # devel dependencies:

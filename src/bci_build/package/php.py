@@ -136,7 +136,6 @@ EXPOSE 9000
         no_recommends=False,
         version="%%php_version%%",
         tag_version=php_version,
-        additional_versions=["%%php_version%%"],
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         os_version=os_version,
