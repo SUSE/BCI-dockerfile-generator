@@ -1,10 +1,68 @@
+import pytest
+
 from bci_build.container_attributes import BuildType
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.service import Service
 from bci_build.templates import SERVICE_TEMPLATE
+
+
+def test_service_without_params_as_xml():
+    assert """<service name="foo" mode="buildtime" />""" == str(Service(name="foo"))
+
+
+def test_service_with_params_as_xml():
+    assert (
+        """<service name="foo" mode="buildtime"><param name="baz">bar</param><param name="baz">foo</param></service>"""
+        == str(Service(name="foo", param=[("baz", "bar"), ("baz", "foo")]))
+    )
+
+
+@pytest.mark.parametrize(
+    "replacement, default_file_name, service",
+    [
+        # bare bone example
+        (
+            Replacement(regex := "%%ver%%", pkg := "pkgFoo"),
+            "Dockerfile",
+            Service(
+                name=(name := "replace_using_package_version"),
+                param=[("file", "Dockerfile"), ("regex", regex), ("package", pkg)],
+            ),
+        ),
+        # the default file name is ignored if the parameter file_name is given
+        (
+            Replacement(regex, pkg, file_name=(fname := "testfile")),
+            "Dockerfile",
+            Service(
+                name=name,
+                param=[("file", fname), ("regex", regex), ("package", pkg)],
+            ),
+        ),
+        # specify a parse_version
+        (
+            Replacement(regex, pkg, parse_version=ParseVersion.MAJOR),
+            "Dockerfile",
+            Service(
+                name=name,
+                param=[
+                    ("file", "Dockerfile"),
+                    ("regex", regex),
+                    ("package", pkg),
+                    ("parse-version", "major"),
+                ],
+            ),
+        ),
+    ],
+)
+def test_replacement_to_service(
+    replacement: Replacement, default_file_name: str, service: Service
+):
+    assert replacement.to_service(default_file_name) == service
+
 
 _BASE_KWARGS = {
     "name": "test",
