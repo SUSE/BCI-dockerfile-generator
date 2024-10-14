@@ -15,9 +15,10 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: bci/php-fpm:%%php_version%%-%RELEASE%
+#!BuildTag: bci/php-fpm:%%php_version%%
 #!BuildTag: bci/php-fpm:8-%RELEASE%
 #!BuildTag: bci/php-fpm:8
-#!BuildTag: bci/php-fpm:%%php_version%%
 #!BuildTag: bci/php-fpm:latest
 #!BuildName: bci-php-fpm-8
 #!BuildVersion: 15.6.8
@@ -39,8 +40,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="8-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/php-fpm:8-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%php_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/php-fpm:%%php_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"

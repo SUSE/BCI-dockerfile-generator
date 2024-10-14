@@ -15,13 +15,14 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
+#!BuildTag: containers/python:%%py39_ver%%-%RELEASE%
+#!BuildTag: containers/python:%%py39_ver%%
 #!BuildTag: containers/python:3.9-%RELEASE%
 #!BuildTag: containers/python:3.9
 #!BuildTag: containers/python:3
-#!BuildTag: containers/python:%%py39_ver%%
 #!ForceMultiVersion
 #!BuildName: containers-python-3.9
-#!BuildVersion: 15.6.3.9
+#!BuildVersion: %%py39_ver%%
 #!BuildRelease: 41
 FROM registry.suse.com/bci/bci-base:15.6
 
@@ -39,8 +40,8 @@ LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/python"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="3.9-%RELEASE%"
-LABEL org.opensuse.reference="dp.apps.rancher.io/containers/python:3.9-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%py39_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/python:%%py39_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2027-12-31 00:00:00"

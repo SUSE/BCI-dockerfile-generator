@@ -19,7 +19,7 @@
 #!BuildTag: containers/postfix:%%postfix_version%%
 #!ForceMultiVersion
 #!BuildName: containers-postfix-%%postfix_version%%
-#!BuildVersion: 15.6
+#!BuildVersion: %%postfix_version%%
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM bci/bci-base:15.6 AS builder

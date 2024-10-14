@@ -17,9 +17,10 @@
 
 #!BuildTag: bci/golang:oldstable-2.%RELEASE%
 #!BuildTag: bci/golang:oldstable
+#!BuildTag: bci/golang:%%golang_version%%-2.%RELEASE%
+#!BuildTag: bci/golang:%%golang_version%%
 #!BuildTag: bci/golang:1.22-2.%RELEASE%
 #!BuildTag: bci/golang:1.22
-#!BuildTag: bci/golang:%%golang_version%%
 #!BuildName: bci-golang-oldstable
 #!BuildVersion: 15.6.1.22.2
 #!BuildRelease: 33
@@ -40,8 +41,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="1.22-2.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/golang:1.22-2.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%golang_version%%-2.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/golang:%%golang_version%%-2.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"

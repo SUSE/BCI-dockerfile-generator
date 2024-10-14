@@ -17,9 +17,10 @@
 
 #!BuildTag: bci/rust:stable-1.%RELEASE%
 #!BuildTag: bci/rust:stable
+#!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
+#!BuildTag: bci/rust:%%RUST_VERSION%%
 #!BuildTag: bci/rust:1.81-1.%RELEASE%
 #!BuildTag: bci/rust:1.81
-#!BuildTag: bci/rust:%%RUST_VERSION%%
 #!BuildTag: bci/rust:latest
 #!BuildName: bci-rust-stable
 #!BuildVersion: 15.6.1.81.1
@@ -40,8 +41,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="1.81-1.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/rust:1.81-1.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-1.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2024-12-19"

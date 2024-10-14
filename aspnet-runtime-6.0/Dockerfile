@@ -15,9 +15,10 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
+#!BuildTag: bci/dotnet-aspnet:6.0.35-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:6.0.35
 #!BuildTag: bci/dotnet-aspnet:6.0-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:6.0
-#!BuildTag: bci/dotnet-aspnet:6.0.35
 #!BuildName: bci-dotnet-aspnet-6.0
 #!BuildVersion: 15.6.6.0
 #!BuildRelease: 32
@@ -35,8 +36,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="6.0-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:6.0-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="6.0.35-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:6.0.35-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2024-11-12"
