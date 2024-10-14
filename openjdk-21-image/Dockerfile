@@ -15,6 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
+#!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
+#!BuildTag: bci/openjdk:%%java_version%%
 #!BuildTag: bci/openjdk:21-%RELEASE%
 #!BuildTag: bci/openjdk:21
 #!BuildTag: bci/openjdk:latest
@@ -37,8 +39,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="21-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:21-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
