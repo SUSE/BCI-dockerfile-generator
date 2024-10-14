@@ -15,9 +15,10 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
+#!BuildTag: bci/dotnet-sdk:8.0.10-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:8.0.10
 #!BuildTag: bci/dotnet-sdk:8.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:8.0
-#!BuildTag: bci/dotnet-sdk:8.0.10
 #!BuildName: bci-dotnet-sdk-8.0
 #!BuildVersion: 15.7.8.0
 FROM bci/bci-base:15.7
@@ -34,8 +35,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="8.0-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:8.0-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="8.0.10-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:8.0.10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-11-10"
@@ -67,8 +68,8 @@ COPY dotnet-apphost-pack-8.0-8.0.10-1.x86_64.rpm /tmp/
 COPY aspnetcore-targeting-pack-8.0-8.0.10-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.10-1.x86_64.rpm
 COPY aspnetcore-runtime-8.0-8.0.10-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.402-1.x86_64.rpm
-COPY dotnet-sdk-8.0-8.0.402-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.403-1.x86_64.rpm
+COPY dotnet-sdk-8.0-8.0.403-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487

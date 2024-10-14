@@ -19,7 +19,7 @@
 #!BuildTag: containers/postfix:%%postfix_version%%
 #!ForceMultiVersion
 #!BuildName: containers-postfix-%%postfix_version%%
-#!BuildVersion: 15.7
+#!BuildVersion: %%postfix_version%%
 FROM bci/bci-micro:15.7 AS target
 FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target

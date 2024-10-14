@@ -15,9 +15,10 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
+#!BuildTag: bci/spack:0.21.2-%RELEASE%
+#!BuildTag: bci/spack:0.21.2
 #!BuildTag: bci/spack:0.21-%RELEASE%
 #!BuildTag: bci/spack:0.21
-#!BuildTag: bci/spack:0.21.2
 #!BuildName: bci-spack-0.21
 #!BuildVersion: 15.7.0.21
 FROM bci/bci-base:15.7
@@ -37,8 +38,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="0.21-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/spack:0.21-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="0.21.2-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/spack:0.21.2-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"

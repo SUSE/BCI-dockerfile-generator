@@ -15,8 +15,12 @@
 
 #!UseOBSRepositories
 
+#!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%-%RELEASE%
+#!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%
 #!BuildTag: suse/rmt-mariadb-client:10.11-%RELEASE%
 #!BuildTag: suse/rmt-mariadb-client:10.11
+#!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
+#!BuildTag: suse/mariadb-client:%%mariadb_version%%
 #!BuildTag: suse/mariadb-client:10.11-%RELEASE%
 #!BuildTag: suse/mariadb-client:10.11
 #!BuildName: suse-rmt-mariadb-client-10.11
@@ -38,8 +42,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10.11-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb-client:10.11-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%mariadb_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb-client:%%mariadb_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
