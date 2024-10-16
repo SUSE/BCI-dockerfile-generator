@@ -17,22 +17,22 @@
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 #!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%
-#!BuildTag: opensuse/bci/openjdk-devel:22-%RELEASE%
-#!BuildTag: opensuse/bci/openjdk-devel:22
+#!BuildTag: opensuse/bci/openjdk-devel:23-%RELEASE%
+#!BuildTag: opensuse/bci/openjdk-devel:23
 #!BuildTag: opensuse/bci/openjdk-devel:latest
 
-FROM opensuse/bci/openjdk:22
+FROM opensuse/bci/openjdk:23
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends java-22-openjdk-devel maven; \
+    zypper -n install --no-recommends java-23-openjdk-devel maven; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.openjdk.devel
 LABEL org.opencontainers.image.authors="openSUSE (https://www.opensuse.org/)"
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 22 development"
-LABEL org.opencontainers.image.description="OpenJDK 22 development container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 23 development"
+LABEL org.opencontainers.image.description="OpenJDK 23 development container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -44,11 +44,11 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/openjdk-22-devel-image/README.md"
-ENV JAVA_BINDIR="/usr/lib64/jvm/java-22-openjdk-22/bin"
-ENV JAVA_HOME="/usr/lib64/jvm/java-22-openjdk-22"
-ENV JAVA_ROOT="/usr/lib64/jvm/java-22-openjdk-22"
-ENV JAVA_VERSION="22"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/openjdk-23-devel-image/README.md"
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-23-openjdk-23/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-23-openjdk-23"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-23-openjdk-23"
+ENV JAVA_VERSION="23"
 
 CMD ["/usr/bin/jshell"]
 RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]
