@@ -17,7 +17,7 @@ from bci_build.package import generate_disk_size_constraints
 def _get_openjdk_kwargs(
     os_version: OsVersion,
     devel: bool,
-    java_version: Literal[11, 13, 15, 17, 20, 21, 22],
+    java_version: Literal[11, 13, 15, 17, 20, 21, 23],
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -28,7 +28,7 @@ def _get_openjdk_kwargs(
     }
 
     is_latest = (java_version == 21 and os_version.is_sle15) or (
-        java_version == 22 and os_version.is_tumbleweed
+        java_version == 23 and os_version.is_tumbleweed
     )
 
     common = {
@@ -39,9 +39,9 @@ def _get_openjdk_kwargs(
         "version": "%%java_version%%",
         "os_version": os_version,
         "is_latest": is_latest,
-        "package_name": f"openjdk-{java_version}"
-        + ("-devel" if devel else "")
-        + "-image",
+        "package_name": (
+            f"openjdk-{java_version}" + ("-devel" if devel else "") + "-image"
+        ),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
@@ -108,7 +108,7 @@ OPENJDK_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=22),
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=23),
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
