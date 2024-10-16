@@ -1,0 +1,36 @@
+# {{ image.pretty_name }} container image
+
+{% include 'badges.j2' %}
+
+ {{ image.description }}
+
+## How to use this container image
+
+The container image expects dhcp configuration file in the path /etc/kea.
+To run dhcp4 for the configuration provided in the directory /etc/kea
+
+```ShellSession
+podman container runlabel run \
+      {{ image.pretty_reference }}
+```
+To run dhcp6 for the configuration provided in the directory /etc/kea
+
+```ShellSession
+podman container runlabel run_dhcp6 \
+      {{ image.pretty_reference }}
+```
+
+Dhcp configuration file can also be provided in the current directory.
+To run dhcp4 for the configuration provided in the current directory
+
+```ShellSession
+podman container runlabel runcwd \
+      {{ image.pretty_reference }}
+```
+To run dhcp6 for the configuration provided in the current directory
+
+```ShellSession
+podman container runlabel runcwd_dhcp6 \
+      {{ image.pretty_reference }}
+```
+{% include 'licensing_and_eula.j2' %}
