@@ -39,9 +39,9 @@ def _get_openjdk_kwargs(
         "version": "%%java_version%%",
         "os_version": os_version,
         "is_latest": is_latest,
-        "package_name": f"openjdk-{java_version}"
-        + ("-devel" if devel else "")
-        + "-image",
+        "package_name": (
+            f"openjdk-{java_version}" + ("-devel" if devel else "") + "-image"
+        ),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
