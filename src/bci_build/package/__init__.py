@@ -202,6 +202,9 @@ class BaseContainerImage(abc.ABC):
     #: An optional list of tcp port exposes, it is omitted if empty or ``None``
     exposes_tcp: list[int] | None = None
 
+    #: An optional list of udp port exposes, it is omitted if empty or ``None``
+    exposes_udp: list[int] | None = None
+
     #: Extra environment variables to be set in the container
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
         default_factory=dict
@@ -730,17 +733,27 @@ exit 0
     @overload
     def _dockerfile_volume_expose(
         self,
+        instruction: Literal["EXPOSEUDP"],
+        entries: list[str] | None,
+    ) -> str: ...
+
+    @overload
+    def _dockerfile_volume_expose(
+        self,
         instruction: Literal["VOLUME"],
         entries: list[str] | None,
     ) -> str: ...
 
     def _dockerfile_volume_expose(
         self,
-        instruction: Literal["EXPOSE", "VOLUME"],
+        instruction: Literal["EXPOSE", "EXPOSEUDP", "VOLUME"],
         entries: list[int] | list[str] | None,
     ):
         if not entries:
             return ""
+
+        if instruction == "EXPOSEUDP":
+            return "\n" + f"{instruction} " + " ".join(str(e) + "/udp" for e in entries)
 
         return "\n" + f"{instruction} " + " ".join(str(e) for e in entries)
 
@@ -750,7 +763,11 @@ exit 0
 
     @property
     def expose_dockerfile(self) -> str:
-        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+        _expose = ""
+        _expose += self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+        _expose += "\n" if _expose and self.exposes_udp else ""
+        _expose += "\n" + self._dockerfile_volume_expose("EXPOSEUDP", self.exposes_udp)
+        return _expose
 
     @property
     def kiwi_packages(self) -> str:
@@ -1457,6 +1474,7 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .keadhcp import KEA_DHCP_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CONTAINERS  # noqa: E402
@@ -1517,6 +1535,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *TOMCAT_CONTAINERS,
         *GCC_CONTAINERS,
         *SPACK_CONTAINERS,
+        *KEA_DHCP_CONTAINERS,
     )
 }
 
