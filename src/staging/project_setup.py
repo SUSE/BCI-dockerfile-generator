@@ -183,7 +183,11 @@ def generate_meta(
     title += f" for {os_version.full_os_name}"
 
     if project_type == ProjectType.DEVEL:
-        description = "BCI " + description
+        description = (
+            "BCI "
+            + description
+            + "\nThis project is automatically updated from git. Please do **not** send submit requests, send a pull request to the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) instead"
+        )
         title = "BCI " + title
 
     extra_header = None
