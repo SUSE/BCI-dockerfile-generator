@@ -48,6 +48,7 @@ LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_l
 LABEL usage="This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
 CMD ["/usr/lib/systemd/systemd"]
 
+
 RUN mkdir -p /etc/systemd/system.conf.d/ && \
     printf "[Manager]\nLogColor=no" > \
         /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
