@@ -17,7 +17,8 @@ _OSC_USERNAME = "foobar"
             "devel:BCI:SLE-15-SP6",
             """<project name="devel:BCI:SLE-15-SP6">
   <title>BCI Development project for SLE 15 SP6</title>
-  <description>BCI Development project for SLE 15 SP6</description>
+  <description>BCI Development project for SLE 15 SP6
+This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
   <person userid="dancermak" role="maintainer"/>
@@ -119,7 +120,8 @@ _OSC_USERNAME = "foobar"
             (prj_name := "devel:BCI:16.0"),
             f"""<project name="{prj_name}">
   <title>BCI Development project for SLE 16</title>
-  <description>BCI Development project for SLE 16</description>
+  <description>BCI Development project for SLE 16
+This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
   <person userid="dancermak" role="maintainer"/>
