@@ -53,6 +53,7 @@ ENV APACHE_CONFDIR="/etc/apache2"
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["apache2-foreground"]
+
 COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-*
 

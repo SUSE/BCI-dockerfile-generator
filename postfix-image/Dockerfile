@@ -49,6 +49,7 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 ENTRYPOINT ["/entrypoint/entrypoint.sh"]
 CMD ["postfix", "start-fg"]
 EXPOSE 25 465 587
+
 RUN set -euo pipefail; mkdir -p /entrypoint/ldap
 COPY entrypoint.sh /entrypoint/entrypoint.sh
 RUN set -euo pipefail; chmod +x /entrypoint/entrypoint.sh

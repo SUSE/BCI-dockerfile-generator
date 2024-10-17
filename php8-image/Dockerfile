@@ -52,5 +52,6 @@ ENV COMPOSER_VERSION="%%composer_version%%"
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["php", "-a"]
+
 COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-*

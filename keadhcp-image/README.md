@@ -1,0 +1,33 @@
+# KEA DHCP Container
+
+This is an openSUSE Base Container Image for  DHCP server
+
+## How to use this container image
+
+The container image expects dhcp configuration file in the path /etc/kea.
+To run dhcp4 for the configuration provided in the directory /etc/kea
+
+```ShellSession
+podman container runlabel run \
+      registry.opensuse.org/opensuse/keadhcp:2.6
+```
+To run dhcp6 for the configuration provided in the directory /etc/kea
+
+```ShellSession
+podman container runlabel run_dhcp6 \
+      registry.opensuse.org/opensuse/keadhcp:2.6
+```
+
+Dhcp configuration file can also be provided in the current directory.
+To run dhcp4 for the configuration provided in the current directory
+
+```ShellSession
+podman container runlabel runcwd \
+      registry.opensuse.org/opensuse/keadhcp:2.6
+```
+To run dhcp6 for the configuration provided in the current directory
+
+```ShellSession
+podman container runlabel runcwd_dhcp6 \
+      registry.opensuse.org/opensuse/keadhcp:2.6
+```

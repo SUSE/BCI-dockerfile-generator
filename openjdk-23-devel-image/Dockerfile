@@ -51,4 +51,5 @@ ENV JAVA_ROOT="/usr/lib64/jvm/java-23-openjdk-23"
 ENV JAVA_VERSION="23"
 
 CMD ["/usr/bin/jshell"]
+
 RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]

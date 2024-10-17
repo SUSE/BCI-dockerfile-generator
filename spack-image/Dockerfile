@@ -54,6 +54,7 @@ ENV container="docker"
 ENTRYPOINT ["/bin/bash", "/usr/share/spack/docker/entrypoint.bash"]
 CMD ["interactive-shell"]
 
+
 RUN set -euo pipefail; ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \
        /usr/local/bin/docker-shell \
     && ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \

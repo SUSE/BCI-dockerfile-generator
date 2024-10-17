@@ -46,6 +46,7 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
+
 # sanity check that the version from the tag is equal to the version of nginx that we expect
 RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' nginx | cut -d '.' -f -2)" = "1.27" ]
 RUN set -euo pipefail; mkdir /docker-entrypoint.d

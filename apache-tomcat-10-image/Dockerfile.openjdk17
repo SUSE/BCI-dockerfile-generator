@@ -57,6 +57,7 @@ ENV PATH="/usr/share/tomcat/bin:$PATH"
 
 CMD ["/usr/libexec/tomcat/server", "start"]
 EXPOSE 8080
+
 RUN set -euo pipefail; mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat
 RUN set -euo pipefail; ln -s /usr/share/tomcat /usr/local/tomcat
 RUN set -euo pipefail; \

@@ -49,5 +49,6 @@ ENV PYTHON_VERSION="%%py312_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
 
+
 RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.12 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.12 /usr/local/bin/pydoc

@@ -48,5 +48,6 @@ ENV LANG="en"
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh

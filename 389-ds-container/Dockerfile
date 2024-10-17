@@ -46,6 +46,7 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 CMD ["/usr/lib/dirsrv/dscontainer", "-r"]
 EXPOSE 3389 3636
 
+
 COPY nsswitch.conf /etc/nsswitch.conf
 
 RUN set -euo pipefail; mkdir -p /data/config; \

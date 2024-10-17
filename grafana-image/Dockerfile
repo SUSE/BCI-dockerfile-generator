@@ -53,6 +53,7 @@ ENV GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3000
+
 COPY run.sh /run.sh
 RUN set -euo pipefail; chmod +x /run.sh
         

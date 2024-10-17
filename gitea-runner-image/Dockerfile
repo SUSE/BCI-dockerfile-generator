@@ -43,5 +43,6 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/gitea-runner-image/README.md"
+
 COPY osc_checkout /usr/bin/osc_checkout
 RUN set -euo pipefail; chmod +x /usr/bin/osc_checkout

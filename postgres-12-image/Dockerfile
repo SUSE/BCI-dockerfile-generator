@@ -53,6 +53,7 @@ ENV PGDATA="/var/lib/pgsql/data"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
 EXPOSE 5432
+
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \

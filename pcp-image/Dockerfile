@@ -49,6 +49,7 @@ ENTRYPOINT ["/usr/local/bin/container-entrypoint"]
 CMD ["/usr/lib/systemd/systemd"]
 EXPOSE 44321 44322 44323
 
+
 RUN set -euo pipefail; mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint healthcheck /usr/local/bin/
 RUN set -euo pipefail; chmod +x /usr/local/bin/container-entrypoint /usr/local/bin/healthcheck

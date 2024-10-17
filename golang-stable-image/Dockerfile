@@ -53,6 +53,7 @@ ENV GOTOOLCHAIN="local"
 ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 
+
 # only available on go's tsan_arch architectures
 #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
 RUN set -euo pipefail; if zypper -n install go1.23-race; then zypper -n clean; fi
