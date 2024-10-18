@@ -17,9 +17,9 @@
 
 #!BuildTag: bci/kiwi:10.1.10-%RELEASE%
 #!BuildTag: bci/kiwi:10.1.10
-#!BuildTag: bci/kiwi:10-%RELEASE%
-#!BuildTag: bci/kiwi:10
+#!BuildTag: bci/kiwi:10.1-%RELEASE%
 #!BuildTag: bci/kiwi:10.1
+#!BuildTag: bci/kiwi:10
 
 FROM bci/bci-base:16.0
 
