@@ -202,6 +202,9 @@ class BaseContainerImage(abc.ABC):
     #: An optional list of tcp port exposes, it is omitted if empty or ``None``
     exposes_tcp: list[int] | None = None
 
+    #: An optional list of udp port exposes, it is omitted if empty or ``None``
+    exposes_udp: list[int] | None = None
+
     #: Extra environment variables to be set in the container
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
         default_factory=dict
@@ -730,17 +733,27 @@ exit 0
     @overload
     def _dockerfile_volume_expose(
         self,
+        instruction: Literal["EXPOSEUDP"],
+        entries: list[int] | None,
+    ) -> str: ...
+
+    @overload
+    def _dockerfile_volume_expose(
+        self,
         instruction: Literal["VOLUME"],
         entries: list[str] | None,
     ) -> str: ...
 
     def _dockerfile_volume_expose(
         self,
-        instruction: Literal["EXPOSE", "VOLUME"],
+        instruction: Literal["EXPOSE", "EXPOSEUDP", "VOLUME"],
         entries: list[int] | list[str] | None,
     ):
         if not entries:
             return ""
+
+        if instruction == "EXPOSEUDP":
+            return "\n" + "EXPOSE " + " ".join(str(e) + "/udp" for e in entries)
 
         return "\n" + f"{instruction} " + " ".join(str(e) for e in entries)
 
@@ -750,7 +763,9 @@ exit 0
 
     @property
     def expose_dockerfile(self) -> str:
-        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+        return self._dockerfile_volume_expose(
+            "EXPOSE", self.exposes_tcp
+        ) + self._dockerfile_volume_expose("EXPOSEUDP", self.exposes_udp)
 
     @property
     def kiwi_packages(self) -> str:
