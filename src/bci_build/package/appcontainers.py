@@ -484,3 +484,39 @@ TRIVY_CONTAINERS = [
     )
     for os_version in (OsVersion.TUMBLEWEED,)
 ]
+
+_REDIS_ENTRYPOINT = (Path(__file__).parent / "redis" / "entrypoint.tar.gz").read_bytes()
+
+REDIS_CONTAINERS = [
+    ApplicationStackContainer(
+        name="redis",
+        pretty_name="Advanced Key-Value Store",
+        from_image=generate_from_image_tag(os_version, "bci-micro"),
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        version="%%redis_version%%",
+        version_in_uid=False,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%redis_version%%",
+                package_name="redis",
+                parse_version=ParseVersion.MINOR,
+            )
+        ],
+        license="BSD-3-Clause",
+        package_list=[
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in (
+                "redis",
+                "util-linux",
+            )
+        ],
+        extra_files={"root.tar.gz": _REDIS_ENTRYPOINT},
+        entrypoint=["/usr/local/bin/entrypoint.sh"],
+        cmd=["redis-server", "--protected-mode no"],
+        volumes=["/data"],
+        exposes_tcp=[6379],
+        build_recipe_type=BuildType.KIWI,
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+]

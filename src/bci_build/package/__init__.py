@@ -1443,6 +1443,7 @@ from .appcontainers import HELM_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
+from .appcontainers import REDIS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
@@ -1489,6 +1490,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,
         *TRIVY_CONTAINERS,
+        *REDIS_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GIT_CONTAINERS,
