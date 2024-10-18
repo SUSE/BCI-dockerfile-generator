@@ -119,6 +119,15 @@ def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     assert cls(**kwargs, exposes_tcp=[80, 443]).expose_dockerfile == "\nEXPOSE 80 443"
 
 
+def test_expose_udp_dockerfile(bci: BCI_FIXTURE_RET_T):
+    cls, kwargs = bci
+
+    assert (
+        cls(**kwargs, exposes_tcp=[67, 68]).expose_dockerfile
+        == "\nEXPOSE 67/udp 68/udp"
+    )
+
+
 def test_no_volume_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
