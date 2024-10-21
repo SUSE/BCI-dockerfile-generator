@@ -17,11 +17,11 @@
 
 #!BuildTag: bci/kiwi:9.24.43-%RELEASE%
 #!BuildTag: bci/kiwi:9.24.43
-#!BuildTag: bci/kiwi:9-%RELEASE%
-#!BuildTag: bci/kiwi:9
+#!BuildTag: bci/kiwi:9.24-%RELEASE%
 #!BuildTag: bci/kiwi:9.24
-#!BuildName: bci-kiwi-9
-#!BuildVersion: 15.7.9
+#!BuildTag: bci/kiwi:9
+#!BuildName: bci-kiwi-9.24
+#!BuildVersion: 15.7.9.24
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
