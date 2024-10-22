@@ -143,6 +143,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: python-3.13-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: distribution-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -303,6 +307,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: python-3.12-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: python-3.13-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: distribution-image
