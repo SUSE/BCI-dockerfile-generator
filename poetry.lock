@@ -716,13 +716,13 @@ resolved_reference = "eddf2f0d074392af02cac2c5122d30463802a468"
 
 [[package]]
 name = "oras"
-version = "0.2.23"
+version = "0.2.24"
 description = "OCI Registry as Storage Python SDK"
 optional = false
 python-versions = "*"
 files = [
-    {file = "oras-0.2.23-py3-none-any.whl", hash = "sha256:de4db3f1b4b7d8404ead0a051364697a39c266ee848b146b65e277440d17099d"},
-    {file = "oras-0.2.23.tar.gz", hash = "sha256:040c7fd4d94de4e31ad7b576592c8a7a0c8a3afa363fca81e3babbd405a1857a"},
+    {file = "oras-0.2.24-py3-none-any.whl", hash = "sha256:6549e623c7a0e671bba7f6867e8b308dff3caed943b6e4f6933b900ea10ef860"},
+    {file = "oras-0.2.24.tar.gz", hash = "sha256:36676a4be35d6adaab78b481d2be66002cb3c3ed4ff51503e00a1e98fc6e692b"},
 ]
 
 [package.dependencies]
