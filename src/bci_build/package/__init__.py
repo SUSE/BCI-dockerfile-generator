@@ -199,8 +199,8 @@ class BaseContainerImage(abc.ABC):
     #: An optional list of volumes, it is omitted if empty or ``None``
     volumes: list[str] | None = None
 
-    #: An optional list of port exposes, it is omitted if empty or ``None``
-    exposes_ports: list[str] | None = None
+    #: An optional list of tcp port exposes, it is omitted if empty or ``None``
+    exposes_tcp: list[int] | None = None
 
     #: Extra environment variables to be set in the container
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
@@ -718,13 +718,13 @@ exit 0
     @property
     def exposes_kiwi(self) -> str:
         """The EXPOSES for this image as kiwi xml elements."""
-        return self._kiwi_volumes_expose("expose", "port number", self.exposes_ports)
+        return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
 
     @overload
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE"],
-        entries: list[str] | None,
+        entries: list[int] | None,
     ) -> str: ...
 
     @overload
@@ -737,11 +737,12 @@ exit 0
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE", "VOLUME"],
-        entries: list[str] | list[str] | None,
+        entries: list[int] | list[str] | None,
     ):
         if not entries:
             return ""
-        return "\n" + f"{instruction} " + " ".join(e for e in entries)
+
+        return "\n" + f"{instruction} " + " ".join(str(e) for e in entries)
 
     @property
     def volume_dockerfile(self) -> str:
@@ -749,7 +750,7 @@ exit 0
 
     @property
     def expose_dockerfile(self) -> str:
-        return self._dockerfile_volume_expose("EXPOSE", self.exposes_ports)
+        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
 
     @property
     def kiwi_packages(self) -> str:

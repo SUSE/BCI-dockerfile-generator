@@ -87,16 +87,16 @@ def test_multiple_volumes_kiwi(bci: BCI_FIXTURE_RET_T):
 def test_no_expose_kiwi(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
-    assert cls(**kwargs, exposes_ports=[]).exposes_kiwi == ""
+    assert cls(**kwargs, exposes_tcp=[]).exposes_kiwi == ""
     assert cls(**kwargs).exposes_kiwi == ""
-    assert cls(**kwargs, exposes_ports=None).exposes_kiwi == ""
+    assert cls(**kwargs, exposes_tcp=None).exposes_kiwi == ""
 
 
 def test_expose_port_kiwi(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert (
-        cls(**kwargs, exposes_ports=["443", "80"]).exposes_kiwi
+        cls(**kwargs, exposes_tcp=[443, 80]).exposes_kiwi
         == """
         <expose>
           <port number="443" />
@@ -109,17 +109,14 @@ def test_no_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert cls(**kwargs).expose_dockerfile == ""
-    assert cls(**kwargs, exposes_ports=[]).expose_dockerfile == ""
-    assert cls(**kwargs, exposes_ports=None).expose_dockerfile == ""
+    assert cls(**kwargs, exposes_tcp=[]).expose_dockerfile == ""
+    assert cls(**kwargs, exposes_tcp=None).expose_dockerfile == ""
 
 
 def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
-    assert (
-        cls(**kwargs, exposes_ports=["80", "443", "67/udp"]).expose_dockerfile
-        == "\nEXPOSE 80 443 67/udp"
-    )
+    assert cls(**kwargs, exposes_tcp=[80, 443]).expose_dockerfile == "\nEXPOSE 80 443"
 
 
 def test_no_volume_dockerfile(bci: BCI_FIXTURE_RET_T):

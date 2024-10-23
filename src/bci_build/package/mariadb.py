@@ -112,7 +112,7 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
             build_recipe_type=BuildType.DOCKER,
             cmd=["mariadbd"],
             volumes=["/var/lib/mysql"],
-            exposes_ports=["3306"],
+            exposes_tcp=[3306],
             custom_end=rf"""{version_check_lines}
 
 {DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
