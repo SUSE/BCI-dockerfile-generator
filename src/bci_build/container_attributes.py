@@ -89,3 +89,12 @@ class PackageType(enum.Enum):
 
     def __str__(self) -> str:
         return self.value
+
+
+@enum.unique
+class NetworkProtocol(enum.Enum):
+    TCP = "tcp"
+    UDP = "udp"
+
+    def __str__(self) -> str:
+        return self.value

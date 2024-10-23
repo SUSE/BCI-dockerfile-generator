@@ -18,6 +18,7 @@ import jinja2
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import ImageType
+from bci_build.container_attributes import NetworkProtocol
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import ReleaseStage
 from bci_build.container_attributes import SupportLevel
@@ -135,6 +136,24 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
     return "bci"
 
 
+@dataclass(frozen=True)
+class NetworkPort:
+    """Representation of a port to expose from a container."""
+
+    #: the port number
+    number: int
+
+    #: the network protocol
+    protocol: NetworkProtocol = NetworkProtocol.TCP
+
+    def __post_init__(self) -> None:
+        if self.number < 1 or self.number > 65535:
+            raise ValueError(f"Invalid port number: {self.number}")
+
+    def __str__(self) -> str:
+        return f"{self.number}/{self.protocol}"
+
+
 @dataclass
 class BaseContainerImage(abc.ABC):
     """Base class for all Base Containers."""
@@ -199,8 +218,12 @@ class BaseContainerImage(abc.ABC):
     #: An optional list of volumes, it is omitted if empty or ``None``
     volumes: list[str] | None = None
 
-    #: An optional list of tcp port exposes, it is omitted if empty or ``None``
-    exposes_tcp: list[int] | None = None
+    #: An optional list of port exposes, it is omitted if empty or ``None``.
+    #:
+    #: If the list is a list of ints, then the ports are assumed to be TCP
+    #: ports. If UDP ports are required, supply a list of :py:class`NetworkPort`
+    #: instances.
+    exposes_ports: list[int] | list[NetworkPort] | None = None
 
     #: Extra environment variables to be set in the container
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
@@ -687,14 +710,14 @@ exit 0
         self,
         main_element: Literal["expose"],
         entry_element: Literal["port number"],
-        entries: list[int] | None,
+        entries: list[int] | list[NetworkPort] | None,
     ) -> str: ...
 
     def _kiwi_volumes_expose(
         self,
         main_element: Literal["volumes", "expose"],
         entry_element: Literal["volume name", "port number"],
-        entries: list[int] | list[str] | None,
+        entries: list[int] | list[NetworkPort] | list[str] | None,
     ) -> str:
         if not entries:
             return ""
@@ -718,13 +741,13 @@ exit 0
     @property
     def exposes_kiwi(self) -> str:
         """The EXPOSES for this image as kiwi xml elements."""
-        return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
+        return self._kiwi_volumes_expose("expose", "port number", self.exposes_ports)
 
     @overload
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE"],
-        entries: list[int] | None,
+        entries: list[int] | list[NetworkPort] | None,
     ) -> str: ...
 
     @overload
@@ -737,7 +760,7 @@ exit 0
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE", "VOLUME"],
-        entries: list[int] | list[str] | None,
+        entries: list[int] | list[NetworkPort] | list[str] | None,
     ):
         if not entries:
             return ""
@@ -750,7 +773,7 @@ exit 0
 
     @property
     def expose_dockerfile(self) -> str:
-        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+        return self._dockerfile_volume_expose("EXPOSE", self.exposes_ports)
 
     @property
     def kiwi_packages(self) -> str:
