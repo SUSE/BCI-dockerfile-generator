@@ -11,7 +11,7 @@ on:
 jobs:
   update-cr:
     name: Update home:defolos:BCI:CR
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
