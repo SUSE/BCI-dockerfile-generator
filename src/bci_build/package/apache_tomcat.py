@@ -4,7 +4,6 @@ import datetime
 
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -13,6 +12,7 @@ from bci_build.package import OsContainer
 from bci_build.package import Package
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
+from bci_build.package.obs_package import MultiBuildObsPackage
 from bci_build.registry import publish_registry
 
 # last version needs to be the newest
@@ -51,14 +51,11 @@ def _get_sac_supported_until(
     )
 
 
-TOMCAT_CONTAINERS = [
-    ApplicationStackContainer(
+def _create_tomcat_container(
+    os_version: OsVersion, tomcat_ver: str, jre_version: int
+) -> ApplicationStackContainer:
+    return ApplicationStackContainer(
         name="apache-tomcat",
-        package_name=(
-            f"apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
-            if os_version.is_tumbleweed
-            else f"sac-apache-tomcat-{tomcat_ver.partition('.')[0]}-image"
-        ),
         _publish_registry=publish_registry(os_version, app_collection=True),
         pretty_name="Apache Tomcat",
         custom_description=(
@@ -125,15 +122,29 @@ WORKDIR $CATALINA_HOME
         entrypoint_user="tomcat",
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
-    for tomcat_ver, os_version, jre_version in (
-        ("10.1", OsVersion.TUMBLEWEED, 23),
-        ("10.1", OsVersion.TUMBLEWEED, 21),
-        ("10.1", OsVersion.TUMBLEWEED, 17),
-        ("9", OsVersion.TUMBLEWEED, 17),
-        ("10.1", OsVersion.SP6, 21),
-        ("10.1", OsVersion.SP6, 17),
-        # (10.1, OsVersion.SP7, 21),
-    )
-]
 
-TOMCAT_CRATE = ContainerCrate(TOMCAT_CONTAINERS)
+
+TOMCAT_CONTAINERS: list[MultiBuildObsPackage | ApplicationStackContainer] = [
+    MultiBuildObsPackage.from_bcis(
+        bcis=[
+            _create_tomcat_container(os_version, tomcat_ver, jre_version)
+            for tomcat_ver, os_version, jre_version in (
+                ("10.1", OsVersion.TUMBLEWEED, 23),
+                ("10.1", OsVersion.TUMBLEWEED, 21),
+                ("10.1", OsVersion.TUMBLEWEED, 17),
+            )
+        ],
+        package_name="apache-tomcat-10-image",
+    ),
+    _create_tomcat_container(OsVersion.TUMBLEWEED, "9", 17),
+    MultiBuildObsPackage.from_bcis(
+        package_name="sac-apache-tomcat-image",
+        bcis=[
+            _create_tomcat_container(os_version, tomcat_ver, jre_version)
+            for tomcat_ver, os_version, jre_version in (
+                ("10.1", OsVersion.SP6, 21),
+                ("10.1", OsVersion.SP6, 17),
+            )
+        ],
+    ),
+]
