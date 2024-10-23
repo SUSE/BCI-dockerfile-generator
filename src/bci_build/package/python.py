@@ -133,7 +133,7 @@ PYTHON_3_11_CONTAINERS = (
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
     )
-    for os_version in (OsVersion.SP6,)
+    for os_version in (OsVersion.SP6, OsVersion.SP7)
 )
 
 PYTHON_3_12_CONTAINERS = [
