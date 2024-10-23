@@ -92,7 +92,7 @@ POSTFIX_CONTAINERS = [
         license="(EPL-2.0 OR IPL-1.0) AND MIT",
         extra_files=_POSTFIX_FILES,
         support_level=SupportLevel.TECHPREVIEW,
-        exposes_ports=["25", "465", "587"],
+        exposes_tcp=[25, 465, 587],
         volumes=["/var/spool/postfix", "/var/spool/vmail", "/etc/pki"],
         custom_end=f"""{DOCKERFILE_RUN} mkdir -p /entrypoint/ldap
 COPY {"entrypoint.sh" if os_version == OsVersion.TUMBLEWEED else "entrypoint.sles.sh"} /entrypoint/entrypoint.sh

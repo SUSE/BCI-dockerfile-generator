@@ -183,7 +183,7 @@ For the following :file:`Dockerfile` settings, use the respective properties of
 - ``ENTRYPOINT``: :py:attr:`~bci_build.package.BaseContainerImage.entrypoint`
 - ``CMD``: :py:attr:`~bci_build.package.BaseContainerImage.cmd`
 - ``VOLUME``: :py:attr:`~bci_build.package.BaseContainerImage.volumes`
-- ``EXPOSE``: :py:attr:`~bci_build.package.BaseContainerImage.exposes_ports`
+- ``EXPOSE``: :py:attr:`~bci_build.package.BaseContainerImage.exposes_tcp`
 - ``ENV``: :py:attr:`~bci_build.package.BaseContainerImage.env`
 - ``LABEL``: :py:attr:`~bci_build.package.BaseContainerImage.extra_labels`
 - ``MAINTAINER``: :py:attr:`~bci_build.package.BaseContainerImage.maintainer`
