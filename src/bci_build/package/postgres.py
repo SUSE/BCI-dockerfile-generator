@@ -57,7 +57,7 @@ POSTGRES_CONTAINERS = [
             ),
         ],
         volumes=["$PGDATA"],
-        exposes_tcp=[5432],
+        exposes_ports=["5432"],
         custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \

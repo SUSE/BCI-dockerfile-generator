@@ -490,7 +490,7 @@ Copyright header
                 volumes=["/bin/", "/usr/bin/"],
                 # does nothing on TW
                 supported_until=date(2024, 2, 1),
-                exposes_tcp=[22, 1111],
+                exposes_ports=["22", "1111"],
                 license="BSD",
                 version="28.2",
                 additional_names=["emacs"],

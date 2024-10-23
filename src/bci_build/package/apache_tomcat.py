@@ -86,8 +86,6 @@ TOMCAT_CONTAINERS = [
                 if tomcat_ver == _TOMCAT_VERSIONS[0]
                 else f"tomcat{tomcat_ver.partition('.')[0]}"
             ),
-            # used by the startup scripts but not required (workaround bsc#1231347)
-            "which",
             # currently needed by testsuite
             "curl",
             # currently needed by custom_end
@@ -104,7 +102,7 @@ TOMCAT_CONTAINERS = [
             f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
             "start",
         ],
-        exposes_tcp=[8080],
+        exposes_ports=["8080"],
         env={
             "TOMCAT_MAJOR": int(tomcat_ver.partition(".")[0]),
             "TOMCAT_VERSION": "%%tomcat_version%%",
@@ -126,7 +124,7 @@ WORKDIR $CATALINA_HOME
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
     for tomcat_ver, os_version, jre_version in (
-        ("10.1", OsVersion.TUMBLEWEED, 22),
+        ("10.1", OsVersion.TUMBLEWEED, 23),
         ("10.1", OsVersion.TUMBLEWEED, 21),
         ("10.1", OsVersion.TUMBLEWEED, 17),
         ("9", OsVersion.TUMBLEWEED, 17),
