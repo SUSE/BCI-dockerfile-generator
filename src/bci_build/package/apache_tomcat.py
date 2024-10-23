@@ -3,7 +3,6 @@
 import datetime
 
 from bci_build.container_attributes import PackageType
-from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
@@ -77,7 +76,6 @@ TOMCAT_CONTAINERS = [
         tag_version=tomcat_ver,
         build_flavor=f"openjdk{jre_version}",
         _min_release_counter=None if not os_version.is_sle15 else 55,
-        support_level=SupportLevel.L3,
         supported_until=_get_sac_supported_until(
             os_version=os_version, tomcat_ver=tomcat_ver, jre_major=jre_version
         ),
