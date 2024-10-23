@@ -18,6 +18,7 @@ import jinja2
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import ImageType
+from bci_build.container_attributes import NetworkPort
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import ReleaseStage
 from bci_build.container_attributes import SupportLevel
@@ -199,8 +200,8 @@ class BaseContainerImage(abc.ABC):
     #: An optional list of volumes, it is omitted if empty or ``None``
     volumes: list[str] | None = None
 
-    #: An optional list of tcp port exposes, it is omitted if empty or ``None``
-    exposes_tcp: list[int] | None = None
+    #: An optional list of port exposes, it is omitted if empty or ``None``.
+    exposes_ports: list[NetworkPort] | None = None
 
     #: Extra environment variables to be set in the container
     env: dict[str, str | int] | dict[str, str] | dict[str, int] = field(
@@ -687,14 +688,14 @@ exit 0
         self,
         main_element: Literal["expose"],
         entry_element: Literal["port number"],
-        entries: list[int] | None,
+        entries: list[NetworkPort] | None,
     ) -> str: ...
 
     def _kiwi_volumes_expose(
         self,
         main_element: Literal["volumes", "expose"],
         entry_element: Literal["volume name", "port number"],
-        entries: list[int] | list[str] | None,
+        entries: list[NetworkPort] | list[str] | None,
     ) -> str:
         if not entries:
             return ""
@@ -718,13 +719,13 @@ exit 0
     @property
     def exposes_kiwi(self) -> str:
         """The EXPOSES for this image as kiwi xml elements."""
-        return self._kiwi_volumes_expose("expose", "port number", self.exposes_tcp)
+        return self._kiwi_volumes_expose("expose", "port number", self.exposes_ports)
 
     @overload
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE"],
-        entries: list[int] | None,
+        entries: list[NetworkPort] | None,
     ) -> str: ...
 
     @overload
@@ -737,7 +738,7 @@ exit 0
     def _dockerfile_volume_expose(
         self,
         instruction: Literal["EXPOSE", "VOLUME"],
-        entries: list[int] | list[str] | None,
+        entries: list[NetworkPort] | list[str] | None,
     ):
         if not entries:
             return ""
@@ -750,7 +751,7 @@ exit 0
 
     @property
     def expose_dockerfile(self) -> str:
-        return self._dockerfile_volume_expose("EXPOSE", self.exposes_tcp)
+        return self._dockerfile_volume_expose("EXPOSE", self.exposes_ports)
 
     @property
     def kiwi_packages(self) -> str:

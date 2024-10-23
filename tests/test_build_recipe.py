@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import PackageType
@@ -398,7 +399,7 @@ ENV GPP_path="/usr/bin/g++"
 
 ENTRYPOINT ["/usr/bin/emacs"]
 CMD ["/usr/bin/gcc"]
-EXPOSE 22 1111
+EXPOSE 22/tcp 1111/tcp
 RUN emacs -Q --batch
 VOLUME /bin/ /usr/bin/""",
             """<?xml version="1.0" encoding="utf-8"?>
@@ -450,8 +451,8 @@ Copyright header
           <volume name="/usr/bin/" />
         </volumes>
         <expose>
-          <port number="22" />
-          <port number="1111" />
+          <port number="22/tcp" />
+          <port number="1111/tcp" />
         </expose>
         <environment>
           <env name="EMACS_VERSION" value="28"/>
@@ -490,7 +491,7 @@ Copyright header
                 volumes=["/bin/", "/usr/bin/"],
                 # does nothing on TW
                 supported_until=date(2024, 2, 1),
-                exposes_tcp=[22, 1111],
+                exposes_ports=[TCP(22), TCP(1111)],
                 license="BSD",
                 version="28.2",
                 additional_names=["emacs"],
