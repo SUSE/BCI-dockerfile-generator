@@ -1,5 +1,6 @@
 """Application Containers that are generated with the BCI tooling"""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import BuildType
@@ -485,8 +486,6 @@ TRIVY_CONTAINERS = [
     for os_version in (OsVersion.TUMBLEWEED,)
 ]
 
-_REDIS_ENTRYPOINT = (Path(__file__).parent / "redis" / "entrypoint.tar.gz").read_bytes()
-
 REDIS_CONTAINERS = [
     ApplicationStackContainer(
         name="redis",
@@ -511,10 +510,14 @@ REDIS_CONTAINERS = [
                 "util-linux",
             )
         ],
-        extra_files={"root.tar.gz": _REDIS_ENTRYPOINT},
-        entrypoint=["/usr/local/bin/entrypoint.sh"],
-        cmd=["redis-server", "--protected-mode no"],
-        volumes=["/data"],
+        config_sh_script=textwrap.dedent(
+            """
+            chown redis:redis /var/lib/redis
+            """
+        ),
+        entrypoint_user="redis",
+        cmd=["redis-server", "--protected-mode no", "--dir /var/lib/redis"],
+        volumes=["/var/lib/redis"],
         exposes_tcp=[6379],
         build_recipe_type=BuildType.KIWI,
     )
