@@ -1,5 +1,5 @@
 # Tomcat 10 container image
-![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
 ## Description
@@ -22,7 +22,7 @@ To deploy an application, copy the `.war` file into
 `$CATALINA_BASE/webapps` (either during a container build or by bind-mounting
 the directory), and launch the container using the following command:
 ```ShellSession
-$ podman run -d --rm -p 8080:8080 dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk17
+$ podman run -d --rm -p 8080:8080 dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk21
 ```
 
 The deployed webapp is then accessible via `http://localhost:8080/$webapp_name`.
@@ -39,7 +39,7 @@ follows:
 ```ShellSession
 $ chmod 0777 /path/to/my/app
 $ podman run --rm -d -v /path/to/my/app:/usr/share/tomcat/webapps:z \
-      -p 8080:8080 dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk17
+      -p 8080:8080 dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk21
 ```
 
 
@@ -55,7 +55,7 @@ options to the container runtime using the `-e` flag:
 ```ShellSession
 $ podman run -it --rm \
       -e JAVA_OPTS="-Xmx1024m" -p 8080:8080 \
-      dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk17
+      dp.apps.rancher.io/containers/apache-tomcat:10.1-openjdk21
 ```
 
 The image ships with `CATALINA_HOME` set to `/usr/share/tomcat`
@@ -76,6 +76,5 @@ This documentation and the build recipe are licensed as MIT.
 The container itself contains various software components under various open source licenses listed in the associated
 Software Bill of Materials (SBOM).
 
-This image is a tech preview. Do not use it for production.
-Your feedback is welcome.
-Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
+This image is based on [SUSE Linux Enterprise Server](https://www.suse.com/products/server/), a reliable,
+secure, and scalable server operating system built to power mission-critical workloads in physical and virtual environments.
