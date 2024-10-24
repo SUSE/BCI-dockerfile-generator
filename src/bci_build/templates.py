@@ -100,6 +100,7 @@ LABEL io.artifacthub.package.logo-url="{{ image.logo_url }}"
 {%- if image.expose_dockerfile %}{{ image.expose_dockerfile }}{% endif %}
 {% if image.dockerfile_custom_end %}{{ image.dockerfile_custom_end }}{% endif %}
 {%- if image.entrypoint_user %}USER {{ image.entrypoint_user }}{% endif %}
+{%- if image.workdir %}WORKDIR {{ image.workdir }}{% endif %}
 {%- if image.volume_dockerfile %}{{ image.volume_dockerfile }}{% endif %}
 """
 )
@@ -136,6 +137,9 @@ KIWI_TEMPLATE = jinja2.Template(
 {%- endif %}
 {%- if image.entrypoint_user %}
           user="{{ image.entrypoint_user }}"
+{%- endif %}
+{%- if image.workdir %}
+          workingdir="{{ image.workdir }}"
 {%- endif %}
 {#- NOTE: eye sight chart: this has a closing element character '>' here: ----> -#} >
         <labels>

@@ -193,6 +193,9 @@ class BaseContainerImage(abc.ABC):
     # The user to use for entrypoint service
     entrypoint_user: str | None = ""
 
+    # An optional workdir for the entrypoint or CMD
+    workdir: str | None = ""
+
     #: An optional CMD for the image, it is omitted if empty or ``None``
     cmd: list[str] | None = None
 
