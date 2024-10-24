@@ -1,3 +1,5 @@
+from bci_build.container_attributes import NetworkProtocol
+from bci_build.package import NetworkPort
 from tests.conftest import BCI_FIXTURE_RET_T
 
 
@@ -96,7 +98,7 @@ def test_expose_port_kiwi(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert (
-        cls(**kwargs, exposes_ports=["443", "80"]).exposes_kiwi
+        cls(**kwargs, exposes_ports=[443, 80]).exposes_kiwi
         == """
         <expose>
           <port number="443" />
@@ -117,8 +119,15 @@ def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert (
-        cls(**kwargs, exposes_ports=["80", "443", "67/udp"]).expose_dockerfile
-        == "\nEXPOSE 80 443 67/udp"
+        cls(
+            **kwargs,
+            exposes_ports=[
+                NetworkPort(80),
+                NetworkPort(443),
+                NetworkPort(67, NetworkProtocol.UDP),
+            ],
+        ).expose_dockerfile
+        == "\nEXPOSE 80/tcp 443/tcp 67/udp"
     )
 
 

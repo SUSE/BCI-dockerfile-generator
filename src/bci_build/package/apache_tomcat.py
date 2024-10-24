@@ -102,7 +102,7 @@ TOMCAT_CONTAINERS = [
             f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
             "start",
         ],
-        exposes_ports=["8080"],
+        exposes_ports=[8080],
         env={
             "TOMCAT_MAJOR": int(tomcat_ver.partition(".")[0]),
             "TOMCAT_VERSION": "%%tomcat_version%%",
