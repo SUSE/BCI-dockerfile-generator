@@ -1469,6 +1469,7 @@ from .python import PYTHON_3_9_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
 from .python import PYTHON_TW_CONTAINERS  # noqa: E402
+from .redis import REDIS_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
@@ -1489,6 +1490,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,
         *TRIVY_CONTAINERS,
+        *REDIS_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GIT_CONTAINERS,
