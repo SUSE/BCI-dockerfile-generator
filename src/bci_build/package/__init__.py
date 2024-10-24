@@ -1454,6 +1454,7 @@ from .basecontainers import INIT_CONTAINERS  # noqa: E402
 from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
 from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
+from .cosign import COSIGN_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
@@ -1479,6 +1480,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
     for bci in (
         *BASE_CONTAINERS,
+        *COSIGN_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_9_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
