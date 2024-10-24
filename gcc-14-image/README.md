@@ -19,7 +19,7 @@ below. The `Dockerfile` uses this image to build a custom container image,
 copies the sources to a working directory, and compiles the application:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:7
+FROM registry.suse.com/bci/gcc:14
 WORKDIR /src/
 COPY . /src/
 RUN gcc main.c src1.c src2.c
@@ -30,7 +30,7 @@ It is also possible to compile a static binary with gcc as part of a multistage
 build:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:7 as builder
+FROM registry.suse.com/bci/gcc:14 as builder
 WORKDIR /src/
 COPY . /src/
 RUN gcc -o app main.c src1.c src2.c
@@ -63,8 +63,7 @@ The GNU Compiler Collections supports a wide range of frontends. The container
 image ships the C and C++ frontends available as `gcc` and `g++`
 respectively. The following additional frontends can be installed from the
 repository:
-- `gcc7-fortran` for Fortran support
-- `gcc7-ada` for the Ada frontend (GNAT)
+- `gcc14-fortran` for Fortran support
 
 
 ### Using the container image interactively
@@ -75,13 +74,13 @@ practical. One way to do this is to mount the working directory of an
 application into the launched container and compile the application there:
 
 ```bash
-podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:7 \
+podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:14 \
     gcc -o /src/app.out /src/*.c
 ```
 or by invoking `make`
 ```bash
 podman run --rm -it -v $(pwd):/src/:Z --workdir /src/ \
-    registry.suse.com/bci/gcc:7 \
+    registry.suse.com/bci/gcc:14 \
     make
 ```
 
