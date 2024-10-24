@@ -17,14 +17,15 @@
 
 #!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
-#!BuildTag: bci/gcc:7-%RELEASE%
-#!BuildTag: bci/gcc:7
-#!BuildName: bci-gcc-7
-#!BuildVersion: 15.6.7
+#!BuildTag: bci/gcc:14-%RELEASE%
+#!BuildTag: bci/gcc:14
+#!BuildTag: bci/gcc:latest
+#!BuildName: bci-gcc-14
+#!BuildVersion: 15.6.14
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc7 gcc7-c++ make gcc gcc-c++ curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends gcc14 gcc14-c++ make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -41,7 +42,8 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
+LABEL com.suse.supportlevel.until="2026-07-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
@@ -51,3 +53,8 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV GCC_VERSION="%%gcc_minor_version%%"
 
+# symlink all versioned gcc & g++ binaries to unversioned
+# ones in /usr/local/bin so that plain gcc works
+RUN set -euo pipefail; for gcc_bin in $(rpm -ql gcc14 gcc14-c++ |grep ^/usr/bin/ ); do \
+        ln -sf $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-14$||'); \
+    done

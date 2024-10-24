@@ -1,5 +1,5 @@
 # SLE BCI GNU Compiler Collection container image (GCC)
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
+![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
 # Description
@@ -19,7 +19,7 @@ below. The `Dockerfile` uses this image to build a custom container image,
 copies the sources to a working directory, and compiles the application:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:7
+FROM registry.suse.com/bci/gcc:14
 WORKDIR /src/
 COPY . /src/
 RUN gcc main.c src1.c src2.c
@@ -30,7 +30,7 @@ It is also possible to compile a static binary with gcc as part of a multistage
 build:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:7 as builder
+FROM registry.suse.com/bci/gcc:14 as builder
 WORKDIR /src/
 COPY . /src/
 RUN gcc -o app main.c src1.c src2.c
@@ -63,8 +63,7 @@ The GNU Compiler Collections supports a wide range of frontends. The container
 image ships the C and C++ frontends available as `gcc` and `g++`
 respectively. The following additional frontends can be installed from the
 repository:
-- `gcc7-fortran` for Fortran support
-- `gcc7-ada` for the Ada frontend (GNAT)
+- `gcc14-fortran` for Fortran support
 
 
 ### Using the container image interactively
@@ -75,13 +74,13 @@ practical. One way to do this is to mount the working directory of an
 application into the launched container and compile the application there:
 
 ```bash
-podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:7 \
+podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:14 \
     gcc -o /src/app.out /src/*.c
 ```
 or by invoking `make`
 ```bash
 podman run --rm -it -v $(pwd):/src/:Z --workdir /src/ \
-    registry.suse.com/bci/gcc:7 \
+    registry.suse.com/bci/gcc:14 \
     make
 ```
 
@@ -97,6 +96,6 @@ This documentation and the build recipe are licensed as MIT.
 The container itself contains various software components under various open source licenses listed in the associated
 Software Bill of Materials (SBOM).
 
-This image is a tech preview. Do not use it for production.
-Your feedback is welcome.
-Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Linux%20Enterprise%20Base%20Container%20Images).
+This image is based on [SLE BCI](https://opensource.suse.com/bci/), a stable and redistributable foundation for software innovation. SLE BCI is enterprise-ready, and it comes with an option for support.
+
+See the [SLE BCI EULA](https://www.suse.com/licensing/eula/#bci) for further information.
