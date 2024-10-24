@@ -1,0 +1,51 @@
+# {{ image.title }}
+{% include 'badges.j2' %}
+
+## Description
+Cosign aims to make signatures invisible infrastructure.
+
+Cosign supports:
+
+* "Keyless signing" with the Sigstore public good Fulcio certificate authority and Rekor transparency log (default)
+* Hardware and KMS signing
+* Signing with a cosign generated encrypted private/public keypair
+* Container Signing, Verification and Storage in an OCI registry.
+* Bring-your-own PKI
+
+
+## Usage
+
+### ### Verify a container
+
+To verify the image, you'll need to pass in the expected certificate subject
+and certificate issuer via the `--certificate-identity` and
+`--certificate-oidc-issuer` flags:
+
+```
+podman run {{ image.pretty_reference }} verify $IMAGE --certificate-identity=$IDENTITY --certificate-oidc-issuer=$OIDC_ISSUER
+```
+
+You can also pass in a regex for the certificate identity and issuer flags,
+`--certificate-identity-regexp` and `--certificate-oidc-issuer-regexp`.
+
+### Verify a container against a public key
+
+This command returns `0` if *at least one* `cosign` formatted signature for
+the image is found matching the public key. See the detailed usage below for
+information and caveats on other signature formats.
+
+Any valid payloads are printed to stdout, in json format. Note that these
+signed payloads include the digest of the container image, which is how we
+can be sure these "detached" signatures cover the correct image.
+
+```shell
+$ podman run {{ image.pretty_reference }} verify --key cosign.pub $IMAGE_URI:1h
+The following checks were performed on these signatures:
+  - The cosign claims were validated
+  - The signatures were verified against the specified public key
+{"Critical":{"Identity":{"docker-reference":""},"Image":{"Docker-manifest-digest":"sha256:87ef60f558bad79beea6425a3b28989f01dd417164150ab3baab98dcbf04def8"},"Type":"cosign container image signature"},"Optional":null}
+
+For more use cases and information, please check out the
+[cosign README.md](https://github.com/sigstore/cosign/blob/main/README.md).
+
+{% include 'licensing_and_eula.j2' %}
