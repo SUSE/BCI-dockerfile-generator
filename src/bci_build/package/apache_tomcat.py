@@ -61,10 +61,11 @@ TOMCAT_CONTAINERS = [
         _publish_registry=publish_registry(os_version, app_collection=True),
         pretty_name="Apache Tomcat",
         custom_description=(
-            "Apache Tomcat is a free and open-source implementation of the Jakarta Servlet, "
-            "Jakarta Expression Language, and WebSocket technologies"
+            "The Apache Tomcat software is an open-source implementation of the Jakarta Servlet, "
+            "Jakarta Pages, Jakarta Expression Language, Jakarta WebSocket, Jakarta Annotations, "
+            "and Jakarta Authentication specifications. These specifications are part of the Jakarta EE platform"
         )
-        + (", {based_on_container}." if os_version.is_tumbleweed else "."),
+        + (". It is {based_on_container}." if os_version.is_tumbleweed else "."),
         os_version=os_version,
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
