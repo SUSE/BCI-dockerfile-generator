@@ -130,6 +130,7 @@ WORKDIR $CATALINA_HOME
         ("9", OsVersion.TUMBLEWEED, 17),
         ("10.1", OsVersion.SP6, 21),
         ("10.1", OsVersion.SP6, 17),
+        ("10.1", OsVersion.SP6, 11),
         # (10.1, OsVersion.SP7, 21),
     )
 ]
