@@ -1498,8 +1498,10 @@ updates:
         """Adjust to project meta of the devel project on OBS to match the
         template generated via
         :py:func:`staging.project_setup.generate_meta`. Additionally set the
-        project meta from the file :file:`_config` in the deployment branch and
-        set the `OSRT:Config` attribute for pkglistgen to function as expected.
+        project meta from the file :file:`_config` in the deployment branch, set
+        the ``OSRT:Config`` attribute for pkglistgen to function as expected and
+        set the ``OBS:RejectRequests`` attribute to a warning that SRs do not
+        work.
 
         """
         prj_name, meta = generate_meta(
@@ -1513,6 +1515,14 @@ updates:
 
         await self._run_cmd(f"""{self._osc} meta attribute {prj_name} -a OSRT:Config --set 'main-repo = standard
 pkglistgen-archs = ppc64le s390x aarch64 x86_64'""")
+
+        await self._run_cmd(
+            f"{self._osc} meta attribute {prj_name} -a OBS:RejectRequests"
+            " --set 'This project is automatically updated from git. Please do"
+            " **not** send submit requests. Either create an issue or send a "
+            "pull request to the https://github.com/SUSE/bci-dockerfile-generator"
+            " repository instead'"
+        )
 
     async def configure_devel_bci_package(self, package_name: str) -> None:
         bci = [b for b in self._bcis if b.package_name == package_name]
