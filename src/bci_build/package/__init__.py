@@ -1099,7 +1099,7 @@ exit 0
 
         if self.build_flavor:
             dfile = "Dockerfile"
-            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile()))
+            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile(self)))
             files.append(dfile)
 
             mname = "_multibuild"
