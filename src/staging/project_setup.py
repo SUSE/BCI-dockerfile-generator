@@ -189,6 +189,10 @@ def generate_meta(
     extra_header = None
     if project_type == ProjectType.CR:
         extra_header = f"  <scmsync>https://github.com/SUSE/bci-dockerfile-generator#{os_version.deployment_branch_name}</scmsync>"
+    if project_type == ProjectType.DEVEL and os_version == OsVersion.TUMBLEWEED:
+        # need to add factory-maintainers group as a maintainer so that the bot
+        # can accept SRs
+        extra_header = """  <group groupid="factory-maintainers" role="maintainer"/>"""
 
     return prj_name, META_TEMPLATE.render(
         project_title=title,
