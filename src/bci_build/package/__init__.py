@@ -334,12 +334,6 @@ class BaseContainerImage(abc.ABC):
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
-        if not self.maintainer:
-            self.maintainer = (
-                "openSUSE (https://www.opensuse.org/)"
-                if self.os_version.is_tumbleweed
-                else "SUSE LLC (https://www.suse.com/)"
-            )
         if not self._publish_registry:
             self._publish_registry = publish_registry(self.os_version)
 
@@ -350,6 +344,8 @@ class BaseContainerImage(abc.ABC):
                 self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
             # Override maintainer listing from base container by setting an empty value
             self.maintainer = ""
+        elif not self.maintainer and not self.os_version.is_tumbleweed:
+            self.maintainer = "https://github.com/SUSE/bci/discussions"
 
         # limit to tech preview for beta releases
         if (
