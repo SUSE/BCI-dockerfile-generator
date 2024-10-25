@@ -348,8 +348,8 @@ class BaseContainerImage(abc.ABC):
             # Limit to aarch64 and x86_64
             if not self.exclusive_arch:
                 self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
-            # Disable maintainer listing
-            self.maintainer = None
+            # Override maintainer listing from base container by setting an empty value
+            self.maintainer = ""
 
         # limit to tech preview for beta releases
         if (
