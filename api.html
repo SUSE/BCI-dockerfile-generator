@@ -1070,19 +1070,19 @@ stream defined in <code class="xref py py-const docutils literal notranslate"><s
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f6743e2cf50&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f29148e12b0&gt;</span></em><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f6744c71220&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f291482b860&gt;</span></em><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f6744cf9a60&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2914afa1b0&gt;</span></em><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
@@ -1222,8 +1222,10 @@ ASCII characters appended.</p>
 <dd><p>Adjust to project meta of the devel project on OBS to match the
 template generated via
 <a class="reference internal" href="#staging.project_setup.generate_meta" title="staging.project_setup.generate_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">staging.project_setup.generate_meta()</span></code></a>. Additionally set the
-project meta from the file <code class="file docutils literal notranslate"><span class="pre">_config</span></code> in the deployment branch and
-set the <cite>OSRT:Config</cite> attribute for pkglistgen to function as expected.</p>
+project meta from the file <code class="file docutils literal notranslate"><span class="pre">_config</span></code> in the deployment branch, set
+the <code class="docutils literal notranslate"><span class="pre">OSRT:Config</span></code> attribute for pkglistgen to function as expected and
+set the <code class="docutils literal notranslate"><span class="pre">OBS:RejectRequests</span></code> attribute to a warning that SRs do not
+work.</p>
 </dd></dl>
 
 <dl class="py method">
