@@ -17,7 +17,6 @@
 
 #!BuildTag: bci/kiwi:9.24.43-%RELEASE%
 #!BuildTag: bci/kiwi:9.24.43
-#!BuildTag: bci/kiwi:9.24-%RELEASE%
 #!BuildTag: bci/kiwi:9.24
 #!BuildTag: bci/kiwi:9
 #!BuildTag: bci/kiwi:latest
