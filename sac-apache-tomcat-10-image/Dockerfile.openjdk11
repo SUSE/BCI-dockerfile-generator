@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk17-%RELEASE%
-#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk17
-#!BuildTag: containers/apache-tomcat:10.1-openjdk17-%RELEASE%
-#!BuildTag: containers/apache-tomcat:10.1-openjdk17
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk11-%RELEASE%
+#!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk11
+#!BuildTag: containers/apache-tomcat:10.1-openjdk11-%RELEASE%
+#!BuildTag: containers/apache-tomcat:10.1-openjdk11
 #!ForceMultiVersion
-#!BuildName: containers-apache-tomcat-10.1-openjdk17
+#!BuildName: containers-apache-tomcat-10.1-openjdk11
 #!BuildVersion: %%tomcat_version%%
 #!BuildRelease: 55
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
@@ -28,7 +28,7 @@ FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends tomcat10 curl sed java-17-openjdk java-17-openjdk-headless; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends tomcat10 curl sed java-11-openjdk java-11-openjdk-headless; \
     zypper -n --installroot /target remove util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
@@ -43,18 +43,18 @@ LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/apache-
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%tomcat_version%%-openjdk17-%RELEASE%"
-LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:%%tomcat_version%%-openjdk17-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%tomcat_version%%-openjdk11-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/apache-tomcat:%%tomcat_version%%-openjdk11-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2027-07-01"
+LABEL com.suse.supportlevel.until="2026-12-31"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.openjdk17.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.openjdk11.md"
 LABEL io.artifacthub.package.logo-url="https://tomcat.apache.org/res/images/tomcat.png"
 ENV TOMCAT_MAJOR="10"
 ENV TOMCAT_VERSION="%%tomcat_version%%"
