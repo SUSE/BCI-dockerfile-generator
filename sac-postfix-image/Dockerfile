@@ -33,6 +33,7 @@ FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postfix
+LABEL org.opencontainers.image.authors=""
 LABEL org.opencontainers.image.title="Postfix"
 LABEL org.opencontainers.image.description="Postfix container is fast and secure mail server, based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%postfix_version%%"
