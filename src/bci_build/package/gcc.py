@@ -4,6 +4,7 @@ import datetime
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -46,10 +47,10 @@ def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
 GCC_CONTAINERS = [
     DevelopmentContainer(
         name="gcc",
-        package_name=f"gcc-{gcc_version}-image",
         os_version=os_version,
         version="%%gcc_minor_version%%",
-        tag_version=gcc_version,
+        build_flavor=gcc_version,
+        version_in_uid=False,
         support_level=SupportLevel.L3,
         supported_until=_GCC_SLCC_SUPPORTED_UNTIL.get(gcc_version),
         package_list=(
@@ -96,3 +97,5 @@ GCC_CONTAINERS = [
         (14, OsVersion.TUMBLEWEED),
     )
 ]
+
+GCC_CRATE = ContainerCrate(GCC_CONTAINERS)
