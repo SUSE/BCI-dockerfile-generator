@@ -57,7 +57,7 @@ COPY --from=target / /target
 COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
-{%- if image.maintainer %}
+{%- if image.maintainer != None %}
 LABEL org.opencontainers.image.authors="{{ image.maintainer }}"
 {%- endif %}
 LABEL org.opencontainers.image.title="{{ image.title }}"
