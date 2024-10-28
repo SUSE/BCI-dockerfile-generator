@@ -181,6 +181,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "shadow",
                     "zypper",
                 ]
+                + (["libcurl-mini4"] if os_version.is_slfo else [])
                 + (
                     ["kubic-locale-archive", "rpm-ndb"]
                     if os_version.is_sle15
