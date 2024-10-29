@@ -143,9 +143,8 @@ PYTHON_3_12_CONTAINERS = [
         package_name="python-3.12-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version in (OsVersion.SP6, OsVersion.SP7)
+    for os_version in (OsVersion.SP6,)
 ]
-
 
 PYTHON_3_13_CONTAINERS = [
     PythonDevelopmentContainer(
