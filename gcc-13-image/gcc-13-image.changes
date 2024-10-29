@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 29 15:23:20 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop tag_version-%RELEASE%
+
+-------------------------------------------------------------------
 Tue Oct 29 14:22:15 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - add fortran
