@@ -17,7 +17,6 @@
 
 #!BuildTag: opensuse/bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/gcc:%%gcc_minor_version%%
-#!BuildTag: opensuse/bci/gcc:14-%RELEASE%
 #!BuildTag: opensuse/bci/gcc:14
 #!BuildTag: opensuse/bci/gcc:latest
 
