@@ -146,9 +146,8 @@ PYTHON_3_12_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         additional_versions=["3"],
     )
-    for os_version in (OsVersion.SP6, OsVersion.SP7)
+    for os_version in (OsVersion.SP6,)
 ]
-
 
 PYTHON_3_13_CONTAINERS = [
     PythonDevelopmentContainer(
