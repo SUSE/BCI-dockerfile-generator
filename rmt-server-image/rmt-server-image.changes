@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 29 19:40:39 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark rmt-server image as supported
+
+-------------------------------------------------------------------
 Mon Oct 14 11:26:15 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - make the version-%release tag the first one listed; remove duplicates where they existed; update image.ref/reference to point to the version-%release(-) tag
