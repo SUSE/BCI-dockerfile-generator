@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -29,6 +30,7 @@ RMT_CONTAINERS = [
             )
         ],
         version_in_uid=False,
+        support_level=SupportLevel.L3,
         package_list=["rmt-server", "catatonit"],
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
