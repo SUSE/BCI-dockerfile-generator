@@ -17,7 +17,6 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-aspnet:8.0.10-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:8.0.10
-#!BuildTag: bci/dotnet-aspnet:8.0-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:8.0
 #!BuildName: bci-dotnet-aspnet-8.0
 #!BuildVersion: 15.7.8.0

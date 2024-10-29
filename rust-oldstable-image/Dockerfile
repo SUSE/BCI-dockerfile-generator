@@ -19,7 +19,6 @@
 #!BuildTag: bci/rust:oldstable
 #!BuildTag: bci/rust:%%RUST_VERSION%%-2.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:1.80-2.%RELEASE%
 #!BuildTag: bci/rust:1.80
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 15.7.1.80.2

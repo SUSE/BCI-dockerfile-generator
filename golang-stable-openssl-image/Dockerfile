@@ -19,7 +19,6 @@
 #!BuildTag: bci/golang:stable-openssl
 #!BuildTag: bci/golang:%%golang_version%%-openssl-%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%-openssl
-#!BuildTag: bci/golang:1.21-openssl-%RELEASE%
 #!BuildTag: bci/golang:1.21-openssl
 #!BuildName: bci-golang-stable-openssl
 #!BuildVersion: 15.7

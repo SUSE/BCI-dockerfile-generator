@@ -17,11 +17,9 @@
 
 #!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/nodejs:%%nodejs_version%%
-#!BuildTag: bci/nodejs:20-%RELEASE%
 #!BuildTag: bci/nodejs:20
 #!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%
-#!BuildTag: bci/node:20-%RELEASE%
 #!BuildTag: bci/node:20
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.7.20
