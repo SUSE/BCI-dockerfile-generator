@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 29 15:21:55 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop tag_version-%RELEASE%
+- also install fortran
+
+-------------------------------------------------------------------
 Fri Oct 25 05:40:09 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the GNU Compiler Collection %%gcc_minor_version%% BCI
