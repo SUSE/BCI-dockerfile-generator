@@ -1374,7 +1374,7 @@ updates:
         self, entry: str, package_names: list[str] | None
     ) -> str:
         target_branch_name = f"for-deploy-{self.os_version}"
-        entry = entry.replace('"', r"\"")
+        entry = entry.replace("'", r"'\''")
 
         if not package_names:
             commits = self._get_commit_range_between_refs(
@@ -1411,7 +1411,7 @@ updates:
                 fname = f"{package_name}/{package_name}.changes"
                 tasks.append(
                     run_in_worktree(
-                        f'/usr/lib/build/vc -m "{entry}" {package_name}.changes',
+                        f"/usr/lib/build/vc -m '{entry}' {package_name}.changes",
                         env={
                             "VC_REALNAME": GIT_COMMITTER_NAME,
                             "VC_MAILADDR": GIT_COMMITTER_EMAIL,
