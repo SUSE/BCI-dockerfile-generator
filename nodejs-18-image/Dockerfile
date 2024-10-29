@@ -17,11 +17,9 @@
 
 #!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/nodejs:%%nodejs_version%%
-#!BuildTag: bci/nodejs:18-%RELEASE%
 #!BuildTag: bci/nodejs:18
 #!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%
-#!BuildTag: bci/node:18-%RELEASE%
 #!BuildTag: bci/node:18
 #!BuildName: bci-nodejs-18
 #!BuildVersion: 15.5.18
