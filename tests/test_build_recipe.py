@@ -623,7 +623,6 @@ def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
 #!ExclusiveArch: aarch64 x86_64
 #!BuildTag: containers/test:%%emacs_version%%-%RELEASE%
 #!BuildTag: containers/test:%%emacs_version%%
-#!BuildTag: containers/test:42-%RELEASE%
 #!BuildTag: containers/test:42
 #!ForceMultiVersion
 #!BuildName: containers-test-42

@@ -63,7 +63,6 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         "pretty_name": f"Python {py3_ver} development",
         "version": py3_ver_replacement,
         "tag_version": py3_ver,
-        "additional_versions": ["3"],
         "env": {
             "PYTHON_VERSION": py3_ver_replacement,
             "PATH": "$PATH:/root/.local/bin",
@@ -106,6 +105,7 @@ PYTHON_3_6_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
         package_name="python-3.6-image",
+        additional_versions=["3"],
     )
     for os_version in (OsVersion.SP6,)
 )
@@ -125,6 +125,7 @@ PYTHON_TW_CONTAINERS = (
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
         is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
         package_name=f"python-{pyver}-image",
+        additional_versions=["3"],
     )
     for pyver in _PYTHON_TW_VERSIONS
 )
@@ -133,6 +134,7 @@ PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
+        additional_versions=["3"],
     )
     for os_version in (OsVersion.SP6, OsVersion.SP7)
 )
@@ -142,6 +144,7 @@ PYTHON_3_12_CONTAINERS = [
         **_get_python_kwargs("3.12", os_version),
         package_name="python-3.12-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        additional_versions=["3"],
     )
     for os_version in (OsVersion.SP6, OsVersion.SP7)
 ]

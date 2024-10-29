@@ -1277,11 +1277,8 @@ class DevelopmentContainer(BaseContainerImage):
     @property
     def build_tags(self) -> list[str]:
         tags = []
-
         for name in [self.name] + self.additional_names:
             ver_labels: list[str] = [self._version_variant]
-            if self._version_variant != self._tag_variant:
-                ver_labels.append(self._tag_variant)
             if self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
@@ -1289,7 +1286,10 @@ class DevelopmentContainer(BaseContainerImage):
                     f"{self.registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 ]
                 tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
-            for ver_label in self.additional_versions:
+            additional_ver_labels: list[str] = self.additional_versions
+            if self._version_variant != self._tag_variant:
+                additional_ver_labels = [self._tag_variant] + additional_ver_labels
+            for ver_label in additional_ver_labels:
                 tags += [f"{self.registry_prefix}/{name}:{ver_label}"]
 
             if self.is_latest:
