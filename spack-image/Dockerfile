@@ -17,7 +17,6 @@
 #!ExclusiveArch: aarch64 x86_64
 #!BuildTag: bci/spack:0.21.2-%RELEASE%
 #!BuildTag: bci/spack:0.21.2
-#!BuildTag: bci/spack:0.21-%RELEASE%
 #!BuildTag: bci/spack:0.21
 #!BuildName: bci-spack-0.21
 #!BuildVersion: 15.7.0.21

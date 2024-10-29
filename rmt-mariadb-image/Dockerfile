@@ -17,11 +17,9 @@
 
 #!BuildTag: suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/rmt-mariadb:%%mariadb_version%%
-#!BuildTag: suse/rmt-mariadb:10.11-%RELEASE%
 #!BuildTag: suse/rmt-mariadb:10.11
 #!BuildTag: suse/mariadb:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb:%%mariadb_version%%
-#!BuildTag: suse/mariadb:10.11-%RELEASE%
 #!BuildTag: suse/mariadb:10.11
 #!BuildName: suse-rmt-mariadb-10.11
 #!BuildVersion: 15.7.10.11

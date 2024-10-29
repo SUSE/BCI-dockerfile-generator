@@ -17,7 +17,6 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-runtime:6.0.35-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:6.0.35
-#!BuildTag: bci/dotnet-runtime:6.0-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:6.0
 #!BuildName: bci-dotnet-runtime-6.0
 #!BuildVersion: 15.7.6.0
