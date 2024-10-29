@@ -56,9 +56,14 @@ GCC_CONTAINERS = [
             [
                 (gcc_pkg := f"gcc{gcc_version}"),
                 (gpp := f"{gcc_pkg}-c++"),
+                (gfortran := f"{gcc_pkg}-fortran"),
                 "make",
             ]
-            + (["gcc", "gcc-c++"] if _is_main_gcc(os_version, gcc_version) else [])
+            + (
+                ["gcc", "gcc-c++", "gcc-fortran"]
+                if _is_main_gcc(os_version, gcc_version)
+                else []
+            )
             + os_version.common_devel_packages
             + os_version.lifecycle_data_pkg
         ),
@@ -79,7 +84,7 @@ GCC_CONTAINERS = [
         custom_end=(
             rf"""# symlink all versioned gcc & g++ binaries to unversioned
 # ones in /usr/local/bin so that plain gcc works
-{DOCKERFILE_RUN} for gcc_bin in $(rpm -ql {gcc_pkg} {gpp} |grep ^/usr/bin/ ); do \
+{DOCKERFILE_RUN} for gcc_bin in $(rpm -ql {gcc_pkg} {gpp} {gfortran} |grep ^/usr/bin/ ); do \
         ln -sf $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-{gcc_version}$||'); \
     done
 """
