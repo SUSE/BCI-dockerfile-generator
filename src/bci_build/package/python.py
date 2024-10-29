@@ -12,7 +12,7 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.registry import publish_registry
 
-_PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12"]
+_PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 # The lifecycle is handcrafted by the SUSE Python maintainers
 _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
@@ -25,6 +25,7 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
     "3.11": datetime.date(2027, 12, 31),
     "3.12": _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+    "3.13": _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
 }
 
 
@@ -143,4 +144,14 @@ PYTHON_3_12_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP6, OsVersion.SP7)
+]
+
+
+PYTHON_3_13_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.13", os_version),
+        package_name="python-3.13-image",
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+    )
+    for os_version in (OsVersion.SP7,)
 ]
