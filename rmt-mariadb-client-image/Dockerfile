@@ -17,12 +17,10 @@
 
 #!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/rmt-mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/rmt-mariadb-client:10.11-%RELEASE%
 #!BuildTag: suse/rmt-mariadb-client:10.11
 #!BuildTag: suse/rmt-mariadb-client:latest
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/mariadb-client:10.11-%RELEASE%
 #!BuildTag: suse/mariadb-client:10.11
 #!BuildTag: suse/mariadb-client:latest
 #!BuildName: suse-rmt-mariadb-client-10.11

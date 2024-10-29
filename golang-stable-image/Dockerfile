@@ -19,7 +19,6 @@
 #!BuildTag: bci/golang:stable
 #!BuildTag: bci/golang:%%golang_version%%-1.%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:1.23-1.%RELEASE%
 #!BuildTag: bci/golang:1.23
 #!BuildTag: bci/golang:latest
 #!BuildName: bci-golang-stable
