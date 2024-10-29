@@ -185,11 +185,12 @@ FIPS_BASE_CONTAINERS = [
         custom_end=_get_fips_base_custom_end(os_version)
         + textwrap.dedent(
             """
+            ENV GNUTLS_FORCE_FIPS_MODE=1
+            ENV LIBGCRYPT_FORCE_FIPS_MODE=1
+            ENV LIBICA_FIPS_FLAG=1
+            ENV NSS_FIPS=1
             ENV OPENSSL_FIPS=1
             ENV OPENSSL_FORCE_FIPS_MODE=1
-            ENV LIBGCRYPT_FORCE_FIPS_MODE=1
-            ENV GNUTLS_FORCE_FIPS_MODE=1
-            ENV LIBICA_FIPS_FLAG=1
             """
         ),
     )
