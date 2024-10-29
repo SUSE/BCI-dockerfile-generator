@@ -17,7 +17,6 @@
 
 #!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
-#!BuildTag: bci/gcc:14-%RELEASE%
 #!BuildTag: bci/gcc:14
 
 FROM bci/bci-base:16.0
