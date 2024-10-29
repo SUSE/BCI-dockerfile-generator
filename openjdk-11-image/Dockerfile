@@ -17,7 +17,6 @@
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 #!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
 #!BuildTag: bci/openjdk:%%java_version%%
-#!BuildTag: bci/openjdk:11-%RELEASE%
 #!BuildTag: bci/openjdk:11
 #!BuildName: bci-openjdk-11
 #!BuildVersion: 15.5.11
