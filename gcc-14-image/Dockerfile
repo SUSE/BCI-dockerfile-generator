@@ -23,7 +23,7 @@
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc14 gcc14-c++ make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -51,6 +51,6 @@ ENV GCC_VERSION="%%gcc_minor_version%%"
 
 # symlink all versioned gcc & g++ binaries to unversioned
 # ones in /usr/local/bin so that plain gcc works
-RUN set -euo pipefail; for gcc_bin in $(rpm -ql gcc14 gcc14-c++ |grep ^/usr/bin/ ); do \
+RUN set -euo pipefail; for gcc_bin in $(rpm -ql gcc14 gcc14-c++ gcc14-fortran |grep ^/usr/bin/ ); do \
         ln -sf $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-14$||'); \
     done
