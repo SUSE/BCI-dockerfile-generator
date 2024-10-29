@@ -30,9 +30,13 @@ class ContainerCrate:
             )
         )
 
-    def default_dockerfile(self) -> str:
+    def default_dockerfile(self, container) -> str:
+        buildrelease: str = ""
+        if container.build_release:
+            buildrelease = f"\n#!BuildVersion: workaround-for-an-obs-bug\n#!BuildRelease: {container.build_release}"
         """Return a default Dockerfile to disable build on default flavor."""
-        return """#!ExclusiveArch: do-not-build
+        return f"""#!ExclusiveArch: do-not-build
+#!ForceMultiVersion{buildrelease}
 
 # For this container we only build the Dockerfile.$flavor builds.
 """
