@@ -22,7 +22,7 @@
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc14 gcc14-c++ make gcc gcc-c++ curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
