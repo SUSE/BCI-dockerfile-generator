@@ -17,7 +17,6 @@
 
 #!BuildTag: bci/python:%%py36_ver%%-%RELEASE%
 #!BuildTag: bci/python:%%py36_ver%%
-#!BuildTag: bci/python:3.6-%RELEASE%
 #!BuildTag: bci/python:3.6
 #!BuildTag: bci/python:3
 #!BuildName: bci-python-3.6

@@ -17,7 +17,6 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: bci/dotnet-sdk:8.0.10-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:8.0.10
-#!BuildTag: bci/dotnet-sdk:8.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:8.0
 #!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-8.0

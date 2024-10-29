@@ -17,9 +17,7 @@
 #!ExclusiveArch: aarch64 x86_64
 #!BuildTag: containers/python:%%py39_ver%%-%RELEASE%
 #!BuildTag: containers/python:%%py39_ver%%
-#!BuildTag: containers/python:3.9-%RELEASE%
 #!BuildTag: containers/python:3.9
-#!BuildTag: containers/python:3
 #!ForceMultiVersion
 #!BuildName: containers-python-3.9
 #!BuildVersion: %%py39_ver%%
