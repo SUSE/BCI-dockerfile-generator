@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 29 15:21:55 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop tag_version-%RELEASE%
+
+-------------------------------------------------------------------
 Mon Oct 21 07:26:18 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - set minor version as tag_version
