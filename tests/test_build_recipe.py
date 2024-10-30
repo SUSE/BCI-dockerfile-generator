@@ -485,7 +485,7 @@ Copyright header
                 from_image="suse/base:18",
                 entrypoint=["/usr/bin/emacs"],
                 cmd=["/usr/bin/gcc"],
-                maintainer="invalid@suse.com",
+                oci_authors="invalid@suse.com",
                 logo_url="https://suse.com/assets/emacs-logo.svg",
                 volumes=["/bin/", "/usr/bin/"],
                 # does nothing on TW
