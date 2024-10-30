@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 08:42:47 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- update to new version
+
+-------------------------------------------------------------------
 Tue Oct 29 15:21:55 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop tag_version-%RELEASE%
