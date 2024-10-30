@@ -51,8 +51,9 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
 RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
 
+ENV GNUTLS_FORCE_FIPS_MODE=1
+ENV LIBGCRYPT_FORCE_FIPS_MODE=1
+ENV LIBICA_FIPS_FLAG=1
+ENV NSS_FIPS=1
 ENV OPENSSL_FIPS=1
 ENV OPENSSL_FORCE_FIPS_MODE=1
-ENV LIBGCRYPT_FORCE_FIPS_MODE=1
-ENV GNUTLS_FORCE_FIPS_MODE=1
-ENV LIBICA_FIPS_FLAG=1

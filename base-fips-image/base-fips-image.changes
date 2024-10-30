@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 09:11:23 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- enforce fips mode for NSS
+
+-------------------------------------------------------------------
 Fri Oct 11 15:13:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - make the tag with -%RELEASE% the first tag listed
