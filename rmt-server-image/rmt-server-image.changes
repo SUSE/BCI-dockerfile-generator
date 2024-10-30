@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 12:47:58 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add missing space to rmt.conf, fixes bsc#1230404
+
+-------------------------------------------------------------------
 Tue Oct 29 19:40:39 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark rmt-server image as supported
