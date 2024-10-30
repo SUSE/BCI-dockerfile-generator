@@ -48,6 +48,6 @@ LABEL com.suse.release-stage="beta"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]
 CMD ["--config.file=/etc/prometheus/blackbox.yml"]
-EXPOSE 9115
+EXPOSE 9115/tcp
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
     CMD ["/usr/bin/curl", "-m", "2", "-sf", "http://localhost:9115/-/healthy"]

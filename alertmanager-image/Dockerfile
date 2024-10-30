@@ -47,7 +47,7 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["/usr/bin/prometheus-alertmanager"]
-EXPOSE 9093
+EXPOSE 9093/tcp
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
     CMD ["/usr/bin/curl", "-m", "2", "-sf", "http://localhost:9093/-/healthy"]
 

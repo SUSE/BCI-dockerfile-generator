@@ -51,7 +51,7 @@ LABEL com.suse.release-stage="beta"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
-EXPOSE 3306
+EXPOSE 3306/tcp
 # sanity check that the version from the tag is equal to the version of mariadb-client that we expect
 RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' mariadb-client | cut -d '.' -f -2)" = "10.11" ]
 
