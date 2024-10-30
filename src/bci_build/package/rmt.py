@@ -31,7 +31,7 @@ RMT_CONTAINERS = [
         ],
         version_in_uid=False,
         support_level=SupportLevel.L3,
-        package_list=["rmt-server", "catatonit"],
+        package_list=["rmt-server", "catatonit", "bash"],
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
