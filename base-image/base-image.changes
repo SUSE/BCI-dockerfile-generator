@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 15:34:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
 Mon Oct 28 12:14:13 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - prefer libcurl-mini for the base container
