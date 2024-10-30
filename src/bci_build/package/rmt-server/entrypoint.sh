@@ -53,7 +53,7 @@ if [ "$1" = "/usr/share/rmt/bin/rails" ] && [ "$2" = "server" ]; then
   pushd /usr/share/rmt > /dev/null
 	/usr/share/rmt/bin/rails db:create db:migrate RAILS_ENV=production
   popd > /dev/null
-  if [ "${SCC_SYNC}" == "true" ]; then
+  if [ "${SCC_SYNC}" = "true" ]; then
     echo "Syncing product list"
     rmt-cli sync
     for PRODUCT in $SCC_PRODUCT_ENABLE
