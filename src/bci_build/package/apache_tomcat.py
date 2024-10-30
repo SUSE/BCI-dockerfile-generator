@@ -2,6 +2,7 @@
 
 import datetime
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import PackageType
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -103,7 +104,7 @@ TOMCAT_CONTAINERS = [
             f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
             "start",
         ],
-        exposes_ports=["8080"],
+        exposes_ports=[TCP(8080)],
         env={
             "TOMCAT_MAJOR": int(tomcat_ver.partition(".")[0]),
             "TOMCAT_VERSION": "%%tomcat_version%%",

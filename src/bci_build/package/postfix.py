@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -92,7 +93,7 @@ POSTFIX_CONTAINERS = [
         license="(EPL-2.0 OR IPL-1.0) AND MIT",
         extra_files=_POSTFIX_FILES,
         support_level=SupportLevel.TECHPREVIEW,
-        exposes_ports=["25", "465", "587"],
+        exposes_ports=[TCP(25), TCP(465), TCP(587)],
         volumes=["/var/spool/postfix", "/var/spool/vmail", "/etc/pki"],
         custom_end=f"""{DOCKERFILE_RUN} mkdir -p /entrypoint/ldap
 COPY {"entrypoint.sh" if os_version == OsVersion.TUMBLEWEED else "entrypoint.sles.sh"} /entrypoint/entrypoint.sh

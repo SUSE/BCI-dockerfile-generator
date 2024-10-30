@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
@@ -73,7 +74,7 @@ PCP_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         extra_files=_PCP_FILES,
         volumes=["/var/log/pcp/pmlogger"],
-        exposes_ports=["44321", "44322", "44323"],
+        exposes_ports=[TCP(44321), TCP(44322), TCP(44323)],
         custom_end=f"""
 {DOCKERFILE_RUN} mkdir -p /usr/share/container-scripts/pcp; mkdir -p /etc/sysconfig
 COPY container-entrypoint healthcheck /usr/local/bin/
@@ -117,7 +118,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
                 parse_version=ParseVersion.MINOR,
             )
         ],
-        exposes_ports=["3389", "3636"],
+        exposes_ports=[TCP(3389), TCP(3636)],
         volumes=["/data"],
         custom_end=rf"""
 COPY nsswitch.conf /etc/nsswitch.conf
@@ -169,7 +170,7 @@ PROMETHEUS_CONTAINERS = [
             for level in (ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus"],
-        exposes_ports=[str(_PROMETHEUS_PORT)],
+        exposes_ports=[TCP(_PROMETHEUS_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_PROMETHEUS_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
@@ -197,7 +198,7 @@ ALERTMANAGER_CONTAINERS = [
             for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/prometheus/alertmanager"],
-        exposes_ports=[str(_ALERTMANAGER_PORT)],
+        exposes_ports=[TCP(_ALERTMANAGER_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_ALERTMANAGER_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
@@ -225,7 +226,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
             )
             for level in (ParseVersion.MINOR, ParseVersion.PATCH)
         ],
-        exposes_ports=[str(_BLACKBOX_PORT)],
+        exposes_ports=[TCP(_BLACKBOX_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_BLACKBOX_PORT),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
@@ -267,7 +268,7 @@ GRAFANA_CONTAINERS = [
             for level in (ParseVersion.MAJOR, ParseVersion.MINOR, ParseVersion.PATCH)
         ],
         volumes=["/var/lib/grafana"],
-        exposes_ports=["3000"],
+        exposes_ports=[TCP(3000)],
         custom_end=f"""COPY run.sh /run.sh
 {DOCKERFILE_RUN} chmod +x /run.sh
         """,
@@ -309,7 +310,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "build_recipe_type": BuildType.DOCKER,
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
-        "exposes_ports": ["80"],
+        "exposes_ports": [TCP(80)],
         "custom_end": f"""{ version_check_lines }
 {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
@@ -421,7 +422,7 @@ REGISTRY_CONTAINERS = [
         cmd=["serve", "/etc/registry/config.yml"],
         build_recipe_type=BuildType.KIWI,
         volumes=["/var/lib/docker-registry"],
-        exposes_ports=["5000"],
+        exposes_ports=[TCP(5000)],
         support_level=SupportLevel.L3,
     )
     for os_version in ALL_NONBASE_OS_VERSIONS

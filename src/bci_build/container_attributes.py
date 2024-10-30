@@ -4,6 +4,7 @@ types.
 """
 
 import enum
+from dataclasses import dataclass
 
 
 @enum.unique
@@ -89,3 +90,38 @@ class PackageType(enum.Enum):
 
     def __str__(self) -> str:
         return self.value
+
+
+@enum.unique
+class NetworkProtocol(enum.Enum):
+    TCP = "tcp"
+    UDP = "udp"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+@dataclass(frozen=True)
+class NetworkPort:
+    """Representation of a port to expose from a container."""
+
+    #: the port number
+    number: int
+
+    #: the network protocol
+    protocol: NetworkProtocol = NetworkProtocol.TCP
+
+    def __post_init__(self) -> None:
+        if self.number < 1 or self.number > 65535:
+            raise ValueError(f"Invalid port number: {self.number}")
+
+    def __str__(self) -> str:
+        return f"{self.number}/{self.protocol}"
+
+
+def TCP(port_number: int) -> NetworkPort:
+    return NetworkPort(port_number, protocol=NetworkProtocol.TCP)
+
+
+def UDP(port_number: int) -> NetworkPort:
+    return NetworkPort(port_number, protocol=NetworkProtocol.UDP)

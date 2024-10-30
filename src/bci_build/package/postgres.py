@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -27,7 +28,7 @@ POSTGRES_CONTAINERS = [
         support_level=SupportLevel.ACC,
         package_list=["libpq5", f"postgresql{ver}-server", "findutils"],
         version="%%pg_patch_version%%",
-        tag_version=ver,
+        tag_version=str(ver),
         additional_versions=["%%pg_minor_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
         cmd=["postgres"],
@@ -57,7 +58,7 @@ POSTGRES_CONTAINERS = [
             ),
         ],
         volumes=["$PGDATA"],
-        exposes_ports=["5432"],
+        exposes_ports=[TCP(5432)],
         custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \

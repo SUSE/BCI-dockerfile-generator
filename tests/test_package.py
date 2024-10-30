@@ -1,3 +1,5 @@
+from bci_build.container_attributes import TCP
+from bci_build.container_attributes import UDP
 from tests.conftest import BCI_FIXTURE_RET_T
 
 
@@ -96,11 +98,11 @@ def test_expose_port_kiwi(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert (
-        cls(**kwargs, exposes_ports=["443", "80"]).exposes_kiwi
+        cls(**kwargs, exposes_ports=[TCP(443), TCP(80)]).exposes_kiwi
         == """
         <expose>
-          <port number="443" />
-          <port number="80" />
+          <port number="443/tcp" />
+          <port number="80/tcp" />
         </expose>"""
     )
 
@@ -117,8 +119,8 @@ def test_expose_dockerfile(bci: BCI_FIXTURE_RET_T):
     cls, kwargs = bci
 
     assert (
-        cls(**kwargs, exposes_ports=["80", "443", "67/udp"]).expose_dockerfile
-        == "\nEXPOSE 80 443 67/udp"
+        cls(**kwargs, exposes_ports=[TCP(80), TCP(443), UDP(67)]).expose_dockerfile
+        == "\nEXPOSE 80/tcp 443/tcp 67/udp"
     )
 
 
