@@ -29,7 +29,7 @@ RUN set -euo pipefail; \
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.base-fips
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI 15 SP6 FIPS-140-3"
 LABEL org.opencontainers.image.description="15 SP6 FIPS-140-3 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%.%RELEASE%"
