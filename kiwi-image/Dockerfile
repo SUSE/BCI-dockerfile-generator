@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/kiwi:10.1.10-%RELEASE%
-#!BuildTag: bci/kiwi:10.1.10
+#!BuildTag: bci/kiwi:10.1.16-%RELEASE%
+#!BuildTag: bci/kiwi:10.1.16
 #!BuildTag: bci/kiwi:10.1
 #!BuildTag: bci/kiwi:10
 
@@ -32,13 +32,13 @@ RUN set -euo pipefail; \
 LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
 LABEL org.opencontainers.image.title="SLE BCI KIWI Appliance Builder (kiwi)"
 LABEL org.opencontainers.image.description="KIWI Appliance Builder (kiwi) container based on the SLE Base Container Image. This container is only supported in privileged mode."
-LABEL org.opencontainers.image.version="10.1.10"
+LABEL org.opencontainers.image.version="10.1.16"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10.1.10-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:10.1.10-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.1.16-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/kiwi:10.1.16-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
