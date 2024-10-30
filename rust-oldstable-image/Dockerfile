@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.rust
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Rust 1.80"
 LABEL org.opencontainers.image.description="Rust 1.80 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%RUST_VERSION%%"

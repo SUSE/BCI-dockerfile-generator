@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 15:35:19 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
 Wed Oct 30 09:11:23 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - enforce fips mode for NSS
