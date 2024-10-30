@@ -54,7 +54,7 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["/entrypoint/entrypoint.sh"]
 CMD ["postfix", "start-fg"]
-EXPOSE 25 465 587
+EXPOSE 25/tcp 465/tcp 587/tcp
 RUN set -euo pipefail; mkdir -p /entrypoint/ldap
 COPY entrypoint.sles.sh /entrypoint/entrypoint.sh
 RUN set -euo pipefail; chmod +x /entrypoint/entrypoint.sh
