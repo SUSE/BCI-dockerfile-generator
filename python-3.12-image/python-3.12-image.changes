@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 30 15:35:19 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
 Tue Oct 29 15:30:53 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop tag_version-%RELEASE%
