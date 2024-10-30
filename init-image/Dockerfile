@@ -28,7 +28,7 @@ RUN set -euo pipefail; \
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.init
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI 15 SP7 Init"
 LABEL org.opencontainers.image.description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"

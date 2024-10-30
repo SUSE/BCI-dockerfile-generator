@@ -29,7 +29,7 @@ RUN set -euo pipefail; \
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.alertmanager
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE Alertmanager"
 LABEL org.opencontainers.image.description="Alertmanager container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%alertmanager_patch_version%%"

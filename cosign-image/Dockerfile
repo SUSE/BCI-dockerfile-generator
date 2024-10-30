@@ -32,7 +32,7 @@ FROM bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.cosign
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE cosign"
 LABEL org.opencontainers.image.description="Signing OCI containers using Sigstore, based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%cosign_version%%"
