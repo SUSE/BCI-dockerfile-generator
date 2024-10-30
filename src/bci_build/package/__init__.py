@@ -252,7 +252,7 @@ class BaseContainerImage(abc.ABC):
     config_sh_interpreter: str = "/bin/bash"
 
     #: The oci image author annoation for this image, defaults to SUSE/openSUSE
-    maintainer: str | None = None
+    oci_authors: str | None = None
 
     #: Additional files that belong into this container-package.
     #: The key is the filename, the values are the file contents.
@@ -334,12 +334,6 @@ class BaseContainerImage(abc.ABC):
                 BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
             )
 
-        if not self.maintainer:
-            self.maintainer = (
-                "openSUSE (https://www.opensuse.org/)"
-                if self.os_version.is_tumbleweed
-                else "SUSE LLC (https://www.suse.com/)"
-            )
         if not self._publish_registry:
             self._publish_registry = publish_registry(self.os_version)
 
@@ -349,7 +343,9 @@ class BaseContainerImage(abc.ABC):
             if not self.exclusive_arch:
                 self.exclusive_arch = [Arch.AARCH64, Arch.X86_64]
             # Override maintainer listing from base container by setting an empty value
-            self.maintainer = ""
+            self.oci_authors = ""
+        elif not self.oci_authors and not self.os_version.is_tumbleweed:
+            self.oci_authors = "https://github.com/SUSE/bci/discussions"
 
         # limit to tech preview for beta releases
         if (

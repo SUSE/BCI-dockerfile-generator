@@ -40,7 +40,7 @@ RUN \\
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="27"
@@ -85,7 +85,7 @@ Copyright header
           additionaltags="27">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
+            <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
             <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="27"/>
@@ -157,7 +157,7 @@ RUN \\
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%emacs_ver%%"
@@ -197,7 +197,7 @@ Copyright header
           additionaltags="stable,%%emacs_ver%%-1.%RELEASE%,%%emacs_ver%%">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
+            <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
             <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%%emacs_ver%%"/>
@@ -261,7 +261,7 @@ RUN \\
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
-LABEL org.opencontainers.image.authors="SUSE LLC (https://www.suse.com/)"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Test"
 LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="29"
@@ -304,7 +304,7 @@ Copyright header
           user="emacs">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
-            <label name="org.opencontainers.image.authors" value="SUSE LLC (https://www.suse.com/)"/>
+            <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
             <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
             <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="29"/>
@@ -485,7 +485,7 @@ Copyright header
                 from_image="suse/base:18",
                 entrypoint=["/usr/bin/emacs"],
                 cmd=["/usr/bin/gcc"],
-                maintainer="invalid@suse.com",
+                oci_authors="invalid@suse.com",
                 logo_url="https://suse.com/assets/emacs-logo.svg",
                 volumes=["/bin/", "/usr/bin/"],
                 # does nothing on TW
@@ -542,7 +542,6 @@ Copyright header
           additionaltags="%OS_VERSION_ID_SP%,latest">
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
-            <label name="org.opencontainers.image.authors" value="openSUSE (https://www.opensuse.org/)"/>
             <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
             <label name="org.opencontainers.image.description" value="A test environment for containers."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
