@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 31 16:12:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- be explicit in protocol for expose statement
+
+-------------------------------------------------------------------
 Mon Oct 28 09:03:01 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - blank out authors for appcollection
