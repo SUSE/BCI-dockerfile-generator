@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 31 16:12:14 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- be explicit in protocol for expose statement
+
+-------------------------------------------------------------------
 Wed Oct 30 15:35:20 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - point to a contact location for SLE BCI
