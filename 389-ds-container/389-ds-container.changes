@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 31 16:12:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- be explicit in protocol for expose statement
+
+-------------------------------------------------------------------
 Fri Oct 11 15:13:11 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - make the tag with -%RELEASE% the first tag listed
