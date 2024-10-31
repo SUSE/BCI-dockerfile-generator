@@ -50,7 +50,7 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 CMD ["/usr/lib/dirsrv/dscontainer", "-r"]
-EXPOSE 3389 3636
+EXPOSE 3389/tcp 3636/tcp
 
 COPY nsswitch.conf /etc/nsswitch.conf
 
