@@ -87,7 +87,7 @@ _pkg_version_fields: dict[str, type[ParseVersion] | type[str]] = {
 for os_ver in OsVersion:
     _pkg_version_fields[str(os_ver)] = str
 
-_PKG_VERSION_T = TypedDict("_PKG_VERSION_T", fields=_pkg_version_fields, total=False)
+_PKG_VERSION_T = TypedDict("_PKG_VERSION_T", _pkg_version_fields, total=False)
 
 
 #: Type for storing versions of packages.
