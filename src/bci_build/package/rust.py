@@ -3,6 +3,8 @@
 import datetime
 from itertools import product
 
+import packaging.version
+
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -17,6 +19,7 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.82": datetime.date(2024, 10, 17) + _RUST_SUPPORT_OVERLAP,
     "1.81": datetime.date(2024, 9, 5) + _RUST_SUPPORT_OVERLAP,
     "1.80": datetime.date(2024, 7, 25) + _RUST_SUPPORT_OVERLAP,
     "1.79": datetime.date(2024, 6, 13) + _RUST_SUPPORT_OVERLAP,
@@ -27,11 +30,15 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.80", "1.81"]
+_RUST_VERSIONS = ["1.81", "1.82"]
 
 assert (
     len(_RUST_VERSIONS) == 2
 ), "Only two versions of rust must be supported at the same time"
+
+assert packaging.version.parse(_RUST_VERSIONS[0]) < packaging.version.parse(
+    _RUST_VERSIONS[1]
+), "Newest rust version must be listed as last"
 
 RUST_CONTAINERS = [
     DevelopmentContainer(
