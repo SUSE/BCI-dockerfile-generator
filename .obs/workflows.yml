@@ -143,6 +143,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: packaging-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: pcp-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -351,6 +355,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-23-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: packaging-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: pcp-image
