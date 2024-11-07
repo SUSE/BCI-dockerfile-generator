@@ -1,0 +1,4 @@
+-------------------------------------------------------------------
+Thu Nov 07 14:15:03 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the Apache Tomcat %%tomcat_version%% BCI
