@@ -47,6 +47,7 @@ GCC_CONTAINERS = [
     DevelopmentContainer(
         name="gcc",
         package_name=f"gcc-{gcc_version}-image",
+        license="GPL-3.0-or-later",
         os_version=os_version,
         version="%%gcc_minor_version%%",
         tag_version=gcc_version,
