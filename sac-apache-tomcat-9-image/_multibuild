@@ -1,0 +1,4 @@
+<multibuild>
+    <package>openjdk11</package>
+    <package>openjdk17</package>
+</multibuild>
