@@ -133,6 +133,8 @@ WORKDIR $CATALINA_HOME
         ("10.1", OsVersion.SP6, 21),
         ("10.1", OsVersion.SP6, 17),
         ("10.1", OsVersion.SP6, 11),
+        ("9", OsVersion.SP6, 17),
+        ("9", OsVersion.SP6, 11),
         # (10.1, OsVersion.SP7, 21),
     )
 ]
