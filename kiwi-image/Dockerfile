@@ -17,13 +17,13 @@
 
 #!BuildTag: bci/kiwi:10.1.16-%RELEASE%
 #!BuildTag: bci/kiwi:10.1.16
-#!BuildTag: bci/kiwi:10.1
 #!BuildTag: bci/kiwi:10
+#!BuildTag: bci/kiwi:10.1
 
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz SLES-release curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz SLES-release kpartx curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -49,3 +49,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
 RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' python3-kiwi | cut -d '.' -f -2)" = "10.1" ]
+SHELL ["/bin/bash", "-c"]
+RUN echo $'mapper: \n\
+  - part_mapper: kpartx\n\
+' > /etc/kiwi.yml
