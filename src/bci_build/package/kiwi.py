@@ -4,12 +4,19 @@ from bci_build.container_attributes import BuildType
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
+
+
+def generate_kiwi_10_config():
+    """force part_mapper to be kpartx rather than the default udev, which we don't run in the image."""
+    return f"""{DOCKERFILE_RUN} printf "mapper:\\n  - part_mapper: kpartx\\n" > /etc/kiwi.yml"""
+
 
 KIWI_CONTAINERS = [
     DevelopmentContainer(
@@ -54,7 +61,10 @@ KIWI_CONTAINERS = [
             *os_version.release_package_names,
         ]
         + os_version.common_devel_packages,
-        custom_end=f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}",
+        custom_end=(
+            f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}\n"
+        )
+        + (generate_kiwi_10_config() if float(kiwi_minor) >= 10 else ""),
         build_recipe_type=BuildType.DOCKER,
         _min_release_counter=(15 if os_version.is_sle15 else None),
         extra_labels={
