@@ -4,7 +4,7 @@
 #
 # Note: when fetching external files, make sure to include their license declarations!
 
-mkdir -p src/bci_build/package/{postgres,nginx,grafana,mariadb,postfix/entrypoint/ldap}
+mkdir -p src/bci_build/package/{postgres,nginx,grafana,mariadb,postfix/entrypoint/ldap,podman}
 
 ### postgres: PostgreSQL license
 curl -sf -o src/bci_build/package/postgres/LICENSE https://raw.githubusercontent.com/docker-library/postgres/master/LICENSE
@@ -43,3 +43,8 @@ curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/virtual_mailbox_maps h
 curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/virtual_uid_maps https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/postfix/ldap/virtual_uid_maps
 
 patch src/bci_build/package/postfix/entrypoint/entrypoint.sh src/bci_build/package/postfix/entrypoint/sles-entrypoint.patch -o src/bci_build/package/postfix/entrypoint/entrypoint.sles.sh
+
+### podman: Apache-2
+curl -sf -o src/bci_build/package/podman/containers.conf https://raw.githubusercontent.com/containers/image_build/main/podman/containers.conf
+curl -sf -o src/bci_build/package/podman/podman-containers.conf https://raw.githubusercontent.com/containers/image_build/main/podman/podman-containers.conf
+curl -sf -o src/bci_build/package/podman/LICENSE https://raw.githubusercontent.com/containers/image_build/main/LICENSE
