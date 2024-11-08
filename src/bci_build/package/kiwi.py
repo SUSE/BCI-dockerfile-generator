@@ -23,10 +23,10 @@ KIWI_CONTAINERS = [
         version=format_version(
             kiwi_ver := get_pkg_version("python-kiwi", os_version), ParseVersion.PATCH
         ),
-        tag_version=(kiwi_minor := format_version(kiwi_ver, ParseVersion.MINOR)),
         version_in_uid=False,
         additional_versions=[
             format_version(kiwi_ver, ParseVersion.MAJOR),
+            kiwi_minor := format_version(kiwi_ver, ParseVersion.MINOR),
         ],
         license="GPL-3.0-or-later",
         package_list=[
