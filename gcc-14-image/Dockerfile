@@ -46,5 +46,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.logo-url="https://gcc.gnu.org/img/gccegg-65.png"
 ENV GCC_VERSION="%%gcc_minor_version%%"
 
