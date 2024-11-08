@@ -17,14 +17,14 @@
 
 #!BuildTag: opensuse/bci/kiwi:10.1.16-%RELEASE%
 #!BuildTag: opensuse/bci/kiwi:10.1.16
-#!BuildTag: opensuse/bci/kiwi:10.1
 #!BuildTag: opensuse/bci/kiwi:10
+#!BuildTag: opensuse/bci/kiwi:10.1
 #!BuildTag: opensuse/bci/kiwi:latest
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz openSUSE-release openSUSE-release-appliance-docker curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz openSUSE-release openSUSE-release-appliance-docker kpartx curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -47,3 +47,7 @@ LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
 RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' python3-kiwi | cut -d '.' -f -2)" = "10.1" ]
+SHELL ["/bin/bash", "-c"]
+RUN echo $'mapper: \n\
+  - part_mapper: kpartx\n\
+' > /etc/kiwi.yml
