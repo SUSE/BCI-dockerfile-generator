@@ -392,7 +392,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> str | None:
-        if self.os_version not in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
+        if self.os_version.is_sle15:
             epoch = ""
             if self.os_epoch:
                 epoch = f"{self.os_epoch}."

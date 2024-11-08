@@ -69,6 +69,7 @@ GCC_CONTAINERS = [
             + os_version.lifecycle_data_pkg
         ),
         pretty_name="GNU Compiler Collection",
+        logo_url="https://gcc.gnu.org/img/gccegg-65.png",
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
             and _is_latest_gcc(os_version, gcc_version)
