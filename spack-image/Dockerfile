@@ -20,7 +20,7 @@
 #!BuildTag: bci/spack:0.21
 #!BuildTag: bci/spack:latest
 #!BuildName: bci-spack-0.21
-#!BuildVersion: 15.6.0.21
+#!BuildVersion: 15.6.0.21.3
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

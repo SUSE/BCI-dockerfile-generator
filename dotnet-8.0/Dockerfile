@@ -20,7 +20,7 @@
 #!BuildTag: bci/dotnet-sdk:8.0
 #!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-8.0
-#!BuildVersion: 15.6.8.0
+#!BuildVersion: 15.6.8.0.10
 #!BuildRelease: 20
 FROM registry.suse.com/bci/bci-base:15.6
 

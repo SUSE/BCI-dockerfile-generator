@@ -21,7 +21,7 @@
 #!BuildTag: bci/kiwi:9
 #!BuildTag: bci/kiwi:latest
 #!BuildName: bci-kiwi-9.24
-#!BuildVersion: 15.6.9.24
+#!BuildVersion: 15.6.9.24.43
 #!BuildRelease: 15
 FROM registry.suse.com/bci/bci-base:15.6
 
