@@ -19,7 +19,7 @@
 #!BuildTag: bci/spack:0.21.3
 #!BuildTag: bci/spack:0.21
 #!BuildName: bci-spack-0.21
-#!BuildVersion: 15.7.0.21
+#!BuildVersion: 15.7.0.21.3
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \

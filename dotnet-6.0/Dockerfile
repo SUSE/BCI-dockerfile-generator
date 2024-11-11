@@ -19,7 +19,7 @@
 #!BuildTag: bci/dotnet-sdk:6.0.35
 #!BuildTag: bci/dotnet-sdk:6.0
 #!BuildName: bci-dotnet-sdk-6.0
-#!BuildVersion: 15.7.6.0
+#!BuildVersion: 15.7.6.0.35
 FROM bci/bci-base:15.7
 
 
