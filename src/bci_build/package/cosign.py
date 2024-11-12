@@ -1,5 +1,6 @@
 """Cosign Application container"""
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
@@ -32,6 +33,7 @@ COSIGN_CONTAINERS = [
         package_list=["cosign"],
         entrypoint=["/usr/bin/cosign"],
         license="Apache-2.0",
+        support_level=SupportLevel.L3,
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
         _min_release_counter=0,
     )
