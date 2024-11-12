@@ -17,10 +17,10 @@
 
 #!BuildTag: suse/cosign:%%cosign_version%%-%RELEASE%
 #!BuildTag: suse/cosign:%%cosign_version%%
-#!BuildTag: suse/cosign:2.2
+#!BuildTag: suse/cosign:2.4
 #!BuildTag: suse/cosign:latest
-#!BuildName: suse-cosign-2.2
-#!BuildVersion: 15.6.2.2
+#!BuildName: suse-cosign-2.4
+#!BuildVersion: 15.6.2.4
 #!BuildRelease: 0
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
