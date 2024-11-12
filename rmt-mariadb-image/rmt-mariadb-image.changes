@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 12 15:33:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- update entrypoint from upstream
+
+-------------------------------------------------------------------
 Thu Oct 31 16:12:08 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - be explicit in protocol for expose statement
