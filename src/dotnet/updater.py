@@ -178,6 +178,7 @@ class DotNetBCI(DevelopmentContainer):
         self.supported_until = {
             "6.0": datetime.date(2024, 11, 12),
             "8.0": datetime.date(2026, 11, 10),
+            "9.0": datetime.date(2026, 5, 12),
         }.get(str(self.tag_version))
         assert (
             self.supported_until
@@ -193,7 +194,9 @@ class DotNetBCI(DevelopmentContainer):
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
         self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
-        self._min_release_counter = {"8.0": 20, "6.0": 32}[str(self.tag_version)]
+        self._min_release_counter = {"8.0": 20, "6.0": 32, "9.0": 1}[
+            str(self.tag_version)
+        ]
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository and
@@ -335,16 +338,17 @@ class DotNetBCI(DevelopmentContainer):
             dotnet_version=self.version,
         )
 
+        # HACK ugly workaround to avoid installing these packages via zypper in the template generation
         self.package_list = []
 
         super().prepare_template()
 
 
-_DOTNET_VERSION_T = Literal["6.0", "8.0"]
+_DOTNET_VERSION_T = Literal["8.0", "9.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "8.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0"]
 
-_LATEST_DOTNET_VERSION = "8.0"
+_LATEST_DOTNET_VERSION = "9.0"
 
 assert _LATEST_DOTNET_VERSION in _DOTNET_VERSIONS
 assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS)
@@ -362,19 +366,19 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         package_list: list[Package | str] = [
             "dotnet-host",
             Package(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
+        ] + [
+            f"{pkg}-{ver}"
+            for pkg in (
+                "dotnet-targeting-pack",
+                "dotnet-hostfxr",
+                "dotnet-runtime-deps",
+                "dotnet-runtime",
+                "dotnet-apphost-pack",
+                "aspnetcore-targeting-pack",
+                "aspnetcore-runtime",
+                "dotnet-sdk",
+            )
         ]
-
-        for pkg in (
-            "dotnet-targeting-pack",
-            "dotnet-hostfxr",
-            "dotnet-runtime-deps",
-            "dotnet-runtime",
-            "dotnet-apphost-pack",
-            "aspnetcore-targeting-pack",
-            "aspnetcore-runtime",
-            "dotnet-sdk",
-        ):
-            package_list.append(f"{pkg}-{ver}")
 
         DOTNET_CONTAINERS.append(
             DotNetBCI(
