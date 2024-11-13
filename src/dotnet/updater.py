@@ -366,19 +366,19 @@ for os_version in (OsVersion.SP6, OsVersion.SP7):
         package_list: list[Package | str] = [
             "dotnet-host",
             Package(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
+        ] + [
+            f"{pkg}-{ver}"
+            for pkg in (
+                "dotnet-targeting-pack",
+                "dotnet-hostfxr",
+                "dotnet-runtime-deps",
+                "dotnet-runtime",
+                "dotnet-apphost-pack",
+                "aspnetcore-targeting-pack",
+                "aspnetcore-runtime",
+                "dotnet-sdk",
+            )
         ]
-
-        for pkg in (
-            "dotnet-targeting-pack",
-            "dotnet-hostfxr",
-            "dotnet-runtime-deps",
-            "dotnet-runtime",
-            "dotnet-apphost-pack",
-            "aspnetcore-targeting-pack",
-            "aspnetcore-runtime",
-            "dotnet-sdk",
-        ):
-            package_list.append(f"{pkg}-{ver}")
 
         DOTNET_CONTAINERS.append(
             DotNetBCI(
