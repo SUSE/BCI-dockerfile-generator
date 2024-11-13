@@ -33,6 +33,7 @@ def _get_sac_supported_until(
         21: datetime.date(2031, 6, 30),
         17: datetime.date(2027, 12, 31),
         11: datetime.date(2026, 12, 31),
+        8: datetime.date(2026, 12, 31),
     }
     # We do not have a documented policy, for now we do 3 years from initial publishing
     tomcat_end_support_dates: dict[str, datetime.date] = {
@@ -49,6 +50,13 @@ def _get_sac_supported_until(
         jre_end_support_dates.get(jre_major, datetime.date.max),
         tomcat_end_support_dates.get(tomcat_ver, datetime.date.max),
     )
+
+
+def _get_java_packages(jre_major: int) -> list[str]:
+    """Determine the right java packages to install, even when using the marketing version"""
+    if jre_major == 8:
+        return ["java-1_8_0-openjdk", "java-1_8_0-openjdk-headless"]
+    return [f"java-{jre_major}-openjdk", f"java-{jre_major}-openjdk-headless"]
 
 
 TOMCAT_CONTAINERS = [
@@ -94,7 +102,7 @@ TOMCAT_CONTAINERS = [
             "sed",
             Package("util-linux", PackageType.DELETE),
         ]
-        + [f"java-{jre_version}-openjdk", f"java-{jre_version}-openjdk-headless"],
+        + _get_java_packages(jre_version),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%tomcat_version%%", package_name=tomcat_pkg
@@ -129,12 +137,15 @@ WORKDIR $CATALINA_HOME
         ("10.1", OsVersion.TUMBLEWEED, 23),
         ("10.1", OsVersion.TUMBLEWEED, 21),
         ("10.1", OsVersion.TUMBLEWEED, 17),
+        ("9", OsVersion.TUMBLEWEED, 21),
         ("9", OsVersion.TUMBLEWEED, 17),
         ("10.1", OsVersion.SP6, 21),
         ("10.1", OsVersion.SP6, 17),
         ("10.1", OsVersion.SP6, 11),
+        ("9", OsVersion.SP6, 21),
         ("9", OsVersion.SP6, 17),
         ("9", OsVersion.SP6, 11),
+        ("9", OsVersion.SP6, 8),
         # (10.1, OsVersion.SP7, 21),
     )
 ]
