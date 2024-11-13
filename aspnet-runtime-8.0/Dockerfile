@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-aspnet:8.0.10-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:8.0.10
 #!BuildTag: bci/dotnet-aspnet:8.0
-#!BuildTag: bci/dotnet-aspnet:latest
 #!BuildName: bci-dotnet-aspnet-8.0
 #!BuildVersion: 15.6.8.0
 #!BuildRelease: 20
