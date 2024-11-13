@@ -15,30 +15,30 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-runtime:6.0.35-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:6.0.35
-#!BuildTag: bci/dotnet-runtime:6.0
-#!BuildName: bci-dotnet-runtime-6.0
-#!BuildVersion: 15.7.6.0
+#!BuildTag: bci/dotnet-aspnet:9.0.0-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:9.0.0
+#!BuildTag: bci/dotnet-aspnet:9.0
+#!BuildName: bci-dotnet-aspnet-9.0
+#!BuildVersion: 15.7.9.0
 FROM bci/bci-base:15.7
 
 
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.dotnet.runtime
+# labelprefix=com.suse.bci.dotnet.aspnet
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 6.0"
-LABEL org.opencontainers.image.description="The .NET Runtime 6.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="6.0.35"
+LABEL org.opencontainers.image.title="SLE BCI ASP.NET Core Runtime 9.0"
+LABEL org.opencontainers.image.description="The ASP.NET Core Runtime 9.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+LABEL org.opencontainers.image.version="9.0.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="6.0.35-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:6.0.35-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="9.0.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2024-11-12"
+LABEL com.suse.supportlevel.until="2026-05-12"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
@@ -48,14 +48,16 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-6.0.35-1.x86_64.rpm
-COPY dotnet-host-6.0.35-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-6.0-6.0.35-1.x86_64.rpm
-COPY dotnet-hostfxr-6.0-6.0.35-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-6.0-6.0.36-1.x86_64.rpm
-COPY dotnet-runtime-deps-6.0-6.0.36-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-6.0-6.0.35-1.x86_64.rpm
-COPY dotnet-runtime-6.0-6.0.35-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.0-1.x86_64.rpm
+COPY dotnet-host-9.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.0-1.x86_64.rpm
+COPY dotnet-hostfxr-9.0-9.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.0-1.x86_64.rpm
+COPY dotnet-runtime-deps-9.0-9.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.0-1.x86_64.rpm
+COPY dotnet-runtime-9.0-9.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.0-1.x86_64.rpm
+COPY aspnetcore-runtime-9.0-9.0.0-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -72,3 +74,9 @@ COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
 RUN rm -rf /tmp/* && zypper clean && rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
+
+ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
+ENV DOTNET_VERSION=9.0.0
+RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
+WORKDIR /app
+EXPOSE 8080
