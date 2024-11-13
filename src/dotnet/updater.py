@@ -338,14 +338,15 @@ class DotNetBCI(DevelopmentContainer):
             dotnet_version=self.version,
         )
 
+        # HACK ugly workaround to avoid installing these packages via zypper in the template generation
         self.package_list = []
 
         super().prepare_template()
 
 
-_DOTNET_VERSION_T = Literal["6.0", "8.0", "9.0"]
+_DOTNET_VERSION_T = Literal["8.0", "9.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["6.0", "8.0", "9.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0"]
 
 _LATEST_DOTNET_VERSION = "9.0"
 
