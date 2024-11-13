@@ -1432,6 +1432,8 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
+from dotnet.updater import DOTNET_CONTAINERS  # noqa: E402
+
 from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
@@ -1487,6 +1489,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *PYTHON_TW_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
+        *DOTNET_CONTAINERS,
         *PCP_CONTAINERS,
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,

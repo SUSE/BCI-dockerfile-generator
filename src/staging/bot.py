@@ -37,7 +37,6 @@ from bci_build.logger import LOGGER
 from bci_build.os_version import OsVersion
 from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
 from bci_build.package import BaseContainerImage
-from dotnet.updater import DOTNET_CONTAINERS
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
@@ -225,7 +224,7 @@ class StagingBot:
         instance.
 
         """
-        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values()) + DOTNET_CONTAINERS
+        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values())
         all_bcis.sort(key=lambda bci: bci.uid)
         return (bci for bci in all_bcis if bci.os_version == self.os_version)
 
@@ -1753,8 +1752,7 @@ comma-separated list. The package list is taken from the environment variable
         required=True,
         type=str,
         help="Name of the package to configure on OBS",
-        choices=list({bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values()})
-        + [dotnet_img.package_name for dotnet_img in DOTNET_CONTAINERS],
+        choices=list({bci.package_name for bci in ALL_CONTAINER_IMAGE_NAMES.values()}),
     )
 
     subparsers.add_parser(
