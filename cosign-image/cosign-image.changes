@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 13 13:40:45 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- ship with suse-build-keys
+
+-------------------------------------------------------------------
 Tue Nov 12 15:12:21 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - new cosign version

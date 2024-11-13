@@ -1,4 +1,4 @@
-# .NET SDK 6.0 container image
+# .NET Runtime 9.0 container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -9,13 +9,7 @@
 It is cross-platform, and can be used in devices, cloud, and embedded/IoT scenarios.
 You can use C# or F# to write .NET applications.
 
-This image contains the .NET SDK, consisting of three parts:
-
-- .NET CLI
-- .NET Runtime
-- ASP.NET Core Runtime
-
-You can use the image to develop, build, and test of .NET and ASP.NET Core applications.
+This image contains the .NET runtimes and libraries, and it is optimized for running .NET applications in production.
 
 ## Notice
 
@@ -28,10 +22,11 @@ SUSE does not provide any support or warranties for the third-party components i
 
 ## Usage
 
-To compile an application, copy the sources and build the binary:
+To deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:6.0 AS build
+FROM registry.suse.com/bci/dotnet-sdk:9.0 AS build
+
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
@@ -40,10 +35,11 @@ RUN dotnet restore
 
 # copy and publish app and libraries
 COPY . .
-RUN dotnet publish --no-restore -o /app
+RUN dotnet publish --no-restore -c Release -o /app
 
 # final image
-FROM registry.suse.com/bci/dotnet-runtime:6.0
+FROM registry.suse.com/bci/dotnet-runtime:9.0
+
 WORKDIR /app
 COPY --from=build /app .
 
@@ -56,22 +52,8 @@ ENTRYPOINT ["./dotnetapp"]
 Build and run the container image:
 
 ```ShellSession
-podmanbuild -t my-dotnet-app .
+podman build -t my-dotnet-app .
 podman run -it --rm my-dotnet-app
-```
-
-There are situations, where you don't want to run an application inside a container.
-
-To compile the application without running it inside a container, use the following command:
-
-```ShellSession
-podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/dotnet-sdk:6.0 dotnet run
-```
-
-To run unit tests in an isolated environment, use the following command:
-
-```ShellSession
-podman run --rm -v "$PWD":/app:Z -w /app/tests registry.suse.com/bci/dotnet-sdk:6.0 dotnet test --logger:trx
 ```
 
 ## Globalization
