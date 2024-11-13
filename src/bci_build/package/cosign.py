@@ -29,7 +29,8 @@ COSIGN_CONTAINERS = [
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        package_list=["cosign"],
+        package_list=["cosign"]
+        + (["openSUSE-build-key"] if os_version.is_tumbleweed else ["suse-build-key"]),
         entrypoint=["/usr/bin/cosign"],
         license="Apache-2.0",
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
