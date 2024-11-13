@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 13 13:05:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- set kiwi mapper to kpartx
+
+-------------------------------------------------------------------
 Wed Oct 30 15:34:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - point to a contact location for SLE BCI
