@@ -27,7 +27,7 @@ FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends cosign; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends cosign suse-build-key; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.6
