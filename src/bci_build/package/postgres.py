@@ -10,6 +10,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 
 _POSTGRES_ENTRYPOINT = (
     Path(__file__).parent / "postgres" / "entrypoint.sh"
@@ -26,7 +27,15 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
-        package_list=["libpq5", f"postgresql{ver}-server", "findutils"],
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+        package_list=[
+            "libpq5",
+            f"postgresql{ver}-server",
+            "findutils",
+            "coreutils",
+            "sed",
+            "util-linux",  # for setpriv :-(
+        ],
         version="%%pg_patch_version%%",
         tag_version=str(ver),
         additional_versions=["%%pg_minor_version%%"],
