@@ -23,16 +23,13 @@
 #!BuildName: suse-postgres-16
 #!BuildVersion: 15.6.16
 #!BuildRelease: 35
-FROM registry.suse.com/bci/bci-micro:15.6 AS target
-FROM suse/sle15:15.6 AS builder
-COPY --from=target / /target
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql16-server findutils coreutils sed; \
+    zypper -n install --no-recommends libpq5 postgresql16-server findutils; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-FROM registry.suse.com/bci/bci-micro:15.6
-COPY --from=builder /target /
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postgres
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
