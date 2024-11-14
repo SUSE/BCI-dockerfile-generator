@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 14 17:06:48 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to multistage build
+
+-------------------------------------------------------------------
 Thu Oct 31 16:12:08 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - be explicit in protocol for expose statement
