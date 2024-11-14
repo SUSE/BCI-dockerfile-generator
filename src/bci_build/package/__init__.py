@@ -235,6 +235,10 @@ class BaseContainerImage(abc.ABC):
     #:   is not possible and will result in an error.
     custom_end: str = ""
 
+    #: This string is appended to the the build stage in a multistage build and can
+    #: contain arbitrary instructions valid for a :file:`Dockerfile`.
+    build_stage_custom_end: str | None = None
+
     #: A script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
     #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added

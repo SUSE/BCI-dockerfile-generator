@@ -14,6 +14,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
 
@@ -42,10 +43,6 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
     else:
         prefix = "rmt-"
         additional_names = ["mariadb"]
-
-    version_check_lines = generate_package_version_check(
-        "mariadb-client", mariadb_version
-    )
 
     docker_entrypoint = (
         Path(__file__).parent / "mariadb" / str(mariadb_version) / "entrypoint.sh"
@@ -77,6 +74,10 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             version_in_uid=False,
             pretty_name="MariaDB Server",
+            from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+            build_stage_custom_end=generate_package_version_check(
+                "mariadb", mariadb_version, use_target=True
+            ),
             replacements_via_service=[
                 Replacement(
                     regex_in_build_description=_MARIADB_VERSION_PLACEHOLDER,
@@ -90,12 +91,15 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
                 ),
             ],
             package_list=[
+                "coreutils",
+                "findutils",
+                "gawk",
                 "mariadb",
                 "mariadb-tools",
-                "gawk",
+                "openssl",
+                "sed",
                 "timezone",
                 "util-linux",
-                "findutils",
                 "zstd",
             ],
             entrypoint=[_ENTRYPOINT_FNAME],
@@ -114,9 +118,7 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
             cmd=["mariadbd"],
             volumes=["/var/lib/mysql"],
             exposes_ports=[TCP(3306)],
-            custom_end=rf"""{version_check_lines}
-
-{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
+            custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY {_ENTRYPOINT_FNAME} /usr/local/bin/
@@ -151,6 +153,10 @@ COPY gosu /usr/local/bin/gosu
             version_in_uid=False,
             additional_names=[f"{name}-client" for name in additional_names],
             version=_MARIADB_VERSION_PLACEHOLDER,
+            from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+            build_stage_custom_end=generate_package_version_check(
+                "mariadb-client", mariadb_version, use_target=True
+            ),
             tag_version=mariadb_version,
             pretty_name="MariaDB Client",
             support_level=SupportLevel.L3,
@@ -163,6 +169,5 @@ COPY gosu /usr/local/bin/gosu
                     package_name="mariadb-client",
                 ),
             ],
-            custom_end=version_check_lines,
         )
     )
