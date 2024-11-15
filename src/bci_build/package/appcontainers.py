@@ -1,5 +1,6 @@
 """Application Containers that are generated with the BCI tooling"""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import TCP
