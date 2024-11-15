@@ -1,0 +1,35 @@
+# The Valkey {{ image.tag_version }} container image
+
+{% include 'badges.j2' %}
+
+## Description
+
+Valkey is a high-performance data structure server that primarily serves
+key/value workloads. It supports a wide range of native structures and
+an extensible plugin system for adding new data structures and access
+patterns.
+
+## How to use the image
+
+The image ships with the valkey server and a persistent storage configured
+to `/data`.
+
+To start an instance, follow these instructions:
+
+
+```ShellSession
+podman run --rm {{ image.pretty_reference }}
+```
+
+In case you want start with persistent storage, run this:
+
+```ShellSession
+podman run --rm {{ image.pretty_reference }} valkey-server --save 60 1
+```
+
+This one will save a snapshot of the DB every 60 seconds if at least 1
+write operation was performed. If persistence is enabled, data is stored
+in the VOLUME /data, which can be used with `-v /host/dir:/data`.
+
+
+{% include 'licensing_and_eula.j2' %}
