@@ -343,7 +343,7 @@ GITEA_RUNNER_CONTAINER = OsContainer(
         "obs-service-format_spec_file",
         "obs-service-source_validator",
         "typescript",
-        "git",
+        "git-core",
         *OsVersion.TUMBLEWEED.release_package_names,
     ],
     extra_files={"osc_checkout": OSC_CHECKOUT},
