@@ -229,6 +229,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: trivy-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: valkey-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
   filters:
     event: pull_request
 
@@ -417,6 +421,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: trivy-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: valkey-image
   filters:
     event: push
     branches:
