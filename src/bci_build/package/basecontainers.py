@@ -20,6 +20,7 @@ from bci_build.package import OsContainer
 from bci_build.package import Package
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
@@ -105,6 +106,13 @@ _FIPS_15_SP4_BINARIES: list[str] = [
 ]
 
 
+def _get_asset_script(baseurl: str, binaries: list[str]) -> str:
+    return "".join(
+        f"#!RemoteAssetUrl: {baseurl}{binary}\nCOPY {os.path.basename(binary)} .\n"
+        for binary in binaries
+    ).strip()
+
+
 def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     bins: list[str] = []
     custom_set_fips_mode: str = (
@@ -131,10 +139,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     )
 
     return (
-        "".join(
-            f"#!RemoteAssetUrl: {_FIPS_ASSET_BASEURL}{binary}\nCOPY {os.path.basename(binary)} .\n"
-            for binary in bins
-        ).strip()
+        _get_asset_script(_FIPS_ASSET_BASEURL, bins)
         + (custom_install_bins if bins else "")
         + (custom_set_fips_mode if os_version not in (OsVersion.SP3,) else "")
     )
@@ -315,6 +320,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                     "kernel-devel",
                     "kernel-syms",
                     "gcc",
+                    "git-core",
                     "kmod",
                     "make",
                     "patch",
@@ -324,10 +330,52 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 ]
                 # tar is not in bci-base in 15.4, but we need it to unpack tarballs
                 + (["tar"] if os_version == OsVersion.SP4 else [])
+                + (["suse-module-tools-scriptlets"] if os_version.is_slfo else [])
             ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
+
+
+# SL Micro 6.0 GA kernel container devel
+_SLM60_BASEURL = "https://api.opensuse.org/public/build/SUSE:ALP:Source:Standard:Core:1.0:Build/standard/"
+_SLM60_KERNEL_PACKAGES = [
+    "x86_64/patchinfo.ga/kernel-devel-6.4.0-17.1.noarch.rpm",
+    "x86_64/patchinfo.ga/kernel-macros-6.4.0-17.1.noarch.rpm",
+    "x86_64/patchinfo.ga/kernel-syms-6.4.0-17.1.x86_64.rpm",
+    "x86_64/patchinfo.ga/kernel-default-devel-6.4.0-17.1.x86_64.rpm",
+    "aarch64/patchinfo.ga/kernel-syms-6.4.0-17.1.aarch64.rpm",
+    "aarch64/patchinfo.ga/kernel-default-devel-6.4.0-17.1.aarch64.rpm",
+    "aarch64/patchinfo.ga/kernel-64kb-devel-6.4.0-17.1.aarch64.rpm",
+    "s390x/patchinfo.ga/kernel-syms-6.4.0-17.1.s390x.rpm",
+    "s390x/patchinfo.ga/kernel-default-devel-6.4.0-17.1.s390x.rpm",
+]
+KERNEL_MODULE_CONTAINERS.append(
+    OsContainer(
+        name="slm60-kernel-module-devel",
+        pretty_name="SUSE Linux Micro 6.0 Kernel module development",
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
+        os_version=OsVersion.SLE16_0,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+        is_latest=OsVersion.SLE16_0 in CAN_BE_LATEST_OS_VERSION,
+        from_target_image=generate_from_image_tag(
+            OsVersion.SLE16_0, "bci-sle16-kernel-module-devel"
+        ),
+        package_list=OsVersion.SLE16_0.release_package_names,
+        exclusive_arch=[Arch.X86_64, Arch.S390X, Arch.AARCH64],
+        extra_files={"_constraints": generate_disk_size_constraints(8)},
+        custom_end=_get_asset_script(_SLM60_BASEURL, _SLM60_KERNEL_PACKAGES)
+        + textwrap.dedent(
+            f"""
+            {DOCKERFILE_RUN} \\
+                [ $(LC_ALL=C rpm --checksig -v *rpm | \\
+                    grep -c -E "^ *V3.*key ID 09d9ea69:") = {len(_SLM60_KERNEL_PACKAGES)} ] \\
+                && rpm -Uvh --oldpackage --force *.$(uname -m).rpm *.noarch.rpm \\
+                && rm -vf *.rpm \\
+                && rpmqpack | grep -E '^kernel-' | xargs zypper -n addlock\n"""
+        ),
+    )
+)
 
 
 OSC_CHECKOUT = (Path(__file__).parent / "gitea-runner" / "osc_checkout").read_bytes()
