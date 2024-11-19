@@ -85,7 +85,7 @@ TOMCAT_CONTAINERS = [
         version="%%tomcat_version%%",
         tag_version=tomcat_ver,
         build_flavor=f"openjdk{jre_version}",
-        _min_release_counter=None if not os_version.is_sle15 else 55,
+        _min_release_counter=58 if os_version.is_sle15 else None,
         supported_until=_get_sac_supported_until(
             os_version=os_version, tomcat_ver=tomcat_ver, jre_major=jre_version
         ),
