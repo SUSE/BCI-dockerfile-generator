@@ -18,7 +18,6 @@
 #!BuildTag: suse/cosign:%%cosign_version%%-%RELEASE%
 #!BuildTag: suse/cosign:%%cosign_version%%
 #!BuildTag: suse/cosign:2.4
-#!BuildTag: suse/cosign:2
 #!BuildTag: suse/cosign:latest
 #!BuildName: suse-cosign-2.4
 #!BuildVersion: 15.6.2.4
