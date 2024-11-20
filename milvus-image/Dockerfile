@@ -15,37 +15,35 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/cosign:%%cosign_version%%-%RELEASE%
-#!BuildTag: opensuse/cosign:%%cosign_version%%
-#!BuildTag: opensuse/cosign:2.4
-#!BuildTag: opensuse/cosign:2
-#!BuildTag: opensuse/cosign:latest
+#!BuildTag: opensuse/milvus:%%milvus_version%%-%RELEASE%
+#!BuildTag: opensuse/milvus:%%milvus_version%%
+#!BuildTag: opensuse/milvus:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends cosign openSUSE-build-key; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libglog-4-0 etcd minio-client tini milvus milvus-cppcpu; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM opensuse/bci/bci-micro:latest
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.application.cosign
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed cosign"
-LABEL org.opencontainers.image.description="Signing OCI containers using Sigstore, based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="%%cosign_version%%"
+# labelprefix=org.opensuse.application.milvus
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Milvus"
+LABEL org.opencontainers.image.description="Milvus is a high-performance, highly scalable vector database that runs efficiently across a wide range of environments.. It is based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.version="%%milvus_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%cosign_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/cosign:%%cosign_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%milvus_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/milvus:%%milvus_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/cosign-image/README.md"
-LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg"
-ENTRYPOINT ["/usr/bin/cosign"]
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/milvus-image/README.md"
+ENTRYPOINT ["/usr/bin/tini"]
+RUN set -euo pipefail; mkdir /milvus && ln -s /etc/milvus/configs/ /milvus
