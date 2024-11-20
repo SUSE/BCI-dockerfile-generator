@@ -23,6 +23,7 @@ COSIGN_CONTAINERS = [
             cosign_ver := get_pkg_version("cosign", os_version), ParseVersion.MINOR
         ),
         version_in_uid=False,
+        additional_versions=[format_version(cosign_ver, ParseVersion.MAJOR)],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%cosign_version%%",
