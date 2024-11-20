@@ -99,10 +99,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: milvus-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: minimal-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -326,9 +322,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: micro-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: milvus-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: minimal-image
