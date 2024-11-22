@@ -93,7 +93,7 @@ class Replacement:
     #: override file name, if unset use :file:`Dockerfile` or :file:`$pkg_name.kiwi`
     file_name: str | None = None
 
-    #: specify how the version should be formated, see
+    #: specify how the version should be formatted, see
     #: `<https://github.com/openSUSE/obs-service-replace_using_package_version#usage>`_
     #: for further details
     parse_version: None | ParseVersion = None
@@ -252,7 +252,7 @@ class BaseContainerImage(abc.ABC):
     #: for bash and not for a different shell.
     config_sh_interpreter: str = "/bin/bash"
 
-    #: The oci image author annoation for this image, defaults to SUSE/openSUSE
+    #: The oci image author annotation for this image, defaults to SUSE/openSUSE
     oci_authors: str | None = None
 
     #: Additional files that belong into this container-package.

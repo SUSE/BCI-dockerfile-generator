@@ -1863,7 +1863,7 @@ comma-separated list. The package list is taken from the environment variable
                 build_res = await bot.wait_for_build_to_finish()
                 if is_build_failed(build_res):
                     raise RuntimeError("Build failed!")
-                return "Build succeded"
+                return "Build succeeded"
 
             coro = _quality()
 
