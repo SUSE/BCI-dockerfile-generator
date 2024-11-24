@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Nov 24 08:01:55 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Fix spelling mistakes
+
+-------------------------------------------------------------------
 Thu Oct 31 16:12:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - be explicit in protocol for expose statement
