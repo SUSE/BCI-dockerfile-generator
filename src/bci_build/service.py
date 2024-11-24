@@ -25,7 +25,7 @@ class Service:
     mode: Literal["buildtime"] = "buildtime"
 
     def as_xml_element(self) -> ET.Element:
-        """Coverts this source service into a
+        """Converts this source service into a
         :py:class:`~xml.etree.ElementTree.Element`.
 
         """

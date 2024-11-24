@@ -26,7 +26,7 @@ class Registry(ABC):
     """The vendor that is put into the ``org.opencontainers.image.vendor`` label"""
     vendor: str
 
-    """enforce sequential release numbers even across version chagnes."""
+    """enforce sequential release numbers even across version changes."""
     force_multiversion: bool = False
 
     @staticmethod
