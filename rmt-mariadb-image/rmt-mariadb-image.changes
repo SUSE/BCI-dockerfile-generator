@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 25 11:54:57 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Switch to a multistage build and base the final image on micro
+
+-------------------------------------------------------------------
 Tue Nov 12 15:32:53 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - update entrypoint from upstream
