@@ -7,6 +7,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 
@@ -21,6 +22,9 @@ COSIGN_CONTAINERS = [
         version="%%cosign_version%%",
         tag_version=format_version(
             cosign_ver := get_pkg_version("cosign", os_version), ParseVersion.MINOR
+        ),
+        build_stage_custom_end=generate_package_version_check(
+            "cosign", cosign_ver, ParseVersion.MINOR, use_target=True
         ),
         version_in_uid=False,
         additional_versions=[format_version(cosign_ver, ParseVersion.MAJOR)],

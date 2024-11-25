@@ -55,6 +55,9 @@ COPY --from=target / /target
     zypper -n clean; \\
     {{ LOG_CLEAN }}
 {%- endif %}
+{%- if image.build_stage_custom_end %}
+{{ image.build_stage_custom_end }}
+{%- endif %}
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
 COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
