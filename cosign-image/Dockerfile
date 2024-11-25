@@ -31,6 +31,10 @@ RUN set -euo pipefail; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends cosign suse-build-key; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+# sanity check that the version from the tag is equal to the version of cosign that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' cosign | \
+    cut -d '.' -f -2)" = "2.4" ]
 FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers

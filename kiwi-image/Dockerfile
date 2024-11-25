@@ -53,4 +53,6 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
-RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' python3-kiwi | cut -d '.' -f -2)" = "9.24" ]
+RUN set -euo pipefail; \
+    [ "$(rpm -q --qf '%{version}' python3-kiwi | \
+    cut -d '.' -f -2)" = "9.24" ]
