@@ -19,9 +19,10 @@
 #!BuildTag: containers/apache-tomcat:%%tomcat_version%%-openjdk21
 #!BuildTag: containers/apache-tomcat:10.1-openjdk21
 #!ForceMultiVersion
+#!BcntSyncTag: sac-apache-tomcat-10-image
 #!BuildName: containers-apache-tomcat-10.1-openjdk21
 #!BuildVersion: %%tomcat_version%%
-#!BuildRelease: 55
+#!BuildRelease: 58
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
