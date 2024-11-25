@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 25 15:33:48 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- README formatting hint fix
+
+-------------------------------------------------------------------
 Mon Nov 25 11:54:33 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add line breaks into package version check
