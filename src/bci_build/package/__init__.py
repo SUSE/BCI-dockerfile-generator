@@ -154,9 +154,6 @@ class BaseContainerImage(abc.ABC):
     # ``devel:BCI:SLE-15-SP$ver`` (on  OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
     package_name: str | None = None
 
-    #: Epoch to use for handling os_version downgrades
-    os_epoch: int | None = None
-
     #: The container from which the build stage is running. On SLE15, this defaults to
     #: ``suse/sle15:15.$SP`` for Application Containers and ``bci/bci-base:15.$SP``
     #: for all other images. On openSUSE, ``opensuse/tumbleweed:latest`` is used
@@ -393,10 +390,7 @@ class BaseContainerImage(abc.ABC):
     @property
     def build_version(self) -> str | None:
         if self.os_version.is_sle15:
-            epoch = ""
-            if self.os_epoch:
-                epoch = f"{self.os_epoch}."
-            return f"15.{epoch}{int(self.os_version.value)}"
+            return f"15.{int(self.os_version.value)}"
         return None
 
     @property
