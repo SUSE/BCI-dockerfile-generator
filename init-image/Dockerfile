@@ -18,7 +18,7 @@
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%.%RELEASE%
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-init:latest
-#!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
+#!BuildName: bci-bci-init
 #!BuildVersion: 15.6
 FROM registry.suse.com/bci/bci-base:15.6
 
