@@ -39,7 +39,7 @@ VALKEY_CONTAINERS = [
             )
         ],
         license="BSD-3-Clause",
-        package_list=["valkey", "valkey-compat-redis"],
+        package_list=["valkey"],
         entrypoint=["/usr/bin/valkey-server"],
         entrypoint_user="valkey",
         exposes_ports=[TCP(6379)],
