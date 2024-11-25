@@ -23,13 +23,20 @@
 #!BuildTag: suse/mariadb-client:10.11
 #!BuildName: suse-rmt-mariadb-client-10.11
 #!BuildVersion: 15.7.10.11
-FROM suse/sle15:15.7
+FROM bci/bci-micro:15.7 AS target
+FROM suse/sle15:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends mariadb-client; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends mariadb-client; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
+    cut -d '.' -f -2)" = "10.11" ]
+FROM bci/bci-micro:15.7
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-mariadb-client
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -50,5 +57,3 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 CMD ["mariadb"]
-# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
-RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' mariadb-client | cut -d '.' -f -2)" = "10.11" ]
