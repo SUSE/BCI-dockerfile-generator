@@ -26,13 +26,20 @@
 #!BuildName: suse-rmt-mariadb-10.11
 #!BuildVersion: 15.6.10.11
 #!BuildRelease: 35
-FROM registry.suse.com/bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-micro:15.6 AS target
+FROM suse/sle15:15.6 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends mariadb mariadb-tools gawk timezone util-linux findutils zstd; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gawk mariadb mariadb-tools openssl sed timezone util-linux zstd; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+# sanity check that the version from the tag is equal to the version of mariadb that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' mariadb | \
+    cut -d '.' -f -2)" = "10.11" ]
+FROM registry.suse.com/bci/bci-micro:15.6
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-mariadb
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -57,9 +64,6 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]
 EXPOSE 3306/tcp
-# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
-RUN set -euo pipefail; [ "$(rpm -q --qf '%{version}' mariadb-client | cut -d '.' -f -2)" = "10.11" ]
-
 RUN set -euo pipefail; mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
