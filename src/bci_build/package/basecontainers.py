@@ -115,10 +115,9 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
             bins = _FIPS_15_SP2_BINARIES
         case OsVersion.SP4:
             bins = _FIPS_15_SP4_BINARIES
-        case OsVersion.SP5 | OsVersion.SP6:
-            pass
-        case _:
-            raise NotImplementedError(f"Unsupported os_version: {os_version}")
+
+    if os_version not in ALL_BASE_OS_VERSIONS:
+        raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
     custom_install_bins: str = textwrap.dedent(
         f"""
@@ -141,13 +140,11 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
 
 
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
-    match os_version:
-        case OsVersion.SP3:
-            return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
-        case OsVersion.SP4 | OsVersion.SP5 | OsVersion.SP6:
-            return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
-        case _:
-            raise NotImplementedError(f"Unsupported os_version: {os_version}")
+    if os_version == OsVersion.SP3:
+        return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
+    if os_version.is_sle15 or os_version.is_slfo or os_version.is_tumbleweed:
+        return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
+    raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
 
 def _get_supported_until_fips(os_version: OsVersion) -> datetime.date:
@@ -198,7 +195,7 @@ FIPS_BASE_CONTAINERS = [
         ),
     )
     # SP5 is known to be having a non-working libgcrypt for FIPS mode
-    for os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP6)
+    for os_version in ALL_OS_VERSIONS - {OsVersion.SP5}
 ]
 
 
