@@ -19,6 +19,8 @@ jobs:
           - 7
           - 6
           - 5
+          - 4
+          - 3
           - "16.0"
           - Tumbleweed
 
@@ -44,7 +46,7 @@ jobs:
         id: find_comment
         with:
           issue-number: ${{ github.event.number }}
-          body-includes: "Created a staging project on OBS for ${{ matrix.os_version }}: "
+          body-includes: "Rendered the templates for ${{ matrix.os_version }}: "
           direction: last
 
       - name: run the cleanup
