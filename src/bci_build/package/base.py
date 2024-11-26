@@ -177,13 +177,12 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "cracklib-dict-small",
                     "filesystem",
                     "jdupes",
-                    "patterns-base-fips",
                     "shadow",
                     "zypper",
                 ]
                 + (["libcurl-mini4"] if os_version.is_slfo else [])
                 + (
-                    ["kubic-locale-archive", "rpm-ndb"]
+                    ["kubic-locale-archive", "rpm-ndb", "patterns-base-fips"]
                     if os_version.is_sle15
                     else ["glibc-locale-base"]
                 )

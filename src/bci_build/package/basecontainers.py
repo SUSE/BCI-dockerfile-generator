@@ -173,11 +173,14 @@ FIPS_BASE_CONTAINERS = [
             os_version in CAN_BE_LATEST_OS_VERSION or os_version in ALL_OS_LTSS_VERSIONS
         ),
         pretty_name=_get_fips_pretty_name(os_version),
-        package_list=[*os_version.release_package_names, "coreutils"]
-        + (
-            ["fipscheck"]
-            if os_version == OsVersion.SP3
-            else ["crypto-policies-scripts"]
+        package_list=(
+            [*os_version.release_package_names, "coreutils"]
+            + (
+                ["fipscheck"]
+                if os_version == OsVersion.SP3
+                else ["crypto-policies-scripts"]
+            )
+            + (["patterns-base-fips"] if os_version.is_slfo else [])
         ),
         extra_labels={
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
