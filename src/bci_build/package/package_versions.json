@@ -25,6 +25,14 @@
         "Tumbleweed": "2.6",
         "version_format": "minor"
     },
+    "kubernetes1.28": {
+        "5": "1.28.13",
+        "6": "1.28.13",
+        "7": "1.28.13"
+    },
+    "kubernetes1.31": {
+        "Tumbleweed": "1.31.3"
+    },
     "mariadb": {
         "5": "10.6",
         "6": "10.11",
