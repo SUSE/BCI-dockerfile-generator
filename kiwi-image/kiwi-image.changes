@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 26 17:34:14 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- add buildname setting for stable container aggregation
+
+-------------------------------------------------------------------
 Mon Nov 25 11:56:31 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add line breaks into package version check
