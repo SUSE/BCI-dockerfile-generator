@@ -72,6 +72,7 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         + os_version.common_devel_packages
         + ([f"{py3}-wheel"] if has_wheel else [])
         + ([f"{py3}-pipx"] if has_pipx else [])
+        + (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
         + os_version.lifecycle_data_pkg,
         "replacements_via_service": [
             Replacement(
