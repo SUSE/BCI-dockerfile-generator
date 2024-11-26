@@ -208,18 +208,18 @@ def _get_minimal_kwargs(os_version: OsVersion):
     if os_version in (OsVersion.SP6,):
         package_list.append(Package("libpcre1", pkg_type=PackageType.DELETE))
 
-    package_list += [
+    package_list.extend(
         Package(name, pkg_type=PackageType.BOOTSTRAP)
         for name in os_version.release_package_names
-    ]
+    )
     if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
-        package_list += [
+        package_list.extend(
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base")
-        ]
+        )
 
     kwargs = {
         "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
