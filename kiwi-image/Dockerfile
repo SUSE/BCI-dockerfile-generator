@@ -19,7 +19,8 @@
 #!BuildTag: bci/kiwi:10.1.16
 #!BuildTag: bci/kiwi:10.1
 #!BuildTag: bci/kiwi:10
-
+#!BuildName: bci-kiwi-10.1
+#!BuildVersion: 16.0.10.1
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
