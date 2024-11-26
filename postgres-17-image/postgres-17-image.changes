@@ -1,0 +1,4 @@
+-------------------------------------------------------------------
+Tue Nov 26 12:45:32 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the PostgreSQL 17 %%pg_patch_version%% BCI
