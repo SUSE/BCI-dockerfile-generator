@@ -18,7 +18,8 @@
 #!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildTag: bci/gcc:14
-
+#!BuildName: bci-gcc-14
+#!BuildVersion: 16.0.14
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
