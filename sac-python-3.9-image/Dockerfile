@@ -25,7 +25,7 @@
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends python39-devel python39 python39-pip curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends python39-devel python39 python39-pip curl findutils gawk git-core procps lifecycle-data-sle-module-python3 lifecycle-data-sle-module-development-tools; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
