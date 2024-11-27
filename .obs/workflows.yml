@@ -83,6 +83,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: kea-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: kiwi-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -262,6 +266,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: init-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: kea-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: kiwi-image

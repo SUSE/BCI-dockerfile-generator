@@ -23,7 +23,7 @@
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends python313-devel python313 python313-pip curl findutils gawk git-core procps python313-wheel python313-pipx lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends python313-devel python313 python313-pip curl findutils gawk git-core procps python313-wheel python313-pipx lifecycle-data-sle-module-python3 lifecycle-data-sle-module-development-tools; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 

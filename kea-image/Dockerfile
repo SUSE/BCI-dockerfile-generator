@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MPL-2.0
 
 #     Copyright (c) 2024 SUSE LLC
 
@@ -15,42 +15,42 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/python:%%py311_ver%%-%RELEASE%
-#!BuildTag: bci/python:%%py311_ver%%
-#!BuildTag: bci/python:3.11
-#!BuildTag: bci/python:3
-#!BuildName: bci-python-3.11
-#!BuildVersion: 15.7.3.11
-FROM bci/bci-base:15.7
+#!BuildTag: suse/kea:2.6-%RELEASE%
+#!BuildTag: suse/kea:2.6
+#!BuildTag: suse/kea:latest
+#!BuildName: suse-kea-2.6
+#!BuildVersion: 15.7.2.6
+FROM suse/sle15:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends python311-devel python311 python311-pip curl findutils gawk git-core procps python311-wheel python311-pipx lifecycle-data-sle-module-python3 lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends kea util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.python
+# labelprefix=com.suse.application.kea
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Python 3.11 development"
-LABEL org.opencontainers.image.description="Python 3.11 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%py311_ver%%"
+LABEL org.opencontainers.image.title="SLE Kea DHCP Server"
+LABEL org.opencontainers.image.description="Kea DHCP Server container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="2.6"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%py311_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/python:%%py311_ver%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="2.6-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kea:2.6-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2027-12-31"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV PYTHON_VERSION="%%py311_ver%%"
-ENV PATH="$PATH:/root/.local/bin"
-ENV PIP_VERSION="%%pip_ver%%"
+LABEL run="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v /etc/kea:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
+LABEL runcwd="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v .:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
+LABEL run_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v /etc/kea:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
+LABEL runcwd_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v .:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
+EXPOSE 67 67/udp
 
-RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; ln -s /usr/bin/python3.11 /usr/local/bin/python3; \
-    ln -s /usr/bin/pydoc3.11 /usr/local/bin/pydoc
+    RUN mkdir -p /var/run/kea
+    
