@@ -78,7 +78,7 @@ class OsVersion(enum.Enum):
 
     @property
     def lifecycle_data_pkg(self) -> list[str]:
-        if self.value not in (OsVersion.SLE16_0.value, OsVersion.TUMBLEWEED.value):
+        if self.is_sle15:
             return ["lifecycle-data-sle-module-development-tools"]
         return []
 
