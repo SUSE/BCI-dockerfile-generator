@@ -1116,6 +1116,8 @@ exit 0
 
             if hasattr(self, "version"):
                 ver = self.version
+                if hasattr(self, "tag_version"):
+                    ver = self.tag_version
                 # we don't want to include the version for language stack
                 # containers with the version_in_uid flag set to False, but by
                 # default we include it (for os containers which don't have this
