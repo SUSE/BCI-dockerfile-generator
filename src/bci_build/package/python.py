@@ -97,6 +97,12 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         config_sh_script += rf"""; ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
 
+    # broken packaging without a "pip" update-alternatives link
+    if py3_ver in ("3.9",):
+        config_sh_script += (
+            f"; test -e /usr/bin/pip || ln -s /usr/bin/pip{py3_ver} /usr/local/bin/pip"
+        )
+
     kwargs["config_sh_script"] = config_sh_script
 
     return kwargs
