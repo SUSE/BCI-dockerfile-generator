@@ -20,6 +20,11 @@
         "Tumbleweed": "3.16",
         "version_format": "minor"
     },
+    "kea": {
+        "7": "2.6",
+        "Tumbleweed": "2.6",
+        "version_format": "minor"
+    },
     "mariadb": {
         "5": "10.6",
         "6": "10.11",

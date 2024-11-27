@@ -1458,6 +1458,7 @@ from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .kea import KEA_DHCP_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CONTAINERS  # noqa: E402
@@ -1524,6 +1525,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *TOMCAT_CONTAINERS,
         *GCC_CONTAINERS,
         *SPACK_CONTAINERS,
+        *KEA_DHCP_CONTAINERS,
     )
 }
 
