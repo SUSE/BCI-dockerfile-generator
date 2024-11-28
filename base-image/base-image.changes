@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 28 13:42:17 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Drop patterns-base-fips, it's meaning changed from SLES 15 -> 16 and now it pulls in too many unnecessary packages
+
+-------------------------------------------------------------------
 Wed Oct 30 15:34:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - point to a contact location for SLE BCI
