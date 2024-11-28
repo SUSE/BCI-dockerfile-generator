@@ -1,8 +1,31 @@
-# The SLE 15 SP7 with Git container image
+# SLE 15 SP7 with Git: Git application container
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
-A micro environment with Git based on the SLE Base Container Image.
+
+## Description
+
+Git is a distributed version control system that tracks
+versions of files. Git is primarily designed for controlling source code in collaborative software development.
+
+
+## Usage
+
+This container provides the SUSE LLC version of Git.
+
+Example of using Git container:
+
+```ShellSession
+$ podman run registry.suse.com/suse/git:2.43 git help
+```
+
+As Git requires a repository, the container
+does not explicitly set an entrypoint. This way, you can launch the container in
+interactive mode to clone a repository and work on it. To avoid losing all your changes when exiting the container, use a persistent volume mount on launch.
+
+For more use cases and documentation, refer to the
+[Git SCM documentation](https://git-scm.com/doc).
+
 
 ## Licensing
 
