@@ -236,6 +236,11 @@ class BaseContainerImage(abc.ABC):
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
     build_stage_custom_end: str | None = None
 
+    #: This string defines which build counter identifier should be used for this
+    #: container. can be an arbitrary string is used to derive the checkin-counter.
+    #: Defaults to the main package for packages with a flavor.
+    buildcounter_synctag: str | None = None
+
     #: A script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
     #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
@@ -355,6 +360,10 @@ class BaseContainerImage(abc.ABC):
             and self.support_level == SupportLevel.L3
         ):
             self.support_level = SupportLevel.TECHPREVIEW
+
+        # set buildcounter to the package name if not set
+        if not self.buildcounter_synctag and self.package_name and self.build_flavor:
+            self.buildcounter_synctag = self.package_name
 
     @abc.abstractmethod
     def prepare_template(self) -> None:
@@ -1226,7 +1235,13 @@ class DevelopmentContainer(BaseContainerImage):
 
     @property
     def uid(self) -> str:
-        return f"{self.name}-{self._tag_variant}" if self.version_in_uid else self.name
+        return (
+            f"{self.name}-{self._tag_variant}" if self.version_in_uid else self.name
+        ) + (
+            "-sac"
+            if isinstance(self._publish_registry, ApplicationCollectionRegistry)
+            else ""
+        )
 
     @property
     def _stability_suffix(self) -> str:
@@ -1468,11 +1483,11 @@ from .php import PHP_CONTAINERS  # noqa: E402
 from .postfix import POSTFIX_CONTAINERS  # noqa: E402
 from .postgres import POSTGRES_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
-from .python import PYTHON_3_9_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_13_CONTAINERS  # noqa: E402
 from .python import PYTHON_TW_CONTAINERS  # noqa: E402
+from .python import SAC_PYTHON_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
@@ -1484,8 +1499,8 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     for bci in (
         *BASE_CONTAINERS,
         *COSIGN_CONTAINERS,
+        *SAC_PYTHON_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
-        *PYTHON_3_9_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_3_12_CONTAINERS,
         *PYTHON_3_13_CONTAINERS,
