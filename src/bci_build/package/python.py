@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -108,6 +109,20 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     return kwargs
 
 
+SAC_PYTHON_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs(py_version, OsVersion.SP6),
+        build_flavor=py_version,
+        is_singleton_image=True,
+        package_name="sac-python-image",
+        _publish_registry=publish_registry(OsVersion.SP6, app_collection=True),
+    )
+    for py_version in ("3.9", "3.11")
+]
+
+SAC_PYTHON_CRATE = ContainerCrate(SAC_PYTHON_CONTAINERS)
+
+
 PYTHON_3_6_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
@@ -117,14 +132,6 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP6,)
 )
 
-PYTHON_3_9_CONTAINERS = (
-    PythonDevelopmentContainer(
-        **_get_python_kwargs("3.9", os_version),
-        package_name="sac-python-3.9-image",
-        _publish_registry=publish_registry(os_version, app_collection=True),
-    )
-    for os_version in (OsVersion.SP6,)
-)
 
 _PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.10", "3.12", "3.13", "3.11")
 PYTHON_TW_CONTAINERS = (
