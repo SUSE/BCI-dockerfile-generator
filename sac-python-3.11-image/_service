@@ -2,13 +2,13 @@
   <service mode="buildtime" name="docker_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
   <service name="replace_using_package_version" mode="buildtime">
-      <param name="file">Dockerfile.3.9</param>
-      <param name="regex">%%py39_ver%%</param>
-      <param name="package">python39-base</param>
+      <param name="file">Dockerfile.3.11</param>
+      <param name="regex">%%py311_ver%%</param>
+      <param name="package">python311-base</param>
   </service>
   <service name="replace_using_package_version" mode="buildtime">
-      <param name="file">Dockerfile.3.9</param>
+      <param name="file">Dockerfile.3.11</param>
       <param name="regex">%%pip_ver%%</param>
-      <param name="package">python39-pip</param>
+      <param name="package">python311-pip</param>
   </service>
 </services>

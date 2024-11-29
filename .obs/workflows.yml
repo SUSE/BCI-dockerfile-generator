@@ -179,6 +179,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: sac-python-3.11-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: python-3.12-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -382,6 +386,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: python-3.11-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: sac-python-3.11-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: python-3.12-image
