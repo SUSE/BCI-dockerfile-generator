@@ -11,12 +11,12 @@ from bci_build.templates import SERVICE_TEMPLATE
 
 
 def test_service_without_params_as_xml():
-    assert """<service name="foo" mode="buildtime" />""" == str(Service(name="foo"))
+    assert """<service mode="buildtime" name="foo" />""" == str(Service(name="foo"))
 
 
 def test_service_with_params_as_xml():
     assert (
-        """<service name="foo" mode="buildtime"><param name="baz">bar</param><param name="baz">foo</param></service>"""
+        """<service mode="buildtime" name="foo"><param name="baz">bar</param><param name="baz">foo</param></service>"""
         == str(Service(name="foo", param=[("baz", "bar"), ("baz", "foo")]))
     )
 
@@ -107,12 +107,12 @@ def test_service_with_replacement_kiwi():
         == """<services>
   <service mode="buildtime" name="kiwi_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">test-image.kiwi</param>
     <param name="regex">%%re%%</param>
     <param name="package">coreutils</param>
   </service>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">replacementfile</param>
     <param name="regex">%%re%%</param>
     <param name="package">coreutils</param>
@@ -148,18 +148,18 @@ def test_service_with_replacement_docker():
         == """<services>
   <service mode="buildtime" name="docker_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile</param>
     <param name="regex">%%my_ver%%</param>
     <param name="package">sh</param>
   </service>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile</param>
     <param name="regex">%%minor_ver%%</param>
     <param name="package">filesystem</param>
     <param name="parse-version">minor</param>
   </service>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">replacementfile</param>
     <param name="regex">%%minor_ver%%</param>
     <param name="package">filesystem</param>
@@ -190,12 +190,12 @@ def test_service_with_multi_flavor_docker():
         == """<services>
   <service mode="buildtime" name="docker_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile.flavor1</param>
     <param name="regex">%%my_ver%%</param>
     <param name="package">sh</param>
   </service>
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile.flavor2</param>
     <param name="regex">%%my_ver%%</param>
     <param name="package">sh</param>

@@ -29,7 +29,7 @@ class Service:
         :py:class:`~xml.etree.ElementTree.Element`.
 
         """
-        root = ET.Element("service", attrib={"name": self.name, "mode": self.mode})
+        root = ET.Element("service", attrib={"mode": self.mode, "name": self.name})
 
         for param in self.param:
             (p := ET.Element("param", attrib={"name": param[0]})).text = param[1]
