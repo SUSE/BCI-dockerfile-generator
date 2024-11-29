@@ -18,7 +18,7 @@ testing environment.
 ## Usage
 
 The container image comes with the `zypper` package manager, the free `SLE_BCI`
-repository and the `container-suseconnect` utility. This allows you to access to
+repository and the `container-suseconnect` utility. This allows you to access
 the full SLE repositories with a valid SLE subscription. The image is designed
 to be extended by installing packages required for your specific scenario.
 
