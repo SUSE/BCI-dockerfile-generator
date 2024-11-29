@@ -1049,7 +1049,7 @@ exit 0
         returns the filenames (not full paths) that were written to the disk.
 
         """
-        files = ["_service"]
+        files = []
         tasks = []
 
         self.prepare_template()
@@ -1095,18 +1095,11 @@ exit 0
                 False
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
 
-        if self.build_flavor:
-            dfile = "Dockerfile"
-            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile(self)))
-            files.append(dfile)
-
-            mname = "_multibuild"
-            tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
-            files.append(mname)
-
-        tasks.append(
-            write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
-        )
+        # Service file for containercrates is written via the crate
+        if not self.build_flavor:
+            fname = "_service"
+            tasks.append(write_file_to_dest(fname, SERVICE_TEMPLATE.render(image=self)))
+            files.append(fname)
 
         changes_file_name = self.package_name + ".changes"
         if not (Path(dest) / changes_file_name).exists():

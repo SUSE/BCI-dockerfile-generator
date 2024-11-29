@@ -1,5 +1,11 @@
 """Crate to handle multibuild containers in the generator."""
 
+import asyncio
+import os
+
+from bci_build.templates import SERVICE_TEMPLATE
+from bci_build.util import write_to_file
+
 
 class ContainerCrate:
     """ContainerCrate is combining multiple container build flavors.
@@ -48,3 +54,24 @@ class ContainerCrate:
             for pkg in self.all_build_flavors(container)
         )
         return f"<multibuild>\n{flavors}\n</multibuild>"
+
+    async def write_files_to_folder(self, dest: str, container) -> list[str]:
+        """Write the files that this crate,container pair needs."""
+        files = []
+
+        fname = "Dockerfile"
+        await write_to_file(
+            os.path.join(dest, fname), self.default_dockerfile(container)
+        )
+        files.append(fname)
+
+        fname = "_multibuild"
+        await write_to_file(os.path.join(dest, fname), self.multibuild(container))
+        files.append(fname)
+
+        fname = "_service"
+        await write_to_file(
+            os.path.join(dest, fname), SERVICE_TEMPLATE.render(image=container)
+        )
+        files.append(fname)
+        return files
