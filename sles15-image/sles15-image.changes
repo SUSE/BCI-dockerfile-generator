@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 29 12:38:55 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix typo in README
+
+-------------------------------------------------------------------
 Thu Nov 28 13:41:03 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Switch to the unauthenticated CDN for the SLE BCI repository
