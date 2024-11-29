@@ -15,8 +15,12 @@ testing environment.
 
 ## Usage
 
-The container image comes with the `zypper` package manager, the free `SLE_BCI`
-repository and the `container-suseconnect` utility. This allows you to access
+The container image comes with the `zypper` package manager
+{%- if image.os_version.is_ltss %}
+, the free `SLE_BCI` repository
+{%- endif %}
+
+and the `container-suseconnect` utility. This allows you to access
 the full SLE repositories with a valid SLE subscription. The image is designed
 to be extended by installing packages required for your specific scenario.
 
@@ -47,6 +51,7 @@ $ podman run -ti --rm {{ image.pretty_reference }}
 {% set ref_list = image.pretty_reference.split(":") %}{{ ref_list[0] }}
 ```
 
+{%- if image.os_version.is_ltss %}
 ### The SLE_BCI repository
 
 The container image comes with the free `SLE_BCI` repository. The repository
@@ -54,6 +59,7 @@ contains a subset of all packages from SUSE Linux Enterprise. The packages are
 available free of charge, and they can be redistributed freely. However, they
 are provided without support. The repository also contains the latest version of
 packages only.
+{%- endif %}
 
 
 ### Getting access to the SLE repositories
@@ -67,5 +73,7 @@ Find more information about container-suseconnect in the
 section in the container guide or in the tutorial ["How to use
 container-suseconnect"](https://opensource.suse.com/bci-docs/guides/container-suseconnect/).
 
-
+{%- if image.os_version.is_ltss %}
+{% include 'access_protected_images.j2' %}
+{%- endif %}
 {% include 'licensing_and_eula.j2' %}

@@ -1032,6 +1032,8 @@ exit 0
     def kiwi_version(self) -> str:
         if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
             return str(datetime.datetime.now().year)
+        if self.os_version in (OsVersion.SP5_LTSS,):
+            return "15.5"
         return f"15.{int(self.os_version.value)}.0"
 
     @property
