@@ -35,7 +35,8 @@ class Service:
             (p := ET.Element("param", attrib={"name": param[0]})).text = param[1]
             root.append(p)
 
+        ET.indent(root, space=" " * 4)
         return root
 
     def __str__(self) -> str:
-        return ET.tostring(self.as_xml_element()).decode("utf-8")
+        return ET.tostring(self.as_xml_element(), encoding="unicode")

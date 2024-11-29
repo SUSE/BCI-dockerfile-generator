@@ -4,7 +4,7 @@ import datetime
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import PackageType
-from bci_build.containercrate import ContainerCrate
+from bci_build.containercrate import ContainerCrateAssigner
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -150,4 +150,4 @@ WORKDIR $CATALINA_HOME
     )
 ]
 
-TOMCAT_CRATE = ContainerCrate(TOMCAT_CONTAINERS)
+ContainerCrateAssigner(TOMCAT_CONTAINERS)

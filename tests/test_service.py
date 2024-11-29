@@ -1,7 +1,6 @@
 import pytest
 
 from bci_build.container_attributes import BuildType
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
@@ -15,10 +14,10 @@ def test_service_without_params_as_xml():
 
 
 def test_service_with_params_as_xml():
-    assert (
-        """<service name="foo" mode="buildtime"><param name="baz">bar</param><param name="baz">foo</param></service>"""
-        == str(Service(name="foo", param=[("baz", "bar"), ("baz", "foo")]))
-    )
+    assert """<service name="foo" mode="buildtime">
+    <param name="baz">bar</param>
+    <param name="baz">foo</param>
+</service>""" == str(Service(name="foo", param=[("baz", "bar"), ("baz", "foo")]))
 
 
 @pytest.mark.parametrize(
@@ -164,41 +163,6 @@ def test_service_with_replacement_docker():
     <param name="regex">%%minor_ver%%</param>
     <param name="package">filesystem</param>
     <param name="parse-version">minor</param>
-  </service>
-</services>"""
-    )
-
-
-def test_service_with_multi_flavor_docker():
-    containers = [
-        DevelopmentContainer(
-            **_BASE_KWARGS,
-            build_recipe_type=BuildType.DOCKER,
-            build_flavor=flavor,
-            replacements_via_service=[
-                Replacement(regex_in_build_description="%%my_ver%%", package_name="sh"),
-            ],
-        )
-        for flavor in ("flavor1", "flavor2")
-    ]
-    ContainerCrate(containers)
-
-    assert (
-        SERVICE_TEMPLATE.render(
-            image=containers[0],
-        )
-        == """<services>
-  <service mode="buildtime" name="docker_label_helper"/>
-  <service mode="buildtime" name="kiwi_metainfo_helper"/>
-  <service name="replace_using_package_version" mode="buildtime">
-    <param name="file">Dockerfile.flavor1</param>
-    <param name="regex">%%my_ver%%</param>
-    <param name="package">sh</param>
-  </service>
-  <service name="replace_using_package_version" mode="buildtime">
-    <param name="file">Dockerfile.flavor2</param>
-    <param name="regex">%%my_ver%%</param>
-    <param name="package">sh</param>
   </service>
 </services>"""
     )

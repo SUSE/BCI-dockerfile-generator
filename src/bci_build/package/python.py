@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
-from bci_build.containercrate import ContainerCrate
+from bci_build.containercrate import ContainerCrateAssigner
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -119,8 +119,7 @@ SAC_PYTHON_CONTAINERS = [
     )
     for py_version in ("3.9", "3.11")
 ]
-
-SAC_PYTHON_CRATE = ContainerCrate(SAC_PYTHON_CONTAINERS)
+ContainerCrateAssigner(SAC_PYTHON_CONTAINERS)
 
 
 PYTHON_3_6_CONTAINERS = (
