@@ -114,7 +114,7 @@ SAC_PYTHON_CONTAINERS = [
         **_get_python_kwargs(py_version, OsVersion.SP6),
         build_flavor=py_version,
         is_singleton_image=True,
-        package_name="sac-python-image",
+        package_name=f"sac-python-{py_version}-image",
         _publish_registry=publish_registry(OsVersion.SP6, app_collection=True),
     )
     for py_version in ("3.9", "3.11")
