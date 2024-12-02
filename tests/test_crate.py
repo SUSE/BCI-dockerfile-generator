@@ -1,5 +1,5 @@
 from bci_build.container_attributes import BuildType
-from bci_build.containercrate import ContainerCrate
+from bci_build.containercrate import ContainerCrateAssigner
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 
@@ -22,8 +22,9 @@ def test_multibuild_with_multi_flavor_docker():
         )
         for flavor in ("flavor1", "flavor2")
     ]
+    ContainerCrateAssigner(containers)
     assert (
-        ContainerCrate(containers).multibuild(containers[0])
+        containers[0].crate.multibuild()
         == """<multibuild>
     <package>flavor1</package>
     <package>flavor2</package>

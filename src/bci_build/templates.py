@@ -201,24 +201,18 @@ SERVICE_TEMPLATE = jinja2.Template(
     """<services>
   <service mode="buildtime" name="{{ image.build_recipe_type }}_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
-{%- set all_build_flavors = [""] %}
-{%-     if image.crate and image.build_flavor %}
-{%-         set all_build_flavors = image.crate.all_build_flavors(image) %}
-{%-     endif %}
-{%- for flavor in all_build_flavors %}
 {%- for replacement in image.replacements_via_service %}
   <service name="replace_using_package_version" mode="buildtime">
     <param name="file">
 {%- if replacement.file_name != None %}{{replacement.file_name}}
-{%- elif (image.build_recipe_type|string) == "docker" %}{% if flavor %}Dockerfile.{{ flavor }}{% else %}Dockerfile{% endif %}
+{%- elif (image.build_recipe_type|string) == "docker" %}Dockerfile
 {%- else %}{{ image.package_name }}.kiwi
 {%- endif %}</param>
     <param name="regex">{{ replacement.regex_in_build_description }}</param>
     <param name="package">{{ replacement.package_name }}</param>{% if replacement.parse_version %}
     <param name="parse-version">{{ replacement.parse_version }}</param>{% endif %}
   </service>
-{%- endfor -%}
-{% endfor %}
+{%- endfor %}
 </services>
 """
 )

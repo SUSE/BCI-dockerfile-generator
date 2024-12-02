@@ -1049,7 +1049,7 @@ exit 0
         returns the filenames (not full paths) that were written to the disk.
 
         """
-        files = ["_service"]
+        files = []
         tasks = []
 
         self.prepare_template()
@@ -1095,18 +1095,11 @@ exit 0
                 False
             ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
 
-        if self.build_flavor:
-            dfile = "Dockerfile"
-            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile(self)))
-            files.append(dfile)
-
-            mname = "_multibuild"
-            tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
-            files.append(mname)
-
-        tasks.append(
-            write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
-        )
+        # Service file for containercrates is written via the crate
+        if not self.build_flavor:
+            fname = "_service"
+            tasks.append(write_file_to_dest(fname, SERVICE_TEMPLATE.render(image=self)))
+            files.append(fname)
 
         changes_file_name = self.package_name + ".changes"
         if not (Path(dest) / changes_file_name).exists():
@@ -1212,7 +1205,9 @@ class DevelopmentContainer(BaseContainerImage):
     def _version_variant(self) -> str:
         """return the version-build_flavor or version."""
         return (
-            f"{self.version}-{self.build_flavor}" if self.build_flavor else self.version
+            f"{self.version}-{self.build_flavor}"
+            if self.build_flavor and self.build_flavor != self.tag_version
+            else self.version
         )
 
     @property
@@ -1220,13 +1215,22 @@ class DevelopmentContainer(BaseContainerImage):
         """return the tag_version-build_flavor or tag_version."""
         return (
             f"{self.tag_version}-{self.build_flavor}"
-            if self.build_flavor
+            if self.build_flavor and self.build_flavor != self.tag_version
             else self.tag_version
         )
 
     @property
     def uid(self) -> str:
-        return f"{self.name}-{self._tag_variant}" if self.version_in_uid else self.name
+        registry = (
+            "-sac"
+            if isinstance(self._publish_registry, ApplicationCollectionRegistry)
+            else ""
+        )
+        return (
+            f"{self.name}-{self._tag_variant}{registry}"
+            if self.version_in_uid
+            else self.name
+        )
 
     @property
     def _stability_suffix(self) -> str:
@@ -1468,11 +1472,11 @@ from .php import PHP_CONTAINERS  # noqa: E402
 from .postfix import POSTFIX_CONTAINERS  # noqa: E402
 from .postgres import POSTGRES_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
-from .python import PYTHON_3_9_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_13_CONTAINERS  # noqa: E402
 from .python import PYTHON_TW_CONTAINERS  # noqa: E402
+from .python import SAC_PYTHON_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
@@ -1484,8 +1488,8 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     for bci in (
         *BASE_CONTAINERS,
         *COSIGN_CONTAINERS,
+        *SAC_PYTHON_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
-        *PYTHON_3_9_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_3_12_CONTAINERS,
         *PYTHON_3_13_CONTAINERS,
