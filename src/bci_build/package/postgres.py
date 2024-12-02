@@ -4,6 +4,7 @@ from pathlib import Path
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -27,6 +28,9 @@ POSTGRES_CONTAINERS = [
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
+        supported_until=(
+            _SUPPORTED_UNTIL_SLE[os_version] if os_version.is_sle15 else None
+        ),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         package_list=[
             "libpq5",
