@@ -10,7 +10,7 @@ on:
 jobs:
   format:
     name: Ensure code is properly formatted
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
 
   ci:
     name: Run the unit tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
@@ -56,7 +56,7 @@ jobs:
 
   documentation:
     name: Build the documentation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
