@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
 Thu Nov 28 14:47:58 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - add/extend README

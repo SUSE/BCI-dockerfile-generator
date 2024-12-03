@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
 Tue Dec  3 14:08:35 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - dockerfile fixes
