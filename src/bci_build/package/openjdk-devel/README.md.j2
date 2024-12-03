@@ -10,14 +10,14 @@ The OpenJDK development image is intended to be used as a build environment. For
 
 ## Usage
 
-The default command for the image is the Java Shell tool (JShell).
+{% if image.os_version | string in ("5", "6") %}The default command for the image is the Java Shell tool (JShell).
 
 ```ShellSession
 $ podman run -it --rm {{ image.pretty_reference }}
 jshell> /help
 ```
 
-To compile and deploy an application, copy the sources and build the binary:
+{% endif %}To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
