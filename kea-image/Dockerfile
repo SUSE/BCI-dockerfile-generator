@@ -17,7 +17,6 @@
 
 #!BuildTag: suse/kea:2.6-%RELEASE%
 #!BuildTag: suse/kea:2.6
-#!BuildTag: suse/kea:latest
 #!BuildName: suse-kea-2.6
 #!BuildVersion: 15.7.2.6
 FROM suse/sle15:15.7
@@ -50,7 +49,7 @@ LABEL run="podman run --replace -it --privileged --network=host --name kea-dhcp4
 LABEL runcwd="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v .:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
 LABEL run_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v /etc/kea:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
 LABEL runcwd_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v .:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
-EXPOSE 67 67/udp
+EXPOSE 67/tcp 67/udp
 
-    RUN mkdir -p /var/run/kea
-    
+ENV KEA_PIDFILE_DIR="/var/run/kea"
+RUN install -m 0750 -o root -g root -d /var/run/kea
