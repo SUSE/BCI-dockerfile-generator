@@ -29,7 +29,9 @@ POSTGRES_CONTAINERS = [
         pretty_name=f"PostgreSQL {ver}",
         support_level=SupportLevel.ACC,
         supported_until=(
-            _SUPPORTED_UNTIL_SLE[os_version] if os_version.is_sle15 else None
+            _SUPPORTED_UNTIL_SLE[os_version]
+            if os_version in (OsVersion.SP5, OsVersion.SP6)
+            else None
         ),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         package_list=[
