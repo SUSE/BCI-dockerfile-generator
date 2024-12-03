@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  3 08:40:44 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
 Tue Nov 26 14:34:11 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Drop latest tag in favor of postgres 17

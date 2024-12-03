@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  3 08:40:44 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
 Wed Oct 30 15:35:19 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - point to a contact location for SLE BCI

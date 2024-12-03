@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  3 08:40:44 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
 Thu Nov 28 13:38:57 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add alias pip pointing to pip-3.9
