@@ -207,7 +207,7 @@ SERVICE_TEMPLATE = jinja2.Template(
 {%-     endif %}
 {%- for flavor in all_build_flavors %}
 {%- for replacement in image.replacements_via_service %}
-  <service name="replace_using_package_version" mode="buildtime">
+  <service mode="buildtime" name="replace_using_package_version">
     <param name="file">
 {%- if replacement.file_name != None %}{{replacement.file_name}}
 {%- elif (image.build_recipe_type|string) == "docker" %}{% if flavor %}Dockerfile.{{ flavor }}{% else %}Dockerfile{% endif %}
