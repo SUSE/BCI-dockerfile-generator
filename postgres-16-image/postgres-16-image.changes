@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Dec  2 15:18:44 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add end of support date
+
+-------------------------------------------------------------------
 Tue Nov 26 14:35:53 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Drop latest tag in favor of postgres 17
