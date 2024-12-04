@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-
+#!ExclusiveArch: x86_64
 #!BuildTag: opensuse/bci/bci-base-fips:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: opensuse/bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildTag: opensuse/bci/bci-base-fips:latest

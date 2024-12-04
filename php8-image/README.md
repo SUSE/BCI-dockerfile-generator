@@ -1,6 +1,6 @@
 # The PHP 8 container image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 PHP is a general-purpose scripting language used primarily for server-side web
 development. It can be used directly, embedded in HTML files, or executed via a

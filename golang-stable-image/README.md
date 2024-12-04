@@ -1,6 +1,6 @@
 # Go 1.23 development container image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 

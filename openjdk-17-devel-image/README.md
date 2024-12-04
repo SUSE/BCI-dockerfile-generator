@@ -1,6 +1,6 @@
 # OpenJDK 17 development container image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 

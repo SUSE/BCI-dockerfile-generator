@@ -1,6 +1,6 @@
 # OpenJDK 23 runtime container image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 

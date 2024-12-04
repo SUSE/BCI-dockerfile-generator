@@ -1,6 +1,6 @@
 # Ruby 3.3 Container Image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 

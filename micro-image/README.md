@@ -1,5 +1,5 @@
 # openSUSE Tumbleweed BCI Micro: Suitable for deploying static binaries
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 

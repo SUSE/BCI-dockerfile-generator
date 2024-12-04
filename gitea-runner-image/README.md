@@ -1,5 +1,5 @@
 # The openSUSE Tumbleweed BCI Gitea action runner container image
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 Gitea action runner container based on the openSUSE Tumbleweed Base Container Image.
 

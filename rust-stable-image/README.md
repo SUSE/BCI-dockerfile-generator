@@ -1,6 +1,6 @@
 # Rust 1.82 Container Image
 
-![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
+
 
 ## Description
 
