@@ -30,10 +30,10 @@ RUN set -euo pipefail; \
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.gcc
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI GNU Compiler Collection"
-LABEL org.opencontainers.image.description="GNU Compiler Collection container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE LTSS BCI GNU Compiler Collection"
+LABEL org.opencontainers.image.description="GNU Compiler Collection container based on the SLE LTSS Base Container Image."
 LABEL org.opencontainers.image.version="%%gcc_minor_version%%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/long-term-service-pack-support/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
@@ -42,7 +42,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%R
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-07-31"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix

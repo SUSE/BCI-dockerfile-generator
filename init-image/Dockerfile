@@ -29,10 +29,10 @@ RUN set -euo pipefail; \
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.init
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI 16 Init"
-LABEL org.opencontainers.image.description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman."
+LABEL org.opencontainers.image.title="SLE LTSS BCI 16 Init"
+LABEL org.opencontainers.image.description="Systemd environment for containers based on the SLE LTSS Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
-LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/long-term-service-pack-support/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
@@ -40,7 +40,7 @@ LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix

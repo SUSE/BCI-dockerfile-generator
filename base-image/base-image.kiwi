@@ -22,7 +22,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE BCI %OS_VERSION_NO_DASH% Base Container Image</specification>
+    <specification>SLE LTSS BCI %OS_VERSION_NO_DASH% Base Container Image</specification>
   </description>
   <preferences>
     <type image="docker">
@@ -33,18 +33,18 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.base">
             <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
-            <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Base"/>
+            <label name="org.opencontainers.image.title" value="SLE LTSS BCI %OS_VERSION_NO_DASH% Base"/>
             <label name="org.opencontainers.image.description" value="Image for containers based on %OS_PRETTY_NAME%."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
-            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
+            <label name="org.opencontainers.image.url" value="https://www.suse.com/products/long-term-service-pack-support/"/>
             <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.suse.com/bci/bci-base:%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
-            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-eula"/>
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
@@ -69,6 +69,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="glibc-locale-base"/>
     <package name="jdupes"/>
     <package name="libcurl-mini4"/>
+    <package name="libopenssl-3-fips-provider"/>
     <package name="patterns-base-minimal_base"/>
     <package name="shadow"/>
     <package name="zypper"/>
