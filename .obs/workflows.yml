@@ -45,6 +45,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:SLE-15-SP5
         source_package: sle15-kernel-module-devel-image
         target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP5
+        source_package: sles15-ltss-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP5:Staging
   filters:
     event: pull_request
 
@@ -95,6 +99,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP5
         package: sle15-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP5
+        package: sles15-ltss-image
   filters:
     event: push
     branches:

@@ -14,42 +14,42 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE% bci/bci-minimal:%OS_VERSION_ID_SP% -->
+<!-- OBS-AddTag: suse/ltss/sle%OS_VERSION_ID_SP%/sle15:%OS_VERSION_ID_SP%.%RELEASE% suse/ltss/sle%OS_VERSION_ID_SP%/sle15:%OS_VERSION_ID_SP% suse/ltss/sle%OS_VERSION_ID_SP%/sle15:latest suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:%OS_VERSION_ID_SP%.%RELEASE% suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:%OS_VERSION_ID_SP% -->
+<!-- OBS-ExclusiveArch: aarch64 x86_64 ppc64le s390x -->
+<!-- OBS-IgnorePackage: rpm -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="minimal-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="sles15-ltss-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE LTSS BCI 15 SP5 Minimal Container Image</specification>
+    <specification>SLE LTSS BCI %OS_PRETTY_NAME% LTSS Base Container Image Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.5">
+    <type image="docker">
       <containerconfig
-          name="bci/bci-minimal"
+          name="suse/ltss/sle%OS_VERSION_ID_SP%/sle15"
           tag="%OS_VERSION_ID_SP%.%RELEASE%"
-          additionaltags="%OS_VERSION_ID_SP%">
+          additionaltags="%OS_VERSION_ID_SP%,latest">
         <labels>
-          <suse_label_helper:add_prefix prefix="com.suse.bci.minimal">
+          <suse_label_helper:add_prefix prefix="com.suse.sle.base">
             <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
-            <label name="org.opencontainers.image.title" value="SLE LTSS BCI 15 SP5 Minimal"/>
-            <label name="org.opencontainers.image.description" value="15 SP5 Minimal container based on the SLE LTSS Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE LTSS BCI %OS_PRETTY_NAME% LTSS Base Container Image"/>
+            <label name="org.opencontainers.image.description" value="Image for containers based on %OS_PRETTY_NAME%."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/long-term-service-pack-support/"/>
             <label name="org.opencontainers.image.ref.name" value="%OS_VERSION_ID_SP%.%RELEASE%"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/bci/bci-minimal:%OS_VERSION_ID_SP%.%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:%OS_VERSION_ID_SP%.%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="l3"/>
-            <label name="com.suse.supportlevel.until" value="2024-12-31"/>
             <label name="com.suse.eula" value="sle-eula"/>
             <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
           </suse_label_helper:add_prefix>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%/README.md"/>
-          <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
         </labels>
       </containerconfig>
     </type>
@@ -61,17 +61,32 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   <repository type="rpm-md">
     <source path="obsrepositories:/"/>
   </repository>
-  <packages type="delete">
-    <package name="grep"/>
-    <package name="diffutils"/>
-    <package name="info"/>
-    <package name="fillup"/>
-    <package name="libzio1"/>
-  </packages>
   <packages type="bootstrap">
-    <package name="sles-ltss-release"/>
+    <package name="aaa_base"/>
+    <package name="cracklib-dict-small"/>
+    <package name="filesystem"/>
+    <package name="jdupes"/>
+    <package name="kubic-locale-archive"/>
+    <package name="patterns-base-fips"/>
     <package name="rpm-ndb"/>
-    <package name="perl-base"/>
+    <package name="shadow"/>
+    <package name="sles-ltss-release"/>
+    <package name="zypper"/>
+  </packages>
+  <packages type="image">
+    <package name="bash"/>
+    <package name="ca-certificates-mozilla"/>
+    <package name="container-suseconnect"/>
+    <package name="coreutils"/>
+    <package name="curl"/>
+    <package name="gzip"/>
+    <package name="netcfg"/>
+    <package name="openssl-3"/>
+    <package name="procps"/>
+    <package name="skelcd-EULA-SLES"/>
+    <package name="suse-build-key"/>
+    <package name="tar"/>
+    <package name="timezone"/>
   </packages>
 
 </image>
