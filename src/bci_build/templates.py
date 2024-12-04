@@ -34,7 +34,7 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {% endfor -%}
 {%- if image.publish_registry.force_multiversion -%}#!ForceMultiVersion
 {% endif -%}
-{%- if image.crate and image.build_flavor %}#!BcntSyncTag: {{ image.package_name }}
+{%- if image.buildcounter_synctag %}#!BcntSyncTag: {{ image.buildcounter_synctag }}
 {% endif -%}
 {% if image.build_version %}#!BuildName: {{ image.build_name }}
 #!BuildVersion: {{ image.build_version }}

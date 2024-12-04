@@ -108,6 +108,16 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     return kwargs
 
 
+SAC_PYTHON_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs(py_version, OsVersion.SP6),
+        package_name=f"sac-python-{py_version}-image",
+        buildcounter_synctag="sac-containers-python",
+        _publish_registry=publish_registry(OsVersion.SP6, app_collection=True),
+    )
+    for py_version in ("3.9", "3.11")
+]
+
 PYTHON_3_6_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.6", os_version),
@@ -117,14 +127,6 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP6,)
 )
 
-PYTHON_3_9_CONTAINERS = (
-    PythonDevelopmentContainer(
-        **_get_python_kwargs("3.9", os_version),
-        package_name="sac-python-3.9-image",
-        _publish_registry=publish_registry(os_version, app_collection=True),
-    )
-    for os_version in (OsVersion.SP6,)
-)
 
 _PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.10", "3.12", "3.13", "3.11")
 PYTHON_TW_CONTAINERS = (
