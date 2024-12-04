@@ -68,6 +68,7 @@ def _get_openjdk_kwargs(
             "package_list": [f"java-{java_version}-openjdk-devel", "maven"],
             "cmd": ["/usr/bin/jshell"],
             "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
+            "_custom_test_env": "openjdk_devel",
         }
     return common | {
         "name": "openjdk",
