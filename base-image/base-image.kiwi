@@ -69,6 +69,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="glibc-locale-base"/>
     <package name="jdupes"/>
     <package name="libcurl-mini4"/>
+    <package name="libopenssl-3-fips-provider"/>
     <package name="patterns-base-minimal_base"/>
     <package name="shadow"/>
     <package name="zypper"/>
