@@ -23,6 +23,8 @@ class OsVersion(enum.Enum):
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
 
+    _is_ltss_bci = False
+
     @staticmethod
     def parse(val: str):
         try:
@@ -112,7 +114,7 @@ class OsVersion(enum.Enum):
 
     @property
     def is_ltss(self) -> bool:
-        return self in ALL_OS_LTSS_VERSIONS
+        return self._is_ltss_bci or self in ALL_OS_LTSS_VERSIONS
 
     @property
     def os_version(self) -> str:
@@ -133,6 +135,8 @@ class OsVersion(enum.Enum):
 
     @property
     def eula_package_names(self) -> tuple[str, ...]:
+        if self.is_ltss:
+            return ("skelcd-EULA-SLES",)
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
         # TODO: switch to skelcd-EULA-bci when SLES 16 is released
