@@ -422,7 +422,9 @@ class BaseContainerImage(abc.ABC):
     @property
     def eula(self) -> str:
         """EULA covering this image. can be ``sle-eula`` or ``sle-bci``."""
-        if self.os_version.is_ltss:
+        if self.os_version.is_ltss or isinstance(
+            self._publish_registry, ApplicationCollectionRegistry
+        ):
             return "sle-eula"
         return "sle-bci"
 
