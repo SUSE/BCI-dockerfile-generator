@@ -1456,7 +1456,6 @@ from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
 from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
-from .appcontainers import HELM_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
@@ -1475,6 +1474,7 @@ from .cosign import COSIGN_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .helm import HELM_CONTAINERS  # noqa: E402
 from .kea import KEA_DHCP_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
