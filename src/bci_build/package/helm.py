@@ -25,6 +25,9 @@ HELM_CONTAINERS = [
         tag_version=format_version(
             helm_ver := get_pkg_version("helm", os_version), ParseVersion.MINOR
         ),
+        additional_versions=[
+            format_version(helm_ver, ParseVersion.MAJOR),
+        ],
         config_sh_script=generate_package_version_check(
             "helm", helm_ver, ParseVersion.MINOR
         ),
