@@ -14,7 +14,7 @@ https://github.com/SUSE/BCI-dockerfile-generator
 Please submit bugfixes or comments via https://bugs.opensuse.org/
 You can contact the BCI team via https://github.com/SUSE/bci/discussions
 -->
-<!-- OBS-AddTag: suse/helm:3.13-%RELEASE% suse/helm:3.13 -->
+<!-- OBS-AddTag: suse/helm:3.16-%RELEASE% suse/helm:3.16 -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
 <image schemaversion="7.4" name="helm-image" xmlns:suse_label_helper="com.suse.label_helper">
@@ -27,20 +27,20 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.7">
       <containerconfig
           name="suse/helm"
-          tag="3.13-%RELEASE%"
-          additionaltags="3.13">
+          tag="3.16-%RELEASE%"
+          additionaltags="3.16">
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.application.helm">
             <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
             <label name="org.opencontainers.image.title" value="SLE Kubernetes Package Manager"/>
             <label name="org.opencontainers.image.description" value="Kubernetes Package Manager container based on the SLE Base Container Image."/>
-            <label name="org.opencontainers.image.version" value="3.13"/>
+            <label name="org.opencontainers.image.version" value="3.16"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
             <label name="org.opencontainers.image.source" value="%SOURCEURL%"/>
             <label name="org.opencontainers.image.url" value="https://www.suse.com/products/base-container-images/"/>
-            <label name="org.opencontainers.image.ref.name" value="3.13-%RELEASE%"/>
-            <label name="org.opensuse.reference" value="registry.suse.com/suse/helm:3.13-%RELEASE%"/>
+            <label name="org.opencontainers.image.ref.name" value="3.16-%RELEASE%"/>
+            <label name="org.opensuse.reference" value="registry.suse.com/suse/helm:3.16-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-eula"/>
