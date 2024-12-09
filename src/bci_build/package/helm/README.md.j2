@@ -19,7 +19,7 @@ $ podman run --rm -it  {{ image.pretty_reference }} <helm-sub-command>
 For instance, to display the Helm version, run:
 ```ShellSession
 $ podman run --rm -it {{ image.pretty_reference }} version {% raw %}--template='{{.Version}}'{% endraw %}
-v{{ image.version }}
+v{{ image.tag_version }}
 ```
 
 Refer to the full list of Helm commands, flags and environment variables, in the [official Helm documentation](https://helm.sh/docs/helm/helm/).
