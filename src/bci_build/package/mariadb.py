@@ -18,7 +18,7 @@ from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
 
-_MARIADB_GOSU = b"""#!/bin/bash
+_MARIADB_IDEXEC = b"""#!/bin/bash
 
 u=$1
 shift
@@ -110,7 +110,7 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
                     Path(__file__).parent / "mariadb" / str(mariadb_version) / "LICENSE"
                 ).read_bytes(),
                 "healthcheck.sh": healthcheck,
-                "gosu": _MARIADB_GOSU,
+                "idexec": _MARIADB_IDEXEC,
                 "_constraints": generate_disk_size_constraints(11),
             },
             support_level=SupportLevel.L3,
@@ -129,8 +129,12 @@ COPY {_ENTRYPOINT_FNAME} /usr/local/bin/
 COPY healthcheck.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod 755 /usr/local/bin/healthcheck.sh
 
-COPY gosu /usr/local/bin/gosu
-{DOCKERFILE_RUN} chmod 755 /usr/local/bin/gosu
+COPY idexec /usr/local/bin/idexec
+{DOCKERFILE_RUN} chmod 755 /usr/local/bin/idexec
+
+# replace gosu calls with idexec
+{DOCKERFILE_RUN} sed -i 's/exec gosu /exec idexec /g' /usr/local/bin/{_ENTRYPOINT_FNAME}
+{DOCKERFILE_RUN} sed -i 's/exec gosu /exec idexec /g' /usr/local/bin/healthcheck.sh
 
 {DOCKERFILE_RUN} sed -i -e 's,$(pwgen .*),$(openssl rand -base64 36),' /usr/local/bin/{_ENTRYPOINT_FNAME}
 
