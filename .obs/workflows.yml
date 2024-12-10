@@ -37,6 +37,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:16.0
         source_package: sle16-kernel-module-devel-image
         target_project: home:defolos:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:16.0
+        source_package: slm60-kernel-module-devel-image
+        target_project: home:defolos:BCI:CR:16.0:Staging
   filters:
     event: pull_request
 
@@ -81,6 +85,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: sle16-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: slm60-kernel-module-devel-image
   filters:
     event: push
     branches:
