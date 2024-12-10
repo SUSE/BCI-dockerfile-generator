@@ -14,7 +14,7 @@ from bci_build.package.versions import get_pkg_version
 HELM_CONTAINERS = [
     ApplicationStackContainer(
         name="helm",
-        pretty_name="Kubernetes Package Manager",
+        pretty_name="Helm (Kubernetes Package Manager)",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%helm_version%%",
