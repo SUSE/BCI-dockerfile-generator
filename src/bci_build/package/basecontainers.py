@@ -349,6 +349,7 @@ _SLM60_KERNEL_PACKAGES = [
     "s390x/patchinfo.ga/kernel-syms-6.4.0-17.1.s390x.rpm",
     "s390x/patchinfo.ga/kernel-default-devel-6.4.0-17.1.s390x.rpm",
 ]
+_SLFO_KEY_ID = "09d9ea69"
 KERNEL_MODULE_CONTAINERS.append(
     OsContainer(
         name="slm60-kernel-module-devel",
@@ -377,7 +378,7 @@ KERNEL_MODULE_CONTAINERS.append(
             f"""
             {DOCKERFILE_RUN} \\
                 [ $(LC_ALL=C rpm --checksig -v *rpm | \\
-                    grep -c -E "^ *V3.*key ID 09d9ea69:") = {len(_SLM60_KERNEL_PACKAGES)} ] \\
+                    grep -c -E "^ *V3.*key ID {_SLFO_KEY_ID}:") = {len(_SLM60_KERNEL_PACKAGES)} ] \\
                 && rpm -Uvh --oldpackage --force *.$(uname -m).rpm *.noarch.rpm \\
                 && rm -vf *.rpm \\
                 && rpmqpack | grep -E '^kernel-' | xargs zypper -n addlock\n"""
