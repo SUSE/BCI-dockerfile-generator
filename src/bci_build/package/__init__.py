@@ -1460,6 +1460,7 @@ from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
 from .appcontainers import REGISTRY_CONTAINERS  # noqa: E402
+from .appcontainers import STUNNEL_CONTAINERS  # noqa: E402
 from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
 from .base import BASE_CONTAINERS  # noqa: E402
@@ -1543,6 +1544,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *GCC_CONTAINERS,
         *SPACK_CONTAINERS,
         *KEA_DHCP_CONTAINERS,
+        *STUNNEL_CONTAINERS,
     )
 }
 
