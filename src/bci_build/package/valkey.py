@@ -39,8 +39,9 @@ VALKEY_CONTAINERS = [
             )
         ],
         license="BSD-3-Clause",
-        package_list=["valkey"],
+        package_list=["valkey", "sed"],
         entrypoint=["/usr/bin/valkey-server"],
+        cmd=["/etc/valkey/valkey.conf"],
         entrypoint_user="valkey",
         exposes_ports=[TCP(6379)],
         volumes=["/data"],
@@ -49,6 +50,7 @@ VALKEY_CONTAINERS = [
         ),
         custom_end=textwrap.dedent(
             f"""
+            {DOCKERFILE_RUN} sed -e 's/^protected-mode yes/protected-mode no/' -e 's/^bind .*//' < /etc/valkey/default.conf.example > /etc/valkey/valkey.conf
             {DOCKERFILE_RUN} install -o valkey -g valkey -m 750 -d /data
             WORKDIR /data
         """
