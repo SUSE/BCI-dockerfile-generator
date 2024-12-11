@@ -96,8 +96,6 @@ TOMCAT_CONTAINERS = [
                 if tomcat_ver == _TOMCAT_VERSIONS[0]
                 else f"tomcat{tomcat_ver.partition('.')[0]}"
             ),
-            # currently needed by testsuite
-            "curl",
             # currently needed by custom_end
             "sed",
             Package("util-linux", PackageType.DELETE),
