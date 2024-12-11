@@ -96,10 +96,6 @@ TOMCAT_CONTAINERS = [
                 if tomcat_ver == _TOMCAT_VERSIONS[0]
                 else f"tomcat{tomcat_ver.partition('.')[0]}"
             ),
-            # currently needed by testsuite
-            "curl",
-            # currently needed by custom_end
-            "sed",
             Package("util-linux", PackageType.DELETE),
         ]
         + _get_java_packages(jre_version),
@@ -122,11 +118,15 @@ TOMCAT_CONTAINERS = [
         },
         custom_end=rf"""{DOCKERFILE_RUN} mkdir -p /var/log/tomcat; chown --recursive tomcat:tomcat /var/log/tomcat
 {DOCKERFILE_RUN} ln -s {_CATALINA_HOME} /usr/local/tomcat
-{DOCKERFILE_RUN} \
-    sed -i /etc/tomcat/logging.properties \
-        -e 's|org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.handlers =.*|org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = java.util.logging.ConsoleHandler|' \
-        -e 's|org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.\[/manager\]\.handlers =.*|org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/manager].handlers = java.util.logging.ConsoleHandler|' \
-        -e 's|org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.\[/host-manager\]\.handlers =.*|org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].handlers = java.util.logging.ConsoleHandler|'
+{DOCKERFILE_RUN} """
+        + r"""while IFS= read -r line; do \
+  line=${line/org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.handlers =*/org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = java.util.logging.ConsoleHandler}; \
+  line=${line/org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.\[\/manager\]\.handlers =*/org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/manager].handlers = java.util.logging.ConsoleHandler}; \
+  line=${line/org\.apache\.catalina\.core\.ContainerBase\.\[Catalina\]\.\[localhost\]\.\[\/host-manager\]\.handlers =*/org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].handlers = java.util.logging.ConsoleHandler}; \
+  echo "$line" >> /tmp/logging.properties; \
+done < /usr/share/tomcat/conf/logging.properties; \
+
+mv /tmp/logging.properties /usr/share/tomcat/conf/logging.properties
 
 WORKDIR $CATALINA_HOME
 """,
