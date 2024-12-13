@@ -14,6 +14,8 @@ class OsVersion(enum.Enum):
     SP6 = 6
     #: SLE 15 Service Pack 5
     SP5 = 5
+    #: SLE 15 Service Pack 5 with LTSS enforced
+    SP5_LTSS = "sle15.5"
     #: SLE 15 Service Pack 4
     SP4 = 4
     #: SLE 15 Service Pack 3
@@ -98,6 +100,7 @@ class OsVersion(enum.Enum):
             OsVersion.SP3.value,
             OsVersion.SP4.value,
             OsVersion.SP5.value,
+            OsVersion.SP5_LTSS.value,
             OsVersion.SP6.value,
             OsVersion.SP7.value,
         )
@@ -112,7 +115,7 @@ class OsVersion(enum.Enum):
 
     @property
     def is_ltss(self) -> bool:
-        return self in ALL_OS_LTSS_VERSIONS
+        return self in (OsVersion.SP5_LTSS,) or self in ALL_OS_LTSS_VERSIONS
 
     @property
     def os_version(self) -> str:
@@ -133,6 +136,8 @@ class OsVersion(enum.Enum):
 
     @property
     def eula_package_names(self) -> tuple[str, ...]:
+        if self.is_ltss:
+            return ("skelcd-EULA-SLES",)
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
         # TODO: switch to skelcd-EULA-bci when SLES 16 is released
