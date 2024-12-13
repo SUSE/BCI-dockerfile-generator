@@ -64,6 +64,9 @@ Additionally, run the unit tests and check whether the documentation builds
    # docs
    poetry run sphinx-build -M html source build -W
 
+Further Contributing Guidelines are defined in the `CONTRIBUTING.md` file
+in the root directory of the project.
+
 
 Documentation - READMEs
 ^^^^^^^^^^^^^^^^^^^^^^^
