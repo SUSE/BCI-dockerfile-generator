@@ -47,19 +47,9 @@ PCP_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         support_level=SupportLevel.L3,
         version=(pcp_ver := get_pkg_version("pcp", os_version)),
+        tag_version=(pcp_major := format_version(pcp_ver, ParseVersion.MAJOR)),
         version_in_uid=False,
-        additional_versions=[
-            format_version(pcp_ver, ParseVersion.MINOR),
-            format_version(pcp_ver, ParseVersion.MAJOR),
-        ],
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description=f"%%pcp_{ver}%%",
-                package_name="pcp",
-                parse_version=ver,
-            )
-            for ver in (ParseVersion.MAJOR, ParseVersion.MINOR)
-        ],
+        additional_versions=[format_version(pcp_ver, ParseVersion.MINOR), pcp_major],
         license="(LGPL-2.1+ AND GPL-2.0+)",
         package_list=[
             "pcp",
@@ -105,6 +95,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version_in_uid=False,
         support_level=SupportLevel.L3,
+        _custom_test_env="389ds",
         oci_authors="william.brown@suse.com",
         pretty_name="389 Directory Server",
         package_list=["389-ds", "timezone", "openssl", "nss_synth"],
@@ -353,6 +344,7 @@ REGISTRY_CONTAINERS = [
         pretty_name="OCI Container Registry (Distribution)",
         from_image=generate_from_image_tag(os_version, "bci-micro"),
         os_version=os_version,
+        _custom_test_env="distribution",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
         version_in_uid=False,

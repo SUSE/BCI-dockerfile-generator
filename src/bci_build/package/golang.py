@@ -47,6 +47,7 @@ def _get_golang_kwargs(
         "name": "golang",
         "stability_tag": stability_tag,
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
+        "_custom_test_env": "go",
         "tag_version": f"{ver}{variant}",
         "version": f"{golang_version_regex}{variant}",
         "env": {

@@ -35,6 +35,7 @@ MICRO_CONTAINERS = [
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
         custom_description="A micro environment for containers {based_on_container}.",
         from_image=None,
+        _custom_test_env="minimal",
         build_recipe_type=BuildType.KIWI,
         package_list=[
             Package(name, pkg_type=PackageType.BOOTSTRAP)
@@ -309,6 +310,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+            _custom_test_env="kernel_module",
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=(
                 [
