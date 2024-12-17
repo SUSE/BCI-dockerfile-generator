@@ -49,20 +49,32 @@ class Registry(ABC):
     @staticmethod
     def build_version(base_version, container: "BaseContainerImage") -> str:
         """Return the build version to set for this container build."""
-        container_version: str = container.tag_version
-        # if container_version is a numeric version and not a macro, then
-        # version.parse() returns a `Version` object => then we concatenate
-        # it with the existing build_version
-        # for non PEP440 versions, we'll get an exception and just return
-        # the parent's classes build_version
-        try:
-            packaging.version.parse(str(container_version))
-            stability_suffix: str = ""
-            if container._stability_suffix:
-                stability_suffix = "." + container._stability_suffix
-            return f"{base_version}.{container_version}{stability_suffix}"
-        except packaging.version.InvalidVersion:
-            return base_version
+
+        def _build_version_from_container_version(
+            container_version: int | str | None,
+        ) -> str | None:
+            # if container_version is a numeric version and not a macro, then
+            # version.parse() returns a `Version` object => then we concatenate
+            # it with the existing build_version
+            # for non PEP440 versions, we'll get an exception and just return
+            # None
+            try:
+                packaging.version.parse(str(container_version))
+                stability_suffix: str = ""
+                if container._stability_suffix:
+                    stability_suffix = "." + container._stability_suffix
+                return f"{base_version}.{container_version}{stability_suffix}"
+            except packaging.version.InvalidVersion:
+                return None
+
+        # first try to use the containers full version, if that fails, pick
+        # tag_version and if that also fails, fall back to the parent's classes
+        # version
+        return (
+            _build_version_from_container_version(container.version)
+            or _build_version_from_container_version(container.tag_version)
+            or base_version
+        )
 
 
 class ApplicationCollectionRegistry(Registry):
