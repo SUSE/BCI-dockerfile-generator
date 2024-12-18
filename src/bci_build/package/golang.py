@@ -10,6 +10,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 
@@ -57,7 +58,9 @@ def _get_golang_kwargs(
         },
         "replacements_via_service": [
             Replacement(
-                regex_in_build_description=golang_version_regex, package_name=go
+                regex_in_build_description=golang_version_regex,
+                package_name=go,
+                parse_version=ParseVersion.PATCH,
             )
         ],
         "custom_end": textwrap.dedent(
