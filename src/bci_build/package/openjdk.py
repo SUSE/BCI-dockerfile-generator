@@ -15,7 +15,9 @@ from bci_build.package import generate_disk_size_constraints
 
 
 def _get_openjdk_kwargs(
-    os_version: OsVersion,
+    os_version: Literal[
+        OsVersion.TUMBLEWEED, OsVersion.SP7, OsVersion.SP6, OsVersion.SP5
+    ],
     devel: bool,
     java_version: Literal[11, 13, 15, 17, 20, 21, 23],
 ):
@@ -61,12 +63,16 @@ def _get_openjdk_kwargs(
     }
 
     if devel:
+        # don't set CMD in SP7 onward as jshell is broken and the CMD is
+        # arguably not too useful anyway
+        if os_version in (OsVersion.SP5, OsVersion.SP6):
+            common |= {"cmd": ["/usr/bin/jshell"]}
+
         return common | {
             "name": "openjdk-devel",
             "custom_labelprefix_end": "openjdk.devel",
             "pretty_name": f"OpenJDK {java_version} development",
             "package_list": [f"java-{java_version}-openjdk-devel", "maven"],
-            "cmd": ["/usr/bin/jshell"],
             "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
         }
     return common | {
