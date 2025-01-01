@@ -172,7 +172,6 @@ ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
 
 # For which versions to create Base Container Images?
 ALL_BASE_OS_VERSIONS: list[OsVersion] = [
-    OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
