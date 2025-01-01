@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan  1 14:14:47 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
 Fri Dec  6 15:06:35 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - Correct EULA to the SLE EULA and mark the image as not redistributable
