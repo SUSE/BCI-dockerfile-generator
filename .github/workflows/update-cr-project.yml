@@ -20,7 +20,6 @@ jobs:
         os_version:
           - 7
           - 6
-          - 5
           - "16.0"
           - Tumbleweed
 

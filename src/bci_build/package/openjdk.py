@@ -90,7 +90,7 @@ OPENJDK_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
-            (OsVersion.SP5, OsVersion.TUMBLEWEED),
+            (OsVersion.TUMBLEWEED,),
             (True, False),
         )
     ]
@@ -99,9 +99,7 @@ OPENJDK_CONTAINERS = (
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(
-            (OsVersion.SP5, OsVersion.TUMBLEWEED), (True, False)
-        )
+        for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
     ]
     + [
         DevelopmentContainer(
