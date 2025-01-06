@@ -1,24 +1,30 @@
-[tool.poetry]
+[project]
 name = "bci-dockerfile-generator"
 version = "0.1.0"
 description = "Generator script for the Dockerfiles for the SLE BCI"
-authors = ["Dan Čermák <dcermak@suse.com>"]
+authors = [
+    { name = "Dan Čermák", email = "dcermak@suse.com" },
+    { name = "Dirk Müller", email = "dmueller@suse.com" },
+]
 license = "GPL-3.0-or-later"
 packages = [
+    { include = "bci_dockerfile_generator", from = "src" },
     { include = "bci_build", from = "src" },
     { include = "staging", from = "src" },
     { include = "dotnet", from = "src" },
 ]
-[tool.poetry.dependencies]
-python = "^3.11"
-Jinja2 = ">=3.1"
-aiohttp = ">=3.9.0"
-rpm-vercmp = ">=0.1"
-aiofiles = ">=22.1"
-obs-package-update = { git = "https://github.com/dcermak/obs-package-update", branch = "main" }
-py-obs = { git = "https://github.com/dcermak/py-obs", branch = "main" }
-GitPython = ">=3.1"
-oras = ">=0.2.2"
+requires-python = ">=3.11,<4.0"
+
+dependencies = [
+    "Jinja2 >=3.1",
+    "aiohttp >=3.9.0",
+    "rpm-vercmp >=0.1",
+    "aiofiles >=22.1",
+    "obs-package-update @git+https://github.com/dcermak/obs-package-update@main",
+    "py-obs @git+https://github.com/dcermak/py-obs@main",
+    "GitPython >=3.1",
+    "oras >=0.2.2",
+]
 
 [tool.poetry.scripts]
 package = "bci_build.package:main"
