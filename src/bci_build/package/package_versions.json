@@ -55,7 +55,7 @@
     "spack": {
         "6": "0.21.3",
         "7": "0.21.3",
-        "Tumbleweed": "0.22.2"
+        "Tumbleweed": "0.23.0"
     },
     "valkey": {
         "Tumbleweed": "8.0",
