@@ -4,12 +4,12 @@
   <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile</param>
     <param name="regex">%%rb_ver%%</param>
-    <param name="package">ruby3.3</param>
+    <param name="package">ruby3.4</param>
   </service>
   <service mode="buildtime" name="replace_using_package_version">
     <param name="file">Dockerfile</param>
     <param name="regex">%%rb_maj%%</param>
-    <param name="package">ruby3.3</param>
+    <param name="package">ruby3.4</param>
     <param name="parse-version">minor</param>
   </service>
 </services>
