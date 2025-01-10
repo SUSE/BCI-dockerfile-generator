@@ -15,34 +15,34 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/bci/ruby:3.3-%RELEASE%
-#!BuildTag: opensuse/bci/ruby:3.3
+#!BuildTag: opensuse/bci/ruby:3.4-%RELEASE%
+#!BuildTag: opensuse/bci/ruby:3.4
 #!BuildTag: opensuse/bci/ruby:3
 #!BuildTag: opensuse/bci/ruby:latest
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends ruby3.3 ruby3.3-rubygem-bundler ruby3.3-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.ruby
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Ruby 3.3"
-LABEL org.opencontainers.image.description="Ruby 3.3 container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="3.3"
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Ruby 3.4"
+LABEL org.opencontainers.image.description="Ruby 3.4 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.version="3.4"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="3.3-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/ruby:3.3-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="3.4-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/ruby:3.4-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/ruby-3.3-image/README.md"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/ruby-3.4-image/README.md"
 ENV LANG="C.UTF-8"
 ENV RUBY_VERSION="%%rb_ver%%"
 ENV RUBY_MAJOR="%%rb_maj%%"

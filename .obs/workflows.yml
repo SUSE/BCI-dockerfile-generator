@@ -223,7 +223,7 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: ruby-3.3-image
+        source_package: ruby-3.4-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
@@ -429,7 +429,7 @@ refresh_devel_BCI:
         package: rmt-server-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: ruby-3.3-image
+        package: ruby-3.4-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: rust-oldstable-image
