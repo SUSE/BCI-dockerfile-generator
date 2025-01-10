@@ -311,7 +311,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
         "exposes_ports": [TCP(80)],
-        "custom_end": f"""{ version_check_lines }
+        "custom_end": f"""{version_check_lines}
 {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin

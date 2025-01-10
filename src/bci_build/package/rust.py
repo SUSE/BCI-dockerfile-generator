@@ -33,9 +33,9 @@ _RUST_SUPPORT_ENDS = {
 # ensure that the **latest** rust version is the last one!
 _RUST_VERSIONS = ["1.82", "1.83"]
 
-assert (
-    len(_RUST_VERSIONS) == 2
-), "Only two versions of rust must be supported at the same time"
+assert len(_RUST_VERSIONS) == 2, (
+    "Only two versions of rust must be supported at the same time"
+)
 
 assert packaging.version.parse(_RUST_VERSIONS[0]) < packaging.version.parse(
     _RUST_VERSIONS[1]

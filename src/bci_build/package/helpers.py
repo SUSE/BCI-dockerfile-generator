@@ -37,7 +37,7 @@ def generate_package_version_check(
 
     return f"""# sanity check that the version from the tag is equal to the version of {pkg_name} that we expect
 {DOCKERFILE_RUN} \\
-    [ "$(rpm{' --root /target' if use_target else ''} -q --qf '%{{version}}' {pkg_name} | \\
+    [ "$(rpm{" --root /target" if use_target else ""} -q --qf '%{{version}}' {pkg_name} | \\
     cut -d '.' -f -{cut_count})" = "{pkg_version}" ]"""
 
 

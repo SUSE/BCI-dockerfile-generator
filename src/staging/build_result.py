@@ -81,9 +81,9 @@ class RepositoryBuildResult:
 
     @staticmethod
     def _from_result(result: ET.Element) -> "RepositoryBuildResult":
-        assert (
-            result.tag == "result"
-        ), f"Invalid element passed, expected '<result>' but got: {ET.tostring(result).decode()}"
+        assert result.tag == "result", (
+            f"Invalid element passed, expected '<result>' but got: {ET.tostring(result).decode()}"
+        )
         attr = result.attrib
         for attr_name in ("project", "repository", "arch", "code", "state"):
             if attr_name not in attr:
@@ -163,16 +163,15 @@ def is_build_failed(build_results: list[RepositoryBuildResult]) -> bool:
             )
 
         for pkg_res in build_res.packages:
-            assert (
-                pkg_res.code
-                in (
-                    PackageStatusCode.EXCLUDED,
-                    PackageStatusCode.FAILED,
-                    PackageStatusCode.SUCCEEDED,
-                    PackageStatusCode.UNRESOLVABLE,
-                    PackageStatusCode.DISABLED,
-                )
-            ), f"package {pkg_res.name} (from repository {build_res.repository} for {build_res.project} and {build_res.arch}) has unfinished state {pkg_res.code}"
+            assert pkg_res.code in (
+                PackageStatusCode.EXCLUDED,
+                PackageStatusCode.FAILED,
+                PackageStatusCode.SUCCEEDED,
+                PackageStatusCode.UNRESOLVABLE,
+                PackageStatusCode.DISABLED,
+            ), (
+                f"package {pkg_res.name} (from repository {build_res.repository} for {build_res.project} and {build_res.arch}) has unfinished state {pkg_res.code}"
+            )
 
             if pkg_res.code in (
                 PackageStatusCode.FAILED,
@@ -217,8 +216,8 @@ def render_as_markdown(
             no_detail = all(not pkg.detail_message for pkg in repo_res.packages)
 
             res += f"""Build results:
-package name | status {'' if no_detail else '| detail '}| build log
--------------|--------{'' if no_detail else '|--------'}|----------
+package name | status {"" if no_detail else "| detail "}| build log
+-------------|--------{"" if no_detail else "|--------"}|----------
 """
             for package_res in repo_res.packages:
                 if no_detail:
