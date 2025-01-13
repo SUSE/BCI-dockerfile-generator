@@ -1,0 +1,24 @@
+# {{ image.pretty_name }} Container Image
+
+{% include 'badges.j2' %}
+
+Kubectl is a command line tool for communicating with a Kubernetes cluster's control plane, using the Kubernetes API.
+
+## How to use this Container Image
+
+To run commands inside the container for the current cluster for which the kubeconfig is available in `/root/.kube.config`:
+
+```ShellSession
+podman run --rm --name kubectl\
+      {{ image.pretty_reference }} get nodes
+```
+
+To pass configuration of a remote cluster to the container:
+
+```ShellSession
+podman run --rm --name kubectl\
+      -v /localpath/to/kubeconfig:/root/.kube/config:Z
+      {{ image.pretty_reference }} get nodes
+```
+
+{% include 'licensing_and_eula.j2' %}
