@@ -326,10 +326,11 @@ class StagingBot:
             osc_username=osc_username,
         )
 
-        assert (
-            bot.staging_project_name
-            == (prj := prj_markdown_link.split("]")[0].replace("[", ""))
-        ), f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
+        assert bot.staging_project_name == (
+            prj := prj_markdown_link.split("]")[0].replace("[", "")
+        ), (
+            f"Mismatch between the constructed project name ({bot.staging_project_name}) and the project name from the comment ({prj})"
+        )
         return bot
 
     @staticmethod
@@ -554,8 +555,8 @@ OS_VERSION_PRETTY={self.os_version.pretty_print}
 DEPLOYMENT_BRANCH_NAME={self.deployment_branch_name}
 PROJECT_NAME={self.staging_project_name}
 PROJECT_URL={self.staging_project_url}
-REPOSITORIES={','.join(self.repositories)}
-PACKAGES={','.join(self.package_names) if self.package_names else None}
+REPOSITORIES={",".join(self.repositories)}
+PACKAGES={",".join(self.package_names) if self.package_names else None}
 """
             )
 
@@ -803,9 +804,9 @@ PACKAGES={','.join(self.package_names) if self.package_names else None}
         for diff in git_commit.diff(f"origin/{self.deployment_branch_name}"):
             # no idea how this could happen, but in theory the diff mode can be
             # `C` for conflict => abort if that's the case
-            assert (
-                diff.a_mode != "C" and diff.b_mode != "C"
-            ), f"diff must not be a conflict, but got {diff=}"
+            assert diff.a_mode != "C" and diff.b_mode != "C", (
+                f"diff must not be a conflict, but got {diff=}"
+            )
 
             if (
                 (a_path := os.path.split(diff.a_path))

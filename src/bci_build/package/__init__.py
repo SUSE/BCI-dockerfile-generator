@@ -650,9 +650,7 @@ exit 0
                 ":", "#"
             )
             return f' derived_from="obsrepositories:/{repo}"'
-        return (
-            f" derived_from=\"obsrepositories:/{self._from_image.replace(':', '#')}\""
-        )
+        return f' derived_from="obsrepositories:/{self._from_image.replace(":", "#")}"'
 
     @property
     def packages(self) -> str:
@@ -1102,9 +1100,9 @@ exit 0
                 files.append("config.sh")
 
         else:
-            assert (
-                False
-            ), f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
+            assert False, (
+                f"got an unexpected build_recipe_type: '{self.build_recipe_type}'"
+            )
 
         if self.build_flavor:
             dfile = "Dockerfile"

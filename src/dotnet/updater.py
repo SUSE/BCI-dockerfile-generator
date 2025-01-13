@@ -180,9 +180,9 @@ class DotNetBCI(DevelopmentContainer):
             "8.0": datetime.date(2026, 11, 10),
             "9.0": datetime.date(2026, 5, 12),
         }.get(str(self.tag_version))
-        assert (
-            self.supported_until
-        ), f".Net version missing in lifecycle information: {self.tag_version}"
+        assert self.supported_until, (
+            f".Net version missing in lifecycle information: {self.tag_version}"
+        )
 
         self.extra_files = {
             "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
@@ -227,9 +227,9 @@ class DotNetBCI(DevelopmentContainer):
             pkgs.append(RpmPackage.from_dnf_package(pkg=pkgs_for_arch[0], arch=arch))
 
         if isinstance(pkg, str):
-            assert len(pkgs) == len(
-                self.exclusive_arch
-            ), "Must find one package per architecture"
+            assert len(pkgs) == len(self.exclusive_arch), (
+                "Must find one package per architecture"
+            )
 
         return pkgs
 
@@ -330,7 +330,9 @@ class DotNetBCI(DevelopmentContainer):
         pkgs = self._fetch_packages()
         self.version = self._guess_version_from_pkglist(pkgs)
         if self.version:
-            assert not self.additional_versions, f"additional_versions property must be unset, but got {self.additional_versions}"
+            assert not self.additional_versions, (
+                f"additional_versions property must be unset, but got {self.additional_versions}"
+            )
 
         self.custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
