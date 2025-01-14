@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 14 09:55:08 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add nobody user/group to the base container
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
