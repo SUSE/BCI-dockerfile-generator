@@ -151,6 +151,8 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "openssl-3",
                     "tar",
                     "timezone",
+                    # for run.oci.keep_original_groups=1 (see bsc#1212118)
+                    "user(nobody)",
                     *os_version.eula_package_names,
                 ]
                 + (
