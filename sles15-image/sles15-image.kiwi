@@ -91,6 +91,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="suse-build-key"/>
     <package name="tar"/>
     <package name="timezone"/>
+    <package name="user(nobody)"/>
   </packages>
 
 </image>
