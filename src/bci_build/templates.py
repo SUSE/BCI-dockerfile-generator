@@ -202,8 +202,8 @@ SERVICE_TEMPLATE = jinja2.Template(
   <service mode="buildtime" name="{{ image.build_recipe_type }}_label_helper"/>
   <service mode="buildtime" name="kiwi_metainfo_helper"/>
 {%- set all_build_flavors = [""] %}
-{%-     if image.crate and image.build_flavor %}
-{%-         set all_build_flavors = image.crate.all_build_flavors(image) %}
+{%-     if image.family and image.build_flavor %}
+{%-         set all_build_flavors = image.family.get_all_build_flavors(image) %}
 {%-     endif %}
 {%- for flavor in all_build_flavors %}
 {%- for replacement in image.replacements_via_service %}

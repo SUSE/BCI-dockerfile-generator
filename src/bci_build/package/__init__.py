@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
 from typing import Literal
+from typing import Sequence
 from typing import overload
 
 import jinja2
@@ -22,7 +23,6 @@ from bci_build.container_attributes import NetworkPort
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import ReleaseStage
 from bci_build.container_attributes import SupportLevel
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import RELEASED_OS_VERSIONS
 from bci_build.os_version import OsVersion
@@ -209,7 +209,7 @@ class BaseContainerImage(abc.ABC):
     build_flavor: str | None = None
 
     #: create that this container is part of
-    crate: ContainerCrate = None
+    family: ContainerFamily = None
 
     #: Add any replacements via `obs-service-replace_using_package_version
     #: <https://github.com/openSUSE/obs-service-replace_using_package_version>`_
@@ -1106,11 +1106,17 @@ exit 0
 
         if self.build_flavor:
             dfile = "Dockerfile"
-            tasks.append(write_file_to_dest(dfile, self.crate.default_dockerfile(self)))
+            tasks.append(
+                write_file_to_dest(
+                    dfile, self.family.get_default_dockerfile_content(self)
+                )
+            )
             files.append(dfile)
 
             mname = "_multibuild"
-            tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
+            tasks.append(
+                write_file_to_dest(mname, self.family.get_multibuild_file_content(self))
+            )
             files.append(mname)
 
         tasks.append(
@@ -1431,6 +1437,85 @@ class OsContainer(BaseContainerImage):
     def prepare_template(self) -> None:
         """Hook to do delayed expensive work prior template rendering"""
         pass
+
+
+class ContainerFamily:
+    """ContainerFamily is grouping multiple containers build flavors.
+
+    This provides package-central functions like generating _service and
+    _multibuild files, checking version_uid
+    """
+
+    def __init__(
+        self,
+        containers: Sequence[BaseContainerImage],
+    ):
+        # Assign the family for every container build flavor based on os version and package name
+        # Sample family structure:
+        # {
+        #   (OsVersion.TumbleWeed, "test-package-name"): {"flavor1", "flavor2"}
+        # }
+        self._container_families: dict[tuple, set] = {}
+        for container in containers:
+            if container.build_flavor:
+                self._container_families.setdefault(
+                    (container.os_version, container.package_name), set()
+                ).add(container.build_flavor)
+
+        for container in containers:
+            if container.family is not None:
+                raise ValueError("Container is already part of a ContainerFamily")
+            container.family = self
+
+    def get_all_build_flavors(
+        self,
+        container: BaseContainerImage,
+    ) -> list[str]:
+        """Return all available build flavors for this container in based on its family"""
+        return sorted(
+            self._container_families.get(
+                (container.os_version, container.package_name), [""]
+            )
+        )
+
+    def get_default_dockerfile_content(
+        self,
+        container: BaseContainerImage,
+    ) -> str:
+        buildrelease: str = ""
+        if container.build_release:
+            buildrelease = f"\n#!BuildVersion: workaround-for-an-obs-bug\n#!BuildRelease: {container.build_release}"
+        """Return a default Dockerfile to disable build on default flavor."""
+        return f"""#!ExclusiveArch: do-not-build
+#!ForceMultiVersion{buildrelease}
+
+# For this container we only build the Dockerfile.$flavor builds.
+"""
+
+    def get_multibuild_file_content(
+        self,
+        container: BaseContainerImage,
+    ) -> str:
+        """Return the _multibuild file string to write for this container based on its family."""
+        if not self.check_version_in_uid(container):
+            return ""
+
+        flavors: str = "\n".join(
+            " " * 4 + f"<package>{pkg}</package>"
+            for pkg in self.get_all_build_flavors(container)
+        )
+        return f"<multibuild>\n{flavors}\n</multibuild>"
+
+    def check_version_in_uid(
+        self,
+        container: BaseContainerImage,
+    ) -> bool:
+        """check if version_in_uid is set to False if a container has more than one flavour"""
+        if len(self.get_all_build_flavors(container)) > 1 and getattr(
+            container, "version_in_uid", False
+        ):
+            return False
+        return True
 
 
 def generate_disk_size_constraints(size_gb: int) -> str:
