@@ -1,4 +1,10 @@
 {
+    "MozillaFirefox": {
+        "6": "128.6",
+        "7": "128.6",
+        "Tumbleweed": "134.0",
+        "version_format": "minor"
+    },
     "cosign": {
         "5": "2.4",
         "6": "2.4",
