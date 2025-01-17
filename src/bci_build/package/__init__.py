@@ -1469,6 +1469,7 @@ from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
 from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
+from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
@@ -1483,6 +1484,7 @@ from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
 from .php import PHP_CONTAINERS  # noqa: E402
 from .postfix import POSTFIX_CONTAINERS  # noqa: E402
 from .postgres import POSTGRES_CONTAINERS  # noqa: E402
+from .pulseaudio import PULSEAUDIO_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
@@ -1547,6 +1549,8 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *KUBECTL_CONTAINERS,
         *STUNNEL_CONTAINERS,
         *XORG_CONTAINERS,
+        *FIREFOX_CONTAINERS,
+        *PULSEAUDIO_CONTAINERS,
     )
 }
 
