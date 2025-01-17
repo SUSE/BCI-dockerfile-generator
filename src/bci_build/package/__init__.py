@@ -1474,6 +1474,9 @@ from .git import GIT_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
 from .helm import HELM_CONTAINERS  # noqa: E402
 from .kea import KEA_DHCP_CONTAINERS  # noqa: E402
+from .kiosk import FIREFOX_CONTAINERS  # noqa: E402
+from .kiosk import PULSEAUDIO_CONTAINERS  # noqa: E402
+from .kiosk import X11_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .kubectl import KUBECTL_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
@@ -1545,6 +1548,9 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *KEA_DHCP_CONTAINERS,
         *KUBECTL_CONTAINERS,
         *STUNNEL_CONTAINERS,
+        *X11_CONTAINERS,
+        *FIREFOX_CONTAINERS,
+        *PULSEAUDIO_CONTAINERS,
     )
 }
 
