@@ -51,6 +51,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: firefox-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: gcc-14-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -159,6 +163,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: pulseaudio-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: python-3.11-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -208,6 +216,10 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: stunnel-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: x11app-base-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
   filters:
     event: pull_request
@@ -262,6 +274,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: dotnet-9.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: firefox-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: gcc-14-image
@@ -345,6 +360,9 @@ refresh_devel_BCI:
         package: prometheus-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: python-3.11-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -382,6 +400,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: stunnel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: x11app-base-image
   filters:
     event: push
     branches:
