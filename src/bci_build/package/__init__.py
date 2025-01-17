@@ -1493,6 +1493,7 @@ from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
+from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
@@ -1543,6 +1544,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *SPACK_CONTAINERS,
         *KEA_DHCP_CONTAINERS,
         *KUBECTL_CONTAINERS,
+        *STUNNEL_CONTAINERS,
     )
 }
 
