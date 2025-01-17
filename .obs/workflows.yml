@@ -205,6 +205,10 @@ staging_build:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: spack-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: stunnel-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
   filters:
     event: pull_request
 
@@ -375,6 +379,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: spack-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: stunnel-image
   filters:
     event: push
     branches:
