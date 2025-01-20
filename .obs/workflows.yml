@@ -47,6 +47,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: firefox-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: gcc-12-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -215,6 +219,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: pulseaudio-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: python-3.11-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -260,6 +268,10 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: valkey-image
+        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:Tumbleweed
+        source_package: x11-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
   filters:
     event: pull_request
@@ -311,6 +323,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: cosign-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: firefox-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: gcc-12-image
@@ -439,6 +454,9 @@ refresh_devel_BCI:
         package: prometheus-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
+        package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
         package: python-3.11-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -473,6 +491,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: valkey-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: x11-image
   filters:
     event: push
     branches:
