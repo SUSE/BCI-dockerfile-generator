@@ -54,7 +54,7 @@ podman run --rm -d \
     -e STUNNEL_CONNECT=0.0.0.0:8000 \
     -v=path/to/server.pem:/etc/stunnel/stunnel.pem:Z \
     -v=path/to/server.crt:/etc/stunnel/stunnel.crt:Z \
-    dp.apps.rancher.io/containers/stunnel:5
+    registry.suse.com/suse/stunnel:5
 ```
 
 
