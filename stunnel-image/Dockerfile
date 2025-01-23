@@ -14,15 +14,14 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: aarch64 x86_64
-#!BuildTag: containers/stunnel:%%stunnel_re%%-%RELEASE%
-#!BuildTag: containers/stunnel:%%stunnel_re%%
-#!BuildTag: containers/stunnel:5
-#!ForceMultiVersion
-#!BuildName: containers-stunnel-5
-#!BuildVersion: %%stunnel_re%%
+
+#!BuildTag: suse/stunnel:%%stunnel_re%%-%RELEASE%
+#!BuildTag: suse/stunnel:%%stunnel_re%%
+#!BuildTag: suse/stunnel:5
+#!BuildName: suse-stunnel-5
+#!BuildVersion: 15.7.5
 FROM bci/bci-micro:15.7 AS target
-FROM bci/bci-base:15.7 AS builder
+FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
@@ -37,16 +36,16 @@ FROM bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.stunnel
-LABEL org.opencontainers.image.authors=""
-LABEL org.opencontainers.image.title="Stunnel"
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
+LABEL org.opencontainers.image.title="SLE Stunnel"
 LABEL org.opencontainers.image.description="Stunnel container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%stunnel_re%%"
-LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/stunnel"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%stunnel_re%%-%RELEASE%"
-LABEL org.opensuse.reference="dp.apps.rancher.io/containers/stunnel:%%stunnel_re%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/stunnel:%%stunnel_re%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
