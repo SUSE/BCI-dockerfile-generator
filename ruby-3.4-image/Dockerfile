@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: GPL-2.0-only
+# SPDX-License-Identifier: MIT
 
 #     Copyright (c) 2025 SUSE LLC
 
@@ -15,42 +15,39 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/git:%%git_version%%-%RELEASE%
-#!BuildTag: suse/git:%%git_version%%
-#!BuildTag: suse/git:2.43
-#!BuildTag: suse/git:%%git_major_version%%
-#!BuildName: suse-git-2.43
-#!BuildVersion: 15.7.2.43
-FROM bci/bci-micro:15.7 AS target
-FROM suse/sle15:15.7 AS builder
-COPY --from=target / /target
+#!BuildTag: bci/ruby:3.4-%RELEASE%
+#!BuildTag: bci/ruby:3.4
+#!BuildTag: bci/ruby:3
+#!BuildName: bci-ruby-3.4
+#!BuildVersion: 15.7.3.4
+FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core openssh-clients; \
+    zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-# sanity check that the version from the tag is equal to the version of git-core that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' git-core | \
-    cut -d '.' -f -2)" = "2.43" ]
-FROM bci/bci-micro:15.7
-COPY --from=builder /target /
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.git
+# labelprefix=com.suse.bci.ruby
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE 15 SP7 with Git"
-LABEL org.opencontainers.image.description="A micro environment with Git based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%git_version%%"
+LABEL org.opencontainers.image.title="SLE BCI Ruby 3.4"
+LABEL org.opencontainers.image.description="Ruby 3.4 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="3.4"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%git_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/git:%%git_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="3.4-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/ruby:3.4-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-eula"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+ENV LANG="C.UTF-8"
+ENV RUBY_VERSION="%%rb_ver%%"
+ENV RUBY_MAJOR="%%rb_maj%%"
+
+RUN set -euo pipefail; sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc
