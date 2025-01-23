@@ -10,7 +10,6 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
-from bci_build.registry import publish_registry
 
 STUNNEL_CONTAINERS = [
     ApplicationStackContainer(
@@ -31,7 +30,6 @@ STUNNEL_CONTAINERS = [
             ).read_bytes(),
             "stunnel.conf": (stunnel_dir / "stunnel.conf").read_bytes(),
         },
-        _publish_registry=publish_registry(os_version, app_collection=True),
         build_stage_custom_end=generate_package_version_check(
             "stunnel", tag_ver, ParseVersion.MAJOR, use_target=True
         ),
