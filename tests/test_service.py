@@ -1,8 +1,8 @@
 import pytest
 
 from bci_build.container_attributes import BuildType
-from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
+from bci_build.package import ContainerFamily
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
@@ -181,7 +181,7 @@ def test_service_with_multi_flavor_docker():
         )
         for flavor in ("flavor1", "flavor2")
     ]
-    ContainerCrate(containers)
+    ContainerFamily(containers)
 
     assert (
         SERVICE_TEMPLATE.render(
