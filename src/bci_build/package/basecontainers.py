@@ -315,6 +315,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                     "kernel-devel",
                     "kernel-syms",
                     "gcc",
+                    "git-core",
                     "kmod",
                     "make",
                     "patch",
@@ -324,6 +325,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 ]
                 # tar is not in bci-base in 15.4, but we need it to unpack tarballs
                 + (["tar"] if os_version == OsVersion.SP4 else [])
+                + (["suse-module-tools-scriptlets"] if os_version.is_slfo else [])
             ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
