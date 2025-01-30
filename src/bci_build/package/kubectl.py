@@ -1,5 +1,6 @@
 """Kubectl BCI container"""
 
+from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
@@ -28,6 +29,7 @@ KUBECTL_CONTAINERS = [
         package_name=f"kubectl-{ver}-image",
         pretty_name="kubectl",
         custom_description="Kubernetes CLI for communicating with a Kubernetes cluster's control plane, using the Kubernetes API.",
+        exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=_is_latest_kubectl(ver, os_version),
         version="%%kubectl_version%%",
