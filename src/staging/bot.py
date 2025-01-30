@@ -728,7 +728,7 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
         (descr := ET.Element("description")).text = bci_pkg.description
         (
             scmsync := ET.Element("scmsync")
-        ).text = f"https://github.com/SUSE/bci-dockerfile-generator?subdir={bci_pkg.package_name}#{git_branch_name}"
+        ).text = f"https://github.com/SUSE/bci-dockerfile-generator?noobsinfo=1&subdir={bci_pkg.package_name}#{git_branch_name}"
 
         for elem in (title, descr, scmsync):
             pkg_conf.append(elem)
