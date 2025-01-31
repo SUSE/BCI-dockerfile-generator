@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-
+#!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/rmt-mariadb:%%mariadb_version%%
 #!BuildTag: suse/rmt-mariadb:10.11
