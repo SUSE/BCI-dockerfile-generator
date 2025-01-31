@@ -1,5 +1,6 @@
 """BCI Container definition for the helm container."""
 
+from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -15,6 +16,7 @@ HELM_CONTAINERS = [
     ApplicationStackContainer(
         name="helm",
         pretty_name="Helm (Kubernetes Package Manager)",
+        exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%helm_version%%",

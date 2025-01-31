@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from bci_build.container_attributes import TCP
+from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
@@ -101,6 +102,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
         name="389-ds",
         package_name="389-ds-container",
+        exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version_in_uid=False,
