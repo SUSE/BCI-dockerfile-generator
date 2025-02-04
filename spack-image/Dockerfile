@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: bci/spack:0.21.3-%RELEASE%
-#!BuildTag: bci/spack:0.21.3
-#!BuildTag: bci/spack:0.21
+#!BuildTag: bci/spack:0.23.0-%RELEASE%
+#!BuildTag: bci/spack:0.23.0
+#!BuildTag: bci/spack:0.23
 #!BuildTag: bci/spack:latest
-#!BuildName: bci-spack-0.21
-#!BuildVersion: 15.6.0.21
+#!BuildName: bci-spack-0.23
+#!BuildVersion: 15.6.0.23
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
@@ -33,13 +33,13 @@ RUN set -euo pipefail; \
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Spack development"
 LABEL org.opencontainers.image.description="Spack development container for building containerized HPC solution stacks, based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="0.21.3"
+LABEL org.opencontainers.image.version="0.23.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="0.21.3-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/spack:0.21.3-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="0.23.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/spack:0.23.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
@@ -73,7 +73,7 @@ RUN set -euo pipefail; mkdir -p /root/.spack \
 # sanity check that the version from the tag is equal to the version of spack that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' spack | \
-    cut -d '.' -f -3)" = "0.21.3" ]
+    cut -d '.' -f -3)" = "0.23.0" ]
 
 WORKDIR /root
 SHELL ["docker-shell"]
