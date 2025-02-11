@@ -7,6 +7,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
+from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
@@ -27,13 +28,17 @@ KIWI_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         # kiwi is not L3 supported
         # support_level=SupportLevel.L3,
-        version=format_version(
-            kiwi_ver := get_pkg_version("python-kiwi", os_version), ParseVersion.PATCH
+        version="%%kiwi_version%%",
+        tag_version=(
+            kiwi_minor := format_version(
+                get_pkg_version("python-kiwi", os_version), ParseVersion.MINOR
+            )
         ),
-        tag_version=(kiwi_minor := format_version(kiwi_ver, ParseVersion.MINOR)),
         version_in_uid=False,
         additional_versions=[
-            format_version(kiwi_ver, ParseVersion.MAJOR),
+            format_version(
+                get_pkg_version("python-kiwi", os_version), ParseVersion.MAJOR
+            ),
         ],
         license="GPL-3.0-or-later",
         package_list=[
@@ -61,6 +66,13 @@ KIWI_CONTAINERS = [
             *os_version.release_package_names,
         ]
         + os_version.common_devel_packages,
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%kiwi_version%%",
+                package_name="python3-kiwi",
+                parse_version=ParseVersion.PATCH,
+            )
+        ],
         custom_end=(
             f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}\n"
         )
