@@ -10,6 +10,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package.helpers import generate_package_version_check
 
 _RMT_ENTRYPOINT = (Path(__file__).parent / "rmt-server" / "entrypoint.sh").read_bytes()
 
@@ -22,6 +23,7 @@ RMT_CONTAINERS = [
         pretty_name="SUSE RMT server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
+        tag_version="2",
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%rmt_version%%",
@@ -36,7 +38,8 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end=f"""COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+        custom_end=f"""{generate_package_version_check("rmt-server", "2", ParseVersion.MAJOR)}
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
