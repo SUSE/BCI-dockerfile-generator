@@ -15,15 +15,11 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
-#!BuildTag: suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%
-#!BuildTag: suse/rmt-mariadb:%%mariadb_version%%
-#!BuildTag: suse/rmt-mariadb:10.11
-#!BuildTag: suse/rmt-mariadb:latest
 #!BuildTag: suse/mariadb:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb:%%mariadb_version%%
 #!BuildTag: suse/mariadb:10.11
 #!BuildTag: suse/mariadb:latest
-#!BuildName: suse-rmt-mariadb-10.11
+#!BuildName: suse-mariadb-10.11
 #!BuildVersion: 15.6.10.11
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
@@ -41,7 +37,7 @@ RUN set -euo pipefail; \
 FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.rmt-mariadb
+# labelprefix=com.suse.application.mariadb
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE MariaDB Server"
 LABEL org.opencontainers.image.description="MariaDB Server container based on the SLE Base Container Image."
@@ -51,7 +47,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%mariadb_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/rmt-mariadb:%%mariadb_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/mariadb:%%mariadb_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"

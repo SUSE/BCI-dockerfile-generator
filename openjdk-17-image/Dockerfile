@@ -14,47 +14,43 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: aarch64 ppc64le s390x x86_64
-#!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
-#!BuildTag: suse/mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/mariadb-client:10.11
-#!BuildTag: suse/mariadb-client:latest
-#!BuildName: suse-mariadb-client-10.11
-#!BuildVersion: 15.6.10.11
-#!BuildRelease: 35
-FROM registry.suse.com/bci/bci-micro:15.6 AS target
-FROM suse/sle15:15.6 AS builder
-COPY --from=target / /target
+#!ExclusiveArch: aarch64 x86_64 ppc64le s390x
+#!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
+#!BuildTag: bci/openjdk:%%java_version%%
+#!BuildTag: bci/openjdk:17
+#!BuildName: bci-openjdk-17
+#!BuildVersion: 15.6.17
+FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends mariadb-client; \
+    zypper -n install --no-recommends java-17-openjdk curl findutils gawk git-core procps; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-# sanity check that the version from the tag is equal to the version of mariadb-client that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
-    cut -d '.' -f -2)" = "10.11" ]
-FROM registry.suse.com/bci/bci-micro:15.6
-COPY --from=builder /target /
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.mariadb-client
+# labelprefix=com.suse.bci.openjdk
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE MariaDB Client"
-LABEL org.opencontainers.image.description="MariaDB Client container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%mariadb_version%%"
+LABEL org.opencontainers.image.title="SLE BCI OpenJDK 17 runtime"
+LABEL org.opencontainers.image.description="OpenJDK 17 runtime container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%mariadb_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/mariadb-client:%%mariadb_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.eula="sle-eula"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-CMD ["mariadb"]
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-17-openjdk-17/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-17-openjdk-17"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-17-openjdk-17"
+ENV JAVA_VERSION="17"
+
+RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]

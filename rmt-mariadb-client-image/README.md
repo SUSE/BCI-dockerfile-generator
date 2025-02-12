@@ -14,13 +14,13 @@ This image contains the [MariaDB client](https://mariadb.com/kb/en/mariadb-comma
 To connect to a MariaDB instance, run the following command:
 
 ```ShellSession
-$ podman run -it --rm registry.suse.com/suse/rmt-mariadb-client:10.11 mariadb -h $HOST_IP -u root -p
+$ podman run -it --rm registry.suse.com/suse/mariadb-client:10.11 mariadb -h $HOST_IP -u root -p
 ```
 
 Use the command below to dump all databases:
 
 ```ShellSession
-$ podman run -it --rm registry.suse.com/suse/rmt-mariadb-client:10.11 mariadb-dump $HOST_IP -p --all-databases > my-dump.sql
+$ podman run -it --rm registry.suse.com/suse/mariadb-client:10.11 mariadb-dump $HOST_IP -p --all-databases > my-dump.sql
 ```
 
 ## Utilities
