@@ -14,54 +14,47 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-
-#!BuildTag: bci/golang:stable-1.%RELEASE%
-#!BuildTag: bci/golang:stable
-#!BuildTag: bci/golang:%%golang_version%%-1.%RELEASE%
-#!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:1.24
-#!BuildTag: bci/golang:latest
-#!BuildName: bci-golang-stable
-#!BuildVersion: 15.6.1.24.1
-#!BuildRelease: 33
+#!ExclusiveArch: x86_64 aarch64
+#!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
+#!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%
+#!BuildTag: suse/pulseaudio:17
+#!BuildTag: suse/pulseaudio:latest
+#!BuildName: suse-pulseaudio-17
+#!BuildVersion: 15.6.17
+#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.24 go1.24-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends pulseaudio pulseaudio-utils; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.golang
+# labelprefix=com.suse.application.pulseaudio
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Go 1.24 development"
-LABEL org.opencontainers.image.description="Go 1.24 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%golang_version%%"
+LABEL org.opencontainers.image.title="SLE Pulseaudio"
+LABEL org.opencontainers.image.description="Pulseaudio container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%pulseaudio_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%golang_version%%-1.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/golang:%%golang_version%%-1.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%pulseaudio_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/pulseaudio:%%pulseaudio_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="l3"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV GOLANG_VERSION="%%golang_version%%"
-ENV GOPATH="/go"
-ENV GOTOOLCHAIN="local"
-ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-
-# only available on go's tsan_arch architectures
-#!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.24-race; then zypper -n clean; fi
-RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-WORKDIR /go
-
+CMD ["/usr/bin/pulseaudio"]
+# sanity check that the version from the tag is equal to the version of pulseaudio that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm -q --qf '%{version}' pulseaudio | \
+    cut -d '.' -f -1)" = "17" ]
+COPY daemon.conf /etc/pulse/
+COPY client.conf /etc/pulse/
+COPY system.pa /etc/pulse/
