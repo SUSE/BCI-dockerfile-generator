@@ -9,7 +9,6 @@ from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
@@ -38,12 +37,9 @@ MARIADB_CLIENT_CONTAINERS = []
 for os_version in ALL_NONBASE_OS_VERSIONS:
     mariadb_version = get_pkg_version("mariadb", os_version)
 
-    if os_version in (OsVersion.SLE16_0, OsVersion.TUMBLEWEED):
-        prefix = ""
-        additional_names = []
-    else:
-        prefix = "rmt-"
-        additional_names = ["mariadb"]
+    pkg_prefix = ""
+    if os_version.is_sle15:
+        pkg_prefix = "rmt-"
 
     docker_entrypoint = (
         Path(__file__).parent / "mariadb" / str(mariadb_version) / "entrypoint.sh"
@@ -67,10 +63,10 @@ for os_version in ALL_NONBASE_OS_VERSIONS:
 
     MARIADB_CONTAINERS.append(
         ApplicationStackContainer(
-            name=f"{prefix}mariadb",
+            name="mariadb",
+            package_name=f"{pkg_prefix}mariadb-image",
             version=_MARIADB_VERSION_PLACEHOLDER,
             tag_version=mariadb_version,
-            additional_names=additional_names,
             exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -153,12 +149,12 @@ COPY idexec /usr/local/bin/idexec
 
     MARIADB_CLIENT_CONTAINERS.append(
         ApplicationStackContainer(
-            name=f"{prefix}mariadb-client",
+            name="mariadb-client",
+            package_name=f"{pkg_prefix}mariadb-client-image",
             exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             version_in_uid=False,
-            additional_names=[f"{name}-client" for name in additional_names],
             version=_MARIADB_VERSION_PLACEHOLDER,
             from_target_image=generate_from_image_tag(os_version, "bci-micro"),
             build_stage_custom_end=generate_package_version_check(
