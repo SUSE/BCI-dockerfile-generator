@@ -14,33 +14,32 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-
-#!BuildTag: bci/golang:oldstable-2.%RELEASE%
-#!BuildTag: bci/golang:oldstable
-#!BuildTag: bci/golang:%%golang_version%%-2.%RELEASE%
-#!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:1.23
-#!BuildName: bci-golang-oldstable
-#!BuildVersion: 15.7.1.23.2
+#!ExclusiveArch: x86_64 aarch64
+#!BuildTag: bci/xorg:%%xorg_server_ver%%-%RELEASE%
+#!BuildTag: bci/xorg:%%xorg_server_ver%%
+#!BuildTag: bci/xorg:21
+#!BuildTag: bci/xorg:notaskbar
+#!BuildName: bci-xorg-21
+#!BuildVersion: 15.7.21
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.23 go1.23-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.golang
+# labelprefix=com.suse.bci.xorg
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Go 1.23 development"
-LABEL org.opencontainers.image.description="Go 1.23 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%golang_version%%"
+LABEL org.opencontainers.image.title="SLE BCI Xorg Server"
+LABEL org.opencontainers.image.description="Xorg Server container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%xorg_server_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%golang_version%%-2.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/golang:%%golang_version%%-2.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%xorg_server_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/xorg:%%xorg_server_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -48,16 +47,17 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV GOLANG_VERSION="%%golang_version%%"
-ENV GOPATH="/go"
-ENV GOTOOLCHAIN="local"
-ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm -q --qf '%{version}' xorg-x11-server | \
+    cut -d '.' -f -1)" = "21" ]
+RUN useradd -m user -u 1000
+COPY preferences /etc/icewm/preferences
+COPY xinitrc /etc/X11/xinit/xinitrc
+COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
 
+ENV XDG_SESSION_TYPE=x11
 
-# only available on go's tsan_arch architectures
-#!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.23-race; then zypper -n clean; fi
-RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-WORKDIR /go
-
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh

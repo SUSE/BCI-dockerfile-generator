@@ -14,33 +14,30 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-
-#!BuildTag: bci/golang:oldstable-2.%RELEASE%
-#!BuildTag: bci/golang:oldstable
-#!BuildTag: bci/golang:%%golang_version%%-2.%RELEASE%
-#!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:1.23
-#!BuildName: bci-golang-oldstable
-#!BuildVersion: 15.7.1.23.2
+#!ExclusiveArch: x86_64 aarch64
+#!BuildTag: bci/kiosk-firefox-esr:%%ff_ver%%-%RELEASE%
+#!BuildTag: bci/kiosk-firefox-esr:%%ff_ver%%
+#!BuildName: bci-kiosk-firefox-esr-%%ff_ver%%
+#!BuildVersion: 15.7
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.23 go1.23-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends MozillaFirefox xorg-x11-fonts MozillaFirefox-branding-SLE gconf2; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.golang
+# labelprefix=com.suse.bci.kiosk-firefox-esr
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Go 1.23 development"
-LABEL org.opencontainers.image.description="Go 1.23 development container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%golang_version%%"
+LABEL org.opencontainers.image.title="SLE BCI Mozilla Firefox"
+LABEL org.opencontainers.image.description="Mozilla Firefox container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%ff_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%golang_version%%-2.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/golang:%%golang_version%%-2.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%ff_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/kiosk-firefox-esr:%%ff_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -48,16 +45,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV GOLANG_VERSION="%%golang_version%%"
-ENV GOPATH="/go"
-ENV GOTOOLCHAIN="local"
-ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-
-# only available on go's tsan_arch architectures
-#!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.23-race; then zypper -n clean; fi
-RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-WORKDIR /go
-
+CMD ["/bin/bash", "-c", "firefox --kiosk $URL"]
+RUN useradd -m user -u 1000
+ENV DISPLAY=":0"

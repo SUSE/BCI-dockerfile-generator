@@ -59,19 +59,19 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: golang-oldstable-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: golang-oldstable-openssl-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: golang-stable-image
+        source_package: golang-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: golang-stable-openssl-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: golang-stable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
@@ -88,6 +88,10 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: kea-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: kiosk-firefox-esr-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
@@ -167,6 +171,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: pulseaudio-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: python-3.11-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -208,6 +216,10 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: stunnel-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: xorg-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
   filters:
     event: pull_request
@@ -270,16 +282,16 @@ refresh_devel_BCI:
         package: git-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: golang-oldstable-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
         package: golang-oldstable-openssl-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: golang-stable-image
+        package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: golang-stable-openssl-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: golang-stable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: grafana-image
@@ -292,6 +304,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: kea-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: kiosk-firefox-esr-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: kiwi-image
@@ -351,6 +366,9 @@ refresh_devel_BCI:
         package: prometheus-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: python-3.11-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -382,6 +400,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: stunnel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: xorg-image
   filters:
     event: push
     branches:
