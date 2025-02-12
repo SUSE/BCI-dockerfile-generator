@@ -187,6 +187,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: ruby-3.4-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: rust-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -364,6 +368,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: ruby-2.5-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: ruby-3.4-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: rust-oldstable-image

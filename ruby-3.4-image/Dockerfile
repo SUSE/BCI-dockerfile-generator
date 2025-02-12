@@ -15,47 +15,39 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/rust:oldstable-2.%RELEASE%
-#!BuildTag: bci/rust:oldstable
-#!BuildTag: bci/rust:%%RUST_VERSION%%-2.%RELEASE%
-#!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:1.83
-#!BuildName: bci-rust-oldstable
-#!BuildVersion: 15.7.1.83.2
+#!BuildTag: bci/ruby:3.4-%RELEASE%
+#!BuildTag: bci/ruby:3.4
+#!BuildTag: bci/ruby:3
+#!BuildName: bci-ruby-3.4
+#!BuildVersion: 15.7.3.4
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rust1.83 cargo1.83 lifecycle-data-sle-module-development-tools; \
+    zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.rust
+# labelprefix=com.suse.bci.ruby
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Rust 1.83"
-LABEL org.opencontainers.image.description="Rust 1.83 container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
+LABEL org.opencontainers.image.title="SLE BCI Ruby 3.4"
+LABEL org.opencontainers.image.description="Ruby 3.4 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="3.4"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-2.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-2.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="3.4-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/ruby:3.4-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2025-03-13"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-ENV RUST_VERSION="%%RUST_VERSION%%"
-ENV CARGO_VERSION="%%CARGO_VERSION%%"
-ENV CC="/usr/local/bin/gcc"
+ENV LANG="C.UTF-8"
+ENV RUBY_VERSION="%%rb_ver%%"
+ENV RUBY_MAJOR="%%rb_maj%%"
 
-# workaround for gcc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-*|grep -P ".*gcc-[[:digit:]]+") /usr/local/bin/gcc
-# smoke test that gcc works
-RUN gcc --version
-RUN ${CC} --version
-COPY rust-and-cargo-pin.check /etc/zypp/systemCheck.d/rust-and-cargo-pin.check
+RUN set -euo pipefail; sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc
