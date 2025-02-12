@@ -103,6 +103,14 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: rmt-mariadb-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
+        source_package: rmt-mariadb-client-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: micro-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -168,14 +176,6 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
         source_package: distribution-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: rmt-mariadb-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: rmt-mariadb-client-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
@@ -303,6 +303,12 @@ refresh_devel_BCI:
         package: kubectl-1.30-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: rmt-mariadb-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: rmt-mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: micro-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -352,12 +358,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: distribution-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: rmt-mariadb-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: rmt-mariadb-client-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: rmt-server-image
