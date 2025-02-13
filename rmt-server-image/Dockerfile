@@ -17,9 +17,10 @@
 
 #!BuildTag: suse/rmt-server:%%rmt_version%%-%RELEASE%
 #!BuildTag: suse/rmt-server:%%rmt_version%%
+#!BuildTag: suse/rmt-server:2
 #!BuildTag: suse/rmt-server:latest
-#!BuildName: suse-rmt-server-%%rmt_version%%
-#!BuildVersion: 15.6
+#!BuildName: suse-rmt-server-2
+#!BuildVersion: 15.6.2
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
 
@@ -54,5 +55,9 @@ ENV LANG="en"
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
+# sanity check that the version from the tag is equal to the version of rmt-server that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm -q --qf '%{version}' rmt-server | \
+    cut -d '.' -f -1)" = "2" ]
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
