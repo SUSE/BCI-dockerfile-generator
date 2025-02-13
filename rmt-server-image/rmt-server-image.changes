@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 13 11:16:34 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set buildname to the major version for stable aggregates
+
+-------------------------------------------------------------------
 Wed Jan  1 14:13:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
