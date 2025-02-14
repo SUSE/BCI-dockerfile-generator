@@ -196,6 +196,6 @@ CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
 _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
     OsVersion.SP5: datetime.date(2024, 12, 31),
-    OsVersion.SP6: None,
+    OsVersion.SP6: datetime.date(2025, 12, 31),
     OsVersion.SP7: datetime.date(2031, 7, 31),
 }
