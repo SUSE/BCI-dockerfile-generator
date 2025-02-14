@@ -39,7 +39,11 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
         ],
         "package_list": [ruby]
         # bundler is part of ruby itself as of Ruby 3.4
-        + ([f"{ruby}-rubygem-bundler"] if ruby_version == "2.5" else [])
+        + (
+            []
+            if ruby_version == "3.4" and os_version.is_sle15
+            else [f"{ruby}-rubygem-bundler"]
+        )
         + [
             f"{ruby}-devel",
             # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
