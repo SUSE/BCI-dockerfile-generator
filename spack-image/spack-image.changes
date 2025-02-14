@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 14 18:01:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end dates
+
+-------------------------------------------------------------------
 Wed Jan 15 10:10:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to new spack version
