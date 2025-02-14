@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 14 18:03:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end dates
+
+-------------------------------------------------------------------
 Wed Feb  5 10:30:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove handling for outdated postgresql versions
