@@ -11,7 +11,7 @@ from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 
 
-def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion):
+def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion):
     ruby = f"ruby{ruby_version}"
     ruby_major = ruby_version.split(".")[0]
 
@@ -37,9 +37,10 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.3"], os_version: OsVersion)
                 parse_version=ParseVersion.MINOR,
             ),
         ],
-        "package_list": [
-            ruby,
-            f"{ruby}-rubygem-bundler",
+        "package_list": [ruby]
+        # bundler is part of ruby itself as of Ruby 3.4
+        + ([f"{ruby}-rubygem-bundler"] if ruby_version == "2.5" else [])
+        + [
             f"{ruby}-devel",
             # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
             "util-linux",
@@ -68,6 +69,10 @@ RUBY_CONTAINERS = [
     ),
     DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP7),
+        support_level=SupportLevel.L3,
+    ),
+    DevelopmentContainer(
+        **_get_ruby_kwargs("3.4", OsVersion.SP7),
         support_level=SupportLevel.L3,
     ),
     DevelopmentContainer(**_get_ruby_kwargs("3.4", OsVersion.TUMBLEWEED)),
