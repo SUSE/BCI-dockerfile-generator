@@ -1,17 +1,51 @@
 """OpenJDK (Java) related BCI containers"""
 
+import datetime
 import os
 from itertools import product
 from typing import Literal
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+
+
+def supported_until(os_version: OsVersion, jre_major: int) -> datetime.date | None:
+    """Return the predicted end of support date for this os/jre combination. Unlike
+    the SAC containers, we bound them to the SP lifecycle
+    """
+    if not os_version.is_sle15:
+        return None
+
+    # Taken from https://www.suse.com/releasenotes/x86_64/SUSE-SLES/15-SP6/index.html#java-version
+    jre_end_support_dates: dict[int, datetime.date] = {
+        21: datetime.date(2031, 6, 30),
+        17: datetime.date(2027, 12, 31),
+        11: datetime.date(2026, 12, 31),
+        8: datetime.date(2026, 12, 31),
+    }
+
+    jre_sp_mapping: dict[int, datetime.date] = {
+        11: _SUPPORTED_UNTIL_SLE[OsVersion.SP5],
+        17: _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+        21: _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
+    }
+
+    if (
+        jre_end_support_dates.get(jre_major) is None
+        or jre_sp_mapping.get(jre_major) is None
+    ):
+        return None
+
+    return min(
+        jre_end_support_dates.get(jre_major, None), jre_sp_mapping.get(jre_major, None)
+    )
 
 
 def _get_openjdk_kwargs(
@@ -41,6 +75,7 @@ def _get_openjdk_kwargs(
         "version": "%%java_version%%",
         "os_version": os_version,
         "is_latest": is_latest,
+        "supported_until": supported_until(os_version, java_version),
         "package_name": (
             f"openjdk-{java_version}" + ("-devel" if devel else "") + "-image"
         ),
