@@ -112,12 +112,16 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         package_list=["389-ds", "timezone", "openssl", "nss_synth"],
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
         version="%%389ds_version%%",
+        tag_version=format_version(
+            three_eight_nine := get_pkg_version("389-ds", os_version),
+            ParseVersion.MINOR,
+        ),
         extra_files=_389DS_FILES,
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%389ds_version%%",
                 package_name="389-ds",
-                parse_version=ParseVersion.MINOR,
+                parse_version=ParseVersion.PATCH,
             )
         ],
         exposes_ports=[TCP(3389), TCP(3636)],
