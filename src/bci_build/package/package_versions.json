@@ -13,6 +13,13 @@
         "Tumbleweed": "2.4",
         "version_format": "minor"
     },
+    "distribution": {
+        "5": "2.8",
+        "6": "2.8",
+        "7": "2.8",
+        "Tumbleweed": "2.8",
+        "version_format": "minor"
+    },
     "git": {
         "5": "2.35",
         "6": "2.43",

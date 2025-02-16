@@ -361,6 +361,9 @@ REGISTRY_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
+        tag_version=format_version(
+            get_pkg_version("distribution", os_version), ParseVersion.MINOR
+        ),
         version_in_uid=False,
         replacements_via_service=[
             Replacement(
