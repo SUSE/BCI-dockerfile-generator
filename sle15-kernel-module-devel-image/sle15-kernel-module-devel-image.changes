@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 14 18:03:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end dates
+
+-------------------------------------------------------------------
 Mon Jan 27 12:50:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add git into the container image
