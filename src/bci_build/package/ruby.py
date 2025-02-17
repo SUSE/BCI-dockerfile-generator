@@ -38,7 +38,8 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
             ),
         ],
         "package_list": [ruby]
-        # bundler is part of ruby itself as of Ruby 3.4
+        # bundler is part of ruby itself as of Ruby 3.4,
+        # it exists as a standalone gem only in Tumbleweed
         + (
             []
             if ruby_version == "3.4" and os_version.is_sle15
