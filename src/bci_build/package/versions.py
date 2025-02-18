@@ -155,7 +155,7 @@ def format_version(ver: str, format: ParseVersion) -> str:
     1.2.0
 
     """
-    v = version.parse(ver)
+    v = version.parse(ver.replace(":", "!").partition("~")[0])
     match format:
         case ParseVersion.MAJOR:
             return str(v.major)
