@@ -59,6 +59,8 @@
         "Tumbleweed": "0.23.0"
     },
     "valkey": {
+        "6": "8.0",
+        "7": "8.0",
         "Tumbleweed": "8.0",
         "version_format": "minor"
     }
