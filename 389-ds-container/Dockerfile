@@ -17,9 +17,10 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
 #!BuildTag: suse/389-ds:%%389ds_version%%
+#!BuildTag: suse/389-ds:2.2
 #!BuildTag: suse/389-ds:latest
-#!BuildName: suse-389-ds-%%389ds_version%%
-#!BuildVersion: 15.6
+#!BuildName: suse-389-ds-2.2
+#!BuildVersion: 15.6.2.2
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
 
