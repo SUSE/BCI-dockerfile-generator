@@ -1495,6 +1495,7 @@ from .rust import RUST_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
+from .xorg import XORG_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
     f"{bci.uid}-{bci.os_version.pretty_print.lower()}": bci
@@ -1545,6 +1546,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *KEA_DHCP_CONTAINERS,
         *KUBECTL_CONTAINERS,
         *STUNNEL_CONTAINERS,
+        *XORG_CONTAINERS,
     )
 }
 
