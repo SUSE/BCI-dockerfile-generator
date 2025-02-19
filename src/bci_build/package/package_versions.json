@@ -1,9 +1,23 @@
 {
+    "389-ds": {
+        "5": "2.2",
+        "6": "2.2",
+        "7": "2.5",
+        "Tumbleweed": "3.1",
+        "version_format": "minor"
+    },
     "cosign": {
         "5": "2.4",
         "6": "2.4",
         "7": "2.4",
         "Tumbleweed": "2.4",
+        "version_format": "minor"
+    },
+    "distribution": {
+        "5": "2.8",
+        "6": "2.8",
+        "7": "2.8",
+        "Tumbleweed": "2.8",
         "version_format": "minor"
     },
     "git": {
