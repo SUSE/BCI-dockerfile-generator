@@ -23,7 +23,7 @@
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends ruby3.4 ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
