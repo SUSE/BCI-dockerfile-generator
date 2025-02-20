@@ -61,9 +61,22 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
             # avoid ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
         },
+        "config_sh_script": (
+            # workaround for https://bugzilla.suse.com/show_bug.cgi?id=1237324
+            (
+                """update-alternatives --set rake /usr/bin/rake.ruby.ruby3.4; \\
+    update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.4; \\
+    update-alternatives --set ri /usr/bin/ri.ruby.ruby3.4; \\
+    ln -s /usr/bin/ruby.ruby3.4 /usr/local/bin/ruby; \\
+    ln -s /usr/bin/gem.ruby3.4 /usr/local/bin/gem; \\
+"""
+            )
+            if ruby_version == "3.4" and os_version.is_sle15
+            else ""
+        )
         # as we only ship one ruby version, we want to make sure that binaries belonging
         # to our gems get installed as `bin` and not as `bin.ruby$ruby_version`
-        "config_sh_script": "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
+        + "sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc",
     }
 
 
