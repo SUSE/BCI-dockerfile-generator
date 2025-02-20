@@ -50,4 +50,9 @@ ENV LANG="C.UTF-8"
 ENV RUBY_VERSION="%%rb_ver%%"
 ENV RUBY_MAJOR="%%rb_maj%%"
 
-RUN set -euo pipefail; sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc
+RUN set -euo pipefail; update-alternatives --set rake /usr/bin/rake.ruby.ruby3.4; \
+    update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.4; \
+    update-alternatives --set ri /usr/bin/ri.ruby.ruby3.4; \
+    ln -s /usr/bin/ruby.ruby3.4 /usr/local/bin/ruby; \
+    ln -s /usr/bin/gem.ruby3.4 /usr/local/bin/gem; \
+sed -i 's/--format-executable/--no-format-executable/' /etc/gemrc
