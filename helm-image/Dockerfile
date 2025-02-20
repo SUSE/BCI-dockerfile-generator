@@ -17,10 +17,10 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/helm:%%helm_version%%-%RELEASE%
 #!BuildTag: suse/helm:%%helm_version%%
-#!BuildTag: suse/helm:3.16
+#!BuildTag: suse/helm:3.17
 #!BuildTag: suse/helm:3
-#!BuildName: suse-helm-3.16
-#!BuildVersion: 15.7.3.16
+#!BuildName: suse-helm-3.17
+#!BuildVersion: 15.7.3.17
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
@@ -32,7 +32,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of helm that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' helm | \
-    cut -d '.' -f -2)" = "3.16" ]
+    cut -d '.' -f -2)" = "3.17" ]
 FROM bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
