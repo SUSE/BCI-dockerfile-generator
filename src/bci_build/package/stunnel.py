@@ -19,6 +19,7 @@ STUNNEL_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version=(stunnel_version_re := "%%stunnel_re%%"),
+        is_singleton_image=True,
         pretty_name="Stunnel",
         package_list=["stunnel"],
         replacements_via_service=[
