@@ -17,10 +17,10 @@
 
 #!BuildTag: bci/kiwi:%%kiwi_version%%-%RELEASE%
 #!BuildTag: bci/kiwi:%%kiwi_version%%
-#!BuildTag: bci/kiwi:10.1
+#!BuildTag: bci/kiwi:10.2
 #!BuildTag: bci/kiwi:10
-#!BuildName: bci-kiwi-10.1
-#!BuildVersion: 16.0.10.1
+#!BuildName: bci-kiwi-10.2
+#!BuildVersion: 16.0.10.2
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
@@ -51,5 +51,5 @@ LABEL usage="This container requires an openSUSE/SUSE host kernel for full funct
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' python3-kiwi | \
-    cut -d '.' -f -2)" = "10.1" ]
+    cut -d '.' -f -2)" = "10.2" ]
 RUN set -euo pipefail; printf "mapper:\n  - part_mapper: kpartx\n" > /etc/kiwi.yml
