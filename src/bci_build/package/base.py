@@ -9,6 +9,7 @@ from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import OsContainer
 from bci_build.package import Package
@@ -129,6 +130,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         "from_image": None,
         "os_version": os_version,
         "support_level": SupportLevel.L3,
+        "supported_until": _SUPPORTED_UNTIL_SLE.get(os_version),
         # we need to exclude i586 and other ports arches from building base images
         "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],
         "kiwi_ignore_packages": ["rpm"] if os_version.is_sle15 else [],
