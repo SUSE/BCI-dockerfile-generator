@@ -58,7 +58,7 @@ SPACK_CONTAINERS = [
             "usage": "This container is enabled and supported only on a SLE15+ host."
         },
         support_level=SupportLevel.L3,
-        supported_until=_SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         custom_end=rf"""
 {DOCKERFILE_RUN} ln -s $SPACK_ROOT/share/spack/docker/entrypoint.bash \
        /usr/local/bin/docker-shell \
