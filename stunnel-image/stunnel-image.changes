@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 24 09:47:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove version from BuildName
+
+-------------------------------------------------------------------
 Thu Jan 23 14:03:05 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Switch publish registry to registry.suse.com

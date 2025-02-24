@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 24 09:47:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove version from BuildName
+
+-------------------------------------------------------------------
 Tue Feb 11 11:49:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to replace_using_package_version service to reduce source changes
