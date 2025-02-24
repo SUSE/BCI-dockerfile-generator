@@ -20,7 +20,7 @@
 #!BuildTag: suse/helm:3.17
 #!BuildTag: suse/helm:3
 #!BuildTag: suse/helm:latest
-#!BuildName: suse-helm-3.17
+#!BuildName: suse-helm
 #!BuildVersion: 15.6.3.17
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
