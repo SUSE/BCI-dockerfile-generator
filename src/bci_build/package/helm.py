@@ -19,6 +19,7 @@ HELM_CONTAINERS = [
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         version="%%helm_version%%",
         tag_version=format_version(
             helm_ver := get_pkg_version("helm", os_version), ParseVersion.MINOR

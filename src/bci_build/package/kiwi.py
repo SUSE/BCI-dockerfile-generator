@@ -26,6 +26,7 @@ KIWI_CONTAINERS = [
         custom_description="{pretty_name} container {based_on_container}. {privileged_only}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         # kiwi is not L3 supported
         # support_level=SupportLevel.L3,
         version="%%kiwi_version%%",

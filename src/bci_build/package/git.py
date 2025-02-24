@@ -20,6 +20,7 @@ GIT_CONTAINERS = [
         custom_description="A micro environment with Git {based_on_container}.",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         version="%%git_version%%",
         tag_version=format_version(
             git_version := get_pkg_version("git", os_version), ParseVersion.MINOR

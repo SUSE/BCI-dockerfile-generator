@@ -1334,7 +1334,7 @@ class DevelopmentContainer(BaseContainerImage):
             if self.stability_tag:
                 build_name = f"{self.registry_prefix}/{self.name}-{self.stability_tag}"
             if self.is_singleton_image:
-                build_name = build_name.partition(":")[0]
+                build_name = build_name.rpartition("-")[0]
             return build_name.replace("/", ":").replace(":", "-")
 
         return None
