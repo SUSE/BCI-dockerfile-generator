@@ -18,7 +18,7 @@
 #!BuildTag: suse/stunnel:%%stunnel_re%%-%RELEASE%
 #!BuildTag: suse/stunnel:%%stunnel_re%%
 #!BuildTag: suse/stunnel:5
-#!BuildName: suse-stunnel-5
+#!BuildName: suse-stunnel
 #!BuildVersion: 15.7.5
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder

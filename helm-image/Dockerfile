@@ -19,7 +19,7 @@
 #!BuildTag: suse/helm:%%helm_version%%
 #!BuildTag: suse/helm:3.17
 #!BuildTag: suse/helm:3
-#!BuildName: suse-helm-3.17
+#!BuildName: suse-helm
 #!BuildVersion: 15.7.3.17
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder

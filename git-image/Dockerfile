@@ -19,7 +19,7 @@
 #!BuildTag: suse/git:%%git_version%%
 #!BuildTag: suse/git:2.43
 #!BuildTag: suse/git:%%git_major_version%%
-#!BuildName: suse-git-2.43
+#!BuildName: suse-git
 #!BuildVersion: 15.7.2.43
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
