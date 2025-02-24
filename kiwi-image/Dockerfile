@@ -19,7 +19,7 @@
 #!BuildTag: bci/kiwi:%%kiwi_version%%
 #!BuildTag: bci/kiwi:10.2
 #!BuildTag: bci/kiwi:10
-#!BuildName: bci-kiwi-10.2
+#!BuildName: bci-kiwi
 #!BuildVersion: 16.0.10.2
 FROM bci/bci-base:16.0
 
