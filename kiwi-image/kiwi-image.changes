@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 24 09:47:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove version from BuildName
+
+-------------------------------------------------------------------
 Fri Feb 21 10:07:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Bump kiwi version to 10.2
