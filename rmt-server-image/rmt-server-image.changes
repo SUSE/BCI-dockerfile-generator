@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 24 09:47:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove version from BuildName
+
+-------------------------------------------------------------------
 Thu Feb 13 11:16:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - set buildname to the major version for stable aggregates

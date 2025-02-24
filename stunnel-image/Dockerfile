@@ -19,7 +19,7 @@
 #!BuildTag: suse/stunnel:%%stunnel_re%%
 #!BuildTag: suse/stunnel:5
 #!BuildTag: suse/stunnel:latest
-#!BuildName: suse-stunnel-5
+#!BuildName: suse-stunnel
 #!BuildVersion: 15.6.5
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target

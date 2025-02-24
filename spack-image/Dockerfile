@@ -19,7 +19,7 @@
 #!BuildTag: bci/spack:0.23.0
 #!BuildTag: bci/spack:0.23
 #!BuildTag: bci/spack:latest
-#!BuildName: bci-spack-0.23
+#!BuildName: bci-spack
 #!BuildVersion: 15.6.0.23
 FROM registry.suse.com/bci/bci-base:15.6
 

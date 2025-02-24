@@ -19,7 +19,7 @@
 #!BuildTag: suse/rmt-server:%%rmt_version%%
 #!BuildTag: suse/rmt-server:2
 #!BuildTag: suse/rmt-server:latest
-#!BuildName: suse-rmt-server-2
+#!BuildName: suse-rmt-server
 #!BuildVersion: 15.6.2
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
