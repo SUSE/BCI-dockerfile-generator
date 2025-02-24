@@ -18,7 +18,7 @@
 #!BuildTag: suse/rmt-server:%%rmt_version%%-%RELEASE%
 #!BuildTag: suse/rmt-server:%%rmt_version%%
 #!BuildTag: suse/rmt-server:2
-#!BuildName: suse-rmt-server-2
+#!BuildName: suse-rmt-server
 #!BuildVersion: 15.7.2
 FROM suse/sle15:15.7
 
