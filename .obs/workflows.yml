@@ -269,7 +269,7 @@ refresh_staging_project:
     event: push
     branches:
       only:
-        - Tumbleweed
+        - "Tumbleweed"
 
 
 refresh_devel_BCI:
@@ -470,4 +470,4 @@ refresh_devel_BCI:
     event: push
     branches:
       only:
-        - Tumbleweed
+        - "Tumbleweed"
