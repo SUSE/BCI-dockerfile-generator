@@ -1,4 +1,4 @@
-"""Kubectl BCI container"""
+"""Kubectl (Kubernetes client) BCI container"""
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
@@ -10,7 +10,7 @@ from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
 
 _KUBECTL_VERSIONS = {
-    OsVersion.TUMBLEWEED: ("1.29", "1.30", "1.31", "1.32"),
+    OsVersion.TUMBLEWEED: ("1.30", "1.31", "1.32"),
     OsVersion.SP6: ("1.28",),
     OsVersion.SP7: ("1.28", "1.30"),
 }
