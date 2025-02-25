@@ -233,7 +233,7 @@ refresh_staging_project:
     event: push
     branches:
       only:
-        - sle15-sp7
+        - "sle15-sp7"
 
 
 refresh_devel_BCI:
@@ -407,4 +407,4 @@ refresh_devel_BCI:
     event: push
     branches:
       only:
-        - sle15-sp7
+        - "sle15-sp7"
