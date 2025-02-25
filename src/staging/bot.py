@@ -369,7 +369,7 @@ class StagingBot:
     event: push
     branches:
       only:
-        - {self.deployment_branch_name}
+        - "{self.deployment_branch_name}"
 """
 
         workflows = """---
