@@ -95,10 +95,6 @@ staging_build:
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:Tumbleweed
-        source_package: kubectl-1.29-image
-        target_project: home:defolos:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:Tumbleweed
         source_package: kubectl-1.30-image
         target_project: home:defolos:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -347,9 +343,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: kiwi-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: kubectl-1.29-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: kubectl-1.30-image
