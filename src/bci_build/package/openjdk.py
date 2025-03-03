@@ -33,7 +33,7 @@ def supported_until(os_version: OsVersion, jre_major: int) -> datetime.date | No
 
     jre_sp_mapping: dict[int, datetime.date] = {
         11: _SUPPORTED_UNTIL_SLE[OsVersion.SP5],
-        17: _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
+        17: _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
         21: _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
     }
 
@@ -135,7 +135,7 @@ OPENJDK_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
-            (OsVersion.TUMBLEWEED, OsVersion.SP6), (True, False)
+            (OsVersion.SP6, OsVersion.SP7, OsVersion.TUMBLEWEED), (True, False)
         )
     ]
     + [
