@@ -22,7 +22,8 @@ VALKEY_CONTAINERS = [
         custom_description=(
             "Valkey is an open-source high-performance key/value "
             "data store designed for a variety of workloads such as "
-            "caching, message queuing and primary database use"
+            "caching, message queuing and primary database use. "
+            "This image is {based_on_container}."
         ),
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
