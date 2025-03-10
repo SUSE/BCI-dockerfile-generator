@@ -1,5 +1,6 @@
 """Ruby Development BCI containers"""
 
+import datetime
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
@@ -9,6 +10,8 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+
+_RUBY_SUPPORT_ENDS = {"2.5": None, "3.4": datetime.date(2028, 3, 31)}
 
 
 def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion):
@@ -23,6 +26,9 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
         "additional_versions": [ruby_major],
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
         "os_version": os_version,
+        "supported_until": (
+            _RUBY_SUPPORT_ENDS.get(ruby_version) if os_version.is_sle15 else None
+        ),
         "env": {
             # upstream does this
             "LANG": "C.UTF-8",
