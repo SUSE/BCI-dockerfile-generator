@@ -17,17 +17,18 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/kubectl:%%kubectl_version%%-%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
-#!BuildTag: suse/kubectl:1.28
-#!BuildTag: suse/kubectl:1.28
-#!BuildName: suse-kubectl-1.28
-#!BuildVersion: 15.6.1.28
+#!BuildTag: suse/kubectl:1.30
+#!BuildTag: suse/kubectl:1.30
+#!BuildTag: suse/kubectl:latest
+#!BuildName: suse-kubectl-1.30
+#!BuildVersion: 15.6.1.30
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.28-client; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.30-client; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.6
