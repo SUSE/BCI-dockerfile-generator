@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 10 11:25:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set EoL date to upstream EoL
+
+-------------------------------------------------------------------
 Thu Feb 20 08:16:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Ensure that Ruby 3.4 is the default Ruby (bsc#1237324)
