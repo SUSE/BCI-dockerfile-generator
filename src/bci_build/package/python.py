@@ -36,7 +36,7 @@ class PythonDevelopmentContainer(DevelopmentContainer):
 
 
 def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
-    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.11")
+    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.13")
     py3_ver_nodots = py3_ver.replace(".", "")
 
     py3 = (
@@ -68,12 +68,14 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             "PATH": "$PATH:/root/.local/bin",
             "PIP_VERSION": pip3_replacement,
         },
-        "package_list": [f"{py3}-devel", py3, pip3]
-        + os_version.common_devel_packages
-        + ([f"{py3}-wheel"] if has_wheel else [])
-        + ([f"{py3}-pipx"] if has_pipx else [])
-        + (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
-        + os_version.lifecycle_data_pkg,
+        "package_list": (
+            [f"{py3}-devel", py3, pip3]
+            + os_version.common_devel_packages
+            + ([f"{py3}-wheel"] if has_wheel else [])
+            + ([f"{py3}-pipx"] if has_pipx else [])
+            + (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
+            + os_version.lifecycle_data_pkg
+        ),
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description=py3_ver_replacement,
@@ -128,7 +130,7 @@ PYTHON_3_6_CONTAINERS = (
 )
 
 
-_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.12", "3.13", "3.11")
+_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.11", "3.12", "3.13")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
