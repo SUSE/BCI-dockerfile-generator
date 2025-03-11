@@ -36,7 +36,7 @@ class PythonDevelopmentContainer(DevelopmentContainer):
 
 
 def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
-    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.11")
+    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.13")
     py3_ver_nodots = py3_ver.replace(".", "")
 
     py3 = (
