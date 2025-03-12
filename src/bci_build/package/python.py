@@ -96,7 +96,8 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     config_sh_script = "install -d -m 0755 /root/.local/bin"
 
     if not is_system_py:
-        config_sh_script += rf"""; ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
+        config_sh_script += rf"""; if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
+    ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
 
     # broken packaging without a "pip" update-alternatives link
