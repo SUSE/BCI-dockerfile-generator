@@ -25,7 +25,8 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers until end of the year
     "3.11": datetime.date(2027, 12, 31),
     "3.12": _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
-    "3.13": _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
+    # see jsc#PED-12365 - maybe superseded by 3.14/3.15
+    "3.13": datetime.date(2027, 12, 31),
 }
 
 
