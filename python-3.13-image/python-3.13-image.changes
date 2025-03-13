@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 13 08:25:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Fix EoL date (jsc#PED-12365)
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
