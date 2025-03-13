@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 13 08:51:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add failsafe to not create invalid compat symlinks
+
+-------------------------------------------------------------------
 Fri Feb 14 18:03:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add support end dates

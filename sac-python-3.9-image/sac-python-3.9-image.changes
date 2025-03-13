@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 13 08:51:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add failsafe to not create invalid compat symlinks
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:47 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
