@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 13 08:52:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add failsafe to not create invalid compat symlinks
+
+-------------------------------------------------------------------
 Thu Mar 13 08:25:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Fix EoL date (jsc#PED-12365)
