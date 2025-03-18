@@ -1,5 +1,0 @@
-<multibuild>
-    <package>openjdk11</package>
-    <package>openjdk17</package>
-    <package>openjdk21</package>
-</multibuild>
