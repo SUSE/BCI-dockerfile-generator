@@ -4,7 +4,6 @@ from pathlib import Path
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -12,7 +11,6 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
-from bci_build.registry import ApplicationCollectionRegistry
 
 _POSTFIX_FILES = {}
 for filename in (
@@ -38,10 +36,6 @@ for filename in (
 POSTFIX_CONTAINERS = [
     ApplicationStackContainer(
         name="postfix",
-        package_name=None if os_version.is_tumbleweed else "sac-postfix-image",
-        _publish_registry=(
-            None if os_version.is_tumbleweed else ApplicationCollectionRegistry()
-        ),
         pretty_name="Postfix",
         custom_description="Postfix container is fast and secure mail server, {based_on_container}.",
         os_version=os_version,
@@ -103,5 +97,5 @@ HEALTHCHECK --interval=5s --timeout=10s --start-period=30s --retries=3 \
         CMD postfix status
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in (OsVersion.TUMBLEWEED,)
 ]
