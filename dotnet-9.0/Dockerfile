@@ -67,8 +67,8 @@ COPY dotnet-apphost-pack-9.0-9.0.3-1.x86_64.rpm /tmp/
 COPY aspnetcore-targeting-pack-9.0-9.0.3-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.3-1.x86_64.rpm
 COPY aspnetcore-runtime-9.0-9.0.3-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.201-1.x86_64.rpm
-COPY dotnet-sdk-9.0-9.0.201-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.202-1.x86_64.rpm
+COPY dotnet-sdk-9.0-9.0.202-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
