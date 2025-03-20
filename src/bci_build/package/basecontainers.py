@@ -20,6 +20,7 @@ from bci_build.package import OsContainer
 from bci_build.package import Package
 from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
 
@@ -196,6 +197,39 @@ FIPS_BASE_CONTAINERS = [
     )
     # SP5 is known to be having a non-working libgcrypt for FIPS mode
     for os_version in ALL_OS_VERSIONS - {OsVersion.SP5}
+]
+
+
+FIPS_MICRO_CONTAINERS = [
+    OsContainer(
+        name="micro-fips",
+        os_version=os_version,
+        support_level=SupportLevel.L3,
+        supported_until=_get_supported_until_fips(os_version),
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        pretty_name=_get_fips_pretty_name(os_version),
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+        build_recipe_type=BuildType.DOCKER,
+        package_list=[name for name in ["coreutils", "crypto-policies-scripts", *os_version.release_package_names]
+
+        ],
+        extra_labels={
+            "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
+        },
+        custom_end=_get_fips_base_custom_end(os_version)
+        + textwrap.dedent(
+            """
+            ENV GNUTLS_FORCE_FIPS_MODE=1
+            ENV LIBGCRYPT_FORCE_FIPS_MODE=1
+            ENV LIBICA_FIPS_FLAG=1
+            ENV NSS_FIPS=1
+            ENV OPENSSL_FIPS=1
+            ENV OPENSSL_FORCE_FIPS_MODE=1
+            """
+        ),
+    )
+    for os_version in [OsVersion.SP6]
 ]
 
 
