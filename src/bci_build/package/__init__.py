@@ -1468,6 +1468,7 @@ from .basecontainers import INIT_CONTAINERS  # noqa: E402
 from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
 from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
+from .bind import BIND_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
 from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
@@ -1549,6 +1550,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *XORG_CONTAINERS,
         *FIREFOX_CONTAINERS,
         *PULSEAUDIO_CONTAINERS,
+        *BIND_CONTAINERS,
     )
 }
 
