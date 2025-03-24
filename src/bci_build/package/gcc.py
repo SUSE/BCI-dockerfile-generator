@@ -17,7 +17,7 @@ _GCC_VERSIONS = Literal[7, 12, 13, 14]
 # The lifecycle is two years after the XX.2 release
 # according to upstream release date at
 # https://gcc.gnu.org/releases.html
-_GCC_SLCC_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
+_GCC_SL16_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
     13: datetime.date(2025, 7, 31),
     14: datetime.date(2026, 7, 31),
 }
@@ -52,7 +52,7 @@ GCC_CONTAINERS = [
         version="%%gcc_minor_version%%",
         tag_version=gcc_version,
         support_level=SupportLevel.L3,
-        supported_until=_GCC_SLCC_SUPPORTED_UNTIL.get(gcc_version),
+        supported_until=_GCC_SL16_SUPPORTED_UNTIL.get(gcc_version),
         package_list=(
             [
                 (gcc_pkg := f"gcc{gcc_version}"),
