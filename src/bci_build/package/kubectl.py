@@ -35,7 +35,6 @@ KUBECTL_CONTAINERS = [
         version="%%kubectl_version%%",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         tag_version=ver,
-        additional_versions=[ver],
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%kubectl_version%%",
