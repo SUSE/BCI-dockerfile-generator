@@ -23,10 +23,30 @@ def _is_latest_kubectl(version: str, os_version: OsVersion) -> bool:
     )
 
 
+def _get_kubectl_stability_tag(version: str, os_version: OsVersion) -> str | None:
+    if not os_version.is_sle15:
+        return None
+
+    assert (len(_KUBECTL_VERSIONS[os_version])) == 2, (
+        "expected max of two versions of kubernetes client in parallel"
+    )
+
+    if version == _KUBECTL_VERSIONS[os_version][-1]:
+        return "stable"
+    if version == _KUBECTL_VERSIONS[os_version][0]:
+        return "oldstable"
+    return None
+
+
 KUBECTL_CONTAINERS = [
     ApplicationStackContainer(
         name="kubectl",
-        package_name=f"kubectl-{ver}-image",
+        stability_tag=(stability_tag := _get_kubectl_stability_tag(ver, os_version)),
+        package_name=(
+            f"kubectl-{stability_tag}-image"
+            if stability_tag
+            else f"kubectl-{ver}-image"
+        ),
         pretty_name="kubectl",
         custom_description="Kubernetes CLI for communicating with a Kubernetes cluster's control plane using the Kubernetes API, {based_on_container}.",
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
