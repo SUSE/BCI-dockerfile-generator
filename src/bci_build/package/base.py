@@ -186,7 +186,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                 ]
                 + (
                     ["libcurl-mini4", "libopenssl-3-fips-provider"]
-                    if os_version.is_slfo
+                    if os_version.is_sl16
                     else []
                 )
                 + (

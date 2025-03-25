@@ -404,7 +404,7 @@ class BaseContainerImage(abc.ABC):
     def build_version(self) -> str | None:
         if self.os_version.is_sle15:
             return f"15.{int(self.os_version.value)}"
-        if self.os_version.is_slfo:
+        if self.os_version.is_sl16:
             return str(self.os_version.value)
         return None
 
@@ -626,7 +626,7 @@ exit 0
                 or _from_image.startswith(self.base_image_registry)
             )
             and not self.os_version.is_tumbleweed
-            and not self.os_version.is_slfo  # waiting for ibs#345975
+            and not self.os_version.is_sl16  # waiting for ibs#345975
         )
 
     @property

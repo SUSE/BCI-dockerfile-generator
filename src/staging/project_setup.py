@@ -130,20 +130,20 @@ def generate_meta(
     with_all_arches = (os_version != OsVersion.TUMBLEWEED) or (
         project_type in (ProjectType.CR, ProjectType.DEVEL)
     )
-    with_helmcharts_repo = project_type == ProjectType.DEVEL and not os_version.is_slfo
+    with_helmcharts_repo = project_type == ProjectType.DEVEL and not os_version.is_sl16
 
     repository_paths: tuple[tuple[str, str], ...]
-    if os_version.is_sle15 or os_version.is_slfo:
+    if os_version.is_sle15 or os_version.is_sl16:
         if os_version.is_sle15:
             first_prj = "SUSE:Registry"
             last_prj = f"SUSE:SLE-15-SP{str(os_version)}:Update"
         else:
-            assert os_version.is_slfo
+            assert os_version.is_sl16
             first_prj = "SUSE:SLFO:Products:SLES:16.0"
             last_prj = "SUSE:SLFO:Main:Build"
 
         repository_paths: tuple[tuple[str, str], ...] = ((first_prj, "standard"),)
-        if (os_version.is_slfo or os_version.is_sle15) and (
+        if (os_version.is_sl16 or os_version.is_sle15) and (
             project_type == ProjectType.STAGING
         ):
             repository_paths += (
@@ -205,7 +205,7 @@ def generate_meta(
         maintainers=users,
         with_all_arches=with_all_arches,
         with_helmcharts_repo=with_helmcharts_repo,
-        with_product_repo=os_version.is_slfo,
+        with_product_repo=os_version.is_sl16,
         repository_paths=repository_paths,
         description=description,
         extra_header=extra_header,
