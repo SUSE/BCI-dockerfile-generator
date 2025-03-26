@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 26 16:54:53 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rename to kubectl-oldstable-image
+
+-------------------------------------------------------------------
 Thu Feb  6 08:58:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix container description

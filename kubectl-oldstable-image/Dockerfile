@@ -15,13 +15,13 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
-#!BuildTag: suse/kubectl:%%kubectl_version%%-%RELEASE%
+#!BuildTag: suse/kubectl:oldstable-2.%RELEASE%
+#!BuildTag: suse/kubectl:oldstable
+#!BuildTag: suse/kubectl:%%kubectl_version%%-2.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
 #!BuildTag: suse/kubectl:1.28
-#!BuildTag: suse/kubectl:1.28
-#!BuildTag: suse/kubectl:latest
-#!BuildName: suse-kubectl-1.28
-#!BuildVersion: 15.6.1.28
+#!BuildName: suse-kubectl-oldstable
+#!BuildVersion: 15.6.1.28.2
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
@@ -43,8 +43,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%kubectl_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/kubectl:%%kubectl_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%kubectl_version%%-2.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kubectl:%%kubectl_version%%-2.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
