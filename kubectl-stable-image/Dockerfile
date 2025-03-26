@@ -15,18 +15,19 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
-#!BuildTag: suse/kubectl:%%kubectl_version%%-%RELEASE%
+#!BuildTag: suse/kubectl:stable-1.%RELEASE%
+#!BuildTag: suse/kubectl:stable
+#!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
-#!BuildTag: suse/kubectl:1.30
-#!BuildTag: suse/kubectl:1.30
-#!BuildName: suse-kubectl-1.30
-#!BuildVersion: 15.7.1.30
+#!BuildTag: suse/kubectl:1.29
+#!BuildName: suse-kubectl-stable
+#!BuildVersion: 15.7.1.29.1
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.30-client; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.29-client; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM bci/bci-micro:15.7
@@ -41,8 +42,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%kubectl_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/kubectl:%%kubectl_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%kubectl_version%%-1.%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kubectl:%%kubectl_version%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
