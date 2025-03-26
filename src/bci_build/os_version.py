@@ -45,7 +45,7 @@ class OsVersion(enum.Enum):
             # TW has no version by itself and the "openSUSE Tumbleweed" is
             # already part of the base identifier
             return ""
-        if self.is_slfo:
+        if self.is_sl16:
             return "16"
 
         return f"15 SP{self.value}"
@@ -56,7 +56,7 @@ class OsVersion(enum.Enum):
             return "openSUSE Tumbleweed"
         elif self.is_ltss:
             return "SLE LTSS"
-        elif self.is_sle15 or self.is_slfo:
+        elif self.is_sle15 or self.is_sl16:
             return "SLE"
 
         raise NotImplementedError(f"Unknown os_version: {self.value}")
@@ -70,7 +70,7 @@ class OsVersion(enum.Enum):
 
     @property
     def deployment_branch_name(self) -> str:
-        if self.is_tumbleweed or self.is_slfo:
+        if self.is_tumbleweed or self.is_sl16:
             return str(self.value)
         if self.is_sle15:
             return f"sle15-sp{self.value}"
@@ -87,7 +87,7 @@ class OsVersion(enum.Enum):
         """Returns a list of common development packages that are needed for
         all development containers"""
         r = set(("findutils", "gawk", "git-core", "curl", "procps"))
-        if self.is_tumbleweed or self.is_slfo:
+        if self.is_tumbleweed or self.is_sl16:
             r.add("util-linux")
 
         return sorted(list(r))
@@ -103,7 +103,7 @@ class OsVersion(enum.Enum):
         )
 
     @property
-    def is_slfo(self) -> bool:
+    def is_sl16(self) -> bool:
         return self.value in (OsVersion.SLE16_0.value,)
 
     @property
@@ -129,7 +129,7 @@ class OsVersion(enum.Enum):
 
     @property
     def has_container_suseconnect(self) -> bool:
-        return self.is_sle15 or self.is_slfo
+        return self.is_sle15 or self.is_sl16
 
     @property
     def eula_package_names(self) -> tuple[str, ...]:

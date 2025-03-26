@@ -28,7 +28,7 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
         return True
     if os_version.is_sle15 and gcc_version == 14:
         return True
-    if os_version.is_slfo and gcc_version == 14:
+    if os_version.is_sl16 and gcc_version == 14:
         return True
     return False
 
@@ -38,7 +38,7 @@ def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
         return True
     if os_version.is_sle15 and gcc_version == 7:
         return True
-    if os_version.is_slfo and gcc_version == 14:
+    if os_version.is_sl16 and gcc_version == 14:
         return True
     return False
 

@@ -142,7 +142,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
     if os_version == OsVersion.SP3:
         return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
-    if os_version.is_sle15 or os_version.is_slfo or os_version.is_tumbleweed:
+    if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
         return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
@@ -177,7 +177,7 @@ FIPS_BASE_CONTAINERS = [
                 if os_version == OsVersion.SP3
                 else ["crypto-policies-scripts"]
             )
-            + (["patterns-base-fips"] if os_version.is_slfo else [])
+            + (["patterns-base-fips"] if os_version.is_sl16 else [])
         ),
         extra_labels={
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
@@ -325,7 +325,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 ]
                 # tar is not in bci-base in 15.4, but we need it to unpack tarballs
                 + (["tar"] if os_version == OsVersion.SP4 else [])
-                + (["suse-module-tools-scriptlets"] if os_version.is_slfo else [])
+                + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
