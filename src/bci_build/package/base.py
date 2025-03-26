@@ -201,7 +201,15 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                 )
                 + [*os_version.release_package_names]
             )
-        ],
+        ]
+        + (
+            [
+                Package(name=pkg_name, pkg_type=PackageType.DELETE)
+                for pkg_name in sorted(("chkstat", "permissions", "permissions-config"))
+            ]
+            if not os_version.is_sle15
+            else []
+        ),
         "config_sh_script": _get_base_config_sh_script(os_version),
         "_min_release_counter": 40,
     }
