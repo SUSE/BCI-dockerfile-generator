@@ -99,11 +99,11 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: kubectl-1.28-image
+        source_package: kubectl-oldstable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
-        source_package: kubectl-1.30-image
+        source_package: kubectl-stable-image
         target_project: home:defolos:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP7
@@ -324,10 +324,10 @@ refresh_devel_BCI:
         package: kiwi-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: kubectl-1.28-image
+        package: kubectl-oldstable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: kubectl-1.30-image
+        package: kubectl-stable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: rmt-mariadb-image
