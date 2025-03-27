@@ -61,6 +61,11 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   <repository type="rpm-md">
     <source path="obsrepositories:/"/>
   </repository>
+  <packages type="delete">
+    <package name="chkstat"/>
+    <package name="permissions"/>
+    <package name="permissions-config"/>
+  </packages>
   <packages type="bootstrap">
     <package name="SLES-release"/>
     <package name="aaa_base"/>
