@@ -11,8 +11,8 @@ from bci_build.package.helpers import generate_from_image_tag
 
 _KUBECTL_VERSIONS = {
     OsVersion.TUMBLEWEED: ("1.30", "1.31", "1.32"),
-    OsVersion.SP6: ("1.28", "1.29"),
-    OsVersion.SP7: ("1.28", "1.29"),
+    OsVersion.SP6: ("1.29", "1.31"),
+    OsVersion.SP7: ("1.29", "1.31"),
 }
 
 
