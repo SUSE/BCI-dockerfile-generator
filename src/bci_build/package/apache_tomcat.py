@@ -55,10 +55,7 @@ TOMCAT_CONTAINERS = [
                 regex_in_build_description="%%tomcat_version%%", package_name=tomcat_pkg
             ),
         ],
-        cmd=[
-            f"/usr/{'libexec' if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0) else 'lib'}/tomcat/server",
-            "start",
-        ],
+        cmd=[f"{os_version.libexecdir}tomcat/server", "start"],
         exposes_ports=[TCP(8080)],
         env={
             "TOMCAT_MAJOR": int(tomcat_ver.partition(".")[0]),

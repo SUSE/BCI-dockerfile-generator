@@ -152,6 +152,12 @@ class OsVersion(enum.Enum):
         assert self.is_sle15
         return ("sles-release",)
 
+    @property
+    def libexecdir(self) -> str:
+        if self.is_sle15:
+            return "/usr/lib/"
+        return "/usr/libexec/"
+
 
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
