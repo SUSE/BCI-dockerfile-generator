@@ -68,9 +68,10 @@
         "version_format": "minor"
     },
     "spack": {
-        "6": "0.23.1",
-        "7": "0.23.0",
-        "Tumbleweed": "0.23.1"
+        "6": "0.23",
+        "7": "0.23",
+        "Tumbleweed": "0.23",
+        "version_format": "minor"
     },
     "valkey": {
         "6": "8.0",

@@ -8,6 +8,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import ParseVersion
+from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
@@ -22,8 +23,12 @@ SPACK_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         is_singleton_image=True,
         logo_url="https://spack.io/assets/images/spack-logo-white.svg",
-        version=(spack_pkg_version := get_pkg_version("spack", os_version)),
-        tag_version=format_version(spack_pkg_version, ParseVersion.MINOR),
+        version="%%spack_version%%",
+        tag_version=(
+            spack_pkg_version := format_version(
+                get_pkg_version("spack", os_version), ParseVersion.MINOR
+            )
+        ),
         version_in_uid=False,
         package_list=[
             "spack",
@@ -58,6 +63,13 @@ SPACK_CONTAINERS = [
         extra_labels={
             "usage": "This container is enabled and supported only on a SLE15+ host."
         },
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description="%%spack_version%%",
+                package_name="spack",
+                parse_version=ParseVersion.PATCH,
+            )
+        ],
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         custom_end=rf"""
@@ -73,7 +85,7 @@ SPACK_CONTAINERS = [
        /root/.spack/modules.yaml \
     && rm -rf /root/*.* /run/nologin
 
-{generate_package_version_check("spack", spack_pkg_version, ParseVersion.PATCH)}
+{generate_package_version_check("spack", spack_pkg_version, ParseVersion.MINOR)}
 
 WORKDIR /root
 SHELL ["docker-shell"]
