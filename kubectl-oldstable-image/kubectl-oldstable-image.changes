@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 28 10:30:31 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- 1.31 for stable, 1.29 for oldstable
+
+-------------------------------------------------------------------
 Wed Mar 26 16:54:53 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rename to kubectl-oldstable-image
