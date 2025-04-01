@@ -173,32 +173,19 @@ async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
     stream defined in :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS`.
 
     """
-    tasks = []
     new_versions: dict[str, dict[str, str]] = {}
-
-    async def _fetch_version(
-        pkg: str, os_version: OsVersion, version_format: ParseVersion
-    ) -> None:
-        version = (
-            await fetch_package_info(osc, prj=_OBS_PROJECTS[os_version], pkg=pkg)
-        ).version
-
-        new_versions[pkg][str(os_version)] = format_version(version, version_format)
-
     for pkg, versions in _PACKAGE_VERSIONS.items():
         new_versions[pkg] = {}
 
-        constraint = versions.get(_VERS_FMT_KEY, ParseVersion.PATCH)
-        for os_version in versions.keys():
-            if os_version != _VERS_FMT_KEY:
-                tasks.append(
-                    _fetch_version(pkg, OsVersion.parse(os_version), constraint)
-                )
+        v_format = versions.get(_VERS_FMT_KEY, ParseVersion.PATCH)
+        for os_version in filter(lambda v: v != _VERS_FMT_KEY, versions):
+            pkg_info = await fetch_package_info(
+                osc, prj=_OBS_PROJECTS[OsVersion.parse(os_version)], pkg=pkg
+            )
+            new_versions[pkg][os_version] = format_version(pkg_info.version, v_format)
 
         if _VERS_FMT_KEY in versions:
-            new_versions[pkg][_VERS_FMT_KEY] = constraint
-
-    await asyncio.gather(*tasks)
+            new_versions[pkg][_VERS_FMT_KEY] = v_format
 
     return new_versions
 
