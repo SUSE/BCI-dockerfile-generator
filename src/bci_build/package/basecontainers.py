@@ -355,7 +355,7 @@ KERNEL_MODULE_CONTAINERS.append(
         name="slm60-kernel-module-devel",
         pretty_name="SUSE Linux Micro 6.0 Kernel module development",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        os_version=OsVersion.SLE16_0,
+        os_version=(os_version := OsVersion.SLE16_0),
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         is_latest=True,
         package_list=(
@@ -368,7 +368,7 @@ KERNEL_MODULE_CONTAINERS.append(
                 "pesign-obs-integration",
                 "dwarves",
                 "libelf-devel",
-                *OsVersion.SLE16_0.release_package_names,
+                *os_version.release_package_names,
             ]
         ),
         exclusive_arch=[Arch.X86_64, Arch.S390X, Arch.AARCH64],
