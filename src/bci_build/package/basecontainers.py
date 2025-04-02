@@ -356,7 +356,7 @@ KERNEL_MODULE_CONTAINERS.append(
         pretty_name="SUSE Linux Micro 6.0 Kernel module development",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         os_version=OsVersion.SLE16_0,
-        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+        supported_until=datetime.date(2028, 6, 30),
         is_latest=True,
         package_list=(
             [
