@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  2 14:38:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix End of support date for SL Micro 6.0 kernel image to align with SL Micro 6.0 EOL
+
+-------------------------------------------------------------------
 Mon Mar 31 08:47:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the SUSE Linux Micro 6.0 Kernel module development BCI
