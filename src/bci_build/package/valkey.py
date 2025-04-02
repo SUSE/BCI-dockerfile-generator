@@ -3,6 +3,7 @@
 import textwrap
 
 from bci_build.container_attributes import TCP
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -30,6 +31,7 @@ VALKEY_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%valkey_version%%",
         version_in_uid=False,
+        support_level=SupportLevel.L3,
         tag_version=format_version(
             valkey_version := get_pkg_version("valkey", os_version), ParseVersion.MINOR
         ),
