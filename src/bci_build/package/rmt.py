@@ -6,6 +6,7 @@ from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
@@ -33,6 +34,7 @@ RMT_CONTAINERS = [
         ],
         version_in_uid=False,
         support_level=SupportLevel.L3,
+        _min_release_counter=(60 if os_version in (OsVersion.SP6,) else None),
         package_list=["rmt-server", "catatonit", "bash"],
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
