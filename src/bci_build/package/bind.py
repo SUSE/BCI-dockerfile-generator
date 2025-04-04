@@ -74,7 +74,11 @@ COPY healthcheck.sh {(_healthcheck := "/usr/local/bin/healthcheck.sh")}
                     ("/run/named", "1775", "root:named"),
                     ("/var/lib/named", "1775", "root:named"),
                     ("/var/lib/named/dyn", "755", "named:named"),
-                    ("/var/lib/named/master", "755", "named:named"),
+                    (
+                        "/var/lib/named/master",
+                        "755",
+                        "root:root" if os_version.is_tumbleweed else "named:named",
+                    ),
                     ("/var/lib/named/slave", "755", "named:named"),
                     ("/var/log/named", "750", "named:named"),
                 )
