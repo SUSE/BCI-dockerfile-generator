@@ -115,7 +115,7 @@ class openSUSERegistry(Registry):
 
     @staticmethod
     def registry_prefix(*, is_application: bool) -> str:
-        return "opensuse" if is_application else "opensuse/bci"
+        return "opensuse/bci"
 
 
 def publish_registry(
