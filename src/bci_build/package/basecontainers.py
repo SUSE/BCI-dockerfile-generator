@@ -18,10 +18,23 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import OsContainer
 from bci_build.package import Package
-from bci_build.package import _build_tag_prefix
 from bci_build.package import generate_disk_size_constraints
 
 _DISABLE_GETTY_AT_TTY1_SERVICE = "systemctl disable getty@tty1.service"
+
+
+def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
+    return [
+        Package(name, pkg_type=PackageType.BOOTSTRAP)
+        for name in (
+            "bash",
+            "ca-certificates-mozilla-prebuilt",
+            # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
+            "coreutils",
+        )
+        + os_version.eula_package_names
+        + os_version.release_package_names
+    ]
 
 
 MICRO_CONTAINERS = [
@@ -36,17 +49,7 @@ MICRO_CONTAINERS = [
         custom_description="A micro environment for containers {based_on_container}.",
         from_image=None,
         build_recipe_type=BuildType.KIWI,
-        package_list=[
-            Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
-                "bash",
-                "ca-certificates-mozilla-prebuilt",
-                # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
-                "coreutils",
-            )
-            + os_version.eula_package_names
-            + os_version.release_package_names
-        ],
+        package_list=_get_micro_package_list(os_version),
         # intentionally empty
         config_sh_script="""
 """,
@@ -212,10 +215,8 @@ def _get_minimal_kwargs(os_version: OsVersion):
     if os_version in (OsVersion.SP6,):
         package_list.append(Package("libpcre1", pkg_type=PackageType.DELETE))
 
-    package_list.extend(
-        Package(name, pkg_type=PackageType.BOOTSTRAP)
-        for name in os_version.release_package_names
-    )
+    package_list.extend(_get_micro_package_list(os_version))
+    package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
     if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
@@ -224,9 +225,8 @@ def _get_minimal_kwargs(os_version: OsVersion):
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base")
         )
-
     kwargs = {
-        "from_image": f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+        "from_image": None,
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
         "package_list": package_list,
     }
@@ -252,6 +252,13 @@ MINIMAL_CONTAINERS = [
             if rpm -q compat-usrmerge-tools; then
                 rpm -e compat-usrmerge-tools
             fi
+
+            # don't have duplicate licenses of the same type
+            jdupes -1 -L -r /usr/share/licenses
+            rpm -e jdupes
+
+            # Will be recreated by the next rpm(1) run as root user
+            rm -v /usr/lib/sysimage/rpm/Index.db
             """
         ),
     )
