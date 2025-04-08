@@ -68,6 +68,7 @@ Prefer: -python312-pip
 Prefer: -python312-flit-core
 Prefer: -python312-flit-core-devel
 FileProvides: /usr/bin/python3 python311-base
+FileProvides: /usr/sbin/iconvconfig glibc
 
 Macros:
 ## PYTHON MACROS BEGIN
