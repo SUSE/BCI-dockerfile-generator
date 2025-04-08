@@ -17,12 +17,13 @@
 
 #!BuildTag: opensuse/bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/gcc:%%gcc_minor_version%%
-#!BuildTag: opensuse/bci/gcc:14
+#!BuildTag: opensuse/bci/gcc:15
+#!BuildTag: opensuse/bci/gcc:latest
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -41,7 +42,12 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/gcc-14-image/README.md"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/gcc-15-image/README.md"
 LABEL io.artifacthub.package.logo-url="https://gcc.gnu.org/img/gccegg-65.png"
 ENV GCC_VERSION="%%gcc_minor_version%%"
 
+# symlink all versioned gcc & g++ binaries to unversioned
+# ones in /usr/local/bin so that plain gcc works
+RUN set -euo pipefail; for gcc_bin in $(rpm -ql gcc15 gcc15-c++ gcc15-fortran |grep ^/usr/bin/ ); do \
+        ln -sf $gcc_bin $(echo "$gcc_bin" | sed -e 's|/usr/bin/|/usr/local/bin/|' -e 's|-15$||'); \
+    done
