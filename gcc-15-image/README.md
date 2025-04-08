@@ -20,7 +20,7 @@ below. The `Dockerfile` uses this image to build a custom container image,
 copies the sources to a working directory, and compiles the application:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:14
+FROM registry.suse.com/bci/gcc:15
 WORKDIR /src/
 COPY . /src/
 RUN gcc main.c src1.c src2.c
@@ -31,7 +31,7 @@ It is also possible to compile a static binary with gcc as part of a multistage
 build:
 
 ```Dockerfile
-FROM registry.suse.com/bci/gcc:14 as builder
+FROM registry.suse.com/bci/gcc:15 as builder
 WORKDIR /src/
 COPY . /src/
 RUN gcc -o app main.c src1.c src2.c
@@ -74,13 +74,13 @@ practical. One way to do this is to mount the working directory of an
 application into the launched container and compile the application there:
 
 ```bash
-podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:14 \
+podman run --rm -it -v $(pwd):/src/:Z registry.suse.com/bci/gcc:15 \
     gcc -o /src/app.out /src/*.c
 ```
 or by invoking `make`
 ```bash
 podman run --rm -it -v $(pwd):/src/:Z --workdir /src/ \
-    registry.suse.com/bci/gcc:14 \
+    registry.suse.com/bci/gcc:15 \
     make
 ```
 

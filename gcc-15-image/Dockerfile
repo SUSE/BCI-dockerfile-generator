@@ -17,13 +17,13 @@
 
 #!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
-#!BuildTag: bci/gcc:14
-#!BuildName: bci-gcc-14
-#!BuildVersion: 16.0.14
+#!BuildTag: bci/gcc:15
+#!BuildName: bci-gcc-15
+#!BuildVersion: 16.0.15
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux; \
+    zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux; \
     zypper -n clean; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
@@ -41,7 +41,6 @@ LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2026-07-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
