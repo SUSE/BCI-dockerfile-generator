@@ -15,7 +15,7 @@ staging_build:
         target_project: home:defolos:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:16.0
-        source_package: gcc-14-image
+        source_package: gcc-15-image
         target_project: home:defolos:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:16.0
@@ -69,7 +69,7 @@ refresh_devel_BCI:
         package: busybox-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: gcc-14-image
+        package: gcc-15-image
     - trigger_services:
         project: devel:BCI:16.0
         package: init-image
