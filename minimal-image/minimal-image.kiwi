@@ -24,7 +24,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <specification>SLE BCI 15 SP7 Minimal Container Image</specification>
   </description>
   <preferences>
-    <type image="docker">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#15.7">
       <containerconfig
           name="bci/bci-minimal"
           tag="%OS_VERSION_ID_SP%-%RELEASE%"
@@ -72,10 +72,6 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="sles-release"/>
     <package name="rpm-ndb"/>
     <package name="perl-base"/>
-    <package name="bash"/>
-    <package name="ca-certificates-mozilla-prebuilt"/>
-    <package name="coreutils"/>
-    <package name="skelcd-EULA-bci"/>
   </packages>
 
 </image>
