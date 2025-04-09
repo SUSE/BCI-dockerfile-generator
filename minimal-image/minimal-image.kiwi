@@ -24,7 +24,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <specification>SLE BCI 16 Minimal Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-micro#16.0">
+    <type image="docker">
       <containerconfig
           name="bci/bci-minimal"
           tag="%OS_VERSION_ID_SP%-%RELEASE%"
@@ -68,7 +68,12 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="libzio1"/>
   </packages>
   <packages type="bootstrap">
+    <package name="bash"/>
+    <package name="ca-certificates-mozilla-prebuilt"/>
+    <package name="coreutils"/>
+    <package name="skelcd-EULA-SLES"/>
     <package name="SLES-release"/>
+    <package name="jdupes"/>
     <package name="rpm"/>
   </packages>
 
