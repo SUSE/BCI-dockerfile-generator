@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  9 18:36:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- reduce image size via hardlinks
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
