@@ -25,7 +25,7 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     "3.11": datetime.date(2027, 12, 31),
     "3.12": _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
     # see jsc#PED-12365 - maybe superseded by 3.14/3.15
-    "3.13": datetime.date(2027, 12, 31),
+    "3.13": datetime.date(2026, 12, 31),
 }
 
 
