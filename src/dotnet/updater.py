@@ -97,7 +97,7 @@ RUN zypper --non-interactive install --no-recommends coreutils sles-release
 COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
-RUN zypper --non-interactive install --no-recommends libicu {# we need to explicitly require openssl 1.1 since SP6 #}{% if image.os_version | string not in ["3", "4", "5"] %}libopenssl1_1 {% endif %}/tmp/*rpm
+RUN zypper --non-interactive install --no-recommends libicu {# we need to explicitly require openssl 3 since SP6 #}{% if image.os_version | string not in ["3", "4", "5"] %}libopenssl3 {% endif %}/tmp/*rpm
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
