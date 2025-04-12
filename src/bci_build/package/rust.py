@@ -92,7 +92,7 @@ requires:rust{rust_version}
             ),
         ],
         custom_end=f"""# workaround for gcc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-*|grep -P ".*gcc-[[:digit:]]+") {_RUST_GCC_PATH}
+RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") {_RUST_GCC_PATH}
 # smoke test that gcc works
 RUN gcc --version
 RUN ${{CC}} --version

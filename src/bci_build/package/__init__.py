@@ -813,7 +813,7 @@ exit 0
         return (
             ""
             if not self.env
-            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items()) + "\n"
+            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
         )
 
     @property
