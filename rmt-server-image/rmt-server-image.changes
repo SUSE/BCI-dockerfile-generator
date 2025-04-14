@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:40:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Thu Feb 13 11:16:34 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - set buildname to the major version for stable aggregates
