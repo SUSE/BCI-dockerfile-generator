@@ -54,4 +54,3 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV NODE_VERSION="22"
-

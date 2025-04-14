@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:51:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Fri Mar 28 13:45:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the ISC BIND 9 BCI
