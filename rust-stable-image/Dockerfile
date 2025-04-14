@@ -55,9 +55,8 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV RUST_VERSION="%%RUST_VERSION%%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV CC="/usr/local/bin/gcc"
-
 # workaround for gcc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-*|grep -P ".*gcc-[[:digit:]]+") /usr/local/bin/gcc
+RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") /usr/local/bin/gcc
 # smoke test that gcc works
 RUN gcc --version
 RUN ${CC} --version
