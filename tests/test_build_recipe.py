@@ -396,7 +396,6 @@ LABEL emacs_version="28"
 LABEL GCC_version="15"
 ENV EMACS_VERSION="28"
 ENV GPP_path="/usr/bin/g++"
-
 ENTRYPOINT ["/usr/bin/emacs"]
 CMD ["/usr/bin/gcc"]
 EXPOSE 22/tcp 1111/tcp

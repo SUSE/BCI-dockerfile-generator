@@ -74,7 +74,6 @@ def _get_golang_kwargs(
             {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
             {DOCKERFILE_RUN} {LOG_CLEAN}
             WORKDIR /go
-
             """
         ),
         "package_list": [*go_packages, "make"]
