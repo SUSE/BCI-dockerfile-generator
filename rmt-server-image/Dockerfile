@@ -45,7 +45,6 @@ LABEL org.opensuse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/rmt-server-image/README.md"
 ENV RAILS_ENV="production"
 ENV LANG="en"
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect
