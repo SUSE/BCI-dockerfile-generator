@@ -51,4 +51,3 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV NODE_VERSION="22"
-

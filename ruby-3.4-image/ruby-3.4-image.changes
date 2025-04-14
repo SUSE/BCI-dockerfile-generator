@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Mon Mar 10 11:25:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Set EoL date to upstream EoL

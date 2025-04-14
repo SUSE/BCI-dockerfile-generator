@@ -41,7 +41,7 @@ LABEL org.opencontainers.image.ref.name="%%py313_ver%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/python:%%py313_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2027-12-31"
+LABEL com.suse.supportlevel.until="2026-12-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
@@ -50,7 +50,6 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV PYTHON_VERSION="%%py313_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
-
 RUN set -euo pipefail; install -d -m 0755 /root/.local/bin; if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
     ln -s /usr/bin/python3.13 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.13 /usr/local/bin/pydoc

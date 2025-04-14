@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Fri Mar  7 07:06:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Switch to Rust 1.84

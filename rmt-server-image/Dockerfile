@@ -48,7 +48,6 @@ LABEL com.suse.release-stage="beta"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 ENV RAILS_ENV="production"
 ENV LANG="en"
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect

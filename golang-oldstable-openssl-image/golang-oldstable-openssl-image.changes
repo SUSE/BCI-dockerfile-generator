@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:43:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
