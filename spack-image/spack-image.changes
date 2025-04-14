@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 14 08:51:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
 Fri Mar 28 19:16:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - extract full version via service
