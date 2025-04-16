@@ -48,15 +48,13 @@ COPY --from=target / /target
 {%- endif %}
 
 {% if image.packages %}{{ DOCKERFILE_RUN }} \\
-    zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}; \\
-    {%- if image.packages_to_delete %}
-    zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}; \\
-    {%- endif %}
-    zypper -n clean; \\
-    {{ LOG_CLEAN }}
-{%- endif %}
+    zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}{%- if image.packages_to_delete %} \\
+    zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}{%- endif %}{%- endif %}
 {%- if image.build_stage_custom_end %}
 {{ image.build_stage_custom_end }}
+{%- endif %}
+{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} clean -a; \\
+    {{ LOG_CLEAN }}
 {%- endif %}
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
 COPY --from=builder /target /{% endif %}
