@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 #     Copyright (c) 2025 SUSE LLC
 
@@ -15,30 +15,35 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
-#!BuildTag: bci/gcc:%%gcc_minor_version%%
-#!BuildTag: bci/gcc:15
-#!BuildName: bci-gcc-15
-#!BuildVersion: 16.0.15
-FROM bci/bci-base:16.0
+#!BuildTag: bci/bci-micro:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-micro:%OS_VERSION_ID_SP%
+#!BuildName: bci-bci-micro-%OS_VERSION_ID_SP%
+#!BuildVersion: 16.0
+FROM scratch AS target
+FROM bci/bci-base:16.0 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux
-RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-SLES SLES-release
 
+RUN set -euo pipefail; zypper -n install jdupes \
+    && jdupes -1 -L -r /target/usr/
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+FROM scratch
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.gcc
+# labelprefix=com.suse.bci.micro
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI GNU Compiler Collection"
-LABEL org.opencontainers.image.description="GNU Compiler Collection container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%gcc_minor_version%%"
+LABEL org.opencontainers.image.title="SLE BCI 16 Micro"
+LABEL org.opencontainers.image.description="A micro environment for containers based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-micro:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -46,5 +51,5 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-LABEL io.artifacthub.package.logo-url="https://gcc.gnu.org/img/gccegg-65.png"
-ENV GCC_VERSION="%%gcc_minor_version%%"
+LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
+CMD ["/bin/sh"]

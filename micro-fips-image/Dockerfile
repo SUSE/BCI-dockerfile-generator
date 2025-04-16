@@ -15,29 +15,35 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
-#!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%
+#!BuildName: bci-bci-micro-fips-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.0
-FROM bci/bci-base:16.0
+FROM scratch AS target
+FROM bci/bci-base:16.0 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends systemd gzip SLES-release
-RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-SLES SLES-release patterns-base-fips libopenssl3
 
+RUN set -euo pipefail; zypper -n install jdupes \
+    && jdupes -1 -L -r /target/usr/
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+FROM scratch
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.init
+# labelprefix=com.suse.bci.micro-fips
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI 16 Init"
-LABEL org.opencontainers.image.description="Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman."
+LABEL org.opencontainers.image.title="SLE BCI 16 FIPS-140-3 Micro"
+LABEL org.opencontainers.image.description="A FIPS enforcing micro environment for containers based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/bci-init:%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-micro-fips:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
@@ -46,11 +52,11 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-LABEL usage="This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
-CMD ["/usr/lib/systemd/systemd"]
+CMD ["/bin/sh"]
 
-RUN install -d -m 0755 /etc/systemd/system.conf.d/ \
-    && printf "[Manager]\nLogColor=no" > \
-        /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
-RUN systemctl disable getty@tty1.service
-HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+ENV GNUTLS_FORCE_FIPS_MODE=1
+ENV LIBGCRYPT_FORCE_FIPS_MODE=1
+ENV LIBICA_FIPS_FLAG=1
+ENV NSS_FIPS=1
+ENV OPENSSL_FIPS=1
+ENV OPENSSL_FORCE_FIPS_MODE=1
