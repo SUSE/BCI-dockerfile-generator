@@ -47,12 +47,14 @@ MICRO_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
         custom_description="A micro environment for containers {based_on_container}.",
-        from_image=None,
-        build_recipe_type=BuildType.KIWI,
-        package_list=_get_micro_package_list(os_version),
-        # intentionally empty
-        config_sh_script="""
-""",
+        from_target_image="scratch",
+        cmd=["/bin/sh"],
+        package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
+        build_stage_custom_end=textwrap.dedent(
+            f"""
+            {DOCKERFILE_RUN} zypper -n install jdupes \\
+                && jdupes -1 -L -r /target/usr/"""
+        ),
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
