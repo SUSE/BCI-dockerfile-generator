@@ -1465,6 +1465,7 @@ from .appcontainers import TRIVY_CONTAINERS  # noqa: E402
 from .base import BASE_CONTAINERS  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
 from .basecontainers import FIPS_BASE_CONTAINERS  # noqa: E402
+from .basecontainers import FIPS_MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import GITEA_RUNNER_CONTAINER  # noqa: E402
 from .basecontainers import INIT_CONTAINERS  # noqa: E402
 from .basecontainers import KERNEL_MODULE_CONTAINERS  # noqa: E402
@@ -1540,6 +1541,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *GRAFANA_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
+        *FIPS_MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
         *KERNEL_MODULE_CONTAINERS,
         GITEA_RUNNER_CONTAINER,
