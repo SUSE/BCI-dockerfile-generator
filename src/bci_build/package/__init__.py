@@ -603,6 +603,8 @@ exit 0
         """Provide the reference for the target image if multistage build is used, empty string otherwise."""
         if not self.from_target_image:
             return ""
+        if self.from_target_image == "scratch":
+            return self.from_target_image
         # build against the released container on SLE for proper base.digest/name generation
         return (
             self.from_target_image
