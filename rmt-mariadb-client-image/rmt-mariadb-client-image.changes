@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 22 10:53:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for new version
+
+-------------------------------------------------------------------
 Wed Feb 12 08:40:11 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Remove the rmt- prefix from the image names

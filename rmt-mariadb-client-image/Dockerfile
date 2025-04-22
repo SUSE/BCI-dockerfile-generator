@@ -17,9 +17,9 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/mariadb-client:10.11
-#!BuildName: suse-mariadb-client-10.11
-#!BuildVersion: 15.7.10.11
+#!BuildTag: suse/mariadb-client:11.4
+#!BuildName: suse-mariadb-client-11.4
+#!BuildVersion: 15.7.11.4
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of mariadb-client that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
-    cut -d '.' -f -2)" = "10.11" ]
+    cut -d '.' -f -2)" = "11.4" ]
 FROM bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
