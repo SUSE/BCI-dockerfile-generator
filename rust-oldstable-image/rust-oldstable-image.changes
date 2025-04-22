@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 22 10:52:19 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.86 for stable, rust 1.85 for oldstable
+
+-------------------------------------------------------------------
 Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - stylistic changes to pass dockerfmt
