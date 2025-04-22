@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 22 10:52:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use singleton image setting as requested by Dan
+
+-------------------------------------------------------------------
 Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - stylistic changes to pass dockerfmt
