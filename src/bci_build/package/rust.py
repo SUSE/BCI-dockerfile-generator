@@ -19,6 +19,7 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.86": datetime.date(2025, 4, 3) + _RUST_SUPPORT_OVERLAP,
     "1.85": datetime.date(2025, 2, 20) + _RUST_SUPPORT_OVERLAP,
     "1.84": datetime.date(2025, 1, 9) + _RUST_SUPPORT_OVERLAP,
     "1.83": datetime.date(2024, 11, 28) + _RUST_SUPPORT_OVERLAP,
@@ -33,7 +34,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.84", "1.85"]
+_RUST_VERSIONS = ["1.85", "1.86"]
 
 assert len(_RUST_VERSIONS) == 2, (
     "Only two versions of rust must be supported at the same time"
