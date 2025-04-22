@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 22 09:45:29 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to singleton images for init as requested by Dan
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
