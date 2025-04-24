@@ -25,7 +25,7 @@ FIREFOX_CONTAINERS = [
                 # for fonts to actually display
                 "xorg-x11-fonts",
                 # for puleaudio communication
-                "libpulse0"
+                "libpulse0",
             ]
             + (
                 ["MozillaFirefox-branding-openSUSE"]
