@@ -98,7 +98,6 @@ GCC_CONTAINERS = [
         (14, OsVersion.SP6),
         (14, OsVersion.SP7),
         (15, OsVersion.SLE16_0),
-        (12, OsVersion.TUMBLEWEED),
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
         (15, OsVersion.TUMBLEWEED),
