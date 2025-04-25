@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr 25 06:18:47 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add libpulse0 to fix audio issue with firefox
+
+-------------------------------------------------------------------
 Wed Feb 26 17:26:31 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Mozilla Firefox BCI
