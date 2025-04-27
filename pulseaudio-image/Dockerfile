@@ -46,7 +46,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-CMD ["/usr/bin/pulseaudio"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # sanity check that the version from the tag is equal to the version of pulseaudio that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' pulseaudio | \
@@ -54,3 +54,5 @@ RUN set -euo pipefail; \
 COPY daemon.conf /etc/pulse/
 COPY client.conf /etc/pulse/
 COPY system.pa /etc/pulse/
+COPY entrypoint.sh /usr/local/bin/
+RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh;
