@@ -50,7 +50,7 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
-CMD ["/usr/bin/pulseaudio"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # sanity check that the version from the tag is equal to the version of pulseaudio that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' pulseaudio | \
@@ -58,3 +58,5 @@ RUN set -euo pipefail; \
 COPY daemon.conf /etc/pulse/
 COPY client.conf /etc/pulse/
 COPY system.pa /etc/pulse/
+COPY entrypoint.sh /usr/local/bin/
+RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh;
