@@ -17,11 +17,11 @@
 
 #!BuildTag: suse/cosign:%%cosign_version%%-%RELEASE%
 #!BuildTag: suse/cosign:%%cosign_version%%
-#!BuildTag: suse/cosign:2.4
+#!BuildTag: suse/cosign:2.5
 #!BuildTag: suse/cosign:2
 #!BuildTag: suse/cosign:latest
-#!BuildName: suse-cosign-2.4
-#!BuildVersion: 15.6.2.4
+#!BuildName: suse-cosign-2.5
+#!BuildVersion: 15.6.2.5
 #!BuildRelease: 0
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
@@ -34,7 +34,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of cosign that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' cosign | \
-    cut -d '.' -f -2)" = "2.4" ]
+    cut -d '.' -f -2)" = "2.5" ]
 FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
