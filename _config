@@ -60,4 +60,5 @@ Substitute: system-packages:docker docker kmod-compat sysvinit-tools kernel-defa
 
 # Prefer the relased containers
 Prefer: -container:micro-image
+Prefer: -container:bci-bci-init
 Prefer: -container:sles15-image
