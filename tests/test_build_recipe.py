@@ -35,8 +35,8 @@ from bci_build.templates import KIWI_TEMPLATE
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
-    zypper -n install --no-recommends gcc emacs; \\
-    zypper -n clean; \\
+    zypper -n install --no-recommends gcc emacs
+RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -152,8 +152,8 @@ RUN emacs -Q --batch test.el
 FROM bci/bci-base:15.7
 
 RUN \\
-    zypper -n install --no-recommends gcc emacs; \\
-    zypper -n clean; \\
+    zypper -n install --no-recommends gcc emacs
+RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -256,8 +256,8 @@ Copyright header
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
-    zypper -n install --no-recommends gcc emacs; \\
-    zypper -n clean; \\
+    zypper -n install --no-recommends gcc emacs
+RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -370,8 +370,8 @@ Copyright header
 FROM suse/base:18
 
 RUN \\
-    zypper -n install --no-recommends gcc emacs; \\
-    zypper -n clean; \\
+    zypper -n install --no-recommends gcc emacs
+RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -632,8 +632,8 @@ FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
 
 RUN \\
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
-    zypper -n clean; \\
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs
+RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
 FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
