@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Fri Mar 28 10:30:31 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - 1.31 for stable, 1.29 for oldstable

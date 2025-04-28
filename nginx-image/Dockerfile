@@ -22,8 +22,8 @@
 FROM suse/sle15:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gawk nginx findutils gettext-runtime; \
-    zypper -n clean; \
+    zypper -n install --no-recommends gawk nginx findutils gettext-runtime
+RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers

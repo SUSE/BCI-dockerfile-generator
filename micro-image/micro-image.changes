@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Apr 28 10:49:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to docker based builds
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year

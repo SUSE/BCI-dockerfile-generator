@@ -23,8 +23,8 @@
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends ruby3.4 ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps; \
-    zypper -n clean; \
+    zypper -n install --no-recommends ruby3.4 ruby3.4-devel util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps
+RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
