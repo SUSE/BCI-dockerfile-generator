@@ -27,8 +27,8 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.29-client; \
-    zypper -n clean; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.29-client
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM bci/bci-micro:15.7
 COPY --from=builder /target /

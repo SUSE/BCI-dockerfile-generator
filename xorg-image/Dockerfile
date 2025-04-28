@@ -24,8 +24,8 @@
 FROM suse/sle15:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools; \
-    zypper -n clean; \
+    zypper -n install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools
+RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
