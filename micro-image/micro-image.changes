@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 10:48:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to docker based builds
+
+-------------------------------------------------------------------
 Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
