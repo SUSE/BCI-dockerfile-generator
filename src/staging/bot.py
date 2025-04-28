@@ -1352,6 +1352,19 @@ updates:
         ancestor_commit = repo.commit(ancestor_ref)
         child_commit = repo.commit(child_ref)
 
+        try:
+            Git(".").merge_base(
+                ancestor_commit.hexsha, child_commit.hexsha, is_ancestor=True
+            )
+        except git.GitCommandError as exc:
+            # git failing with status 1 indicates that ancestor is not an
+            # ancestor of child
+            # => we can exit early
+            # The only other exit code is 128, which indicates that the commit
+            # hexsha is unknown, which must not happen
+            assert exc.status == 1
+            return None
+
         def _recurse_search_for_ancestor(
             commit: git.Commit, ancestor: git.Commit
         ) -> list[git.Commit] | None:
