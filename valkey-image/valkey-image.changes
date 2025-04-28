@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 11:21:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Thu Apr  3 06:55:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark as L3 supported

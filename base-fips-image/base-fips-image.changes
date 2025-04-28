@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 11:21:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Fri Feb 14 18:03:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add support end dates
