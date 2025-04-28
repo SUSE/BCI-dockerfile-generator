@@ -632,7 +632,8 @@ FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
 
 RUN \\
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
+    zypper -n --installroot /target remove util-linux
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
 FROM registry.suse.com/bci/bci-micro:15.6
@@ -664,7 +665,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
                 name="test",
                 pretty_name="Test",
                 supported_until=date(2024, 2, 1),
-                package_list=["emacs"],
+                package_list=["emacs", Package("util-linux", PackageType.DELETE)],
                 package_name="test-image",
                 os_version=(os_version := OsVersion.SP6),
                 _publish_registry=publish_registry(os_version, app_collection=True),
