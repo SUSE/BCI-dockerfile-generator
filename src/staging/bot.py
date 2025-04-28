@@ -40,6 +40,7 @@ from bci_build.package import BaseContainerImage
 from staging.build_result import PackageBuildResult
 from staging.build_result import PackageStatusCode
 from staging.build_result import RepositoryBuildResult
+from staging.git_repo import get_commit_range_between_refs
 from staging.project_setup import ProjectType
 from staging.project_setup import generate_meta
 from staging.project_setup import generate_project_name
@@ -969,13 +970,9 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
         # yes => check if it is newer than the deployment branch
         commit_range = None
         if branch_commit_hash_on_remote:
-            try:
-                commit_range = self._get_commit_range_between_refs(
-                    branch_commit_hash_on_remote,
-                    f"origin/{self.deployment_branch_name}",
-                )
-            except RecursionError:
-                pass
+            commit_range = get_commit_range_between_refs(
+                branch_commit_hash_on_remote, f"origin/{self.deployment_branch_name}"
+            )
 
         # it is newer? => base our work on origin/branch_name and not the
         # deployment_branch
@@ -1341,48 +1338,6 @@ updates:
             (await self._run_cmd(f"{self._osc} api /person/{username}")).stdout
         )
 
-    def _get_commit_range_between_refs(
-        self, child_ref: str, ancestor_ref: str
-    ) -> set[git.Commit] | None:
-        """Returns all commits leading from ``child_ref`` to ``ancestor_ref``,
-        **excluding** ``ancestor_ref``.
-
-        """
-        repo = git.Repo(".")
-        ancestor_commit = repo.commit(ancestor_ref)
-        child_commit = repo.commit(child_ref)
-
-        try:
-            Git(".").merge_base(
-                ancestor_commit.hexsha, child_commit.hexsha, is_ancestor=True
-            )
-        except git.GitCommandError as exc:
-            # git failing with status 1 indicates that ancestor is not an
-            # ancestor of child
-            # => we can exit early
-            # The only other exit code is 128, which indicates that the commit
-            # hexsha is unknown, which must not happen
-            assert exc.status == 1
-            return None
-
-        def _recurse_search_for_ancestor(
-            commit: git.Commit, ancestor: git.Commit
-        ) -> list[git.Commit] | None:
-            for parent in commit.parents:
-                if parent == ancestor:
-                    return [parent]
-
-                if hist := _recurse_search_for_ancestor(parent, ancestor):
-                    return [parent] + hist
-
-            return None
-
-        commits = _recurse_search_for_ancestor(child_commit, ancestor_commit)
-        if not commits:
-            return None
-        res = set([child_commit] + commits)
-        return res - {ancestor_commit}
-
     async def add_changelog_entry(
         self, entry: str, package_names: list[str] | None
     ) -> str:
@@ -1390,7 +1345,7 @@ updates:
         entry = entry.replace("'", r"'\''")
 
         if not package_names:
-            commits = self._get_commit_range_between_refs(
+            commits = get_commit_range_between_refs(
                 f"origin/{target_branch_name}", f"origin/{self.deployment_branch_name}"
             )
             if not commits:
@@ -1479,9 +1434,11 @@ updates:
             one line :command:`osc vc` entry).
 
         """
-        commit_range = self._get_commit_range_between_refs(change_ref, base_ref)
+        commit_range = get_commit_range_between_refs(change_ref, base_ref)
         if not commit_range:
-            raise RuntimeError(f"{base_ref} is not an ancestor of {change_ref}!")
+            raise RuntimeError(
+                f"{base_ref} is not an ancestor of {change_ref} or they are the same object!"
+            )
 
         packages: set[str] = set()
         for commit in commit_range:

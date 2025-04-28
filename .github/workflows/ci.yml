@@ -38,10 +38,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # need the full history for the unit tests
+          fetch-depth: 0
+
       - uses: actions/cache@v4
         with:
           path: ~/.tox
           key: tox-${{ matrix.python_version }}-${{ hashFiles('poetry.lock') }}
+
+      - name: fix the file permissions of the repository
+        run: chown -R $(id -un):$(id -gn) .
 
       - run: |
           poetry install
