@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 10:48:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Mon Feb 24 09:47:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Remove version from BuildName

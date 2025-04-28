@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 28 10:48:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
 Wed Apr  2 14:38:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix End of support date for SL Micro 6.0 kernel image to align with SL Micro 6.0 EOL

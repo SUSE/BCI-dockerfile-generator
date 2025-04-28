@@ -22,8 +22,8 @@
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends kernel-devel kernel-syms gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets; \
-    zypper -n clean; \
+    zypper -n install --no-recommends kernel-devel kernel-syms gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets
+RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
