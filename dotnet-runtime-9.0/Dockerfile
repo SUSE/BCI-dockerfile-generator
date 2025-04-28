@@ -26,6 +26,7 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 
 
+
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.runtime
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"

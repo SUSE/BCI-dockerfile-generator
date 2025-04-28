@@ -24,8 +24,8 @@
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 MozillaFirefox-branding-SLE gconf2; \
-    zypper -n clean; \
+    zypper -n install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 MozillaFirefox-branding-SLE gconf2
+RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
