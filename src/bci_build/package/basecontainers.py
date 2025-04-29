@@ -93,6 +93,8 @@ INIT_CONTAINERS = [
                 && printf "[Manager]\\nLogColor=no" > \\
                     /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
             RUN {_DISABLE_GETTY_AT_TTY1_SERVICE}
+            {DOCKERFILE_RUN} useradd --no-create-home --uid 497 systemd-coredump
+
             HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
             """
         ),
