@@ -29,6 +29,7 @@ VALKEY_CONTAINERS = [
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         version="%%valkey_version%%",
         version_in_uid=False,
         support_level=SupportLevel.L3,
