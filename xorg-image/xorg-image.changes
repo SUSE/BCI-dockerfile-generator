@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 30 12:23:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- re-add accidentally removed timeout setting
+
+-------------------------------------------------------------------
 Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - zypper clean also the system repository from the container

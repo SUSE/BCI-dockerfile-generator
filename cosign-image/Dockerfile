@@ -19,7 +19,7 @@
 #!BuildTag: suse/cosign:%%cosign_version%%
 #!BuildTag: suse/cosign:2.5
 #!BuildTag: suse/cosign:2
-#!BuildName: suse-cosign-2.5
+#!BuildName: suse-cosign
 #!BuildVersion: 15.7.2.5
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
