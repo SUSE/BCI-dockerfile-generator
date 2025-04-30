@@ -19,7 +19,7 @@
 #!BuildTag: suse/valkey:%%valkey_version%%
 #!BuildTag: suse/valkey:8.0
 #!BuildTag: suse/valkey:8
-#!BuildName: suse-valkey-8.0
+#!BuildName: suse-valkey
 #!BuildVersion: 15.7.8.0
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
