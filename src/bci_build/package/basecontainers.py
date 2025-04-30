@@ -50,10 +50,17 @@ MICRO_CONTAINERS = [
         from_target_image="scratch",
         cmd=["/bin/sh"],
         package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
-        build_stage_custom_end=textwrap.dedent(
-            f"""
+        build_stage_custom_end=(
+            (
+                f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
+                if os_version.is_sle15
+                else ""
+            )
+            + textwrap.dedent(
+                f"""
             {DOCKERFILE_RUN} zypper -n install jdupes \\
                 && jdupes -1 -L -r /target/usr/"""
+            )
         ),
     )
     for os_version in ALL_BASE_OS_VERSIONS
