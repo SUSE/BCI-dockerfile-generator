@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 30 12:24:40 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stable buildname for better aggregation
+
+-------------------------------------------------------------------
 Mon Apr 28 11:21:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - zypper clean also the system repository from the container
