@@ -160,7 +160,9 @@ def generate_meta(
     else:
         assert os_version.is_tumbleweed
         repository_paths = (
+            ("openSUSE:Factory", "containerfile"),
             ("openSUSE:Factory", "images"),
+            ("openSUSE:Factory:ARM", "containerfile"),
             ("openSUSE:Factory:ARM", "images"),
             ("openSUSE:Factory:ARM", "standard"),
             ("openSUSE:Factory:PowerPC", "standard"),

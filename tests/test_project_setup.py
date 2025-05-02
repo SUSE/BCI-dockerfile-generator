@@ -304,7 +304,9 @@ This project is automatically updated from git. Please do **not** send submit re
     <enable/>
   </debuginfo>
   <repository name="standard">
+    <path project="openSUSE:Factory" repository="containerfile"/>
     <path project="openSUSE:Factory" repository="images"/>
+    <path project="openSUSE:Factory:ARM" repository="containerfile"/>
     <path project="openSUSE:Factory:ARM" repository="images"/>
     <path project="openSUSE:Factory:ARM" repository="standard"/>
     <path project="openSUSE:Factory:PowerPC" repository="standard"/>
