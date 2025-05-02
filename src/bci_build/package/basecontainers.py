@@ -159,6 +159,19 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     )
 
 
+def _get_fips_custom_env() -> str:
+    return textwrap.dedent(
+        """
+        ENV GNUTLS_FORCE_FIPS_MODE=1
+        ENV LIBGCRYPT_FORCE_FIPS_MODE=1
+        ENV LIBICA_FIPS_FLAG=1
+        ENV NSS_FIPS=1
+        ENV OPENSSL_FIPS=1
+        ENV OPENSSL_FORCE_FIPS_MODE=1
+        """
+    )
+
+
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
     if os_version == OsVersion.SP3:
         return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
@@ -213,20 +226,34 @@ FIPS_BASE_CONTAINERS = [
         extra_labels={
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
         },
-        custom_end=_get_fips_base_custom_end(os_version)
-        + textwrap.dedent(
-            """
-            ENV GNUTLS_FORCE_FIPS_MODE=1
-            ENV LIBGCRYPT_FORCE_FIPS_MODE=1
-            ENV LIBICA_FIPS_FLAG=1
-            ENV NSS_FIPS=1
-            ENV OPENSSL_FIPS=1
-            ENV OPENSSL_FORCE_FIPS_MODE=1
-            """
-        ),
+        custom_end=_get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
     )
     # SP5 is known to be having a non-working libgcrypt for FIPS mode
     for os_version in ALL_OS_VERSIONS - {OsVersion.SP5}
+]
+
+FIPS_MICRO_CONTAINERS = [
+    OsContainer(
+        name="micro-fips",
+        os_version=os_version,
+        support_level=SupportLevel.L3,
+        supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+        logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        pretty_name=f"{_get_fips_pretty_name(os_version)} Micro",
+        custom_description="A FIPS enforcing micro environment for containers {based_on_container}.",
+        from_target_image="scratch",
+        cmd=["/bin/sh"],
+        package_list=[pkg.name for pkg in _get_micro_package_list(os_version)]
+        + ["patterns-base-fips", "libopenssl3"],
+        build_stage_custom_end=textwrap.dedent(
+            f"""
+            {DOCKERFILE_RUN} zypper -n install jdupes \\
+                && jdupes -1 -L -r /target/usr/"""
+        ),
+        custom_end=_get_fips_custom_env(),
+    )
+    for os_version in ALL_BASE_OS_VERSIONS
 ]
 
 
