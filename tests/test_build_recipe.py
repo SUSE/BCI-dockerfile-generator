@@ -111,7 +111,6 @@ Copyright header
     </type>
     <version>15.6.0</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">
@@ -220,7 +219,6 @@ Copyright header
     </type>
     <version>15.7.0</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">
@@ -329,7 +327,6 @@ Copyright header
     </type>
     <version>15.6.0</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">
@@ -462,7 +459,6 @@ Copyright header
     </type>
     <version>__CURRENT_YEAR__</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">
@@ -562,7 +558,6 @@ Copyright header
     </type>
     <version>__CURRENT_YEAR__</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">

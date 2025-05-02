@@ -183,7 +183,6 @@ KIWI_TEMPLATE = jinja2.Template(
     </type>
     <version>{{ image.kiwi_version }}</version>
     <packagemanager>zypper</packagemanager>
-    <rpm-check-signatures>false</rpm-check-signatures>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
   <repository type="rpm-md">
