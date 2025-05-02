@@ -53,7 +53,7 @@ def _get_openjdk_kwargs(
         OsVersion.TUMBLEWEED, OsVersion.SP7, OsVersion.SP6, OsVersion.SP5
     ],
     devel: bool,
-    java_version: Literal[11, 13, 15, 17, 20, 21, 23],
+    java_version: Literal[11, 13, 15, 17, 20, 21, 24],
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -64,7 +64,7 @@ def _get_openjdk_kwargs(
     }
 
     is_latest = (java_version == 21 and os_version.is_sle15) or (
-        java_version == 23 and os_version.is_tumbleweed
+        java_version == 24 and os_version.is_tumbleweed
     )
 
     common = {
@@ -149,7 +149,7 @@ OPENJDK_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=23),
+            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=24),
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product((OsVersion.TUMBLEWEED,), (True, False))
