@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May  2 13:56:35 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- build with signature checks
+
+-------------------------------------------------------------------
 Fri Feb 21 07:40:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Fix support end date
