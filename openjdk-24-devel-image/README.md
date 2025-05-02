@@ -1,4 +1,4 @@
-# OpenJDK 23 development container image
+# OpenJDK 24 development container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
@@ -14,7 +14,7 @@ To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.opensuse.org/opensuse/bci/openjdk-devel:23 as build
+FROM registry.opensuse.org/opensuse/bci/openjdk-devel:24 as build
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.opensuse.org/opensuse/bci/openjdk:23
+FROM registry.opensuse.org/opensuse/bci/openjdk:24
 
 WORKDIR /app
 
@@ -44,12 +44,12 @@ There are situations, where you don't want to run an application inside a contai
 To compile the application, without running it inside a container instance, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk-devel:23 javac Hello.java
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk-devel:24 javac Hello.java
 ```
 
 ## Additional tools
 
-The OpenJDK 23 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
+The OpenJDK 24 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
 
 ## Licensing
 
