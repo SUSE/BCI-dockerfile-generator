@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Mon Apr 28 11:21:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
-- zypper clean also the system repository from the container
+- re-render dockerfile template
 
 -------------------------------------------------------------------
 Wed Mar 12 10:50:26 UTC 2025 - Dirk Müller <dmueller@suse.com>
