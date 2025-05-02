@@ -11,6 +11,8 @@ ExpandFlags: kiwi-nobasepackages
 Type: docker
 BuildEngine: podman
 
+Prefer: container:micro-image
+
 %else
 Type: spec
 Repotype: none
