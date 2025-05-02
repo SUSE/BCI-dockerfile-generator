@@ -1,5 +1,6 @@
 """Build recipe for the ISC Bind 9 container image."""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import NetworkPort
@@ -10,6 +11,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package.helpers import generate_from_image_tag
 
 _BIND_FILES = {
     "entrypoint.sh": (
@@ -18,13 +20,18 @@ _BIND_FILES = {
     "healthcheck.sh": (_bind_dir / "healthcheck.sh").read_text(),
 }
 
+_BIND_PATCH_RE = "%%bind_major_minor_patch%%"
+
 BIND_CONTAINERS = [
     ApplicationStackContainer(
         name="bind",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version=9,
+        is_singleton_image=True,
+        version=_BIND_PATCH_RE,
+        tag_version=9,
         pretty_name="ISC BIND 9",
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
         package_list=["bind"],
         exposes_ports=[
@@ -36,11 +43,10 @@ BIND_CONTAINERS = [
         ],
         additional_versions=[
             (_bind_minor_re := "%%bind_major_minor%%"),
-            (_bind_patch_re := "%%bind_major_minor_patch%%"),
         ],
         replacements_via_service=[
             Replacement(_bind_minor_re, "bind", parse_version=ParseVersion.MINOR),
-            Replacement(_bind_patch_re, "bind", parse_version=ParseVersion.PATCH),
+            Replacement(_BIND_PATCH_RE, "bind", parse_version=ParseVersion.PATCH),
         ],
         extra_files=_BIND_FILES,
         env={
@@ -51,18 +57,19 @@ BIND_CONTAINERS = [
             # need to set this one so that we can override it
             "NAMED_CONF": "/etc/named.conf",
         },
+        build_stage_custom_end=textwrap.dedent(rf"""
+            # patch named.prep to not call logger (provided by systemd)
+            # and just log to stdout
+            {DOCKERFILE_RUN} \
+                mkdir -p /target/usr/local/lib/bind; \
+                cp /target/{os_version.libexecdir}bind/named.prep {(_named_prep := "/target/usr/local/lib/bind/named.prep")}; \
+                sed -i -e 's|logger "Warning: \$1"|echo "Warning: \$1" >\&2|' -e '/\. \$SYSCONFIG_FILE/d' {_named_prep}
+            """),
         custom_end=rf"""COPY entrypoint.sh {(_entrypoint := "/usr/local/bin/entrypoint.sh")}
 COPY healthcheck.sh {(_healthcheck := "/usr/local/bin/healthcheck.sh")}
 {DOCKERFILE_RUN} \
     chmod +x {_entrypoint}; \
     chmod +x {_healthcheck};
-
-# patch named.prep to not call logger (provided by systemd)
-# and just log to stdout
-{DOCKERFILE_RUN} \
-    mkdir -p /usr/local/lib/bind; \
-    cp {os_version.libexecdir}bind/named.prep {(_named_prep := "/usr/local/lib/bind/named.prep")}; \
-    sed -i -e 's|logger "Warning: \$1"|echo "Warning: \$1" >\&2|' -e '/\. \$SYSCONFIG_FILE/d' {_named_prep}
 
 # create directories that tmpfiles.d would create for us
 {DOCKERFILE_RUN} \
