@@ -19,7 +19,7 @@
 #!BuildTag: suse/xorg:%%xorg_server_ver%%
 #!BuildTag: suse/xorg:21
 #!BuildTag: suse/xorg:notaskbar
-#!BuildName: suse-xorg-21
+#!BuildName: suse-xorg
 #!BuildVersion: 15.7.21
 FROM suse/sle15:15.7
 

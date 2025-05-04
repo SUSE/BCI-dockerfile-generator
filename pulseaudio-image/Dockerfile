@@ -18,7 +18,7 @@
 #!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
 #!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%
 #!BuildTag: suse/pulseaudio:17
-#!BuildName: suse-pulseaudio-17
+#!BuildName: suse-pulseaudio
 #!BuildVersion: 15.7.17
 FROM suse/sle15:15.7
 
