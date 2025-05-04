@@ -31,6 +31,7 @@ PULSEAUDIO_CONTAINERS = [
         version_in_uid=False,
         exclusive_arch=KIOSK_EXCLUSIVE_ARCH,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         version=(pulseaudio_ver_re := "%%pulseaudio_ver%%"),
         pretty_name="Pulseaudio",
         package_list=["pulseaudio", "pulseaudio-utils"],

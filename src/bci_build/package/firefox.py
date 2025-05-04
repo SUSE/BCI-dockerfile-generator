@@ -17,6 +17,8 @@ FIREFOX_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         exclusive_arch=KIOSK_EXCLUSIVE_ARCH,
         version=(ff_ver_re := "%%ff_ver%%"),
+        tag_version=None if os_version.is_tumbleweed else "esr",
+        is_singleton_image=True,
         version_in_uid=False,
         pretty_name="Mozilla Firefox",
         package_list=(

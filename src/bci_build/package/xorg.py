@@ -31,6 +31,7 @@ XORG_CONTAINERS = [
         version_in_uid=False,
         tag_version=(tag_ver := "21"),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=True,
         version=(xorg_server_re := "%%xorg_server_ver%%"),
         pretty_name="Xorg Server",
         package_list=[
