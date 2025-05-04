@@ -19,7 +19,7 @@
 #!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%
 #!BuildTag: suse/pulseaudio:17
 #!BuildTag: suse/pulseaudio:latest
-#!BuildName: suse-pulseaudio-17
+#!BuildName: suse-pulseaudio
 #!BuildVersion: 15.6.17
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
