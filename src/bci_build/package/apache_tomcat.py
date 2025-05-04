@@ -82,7 +82,7 @@ WORKDIR $CATALINA_HOME
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
     for tomcat_ver, os_version, jre_version in (
-        ("10.1", OsVersion.TUMBLEWEED, 23),
+        ("10.1", OsVersion.TUMBLEWEED, 24),
         ("10.1", OsVersion.TUMBLEWEED, 21),
         ("10.1", OsVersion.TUMBLEWEED, 17),
         ("9", OsVersion.TUMBLEWEED, 21),
