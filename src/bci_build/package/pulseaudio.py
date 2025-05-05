@@ -13,6 +13,7 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
+from bci_build.package.kiosk import KioskRegistry
 
 _PULSE_FILES = {
     "client.conf": (
@@ -35,6 +36,7 @@ PULSEAUDIO_CONTAINERS = [
         version=(pulseaudio_ver_re := "%%pulseaudio_ver%%"),
         pretty_name="Pulseaudio",
         package_list=["pulseaudio", "pulseaudio-utils"],
+        _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         replacements_via_service=[
             Replacement(
                 pulseaudio_ver_re,

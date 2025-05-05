@@ -11,6 +11,7 @@ from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
 
 from .kiosk import KIOSK_EXCLUSIVE_ARCH
+from .kiosk import KioskRegistry
 
 _XORG_FILES = {
     "entrypoint.sh": (
@@ -33,6 +34,7 @@ XORG_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         is_singleton_image=True,
         version=(xorg_server_re := "%%xorg_server_ver%%"),
+        _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         pretty_name="Xorg Server",
         package_list=[
             "hostname",

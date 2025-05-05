@@ -9,10 +9,12 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
+from bci_build.package.kiosk import KioskRegistry
 
 FIREFOX_CONTAINERS = [
     ApplicationStackContainer(
-        name=("kiosk-firefox" if os_version.is_tumbleweed else "kiosk-firefox-esr"),
+        name=("kiosk-firefox" if os_version.is_tumbleweed else "firefox-esr"),
+        package_name=(None if os_version.is_tumbleweed else "kiosk-firefox-esr-image"),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         exclusive_arch=KIOSK_EXCLUSIVE_ARCH,
@@ -21,6 +23,7 @@ FIREFOX_CONTAINERS = [
         is_singleton_image=True,
         version_in_uid=False,
         pretty_name="Mozilla Firefox",
+        _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         package_list=(
             [
                 "MozillaFirefox",
