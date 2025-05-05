@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  5 07:45:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- buildname adjustments
+
+-------------------------------------------------------------------
 Wed Apr 30 12:25:03 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - re-add accidentally removed timeout setting
