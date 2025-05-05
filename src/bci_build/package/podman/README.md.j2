@@ -1,0 +1,48 @@
+# The Podman Container Image
+
+{% include 'badges.j2' %}
+
+## Description
+
+Podman (the POD MANager) is a tool for managing containers and images, volumes
+mounted into those containers, and pods made from groups of containers. Podman
+runs containers on Linux, but can also be used on Mac and Windows systems using
+a Podman-managed virtual machine. Podman is based on libpod, a library for
+container lifecycle management that.
+
+This Container Image ships Podman pre-configured to allow running it inside a
+container.
+
+
+## Usage
+
+This Container Image is intended for interactive usage only and it must be
+launched in privileged mode:
+
+```ShellSession
+$ podman run --rm -it --privileged \
+      {{ image.pretty_reference }}
+# podman run --rm -it leap grep ^ID= /etc/os-release
+ID="opensuse-leap"
+```
+
+The container ships the unprivileged user `podman`, which can launch rootless
+containers inside a container:
+```ShellSession
+$ podman run --rm -it --privileged \
+      {{ image.pretty_reference }}
+# su podman
+podman:/> podman run --rm -it leap grep ^ID= /etc/os-release
+ID="opensuse-leap"
+```
+
+
+## Limitations
+
+- The container must be run in privileged mode.
+- Podman inside the container has to use the slow `fuse-overlayfs` storage
+  driver. This driver is significantly slower than the default `overlay` driver,
+  which is unavailable in a container.
+
+
+{% include 'licensing_and_eula.j2' %}
