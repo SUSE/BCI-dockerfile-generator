@@ -17,7 +17,6 @@ _BIND_FILES = {
     "entrypoint.sh": (
         (_bind_dir := Path(__file__).parent / "bind") / "entrypoint.sh"
     ).read_text(),
-    "healthcheck.sh": (_bind_dir / "healthcheck.sh").read_text(),
 }
 
 _BIND_PATCH_RE = "%%bind_major_minor_patch%%"
@@ -33,8 +32,8 @@ BIND_CONTAINERS = [
         pretty_name="ISC BIND 9",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
-        # grep: used by the health check
-        package_list=["bind", "bind-utils", "grep"],
+        # dig: used by the health check
+        package_list=["bind", "bind-utils"],
         exposes_ports=[
             NetworkPort(53),
             NetworkPort(53, NetworkProtocol.UDP),
@@ -66,15 +65,12 @@ BIND_CONTAINERS = [
                 cp /target/{os_version.libexecdir}bind/named.prep {(_named_prep := "/target/usr/local/lib/bind/named.prep")}; \
                 sed -i -e 's|logger "Warning: \$1"|echo "Warning: \$1" >\&2|' -e '/\. \$SYSCONFIG_FILE/d' {_named_prep}
             """),
-        custom_end=rf"""COPY entrypoint.sh {(_entrypoint := "/usr/local/bin/entrypoint.sh")}
-COPY healthcheck.sh {(_healthcheck := "/usr/local/bin/healthcheck.sh")}
-{DOCKERFILE_RUN} \
-    chmod +x {_entrypoint}; \
-    chmod +x {_healthcheck};
+        custom_end=textwrap.dedent(rf"""
+            COPY entrypoint.sh {(_entrypoint := "/usr/local/bin/entrypoint.sh")}
 
-# create directories that tmpfiles.d would create for us
-{DOCKERFILE_RUN} \
-"""
+            # create directories that tmpfiles.d would create for us
+            {DOCKERFILE_RUN} \
+            """)
         + (r" \ " + "\n").join(
             (
                 f"    mkdir -p {dirname}; chown {user} {dirname}; chmod {mode} {dirname};"
@@ -92,14 +88,13 @@ COPY healthcheck.sh {(_healthcheck := "/usr/local/bin/healthcheck.sh")}
                 )
             )
         )
-        + f"""
-# create files that tmpfiles.d would create for us
-{DOCKERFILE_RUN} touch /var/lib/named/127.0.0.zone /var/lib/named/localhost.zone /var/lib/named/named.root.key /var/lib/named/root.hint
+        + textwrap.dedent(f"""
+            # create files that tmpfiles.d would create for us
+            {DOCKERFILE_RUN} touch /var/lib/named/127.0.0.zone /var/lib/named/localhost.zone /var/lib/named/named.root.key /var/lib/named/root.hint
 
-ENTRYPOINT ["{_entrypoint}"]
-HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD ["{_healthcheck}"]
-
-""",
+            ENTRYPOINT ["{_entrypoint}"]
+            HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD dig +retry=0 +short @127.0.0.1 conncheck.opensuse.org >/dev/null && echo OK
+"""),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
