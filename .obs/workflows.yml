@@ -55,6 +55,10 @@ staging_build:
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
+        source_package: kiosk-firefox-esr-image
+        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: gcc-14-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
@@ -88,10 +92,6 @@ staging_build:
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
         source_package: init-image
-        target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:defolos:BCI:CR:SLE-15-SP6
-        source_package: kiosk-firefox-esr-image
         target_project: home:defolos:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:defolos:BCI:CR:SLE-15-SP6
@@ -303,6 +303,9 @@ refresh_devel_BCI:
         package: dotnet-9.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
+        package: kiosk-firefox-esr-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
         package: gcc-14-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
@@ -328,9 +331,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: init-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: kiosk-firefox-esr-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: kiwi-image
