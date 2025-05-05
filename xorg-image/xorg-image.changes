@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  5 20:14:35 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- move kiosk related containers below a suse/kiosk prefix
+
+-------------------------------------------------------------------
 Mon May  5 07:44:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - buildname adjustments
