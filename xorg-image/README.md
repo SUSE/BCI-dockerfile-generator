@@ -24,7 +24,7 @@ command as `root`:
       -v xsocket:/tmp/.X11-unix:rw \
       -v /run/udev/data:/run/udev/data:rw \
       --security-opt=no-new-privileges \
-      registry.suse.com/suse/xorg:21
+      registry.suse.com/suse/kiosk/xorg:21
 ```
 
 The volumes are optional and can be omitted if you wish to only start X. The

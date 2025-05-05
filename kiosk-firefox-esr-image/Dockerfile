@@ -15,9 +15,9 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: suse/kiosk-firefox-esr:%%ff_ver%%-%RELEASE%
-#!BuildTag: suse/kiosk-firefox-esr:%%ff_ver%%
-#!BuildTag: suse/kiosk-firefox-esr:esr
+#!BuildTag: suse/kiosk/firefox-esr:%%ff_ver%%-%RELEASE%
+#!BuildTag: suse/kiosk/firefox-esr:%%ff_ver%%
+#!BuildTag: suse/kiosk/firefox-esr:esr
 #!BuildName: suse-kiosk-firefox-esr
 #!BuildVersion: 15.7
 FROM suse/sle15:15.7
@@ -28,7 +28,7 @@ RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.kiosk-firefox-esr
+# labelprefix=com.suse.application.firefox-esr
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE Mozilla Firefox"
 LABEL org.opencontainers.image.description="Mozilla Firefox container based on the SLE Base Container Image."
@@ -38,7 +38,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%ff_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/kiosk-firefox-esr:%%ff_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/firefox-esr:%%ff_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
