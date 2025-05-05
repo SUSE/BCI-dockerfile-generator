@@ -11,14 +11,14 @@ ExpandFlags: kiwi-nobasepackages
 Type: docker
 BuildEngine: podman
 
-Prefer: container:micro-image
-
 %else
 Type: spec
 Repotype: none
 Patterntype: none
 %endif
 %endif
+
+Prefer: openSUSE-release-appliance
 
 # don't rebuild with every release:
 # Substitute: distribution-release openSUSE-release-mini
