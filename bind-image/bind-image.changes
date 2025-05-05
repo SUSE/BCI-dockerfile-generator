@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  5 09:54:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Move healthcheck into Dockerfile
+
+-------------------------------------------------------------------
 Fri May  2 09:58:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Switch to a multistage build and adjust versions metadata
