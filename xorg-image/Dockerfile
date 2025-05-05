@@ -20,7 +20,7 @@
 #!BuildTag: suse/xorg:21
 #!BuildTag: suse/xorg:notaskbar
 #!BuildTag: suse/xorg:latest
-#!BuildName: suse-xorg-21
+#!BuildName: suse-xorg
 #!BuildVersion: 15.6.21
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
