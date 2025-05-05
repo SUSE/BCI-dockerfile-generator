@@ -17,7 +17,8 @@
 #!ExclusiveArch: x86_64 aarch64
 #!BuildTag: suse/kiosk-firefox-esr:%%ff_ver%%-%RELEASE%
 #!BuildTag: suse/kiosk-firefox-esr:%%ff_ver%%
-#!BuildName: suse-kiosk-firefox-esr-%%ff_ver%%
+#!BuildTag: suse/kiosk-firefox-esr:esr
+#!BuildName: suse-kiosk-firefox-esr
 #!BuildVersion: 15.7
 FROM suse/sle15:15.7
 
