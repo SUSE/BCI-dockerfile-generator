@@ -33,7 +33,8 @@ BIND_CONTAINERS = [
         pretty_name="ISC BIND 9",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
-        package_list=["bind"],
+        # grep: used by the health check
+        package_list=["bind", "bind-utils", "grep"],
         exposes_ports=[
             NetworkPort(53),
             NetworkPort(53, NetworkProtocol.UDP),
