@@ -15,11 +15,11 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
-#!BuildTag: suse/pulseaudio:%%pulseaudio_ver%%
-#!BuildTag: suse/pulseaudio:17
-#!BuildTag: suse/pulseaudio:latest
-#!BuildName: suse-pulseaudio
+#!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
+#!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%
+#!BuildTag: suse/kiosk/pulseaudio:17
+#!BuildTag: suse/kiosk/pulseaudio:latest
+#!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.6.17
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
@@ -40,7 +40,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%pulseaudio_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/pulseaudio:%%pulseaudio_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/pulseaudio:%%pulseaudio_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"

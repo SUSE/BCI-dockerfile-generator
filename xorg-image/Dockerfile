@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: suse/xorg:%%xorg_server_ver%%-%RELEASE%
-#!BuildTag: suse/xorg:%%xorg_server_ver%%
-#!BuildTag: suse/xorg:21
-#!BuildTag: suse/xorg:notaskbar
-#!BuildTag: suse/xorg:latest
-#!BuildName: suse-xorg
+#!BuildTag: suse/kiosk/xorg:%%xorg_server_ver%%-%RELEASE%
+#!BuildTag: suse/kiosk/xorg:%%xorg_server_ver%%
+#!BuildTag: suse/kiosk/xorg:21
+#!BuildTag: suse/kiosk/xorg:notaskbar
+#!BuildTag: suse/kiosk/xorg:latest
+#!BuildName: suse-kiosk-xorg
 #!BuildVersion: 15.6.21
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
@@ -41,7 +41,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%xorg_server_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/xorg:%%xorg_server_ver%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/xorg:%%xorg_server_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
