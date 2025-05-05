@@ -67,6 +67,7 @@ BIND_CONTAINERS = [
             """),
         custom_end=textwrap.dedent(rf"""
             COPY entrypoint.sh {(_entrypoint := "/usr/local/bin/entrypoint.sh")}
+            {DOCKERFILE_RUN} chmod +x {_entrypoint}
 
             # create directories that tmpfiles.d would create for us
             {DOCKERFILE_RUN} \
