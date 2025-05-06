@@ -62,6 +62,7 @@ ENV NAMED_CONF="/etc/named.conf"
 EXPOSE 53/tcp 53/udp 953/tcp 853/tcp 443/tcp
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
 
 # create directories that tmpfiles.d would create for us
 RUN set -euo pipefail; \
