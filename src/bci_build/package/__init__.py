@@ -941,7 +941,7 @@ exit 0
         if self.os_version.is_tumbleweed:
             return f"https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/{self.os_version.deployment_branch_name}/{self.readme_path}"
 
-        return f"%SOURCEURL%/{self.readme_name}"
+        return f"%SOURCEURL%{self.readme_name}"
 
     @property
     def readme(self) -> str:
