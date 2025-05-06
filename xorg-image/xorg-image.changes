@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Mon May  5 20:15:42 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - move kiosk related containers below a suse/kiosk prefix

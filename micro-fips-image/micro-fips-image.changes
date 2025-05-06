@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Fri May 02 16:34:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 15 SP6 FIPS-140-3 Micro BCI

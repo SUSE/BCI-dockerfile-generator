@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Wed Apr 30 12:24:40 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - stable buildname for better aggregation
