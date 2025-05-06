@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 07:01:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Re-add chmod +x of the container entrypoint
+
+-------------------------------------------------------------------
 Mon May  5 09:36:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Move healthcheck into Dockerfile
