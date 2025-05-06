@@ -49,7 +49,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 CMD ["/bin/bash", "-c", "firefox --kiosk $URL"]
 RUN useradd -m user -u 1000
 ENV DISPLAY=":0"

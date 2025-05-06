@@ -61,7 +61,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENV RNDC_KEYSIZE="512"
 ENV NAMED_ARGS=""
 ENV NAMED_INITIALIZE_SCRIPTS=""
