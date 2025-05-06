@@ -47,7 +47,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-21-openjdk-21/bin"
 ENV JAVA_HOME="/usr/lib64/jvm/java-21-openjdk-21"
 ENV JAVA_ROOT="/usr/lib64/jvm/java-21-openjdk-21"

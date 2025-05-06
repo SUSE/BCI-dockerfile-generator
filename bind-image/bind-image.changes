@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Tue May  6 07:01:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Re-add chmod +x of the container entrypoint

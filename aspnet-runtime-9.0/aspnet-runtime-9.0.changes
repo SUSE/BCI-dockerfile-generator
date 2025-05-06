@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Mon May  5 09:39:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - New upstream release 9.0.4
