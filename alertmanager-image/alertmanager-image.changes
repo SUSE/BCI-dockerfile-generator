@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Mon May  5 09:54:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Switch to multistage build
