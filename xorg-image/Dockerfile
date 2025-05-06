@@ -46,7 +46,7 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
 RUN set -euo pipefail; \

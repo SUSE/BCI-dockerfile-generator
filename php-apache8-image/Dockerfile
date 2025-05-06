@@ -45,7 +45,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENV PHP_VERSION="%%php_version%%"
 ENV PHP_INI_DIR="/etc/php8/"
 ENV PHPIZE_DEPS="php8-devel awk make findutils"

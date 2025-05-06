@@ -52,7 +52,7 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 COPY entrypoint.sh /usr/local/bin/
 COPY stunnel.conf /etc/stunnel/stunnel.conf
 RUN set -euo pipefail; chmod 0755 /usr/local/bin/entrypoint.sh;     chown --recursive stunnel /etc/stunnel

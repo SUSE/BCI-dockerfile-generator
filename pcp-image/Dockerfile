@@ -46,7 +46,7 @@ LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENTRYPOINT ["/usr/local/bin/container-entrypoint"]
 CMD ["/usr/lib/systemd/systemd"]
 EXPOSE 44321/tcp 44322/tcp 44323/tcp

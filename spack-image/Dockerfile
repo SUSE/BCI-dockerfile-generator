@@ -46,7 +46,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL io.artifacthub.package.logo-url="https://spack.io/assets/images/spack-logo-white.svg"
 LABEL usage="This container is enabled and supported only on a SLE15+ host."
 ENV SPACK_ROOT="/usr"
