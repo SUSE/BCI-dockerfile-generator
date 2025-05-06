@@ -44,7 +44,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
 RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
 

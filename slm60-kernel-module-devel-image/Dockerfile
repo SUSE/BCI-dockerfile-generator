@@ -46,7 +46,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:ALP:Source:Standard:Core:1.0:Build/standard/x86_64/patchinfo.ga/kernel-devel-6.4.0-17.1.noarch.rpm
 COPY kernel-devel-6.4.0-17.1.noarch.rpm .
