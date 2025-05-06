@@ -44,7 +44,6 @@ This project is automatically updated from git. Please do **not** send submit re
     <arch>ppc64le</arch>
   </repository>
   <repository name="images">
-    <path project="devel:BCI:SLE-15-SP6" repository="containerfile"/>
     <path project="devel:BCI:SLE-15-SP6" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -56,7 +55,6 @@ This project is automatically updated from git. Please do **not** send submit re
     <arch>x86_64</arch>
   </repository>
   <repository name="containerfile">
-    <path project="devel:BCI:SLE-15-SP6" repository="images"/>
     <path project="devel:BCI:SLE-15-SP6" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>

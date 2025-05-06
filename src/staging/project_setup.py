@@ -42,7 +42,9 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
 {%- endif %}
   </repository>
   <repository name="images">
+{%- if not with_released_containers %}
     <path project="{{ project_name }}" repository="containerfile"/>
+{%- endif %}
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -67,7 +69,9 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
     <arch>x86_64</arch>
   </repository>{% endif %}
   <repository name="containerfile">
+{%- if not with_released_containers %}
     <path project="{{ project_name }}" repository="images"/>
+{%- endif %}
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -131,6 +135,9 @@ def generate_meta(
         project_type in (ProjectType.CR, ProjectType.DEVEL)
     )
     with_helmcharts_repo = project_type == ProjectType.DEVEL and not os_version.is_sl16
+    with_released_containers = (
+        project_type == ProjectType.DEVEL and not os_version.is_sl16
+    )
 
     repository_paths: tuple[tuple[str, str], ...]
     if os_version.is_sle15 or os_version.is_sl16:
@@ -206,6 +213,7 @@ def generate_meta(
         project_name=prj_name,
         maintainers=users,
         with_all_arches=with_all_arches,
+        with_released_containers=with_released_containers,
         with_helmcharts_repo=with_helmcharts_repo,
         with_product_repo=os_version.is_sl16,
         repository_paths=repository_paths,
