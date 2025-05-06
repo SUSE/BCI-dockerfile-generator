@@ -7,6 +7,7 @@ The main classes in this module are:
 - DotNetBCI: Represents a .NET development container based on the SLE Base Container Image.
 """
 
+import binascii
 import datetime
 import logging
 from dataclasses import dataclass
@@ -86,7 +87,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1{% endif %}
 RUN mkdir -p /tmp/
 
 {% for pkg in dotnet_packages -%}
-#!RemoteAssetUrl: {{ pkg.url }}
+#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
 COPY {{ pkg.name }} /tmp/
 {% endfor %}
 
@@ -130,6 +131,7 @@ class Package:
 class RpmPackage(Package):
     version: str
     url: str
+    checksum: str
 
     @staticmethod
     def from_dnf_package(pkg: dnf.package.Package, arch: Arch) -> "RpmPackage":
@@ -138,6 +140,7 @@ class RpmPackage(Package):
             url=(url := pkg.remote_location()),
             version=pkg.version,
             name=basename(urlparse(url).path),
+            checksum=binascii.hexlify(pkg.chksum[1]).decode("utf-8"),
         )
 
 
@@ -199,8 +202,7 @@ class DotNetBCI(DevelopmentContainer):
         ]
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
-        """Fetches the package `pkg` from the microsoft .Net repository and
-        stores it in the target folder `dest`. The target folder must exist.
+        """Fetches the package `pkg` from the microsoft .Net repository.
 
         Returns:
             list of :py:class:`RpmPackage` representing the downloaded rpms, one for each architecture
@@ -274,8 +276,8 @@ class DotNetBCI(DevelopmentContainer):
         return pkgs
 
     def _fetch_packages(self) -> list[RpmPackage]:
-        """Fetches all packages in self.packages from the Microsoft .Net repo, saves
-        them in the target folder `dest` and returns the list of files.
+        """Fetches all packages in self.packages from the Microsoft .Net repo
+        and returns the list of files.
 
         """
         assert self.exclusive_arch
