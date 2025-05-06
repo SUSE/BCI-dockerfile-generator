@@ -95,8 +95,8 @@ def generate_project_name(
 ) -> str:
     res = {
         ProjectType.DEVEL: "devel:BCI:",
-        ProjectType.CR: f"home:{osc_username}:BCI:CR:",
-        ProjectType.STAGING: f"home:{osc_username}:BCI:Staging:",
+        ProjectType.CR: f"devel:BCI:CR:",
+        ProjectType.STAGING: f"devel:BCI:Staging:",
     }[project_type]
 
     if os_version.is_sle15:

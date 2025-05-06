@@ -69,7 +69,7 @@ This project is automatically updated from git. Please do **not** send submit re
             OsVersion.SP5,
             ProjectType.CR,
             None,
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:CR:SLE-15-SP5"),
+            (prj_name := f"devel:BCI:CR:SLE-15-SP5"),
             f"""<project name="{prj_name}">
   <title>Continuous Rebuild project for SLE 15 SP5</title>
   <description>Continuous Rebuild project for SLE 15 SP5</description>
@@ -177,7 +177,7 @@ This project is automatically updated from git. Please do **not** send submit re
             OsVersion.SLE16_0,
             ProjectType.STAGING,
             (branch := "pr-404"),
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:16.0:{branch}"),
+            (prj_name := f"devel:BCI:Staging:16.0:{branch}"),
             f"""<project name="{prj_name}">
   <title>Staging project for SLE 16</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SLE 16</description>
@@ -236,7 +236,7 @@ This project is automatically updated from git. Please do **not** send submit re
             OsVersion.SP7,
             ProjectType.STAGING,
             (branch := "7-400"),
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:SLE-15-SP7:{branch}"),
+            (prj_name := f"devel:BCI:Staging:SLE-15-SP7:{branch}"),
             f"""<project name="{prj_name}">
   <title>Staging project for SLE 15 SP7</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SLE 15 SP7</description>
@@ -286,7 +286,7 @@ This project is automatically updated from git. Please do **not** send submit re
             OsVersion.TUMBLEWEED,
             ProjectType.STAGING,
             (branch := "7-777"),
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:Tumbleweed:{branch}"),
+            (prj_name := f"devel:BCI:Staging:Tumbleweed:{branch}"),
             f"""<project name="{prj_name}">
   <title>Staging project for openSUSE Tumbleweed</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for openSUSE Tumbleweed</description>
