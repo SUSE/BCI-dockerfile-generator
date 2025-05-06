@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
 Thu May  1 12:32:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - preload the package signing key in the database
