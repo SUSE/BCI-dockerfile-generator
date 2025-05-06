@@ -51,16 +51,16 @@ The current CI setup includes the following projects:
   setup_obs_package` which sets up the package to ``scmsync`` the contents from
   a subdirectory in the deployment branch.
 
-- ``home:defolos:CR:${OS_VERSION}``: A test project, which has a project wide
-  ``scmsync`` to the deployment branch. Therefore it will automatically pick up
-  every new package without manual intervention and it will also use the correct
-  ``prjconf`` via the :file:`_config` (this file is populated in
+- ``home:${OSC_USER}:CR:${OS_VERSION}``: A test project, which has a project
+  wide ``scmsync`` to the deployment branch. Therefore it will automatically
+  pick up every new package without manual intervention and it will also use the
+  correct ``prjconf`` via the :file:`_config` (this file is populated in
   :py:func:`~staging.bot.StagingBot.write_all_image_build_recipes`).
 
-- ``home:defolos:Staging:${OS_VERSION}:${branch_name}-${random}``: The scratch
-  build project created for each pull request against ``main`` by the staging
-  bot in :py:func:`~staging.bot.StagingBot.scratch_build`
+- ``home:${OSC_USER}:Staging:${OS_VERSION}:${branch_name}-${pr_num}``: The
+  scratch build project created for each pull request against ``main`` by the
+  staging bot in :py:func:`~staging.bot.StagingBot.scratch_build`
 
-- ``home:defolos:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}``:
+- ``home:${OSC_USER}:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}``:
   projects created by OBS' SCM CI from ``home:defolos:CR:${OS_VERSION}`` for
   every pull request against the deployment branches.
