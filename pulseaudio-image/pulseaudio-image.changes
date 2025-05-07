@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May  7 14:22:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- also install procps - needed by tests
+
+-------------------------------------------------------------------
 Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid double slash in readme url
