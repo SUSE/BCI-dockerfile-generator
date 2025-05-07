@@ -23,7 +23,7 @@
 FROM suse/sle15:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends pulseaudio pulseaudio-utils
+    zypper -n install --no-recommends pulseaudio pulseaudio-utils procps
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
