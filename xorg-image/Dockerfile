@@ -43,7 +43,7 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/xorg-image/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
 RUN set -euo pipefail; \
