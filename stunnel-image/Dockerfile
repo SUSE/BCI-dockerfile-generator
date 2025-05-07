@@ -56,7 +56,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 COPY entrypoint.sh /usr/local/bin/
 COPY stunnel.conf /etc/stunnel/stunnel.conf
 RUN set -euo pipefail; chmod 0755 /usr/local/bin/entrypoint.sh;     chown --recursive stunnel /etc/stunnel
