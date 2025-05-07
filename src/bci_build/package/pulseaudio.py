@@ -35,7 +35,7 @@ PULSEAUDIO_CONTAINERS = [
         is_singleton_image=True,
         version=(pulseaudio_ver_re := "%%pulseaudio_ver%%"),
         pretty_name="Pulseaudio",
-        package_list=["pulseaudio", "pulseaudio-utils"],
+        package_list=["pulseaudio", "pulseaudio-utils", "procps"],
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         replacements_via_service=[
             Replacement(
