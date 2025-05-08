@@ -20,6 +20,7 @@
 #!BuildTag: bci/bci-micro:latest
 #!BuildName: bci-bci-micro-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6
+#!BuildRelease: 35
 FROM scratch AS target
 FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
