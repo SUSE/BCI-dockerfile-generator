@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  8 13:14:38 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end date
+
+-------------------------------------------------------------------
 Wed May  7 14:22:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - also install procps - needed by tests
