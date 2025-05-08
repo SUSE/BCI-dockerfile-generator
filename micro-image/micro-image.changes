@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  8 08:26:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update buildrelease counter for the kiwi to containerfile switch
+
+-------------------------------------------------------------------
 Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid double slash in readme url
