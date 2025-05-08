@@ -1,14 +1,15 @@
-"""Build description for the Firefox container for the containerized kiosk
-containers.
-
+"""Build description for the Firefox container, which is part of the
+SUSE containerized kiosk solution.
 """
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
+from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
 from bci_build.package.kiosk import KioskRegistry
 
 FIREFOX_CONTAINERS = [
@@ -50,6 +51,8 @@ FIREFOX_CONTAINERS = [
                 parse_version=ParseVersion.MINOR,
             )
         ],
+        support_level=SupportLevel.L3,
+        supported_until=KIOSK_SUPPORT_ENDS,
         cmd=["/bin/bash", "-c", "firefox --kiosk $URL"],
         custom_end="""RUN useradd -m user -u 1000
 ENV DISPLAY=":0"

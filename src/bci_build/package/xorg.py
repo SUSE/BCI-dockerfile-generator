@@ -1,7 +1,9 @@
-"""Build descriptions for the xorg container."""
+"""Build descriptions for the xorg container, which is part of the
+SUSE containerized kiosk solution."""
 
 from pathlib import Path
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
@@ -9,9 +11,9 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_package_version_check
-
-from .kiosk import KIOSK_EXCLUSIVE_ARCH
-from .kiosk import KioskRegistry
+from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
+from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
+from bci_build.package.kiosk import KioskRegistry
 
 _XORG_FILES = {
     "entrypoint.sh": (
@@ -65,6 +67,8 @@ XORG_CONTAINERS = [
             )
         ],
         extra_files=_XORG_FILES,
+        support_level=SupportLevel.L3,
+        supported_until=KIOSK_SUPPORT_ENDS,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         custom_end=generate_package_version_check(
             "xorg-x11-server", tag_ver, ParseVersion.MAJOR

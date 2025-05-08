@@ -1,10 +1,10 @@
 """Build description of the pulseaudio container, which is part of the
-containerized kiosk
-
+SUSE containerized kiosk solution.
 """
 
 from pathlib import Path
 
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
@@ -13,6 +13,7 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
+from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
 from bci_build.package.kiosk import KioskRegistry
 
 _PULSE_FILES = {
@@ -44,6 +45,8 @@ PULSEAUDIO_CONTAINERS = [
                 parse_version=ParseVersion.MINOR,
             )
         ],
+        support_level=SupportLevel.L3,
+        supported_until=KIOSK_SUPPORT_ENDS,
         extra_files=_PULSE_FILES,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         custom_end=generate_package_version_check(
