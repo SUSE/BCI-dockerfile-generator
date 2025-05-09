@@ -50,25 +50,25 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.4-1.x86_64.rpm sha256:e4df25e571da446ac70acf2525081bed1cf15490e81f92e581e97dd66973ccc6
 COPY dotnet-host-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-9.0-9.0.4-1.x86_64.rpm sha256:b907c3d4961dae82ad9c60a5692782b124c3e1dd2378d2751538622a1df008eb
 COPY dotnet-targeting-pack-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.4-1.x86_64.rpm sha256:9a10fbed2dcb2274ca12f7b603affc16f66256031cd6248165c83dfccbe823c5
 COPY dotnet-hostfxr-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.4-1.x86_64.rpm sha256:f57516cc82fb9388e1386e60cf061b9f558de0130d20baf69d5cd60ae1763a73
 COPY dotnet-runtime-deps-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.4-1.x86_64.rpm sha256:51f69373bddb877769ef72ce84269c2fc54f4a76113ba0b9d9be03dcf69cc54e
 COPY dotnet-runtime-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-9.0-9.0.4-1.x86_64.rpm sha256:26366592d992ef506b570e053e6a73de29e34d5f043486ab0624d6ce899a3bec
 COPY dotnet-apphost-pack-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-9.0-9.0.4-1.x86_64.rpm sha256:63788364a08a9524a7ceb11b135be446c3f20c8d2761176d695c701506a5a8b7
 COPY aspnetcore-targeting-pack-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.4-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.4-1.x86_64.rpm sha256:e63685d8ace56936db43d75b2349504d21a7e79b376d070b77ccec97da627b66
 COPY aspnetcore-runtime-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.203-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.203-1.x86_64.rpm sha256:cd4c192b015a549b0443d611ae027e6449c3bed255f42480d7d2db77c7cb747e
 COPY dotnet-sdk-9.0-9.0.203-1.x86_64.rpm /tmp/
 
 
