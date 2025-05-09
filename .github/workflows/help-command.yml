@@ -2,6 +2,12 @@ name: help-command
 on:
   repository_dispatch:
     types: [help-command]
+
+permissions:
+  contents: none
+  issues: write
+  pull-requests: write
+
 jobs:
   help:
     runs-on: ubuntu-latest
@@ -9,7 +15,6 @@ jobs:
       - name: Update comment
         uses: peter-evans/create-or-update-comment@v4
         with:
-          token: ${{ secrets.PAT }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           body: |
