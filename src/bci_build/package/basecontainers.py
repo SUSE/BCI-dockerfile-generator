@@ -89,10 +89,12 @@ INIT_CONTAINERS = [
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         custom_end=textwrap.dedent(
             f"""
-            RUN install -d -m 0755 /etc/systemd/system.conf.d/ \\
+            {DOCKERFILE_RUN} install -d -m 0755 /etc/systemd/system.conf.d/ \\
                 && printf "[Manager]\\nLogColor=no" > \\
                     /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
-            RUN {_DISABLE_GETTY_AT_TTY1_SERVICE}
+            {DOCKERFILE_RUN} {_DISABLE_GETTY_AT_TTY1_SERVICE}
+            {DOCKERFILE_RUN} useradd --no-create-home --uid 497 systemd-coredump
+
             HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
             """
         ),
