@@ -51,16 +51,77 @@ The current CI setup includes the following projects:
   setup_obs_package` which sets up the package to ``scmsync`` the contents from
   a subdirectory in the deployment branch.
 
-- ``home:defolos:CR:${OS_VERSION}``: A test project, which has a project wide
-  ``scmsync`` to the deployment branch. Therefore it will automatically pick up
-  every new package without manual intervention and it will also use the correct
-  ``prjconf`` via the :file:`_config` (this file is populated in
+- ``home:${OSC_USER}:CR:${OS_VERSION}``: A test project, which has a project
+  wide ``scmsync`` to the deployment branch. Therefore it will automatically
+  pick up every new package without manual intervention and it will also use the
+  correct ``prjconf`` via the :file:`_config` (this file is populated in
   :py:func:`~staging.bot.StagingBot.write_all_image_build_recipes`).
 
-- ``home:defolos:Staging:${OS_VERSION}:${branch_name}-${random}``: The scratch
-  build project created for each pull request against ``main`` by the staging
-  bot in :py:func:`~staging.bot.StagingBot.scratch_build`
+- ``home:${OSC_USER}:Staging:${OS_VERSION}:${branch_name}-${pr_num}``: The
+  scratch build project created for each pull request against ``main`` by the
+  staging bot in :py:func:`~staging.bot.StagingBot.scratch_build`
 
-- ``home:defolos:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}``:
+- ``home:${OSC_USER}:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}``:
   projects created by OBS' SCM CI from ``home:defolos:CR:${OS_VERSION}`` for
   every pull request against the deployment branches.
+
+
+Secrets/Credentials
+-------------------
+
+The CI currently requires the following credentials and access tokens to
+operate:
+
+
+SCM Token
+^^^^^^^^^
+
+An SCM access token is required to trigger the `webhook
+<https://github.com/SUSE/BCI-dockerfile-generator/settings/hooks/383133468>`_
+for updating the development and CR projects. Create such a GitHub Personal
+Access Token (PAT) following the guide in
+https://openbuildservice.org/help/manuals/obs-user-guide/cha-obs-scm-ci-workflow-integration#sec-obs-obs-scm-ci-workflow-integration-setup-token-authentication-how-to-authenticate-obs-with-scm
+The personal access token is then used to create a SCM token on OBS as follows:
+
+.. code-block:: shell-session
+
+   osc token --create --operation workflow --scm-token $PAT
+
+OBS will respond with an xml response as the following:
+
+.. code-block:: xml
+
+   <status code="ok">
+       <summary>Ok</summary>
+       <data name="token">$SECRET</data>
+       <data name="id">$ID</data>
+   </status>
+
+The token value ``$SECRET`` is the webhook secret and the id ``$ID`` is the
+query parameter ``id`` in the Payload URL.
+
+
+Staging Bot Account
+^^^^^^^^^^^^^^^^^^^
+
+Some actions on OBS cannot be triggered by the SCM integration, so we have to
+resort to use a less privileged account for this. The username is defined via
+the environment variable ``OSC_USER`` in the github actions yaml and the
+accompanying password is set in the secret `OSC_PASSWORD
+<https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/OSC_PASSWORD>`_.
+
+
+Repository Access Tokens
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two access tokens are required
+
+- The `PAT
+  <https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/PAT>`_
+  secret is a personal access token with the ``repo:public_repo`` scope. It is
+  required to update comments triggered from slash-commands.
+
+- The `CHECKOUT_TOKEN
+  <https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/CHECKOUT_TOKEN>`_
+  secret is a personal access token with the ``repo`` and ``workflow``
+  scopes. It is required to trigger mutable actions from slash-commands.
