@@ -52,13 +52,13 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.15-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.15-1.x86_64.rpm sha256:5471d6536b2074324644d97029b293b17d4a4df8a92d1d6e655948e0bb38b0ae
 COPY dotnet-host-8.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.15-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.15-1.x86_64.rpm sha256:f78fb2ede62f5574b7e27d67bd2a307c9fdeece37af4c73e6a96ddb2b9901bc9
 COPY dotnet-hostfxr-8.0-8.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.15-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.15-1.x86_64.rpm sha256:fb02527d533a3c1e4f3dd376dd3e50193b7c8e9d0819fc08801a46599a445452
 COPY dotnet-runtime-deps-8.0-8.0.15-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.15-1.x86_64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.15-1.x86_64.rpm sha256:1708a15ba075c49892a641db0344c70a9b1e68c262b6aad8d812f8d38a0e0833
 COPY dotnet-runtime-8.0-8.0.15-1.x86_64.rpm /tmp/
 
 
