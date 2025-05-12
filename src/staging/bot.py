@@ -420,22 +420,23 @@ on:
 jobs:
   changelog-check:
     name: changelog check
-    runs-on: ubuntu-22.04
-    container: ghcr.io/dcermak/bci-ci:latest
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
+        id: cache-deps
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
+        if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
@@ -474,20 +475,20 @@ jobs:
   create-issues-for-dan:
     name: create an issue for Dan to create the packages in devel:BCI
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
       fail-fast: false
 
     steps:
       # we need all branches for the build checks
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: main
           token: ${{ secrets.CHECKOUT_TOKEN }}
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
+        id: cache-deps
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
@@ -496,7 +497,8 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
+        if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - name: find the packages that are missing
         run: |
