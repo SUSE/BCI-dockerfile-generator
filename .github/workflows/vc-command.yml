@@ -7,7 +7,6 @@ on:
 jobs:
   append-changelog:
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,7 +23,7 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - name: Add the changelog entries
         id: vars

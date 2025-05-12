@@ -17,9 +17,6 @@ jobs:
   create-pull-requests:
     name: create pull requests if the build recipes changed
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/dcermak/bci-ci:latest
-      options: "--privileged"
 
     strategy:
       fail-fast: false
@@ -47,7 +44,7 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - name: setup the continuous rebuild project
         run: poetry run scratch-build-bot --os-version ${{ matrix.os_version }} create_cr_project
