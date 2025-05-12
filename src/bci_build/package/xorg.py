@@ -1,6 +1,7 @@
 """Build descriptions for the xorg container, which is part of the
 SUSE containerized kiosk solution."""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import SupportLevel
@@ -10,6 +11,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
 from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
@@ -37,6 +39,7 @@ XORG_CONTAINERS = [
         is_singleton_image=True,
         version=(xorg_server_re := "%%xorg_server_ver%%"),
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         pretty_name="Xorg Server",
         package_list=[
             "hostname",
@@ -70,20 +73,23 @@ XORG_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=KIOSK_SUPPORT_ENDS,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
-        custom_end=generate_package_version_check(
-            "xorg-x11-server", tag_ver, ParseVersion.MAJOR
+        build_stage_custom_end=generate_package_version_check(
+            "xorg-x11-server", tag_ver, ParseVersion.MAJOR, use_target=True
         )
-        + """
-RUN useradd -m user -u 1000
-COPY preferences /etc/icewm/preferences
-COPY xinitrc /etc/X11/xinit/xinitrc
-COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
+        + "\nRUN useradd -m user -u 1000",
+        custom_end=textwrap.dedent("""
+            COPY --from=builder /etc/passwd /etc/passwd
+            COPY --from=builder /etc/group /etc/group
+            COPY --from=builder /home/user /home/user
+            COPY preferences /etc/icewm/preferences
+            COPY xinitrc /etc/X11/xinit/xinitrc
+            COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
 
-ENV XDG_SESSION_TYPE=x11
+            ENV XDG_SESSION_TYPE=x11
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-""",
+            COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+            RUN chmod +x /usr/local/bin/entrypoint.sh
+            """),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]

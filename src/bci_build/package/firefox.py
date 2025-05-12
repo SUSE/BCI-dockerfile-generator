@@ -2,12 +2,16 @@
 SUSE containerized kiosk solution.
 """
 
+import textwrap
+
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
 from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
 from bci_build.package.kiosk import KioskRegistry
@@ -25,6 +29,7 @@ FIREFOX_CONTAINERS = [
         version_in_uid=False,
         pretty_name="Mozilla Firefox",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         package_list=(
             [
                 "MozillaFirefox",
@@ -54,9 +59,14 @@ FIREFOX_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=KIOSK_SUPPORT_ENDS,
         cmd=["/bin/bash", "-c", "firefox --kiosk $URL"],
-        custom_end="""RUN useradd -m user -u 1000
-ENV DISPLAY=":0"
-""",
+        # TODO add package_version_check and tag_version
+        build_stage_custom_end=f"{DOCKERFILE_RUN} useradd -m user -u 1000",
+        custom_end=textwrap.dedent("""
+            ENV DISPLAY=":0"
+            COPY --from=builder /etc/passwd /etc/passwd
+            COPY --from=builder /etc/group /etc/group
+            COPY --from=builder /home/user /home/user
+        """),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
