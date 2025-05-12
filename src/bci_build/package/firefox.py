@@ -34,13 +34,14 @@ FIREFOX_CONTAINERS = [
                 "libpulse0",
             ]
             + (
-                ["MozillaFirefox-branding-openSUSE"]
+                ["MozillaFirefox-branding-openSUSE", "libavcodec58_134"]
                 if os_version.is_tumbleweed
                 else [
                     "MozillaFirefox-branding-SLE",
                     # required by Firefox via /usr/bin/gconftool-2
                     # to be fixed via FileProvides
                     "gconf2",
+                    "libavcodec57",
                 ]
             )
         ),
