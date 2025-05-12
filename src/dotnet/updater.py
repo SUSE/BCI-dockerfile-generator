@@ -7,20 +7,17 @@ The main classes in this module are:
 - DotNetBCI: Represents a .NET development container based on the SLE Base Container Image.
 """
 
-import binascii
 import datetime
+import functools
 import logging
 from dataclasses import dataclass
 from dataclasses import field
-from functools import cmp_to_key
-from os.path import basename
 from typing import ClassVar
 from typing import Literal
-from urllib.parse import urlparse
 
-import dnf
 from jinja2 import Template
 from packaging import version
+from version_utils import rpm
 
 from bci_build.logger import LOGGER
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -29,6 +26,9 @@ from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from staging.build_result import Arch
+
+from .repomdparser import RepoMDParser
+from .repomdparser import RpmPackage
 
 MS_ASC = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.7 (GNU/Linux)
@@ -88,7 +88,7 @@ RUN mkdir -p /tmp/
 
 {% for pkg in dotnet_packages -%}
 #!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
-COPY {{ pkg.name }} /tmp/
+COPY {{ pkg.url.split('/') | last }} /tmp/
 {% endfor %}
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -127,23 +127,6 @@ class Package:
         return self.name
 
 
-@dataclass(frozen=True)
-class RpmPackage(Package):
-    version: str
-    url: str
-    checksum: str
-
-    @staticmethod
-    def from_dnf_package(pkg: dnf.package.Package, arch: Arch) -> "RpmPackage":
-        return RpmPackage(
-            arch=arch,
-            url=(url := pkg.remote_location()),
-            version=pkg.version,
-            name=basename(urlparse(url).path),
-            checksum=binascii.hexlify(pkg.chksum[1]).decode("utf-8"),
-        )
-
-
 _DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64]
 
 
@@ -157,8 +140,7 @@ class DotNetBCI(DevelopmentContainer):
 
     package_list: list[str | Package] | list[str] = field(default_factory=list)
 
-    _base: ClassVar[dnf.Base | None] = None
-    _sle_bci_base: ClassVar[dict[OsVersion, dict[Arch, dnf.Base]]] = {}
+    _base: ClassVar[RepoMDParser | None] = None
 
     _logger: ClassVar[logging.Logger] = LOGGER
 
@@ -215,10 +197,8 @@ class DotNetBCI(DevelopmentContainer):
             if isinstance(pkg, Package) and pkg.arch != arch:
                 continue
 
-            pkgs_for_arch = list(
-                DotNetBCI._base.sack.query()
-                .available()
-                .filter(name=pkg_name, latest=True, arch=str(arch))
+            pkgs_for_arch = DotNetBCI._base.query(
+                name=pkg_name, arch=str(arch), latest=True
             )
             self._logger.debug("Found package %s: %s", pkg_name, pkgs_for_arch)
             if len(pkgs_for_arch) != 1:
@@ -226,7 +206,7 @@ class DotNetBCI(DevelopmentContainer):
                     f"Repository contains {len(pkgs_for_arch)} packages with name='{pkg_name}' for {str(arch)}"
                 )
 
-            pkgs.append(RpmPackage.from_dnf_package(pkg=pkgs_for_arch[0], arch=arch))
+            pkgs.append(pkgs_for_arch[0])
 
         if isinstance(pkg, str):
             assert len(pkgs) == len(self.exclusive_arch), (
@@ -252,26 +232,25 @@ class DotNetBCI(DevelopmentContainer):
         assert self._base and self.exclusive_arch
         pkgs = []
         for arch in self.exclusive_arch:
-            pkgs_per_arch = list(
-                DotNetBCI._base.sack.query()
-                .available()
-                .filter(name="dotnet-host", arch=str(arch))
+            pkgs_per_arch = DotNetBCI._base.query(
+                name="dotnet-host", arch=str(arch), latest=False
             )
             matching_pkg = [
                 pkg
                 for pkg in pkgs_per_arch
-                if pkg.version[: len(str(self.tag_version))] == self.tag_version
+                if pkg.evr[1][: len(str(self.tag_version))] == self.tag_version
             ]
             self._logger.debug(
-                "found the following packages matching dotnet-host version %d: %s",
+                "found the following packages matching dotnet-host version %s: %s",
                 self.tag_version,
                 matching_pkg,
             )
             latest_pkg = sorted(
-                matching_pkg, key=cmp_to_key(lambda p1, p2: p1.evr_cmp(p2))
+                matching_pkg,
+                key=functools.cmp_to_key(lambda a, b: rpm.labelCompare(a.evr, b.evr)),
             )[-1]
             self._logger.debug("latest package versions: %s", latest_pkg)
-            pkgs.append(RpmPackage.from_dnf_package(latest_pkg, arch))
+            pkgs.append(latest_pkg)
 
         return pkgs
 
@@ -289,11 +268,13 @@ class DotNetBCI(DevelopmentContainer):
                 rpm_pkgs.extend(self._fetch_ordinary_package(pkg))
 
         for pkg in rpm_pkgs:
-            assert (
-                pkg.arch in self.exclusive_arch
-                and "/" not in pkg.name
-                and pkg.url.startswith(MS_REPO_BASEURL)
+            assert pkg.arch in str(self.exclusive_arch), (
+                f"arch {pkg.arch} not in {str(self.exclusive_arch)}"
             )
+
+            assert "/" not in pkg.name
+            assert pkg.url.startswith(MS_REPO_BASEURL)
+
         return rpm_pkgs
 
     def _guess_version_from_pkglist(self, pkg_list: list[RpmPackage]) -> str | None:
@@ -301,8 +282,8 @@ class DotNetBCI(DevelopmentContainer):
         versions: dict[Arch, str] = {}
         for arch in self.exclusive_arch:
             for pkg in pkg_list:
-                if "dotnet-runtime" in pkg.name and pkg.arch == arch:
-                    versions[arch] = pkg.version
+                if "dotnet-runtime" in pkg.name and pkg.arch == str(arch):
+                    versions[str(arch)] = pkg.evr[1]
         if not versions:
             return None
         elif len(versions) != len(self.exclusive_arch):
@@ -321,13 +302,8 @@ class DotNetBCI(DevelopmentContainer):
     def prepare_template(self) -> None:
         assert self.package_list
         if not DotNetBCI._base:
-            DotNetBCI._base = dnf.Base()
-            DotNetBCI._base.repos.add_new_repo(
-                repoid="packages-microsoft-com-prod",
-                conf=DotNetBCI._base.conf,
-                baseurl=(MS_REPO_BASEURL,),
-            )
-            DotNetBCI._base.fill_sack()
+            DotNetBCI._base = RepoMDParser()
+            DotNetBCI._base.parse(MS_REPO_BASEURL)
 
         pkgs = self._fetch_packages()
         self.version = self._guess_version_from_pkglist(pkgs)
