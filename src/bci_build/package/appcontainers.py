@@ -196,6 +196,7 @@ ALERTMANAGER_CONTAINERS = [
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         additional_versions=["%%alertmanager_minor_version%%"],
         version_in_uid=False,
+        is_singleton_image=True,
         entrypoint=["/usr/bin/prometheus-alertmanager"],
         replacements_via_service=[
             Replacement(
@@ -225,6 +226,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         additional_versions=["%%blackbox_exporter_minor_version%%"],
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
+        is_singleton_image=True,
         entrypoint=["/usr/bin/blackbox_exporter"],
         cmd=["--config.file=/etc/prometheus/blackbox.yml"],
         replacements_via_service=[
@@ -260,6 +262,7 @@ GRAFANA_CONTAINERS = [
         additional_versions=["%%grafana_minor_version%%", "%%grafana_major_version%%"],
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
+        is_singleton_image=True,
         entrypoint=["/run.sh"],
         extra_files=_GRAFANA_FILES,
         env={
