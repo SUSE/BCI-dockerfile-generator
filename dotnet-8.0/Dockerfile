@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-sdk:8.0.14-%RELEASE%
-#!BuildTag: bci/dotnet-sdk:8.0.14
+#!BuildTag: bci/dotnet-sdk:8.0.16-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:8.0.16
 #!BuildTag: bci/dotnet-sdk:8.0
 #!BuildName: bci-dotnet-sdk-8.0
 #!BuildVersion: 15.7.8.0
@@ -30,13 +30,13 @@ FROM bci/bci-base:15.7
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI .NET SDK 8.0"
 LABEL org.opencontainers.image.description="The .NET SDK 8.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="8.0.14"
+LABEL org.opencontainers.image.version="8.0.16"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="8.0.14-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:8.0.14-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="8.0.16-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:8.0.16-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-11-10"
@@ -44,32 +44,32 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 # telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.14-1.x86_64.rpm
-COPY dotnet-host-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.16-1.x86_64.rpm sha256:ebf3943dcb0e97f99a0ec5ec3b3ef01f6cef0a3c3ff984d1f6f8dc5e6c9f83b9
+COPY dotnet-host-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-targeting-pack-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-hostfxr-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-runtime-deps-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-runtime-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-apphost-pack-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-8.0-8.0.14-1.x86_64.rpm
-COPY aspnetcore-targeting-pack-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.14-1.x86_64.rpm
-COPY aspnetcore-runtime-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.407-1.x86_64.rpm
-COPY dotnet-sdk-8.0-8.0.407-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-8.0-8.0.16-1.x86_64.rpm sha256:de9ee99ae7125639f1c2004ab518fcc09e46d6425516f8bfe03261682843d44b
+COPY dotnet-targeting-pack-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.16-1.x86_64.rpm sha256:576d55478e891d68f54e47718f9b8b488a4761343ea9635a511f75cb40c77e15
+COPY dotnet-hostfxr-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.16-1.x86_64.rpm sha256:51121a570494f8ce758f544a54302f121d91f7b598c201dacff99e021a292c0c
+COPY dotnet-runtime-deps-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.16-1.x86_64.rpm sha256:66ba31f97f4861d2addef61d52b0dca0db485ba54400a6742f5a1b4773323a2e
+COPY dotnet-runtime-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-8.0-8.0.16-1.x86_64.rpm sha256:0558f12906fcb450385c8b69263b06bb499e628a1fad3b362c7b2772825791ff
+COPY dotnet-apphost-pack-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-8.0-8.0.16-1.x86_64.rpm sha256:77a3fdb658becb630f5bafc860d5d094638b2257e8c3e3b214b75b81b3c480f9
+COPY aspnetcore-targeting-pack-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-8.0-8.0.16-1.x86_64.rpm sha256:b5c98e8c29ecbd417108c7962920a1b04fafb202188470480b744a8ea6486b97
+COPY aspnetcore-runtime-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-8.0-8.0.409-1.x86_64.rpm sha256:c1912d274fec5c984904a1b43507cf78471116094f3a3a6ba4013bcf5f27636e
+COPY dotnet-sdk-8.0-8.0.409-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
