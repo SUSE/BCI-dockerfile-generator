@@ -20,13 +20,17 @@
 #!BuildTag: suse/kiosk/firefox-esr:esr
 #!BuildName: suse-kiosk-firefox-esr
 #!BuildVersion: 15.7
-FROM suse/sle15:15.7
+FROM bci/bci-micro:15.7 AS target
+FROM suse/sle15:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 MozillaFirefox-branding-SLE gconf2
-RUN set -euo pipefail; zypper -n clean -a; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 MozillaFirefox-branding-SLE gconf2
+RUN set -euo pipefail; useradd -m user -u 1000
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+FROM bci/bci-micro:15.7
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.firefox-esr
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -48,5 +52,8 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 CMD ["/bin/bash", "-c", "firefox --kiosk $URL"]
-RUN useradd -m user -u 1000
+
 ENV DISPLAY=":0"
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+COPY --from=builder /home/user /home/user
