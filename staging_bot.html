@@ -73,18 +73,63 @@ to branch the packages from the CR project
 project. Each package is created via <strong class="command">scratch-build-bot.py
 setup_obs_package</strong> which sets up the package to <code class="docutils literal notranslate"><span class="pre">scmsync</span></code> the contents from
 a subdirectory in the deployment branch.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">home:defolos:CR:${OS_VERSION}</span></code>: A test project, which has a project wide
-<code class="docutils literal notranslate"><span class="pre">scmsync</span></code> to the deployment branch. Therefore it will automatically pick up
-every new package without manual intervention and it will also use the correct
-<code class="docutils literal notranslate"><span class="pre">prjconf</span></code> via the <code class="file docutils literal notranslate"><span class="pre">_config</span></code> (this file is populated in
+<li><p><code class="docutils literal notranslate"><span class="pre">home:${OSC_USER}:CR:${OS_VERSION}</span></code>: A test project, which has a project
+wide <code class="docutils literal notranslate"><span class="pre">scmsync</span></code> to the deployment branch. Therefore it will automatically
+pick up every new package without manual intervention and it will also use the
+correct <code class="docutils literal notranslate"><span class="pre">prjconf</span></code> via the <code class="file docutils literal notranslate"><span class="pre">_config</span></code> (this file is populated in
 <a class="reference internal" href="api.html#staging.bot.StagingBot.write_all_image_build_recipes" title="staging.bot.StagingBot.write_all_image_build_recipes"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_all_image_build_recipes()</span></code></a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">home:defolos:Staging:${OS_VERSION}:${branch_name}-${random}</span></code>: The scratch
-build project created for each pull request against <code class="docutils literal notranslate"><span class="pre">main</span></code> by the staging
-bot in <a class="reference internal" href="api.html#staging.bot.StagingBot.scratch_build" title="staging.bot.StagingBot.scratch_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">scratch_build()</span></code></a></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">home:defolos:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}</span></code>:
+<li><p><code class="docutils literal notranslate"><span class="pre">home:${OSC_USER}:Staging:${OS_VERSION}:${branch_name}-${pr_num}</span></code>: The
+scratch build project created for each pull request against <code class="docutils literal notranslate"><span class="pre">main</span></code> by the
+staging bot in <a class="reference internal" href="api.html#staging.bot.StagingBot.scratch_build" title="staging.bot.StagingBot.scratch_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">scratch_build()</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">home:${OSC_USER}:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}</span></code>:
 projects created by OBS’ SCM CI from <code class="docutils literal notranslate"><span class="pre">home:defolos:CR:${OS_VERSION}</span></code> for
 every pull request against the deployment branches.</p></li>
 </ul>
+</section>
+<section id="secrets-credentials">
+<h2>Secrets/Credentials<a class="headerlink" href="#secrets-credentials" title="Link to this heading">¶</a></h2>
+<p>The CI currently requires the following credentials and access tokens to
+operate:</p>
+<section id="scm-token">
+<h3>SCM Token<a class="headerlink" href="#scm-token" title="Link to this heading">¶</a></h3>
+<p>An SCM access token is required to trigger the <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/settings/hooks/383133468">webhook</a>
+for updating the development and CR projects. Create such a GitHub Personal
+Access Token (PAT) following the guide in
+<a class="reference external" href="https://openbuildservice.org/help/manuals/obs-user-guide/cha-obs-scm-ci-workflow-integration#sec-obs-obs-scm-ci-workflow-integration-setup-token-authentication-how-to-authenticate-obs-with-scm">https://openbuildservice.org/help/manuals/obs-user-guide/cha-obs-scm-ci-workflow-integration#sec-obs-obs-scm-ci-workflow-integration-setup-token-authentication-how-to-authenticate-obs-with-scm</a>
+The personal access token is then used to create a SCM token on OBS as follows:</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">osc token --create --operation workflow --scm-token $PAT</span>
+</pre></div>
+</div>
+<p>OBS will respond with an xml response as the following:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;status</span><span class="w"> </span><span class="na">code=</span><span class="s">&quot;ok&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;summary&gt;</span>Ok<span class="nt">&lt;/summary&gt;</span>
+<span class="w">    </span><span class="nt">&lt;data</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;token&quot;</span><span class="nt">&gt;</span>$SECRET<span class="nt">&lt;/data&gt;</span>
+<span class="w">    </span><span class="nt">&lt;data</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;id&quot;</span><span class="nt">&gt;</span>$ID<span class="nt">&lt;/data&gt;</span>
+<span class="nt">&lt;/status&gt;</span>
+</pre></div>
+</div>
+<p>The token value <code class="docutils literal notranslate"><span class="pre">$SECRET</span></code> is the webhook secret and the id <code class="docutils literal notranslate"><span class="pre">$ID</span></code> is the
+query parameter <code class="docutils literal notranslate"><span class="pre">id</span></code> in the Payload URL.</p>
+</section>
+<section id="staging-bot-account">
+<h3>Staging Bot Account<a class="headerlink" href="#staging-bot-account" title="Link to this heading">¶</a></h3>
+<p>Some actions on OBS cannot be triggered by the SCM integration, so we have to
+resort to use a less privileged account for this. The username is defined via
+the environment variable <code class="docutils literal notranslate"><span class="pre">OSC_USER</span></code> in the github actions yaml and the
+accompanying password is set in the secret <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/OSC_PASSWORD">OSC_PASSWORD</a>.</p>
+</section>
+<section id="repository-access-tokens">
+<h3>Repository Access Tokens<a class="headerlink" href="#repository-access-tokens" title="Link to this heading">¶</a></h3>
+<p>Two access tokens are required</p>
+<ul class="simple">
+<li><p>The <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/PAT">PAT</a>
+secret is a personal access token with the <code class="docutils literal notranslate"><span class="pre">repo:public_repo</span></code> scope. It is
+required to update comments triggered from slash-commands.</p></li>
+<li><p>The <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/CHECKOUT_TOKEN">CHECKOUT_TOKEN</a>
+secret is a personal access token with the <code class="docutils literal notranslate"><span class="pre">repo</span></code> and <code class="docutils literal notranslate"><span class="pre">workflow</span></code>
+scopes. It is required to trigger mutable actions from slash-commands.</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -119,6 +164,7 @@ every pull request against the deployment branches.</p></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Staging Bot</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#branch-setup">Branch setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#project-setup">Project Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#secrets-credentials">Secrets/Credentials</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
