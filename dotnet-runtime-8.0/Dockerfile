@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-runtime:8.0.14-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:8.0.14
+#!BuildTag: bci/dotnet-runtime:8.0.16-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:8.0.16
 #!BuildTag: bci/dotnet-runtime:8.0
 #!BuildName: bci-dotnet-runtime-8.0
 #!BuildVersion: 15.6.8.0
@@ -31,13 +31,13 @@ FROM registry.suse.com/bci/bci-base:15.6
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 8.0"
 LABEL org.opencontainers.image.description="The .NET Runtime 8.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="8.0.14"
+LABEL org.opencontainers.image.version="8.0.16"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="8.0.14-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:8.0.14-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="8.0.16-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:8.0.16-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-11-10"
@@ -47,19 +47,19 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.14-1.x86_64.rpm
-COPY dotnet-host-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-hostfxr-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-runtime-deps-8.0-8.0.14-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.14-1.x86_64.rpm
-COPY dotnet-runtime-8.0-8.0.14-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.16-1.x86_64.rpm sha256:ebf3943dcb0e97f99a0ec5ec3b3ef01f6cef0a3c3ff984d1f6f8dc5e6c9f83b9
+COPY dotnet-host-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.16-1.x86_64.rpm sha256:576d55478e891d68f54e47718f9b8b488a4761343ea9635a511f75cb40c77e15
+COPY dotnet-hostfxr-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.16-1.x86_64.rpm sha256:51121a570494f8ce758f544a54302f121d91f7b598c201dacff99e021a292c0c
+COPY dotnet-runtime-deps-8.0-8.0.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.16-1.x86_64.rpm sha256:66ba31f97f4861d2addef61d52b0dca0db485ba54400a6742f5a1b4773323a2e
+COPY dotnet-runtime-8.0-8.0.16-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -78,7 +78,7 @@ RUN rm -rf /tmp/* && zypper clean && rm -rf {/target,}/var/log/{alternatives.log
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=8.0.14
+ENV DOTNET_VERSION=8.0.16
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
