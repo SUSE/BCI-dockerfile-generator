@@ -20,7 +20,7 @@
 #!BuildTag: suse/grafana:%%grafana_minor_version%%
 #!BuildTag: suse/grafana:%%grafana_major_version%%
 #!BuildTag: suse/grafana:latest
-#!BuildName: suse-grafana-%%grafana_patch_version%%
+#!BuildName: suse-grafana
 #!BuildVersion: 15.6
 #!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
