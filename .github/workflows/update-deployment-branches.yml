@@ -76,7 +76,7 @@ jobs:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
 
       - name: create a pull request
-        uses: vsoch/pull-request-action@master
+        uses: vsoch/pull-request-action@77b3eea5c721545c56f775e1ed4ff9c9c1386148 # master
         id: create-pr
         env:
           GITHUB_TOKEN: ${{ secrets.CHECKOUT_TOKEN }}
