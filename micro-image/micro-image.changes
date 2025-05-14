@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 14 13:33:11 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use singleton buildnames to have stable aggregate names
+
+-------------------------------------------------------------------
 Tue May  6 11:22:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid double slash in readme url
