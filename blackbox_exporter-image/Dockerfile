@@ -18,7 +18,7 @@
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_patch_version%%-%RELEASE%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_patch_version%%
 #!BuildTag: suse/blackbox_exporter:%%blackbox_exporter_minor_version%%
-#!BuildName: suse-blackbox_exporter-%%blackbox_exporter_patch_version%%
+#!BuildName: suse-blackbox_exporter
 #!BuildVersion: 15.7
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder

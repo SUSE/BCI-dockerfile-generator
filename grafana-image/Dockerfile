@@ -19,7 +19,7 @@
 #!BuildTag: suse/grafana:%%grafana_patch_version%%
 #!BuildTag: suse/grafana:%%grafana_minor_version%%
 #!BuildTag: suse/grafana:%%grafana_major_version%%
-#!BuildName: suse-grafana-%%grafana_patch_version%%
+#!BuildName: suse-grafana
 #!BuildVersion: 15.7
 FROM bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
