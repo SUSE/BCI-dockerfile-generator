@@ -60,6 +60,8 @@ COPY pmcd pmlogger /etc/sysconfig/
 # This can be removed after the pcp dependency on sysconfig is removed
 RUN set -euo pipefail; systemctl disable wicked wickedd || :
 
+RUN set -euo pipefail; useradd --comment "PCP Quality Assurance"     --create-home --home-dir /var/lib/pcp/testsuite     --shell /bin/bash     --uid 496         pcpqa
+
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3     CMD /usr/local/bin/healthcheck
 
 VOLUME /var/log/pcp/pmlogger
