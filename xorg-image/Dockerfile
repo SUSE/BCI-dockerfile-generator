@@ -23,13 +23,21 @@
 #!BuildName: suse-kiosk-xorg
 #!BuildVersion: 15.6.21
 #!BuildRelease: 35
-FROM registry.suse.com/bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-micro:15.6 AS target
+FROM suse/sle15:15.6 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools
-RUN set -euo pipefail; zypper -n clean -a; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools
+# sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' xorg-x11-server | \
+    cut -d '.' -f -1)" = "21" ]
+RUN useradd -m user -u 1000
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+FROM registry.suse.com/bci/bci-micro:15.6
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.xorg
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -53,11 +61,10 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-# sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm -q --qf '%{version}' xorg-x11-server | \
-    cut -d '.' -f -1)" = "21" ]
-RUN useradd -m user -u 1000
+
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+COPY --from=builder /home/user /home/user
 COPY preferences /etc/icewm/preferences
 COPY xinitrc /etc/X11/xinit/xinitrc
 COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
