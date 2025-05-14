@@ -1,6 +1,8 @@
 FileProvides: /bin/login util-linux
 FileProvides: /usr/bin/perl perl-base
 FileProvides: /usr/bin/sed sed
+FileProvides: /usr/bin/find findutils
+
 Prefer: -libcontainers-openSUSE-policy
 
 %if "%_repository" == "images"

@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-aspnet:9.0.4-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:9.0.4
+#!BuildTag: bci/dotnet-aspnet:9.0.5-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:9.0.5
 #!BuildTag: bci/dotnet-aspnet:9.0
 #!BuildTag: bci/dotnet-aspnet:latest
 #!BuildName: bci-dotnet-aspnet-9.0
@@ -32,13 +32,13 @@ FROM registry.suse.com/bci/bci-base:15.6
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI ASP.NET Core Runtime 9.0"
 LABEL org.opencontainers.image.description="The ASP.NET Core Runtime 9.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="9.0.4"
+LABEL org.opencontainers.image.version="9.0.5"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="9.0.4-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.4-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="9.0.5-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.5-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-05-12"
@@ -53,16 +53,16 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.4-1.x86_64.rpm
-COPY dotnet-host-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.4-1.x86_64.rpm
-COPY dotnet-hostfxr-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.4-1.x86_64.rpm
-COPY dotnet-runtime-deps-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.4-1.x86_64.rpm
-COPY dotnet-runtime-9.0-9.0.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.4-1.x86_64.rpm
-COPY aspnetcore-runtime-9.0-9.0.4-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.5-1.x86_64.rpm sha256:b349852baa70f1dfd1b492d1dc27e6ac194265be7b8aeef89d485673d4876a24
+COPY dotnet-host-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.5-1.x86_64.rpm sha256:7936068c3c29673068b65b31bd694ff8089cc4a08617865135015d6ad67d842a
+COPY dotnet-hostfxr-9.0-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.5-1.x86_64.rpm sha256:519129ef6fe1b8de3870e2a3dbdbcfba428507a51d06dde0746549ffce3d62e0
+COPY dotnet-runtime-deps-9.0-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.5-1.x86_64.rpm sha256:4626222c5b7871d007039438c434b26a71c467a439b513d83d48c6a7d965f196
+COPY dotnet-runtime-9.0-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.5-1.x86_64.rpm sha256:60544d618e7c44ab906a7c7cd4e5cb05eb561acf97b2ec473458d2efd44605b6
+COPY aspnetcore-runtime-9.0-9.0.5-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -81,7 +81,7 @@ RUN rm -rf /tmp/* && zypper clean && rm -rf {/target,}/var/log/{alternatives.log
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=9.0.4
+ENV DOTNET_VERSION=9.0.5
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
