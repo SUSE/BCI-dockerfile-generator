@@ -512,7 +512,9 @@ jobs:
           cat test-build.env >> $GITHUB_ENV
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: '"""
+            + self.osc_username
+            + """'
 
       - uses: JasonEtco/create-an-issue@v2
         env:
