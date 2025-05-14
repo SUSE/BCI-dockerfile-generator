@@ -5,7 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
+# Supposedly dependabot breaks when using Poetry 2.
+#  - package-ecosystem: "pip"
+#    directory: "/"
+#    schedule:
+#      interval: "daily"
