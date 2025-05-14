@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 14 09:48:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- preallocate users with fixed uids
+
+-------------------------------------------------------------------
 Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid double slash in readme url
