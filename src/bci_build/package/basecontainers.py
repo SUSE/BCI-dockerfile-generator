@@ -45,6 +45,10 @@ MICRO_CONTAINERS = [
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=(
+            # preserve backwards compatibility on already released distributions
+            not os_version.is_sle15
+        ),
         pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
         custom_description="A micro environment for containers {based_on_container}.",
         from_target_image="scratch",
@@ -243,6 +247,10 @@ FIPS_MICRO_CONTAINERS = [
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_singleton_image=(
+            # preserve backwards compatibility on already released distributions
+            not os_version.is_sle15
+        ),
         pretty_name=f"{_get_fips_pretty_name(os_version)} Micro",
         custom_description="A FIPS enforcing micro environment for containers {based_on_container}.",
         from_target_image="scratch",
