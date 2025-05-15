@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 11:56:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- explicitly install rpm-ndb to avoid dependency-resolution pulling in rpm
+
+-------------------------------------------------------------------
 Wed May 14 15:50:34 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to multistage build
