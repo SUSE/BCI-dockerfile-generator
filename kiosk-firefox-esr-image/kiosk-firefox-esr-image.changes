@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 07:59:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- install ffmpeg for video support
+
+-------------------------------------------------------------------
 Wed May 14 15:50:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to multistage build
