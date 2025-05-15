@@ -53,8 +53,8 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.5-1.x86_64.rpm sha256:b349852baa70f1dfd1b492d1dc27e6ac194265be7b8aeef89d485673d4876a24
-COPY dotnet-host-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.4-1.x86_64.rpm sha256:e4df25e571da446ac70acf2525081bed1cf15490e81f92e581e97dd66973ccc6
+COPY dotnet-host-9.0.4-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.5-1.x86_64.rpm sha256:7936068c3c29673068b65b31bd694ff8089cc4a08617865135015d6ad67d842a
 COPY dotnet-hostfxr-9.0-9.0.5-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.5-1.x86_64.rpm sha256:519129ef6fe1b8de3870e2a3dbdbcfba428507a51d06dde0746549ffce3d62e0

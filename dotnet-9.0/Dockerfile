@@ -54,8 +54,8 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.5-1.x86_64.rpm sha256:b349852baa70f1dfd1b492d1dc27e6ac194265be7b8aeef89d485673d4876a24
-COPY dotnet-host-9.0.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.4-1.x86_64.rpm sha256:e4df25e571da446ac70acf2525081bed1cf15490e81f92e581e97dd66973ccc6
+COPY dotnet-host-9.0.4-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-9.0-9.0.5-1.x86_64.rpm sha256:124910e8a2fce6b31d7f023aa11875baa84c89ee90022b7de7426b50b3382ec8
