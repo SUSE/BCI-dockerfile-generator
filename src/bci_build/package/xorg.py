@@ -61,7 +61,9 @@ XORG_CONTAINERS = [
             "sysvinit-tools",
         ]
         # FIXME: unavailable on SLES
-        + (["xsession"] if os_version.is_tumbleweed else []),
+        + (["xsession"] if os_version.is_tumbleweed else [])
+        # workaround xf86-input-evdev pulling udev/kmod/rpm
+        + (["rpm-ndb"] if os_version.is_sle15 else []),
         replacements_via_service=[
             Replacement(
                 xorg_server_re,
