@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 12:49:27 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- align version number with the kiwi based containers
+
+-------------------------------------------------------------------
 Thu May  8 08:26:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update buildrelease counter for the kiwi to containerfile switch
