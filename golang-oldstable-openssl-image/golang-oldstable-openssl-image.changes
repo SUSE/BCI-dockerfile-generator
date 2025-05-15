@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 09:31:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- go1.24-openssl for stable, go1.23-openssl for oldstable
+
+-------------------------------------------------------------------
 Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid double slash in readme url
