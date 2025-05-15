@@ -19,7 +19,7 @@
 #!BuildTag: bci/golang:stable-openssl
 #!BuildTag: bci/golang:%%golang_version%%-openssl-%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%-openssl
-#!BuildTag: bci/golang:1.23-openssl
+#!BuildTag: bci/golang:1.24-openssl
 #!BuildTag: bci/golang:latest
 #!BuildName: bci-golang-stable-openssl
 #!BuildVersion: 15.6
@@ -27,15 +27,15 @@
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.23-openssl go1.23-openssl-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools
+    zypper -n install --no-recommends go1.24-openssl go1.24-openssl-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Go 1.23-openssl development"
-LABEL org.opencontainers.image.description="Go 1.23-openssl development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Go 1.24-openssl development"
+LABEL org.opencontainers.image.description="Go 1.24-openssl development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%golang_version%%-openssl"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -59,7 +59,7 @@ ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin
 
 # only available on go's tsan_arch architectures
 #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.23-openssl-race; then zypper -n clean; fi
+RUN set -euo pipefail; if zypper -n install go1.24-openssl-race; then zypper -n clean; fi
 RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
 RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 WORKDIR /go
