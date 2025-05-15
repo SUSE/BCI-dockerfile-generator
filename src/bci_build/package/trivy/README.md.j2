@@ -1,0 +1,25 @@
+# {{ image.title }}: Trivy application container
+{% include 'badges.j2' %}
+
+
+## Description
+
+Trivy is a comprehensive and versatile security scanner. Trivy has scanners
+that look for security issues, and targets where it can find those issues.
+
+
+## Usage
+
+This container provides the {{ image.publish_registry.vendor }} version of Trivy.
+
+Example of using the Trivy container:
+
+```ShellSession
+$ podman run {{ image.pretty_reference }} image {{ image.pretty_reference }}
+```
+
+For more use cases and documentation, refer to the
+[Trivy documentation](https://trivy.dev/latest/docs).
+
+
+{% include 'licensing_and_eula.j2' %}

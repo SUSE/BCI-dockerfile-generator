@@ -406,35 +406,3 @@ REGISTRY_CONTAINERS = [
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
-
-
-TRIVY_CONTAINERS = [
-    ApplicationStackContainer(
-        name="trivy",
-        pretty_name="Container Vulnerability Scanner",
-        from_image=generate_from_image_tag(os_version, "bci-micro"),
-        os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        version="%%trivy_version%%",
-        version_in_uid=False,
-        replacements_via_service=[
-            Replacement(
-                regex_in_build_description="%%trivy_version%%",
-                package_name="trivy",
-                parse_version=ParseVersion.MINOR,
-            )
-        ],
-        license="Apache-2.0",
-        package_list=[
-            Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
-                "ca-certificates-mozilla",
-                "trivy",
-            )
-        ],
-        entrypoint=["/usr/bin/trivy"],
-        cmd=["help"],
-        build_recipe_type=BuildType.KIWI,
-    )
-    for os_version in (OsVersion.TUMBLEWEED,)
-]
