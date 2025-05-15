@@ -24,17 +24,17 @@ jobs:
             ~/.local/bin
             ~/.local/share/pipx
             ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
       - run: |
           pipx install poetry && poetry install
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - name: Run ruff format
-        run: poetry run ruff format --check --diff
+        run: ~/.local/bin/poetry run ruff format --check --diff
 
       - name: run ruff linter
-        run: poetry run ruff check
+        run: ~/.local/bin/poetry run ruff check
 
   ci:
     name: Run the unit tests
@@ -56,7 +56,7 @@ jobs:
             ~/.local/bin
             ~/.local/share/pipx
             ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
@@ -66,12 +66,12 @@ jobs:
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - run:
-          poetry run pytest -vv
+          ~/.local/bin/poetry run pytest -vv
 
       - run: |
           mkdir -p pkg_dest
           for pkg in $(poetry run package --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
-              poetry run package $pkg pkg_dest
+              ~/.local/bin/poetry run package $pkg pkg_dest
           done
 
 
@@ -88,7 +88,7 @@ jobs:
             ~/.local/bin
             ~/.local/share/pipx
             ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
       - run: |
           pipx install poetry && poetry install --no-interaction --no-root
