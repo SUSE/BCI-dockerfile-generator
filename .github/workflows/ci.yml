@@ -32,6 +32,14 @@ jobs:
       - run: pipx install poetry && poetry install
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
+      - run: |
+          ls -l ~/.local/bin
+          ls -l ~/.local/share/pipx
+          ls -l  ~/.cache/pypoetry/virtualenvs
+          echo "PATH: $PATH"
+          echo "GITHUB_PATH: $GITHUB_PATH"
+          echo "GITHUB_PATH: $(<$GITHUB_PATH)"
+
       - name: Run ruff format
         run: poetry run ruff format --check --diff
 
