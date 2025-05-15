@@ -28,7 +28,7 @@ FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools rpm-ndb
 # sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' xorg-x11-server | \
