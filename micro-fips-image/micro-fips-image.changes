@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 12:20:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set 16.0.0 as base container version
+
+-------------------------------------------------------------------
 Wed May 14 13:33:11 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use singleton buildnames to have stable aggregate names

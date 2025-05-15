@@ -19,7 +19,7 @@
 #!BuildTag: bci/bci-slm60-kernel-module-devel:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-slm60-kernel-module-devel:latest
 #!BuildName: bci-bci-slm60-kernel-module-devel-%OS_VERSION_ID_SP%
-#!BuildVersion: 16.0
+#!BuildVersion: 16.0.0
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
