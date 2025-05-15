@@ -19,7 +19,8 @@
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 #!BuildTag: bci/bci-init:latest
 #!BuildName: bci-bci-init-%OS_VERSION_ID_SP%
-#!BuildVersion: 15.6
+#!BuildVersion: 15.6.0
+#!BuildRelease: 40
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
