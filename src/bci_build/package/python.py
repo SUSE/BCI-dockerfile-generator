@@ -9,7 +9,9 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
+from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package.helpers import generate_from_image_tag
 
 _PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
@@ -35,8 +37,12 @@ class PythonDevelopmentContainer(DevelopmentContainer):
     has_wheel: bool = False
 
 
+def _system_python(os_version: OsVersion) -> _PYTHON_VERSIONS:
+    return "3.6" if os_version.is_sle15 else "3.13"
+
+
 def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
-    is_system_py: bool = py3_ver == ("3.6" if os_version.is_sle15 else "3.13")
+    is_system_py: bool = py3_ver == _system_python(os_version)
     py3_ver_nodots = py3_ver.replace(".", "")
 
     py3 = (
@@ -158,4 +164,44 @@ PYTHON_3_13_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
     for os_version in (OsVersion.SP7,)
+]
+
+_CI_PYTHON = ("3.13", "313")
+
+
+BCI_CI_CONTAINERS = [
+    DevelopmentContainer(
+        name="bci-ci",
+        pretty_name="BCI-internal CI",
+        version=(python_ver := "%%python_version%%"),
+        tag_version="3",
+        is_singleton_image=True,
+        version_in_uid=False,
+        os_version=os_version,
+        from_image=generate_from_image_tag(os_version, "python"),
+        is_latest=True,
+        support_level=SupportLevel.UNSUPPORTED,
+        package_list=(
+            "buildah",
+            "dnf",
+            "fish",
+            "gcc",
+            "git-core",
+            "jq",
+            "osc",
+            "python3-devel",
+            "python3-dnf",
+            "python3-pipx",
+            "python3-poetry",
+        ),
+        replacements_via_service=[
+            Replacement(
+                regex_in_build_description=python_ver,
+                package_name="python313-base",
+                parse_version=ParseVersion.PATCH,
+            )
+            for ver in (ParseVersion.MAJOR, ParseVersion.MINOR)
+        ],
+    )
+    for os_version in (OsVersion.TUMBLEWEED,)
 ]
