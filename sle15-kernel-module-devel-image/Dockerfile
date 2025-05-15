@@ -18,7 +18,7 @@
 #!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-sle15-kernel-module-devel:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-sle15-kernel-module-devel-%OS_VERSION_ID_SP%
-#!BuildVersion: 15.7
+#!BuildVersion: 15.7.0
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
