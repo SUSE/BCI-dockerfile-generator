@@ -109,7 +109,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>15.6.0</version>
+    <version>15.6.27</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -158,8 +158,8 @@ RUN zypper -n clean -a; \\
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Test"
-LABEL org.opencontainers.image.description="Test container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI DevelopmentContainer Test"
+LABEL org.opencontainers.image.description="DevelopmentContainer Test container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%emacs_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -187,7 +187,7 @@ Copyright header
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE BCI Test Container Image</specification>
+    <specification>SLE BCI DevelopmentContainer Test Container Image</specification>
   </description>
   <preferences>
     <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
@@ -198,8 +198,8 @@ Copyright header
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.test">
             <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
-            <label name="org.opencontainers.image.title" value="SLE BCI Test"/>
-            <label name="org.opencontainers.image.description" value="Test container based on the SLE Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="SLE BCI DevelopmentContainer Test"/>
+            <label name="org.opencontainers.image.description" value="DevelopmentContainer Test container based on the SLE Base Container Image."/>
             <label name="org.opencontainers.image.version" value="%%emacs_ver%%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="SUSE LLC"/>
@@ -217,7 +217,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>15.7.0</version>
+    <version>15.7</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -232,7 +232,7 @@ Copyright header
 </image>""",
             DevelopmentContainer(
                 name="test",
-                pretty_name="Test",
+                pretty_name="DevelopmentContainer Test",
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 stability_tag="stable",
@@ -325,7 +325,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>15.6.0</version>
+    <version>15.6.29</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -374,8 +374,8 @@ RUN zypper -n clean -a; \\
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.test
 LABEL org.opencontainers.image.authors="invalid@suse.com"
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Test"
-LABEL org.opencontainers.image.description="Test container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Tumbleweed Emacs"
+LABEL org.opencontainers.image.description="Tumbleweed Emacs container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="28.2"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -407,11 +407,11 @@ Copyright header
 <!-- OBS-ExclusiveArch: x86_64 s390x -->
 <!-- OBS-Imagerepo: obsrepositories:/ -->
 
-<image schemaversion="7.4" name="test-28.2-image" xmlns:suse_label_helper="com.suse.label_helper">
+<image schemaversion="7.4" name="test-28-image" xmlns:suse_label_helper="com.suse.label_helper">
   <description type="system">
     <author>openSUSE Project</author>
     <contact>https://www.suse.com/</contact>
-    <specification>openSUSE Tumbleweed BCI Test Container Image</specification>
+    <specification>openSUSE Tumbleweed BCI Tumbleweed Emacs Container Image</specification>
   </description>
   <preferences>
     <type image="docker" derived_from="obsrepositories:/suse/base#18">
@@ -422,8 +422,8 @@ Copyright header
         <labels>
           <suse_label_helper:add_prefix prefix="org.opensuse.bci.test">
             <label name="org.opencontainers.image.authors" value="invalid@suse.com"/>
-            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Test"/>
-            <label name="org.opencontainers.image.description" value="Test container based on the openSUSE Tumbleweed Base Container Image."/>
+            <label name="org.opencontainers.image.title" value="openSUSE Tumbleweed BCI Tumbleweed Emacs"/>
+            <label name="org.opencontainers.image.description" value="Tumbleweed Emacs container based on the openSUSE Tumbleweed Base Container Image."/>
             <label name="org.opencontainers.image.version" value="28.2"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
             <label name="org.opencontainers.image.vendor" value="openSUSE Project"/>
@@ -457,7 +457,7 @@ Copyright header
 
       </containerconfig>
     </type>
-    <version>__CURRENT_YEAR__</version>
+    <version>2025.0.28</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -473,7 +473,7 @@ Copyright header
             DevelopmentContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",
-                pretty_name="Test",
+                pretty_name="Tumbleweed Emacs",
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 os_version=OsVersion.TUMBLEWEED,
@@ -489,8 +489,8 @@ Copyright header
                 exposes_ports=[TCP(22), TCP(1111)],
                 license="BSD",
                 version="28.2",
+                tag_version="28",
                 additional_names=["emacs"],
-                additional_versions=["28"],
                 extra_labels={"emacs_version": "28", "GCC_version": "15"},
                 env={"EMACS_VERSION": 28, "GPP_path": "/usr/bin/g++"},
                 custom_end="""RUN emacs -Q --batch""",
@@ -501,6 +501,7 @@ Copyright header
 def test_build_recipe_templates(
     dockerfile: str, kiwi_xml: str, image: DevelopmentContainer
 ) -> None:
+    image.build_recipe_type = BuildType.DOCKER
     assert (
         DOCKERFILE_TEMPLATE.render(
             DOCKERFILE_RUN="RUN",
@@ -510,6 +511,7 @@ def test_build_recipe_templates(
         )
         == dockerfile
     )
+    image.build_recipe_type = BuildType.KIWI
     assert KIWI_TEMPLATE.render(image=image, INFOHEADER="Copyright header") == kiwi_xml
 
 
@@ -556,7 +558,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>__CURRENT_YEAR__</version>
+    <version>__CURRENT_YEAR__.0.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>

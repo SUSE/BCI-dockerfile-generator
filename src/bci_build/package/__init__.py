@@ -402,10 +402,41 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_version(self) -> str | None:
-        if self.os_version.is_sle15:
+        """Define the BuildVersion that is used for determining which container build
+        is newer than the other in the build service."""
+        # KIWI used to require an at least 3 component version X.Y.Z. For SLE, we set
+        # X.Y to MAJOR.MINOR and set Z to 0 for OsContainers. Derived
+        # containers inhert the base build_version X.Y and append a suffix .Z.ZZ
+
+        # It is important that the behavior for OsContainers is identical
+        # between KIWI and Dockerfile builds so that we can switch between these
+        # types.
+
+        # TODO: also set it for non-kiwi type (historically we haven't done so)
+        if self.os_version.is_tumbleweed and self.build_recipe_type == BuildType.KIWI:
+            if isinstance(self, OsContainer):
+                return f"{str(datetime.datetime.now().year)}.0.0"
+            return f"{str(datetime.datetime.now().year)}.0"
+        elif self.os_version.is_sle15:
+            if isinstance(self, OsContainer):
+                return f"15.{int(self.os_version.value)}.0"
             return f"15.{int(self.os_version.value)}"
-        if self.os_version.is_sl16:
+        elif self.os_version.is_sl16:
+            if isinstance(self, OsContainer):
+                return f"{str(self.os_version.value)}.0"
             return str(self.os_version.value)
+        return None
+
+    @property
+    def kiwi_version(self) -> str | None:
+        """Return a BuildVersion that is compatible with the requirements that KIWI imposes.
+        https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
+
+        It a version strictly in the format X.Y.Z.
+        """
+        build_ver: str | None = self.build_version
+        if build_ver:
+            return ".".join(build_ver.split(".")[:3])
         return None
 
     @property
@@ -1027,12 +1058,6 @@ exit 0
             + "."
             + (self.custom_labelprefix_end or self.name)
         )
-
-    @property
-    def kiwi_version(self) -> str:
-        if self.os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
-            return str(datetime.datetime.now().year)
-        return f"15.{int(self.os_version.value)}.0"
 
     @property
     def kiwi_additional_tags(self) -> str | None:

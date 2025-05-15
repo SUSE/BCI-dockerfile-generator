@@ -54,7 +54,7 @@ MICRO_CONTAINERS = [
         from_target_image="scratch",
         cmd=["/bin/sh"],
         package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
-        _min_release_counter=35,  # be newer than the newest kiwi based image on SP6
+        _min_release_counter=41,  # be newer than the newest kiwi based image on SP6
         build_stage_custom_end=(
             (
                 f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
