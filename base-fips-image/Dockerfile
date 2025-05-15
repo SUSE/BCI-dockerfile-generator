@@ -18,7 +18,7 @@
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-base-fips
-#!BuildVersion: 15.7
+#!BuildVersion: 15.7.0
 FROM bci/bci-base:15.7
 
 RUN set -euo pipefail; \
