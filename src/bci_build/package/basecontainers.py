@@ -82,6 +82,7 @@ INIT_CONTAINERS = [
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=["systemd", "gzip", *os_version.release_package_names],
+        _min_release_counter=40,
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             os_version not in (OsVersion.SP6, OsVersion.TUMBLEWEED)
@@ -381,6 +382,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             pretty_name=f"{pretty_prefix} Kernel module development",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
+            _min_release_counter=40,
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             package_list=(
