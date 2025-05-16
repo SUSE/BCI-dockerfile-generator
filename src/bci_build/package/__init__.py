@@ -965,14 +965,7 @@ exit 0
 
     @property
     def readme_url(self) -> str:
-        # we cannot use %SOURCEURL% for Tumbleweed, as it points directly to OBS
-        # with a url like:
-        # https://build.opensuse.org/package/show/openSUSE:Factory/ruby-3.2-image?rev=2bf407f529a768e95f024bce5a916c69
-        # to point to the README, we'd have to inject something *before* the query
-        if self.os_version.is_tumbleweed:
-            return f"https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/{self.os_version.deployment_branch_name}/{self.readme_path}"
-
-        return f"%SOURCEURL%{self.readme_name}"
+        return f"%SOURCEURL_WITH({self.readme_name})%"
 
     @property
     def readme(self) -> str:
