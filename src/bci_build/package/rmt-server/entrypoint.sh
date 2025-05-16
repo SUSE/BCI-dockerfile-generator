@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# PV could be empty, make sure the directories exist
+mkdir -p /var/lib/rmt/public/repo
+mkdir -p /var/lib/rmt/public/suma
+mkdir -p /var/lib/rmt/regsharing
+mkdir -p /var/lib/rmt/tmp
+# Set permissions
+chown -R _rmt:nginx /var/lib/rmt
+
 if [ -z "${MYSQL_HOST}" ]; then
 	echo "MYSQL_HOST not set!"
 	exit 1
