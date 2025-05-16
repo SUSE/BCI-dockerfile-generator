@@ -147,8 +147,8 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildName: bci-test-stable
-#!BuildVersion: 15.7
-FROM bci/bci-base:15.7
+#!BuildVersion: 16.0
+FROM bci/bci-base:16.0
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
@@ -170,7 +170,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEAS
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
@@ -190,7 +190,7 @@ Copyright header
     <specification>SLE BCI DevelopmentContainer Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#16.0">
       <containerconfig
           name="bci/test"
           tag="stable-1.%RELEASE%"
@@ -211,13 +211,13 @@ Copyright header
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="beta"/>
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%README.md"/>
         </labels>
       </containerconfig>
     </type>
-    <version>15.7</version>
+    <version>16.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -236,7 +236,7 @@ Copyright header
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 stability_tag="stable",
-                os_version=OsVersion.SP7,
+                os_version=OsVersion.SLE16_0,
                 version="%%emacs_ver%%",
             ),
         ),
