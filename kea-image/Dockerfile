@@ -19,7 +19,7 @@
 #!BuildTag: suse/kea:2.6
 #!BuildName: suse-kea-2.6
 #!BuildVersion: 15.7.2.6
-FROM suse/sle15:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kea util-linux
@@ -42,8 +42,10 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL run="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v /etc/kea:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
 LABEL runcwd="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v .:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"

@@ -23,7 +23,7 @@
 #!BuildTag: bci/node:22
 #!BuildName: bci-nodejs-22
 #!BuildVersion: 15.7.22
-FROM bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends nodejs22 npm22 update-alternatives curl findutils gawk git-core procps
@@ -43,11 +43,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%nodejs_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/nodejs:%%nodejs_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2027-04-30"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENV NODE_VERSION="22"

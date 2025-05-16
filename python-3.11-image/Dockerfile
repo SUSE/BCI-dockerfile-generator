@@ -21,7 +21,7 @@
 #!BuildTag: bci/python:3
 #!BuildName: bci-python-3.11
 #!BuildVersion: 15.7.3.11
-FROM bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends python311-devel python311 python311-pip curl findutils gawk git-core procps python311-wheel python311-pipx lifecycle-data-sle-module-python3 lifecycle-data-sle-module-development-tools
@@ -41,12 +41,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%py311_ver%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/python:%%py311_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2029-12-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENV PYTHON_VERSION="%%py311_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
