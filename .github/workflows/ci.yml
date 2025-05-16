@@ -14,16 +14,31 @@ jobs:
   format:
     name: Ensure code is properly formatted
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ hashFiles('poetry.lock') }}
 
-      - run: poetry install
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/cache@v4
+        id: cache-deps
+        with:
+          path: |
+            ~/.local/bin
+            ~/.local/share/pipx
+            ~/.cache/pypoetry/virtualenvs
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+
+      - run: pipx install poetry && poetry install
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+
+      - run: |
+          ls -l ~/.local/bin
+          ls -l ~/.local/share/pipx
+          ls -l  ~/.cache/pypoetry/virtualenvs
+          echo "PATH: $PATH"
+          echo "GITHUB_PATH: $GITHUB_PATH"
+          echo "GITHUB_PATH: $(<$GITHUB_PATH)"
 
       - name: Run ruff format
         run: poetry run ruff format --check --diff
@@ -34,7 +49,6 @@ jobs:
   ci:
     name: Run the unit tests
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
       fail-fast: false
@@ -44,18 +58,24 @@ jobs:
         with:
           # need the full history for the unit tests
           fetch-depth: 0
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - uses: actions/cache@v4
+        id: cache-deps
         with:
-          path: ~/.tox
-          key: tox-${{ matrix.python_version }}-${{ hashFiles('poetry.lock') }}
+          path: |
+            ~/.local/bin
+            ~/.local/share/pipx
+            ~/.cache/pypoetry/virtualenvs
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+
+      - run: pipx install poetry && poetry install
+        if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
 
-      - run: |
-          poetry install
-          poetry run pytest -vv
+      - run: poetry run pytest -vv
 
       - run: |
           mkdir -p pkg_dest
@@ -67,17 +87,23 @@ jobs:
   documentation:
     name: Build the documentation
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
-      - name: install dependencies
-        run: poetry install
+
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - uses: actions/cache@v4
+        id: cache-deps
         with:
-          path: ~/.tox
-          key: tox-${{ hashFiles('poetry.lock') }}
+          path: |
+            ~/.local/bin
+            ~/.local/share/pipx
+            ~/.cache/pypoetry/virtualenvs
+          key: bci-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+
+      - run: pipx install poetry && poetry install
+        if: steps.cache-deps.outputs.cache-hit != 'true'
 
       - name: build the documentation with sphinx
         run: poetry run sphinx-build -M html source build
