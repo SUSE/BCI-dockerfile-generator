@@ -21,7 +21,7 @@
 #!BuildTag: bci/kiwi:9
 #!BuildName: bci-kiwi
 #!BuildVersion: 15.7.9.24
-FROM bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends checkmedia dracut-kiwi-oem-repart enchant-devel gcc glibc-devel iproute2 java-21-openjdk-headless jing kiwi-systemdeps-filesystems kpartx libxml2-devel lvm2 make netcat-openbsd python3-devel python3-kiwi python3-pip tack timezone xorriso xz sles-release curl findutils gawk git-core procps
@@ -44,8 +44,10 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect

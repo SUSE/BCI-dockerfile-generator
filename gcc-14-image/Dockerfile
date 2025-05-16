@@ -20,7 +20,7 @@
 #!BuildTag: bci/gcc:14
 #!BuildName: bci-gcc-14
 #!BuildVersion: 15.7.14
-FROM bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools
@@ -40,12 +40,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2026-07-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 LABEL io.artifacthub.package.logo-url="https://gcc.gnu.org/img/gccegg-65.png"
 ENV GCC_VERSION="%%gcc_minor_version%%"

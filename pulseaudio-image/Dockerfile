@@ -20,7 +20,7 @@
 #!BuildTag: suse/kiosk/pulseaudio:17
 #!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.7.17
-FROM suse/sle15:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends pulseaudio pulseaudio-utils procps
@@ -40,12 +40,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%pulseaudio_ver%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/pulseaudio:%%pulseaudio_ver%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2028-07-31"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # sanity check that the version from the tag is equal to the version of pulseaudio that we expect

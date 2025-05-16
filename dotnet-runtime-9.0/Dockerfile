@@ -20,7 +20,7 @@
 #!BuildTag: bci/dotnet-runtime:9.0
 #!BuildName: bci-dotnet-runtime-9.0
 #!BuildVersion: 15.7.9.0
-FROM bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-base:15.7
 
 
 
@@ -42,8 +42,10 @@ LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-05-12"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
 
 
