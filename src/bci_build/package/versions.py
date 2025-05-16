@@ -64,17 +64,16 @@ results in:
 
 """
 
-import asyncio
 import json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Literal
 from typing import NoReturn
 from typing import TypedDict
 from typing import overload
 
+import requests
 from packaging import version
-from py_obs.osc import Osc
-from py_obs.project import fetch_package_info
 
 from bci_build.os_version import OsVersion
 from bci_build.package import ParseVersion
@@ -110,7 +109,7 @@ def _read_pkg_versions() -> _PACKAGE_VERSIONS_T:
 
 
 #: versions of all packages where we have to hardcode the version
-_PACKAGE_VERSIONS = _read_pkg_versions()
+_PACKAGE_VERSIONS: _PACKAGE_VERSIONS_T = _read_pkg_versions()
 
 
 def get_pkg_version(pkg_name: str, os_version: OsVersion) -> str:
@@ -167,7 +166,18 @@ def format_version(ver: str, format: ParseVersion) -> str:
             raise ValueError(f"Invalid version format: {format}")
 
 
-async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
+def fetch_package_version(prj: str, pkg: str) -> str:
+    """Ask the OBS API to parse the source spec file version and return it."""
+    fetch = requests.get(
+        f"https://api.opensuse.org/public/source/{prj}/{pkg}",
+        params={"view": "info", "parse": "1"},
+        headers={"User-Agent": "BCI update-versions"},
+    )
+    fetch.raise_for_status()
+    return getattr(ET.fromstring(fetch.text).find("version"), "text")
+
+
+def update_versions() -> dict[str, dict[str, str]]:
     """Fetch all package versions from the build service and return the
     result. This function fetches all versions for every package and every code
     stream defined in :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS`.
@@ -177,12 +187,14 @@ async def update_versions(osc: Osc) -> dict[str, dict[str, str]]:
     for pkg, versions in _PACKAGE_VERSIONS.items():
         new_versions[pkg] = {}
 
-        v_format = versions.get(_VERS_FMT_KEY, ParseVersion.PATCH)
+        v_format: ParseVersion = ParseVersion(
+            str(versions.get(_VERS_FMT_KEY, ParseVersion.PATCH))
+        )
         for os_version in filter(lambda v: v != _VERS_FMT_KEY, versions):
-            pkg_info = await fetch_package_info(
-                osc, prj=_OBS_PROJECTS[OsVersion.parse(os_version)], pkg=pkg
+            pkg_version: str = fetch_package_version(
+                prj=_OBS_PROJECTS[OsVersion.parse(os_version)], pkg=pkg
             )
-            new_versions[pkg][os_version] = format_version(pkg_info.version, v_format)
+            new_versions[pkg][os_version] = format_version(pkg_version, v_format)
 
         if _VERS_FMT_KEY in versions:
             new_versions[pkg][_VERS_FMT_KEY] = v_format
@@ -195,11 +207,7 @@ def run_version_update() -> None:
     the result to the package versions json file.
 
     """
-    osc = Osc(public=True)
-
-    loop = asyncio.get_event_loop()
-
-    new_versions = loop.run_until_complete(update_versions(osc))
+    new_versions = update_versions()
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as versions_json:
         json.dump(new_versions, versions_json, indent=4, sort_keys=True)
