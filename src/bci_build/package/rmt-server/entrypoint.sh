@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# PV could be empty, make sure the directories exist
+# Persistent Volume mount (PV) could be empty, make sure the directories exist
 install -d -m 0755 -o _rmt -g nginx /var/lib/rmt
 install -d -m 0755 -o _rmt -g nginx /var/lib/rmt/public/repo
 install -d -m 0755 -o _rmt -g nginx /var/lib/rmt/public/suma
