@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+permissions:
+  pull-requests: write
+  content: write
+  statuses: read
+
 jobs:
   create-pull-requests:
     name: create pull requests if the build recipes changed
