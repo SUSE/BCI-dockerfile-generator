@@ -53,7 +53,7 @@ jobs:
                 "$entry"
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
 
       - name: Add reaction to the original comment on success
         if: ${{ success() }}

@@ -49,7 +49,7 @@ jobs:
         shell: fish {0}
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
         if: steps.find_comment.outputs.comment-id != ''
 
       - name: update the comment with the previous build explaining that it has been deleted
@@ -93,7 +93,7 @@ jobs:
           cat test-build.env >> $GITHUB_ENV
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
 
       - name: create a comment with a link to the staging project
         if: env.no_change != 'true'
@@ -112,7 +112,7 @@ jobs:
         run: poetry run scratch-build-bot -vvvv wait
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
         if: env.no_change != 'true'
 
       - name: Install crane to list images on the registry
@@ -144,7 +144,7 @@ jobs:
         id: query_build_result
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
         if: env.no_change != 'true'
 
       - name: report the finished build
@@ -161,12 +161,12 @@ jobs:
         run: poetry run scratch-build-bot get_build_quality
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
         if: env.no_change != 'true'
 
       - name: cleanup the branches if no functional changes were commited or the build was cancelled
         run: poetry run scratch-build-bot -vvvv -l cleanup
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
         if: ${{ env.no_change == 'true' || cancelled() }}

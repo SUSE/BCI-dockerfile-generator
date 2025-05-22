@@ -9,13 +9,13 @@ from bci_build.os_version import OsVersion
 USERS_FOR_PRODUCTION = [
     "avicenzi",
     "dirkmueller",
-    "dancermak",
     "favogt",
     "fcrozat",
     "pvlasin",
+    "pushman",
 ]
 
-USERS_FOR_STAGING = ["avicenzi", "dancermak"]
+USERS_FOR_STAGING = ["avicenzi"]
 
 META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
   <title>{{ project_title }}</title>

@@ -53,7 +53,7 @@ jobs:
         run: poetry run scratch-build-bot --os-version ${{ matrix.os_version }} create_cr_project
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
 
       - name: configure git user
         run: |
@@ -77,7 +77,7 @@ jobs:
           fi
           cat test-build.env >> $GITHUB_ENV
         env:
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
 
       - name: create a pull request

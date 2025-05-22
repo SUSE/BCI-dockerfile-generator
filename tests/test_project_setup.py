@@ -21,10 +21,10 @@ _OSC_USERNAME = "foobar"
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="favogt" role="maintainer"/>
   <person userid="fcrozat" role="maintainer"/>
   <person userid="pvlasin" role="maintainer"/>
+  <person userid="pushman" role="maintainer"/>
 
   <build>
     <enable/>
@@ -72,7 +72,6 @@ This project is automatically updated from git. Please do **not** send submit re
   <title>Continuous Rebuild project for SLE 15 SP5</title>
   <description>Continuous Rebuild project for SLE 15 SP5</description>
   <person userid="avicenzi" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
   <scmsync>https://github.com/SUSE/bci-dockerfile-generator#sle15-sp5</scmsync>
@@ -122,10 +121,10 @@ This project is automatically updated from git. Please do **not** send submit re
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="favogt" role="maintainer"/>
   <person userid="fcrozat" role="maintainer"/>
   <person userid="pvlasin" role="maintainer"/>
+  <person userid="pushman" role="maintainer"/>
 
   <build>
     <enable/>
@@ -180,7 +179,6 @@ This project is automatically updated from git. Please do **not** send submit re
   <title>Staging project for SLE 16</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SLE 16</description>
   <person userid="avicenzi" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
   <build>
@@ -239,7 +237,6 @@ This project is automatically updated from git. Please do **not** send submit re
   <title>Staging project for SLE 15 SP7</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SLE 15 SP7</description>
   <person userid="avicenzi" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
   <build>
@@ -289,7 +286,6 @@ This project is automatically updated from git. Please do **not** send submit re
   <title>Staging project for openSUSE Tumbleweed</title>
   <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for openSUSE Tumbleweed</description>
   <person userid="avicenzi" role="maintainer"/>
-  <person userid="dancermak" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
   <build>

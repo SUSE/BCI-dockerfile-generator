@@ -10,7 +10,7 @@ on:
 
 jobs:
   update-cr:
-    name: Update home:defolos:BCI:CR
+    name: Update home:pushman:BCI:CR
     runs-on: ubuntu-latest
     container: ghcr.io/dcermak/bci-ci:latest
 
@@ -46,4 +46,4 @@ jobs:
           poetry run scratch-build-bot -vvvv --os-version ${{ matrix.os_version }} create_cr_project
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"

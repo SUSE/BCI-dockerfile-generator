@@ -55,4 +55,4 @@ jobs:
         if: steps.find_comment.outputs.comment-id != ''
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
-          OSC_USER: "defolos"
+          OSC_USER: "pushman"
