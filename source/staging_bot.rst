@@ -109,19 +109,3 @@ resort to use a less privileged account for this. The username is defined via
 the environment variable ``OSC_USER`` in the github actions yaml and the
 accompanying password is set in the secret `OSC_PASSWORD
 <https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/OSC_PASSWORD>`_.
-
-
-Repository Access Tokens
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Two access tokens are required
-
-- The `PAT
-  <https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/PAT>`_
-  secret is a personal access token with the ``repo:public_repo`` scope. It is
-  required to update comments triggered from slash-commands.
-
-- The `CHECKOUT_TOKEN
-  <https://github.com/SUSE/BCI-dockerfile-generator/settings/secrets/actions/CHECKOUT_TOKEN>`_
-  secret is a personal access token with the ``repo`` and ``workflow``
-  scopes. It is required to trigger mutable actions from slash-commands.

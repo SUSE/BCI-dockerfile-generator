@@ -4,6 +4,13 @@ name: OBS Scratch Build
 on:
   pull_request:
 
+permissions:
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+  statuses: read
+
 jobs:
   obs-build:
     name: build all images on OBS
@@ -23,7 +30,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.CHECKOUT_TOKEN }}
 
       - uses: actions/cache@v4
         with:
