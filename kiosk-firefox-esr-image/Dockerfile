@@ -28,7 +28,10 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 MozillaFirefox-branding-SLE gconf2 libavcodec57
-RUN set -euo pipefail; useradd -m user -u 1000
+RUN set -euo pipefail; useradd -m -u 1000 -U user
+RUN set -euo pipefail; mkdir -p /home/user/.mozilla/firefox
+RUN set -euo pipefail; chown -R user:user /home/user/.mozilla
+
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.6
