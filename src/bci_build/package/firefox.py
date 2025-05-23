@@ -61,7 +61,12 @@ FIREFOX_CONTAINERS = [
         supported_until=KIOSK_SUPPORT_ENDS,
         cmd=["/bin/bash", "-c", "firefox --kiosk $URL"],
         # TODO add package_version_check and tag_version
-        build_stage_custom_end=f"{DOCKERFILE_RUN} useradd -m user -u 1000",
+        # Ensure that the user is created and Firefox has access to its profile directory.
+        build_stage_custom_end=textwrap.dedent(f"""\
+            {DOCKERFILE_RUN} useradd -m -u 1000 -U user
+            {DOCKERFILE_RUN} mkdir -p /home/user/.mozilla/firefox
+            {DOCKERFILE_RUN} chown -R user:user /home/user/.mozilla
+            """),
         custom_end=textwrap.dedent("""
             ENV DISPLAY=":0"
             COPY --from=builder /etc/passwd /etc/passwd
