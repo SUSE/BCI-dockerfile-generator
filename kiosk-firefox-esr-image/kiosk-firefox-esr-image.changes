@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 23 14:23:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- create home directory for firefox
+
+-------------------------------------------------------------------
 Fri May 23 11:26:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use SOURCEURL_WITH to generate proper artifacthub urls
