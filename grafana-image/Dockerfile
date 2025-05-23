@@ -51,7 +51,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV GF_PATHS_DATA="/var/lib/grafana"
 ENV GF_PATHS_HOME="/usr/share/grafana"
 ENV GF_PATHS_LOGS="/var/log/grafana"
