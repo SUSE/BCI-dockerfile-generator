@@ -37,14 +37,14 @@
 <span id="id1"></span><h1>Staging Bot<a class="headerlink" href="#staging-bot" title="Link to this heading">¶</a></h1>
 <p>Pull requests to the project are tested using a bot running via github
 actions. It writes all build recipes for the images to a branch and creates a
-staging project on <a class="reference external" href="https://build.opensuse.org/">https://build.opensuse.org/</a> under the user <code class="docutils literal notranslate"><span class="pre">defolos</span></code>
-(private account of <a class="reference external" href="https://github.com/dcermak">Dan Čermák</a>). The bot will
-then write a comment in the pull request for each OS version that had changes
-with the branch name, the staging project URL and wait for the builds in the
-staging project to finish. Once they have finished, it will update the comment
-with the build results and either pass or fail the CI job depending on how the
-containers built on OBS. The bot will delete the previously created staging
-project and branches on each new push or when the PR is closed/merged.</p>
+staging project on <a class="reference external" href="https://build.opensuse.org/">https://build.opensuse.org/</a> under the user <code class="docutils literal notranslate"><span class="pre">pushman</span></code> (bot
+account of the container team). The bot will then write a comment in the pull
+request for each OS version that had changes with the branch name, the staging
+project URL and wait for the builds in the staging project to finish. Once they
+have finished, it will update the comment with the build results and either pass
+or fail the CI job depending on how the containers built on OBS. The bot will
+delete the previously created staging project and branches on each new push or
+when the PR is closed/merged.</p>
 <p>For further details, see <a class="reference internal" href="api.html#staging.bot.StagingBot" title="staging.bot.StagingBot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StagingBot</span></code></a> or refer to the
 help of the command <strong class="command">poetry run scratch-build-bot</strong>.</p>
 <section id="branch-setup">
@@ -82,7 +82,7 @@ correct <code class="docutils literal notranslate"><span class="pre">prjconf</sp
 scratch build project created for each pull request against <code class="docutils literal notranslate"><span class="pre">main</span></code> by the
 staging bot in <a class="reference internal" href="api.html#staging.bot.StagingBot.scratch_build" title="staging.bot.StagingBot.scratch_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">scratch_build()</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">home:${OSC_USER}:BCI:CR:${OS_VERSION}:Staging:SUSE:BCI-dockerfile-generator:PR-${PR_NUM}</span></code>:
-projects created by OBS’ SCM CI from <code class="docutils literal notranslate"><span class="pre">home:defolos:CR:${OS_VERSION}</span></code> for
+projects created by OBS’ SCM CI from <code class="docutils literal notranslate"><span class="pre">home:pushman:CR:${OS_VERSION}</span></code> for
 every pull request against the deployment branches.</p></li>
 </ul>
 </section>
