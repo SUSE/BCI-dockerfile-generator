@@ -2,56 +2,56 @@
 staging_build:
   steps:
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: base-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: base-fips-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: busybox-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: gcc-15-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: init-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: kiwi-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: micro-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: micro-fips-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: minimal-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: sle16-kernel-module-devel-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
-        source_project: home:defolos:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.0
         source_package: slm60-kernel-module-devel-image
-        target_project: home:defolos:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.0:Staging
   filters:
     event: pull_request
 
 refresh_staging_project:
   steps:
     - trigger_services:
-        project: home:defolos:BCI:CR:16.0
+        project: home:pushman:BCI:CR:16.0
         package: _project
   filters:
     event: push
