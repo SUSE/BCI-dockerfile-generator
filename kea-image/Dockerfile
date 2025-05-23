@@ -46,7 +46,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL run="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v /etc/kea:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
 LABEL runcwd="podman run --replace -it --privileged --network=host --name kea-dhcp4 -v .:/etc/kea IMAGE kea-dhcp4  -c /etc/kea/kea-dhcp4.conf"
 LABEL run_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v /etc/kea:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
