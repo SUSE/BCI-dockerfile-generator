@@ -60,7 +60,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 COPY test.el .
 RUN emacs -Q --batch test.el
 """,
@@ -105,7 +105,7 @@ Copyright header
           </suse_label_helper:add_prefix>
           <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
           <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
-          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%README.md"/>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
         </labels>
       </containerconfig>
     </type>
@@ -173,7 +173,7 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 """,
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -213,7 +213,7 @@ Copyright header
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
-          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%README.md"/>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
         </labels>
       </containerconfig>
     </type>
@@ -278,7 +278,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 USER emacs""",
             """<?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: MIT -->
@@ -321,7 +321,7 @@ Copyright header
           </suse_label_helper:add_prefix>
           <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
           <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
-          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL%README.md"/>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
         </labels>
       </containerconfig>
     </type>
@@ -387,7 +387,7 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://suse.com/assets/emacs-logo.svg"
 LABEL emacs_version="28"
 LABEL GCC_version="15"
@@ -437,7 +437,7 @@ Copyright header
             <label name="emacs_version" value="28"/>
             <label name="GCC_version" value="15"/>
           </suse_label_helper:add_prefix>
-          <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
           <label name="io.artifacthub.package.logo-url" value="https://suse.com/assets/emacs-logo.svg"/>
         </labels>
         <subcommand execute="/usr/bin/gcc"/>
@@ -553,7 +553,7 @@ Copyright header
             <label name="org.opensuse.release-stage" value="released"/>
             <label name="org.opensuse.lifecycle-url" value="https://en.opensuse.org/Lifetime#openSUSE_BCI"/>
           </suse_label_helper:add_prefix>
-          <label name="io.artifacthub.package.readme-url" value="https://raw.githubusercontent.com/SUSE/BCI-dockerfile-generator/Tumbleweed/test-image/README.md"/>
+          <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
           <label name="io.artifacthub.package.logo-url" value="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"/>
         </labels>
       </containerconfig>
@@ -656,7 +656,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL%README.md"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 """,
             ApplicationStackContainer(
                 name="test",
