@@ -59,10 +59,8 @@ RUN set -euo pipefail; chmod +x /usr/local/bin/container-entrypoint /usr/local/b
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
 COPY pmcd pmlogger /etc/sysconfig/
 
-# This can be removed after the pcp dependency on sysconfig is removed
-RUN set -euo pipefail; systemctl disable wicked wickedd || :
-
-RUN set -euo pipefail; useradd --comment "PCP Quality Assurance"     --create-home --home-dir /var/lib/pcp/testsuite     --shell /bin/bash     --uid 496         pcpqa
+# Create all the users
+RUN set -euo pipefail; systemd-sysusers
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3     CMD /usr/local/bin/healthcheck
 
