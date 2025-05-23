@@ -305,7 +305,7 @@ class StagingBot:
         if comment_text == "":
             raise ValueError("Received empty github comment, cannot create the bot")
         # comment_text looks like this:
-        # Created a staging project on OBS for 4: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-HsmtR](url/to/proj)
+        # Created a staging project on OBS for 4: [home:pushman:BCI:Staging:SLE-15-SP4:sle15-sp4-HsmtR](url/to/proj)
         # Changes pushed to branch [`sle15-sp4-HsmtR`](url/to/branch)
         lines = comment_text.strip().splitlines()
         proj_line = lines[0]
