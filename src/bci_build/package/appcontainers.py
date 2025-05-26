@@ -83,14 +83,8 @@ COPY container-entrypoint healthcheck /usr/local/bin/
 COPY pmproxy.conf.template 10-host_mount.conf.template /usr/share/container-scripts/pcp/
 COPY pmcd pmlogger /etc/sysconfig/
 
-# This can be removed after the pcp dependency on sysconfig is removed
-{DOCKERFILE_RUN} systemctl disable wicked wickedd || :
-
-{DOCKERFILE_RUN} useradd --comment "PCP Quality Assurance" \
-    --create-home --home-dir /var/lib/pcp/testsuite \
-    --shell /bin/bash \
-    --uid 496 \
-        pcpqa
+# Create all the users
+{DOCKERFILE_RUN} systemd-sysusers
 
 HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
