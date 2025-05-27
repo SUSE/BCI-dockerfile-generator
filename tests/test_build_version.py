@@ -51,7 +51,7 @@ from bci_build.registry import publish_registry
         ),
         (
             None,
-            f"{date.today().year}.0.28",
+            "__CURRENT_YEAR__.0.28",
             DevelopmentContainer(
                 exclusive_arch=[Arch.X86_64, Arch.S390X],
                 name="test",
@@ -71,17 +71,23 @@ def test_build_versions_developmentcontainer(
     build_version_docker: str, build_version_kiwi: str, image: DevelopmentContainer
 ) -> None:
     image.build_recipe_type = BuildType.DOCKER
+    if build_version_docker:
+        build_version_docker = build_version_docker.replace(
+            "__CURRENT_YEAR__", str(date.today().year)
+        )
     assert image.build_version == build_version_docker
     image.build_recipe_type = BuildType.KIWI
-    assert image.build_version == build_version_kiwi
+    assert image.build_version == build_version_kiwi.replace(
+        "__CURRENT_YEAR__", str(date.today().year)
+    )
 
 
 @pytest.mark.parametrize(
     "build_version_docker,build_version_kiwi,image",
     [
         (
-            None,
-            f"{date.today().year}.0.0",
+            "%OS_VERSION_ID_SP%.0.0",
+            "%OS_VERSION_ID_SP%.0.0",
             OsContainer(
                 name="test",
                 os_version=OsVersion.TUMBLEWEED,
@@ -115,9 +121,13 @@ def test_build_version_oscontainer(
     build_version_docker: str, build_version_kiwi: str, image: OsContainer
 ) -> None:
     image.build_recipe_type = BuildType.DOCKER
-    assert image.build_version == build_version_docker
+    assert image.build_version == build_version_docker.replace(
+        "__CURRENT_YEAR__", str(date.today().year)
+    )
     image.build_recipe_type = BuildType.KIWI
-    assert image.build_version == build_version_kiwi
+    assert image.build_version == build_version_kiwi.replace(
+        "__CURRENT_YEAR__", str(date.today().year)
+    )
 
 
 @pytest.mark.parametrize(

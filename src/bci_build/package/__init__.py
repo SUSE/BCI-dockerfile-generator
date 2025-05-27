@@ -412,11 +412,12 @@ class BaseContainerImage(abc.ABC):
         # between KIWI and Dockerfile builds so that we can switch between these
         # types.
 
-        # TODO: also set it for non-kiwi type (historically we haven't done so)
-        if self.os_version.is_tumbleweed and self.build_recipe_type == BuildType.KIWI:
+        if self.os_version.is_tumbleweed:
             if isinstance(self, OsContainer):
-                return f"{str(datetime.datetime.now().year)}.0.0"
-            return f"{str(datetime.datetime.now().year)}.0"
+                return "%OS_VERSION_ID_SP%.0.0"
+            # TODO: also set it for non-kiwi type (historically we haven't done so)
+            if self.build_recipe_type == BuildType.KIWI:
+                return f"{str(datetime.datetime.now().year)}.0"
         elif self.os_version.is_sle15:
             if isinstance(self, OsContainer):
                 return f"15.{int(self.os_version.value)}.0"
