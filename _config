@@ -16,7 +16,6 @@ Binarytype: rpm
 %if "%_repository" == "containerfile"
 Type: docker
 BuildEngine: podman
-PreInstall: cni
 
 %else
 Type: spec
