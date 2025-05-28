@@ -59,6 +59,7 @@ XORG_CONTAINERS = [
             "xdm",
             # for /sbin/pidof, required by xdm
             "sysvinit-tools",
+            "procps",
         ]
         # FIXME: unavailable on SLES
         + (["xsession"] if os_version.is_tumbleweed else [])
