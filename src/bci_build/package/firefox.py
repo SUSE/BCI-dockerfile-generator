@@ -37,6 +37,8 @@ FIREFOX_CONTAINERS = [
                 "xorg-x11-fonts",
                 # for puleaudio communication
                 "libpulse0",
+                # for cjk fonts
+                "noto-sans-cjk-fonts",
             ]
             + (
                 ["MozillaFirefox-branding-openSUSE", "libavcodec58_134"]
