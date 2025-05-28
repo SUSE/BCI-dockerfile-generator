@@ -457,7 +457,7 @@ Copyright header
 
       </containerconfig>
     </type>
-    <version>2025.0.28</version>
+    <version>__CURRENT_YEAR__.0.28</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -558,7 +558,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>__CURRENT_YEAR__.0.0</version>
+    <version>%OS_VERSION_ID_SP%.0.0</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
