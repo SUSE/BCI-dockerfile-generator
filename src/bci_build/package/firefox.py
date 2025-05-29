@@ -43,7 +43,9 @@ FIREFOX_CONTAINERS = [
                 "libavcodec58_134",
             ]
             + (
-                ["MozillaFirefox-branding-openSUSE",]
+                [
+                    "MozillaFirefox-branding-openSUSE",
+                ]
                 if os_version.is_tumbleweed
                 else [
                     "MozillaFirefox-branding-SLE",
