@@ -25,7 +25,7 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 noto-sans-cjk-fonts MozillaFirefox-branding-SLE gconf2 libavcodec57
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends MozillaFirefox xorg-x11-fonts libpulse0 noto-sans-cjk-fonts libavcodec58_134 MozillaFirefox-branding-SLE gconf2
 RUN set -euo pipefail; useradd -m -u 1000 -U user
 RUN set -euo pipefail; mkdir -p /home/user/.mozilla/firefox
 RUN set -euo pipefail; chown -R user:user /home/user/.mozilla
