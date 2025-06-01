@@ -1474,7 +1474,6 @@ from dotnet.updater import DOTNET_CONTAINERS  # noqa: E402
 from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
-from .appcontainers import GRAFANA_CONTAINERS  # noqa: E402
 from .appcontainers import NGINX_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
@@ -1495,6 +1494,7 @@ from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
+from .grafana import GRAFANA_CONTAINERS  # noqa: E402
 from .helm import HELM_CONTAINERS  # noqa: E402
 from .kea import KEA_DHCP_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
