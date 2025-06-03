@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  3 09:12:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add missing required packages for the entrypoint script
+
+-------------------------------------------------------------------
 Mon May 26 07:44:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark GF_INSTALL_PLUGINS as deprecated
