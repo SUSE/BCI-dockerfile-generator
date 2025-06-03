@@ -15,8 +15,11 @@ from bci_build.package.versions import get_pkg_version
 
 
 def generate_kiwi_10_config():
-    """force part_mapper to be kpartx rather than the default udev, which we don't run in the image."""
-    return f"""{DOCKERFILE_RUN} printf "mapper:\\n  - part_mapper: kpartx\\n" > /etc/kiwi.yml"""
+    """Configure kiwi for run within a container. This includes:
+    * force part_mapper to be kpartx rather than the default udev, which we don't run in the image.
+    * (temporarily) disabling filesystem checks (https://github.com/OSInside/kiwi/pull/2826 )
+    """
+    return f"""{DOCKERFILE_RUN} printf "runtime_checks:\\n  - disable:\\n    - check_target_dir_on_unsupported_filesystem\\n\\nmapper:\\n  - part_mapper: kpartx\\n" > /etc/kiwi.yml"""
 
 
 KIWI_CONTAINERS = [
