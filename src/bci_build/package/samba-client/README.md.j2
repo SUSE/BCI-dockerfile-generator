@@ -1,0 +1,19 @@
+# {{ image.pretty_name }} Container Image
+
+{% include 'badges.j2' %}
+
+## Description
+
+Samba is a feature-rich Open Source implementation of the SMB and Active Directory protocols for Linux and UNIX-like systems.
+
+This image contains the Samba client.
+
+## Usage
+
+To connect to a SMB file server, run the following command:
+
+```ShellSession
+$ podman run -it --rm {{ image.pretty_reference }} smbclient //SERVER/SHARE -U "DOMAIN\\username"
+```
+
+{% include 'licensing_and_eula.j2' %}
