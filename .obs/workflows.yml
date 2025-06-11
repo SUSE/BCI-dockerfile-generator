@@ -35,6 +35,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: bci-ci-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: bind-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -318,6 +322,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: base-fips-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: bci-ci-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: bind-image
