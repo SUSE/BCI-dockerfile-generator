@@ -2,6 +2,7 @@ FileProvides: /bin/login util-linux
 FileProvides: /usr/bin/perl perl-base
 FileProvides: /usr/bin/sed sed
 FileProvides: /usr/bin/find findutils
+FileProvides: /usr/bin/python3.6 python3-base
 
 Prefer: -libcontainers-openSUSE-policy
 
