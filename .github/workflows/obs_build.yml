@@ -8,7 +8,6 @@ jobs:
   obs-build:
     name: build all images on OBS
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
     strategy:
       fail-fast: false
       matrix:
@@ -34,7 +33,7 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - name: find the previous comment created by the bot
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3

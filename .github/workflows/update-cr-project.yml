@@ -12,7 +12,6 @@ jobs:
   update-cr:
     name: Update home:pushman:BCI:CR
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
       fail-fast: false
@@ -38,12 +37,10 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - name: run the CR project creation
-        run: |
-          poetry install
-          poetry run scratch-build-bot -vvvv --os-version ${{ matrix.os_version }} create_cr_project
+        run: poetry run scratch-build-bot -vvvv --os-version ${{ matrix.os_version }} create_cr_project
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "pushman"

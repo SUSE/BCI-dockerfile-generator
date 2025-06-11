@@ -1476,6 +1476,18 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "version-utils"
+version = "0.3.2"
+description = "Library for parsing system package strings and comparing package versions"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "version_utils-0.3.2-py2.py3-none-any.whl", hash = "sha256:4e0f3dff669d7a081dd66d8b616752dc309e7246a7b2c5ac800dde5ec0d9a555"},
+    {file = "version_utils-0.3.2.tar.gz", hash = "sha256:308191f111395ac19ec5ef4650764af29962a6415d8391785027ae5328579299"},
+]
+
+[[package]]
 name = "yarl"
 version = "1.20.0"
 description = "Yet another URL library"
@@ -1597,4 +1609,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "1d1f73c5f1cc73ab354f3a4487cb14391f77fa6b4ec7219ecfa98176f2a59424"
+content-hash = "404617a188a22b74aec8bb1215f5494c1ce2a54e7667f132f03d1ade6e27895f"
