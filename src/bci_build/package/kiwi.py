@@ -91,5 +91,5 @@ KIWI_CONTAINERS = [
             "_constraints": generate_disk_size_constraints(8)
         },
     )
-    for os_version in list(set(ALL_NONBASE_OS_VERSIONS) | set((OsVersion.SLE16_0,)))
+    for os_version in list(set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SLE16_0})
 ]

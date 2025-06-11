@@ -31,7 +31,7 @@ def supported_until(os_version: OsVersion, jre_major: int) -> datetime.date | No
         8: datetime.date(2026, 12, 31),
     }
 
-    jre_sp_mapping: dict[int, datetime.date] = {
+    jre_sp_mapping: dict[int, datetime.date | None] = {
         11: _SUPPORTED_UNTIL_SLE[OsVersion.SP5],
         17: _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
         21: _SUPPORTED_UNTIL_SLE[OsVersion.SP7],

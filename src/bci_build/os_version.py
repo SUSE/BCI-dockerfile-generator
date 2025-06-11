@@ -86,7 +86,7 @@ class OsVersion(enum.Enum):
     def common_devel_packages(self) -> list[str]:
         """Returns a list of common development packages that are needed for
         all development containers"""
-        r = set(("findutils", "gawk", "git-core", "curl", "procps"))
+        r = {"findutils", "gawk", "git-core", "curl", "procps"}
         if self.is_tumbleweed or self.is_sl16:
             r.add("util-linux")
 

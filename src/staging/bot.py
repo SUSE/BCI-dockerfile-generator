@@ -1297,7 +1297,7 @@ updates:
                     # if we got here, then osc result --watch successfully
                     # finished
                     break
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     if is_execution_time_exceeded():
                         raise
                 except CommandError as cmd_err:

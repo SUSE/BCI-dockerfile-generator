@@ -12,7 +12,7 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 
-_GCC_VERSIONS = Literal[7, 12, 13, 14]
+_GCC_VERSIONS = Literal[7, 12, 13, 14, 15]
 
 # The lifecycle is two years after the XX.2 release
 # according to upstream release date at
@@ -50,7 +50,7 @@ GCC_CONTAINERS = [
         license="GPL-3.0-or-later",
         os_version=os_version,
         version="%%gcc_minor_version%%",
-        tag_version=gcc_version,
+        tag_version=str(gcc_version),
         support_level=SupportLevel.L3,
         supported_until=_GCC_SL16_SUPPORTED_UNTIL.get(gcc_version),
         package_list=(
