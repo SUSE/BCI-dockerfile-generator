@@ -12,7 +12,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_BASE_OS_VERSIONS
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import ALL_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -44,7 +44,7 @@ MICRO_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
@@ -78,7 +78,7 @@ INIT_CONTAINERS = [
         os_version=os_version,
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=["systemd", "gzip", *os_version.release_package_names],
@@ -219,7 +219,8 @@ FIPS_BASE_CONTAINERS = [
         ),
         supported_until=_get_supported_until_fips(os_version),
         is_latest=(
-            os_version in CAN_BE_LATEST_OS_VERSION or os_version in ALL_OS_LTSS_VERSIONS
+            os_version in CAN_BE_LATEST_BASE_OS_VERSION
+            or os_version in ALL_OS_LTSS_VERSIONS
         ),
         pretty_name=_get_fips_pretty_name(os_version),
         package_list=(
@@ -247,7 +248,7 @@ FIPS_MICRO_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
@@ -303,7 +304,7 @@ MINIMAL_CONTAINERS = [
         **_get_minimal_kwargs(os_version),
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
@@ -337,7 +338,7 @@ BUSYBOX_CONTAINERS = [
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
         cmd=["/bin/sh"],
         package_list=[
@@ -384,7 +385,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             os_version=os_version,
             _min_release_counter=40,
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-            is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+            is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
             package_list=(
                 [
                     "kernel-devel",
