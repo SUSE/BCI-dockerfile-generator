@@ -142,7 +142,7 @@ COPY idexec /usr/local/bin/idexec
 # Disable binding to localhost only, doesn't make sense in a container
 {DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
-{DOCKERFILE_RUN} mkdir /run/mysql
+{DOCKERFILE_RUN} install -d -m 0755 -o mysql -g mysql /run/mysql
 """,
         )
     )
