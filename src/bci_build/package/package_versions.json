@@ -58,6 +58,12 @@
         "Tumbleweed": "10.2",
         "version_format": "minor"
     },
+    "samba": {
+        "6": "4.19",
+        "7": "4.21",
+        "Tumbleweed": "4.22",
+        "version_format": "minor"
+    },
     "spack": {
         "6": "0.23",
         "7": "0.23",

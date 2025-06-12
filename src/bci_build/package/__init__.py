@@ -1516,6 +1516,9 @@ from .python import PYTHON_TW_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
 from .rust import RUST_CONTAINERS  # noqa: E402
+from .samba import SAMBA_CLIENT_CONTAINERS  # noqa: E402
+from .samba import SAMBA_SERVER_CONTAINERS  # noqa: E402
+from .samba import SAMBA_TOOLBOX_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
 from .trivy import TRIVY_CONTAINERS  # noqa: E402
@@ -1568,6 +1571,9 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         GITEA_RUNNER_CONTAINER,
         *TOMCAT_CONTAINERS,
         *GCC_CONTAINERS,
+        *SAMBA_SERVER_CONTAINERS,
+        *SAMBA_CLIENT_CONTAINERS,
+        *SAMBA_TOOLBOX_CONTAINERS,
         *SPACK_CONTAINERS,
         *KEA_DHCP_CONTAINERS,
         *KUBECTL_CONTAINERS,

@@ -1,0 +1,37 @@
+# {{ image.pretty_name }} Container Image
+
+{% include 'badges.j2' %}
+
+## Description
+
+Samba is a feature-rich Open Source implementation of the SMB and Active Directory protocols for Linux and UNIX-like systems.
+
+This image comes with Samba tools and TDB tools.
+
+## Usage
+
+To check the available shares in a SMB file server, run the following command:
+
+```ShellSession
+$ podman run -it --rm {{ image.pretty_reference }} smbclient -L //SERVER/SHARE -U "DOMAIN\\username"
+```
+
+To check the available shares anonymously in a SMB file server, run the following command:
+
+```ShellSession
+$ podman run -it --rm {{ image.pretty_reference }} smbclient -L //SERVER/SHARE -N
+```
+
+To list all Samba users in the Samba database, run the following command:
+
+```ShellSession
+$ podman run -it --rm -v /path/to/samba/data:/var/lib/samba {{ image.pretty_reference }} pdbedit -L
+```
+
+To print all records in the Samba secrets database, run the following command:
+
+```ShellSession
+$ podman run -it --rm -v /path/to/samba/data:/var/lib/samba {{ image.pretty_reference }} tdbdump /var/lib/samba/private/secrets.tdb
+```
+
+{% include 'licensing_and_eula.j2' %}
