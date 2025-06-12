@@ -143,6 +143,7 @@ COPY idexec /usr/local/bin/idexec
 {DOCKERFILE_RUN} sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
 {DOCKERFILE_RUN} install -d -m 0755 -o mysql -g mysql /run/mysql
+{DOCKERFILE_RUN} install -d -m 0700 -o mysql -g root /var/lib/mysql
 """,
         )
     )
