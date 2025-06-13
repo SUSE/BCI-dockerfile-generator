@@ -17,7 +17,6 @@
 
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%.%RELEASE%
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
-#!BuildTag: bci/bci-base-fips:latest
 #!BuildName: bci-bci-base-fips-%OS_VERSION_ID_SP%
 #!BuildVersion: 15.6.0
 FROM registry.suse.com/bci/bci-base:15.6
