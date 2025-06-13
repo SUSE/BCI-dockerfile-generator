@@ -19,15 +19,15 @@
 #!BuildTag: suse/kubectl:stable
 #!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
-#!BuildTag: suse/kubectl:1.31
+#!BuildTag: suse/kubectl:1.33
 #!BuildName: suse-kubectl-stable
-#!BuildVersion: 15.7.1.31.1
+#!BuildVersion: 15.7.1.33.1
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.31-client
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.33-client
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.7
