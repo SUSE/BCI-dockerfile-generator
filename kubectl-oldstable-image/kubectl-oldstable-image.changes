@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 13 14:46:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- 1.33 for stable, 1.31 for oldstable
+
+-------------------------------------------------------------------
 Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use SOURCEURL_WITH to generate proper artifacthub urls
