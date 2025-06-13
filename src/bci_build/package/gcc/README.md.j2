@@ -62,12 +62,12 @@ The GNU Compiler Collections supports a wide range of frontends. The container
 image ships the C,  C++  and fortran frontends available as `gcc`, `g++` and `gfortran`
 respectively. The following additional frontends can be installed from the
 repository:
-{% if (image.tag_version == 7) or (image.os_version.is_tumbleweed) %}- `gcc{{ image.tag_version }}-ada` for the Ada frontend (GNAT)
+{% if (image.tag_version == "7") or (image.os_version.is_tumbleweed) %}- `gcc{{ image.tag_version }}-ada` for the Ada frontend (GNAT)
 {% endif %}{% if image.os_version.is_tumbleweed %}- `gcc{{ image.tag_version }}-go` for the Go frontend
 - `gcc{{ image.tag_version }}-objc` and `gcc{{ image.tag_version }}-obj-c++` for the Objective C and Objective C++
-{% if (image.tag_version >= 12) %}- `gcc{{ image.tag_version }}-d` for the frontend to the D Language
-{% endif %}{%- if (image.tag_version >= 13) %}- `gcc{{ image.tag_version }}-m2` for the Modula 2 compiler frontend
-{% endif %}{%- if (image.tag_version >= 14) %}- `gcc{{ image.tag_version }}-rust` for the GNU Rust compiler
+{% if (image.tag_version != "7") %}- `gcc{{ image.tag_version }}-d` for the frontend to the D Language
+{% endif %}{%- if (image.tag_version != "7") %}- `gcc{{ image.tag_version }}-m2` for the Modula 2 compiler frontend
+{% endif %}{%- if (image.tag_version != "7" and image.tag_version != "13") %}- `gcc{{ image.tag_version }}-rust` for the GNU Rust compiler
 {% endif %}{% endif %}
 
 ### Using the container image interactively

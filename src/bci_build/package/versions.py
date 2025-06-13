@@ -104,7 +104,7 @@ def _read_pkg_versions() -> _PACKAGE_VERSIONS_T:
     :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS_JSON_PATH`.
 
     """
-    with open(PACKAGE_VERSIONS_JSON_PATH, "r") as versions_json:
+    with open(PACKAGE_VERSIONS_JSON_PATH) as versions_json:
         return json.load(versions_json)
 
 

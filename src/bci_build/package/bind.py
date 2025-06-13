@@ -28,7 +28,7 @@ BIND_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         is_singleton_image=True,
         version=_BIND_PATCH_RE,
-        tag_version=9,
+        tag_version="9",
         pretty_name="ISC BIND 9",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
@@ -51,7 +51,7 @@ BIND_CONTAINERS = [
         extra_files=_BIND_FILES,
         env={
             # copy-pasta from /etc/sysconfig/named
-            "RNDC_KEYSIZE": 512,
+            "RNDC_KEYSIZE": "512",
             "NAMED_ARGS": "",
             "NAMED_INITIALIZE_SCRIPTS": "",
             # need to set this one so that we can override it

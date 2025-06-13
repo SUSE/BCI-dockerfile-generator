@@ -188,7 +188,7 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
 
-def _get_supported_until_fips(os_version: OsVersion) -> datetime.date:
+def _get_supported_until_fips(os_version: OsVersion) -> datetime.date | None:
     """Returns the end of LTSS for images under LTSS, otherwise end of general support if known"""
     match os_version:
         case OsVersion.SP3:

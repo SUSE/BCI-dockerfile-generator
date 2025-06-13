@@ -1,7 +1,4 @@
-from typing import Generator
-from typing import List
-from typing import Tuple
-from typing import Type
+from collections.abc import Generator
 from typing import TypedDict
 from typing import Union
 
@@ -23,7 +20,7 @@ class BciKwargsBase(TypedDict):
     pretty_name: str
     package_name: str
     os_version: OsVersion
-    package_list: List[str]
+    package_list: list[str]
 
 
 class BciKwargs(BciKwargsBase):
@@ -39,7 +36,7 @@ KWARGS = BciKwargsBase(
 )
 
 
-BCI_FIXTURE_RET_T = Tuple[Type[BaseContainerImage], Union[BciKwargs, BciKwargsBase]]
+BCI_FIXTURE_RET_T = tuple[type[BaseContainerImage], Union[BciKwargs, BciKwargsBase]]
 
 
 @pytest.fixture
