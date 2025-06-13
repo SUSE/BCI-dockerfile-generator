@@ -193,11 +193,15 @@ ALL_OS_VERSIONS: set[OsVersion] = {
     v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)
 }
 
+CAN_BE_LATEST_BASE_OS_VERSION: list[OsVersion] = [
+    OsVersion.SP7,
+    OsVersion.TUMBLEWEED,
+]
+
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.SP6,
     OsVersion.TUMBLEWEED,
 ]
-
 
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
