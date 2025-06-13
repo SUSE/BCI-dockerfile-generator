@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 13 10:46:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set permissions on folders correctly so that non-root usage works
+
+-------------------------------------------------------------------
 Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use SOURCEURL_WITH to generate proper artifacthub urls
