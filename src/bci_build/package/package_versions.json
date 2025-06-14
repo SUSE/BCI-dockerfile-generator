@@ -73,7 +73,7 @@
     "valkey": {
         "6": "8.0",
         "7": "8.0",
-        "Tumbleweed": "8.0",
+        "Tumbleweed": "8.1",
         "version_format": "minor"
     }
 }
