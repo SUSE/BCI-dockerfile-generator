@@ -110,6 +110,8 @@ class Sles15Image(OsContainer):
             tags.extend(
                 ("suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.image_ref_name}")
             )
+            if self.os_version in CAN_BE_LATEST_BASE_OS_VERSION:
+                tags.append("suse/sle15:latest")
         tags += super().build_tags
         return tags
 
