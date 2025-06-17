@@ -18,6 +18,7 @@
 #!BuildTag: suse/mariadb:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb:%%mariadb_version%%
 #!BuildTag: suse/mariadb:11.4
+#!BuildTag: suse/mariadb:latest
 #!BuildName: suse-mariadb-11.4
 #!BuildVersion: 15.7.11.4
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

@@ -17,6 +17,7 @@
 
 #!BuildTag: suse/kea:2.6-%RELEASE%
 #!BuildTag: suse/kea:2.6
+#!BuildTag: suse/kea:latest
 #!BuildName: suse-kea-2.6
 #!BuildVersion: 15.7.2.6
 FROM registry.suse.com/bci/bci-base:15.7

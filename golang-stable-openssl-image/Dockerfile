@@ -20,6 +20,7 @@
 #!BuildTag: bci/golang:%%golang_version%%-openssl-%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%-openssl
 #!BuildTag: bci/golang:1.24-openssl
+#!BuildTag: bci/golang:latest
 #!BuildName: bci-golang-stable-openssl
 #!BuildVersion: 15.7
 FROM registry.suse.com/bci/bci-base:15.7

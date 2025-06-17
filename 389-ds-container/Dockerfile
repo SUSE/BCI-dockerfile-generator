@@ -18,6 +18,7 @@
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:2.5
+#!BuildTag: suse/389-ds:latest
 #!BuildName: suse-389-ds-2.5
 #!BuildVersion: 15.7.2.5
 FROM registry.suse.com/bci/bci-base:15.7

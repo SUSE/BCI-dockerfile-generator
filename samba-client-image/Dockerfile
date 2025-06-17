@@ -18,6 +18,7 @@
 #!BuildTag: suse/samba-client:%%samba_version%%-%RELEASE%
 #!BuildTag: suse/samba-client:%%samba_version%%
 #!BuildTag: suse/samba-client:4.21
+#!BuildTag: suse/samba-client:latest
 #!BuildName: suse-samba-client
 #!BuildVersion: 15.7.4.21
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

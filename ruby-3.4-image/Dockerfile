@@ -18,6 +18,7 @@
 #!BuildTag: bci/ruby:3.4-%RELEASE%
 #!BuildTag: bci/ruby:3.4
 #!BuildTag: bci/ruby:3
+#!BuildTag: bci/ruby:latest
 #!BuildName: bci-ruby-3.4
 #!BuildVersion: 15.7.3.4
 FROM registry.suse.com/bci/bci-base:15.7

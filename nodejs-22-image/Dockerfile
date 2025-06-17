@@ -18,9 +18,11 @@
 #!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/nodejs:%%nodejs_version%%
 #!BuildTag: bci/nodejs:22
+#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%
 #!BuildTag: bci/node:22
+#!BuildTag: bci/node:latest
 #!BuildName: bci-nodejs-22
 #!BuildVersion: 15.7.22
 FROM registry.suse.com/bci/bci-base:15.7

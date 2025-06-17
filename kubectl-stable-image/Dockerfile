@@ -20,6 +20,7 @@
 #!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
 #!BuildTag: suse/kubectl:1.33
+#!BuildTag: suse/kubectl:latest
 #!BuildName: suse-kubectl-stable
 #!BuildVersion: 15.7.1.33.1
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
