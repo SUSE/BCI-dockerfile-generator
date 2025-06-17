@@ -96,7 +96,7 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         "supported_until": (
             _SLE_15_PYTHON_SUPPORT_ENDS[py3_ver] if os_version.is_sle15 else None
         ),
-        "_min_release_counter": 41,
+        "_min_release_counter": 70,
     }
 
     config_sh_script = "install -d -m 0755 /root/.local/bin"

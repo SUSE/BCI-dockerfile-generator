@@ -197,9 +197,7 @@ class DotNetBCI(DevelopmentContainer):
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
         self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
-        self._min_release_counter = {"8.0": 20, "6.0": 32, "9.0": 1}[
-            str(self.tag_version)
-        ]
+        self._min_release_counter = {"8.0": 60, "9.0": 20}[str(self.tag_version)]
 
     def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
         """Fetches the package `pkg` from the microsoft .Net repository.

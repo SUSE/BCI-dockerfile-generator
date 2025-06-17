@@ -42,7 +42,7 @@ COSIGN_CONTAINERS = [
         license="Apache-2.0",
         support_level=SupportLevel.L3,
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
-        _min_release_counter=0,
+        _min_release_counter=10,
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]

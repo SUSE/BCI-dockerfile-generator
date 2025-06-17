@@ -442,7 +442,7 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_release(self) -> str | None:
-        if self.os_version not in (OsVersion.SP6,):
+        if self.os_version not in (OsVersion.SP7,):
             return None
 
         return (
@@ -1372,7 +1372,7 @@ class DevelopmentContainer(BaseContainerImage):
 class ApplicationStackContainer(DevelopmentContainer):
     def __post_init__(self) -> None:
         if self._min_release_counter is None:
-            self._min_release_counter = 35
+            self._min_release_counter = 60
         super().__post_init__()
 
     @property

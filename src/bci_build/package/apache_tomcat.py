@@ -39,7 +39,6 @@ TOMCAT_CONTAINERS = [
         build_flavor=f"openjdk{jre_version}",
         version="%%tomcat_version%%",
         tag_version=tomcat_ver,
-        _min_release_counter=58 if os_version.is_sle15 else None,
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         package_list=[
             tomcat_pkg := (
