@@ -88,10 +88,6 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
 
 RUBY_CONTAINERS = [
     DevelopmentContainer(
-        **_get_ruby_kwargs("2.5", OsVersion.SP6),
-        support_level=SupportLevel.L3,
-    ),
-    DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP7),
         support_level=SupportLevel.L3,
     ),

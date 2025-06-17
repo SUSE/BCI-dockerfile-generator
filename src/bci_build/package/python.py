@@ -123,7 +123,7 @@ PYTHON_3_6_CONTAINERS = (
         package_name="python-3.6-image",
         additional_versions=["3"],
     )
-    for os_version in (OsVersion.SP6, OsVersion.SP7)
+    for os_version in (OsVersion.SP7,)
 )
 
 
@@ -144,7 +144,7 @@ PYTHON_3_11_CONTAINERS = (
         package_name="python-3.11-image",
         additional_versions=["3"],
     )
-    for os_version in (OsVersion.SP6, OsVersion.SP7)
+    for os_version in (OsVersion.SP7,)
 )
 
 PYTHON_3_12_CONTAINERS = [

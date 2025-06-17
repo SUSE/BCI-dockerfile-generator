@@ -20,7 +20,7 @@ SAMBA_CLIENT_CONTAINERS = []
 SAMBA_TOOLBOX_CONTAINERS = []
 
 
-for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP6, OsVersion.SP7):
+for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
     samba_version = get_pkg_version("samba", os_version)
 
     srv = ApplicationStackContainer(

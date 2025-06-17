@@ -172,7 +172,6 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
-    OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
 ]
