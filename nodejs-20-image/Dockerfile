@@ -23,7 +23,6 @@
 #!BuildTag: bci/node:20
 #!BuildName: bci-nodejs-20
 #!BuildVersion: 15.6.20
-#!BuildRelease: 30
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
