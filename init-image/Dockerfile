@@ -20,6 +20,7 @@
 #!BuildTag: bci/bci-init:latest
 #!BuildName: bci-bci-init
 #!BuildVersion: 15.7.0
+#!BuildRelease: 40
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \

@@ -22,6 +22,7 @@
 #!BuildTag: suse/pcp:latest
 #!BuildName: suse-pcp-6.2.0
 #!BuildVersion: 15.7.6.2.0
+#!BuildRelease: 60
 FROM bci/bci-init:15.7
 
 RUN set -euo pipefail; \

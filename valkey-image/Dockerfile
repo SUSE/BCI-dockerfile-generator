@@ -22,6 +22,7 @@
 #!BuildTag: suse/valkey:latest
 #!BuildName: suse-valkey
 #!BuildVersion: 15.7.8.0
+#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target

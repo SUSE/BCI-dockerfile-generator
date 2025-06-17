@@ -20,6 +20,7 @@
 #!BuildTag: suse/nginx:latest
 #!BuildName: suse-nginx-1.21
 #!BuildVersion: 15.7.1.21
+#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \

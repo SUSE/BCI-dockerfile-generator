@@ -22,6 +22,7 @@
 #!BuildTag: suse/kiosk/xorg:latest
 #!BuildName: suse-kiosk-xorg
 #!BuildVersion: 15.7.21
+#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target

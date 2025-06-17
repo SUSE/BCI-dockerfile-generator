@@ -23,6 +23,7 @@
 #!BuildTag: suse/kubectl:latest
 #!BuildName: suse-kubectl-stable
 #!BuildVersion: 15.7.1.33.1
+#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
