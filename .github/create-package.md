@@ -1,6 +1,6 @@
 ---
 title: Packages are missing on OBS for {{ env.DEPLOYMENT_BRANCH_NAME }}
-assignees: dcermak
+assignees: alexandrevicenzi
 ---
 
 The following packages are missing in the devel project on OBS: {{ env.pkgs }}

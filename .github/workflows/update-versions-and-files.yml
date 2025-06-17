@@ -38,7 +38,6 @@ jobs:
           delete-branch: true
           commit-message: "🤖: Update package versions and external files"
           reviewers: dirkmueller,alexandrevicenzi
-          assignees: dcermak
           title: "🤖: Update package versions and files"
           body: |
             This is an automated update via poetry run update-versions and ./update-files.sh
