@@ -20,7 +20,6 @@
 #!BuildTag: suse/samba-toolbox:4.19
 #!BuildName: suse-samba-toolbox
 #!BuildVersion: 15.6.4.19
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target

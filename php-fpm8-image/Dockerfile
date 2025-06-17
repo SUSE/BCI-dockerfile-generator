@@ -20,7 +20,6 @@
 #!BuildTag: bci/php-fpm:8
 #!BuildName: bci-php-fpm-8
 #!BuildVersion: 15.6.8
-#!BuildRelease: 30
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

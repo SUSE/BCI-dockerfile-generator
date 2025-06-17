@@ -21,7 +21,6 @@
 #!BuildTag: suse/git:%%git_major_version%%
 #!BuildName: suse-git
 #!BuildVersion: 15.6.2.43
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target

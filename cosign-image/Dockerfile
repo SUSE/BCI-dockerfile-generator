@@ -21,7 +21,6 @@
 #!BuildTag: suse/cosign:2
 #!BuildName: suse-cosign
 #!BuildVersion: 15.6.2.5
-#!BuildRelease: 0
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target

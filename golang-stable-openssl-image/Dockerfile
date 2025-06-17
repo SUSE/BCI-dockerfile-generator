@@ -22,7 +22,6 @@
 #!BuildTag: bci/golang:1.24-openssl
 #!BuildName: bci-golang-stable-openssl
 #!BuildVersion: 15.6
-#!BuildRelease: 33
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

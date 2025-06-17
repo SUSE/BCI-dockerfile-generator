@@ -20,7 +20,6 @@
 #!BuildTag: bci/dotnet-runtime:9.0
 #!BuildName: bci-dotnet-runtime-9.0
 #!BuildVersion: 15.6.9.0
-#!BuildRelease: 1
 FROM registry.suse.com/bci/bci-base:15.6
 
 

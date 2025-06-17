@@ -20,7 +20,6 @@
 #!BuildTag: suse/rmt-server:2
 #!BuildName: suse-rmt-server
 #!BuildVersion: 15.6.2
-#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

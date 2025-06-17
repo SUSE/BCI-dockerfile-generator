@@ -22,7 +22,6 @@
 #!BuildTag: bci/golang:1.23
 #!BuildName: bci-golang-oldstable
 #!BuildVersion: 15.6.1.23.2
-#!BuildRelease: 33
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

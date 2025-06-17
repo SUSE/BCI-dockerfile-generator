@@ -19,7 +19,6 @@
 #!BuildTag: suse/rmt-nginx:1.21
 #!BuildName: suse-rmt-nginx-1.21
 #!BuildVersion: 15.6.1.21
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

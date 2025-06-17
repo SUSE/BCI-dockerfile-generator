@@ -22,7 +22,6 @@
 #!BuildTag: suse/postgres:latest
 #!BuildName: suse-postgres-17
 #!BuildVersion: 15.6.17
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target

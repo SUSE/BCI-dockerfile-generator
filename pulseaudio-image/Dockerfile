@@ -20,7 +20,6 @@
 #!BuildTag: suse/kiosk/pulseaudio:17
 #!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.6.17
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \

@@ -21,7 +21,6 @@
 #!BuildTag: suse/prometheus:%%prometheus_major_version%%
 #!BuildName: suse-prometheus-%%prometheus_patch_version%%
 #!BuildVersion: 15.6
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target

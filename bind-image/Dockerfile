@@ -21,7 +21,6 @@
 #!BuildTag: suse/bind:%%bind_major_minor%%
 #!BuildName: suse-bind
 #!BuildVersion: 15.6.9
-#!BuildRelease: 35
 FROM registry.suse.com/bci/bci-micro:15.6 AS target
 FROM suse/sle15:15.6 AS builder
 COPY --from=target / /target
