@@ -35,7 +35,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         # we label the newest LTS version as latest
-        "is_latest": ver == 20 and os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": ver == 22 and os_version in CAN_BE_LATEST_OS_VERSION,
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
