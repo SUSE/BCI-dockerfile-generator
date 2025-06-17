@@ -24,7 +24,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
         "pretty_name": f"Ruby {ruby_version}",
         "version": ruby_version,
         "additional_versions": [ruby_major],
-        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": ruby_version == "3.4" and os_version in CAN_BE_LATEST_OS_VERSION,
         "os_version": os_version,
         "supported_until": (
             _RUBY_SUPPORT_ENDS.get(ruby_version) if os_version.is_sle15 else None
