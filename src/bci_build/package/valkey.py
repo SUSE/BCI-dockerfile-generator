@@ -60,5 +60,5 @@ VALKEY_CONTAINERS = [
         """
         ),
     )
-    for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP6, OsVersion.SP7)
+    for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7)
 ]

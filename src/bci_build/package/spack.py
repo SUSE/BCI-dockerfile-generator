@@ -91,5 +91,5 @@ WORKDIR /root
 SHELL ["docker-shell"]
 """,
     )
-    for os_version in [OsVersion.SP6, OsVersion.SP7, OsVersion.TUMBLEWEED]
+    for os_version in [OsVersion.SP7, OsVersion.TUMBLEWEED]
 ]

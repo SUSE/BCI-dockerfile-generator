@@ -11,7 +11,6 @@ from bci_build.package.helpers import generate_from_image_tag
 
 _KUBECTL_VERSIONS = {
     OsVersion.TUMBLEWEED: ("1.30", "1.31", "1.32", "1.33"),
-    OsVersion.SP6: ("1.31", "1.33"),
     OsVersion.SP7: ("1.31", "1.33"),
 }
 
@@ -71,7 +70,7 @@ KUBECTL_CONTAINERS = [
     for ver, os_version in (
         [
             (kubectl_version, os_version)
-            for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP6, OsVersion.SP7)
+            for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7)
             for kubectl_version in _KUBECTL_VERSIONS[os_version]
         ]
     )
