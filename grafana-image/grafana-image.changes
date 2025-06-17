@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
 Tue Jun  3 09:12:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add missing required packages for the entrypoint script
