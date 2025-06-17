@@ -34,7 +34,7 @@ RMT_CONTAINERS = [
         ],
         version_in_uid=False,
         support_level=SupportLevel.L3,
-        _min_release_counter=(60 if os_version in (OsVersion.SP6,) else None),
+        _min_release_counter=(70 if os_version in (OsVersion.SP7,) else None),
         package_list=["rmt-server", "catatonit", "bash"],
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],

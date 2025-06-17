@@ -623,9 +623,9 @@ def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
 #!ForceMultiVersion
 #!BuildName: containers-test-42
 #!BuildVersion: %%emacs_version%%
-#!BuildRelease: 35
-FROM registry.suse.com/bci/bci-micro:15.6 AS target
-FROM bci/bci-base:15.6 AS builder
+#!BuildRelease: 60
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target
 
 RUN \\
@@ -633,7 +633,7 @@ RUN \\
     zypper -n --installroot /target remove util-linux
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
-FROM registry.suse.com/bci/bci-micro:15.6
+FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.test
@@ -664,7 +664,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
                 supported_until=date(2024, 2, 1),
                 package_list=["emacs", Package("util-linux", PackageType.DELETE)],
                 package_name="test-image",
-                os_version=(os_version := OsVersion.SP6),
+                os_version=(os_version := OsVersion.SP7),
                 _publish_registry=publish_registry(os_version, app_collection=True),
                 from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
                 version="%%emacs_version%%",

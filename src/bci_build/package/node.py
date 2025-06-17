@@ -59,7 +59,6 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "env": {
             "NODE_VERSION": ver,
         },
-        "_min_release_counter": 30,
     }
 
 
