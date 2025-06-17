@@ -18,6 +18,7 @@
 #!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
 #!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%
 #!BuildTag: suse/kiosk/pulseaudio:17
+#!BuildTag: suse/kiosk/pulseaudio:latest
 #!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.7.17
 FROM registry.suse.com/bci/bci-base:15.7

@@ -19,6 +19,7 @@
 #!BuildTag: suse/kiosk/xorg:%%xorg_server_ver%%
 #!BuildTag: suse/kiosk/xorg:21
 #!BuildTag: suse/kiosk/xorg:notaskbar
+#!BuildTag: suse/kiosk/xorg:latest
 #!BuildName: suse-kiosk-xorg
 #!BuildVersion: 15.7.21
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

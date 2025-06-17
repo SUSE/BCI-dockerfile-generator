@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-aspnet:9.0.6-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:9.0.6
 #!BuildTag: bci/dotnet-aspnet:9.0
+#!BuildTag: bci/dotnet-aspnet:latest
 #!BuildName: bci-dotnet-aspnet-9.0
 #!BuildVersion: 15.7.9.0
 FROM registry.suse.com/bci/bci-base:15.7

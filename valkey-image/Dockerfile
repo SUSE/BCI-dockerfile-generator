@@ -19,6 +19,7 @@
 #!BuildTag: suse/valkey:%%valkey_version%%
 #!BuildTag: suse/valkey:8.0
 #!BuildTag: suse/valkey:8
+#!BuildTag: suse/valkey:latest
 #!BuildName: suse-valkey
 #!BuildVersion: 15.7.8.0
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

@@ -18,6 +18,7 @@
 #!BuildTag: bci/ruby:2.5-%RELEASE%
 #!BuildTag: bci/ruby:2.5
 #!BuildTag: bci/ruby:2
+#!BuildTag: bci/ruby:latest
 #!BuildName: bci-ruby-2.5
 #!BuildVersion: 15.7.2.5
 FROM registry.suse.com/bci/bci-base:15.7

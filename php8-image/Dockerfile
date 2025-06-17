@@ -18,6 +18,7 @@
 #!BuildTag: bci/php:%%php_version%%-%RELEASE%
 #!BuildTag: bci/php:%%php_version%%
 #!BuildTag: bci/php:8
+#!BuildTag: bci/php:latest
 #!BuildName: bci-php-8
 #!BuildVersion: 15.7.8
 FROM registry.suse.com/bci/bci-base:15.7

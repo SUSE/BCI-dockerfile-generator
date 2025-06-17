@@ -19,6 +19,7 @@
 #!BuildTag: suse/bind:%%bind_major_minor_patch%%
 #!BuildTag: suse/bind:9
 #!BuildTag: suse/bind:%%bind_major_minor%%
+#!BuildTag: suse/bind:latest
 #!BuildName: suse-bind
 #!BuildVersion: 15.7.9
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

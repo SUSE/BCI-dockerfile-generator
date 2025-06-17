@@ -19,6 +19,7 @@
 #!BuildTag: suse/git:%%git_version%%
 #!BuildTag: suse/git:2.43
 #!BuildTag: suse/git:%%git_major_version%%
+#!BuildTag: suse/git:latest
 #!BuildName: suse-git
 #!BuildVersion: 15.7.2.43
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

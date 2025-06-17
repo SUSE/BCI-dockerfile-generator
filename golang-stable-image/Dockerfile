@@ -20,6 +20,7 @@
 #!BuildTag: bci/golang:%%golang_version%%-1.%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%
 #!BuildTag: bci/golang:1.24
+#!BuildTag: bci/golang:latest
 #!BuildName: bci-golang-stable
 #!BuildVersion: 15.7.1.24.1
 FROM registry.suse.com/bci/bci-base:15.7

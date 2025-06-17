@@ -20,6 +20,7 @@
 #!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
 #!BuildTag: bci/rust:1.87
+#!BuildTag: bci/rust:latest
 #!BuildName: bci-rust-stable
 #!BuildVersion: 15.7.1.87.1
 FROM registry.suse.com/bci/bci-base:15.7

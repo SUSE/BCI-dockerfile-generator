@@ -18,6 +18,7 @@
 #!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%-%RELEASE%
 #!BuildTag: suse/alertmanager:%%alertmanager_patch_version%%
 #!BuildTag: suse/alertmanager:%%alertmanager_minor_version%%
+#!BuildTag: suse/alertmanager:latest
 #!BuildName: suse-alertmanager
 #!BuildVersion: 15.7
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

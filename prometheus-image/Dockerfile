@@ -19,6 +19,7 @@
 #!BuildTag: suse/prometheus:%%prometheus_patch_version%%
 #!BuildTag: suse/prometheus:%%prometheus_minor_version%%
 #!BuildTag: suse/prometheus:%%prometheus_major_version%%
+#!BuildTag: suse/prometheus:latest
 #!BuildName: suse-prometheus-%%prometheus_patch_version%%
 #!BuildVersion: 15.7
 FROM registry.suse.com/bci/bci-micro:15.7 AS target

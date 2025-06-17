@@ -18,6 +18,7 @@
 #!BuildTag: suse/samba-toolbox:%%samba_version%%-%RELEASE%
 #!BuildTag: suse/samba-toolbox:%%samba_version%%
 #!BuildTag: suse/samba-toolbox:4.21
+#!BuildTag: suse/samba-toolbox:latest
 #!BuildName: suse-samba-toolbox
 #!BuildVersion: 15.7.4.21
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
