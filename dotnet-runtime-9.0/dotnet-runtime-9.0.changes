@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 17 13:57:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag (will be moved to SP7 based containers instead)
+
+-------------------------------------------------------------------
 Wed Jun 11 10:55:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to new release 9.0.7

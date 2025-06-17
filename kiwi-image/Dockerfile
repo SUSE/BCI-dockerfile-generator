@@ -19,7 +19,6 @@
 #!BuildTag: bci/kiwi:%%kiwi_version%%
 #!BuildTag: bci/kiwi:9.24
 #!BuildTag: bci/kiwi:9
-#!BuildTag: bci/kiwi:latest
 #!BuildName: bci-kiwi
 #!BuildVersion: 15.6.9.24
 #!BuildRelease: 15

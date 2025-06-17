@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-sdk:9.0.6-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:9.0.6
 #!BuildTag: bci/dotnet-sdk:9.0
-#!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-9.0
 #!BuildVersion: 15.6.9.0
 #!BuildRelease: 1

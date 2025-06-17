@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 17 13:57:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag (will be moved to SP7 based containers instead)
+
+-------------------------------------------------------------------
 Mon May 26 09:39:21 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - create all users in PCP container

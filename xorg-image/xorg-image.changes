@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 17 13:57:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag (will be moved to SP7 based containers instead)
+
+-------------------------------------------------------------------
 Wed May 28 14:58:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add procps

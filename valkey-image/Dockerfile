@@ -19,7 +19,6 @@
 #!BuildTag: suse/valkey:%%valkey_version%%
 #!BuildTag: suse/valkey:8.0
 #!BuildTag: suse/valkey:8
-#!BuildTag: suse/valkey:latest
 #!BuildName: suse-valkey
 #!BuildVersion: 15.6.8.0
 #!BuildRelease: 35

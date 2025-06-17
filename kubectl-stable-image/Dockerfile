@@ -20,7 +20,6 @@
 #!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
 #!BuildTag: suse/kubectl:1.33
-#!BuildTag: suse/kubectl:latest
 #!BuildName: suse-kubectl-stable
 #!BuildVersion: 15.6.1.33.1
 #!BuildRelease: 35

@@ -18,7 +18,6 @@
 #!BuildTag: suse/kiosk/firefox-esr:%%ff_ver%%-%RELEASE%
 #!BuildTag: suse/kiosk/firefox-esr:%%ff_ver%%
 #!BuildTag: suse/kiosk/firefox-esr:esr
-#!BuildTag: suse/kiosk/firefox-esr:latest
 #!BuildName: suse-kiosk-firefox-esr
 #!BuildVersion: 15.6
 #!BuildRelease: 35
