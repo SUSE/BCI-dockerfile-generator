@@ -18,7 +18,6 @@
 #!BuildTag: suse/samba-server:%%samba_version%%-%RELEASE%
 #!BuildTag: suse/samba-server:%%samba_version%%
 #!BuildTag: suse/samba-server:4.19
-#!BuildTag: suse/samba-server:latest
 #!BuildName: suse-samba-server
 #!BuildVersion: 15.6.4.19
 #!BuildRelease: 35

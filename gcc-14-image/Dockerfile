@@ -18,7 +18,6 @@
 #!BuildTag: bci/gcc:%%gcc_minor_version%%-%RELEASE%
 #!BuildTag: bci/gcc:%%gcc_minor_version%%
 #!BuildTag: bci/gcc:14
-#!BuildTag: bci/gcc:latest
 #!BuildName: bci-gcc-14
 #!BuildVersion: 15.6.14
 FROM registry.suse.com/bci/bci-base:15.6

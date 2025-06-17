@@ -18,7 +18,6 @@
 #!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%-%RELEASE%
 #!BuildTag: suse/kiosk/pulseaudio:%%pulseaudio_ver%%
 #!BuildTag: suse/kiosk/pulseaudio:17
-#!BuildTag: suse/kiosk/pulseaudio:latest
 #!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.6.17
 #!BuildRelease: 35

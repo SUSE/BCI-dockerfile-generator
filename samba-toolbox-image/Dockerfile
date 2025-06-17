@@ -18,7 +18,6 @@
 #!BuildTag: suse/samba-toolbox:%%samba_version%%-%RELEASE%
 #!BuildTag: suse/samba-toolbox:%%samba_version%%
 #!BuildTag: suse/samba-toolbox:4.19
-#!BuildTag: suse/samba-toolbox:latest
 #!BuildName: suse-samba-toolbox
 #!BuildVersion: 15.6.4.19
 #!BuildRelease: 35

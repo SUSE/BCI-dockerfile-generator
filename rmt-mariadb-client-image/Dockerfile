@@ -18,7 +18,6 @@
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%
 #!BuildTag: suse/mariadb-client:10.11
-#!BuildTag: suse/mariadb-client:latest
 #!BuildName: suse-mariadb-client-10.11
 #!BuildVersion: 15.6.10.11
 #!BuildRelease: 35
