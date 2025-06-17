@@ -199,7 +199,7 @@ CAN_BE_LATEST_BASE_OS_VERSION: list[OsVersion] = [
 ]
 
 CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
-    OsVersion.SP6,
+    OsVersion.SP7,
     OsVersion.TUMBLEWEED,
 ]
 
