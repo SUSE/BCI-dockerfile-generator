@@ -22,6 +22,7 @@
 #!BuildTag: bci/kiwi:latest
 #!BuildName: bci-kiwi
 #!BuildVersion: 15.7.9.24
+#!BuildRelease: 15
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \

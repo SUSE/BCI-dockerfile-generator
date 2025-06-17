@@ -21,6 +21,7 @@
 #!BuildTag: bci/python:3
 #!BuildName: bci-python-3.6
 #!BuildVersion: 15.7.3.6
+#!BuildRelease: 70
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \

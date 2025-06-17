@@ -20,6 +20,7 @@
 #!BuildTag: suse/kea:latest
 #!BuildName: suse-kea-2.6
 #!BuildVersion: 15.7.2.6
+#!BuildRelease: 60
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
