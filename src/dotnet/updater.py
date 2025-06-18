@@ -98,7 +98,7 @@ RUN zypper --non-interactive install --no-recommends coreutils sles-release
 COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
-RUN zypper --non-interactive install --no-recommends libicu {% if dotnet_version.startswith("8.0") -%} libopenssl1_1 {%- else -%} libopenssl3 {%- endif %} /tmp/*rpm
+RUN zypper --non-interactive install --no-recommends libicu {% if image.os_version.is_sle15 -%} libopenssl1_1 {%- else -%} libopenssl3 {%- endif %} /tmp/*rpm
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
