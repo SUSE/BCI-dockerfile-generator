@@ -56,7 +56,7 @@ RUN mkdir -p /tmp/
 COPY dotnet-host-8.0.17-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.17-1.x86_64.rpm sha256:7e4f85bd05c34fdcc1bbd0a96aaf30a453575dfff3de4d7f53d069cdd952e083
 COPY dotnet-hostfxr-8.0-8.0.17-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.17-1.x86_64.rpm sha256:7c0178c3db0711c5381a47f63f4b669a843ea25ecaf0a115ff1971a3b7200c4a
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.17-1.x86_64.rpm sha256:bf4bde55c7498fb26e4a1fee5a29a083f71bf0e22afa4c54623b72ae8717f268
 COPY dotnet-runtime-deps-8.0-8.0.17-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.17-1.x86_64.rpm sha256:89515ca2eb21ea6c05fffeb5f4342983389cea0d949a2a4e0c6e799b08c0980f
 COPY dotnet-runtime-8.0-8.0.17-1.x86_64.rpm /tmp/
