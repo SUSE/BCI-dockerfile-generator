@@ -19,8 +19,6 @@ You will need the following tools:
 - `poetry <https://python-poetry.org/>`_
 - `osc <https://github.com/openSUSE/osc/>`_ installed and configured to reach
   `OBS <https://build.opensuse.org/>`_ by default.
-- ``python-dnf`` installed via your system's package manager (if you want to
-  touch the .Net images)
 
 To get started, clone this repository and run :command:`poetry install` in its
 root directory.

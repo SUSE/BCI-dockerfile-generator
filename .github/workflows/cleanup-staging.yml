@@ -10,7 +10,6 @@ jobs:
   cleanup:
     name: Cleanup
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
       fail-fast: false
@@ -37,7 +36,7 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: install python dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - name: find last comment made by the bot
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
@@ -49,7 +48,6 @@ jobs:
 
       - name: run the cleanup
         run: |
-          poetry install
           echo "${{ steps.find_comment.outputs.comment-body }}" | poetry run scratch-build-bot -vvvv --from-stdin cleanup
         shell: fish {0}
         if: steps.find_comment.outputs.comment-id != ''
