@@ -298,13 +298,6 @@ STOPSIGNAL SIGQUIT
 
 NGINX_CONTAINERS = [
     ApplicationStackContainer(
-        name="rmt-nginx",
-        pretty_name="NGINX for SUSE RMT",
-        **_get_nginx_kwargs(os_version),
-    )
-    for os_version in (OsVersion.SP7,)
-] + [
-    ApplicationStackContainer(
         name="nginx",
         pretty_name="NGINX",
         custom_description="NGINX open source all-in-one load balancer, content cache and web server {based_on_container}.",
