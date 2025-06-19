@@ -20,7 +20,7 @@
     "git": {
         "6": "2.43",
         "7": "2.43",
-        "Tumbleweed": "2.49",
+        "Tumbleweed": "2.50",
         "version_format": "minor"
     },
     "helm": {
