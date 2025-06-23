@@ -14,7 +14,6 @@ jobs:
   format:
     name: Ensure code is properly formatted
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +22,7 @@ jobs:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
 
-      - run: poetry install
+      - run: pipx install poetry && poetry install
 
       - name: Run ruff format
         run: poetry run ruff format --check --diff
@@ -34,7 +33,6 @@ jobs:
   ci:
     name: Run the unit tests
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     strategy:
       fail-fast: false
@@ -53,9 +51,9 @@ jobs:
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
 
-      - run: |
-          poetry install
-          poetry run pytest -vv
+      - run: pipx install poetry && poetry install
+
+      - run: poetry run pytest -vv
 
       - run: |
           mkdir -p pkg_dest
@@ -67,12 +65,11 @@ jobs:
   documentation:
     name: Build the documentation
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
       - name: install dependencies
-        run: poetry install
+        run: pipx install poetry && poetry install
 
       - uses: actions/cache@v4
         with:
