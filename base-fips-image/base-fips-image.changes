@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 23 16:05:53 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- raise buildrelease counter to be in line with prior releases
+  before switch to dockerfile
+
+-------------------------------------------------------------------
 Fri Jun 13 15:05:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove latest tag
