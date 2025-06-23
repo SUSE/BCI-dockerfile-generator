@@ -8,7 +8,7 @@ jobs:
   obs-build:
     name: build all images on OBS
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
     strategy:
       fail-fast: false
       matrix:
