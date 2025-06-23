@@ -23,6 +23,7 @@ dependencies = [
     "GitPython >=3.1",
     "oras >=0.2.2",
     "requests >= 2",
+    "urllib3 >= 2.5",
 ]
 
 [tool.poetry.scripts]
