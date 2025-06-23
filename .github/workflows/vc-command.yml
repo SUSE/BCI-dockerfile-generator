@@ -7,7 +7,7 @@ on:
 jobs:
   append-changelog:
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
     steps:
       - uses: actions/checkout@v4
         with:

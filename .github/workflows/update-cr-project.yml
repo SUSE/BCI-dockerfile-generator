@@ -12,7 +12,7 @@ jobs:
   update-cr:
     name: Update home:pushman:BCI:CR
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     strategy:
       fail-fast: false

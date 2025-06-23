@@ -18,7 +18,7 @@ jobs:
     name: create pull requests if the build recipes changed
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/dcermak/bci-ci:latest
+      image: registry.opensuse.org/opensuse/bci/bci-ci:latest
       options: "--privileged"
 
     strategy:

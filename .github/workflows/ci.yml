@@ -14,7 +14,7 @@ jobs:
   format:
     name: Ensure code is properly formatted
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
   ci:
     name: Run the unit tests
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     strategy:
       fail-fast: false
@@ -67,7 +67,7 @@ jobs:
   documentation:
     name: Build the documentation
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     steps:
       - uses: actions/checkout@v4
