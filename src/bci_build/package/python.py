@@ -182,6 +182,7 @@ BCI_CI_CONTAINERS = [
         is_latest=True,
         support_level=SupportLevel.UNSUPPORTED,
         package_list=(
+            "build",
             "buildah",
             "dnf",
             "fish",
