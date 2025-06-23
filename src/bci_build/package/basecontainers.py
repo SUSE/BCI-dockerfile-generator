@@ -3,6 +3,7 @@
 import datetime
 import os
 import textwrap
+from dataclasses import dataclass
 from pathlib import Path
 
 from bci_build.container_attributes import Arch
@@ -199,14 +200,14 @@ def _get_supported_until_fips(os_version: OsVersion) -> datetime.date | None:
             return _SUPPORTED_UNTIL_SLE.get(os_version)
 
 
-FIPS_BASE_CONTAINERS = [
-    OsContainer(
-        name="base-fips",
-        exclusive_arch=[Arch.X86_64] if os_version.is_ltss else None,
-        os_version=os_version,
-        build_recipe_type=BuildType.DOCKER,
-        support_level=SupportLevel.L3,
-        is_singleton_image=(
+def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
+    return {
+        "name": "base-fips",
+        "exclusive_arch": [Arch.X86_64] if os_version.is_ltss else None,
+        "os_version": os_version,
+        "build_recipe_type": BuildType.DOCKER,
+        "support_level": SupportLevel.L3,
+        "is_singleton_image": (
             # preserve backwards compatibility on already released distributions
             os_version
             not in (
@@ -217,13 +218,13 @@ FIPS_BASE_CONTAINERS = [
                 OsVersion.TUMBLEWEED,
             )
         ),
-        supported_until=_get_supported_until_fips(os_version),
-        is_latest=(
+        "supported_until": _get_supported_until_fips(os_version),
+        "is_latest": (
             os_version in CAN_BE_LATEST_BASE_OS_VERSION
             or os_version in ALL_OS_LTSS_VERSIONS
         ),
-        pretty_name=_get_fips_pretty_name(os_version),
-        package_list=(
+        "pretty_name": _get_fips_pretty_name(os_version),
+        "package_list": (
             [*os_version.release_package_names, "coreutils"]
             + (
                 ["fipscheck"]
@@ -232,14 +233,28 @@ FIPS_BASE_CONTAINERS = [
             )
             + (["patterns-base-fips"] if os_version.is_sl16 else [])
         ),
-        extra_labels={
+        "extra_labels": {
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
         },
-        custom_end=_get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
+        "custom_end": _get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
+    }
+
+
+@dataclass
+class Sles15Sp6BaseFipsContainer(OsContainer):
+    @property
+    def build_release(self) -> str | None:
+        assert self.os_version == OsVersion.SP6
+        return "30"
+
+
+FIPS_BASE_CONTAINERS = [
+    OsContainer(
+        **_get_fips_base_kwargs(os_version),
     )
     # SP5 is known to be having a non-working libgcrypt for FIPS mode
-    for os_version in ALL_OS_VERSIONS - {OsVersion.SP5}
-]
+    for os_version in ALL_OS_VERSIONS - {OsVersion.SP5, OsVersion.SP6}
+] + [Sles15Sp6BaseFipsContainer(**_get_fips_base_kwargs(OsVersion.SP6))]
 
 FIPS_MICRO_CONTAINERS = [
     OsContainer(
