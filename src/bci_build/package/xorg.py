@@ -7,6 +7,7 @@ from pathlib import Path
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
@@ -80,7 +81,7 @@ XORG_CONTAINERS = [
             "xorg-x11-server", tag_ver, ParseVersion.MAJOR, use_target=True
         )
         + "\nRUN useradd -m user -u 1000",
-        custom_end=textwrap.dedent("""
+        custom_end=textwrap.dedent(f"""
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
             COPY --from=builder /home/user /home/user
@@ -91,8 +92,49 @@ XORG_CONTAINERS = [
             ENV XDG_SESSION_TYPE=x11
 
             COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-            RUN chmod +x /usr/local/bin/entrypoint.sh
+            {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
             """),
+    )
+    for os_version in ALL_NONBASE_OS_VERSIONS
+]
+
+XORG_CLIENT_CONTAINERS = [
+    ApplicationStackContainer(
+        name="xorg-client",
+        os_version=os_version,
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        exclusive_arch=KIOSK_EXCLUSIVE_ARCH,
+        version_in_uid=False,
+        version="21",
+        tag_version=(tag_ver := "21"),
+        is_singleton_image=True,
+        pretty_name="Xorg Client",
+        _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+        package_list=(
+            [
+                # for fonts to actually display
+                "xorg-x11-fonts",
+                # for puleaudio communication
+                "libpulse0",
+                # for cjk fonts
+                "noto-sans-cjk-fonts",
+                # Provides necessary codecs for video/audio playback
+                "libavcodec58_134",
+            ]
+        ),
+        support_level=SupportLevel.L3,
+        supported_until=KIOSK_SUPPORT_ENDS,
+        # TODO add package_version_check and tag_version
+        build_stage_custom_end=textwrap.dedent(f"""\
+            {DOCKERFILE_RUN} useradd -m -u 1000 -U user
+            """),
+        custom_end=textwrap.dedent("""
+            ENV DISPLAY=":0"
+            COPY --from=builder /etc/passwd /etc/passwd
+            COPY --from=builder /etc/group /etc/group
+            COPY --from=builder /home/user /home/user
+        """),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
