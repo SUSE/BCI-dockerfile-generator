@@ -32,7 +32,7 @@ for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
         is_singleton_image=True,
         version="%%samba_version%%",
         version_in_uid=False,
-        support_level=SupportLevel.L3,
+        support_level=SupportLevel.TECHPREVIEW,
         tag_version=samba_version,
         build_stage_custom_end=generate_package_version_check(
             "samba", samba_version, use_target=True
@@ -106,7 +106,7 @@ for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
         is_singleton_image=True,
         version="%%samba_version%%",
         version_in_uid=False,
-        support_level=SupportLevel.L3,
+        support_level=SupportLevel.TECHPREVIEW,
         tag_version=samba_version,
         build_stage_custom_end=generate_package_version_check(
             "samba-client", samba_version, use_target=True
@@ -133,7 +133,7 @@ for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
         is_singleton_image=True,
         version="%%samba_version%%",
         version_in_uid=False,
-        support_level=SupportLevel.L3,
+        support_level=SupportLevel.TECHPREVIEW,
         tag_version=samba_version,
         build_stage_custom_end=generate_package_version_check(
             "samba-client", samba_version, use_target=True
