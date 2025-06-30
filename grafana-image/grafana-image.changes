@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jun 30 08:03:36 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add curl to the grafana image (bsc#1245255)
+
+-------------------------------------------------------------------
 Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - increase buildrelease
