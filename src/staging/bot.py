@@ -1153,13 +1153,10 @@ updates:
         await self._run_cmd(
             f"{self._osc} wipebinaries --all {self.staging_project_name}"
         )
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # call osc rebuild --all in a tempdir not in the git repo, to
-            # workaround https://github.com/openSUSE/osc/issues/1390
-            await self._run_cmd(
-                f"{self._osc} rebuild --all {self.staging_project_name}", cwd=tmp_dir
-            )
-        return self._osc_fetch_results_cmd("--watch")
+        await self._run_cmd(
+            f"{self._osc} rebuild --all {self.staging_project_name}",
+        )
+        return self._osc_fetch_prjresults_cmd("--watch")
 
     async def scratch_build(self, commit_message: str = "") -> None | str:
         # no commit -> no changes -> no reason to build
