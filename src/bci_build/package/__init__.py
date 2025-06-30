@@ -1523,6 +1523,7 @@ from .spack import SPACK_CONTAINERS  # noqa: E402
 from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
 from .trivy import TRIVY_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
+from .xorg import XORG_CLIENT_CONTAINERS  # noqa: E402
 from .xorg import XORG_CONTAINERS  # noqa: E402
 
 ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
@@ -1579,6 +1580,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *KUBECTL_CONTAINERS,
         *STUNNEL_CONTAINERS,
         *XORG_CONTAINERS,
+        *XORG_CLIENT_CONTAINERS,
         *FIREFOX_CONTAINERS,
         *PULSEAUDIO_CONTAINERS,
         *BIND_CONTAINERS,
