@@ -15,12 +15,10 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: suse/kiosk/xorg:%%xorg_server_ver%%-%RELEASE%
-#!BuildTag: suse/kiosk/xorg:%%xorg_server_ver%%
-#!BuildTag: suse/kiosk/xorg:21
-#!BuildTag: suse/kiosk/xorg:notaskbar
-#!BuildTag: suse/kiosk/xorg:latest
-#!BuildName: suse-kiosk-xorg
+#!BuildTag: suse/kiosk/xorg-client:21-%RELEASE%
+#!BuildTag: suse/kiosk/xorg-client:21
+#!BuildTag: suse/kiosk/xorg-client:latest
+#!BuildName: suse-kiosk-xorg-client
 #!BuildVersion: 15.7.21
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
@@ -28,28 +26,25 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools procps rpm-ndb
-# sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' xorg-x11-server | \
-    cut -d '.' -f -1)" = "21" ]
-RUN useradd -m user -u 1000
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends xorg-x11-fonts libpulse0 noto-sans-cjk-fonts libavcodec58_134
+RUN set -euo pipefail; useradd -m -u 1000 -U user
+
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.application.xorg
+# labelprefix=com.suse.application.xorg-client
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE Xorg Server"
-LABEL org.opencontainers.image.description="Xorg Server container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="%%xorg_server_ver%%"
+LABEL org.opencontainers.image.title="SLE Xorg Client"
+LABEL org.opencontainers.image.description="Xorg Client container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="21"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%xorg_server_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/xorg:%%xorg_server_ver%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="21-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kiosk/xorg-client:21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2028-07-31"
@@ -60,16 +55,8 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+ENV DISPLAY=":0"
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /home/user /home/user
-COPY preferences /etc/icewm/preferences
-COPY xinitrc /etc/X11/xinit/xinitrc
-COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
-
-ENV XDG_SESSION_TYPE=x11
-
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh

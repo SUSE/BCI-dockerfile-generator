@@ -257,6 +257,10 @@ staging_build:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: xorg-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: xorg-client-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
   filters:
     event: pull_request
 
@@ -466,6 +470,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: xorg-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: xorg-client-image
   filters:
     event: push
     branches:
