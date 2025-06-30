@@ -15,53 +15,40 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: opensuse/xorg:%%xorg_server_ver%%-%RELEASE%
-#!BuildTag: opensuse/xorg:%%xorg_server_ver%%
-#!BuildTag: opensuse/xorg:21
-#!BuildTag: opensuse/xorg:notaskbar
-#!BuildTag: opensuse/xorg:latest
+#!BuildTag: opensuse/xorg-client:21-%RELEASE%
+#!BuildTag: opensuse/xorg-client:21
+#!BuildTag: opensuse/xorg-client:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname which xinit xhost xorg-x11 xorg-x11-server xrandr icewm-lite xf86-input-evdev xf86-input-libinput xkeyboard-config xinput xorg-x11-essentials xdm sysvinit-tools procps xsession
-# sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' xorg-x11-server | \
-    cut -d '.' -f -1)" = "21" ]
-RUN useradd -m user -u 1000
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends xorg-x11-fonts libpulse0 noto-sans-cjk-fonts libavcodec58_134
+RUN set -euo pipefail; useradd -m -u 1000 -U user
+
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM opensuse/bci/bci-micro:latest
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.application.xorg
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed Xorg Server"
-LABEL org.opencontainers.image.description="Xorg Server container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="%%xorg_server_ver%%"
+# labelprefix=org.opensuse.application.xorg-client
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed Xorg Client"
+LABEL org.opencontainers.image.description="Xorg Client container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.version="21"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%xorg_server_ver%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/xorg:%%xorg_server_ver%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="21-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/xorg-client:21-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+ENV DISPLAY=":0"
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /home/user /home/user
-COPY preferences /etc/icewm/preferences
-COPY xinitrc /etc/X11/xinit/xinitrc
-COPY xorg.conf /etc/X11/xorg.conf.d/xorg.conf
-
-ENV XDG_SESSION_TYPE=x11
-
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
