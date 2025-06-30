@@ -190,6 +190,7 @@ BCI_CI_CONTAINERS = [
             "git-core",
             "jq",
             "osc",
+            "patch",
             "python3-devel",
             "python3-dnf",
             "python3-pipx",
