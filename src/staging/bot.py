@@ -671,9 +671,9 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
 
         await self._send_prj_config(prj_name, prjconf, ProjectConfig.PRJCONF)
 
-    def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
+    def _osc_fetch_prjresults_cmd(self, extra_osc_flags: str = "") -> str:
         return (
-            f"{self._osc} results --xml {extra_osc_flags} "
+            f"{self._osc} prjresults --xml {extra_osc_flags} "
             + " ".join("--repo=" + repo_name for repo_name in self.repositories)
             + f" {self.staging_project_name}"
         )
@@ -1145,7 +1145,7 @@ updates:
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
         return RepositoryBuildResult.from_resultlist(
-            (await self._run_cmd(self._osc_fetch_results_cmd())).stdout
+            (await self._run_cmd(self._osc_fetch_prjresults_cmd())).stdout
         )
 
     async def force_rebuild(self) -> str:
@@ -1289,7 +1289,7 @@ updates:
                         timeout.total_seconds(),
                     )
                     await self._run_cmd(
-                        self._osc_fetch_results_cmd("--watch"), timeout=timeout
+                        self._osc_fetch_prjresults_cmd("--watch"), timeout=timeout
                     )
                     # if we got here, then osc result --watch successfully
                     # finished
