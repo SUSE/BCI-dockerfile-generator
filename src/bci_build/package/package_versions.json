@@ -24,8 +24,8 @@
         "version_format": "minor"
     },
     "helm": {
-        "6": "3.17",
-        "7": "3.17",
+        "6": "3.18",
+        "7": "3.18",
         "Tumbleweed": "3.18",
         "version_format": "minor"
     },
@@ -43,7 +43,7 @@
     "nginx": {
         "6": "1.21",
         "7": "1.21",
-        "Tumbleweed": "1.28",
+        "Tumbleweed": "1.29",
         "version_format": "minor"
     },
     "pcp": {
