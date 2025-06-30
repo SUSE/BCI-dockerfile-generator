@@ -50,7 +50,7 @@ _osc_user = "defolos"
             """Created a staging project on OBS for 16.0: [home:defolos:BCI:Staging:16.0:16.0-AVeMj](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:16.0:16.0-AVeMj)
 Changes pushed to branch [`16.0-AVeMj`](https://github.com/SUSE/BCI-dockerfile-generator/tree/16.0-AVeMj)""",
             StagingBot(
-                os_version=OsVersion.SLE16_0,
+                os_version=OsVersion.SL16_0,
                 branch_name="16.0-AVeMj",
                 osc_username=_osc_user,
             ),

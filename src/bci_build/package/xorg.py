@@ -96,7 +96,7 @@ XORG_CONTAINERS = [
             {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
             """),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SLE16_0}
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
 
 XORG_CLIENT_CONTAINERS = [
@@ -137,5 +137,5 @@ XORG_CLIENT_CONTAINERS = [
             COPY --from=builder /home/user /home/user
         """),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SLE16_0}
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]

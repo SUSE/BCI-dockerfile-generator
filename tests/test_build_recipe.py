@@ -236,7 +236,7 @@ Copyright header
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 stability_tag="stable",
-                os_version=OsVersion.SLE16_0,
+                os_version=OsVersion.SL16_0,
                 version="%%emacs_ver%%",
             ),
         ),

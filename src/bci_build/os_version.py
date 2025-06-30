@@ -19,7 +19,7 @@ class OsVersion(enum.Enum):
     #: SLE 15 Service Pack 3
     SP3 = 3
     #: SUSE Linux 16.0
-    SLE16_0 = "16.0"
+    SL16_0 = "16.0"
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
 
@@ -35,7 +35,7 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SLE16_0.value):
+        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SL16_0.value):
             return self.value
         return f"SP{self.value}"
 
@@ -104,7 +104,7 @@ class OsVersion(enum.Enum):
 
     @property
     def is_sl16(self) -> bool:
-        return self.value in (OsVersion.SLE16_0.value,)
+        return self.value in (OsVersion.SL16_0.value,)
 
     @property
     def is_tumbleweed(self) -> bool:
@@ -122,7 +122,7 @@ class OsVersion(enum.Enum):
         """
         if self.is_sle15:
             return f"15.{str(self.value)}"
-        if self.value == OsVersion.SLE16_0.value:
+        if self.value == OsVersion.SL16_0.value:
             return "16.0"
         # Tumbleweed rolls too fast, just use latest
         return "latest"
@@ -136,7 +136,7 @@ class OsVersion(enum.Enum):
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
         # TODO: switch to skelcd-EULA-bci when SLES 16 is released
-        if self.value == OsVersion.SLE16_0.value:
+        if self.value == OsVersion.SL16_0.value:
             return ("skelcd-EULA-SLES",)
         return ()
 
@@ -144,7 +144,7 @@ class OsVersion(enum.Enum):
     def release_package_names(self) -> tuple[str, ...]:
         if self.value == OsVersion.TUMBLEWEED.value:
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
-        if self.value == OsVersion.SLE16_0.value:
+        if self.value == OsVersion.SL16_0.value:
             return ("SLES-release",)
         if self.is_ltss:
             return ("sles-ltss-release",)
@@ -173,7 +173,7 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP7,
-    OsVersion.SLE16_0,
+    OsVersion.SL16_0,
     OsVersion.TUMBLEWEED,
 ]
 
@@ -182,7 +182,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
-    OsVersion.SLE16_0,
+    OsVersion.SL16_0,
 ]
 
 # List of SPs that are already under LTSS

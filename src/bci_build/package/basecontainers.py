@@ -296,7 +296,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list.extend(_get_micro_package_list(os_version))
     package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0):
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     else:
         # in SLE15, rpm still depends on Perl.
@@ -384,7 +384,7 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.SLE16_0:
+    if os_version == OsVersion.SL16_0:
         prefix = "sle16"
         pretty_prefix = "SLE 16"
     else:
@@ -442,7 +442,7 @@ KERNEL_MODULE_CONTAINERS.append(
         name="slm60-kernel-module-devel",
         pretty_name="SUSE Linux Micro 6.0 Kernel module development",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        os_version=OsVersion.SLE16_0,
+        os_version=OsVersion.SL16_0,
         supported_until=datetime.date(2028, 6, 30),
         is_latest=True,
         package_list=(
@@ -455,7 +455,7 @@ KERNEL_MODULE_CONTAINERS.append(
                 "pesign-obs-integration",
                 "dwarves",
                 "libelf-devel",
-                *OsVersion.SLE16_0.release_package_names,
+                *OsVersion.SL16_0.release_package_names,
             ]
         ),
         exclusive_arch=[Arch.X86_64, Arch.S390X, Arch.AARCH64],

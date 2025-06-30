@@ -86,7 +86,7 @@ OS_VERSION_NEEDS_BASE_CONTAINER: tuple[OsVersion, ...] = ()
 def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
     if os_version == OsVersion.TUMBLEWEED:
         return "openSUSE:Factory", "opensuse-tumbleweed-image"
-    if os_version == OsVersion.SLE16_0:
+    if os_version == OsVersion.SL16_0:
         raise ValueError("The SLFO base container is provided by BCI")
 
     return f"SUSE:SLE-15-SP{os_version}:Update", "sles15-image"
@@ -95,7 +95,7 @@ def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
 def _get_bci_project_name(os_version: OsVersion) -> str:
     prj_suffix = (
         os_version
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0)
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0)
         else "SLE-15-SP" + str(os_version)
     )
     return f"devel:BCI:{prj_suffix}"
