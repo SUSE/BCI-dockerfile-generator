@@ -17,11 +17,11 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/helm:%%helm_version%%-%RELEASE%
 #!BuildTag: suse/helm:%%helm_version%%
-#!BuildTag: suse/helm:3.17
+#!BuildTag: suse/helm:3.18
 #!BuildTag: suse/helm:3
 #!BuildTag: suse/helm:latest
 #!BuildName: suse-helm
-#!BuildVersion: 15.7.3.17
+#!BuildVersion: 15.7.3.18
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
@@ -32,7 +32,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of helm that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' helm | \
-    cut -d '.' -f -2)" = "3.17" ]
+    cut -d '.' -f -2)" = "3.18" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
 FROM registry.suse.com/bci/bci-micro:15.7
