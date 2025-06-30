@@ -18,7 +18,7 @@ class OsVersion(enum.Enum):
     SP4 = 4
     #: SLE 15 Service Pack 3
     SP3 = 3
-    #: SUSE Linux Framework One
+    #: SUSE Linux 16.0
     SLE16_0 = "16.0"
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
@@ -173,6 +173,7 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP7,
+    OsVersion.SLE16_0,
     OsVersion.TUMBLEWEED,
 ]
 

@@ -99,6 +99,15 @@ GOLANG_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
+            **_get_golang_kwargs(ver, govariant, sl16ver),
+            support_level=SupportLevel.L3,
+        )
+        for ver, govariant, sl16ver in product(
+            _GOLANG_VERSIONS, ("",), (OsVersion.SLE16_0,)
+        )
+    ]
+    + [
+        DevelopmentContainer(
             **_get_golang_kwargs(ver, govariant, sle15sp),
             support_level=SupportLevel.L3,
         )

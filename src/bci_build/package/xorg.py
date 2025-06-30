@@ -7,6 +7,7 @@ from pathlib import Path
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
@@ -95,7 +96,7 @@ XORG_CONTAINERS = [
             {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
             """),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SLE16_0}
 ]
 
 XORG_CLIENT_CONTAINERS = [
@@ -136,5 +137,5 @@ XORG_CLIENT_CONTAINERS = [
             COPY --from=builder /home/user /home/user
         """),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SLE16_0}
 ]
