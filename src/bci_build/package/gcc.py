@@ -96,7 +96,7 @@ GCC_CONTAINERS = [
     )
     for (gcc_version, os_version) in (
         (14, OsVersion.SP7),
-        (15, OsVersion.SLE16_0),
+        (15, OsVersion.SL16_0),
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
         (15, OsVersion.TUMBLEWEED),

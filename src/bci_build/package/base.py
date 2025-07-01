@@ -225,6 +225,5 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 BASE_CONTAINERS = [
     Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6, OsVersion.SP7)
 ] + [
-    OsContainer(**_get_base_kwargs(os_version=os_ver))
-    for os_ver in (OsVersion.SLE16_0,)
+    OsContainer(**_get_base_kwargs(os_version=os_ver)) for os_ver in (OsVersion.SL16_0,)
 ]

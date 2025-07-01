@@ -111,7 +111,7 @@ This project is automatically updated from git. Please do **not** send submit re
 </project>""",
         ),
         (
-            OsVersion.SLE16_0,
+            OsVersion.SL16_0,
             ProjectType.DEVEL,
             None,
             (prj_name := "devel:BCI:16.0"),
@@ -171,7 +171,7 @@ This project is automatically updated from git. Please do **not** send submit re
 </project>""",
         ),
         (
-            OsVersion.SLE16_0,
+            OsVersion.SL16_0,
             ProjectType.STAGING,
             (branch := "pr-404"),
             (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:16.0:{branch}"),

@@ -19,7 +19,7 @@ def run_in_tmp_path(tmp_path: pathlib.Path):
 
 @pytest.mark.parametrize("os_version", ALL_NONBASE_OS_VERSIONS)
 @pytest.mark.parametrize("branch", ["", "something"])
-@pytest.mark.parametrize("packages", [None, ["pcp-image"]])
+@pytest.mark.parametrize("packages", [None, ["bind-image"]])
 @pytest.mark.parametrize(
     "repositories", [None, ["images"], ["images", "containerfile", "ports"]]
 )
@@ -47,11 +47,11 @@ _osc_user = "defolos"
     "comment,bot",
     [
         (
-            """Created a staging project on OBS for 4: [home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP4:sle15-sp4-AVeMj)
-Changes pushed to branch [`sle15-sp4-AVeMj`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp4-AVeMj)""",
+            """Created a staging project on OBS for 16.0: [home:defolos:BCI:Staging:16.0:16.0-AVeMj](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:16.0:16.0-AVeMj)
+Changes pushed to branch [`16.0-AVeMj`](https://github.com/SUSE/BCI-dockerfile-generator/tree/16.0-AVeMj)""",
             StagingBot(
-                os_version=OsVersion.SP4,
-                branch_name="sle15-sp4-AVeMj",
+                os_version=OsVersion.SL16_0,
+                branch_name="16.0-AVeMj",
                 osc_username=_osc_user,
             ),
         ),
@@ -65,11 +65,11 @@ Changes pushed to branch [`tumbleweed-EqgiS`](https://github.com/SUSE/BCI-docker
             ),
         ),
         (
-            """Created a staging project on OBS for 3: [home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP3:sle15-sp3-OZGYa)
-Changes pushed to branch [`sle15-sp3-OZGYa`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp3-OZGYa)""",
+            """Created a staging project on OBS for 7: [home:defolos:BCI:Staging:SLE-15-SP7:sle15-sp7-OZGYa](https://build.opensuse.org/project/show/home:defolos:BCI:Staging:SLE-15-SP7:sle15-sp7-OZGYa)
+Changes pushed to branch [`sle15-sp7-OZGYa`](https://github.com/SUSE/BCI-dockerfile-generator/tree/sle15-sp7-OZGYa)""",
             StagingBot(
-                os_version=OsVersion.SP3,
-                branch_name="sle15-sp3-OZGYa",
+                os_version=OsVersion.SP7,
+                branch_name="sle15-sp7-OZGYa",
                 osc_username=_osc_user,
             ),
         ),

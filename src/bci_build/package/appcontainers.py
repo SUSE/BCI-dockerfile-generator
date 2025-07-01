@@ -90,7 +90,7 @@ HEALTHCHECK --start-period=30s --timeout=20s --interval=10s --retries=3 \
     CMD /usr/local/bin/healthcheck
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
 
 
@@ -141,7 +141,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
 
 
@@ -210,7 +210,7 @@ ALERTMANAGER_CONTAINERS = [
         exposes_ports=[TCP(_ALERTMANAGER_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_ALERTMANAGER_PORT),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
 
 _BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
@@ -240,7 +240,7 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         exposes_ports=[TCP(_BLACKBOX_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_BLACKBOX_PORT),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
 
 
@@ -346,5 +346,5 @@ REGISTRY_CONTAINERS = [
         exposes_ports=[TCP(5000)],
         support_level=SupportLevel.L3,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]

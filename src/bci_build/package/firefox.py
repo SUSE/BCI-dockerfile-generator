@@ -7,6 +7,7 @@ import textwrap
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
@@ -39,9 +40,16 @@ FIREFOX_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
-                # Provides necessary codecs for video/audio playback
-                "libavcodec58_134",
             ]
+            + (
+                [
+                    # Provides necessary codecs for video/audio playback
+                    "libavcodec58_134",
+                    "gconf2",
+                ]
+                if os_version.is_sle15
+                else []
+            )
             + (
                 [
                     "MozillaFirefox-branding-openSUSE",
@@ -49,9 +57,6 @@ FIREFOX_CONTAINERS = [
                 if os_version.is_tumbleweed
                 else [
                     "MozillaFirefox-branding-SLE",
-                    # required by Firefox via /usr/bin/gconftool-2
-                    # to be fixed via FileProvides
-                    "gconf2",
                 ]
             )
         ),
@@ -79,5 +84,5 @@ FIREFOX_CONTAINERS = [
             COPY --from=builder /home/user /home/user
         """),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]

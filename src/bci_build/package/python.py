@@ -163,7 +163,7 @@ PYTHON_3_13_CONTAINERS = [
         package_name="python-3.13-image",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version in (OsVersion.SP7,)
+    for os_version in (OsVersion.SP7, OsVersion.SL16_0)
 ]
 
 _CI_PYTHON = ("3.13", "313")

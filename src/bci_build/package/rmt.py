@@ -45,5 +45,5 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]

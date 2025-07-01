@@ -86,7 +86,7 @@ OS_VERSION_NEEDS_BASE_CONTAINER: tuple[OsVersion, ...] = ()
 def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
     if os_version == OsVersion.TUMBLEWEED:
         return "openSUSE:Factory", "opensuse-tumbleweed-image"
-    if os_version == OsVersion.SLE16_0:
+    if os_version == OsVersion.SL16_0:
         raise ValueError("The SLFO base container is provided by BCI")
 
     return f"SUSE:SLE-15-SP{os_version}:Update", "sles15-image"
@@ -95,7 +95,7 @@ def _get_base_image_prj_pkg(os_version: OsVersion) -> tuple[str, str]:
 def _get_bci_project_name(os_version: OsVersion) -> str:
     prj_suffix = (
         os_version
-        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SLE16_0)
+        if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0)
         else "SLE-15-SP" + str(os_version)
     )
     return f"devel:BCI:{prj_suffix}"
@@ -671,9 +671,9 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
 
         await self._send_prj_config(prj_name, prjconf, ProjectConfig.PRJCONF)
 
-    def _osc_fetch_results_cmd(self, extra_osc_flags: str = "") -> str:
+    def _osc_fetch_prjresults_cmd(self, extra_osc_flags: str = "") -> str:
         return (
-            f"{self._osc} results --xml {extra_osc_flags} "
+            f"{self._osc} prjresults --xml {extra_osc_flags} "
             + " ".join("--repo=" + repo_name for repo_name in self.repositories)
             + f" {self.staging_project_name}"
         )
@@ -1145,7 +1145,7 @@ updates:
     async def fetch_build_results(self) -> list[RepositoryBuildResult]:
         """Retrieves the current build results of the staging project."""
         return RepositoryBuildResult.from_resultlist(
-            (await self._run_cmd(self._osc_fetch_results_cmd())).stdout
+            (await self._run_cmd(self._osc_fetch_prjresults_cmd())).stdout
         )
 
     async def force_rebuild(self) -> str:
@@ -1153,13 +1153,10 @@ updates:
         await self._run_cmd(
             f"{self._osc} wipebinaries --all {self.staging_project_name}"
         )
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # call osc rebuild --all in a tempdir not in the git repo, to
-            # workaround https://github.com/openSUSE/osc/issues/1390
-            await self._run_cmd(
-                f"{self._osc} rebuild --all {self.staging_project_name}", cwd=tmp_dir
-            )
-        return self._osc_fetch_results_cmd("--watch")
+        await self._run_cmd(
+            f"{self._osc} rebuild --all {self.staging_project_name}",
+        )
+        return self._osc_fetch_prjresults_cmd("--watch")
 
     async def scratch_build(self, commit_message: str = "") -> None | str:
         # no commit -> no changes -> no reason to build
@@ -1292,7 +1289,7 @@ updates:
                         timeout.total_seconds(),
                     )
                     await self._run_cmd(
-                        self._osc_fetch_results_cmd("--watch"), timeout=timeout
+                        self._osc_fetch_prjresults_cmd("--watch"), timeout=timeout
                     )
                     # if we got here, then osc result --watch successfully
                     # finished
