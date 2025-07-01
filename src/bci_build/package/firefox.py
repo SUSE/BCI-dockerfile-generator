@@ -40,11 +40,11 @@ FIREFOX_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
+                # Provides necessary codecs for video/audio playback
+                "libavcodec58_134",
             ]
             + (
                 [
-                    # Provides necessary codecs for video/audio playback
-                    "libavcodec58_134",
                     "gconf2",
                 ]
                 if os_version.is_sle15
