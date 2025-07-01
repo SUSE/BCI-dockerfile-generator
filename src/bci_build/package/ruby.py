@@ -95,5 +95,9 @@ RUBY_CONTAINERS = [
         **_get_ruby_kwargs("3.4", OsVersion.SP7),
         support_level=SupportLevel.L3,
     ),
+    DevelopmentContainer(
+        **_get_ruby_kwargs("3.4", OsVersion.SL16_0),
+        support_level=SupportLevel.L3,
+    ),
     DevelopmentContainer(**_get_ruby_kwargs("3.4", OsVersion.TUMBLEWEED)),
 ]
