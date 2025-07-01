@@ -31,7 +31,7 @@ FIREFOX_CONTAINERS = [
         pretty_name="Mozilla Firefox",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-        package_list=(
+        package_list=sorted(
             [
                 "MozillaFirefox",
                 # for fonts to actually display

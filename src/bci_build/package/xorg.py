@@ -43,30 +43,32 @@ XORG_CONTAINERS = [
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         pretty_name="Xorg Server",
-        package_list=[
-            "hostname",
-            "which",
-            "xinit",
-            "xhost",
-            "xorg-x11",
-            "xorg-x11-server",
-            "xrandr",
-            "icewm-lite",
-            "xf86-input-evdev",
-            "xf86-input-libinput",
-            "xkeyboard-config",
-            "xinput",
-            # indirect dependencies
-            "xorg-x11-essentials",
-            "xdm",
-            # for /sbin/pidof, required by xdm
-            "sysvinit-tools",
-            "procps",
-        ]
-        # FIXME: unavailable on SLES
-        + (["xsession"] if os_version.is_tumbleweed else [])
-        # workaround xf86-input-evdev pulling udev/kmod/rpm
-        + (["rpm-ndb"] if os_version.is_sle15 else []),
+        package_list=sorted(
+            [
+                "hostname",
+                "which",
+                "xinit",
+                "xhost",
+                "xorg-x11",
+                "xorg-x11-server",
+                "xrandr",
+                "icewm-lite",
+                "xf86-input-evdev",
+                "xf86-input-libinput",
+                "xkeyboard-config",
+                "xinput",
+                # indirect dependencies
+                "xorg-x11-essentials",
+                "xdm",
+                # for /sbin/pidof, required by xdm
+                "sysvinit-tools",
+                "procps",
+            ]
+            # FIXME: unavailable on SLES
+            + (["xsession"] if os_version.is_tumbleweed else [])
+            # workaround xf86-input-evdev pulling udev/kmod/rpm
+            + (["rpm-ndb"] if os_version.is_sle15 else [])
+        ),
         replacements_via_service=[
             Replacement(
                 xorg_server_re,
@@ -112,7 +114,7 @@ XORG_CLIENT_CONTAINERS = [
         pretty_name="Xorg Client",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-        package_list=(
+        package_list=sorted(
             [
                 # for fonts to actually display
                 "xorg-x11-fonts",
