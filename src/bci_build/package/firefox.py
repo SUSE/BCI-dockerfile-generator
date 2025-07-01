@@ -31,7 +31,7 @@ FIREFOX_CONTAINERS = [
         pretty_name="Mozilla Firefox",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-        package_list=(
+        package_list=sorted(
             [
                 "MozillaFirefox",
                 # for fonts to actually display
@@ -40,11 +40,11 @@ FIREFOX_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
+                # Provides necessary codecs for video/audio playback
+                "libavcodec58_134",
             ]
             + (
                 [
-                    # Provides necessary codecs for video/audio playback
-                    "libavcodec58_134",
                     "gconf2",
                 ]
                 if os_version.is_sle15
