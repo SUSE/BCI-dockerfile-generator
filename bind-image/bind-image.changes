@@ -1,4 +1,59 @@
 -------------------------------------------------------------------
-Tue Jul 01 14:00:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Tue Jul  1 16:24:18 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SLE 16
+
+-------------------------------------------------------------------
+Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- increase buildrelease
+
+-------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Tue May  6 07:49:55 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- restore executable permission on entrypoint
+
+-------------------------------------------------------------------
+Mon May  5 09:54:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Move healthcheck into Dockerfile
+
+-------------------------------------------------------------------
+Fri May  2 09:58:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Switch to a multistage build and adjust versions metadata
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Fri Mar 28 13:44:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the ISC BIND 9 BCI

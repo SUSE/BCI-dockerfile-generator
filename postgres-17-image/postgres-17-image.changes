@@ -1,4 +1,74 @@
 -------------------------------------------------------------------
-Tue Jul 01 14:00:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Tue Jul  1 16:21:45 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SLE 16
+
+-------------------------------------------------------------------
+Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- increase buildrelease
+
+-------------------------------------------------------------------
+Tue Jun 10 08:34:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update docker-entrypoint script in preparation of postgresql 18 upgrade
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Fri Mar  7 07:07:12 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Unset NOTIFY_SOCKET in entrypoint
+
+-------------------------------------------------------------------
+Wed Feb  5 10:30:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove handling for outdated postgresql versions
+
+-------------------------------------------------------------------
+Wed Jan 29 14:06:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update README to add hints about the persistent volume requirements
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
+Mon Dec  2 15:18:44 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add end of support date
+
+-------------------------------------------------------------------
+Tue Nov 26 12:45:33 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the PostgreSQL 17 BCI
