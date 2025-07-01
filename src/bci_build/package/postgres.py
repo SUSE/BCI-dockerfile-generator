@@ -44,6 +44,7 @@ POSTGRES_CONTAINERS = [
         ],
         version="%%pg_patch_version%%",
         tag_version=str(ver),
+        _min_release_counter=70 if ver == 16 else None,
         additional_versions=["%%pg_minor_version%%"],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
         cmd=["postgres"],
