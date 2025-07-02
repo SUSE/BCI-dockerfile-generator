@@ -4,8 +4,8 @@ import textwrap
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import UDP
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.versions import get_pkg_version
 
@@ -33,5 +33,5 @@ KEA_DHCP_CONTAINERS = [
         },
         exposes_ports=[TCP(67), UDP(67)],
     )
-    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
