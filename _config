@@ -43,7 +43,7 @@ Ignore: krb5-mini:this-is-only-for-build-envs
 
 BuildFlags: excludebuild:rpm
 
-Prefer: -postgresql16-devel-mini
+Prefer: -postgresql16-devel-mini -ALP-dummy-release -SLES_SAP-release
 
 # prevent gdb from pulling in python 3.11 & 3.12 at the same time
 Substitute: obs:cli_debug_packages less
