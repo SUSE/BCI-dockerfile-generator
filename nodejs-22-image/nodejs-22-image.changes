@@ -1,0 +1,44 @@
+-------------------------------------------------------------------
+Thu Jul  3 12:10:33 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SLE16
+
+-------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Wed Dec 04 12:40:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the Node.js 22 development BCI
