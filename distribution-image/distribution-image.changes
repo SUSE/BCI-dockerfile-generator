@@ -1,0 +1,89 @@
+-------------------------------------------------------------------
+Fri Jul  4 16:55:30 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SL16
+
+-------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Thu May 15 12:20:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- change version to include appversion major as patchlevel
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Fri May  2 13:54:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- build with signature checks
+
+-------------------------------------------------------------------
+Wed Feb 19 11:33:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix image references in README
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
+Thu Oct 31 16:12:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- be explicit in protocol for expose statement
+
+-------------------------------------------------------------------
+Wed Oct 30 15:35:27 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
+Fri Oct 11 15:13:11 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
+Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove org.opencontainers.image.base for unreleased versions
+
+-------------------------------------------------------------------
+Thu Sep 26 09:56:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
+Wed Sep 25 17:12:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
+Fri Sep 13 09:56:28 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove trailing whitespace
+
+-------------------------------------------------------------------
+Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the OCI Container Registry (Distribution) BCI
