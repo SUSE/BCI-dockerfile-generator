@@ -43,6 +43,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
+        source_package: kea-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
         source_package: kiwi-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -168,6 +172,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: init-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: kea-image
     - trigger_services:
         project: devel:BCI:16.0
         package: kiwi-image
