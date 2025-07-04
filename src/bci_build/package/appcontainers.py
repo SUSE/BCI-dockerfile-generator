@@ -141,7 +141,7 @@ HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
 """,
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
 
 
