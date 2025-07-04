@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
-Thu Jul 03 12:13:55 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Fri Jul  4 11:38:42 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SL16
+
+-------------------------------------------------------------------
+Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- increase buildrelease
+
+-------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
+Tue Dec  3 14:08:35 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- dockerfile fixes
+
+-------------------------------------------------------------------
+Wed Nov 27 08:43:47 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Kea DHCP Server 2.6 BCI
