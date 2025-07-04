@@ -13,6 +13,7 @@
         "version_format": "minor"
     },
     "distribution": {
+        "16.0": "3.0",
         "6": "2.8",
         "7": "2.8",
         "Tumbleweed": "3.0",
