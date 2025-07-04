@@ -7,6 +7,7 @@
         "version_format": "minor"
     },
     "cosign": {
+        "16.0": "2.5",
         "6": "2.5",
         "7": "2.5",
         "Tumbleweed": "2.5",
