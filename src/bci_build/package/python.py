@@ -63,6 +63,8 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         # py3.12 pending discussion
         if py3_ver not in ("3.12", "3.9"):
             has_wheel = True
+    elif os_version.is_sl16:
+        has_pipx = has_wheel = True
 
     kwargs = {
         "name": "python",
