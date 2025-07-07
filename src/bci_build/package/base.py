@@ -77,6 +77,9 @@ rm -rf /var/cache/zypp/*
 # drop timestamp
 tail -n +2 /var/lib/zypp/AutoInstalled > /var/lib/zypp/AutoInstalled.new && mv /var/lib/zypp/AutoInstalled.new /var/lib/zypp/AutoInstalled
 
+# remove backup of /etc/shadow
+rm -f /etc/shadow-
+
 {% if os_version.is_tumbleweed -%}
 # Assign a fixed architecture in zypp.conf, to use the container's arch even if
 # the host arch differs (e.g. docker with --platform doesn't affect uname)
