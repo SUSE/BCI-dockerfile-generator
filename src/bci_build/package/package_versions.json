@@ -36,7 +36,7 @@
     "kea": {
         "16.0": "2.6",
         "7": "2.6",
-        "Tumbleweed": "2.6",
+        "Tumbleweed": "3.0",
         "version_format": "minor"
     },
     "mariadb": {
