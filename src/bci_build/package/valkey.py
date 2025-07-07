@@ -4,11 +4,11 @@ import textwrap
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
-from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package import _build_tag_prefix
@@ -60,5 +60,5 @@ VALKEY_CONTAINERS = [
         """
         ),
     )
-    for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
