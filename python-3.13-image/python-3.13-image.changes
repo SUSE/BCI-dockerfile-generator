@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul  7 16:24:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add pipx and wheel into the development container
+
+-------------------------------------------------------------------
 Tue Jul  1 16:22:03 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for SLE 16
