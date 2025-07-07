@@ -3,7 +3,6 @@
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
@@ -45,5 +44,5 @@ COSIGN_CONTAINERS = [
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
         _min_release_counter=10,
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
