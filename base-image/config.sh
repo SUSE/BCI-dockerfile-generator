@@ -62,8 +62,11 @@ rm -rf /var/cache/zypp/*
 # drop timestamp
 tail -n +2 /var/lib/zypp/AutoInstalled > /var/lib/zypp/AutoInstalled.new && mv /var/lib/zypp/AutoInstalled.new /var/lib/zypp/AutoInstalled
 
+# drop useless device/inode specific cache file (see https://github.com/docker-library/official-images/issues/16044)
+rm -v /var/cache/ldconfig/aux-cache
+
 # remove backup of /etc/shadow
-rm -f /etc/shadow-
+rm -vf /etc/shadow-
 
 #==========================================
 # Hack! The go container management tools can't handle sparse files:
