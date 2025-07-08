@@ -59,7 +59,7 @@ MICRO_CONTAINERS = [
         build_stage_custom_end=(
             (
                 f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
-                if os_version.is_sle15
+                if os_version.is_sle15 or os_version.is_sl16
                 else ""
             )
             + textwrap.dedent(
