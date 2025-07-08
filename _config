@@ -24,6 +24,60 @@ Patterntype: none
 %endif
 %endif
 
+%if "%_repository" == "containerfile" || "%_repository" == "images"
+# Revert split of customer facing for container builds
+Prefer: !cpp-build cpp
+Prefer: !gcc-build-ada gcc-ada
+Prefer: !gcc-build-go gcc-go
+Prefer: !gcc-build gcc
+Prefer: !gcc-build-info gcc-info
+Prefer: !gcc-build-c++ gcc-c++
+Prefer: !gcc-build-fortran gcc-fortran
+Prefer: !gcc-build-d gcc-d
+Prefer: !gcc-build-32bit gcc-32bit
+Prefer: !gcc-build-devel gcc-devel
+Prefer: !gcc-build-locale gcc-locale
+Prefer: !gcc-build-c++-32bit gcc-c++-32bit
+Prefer: !gcc-build-fortran-32bit gcc-fortran-32bit
+Prefer: !gcc-build-objc gcc-objc
+Prefer: !gcc-build-objc-32bit gcc-objc-32bit
+Prefer: !gcc-build-obj-c++ gcc-obj-c++
+Prefer: !gcc-build-PIE gcc-PIE
+Prefer: !gcc-build-ada-32bit gcc-ada-32bit
+Prefer: !gcc-build-go-32bit gcc-go-32bit
+Prefer: !gcc-build-d-32bit gcc-d-32bit
+Prefer: !gccjit-build-devel gccjit-devel
+Prefer: !libstdc++-build-devel libstdc++-devel
+Prefer: !libgccjit-build-devel libgccjit-devel
+
+
+Conflict: !cpp
+Conflict: !gcc-ada
+Conflict: !gcc-go
+Conflict: !gcc
+Conflict: !gcc-info
+Conflict: !gcc-c++
+Conflict: !gcc-fortran
+Conflict: !gcc-d
+Conflict: !gcc-32bit
+Conflict: !gcc-devel
+Conflict: !gcc-locale
+Conflict: !gcc-c++-32bit
+Conflict: !gcc-fortran-32bit
+Conflict: !gcc-objc
+Conflict: !gcc-objc-32bit
+Conflict: !gcc-obj-c++
+Conflict: !gcc-PIE
+Conflict: !gcc-ada-32bit
+Conflict: !gcc-go-32bit
+Conflict: !gcc-d-32bit
+Conflict: !gccjit-devel
+Conflict: !libgccjit-devel
+Conflict: !libstdc++-devel
+
+%endif
+
+
 %if "%_repository" == "product"
 Repotype: slepool:nobuildid
 Patterntype: none

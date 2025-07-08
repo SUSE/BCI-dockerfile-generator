@@ -25,7 +25,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-SLES SLES-release
-
+RUN set -euo pipefail; rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
 # not making sense in a zypper-free image
 RUN set -euo pipefail; rm -v /target/var/lib/zypp/AutoInstalled
 RUN set -euo pipefail; zypper -n install jdupes \
