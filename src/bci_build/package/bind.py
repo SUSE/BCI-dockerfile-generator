@@ -82,7 +82,7 @@ BIND_CONTAINERS = [
                     (
                         "/var/lib/named/master",
                         "755",
-                        "root:root" if os_version.is_tumbleweed else "named:named",
+                        "root:root" if not os_version.is_sle15 else "named:named",
                     ),
                     ("/var/lib/named/slave", "755", "named:named"),
                     ("/var/log/named", "750", "named:named"),
