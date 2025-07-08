@@ -72,9 +72,9 @@ BIND_CONTAINERS = [
             # create directories that tmpfiles.d would create for us
             {DOCKERFILE_RUN} \
             """)
-        + (r" \ " + "\n").join(
+        + (" \\\n").join(
             (
-                f"    mkdir -p {dirname}; chown {user} {dirname}; chmod {mode} {dirname};"
+                f"    install -d -m {mode} -o {user.partition(':')[0]} -g {user.partition(':')[2]} {dirname};"
                 for dirname, mode, user in (
                     ("/run/named", "1775", "root:named"),
                     ("/var/lib/named", "1775", "root:named"),
