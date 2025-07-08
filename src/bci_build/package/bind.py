@@ -72,9 +72,9 @@ BIND_CONTAINERS = [
             # create directories that tmpfiles.d would create for us
             {DOCKERFILE_RUN} \
             """)
-        + (r" \ " + "\n").join(
+        + (" \\\n").join(
             (
-                f"    mkdir -p {dirname}; chown {user} {dirname}; chmod {mode} {dirname};"
+                f"    install -d -m {mode} -o {user.partition(':')[0]} -g {user.partition(':')[2]} {dirname};"
                 for dirname, mode, user in (
                     ("/run/named", "1775", "root:named"),
                     ("/var/lib/named", "1775", "root:named"),
@@ -82,7 +82,7 @@ BIND_CONTAINERS = [
                     (
                         "/var/lib/named/master",
                         "755",
-                        "root:root" if os_version.is_tumbleweed else "named:named",
+                        "root:root" if not os_version.is_sle15 else "named:named",
                     ),
                     ("/var/lib/named/slave", "755", "named:named"),
                     ("/var/log/named", "750", "named:named"),
