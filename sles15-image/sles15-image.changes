@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  8 11:09:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove autoinstalled from zypper-free base container
+
+-------------------------------------------------------------------
 Fri May 23 11:26:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use SOURCEURL_WITH to generate proper artifacthub urls

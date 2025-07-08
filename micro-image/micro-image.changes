@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  8 11:09:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove autoinstalled from zypper-free base container
+
+-------------------------------------------------------------------
 Tue Jun 17 17:36:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop buildrelease (obsolete, now set on SP7)
