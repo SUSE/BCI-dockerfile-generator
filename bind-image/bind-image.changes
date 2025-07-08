@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  8 15:47:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use install to create the directories with the right permissions
+
+-------------------------------------------------------------------
 Tue Jul  1 16:24:18 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for SLE 16
