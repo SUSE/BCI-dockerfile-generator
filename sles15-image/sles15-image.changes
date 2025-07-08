@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  8 11:08:40 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove autoinstalled from zypper-free base container
+
+-------------------------------------------------------------------
 Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add latest tags
