@@ -26,8 +26,6 @@ COPY --from=target / /target
 RUN set -euo pipefail; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-bci sles-release
 RUN set -euo pipefail; rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
-# not making sense in a zypper-free image
-RUN set -euo pipefail; rm -v /target/var/lib/zypp/AutoInstalled
 RUN set -euo pipefail; zypper -n install jdupes \
     && jdupes -1 -L -r /target/usr/
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -58,3 +56,8 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 CMD ["/bin/sh"]
+
+# not making sense in a zypper-free image
+RUN set -euo pipefail; rm -v /var/lib/zypp/AutoInstalled
+# includes device and inode numbers that change on deploy
+RUN set -euo pipefail; rm -v /var/cache/ldconfig/aux-cache
