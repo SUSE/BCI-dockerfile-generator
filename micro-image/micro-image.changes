@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  8 15:39:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- import the container signing key as trusted
+
+-------------------------------------------------------------------
 Tue Jul  8 11:09:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove autoinstalled from zypper-free base container
