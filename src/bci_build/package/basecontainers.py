@@ -62,14 +62,16 @@ MICRO_CONTAINERS = [
                 if os_version.is_sle15 or os_version.is_sl16
                 else ""
             )
-            + textwrap.dedent(
-                f"""
-            # not making sense in a zypper-free image
-            {DOCKERFILE_RUN} rm -v /target/var/lib/zypp/AutoInstalled
+            + textwrap.dedent(f"""
             {DOCKERFILE_RUN} zypper -n install jdupes \\
-                && jdupes -1 -L -r /target/usr/"""
-            )
+                && jdupes -1 -L -r /target/usr/""")
         ),
+        custom_end=textwrap.dedent(f"""
+            # not making sense in a zypper-free image
+            {DOCKERFILE_RUN} rm -v /var/lib/zypp/AutoInstalled
+            # includes device and inode numbers that change on deploy
+            {DOCKERFILE_RUN} rm -v /var/cache/ldconfig/aux-cache
+        """),
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -341,6 +343,9 @@ MINIMAL_CONTAINERS = [
             # not making sense in a zypper-free image
             rm -v /var/lib/zypp/AutoInstalled
 
+            # includes device and inode numbers that change on deploy
+            rm -v /var/cache/ldconfig/aux-cache
+
             # Will be recreated by the next rpm(1) run as root user
             rm -v /usr/lib/sysimage/rpm/Index.db
             """
@@ -379,6 +384,9 @@ BUSYBOX_CONTAINERS = [
 
             # not making sense in a zypper-free image
             rm -v /var/lib/zypp/AutoInstalled
+
+            # includes device and inode numbers that change on deploy
+            rm -v /var/cache/ldconfig/aux-cache
 
             # Will be recreated by the next rpm(1) run as root user
             rm -v /usr/lib/sysimage/rpm/Index.db
