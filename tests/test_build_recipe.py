@@ -393,6 +393,7 @@ LABEL emacs_version="28"
 LABEL GCC_version="15"
 ENV EMACS_VERSION="28"
 ENV GPP_path="/usr/bin/g++"
+ENV ZZZ="LAST VALUE"
 ENTRYPOINT ["/usr/bin/emacs"]
 CMD ["/usr/bin/gcc"]
 EXPOSE 22/tcp 1111/tcp
@@ -453,6 +454,7 @@ Copyright header
         <environment>
           <env name="EMACS_VERSION" value="28"/>
           <env name="GPP_path" value="/usr/bin/g++"/>
+          <env name="ZZZ" value="LAST VALUE"/>
         </environment>
 
       </containerconfig>
@@ -492,7 +494,11 @@ Copyright header
                 tag_version="28",
                 additional_names=["emacs"],
                 extra_labels={"emacs_version": "28", "GCC_version": "15"},
-                env={"EMACS_VERSION": 28, "GPP_path": "/usr/bin/g++"},
+                env={
+                    "ZZZ": "LAST VALUE",
+                    "EMACS_VERSION": 28,
+                    "GPP_path": "/usr/bin/g++",
+                },
                 custom_end="""RUN emacs -Q --batch""",
             ),
         ),
