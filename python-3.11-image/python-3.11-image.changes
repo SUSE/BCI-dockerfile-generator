@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 11 10:46:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- order ENVs alphanumerically
+
+-------------------------------------------------------------------
 Fri Jul 11 10:33:34 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - tighten permissions on the pipx directory
