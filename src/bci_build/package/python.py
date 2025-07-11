@@ -73,9 +73,9 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         "tag_version": py3_ver,
         "env": {
             "PYTHON_VERSION": py3_ver_replacement,
-            "PATH": "$PATH:/root/.local/bin",
             "PIP_VERSION": pip3_replacement,
-        },
+        }
+        | ({"PATH": "$PATH:/root/.local/bin"} if has_pipx else {}),
         "package_list": (
             [f"{py3}-devel", py3, pip3]
             + os_version.common_devel_packages
@@ -101,7 +101,9 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
         "_min_release_counter": 70,
     }
 
-    config_sh_script = "install -d -m 0755 /root/.local/bin"
+    config_sh_script = ""
+    if has_pipx:
+        config_sh_script += "install -d -o root -g root -m 0700 /root/.local/bin"
 
     if not is_system_py:
         config_sh_script += rf"""; if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
