@@ -4,6 +4,7 @@ from pathlib import Path
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -32,6 +33,7 @@ POSTGRES_CONTAINERS = [
         os_version=os_version,
         is_latest=ver == _POSTGRES_MAJOR_VERSIONS[0],
         pretty_name=f"PostgreSQL {ver}",
+        build_flavor=flavor,
         support_level=SupportLevel.ACC,
         supported_until=(
             _SUPPORTED_UNTIL_SLE[os_version]
@@ -39,20 +41,32 @@ POSTGRES_CONTAINERS = [
             else None
         ),
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-        package_list=[
-            "libpq5",
-            f"postgresql{ver}-server",
-            "findutils",
-            "coreutils",
-            "sed",
-            "util-linux",  # for setpriv :-(
-        ]
-        + (
+        package_list=sorted(
             [
-                f"postgresql{ver}-pgvector",
+                "libpq5",
+                f"postgresql{ver}-server",
+                "findutils",
+                "coreutils",
+                "sed",
+                "tar",
+                "gzip",
+                "zstd"
+                "util-linux",  # for setpriv :-(
             ]
-            if os_version.is_tumbleweed
-            else []
+            + (
+                [
+                    f"postgresql{ver}-pgvector",
+                ]
+                if os_version.is_tumbleweed
+                else []
+            )
+            + (
+                [
+                    f"postgresql{ver}-contrib",
+                ]
+                if flavor == "contrib"
+                else []
+            )
         ),
         version="%%pg_patch_version%%",
         tag_version=str(ver),
@@ -143,6 +157,10 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
                 OsVersion.TUMBLEWEED,
             )
         ]
+        + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13)]
     )
     + [(14, OsVersion.TUMBLEWEED)]
+    for flavor in ("", "contrib")
 ]
+
+POSTGRES_CRATE = ContainerCrate(POSTGRES_CONTAINERS)
