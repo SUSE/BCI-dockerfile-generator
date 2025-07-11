@@ -46,7 +46,7 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV PYTHON_VERSION="%%py313_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
-RUN set -euo pipefail; install -d -m 0755 /root/.local/bin
+ENV PYTHON_VERSION="%%py313_ver%%"
+RUN set -euo pipefail; install -d -o root -g root -m 0700 /root/.local/bin

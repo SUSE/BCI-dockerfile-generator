@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 11 15:53:38 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- order ENVs alphanumerically
+
+-------------------------------------------------------------------
 Thu Jul  3 12:11:35 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for SL16
