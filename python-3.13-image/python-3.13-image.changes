@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 11 16:08:50 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- tighten access restrictions on PIPX installation directory
+
+-------------------------------------------------------------------
 Fri Jul 11 10:42:21 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - order ENVs alphanumerically
