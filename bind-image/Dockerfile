@@ -58,10 +58,10 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV RNDC_KEYSIZE="512"
 ENV NAMED_ARGS=""
-ENV NAMED_INITIALIZE_SCRIPTS=""
 ENV NAMED_CONF="/etc/named.conf"
+ENV NAMED_INITIALIZE_SCRIPTS=""
+ENV RNDC_KEYSIZE="512"
 EXPOSE 53/tcp 53/udp 953/tcp 853/tcp 443/tcp
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

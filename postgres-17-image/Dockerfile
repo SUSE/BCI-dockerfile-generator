@@ -52,9 +52,9 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV LANG="en_US.utf8"
+ENV PGDATA="/var/lib/pgsql/data"
 ENV PG_MAJOR="17"
 ENV PG_VERSION="%%pg_minor_version%%"
-ENV PGDATA="/var/lib/pgsql/data"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
 EXPOSE 5432/tcp
