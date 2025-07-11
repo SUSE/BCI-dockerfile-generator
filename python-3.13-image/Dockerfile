@@ -44,7 +44,7 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV PYTHON_VERSION="%%py313_ver%%"
-ENV PIP_VERSION="%%pip_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
+ENV PIP_VERSION="%%pip_ver%%"
+ENV PYTHON_VERSION="%%py313_ver%%"
 RUN set -euo pipefail; install -d -o root -g root -m 0700 /root/.local/bin
