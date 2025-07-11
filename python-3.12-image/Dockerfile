@@ -50,9 +50,9 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV PYTHON_VERSION="%%py312_ver%%"
-ENV PIP_VERSION="%%pip_ver%%"
 ENV PATH="$PATH:/root/.local/bin"
+ENV PIP_VERSION="%%pip_ver%%"
+ENV PYTHON_VERSION="%%py312_ver%%"
 RUN set -euo pipefail; install -d -o root -g root -m 0700 /root/.local/bin; if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
     ln -s /usr/bin/python3.12 /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc3.12 /usr/local/bin/pydoc
