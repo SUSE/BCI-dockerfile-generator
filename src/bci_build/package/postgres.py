@@ -41,7 +41,14 @@ POSTGRES_CONTAINERS = [
             "coreutils",
             "sed",
             "util-linux",  # for setpriv :-(
-        ],
+        ]
+        + (
+            [
+                f"postgresql{ver}-pgvector",
+            ]
+            if os_version.is_tumbleweed
+            else []
+        ),
         version="%%pg_patch_version%%",
         tag_version=str(ver),
         _min_release_counter=70 if ver == 16 else None,
