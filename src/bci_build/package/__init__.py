@@ -847,7 +847,7 @@ exit 0
         return (
             ""
             if not self.env
-            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in self.env.items())
+            else "\n" + "\n".join(f'ENV {k}="{v}"' for k, v in sorted(self.env.items()))
         )
 
     @property
@@ -859,7 +859,9 @@ exit 0
             """\n        <environment>
           """
             + """
-          """.join(f'<env name="{k}" value="{v}"/>' for k, v in self.env.items())
+          """.join(
+                f'<env name="{k}" value="{v}"/>' for k, v in sorted(self.env.items())
+            )
             + """
         </environment>
 """
