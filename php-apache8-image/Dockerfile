@@ -49,12 +49,12 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV PHP_VERSION="%%php_version%%"
-ENV PHP_INI_DIR="/etc/php8/"
-ENV PHPIZE_DEPS="php8-devel awk make findutils"
-ENV COMPOSER_VERSION="%%composer_version%%"
 ENV APACHE_CONFDIR="/etc/apache2"
 ENV APACHE_ENVVARS="/usr/sbin/envvars"
+ENV COMPOSER_VERSION="%%composer_version%%"
+ENV PHPIZE_DEPS="php8-devel awk make findutils"
+ENV PHP_INI_DIR="/etc/php8/"
+ENV PHP_VERSION="%%php_version%%"
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["apache2-foreground"]
 COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/

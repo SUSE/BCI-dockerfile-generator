@@ -51,7 +51,5 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV PYTHON_VERSION="%%py36_ver%%"
-ENV PATH="$PATH:/root/.local/bin"
 ENV PIP_VERSION="%%pip_ver%%"
-RUN set -euo pipefail; install -d -m 0755 /root/.local/bin
+ENV PYTHON_VERSION="%%py36_ver%%"
