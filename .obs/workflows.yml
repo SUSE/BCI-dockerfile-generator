@@ -207,6 +207,14 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: postgres-13-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: postgres-14-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: postgres-14-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -215,7 +223,19 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: postgres-15-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: postgres-16-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: postgres-16-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: postgres-17-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -469,13 +489,28 @@ refresh_devel_BCI:
         package: postgres-13-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
+        package: postgres-13-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-14-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
         package: postgres-14-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postgres-15-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
+        package: postgres-15-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
         package: postgres-16-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-16-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: postgres-17-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postgres-17-image
