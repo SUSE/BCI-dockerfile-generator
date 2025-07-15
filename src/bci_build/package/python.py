@@ -52,6 +52,10 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
     has_wheel = has_pipx = False
+    py_env = {
+        "PYTHON_VERSION": py3_ver_replacement,
+        "PIP_VERSION": pip3_replacement,
+    }
 
     if os_version.is_tumbleweed:
         # Tumbleweed rocks
@@ -66,16 +70,19 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     elif os_version.is_sl16:
         has_pipx = has_wheel = True
 
+    if has_pipx:
+        py_env = py_env | {
+            "PIPX_HOME": "/usr/local/lib/pipx",
+            "PIPX_BIN_DIR": "/usr/local/bin",
+            "PIPX_MAN_DIR": "/usr/local/man",
+        }
+
     kwargs = {
         "name": "python",
         "pretty_name": f"Python {py3_ver} development",
         "version": py3_ver_replacement,
         "tag_version": py3_ver,
-        "env": {
-            "PYTHON_VERSION": py3_ver_replacement,
-            "PIP_VERSION": pip3_replacement,
-        }
-        | ({"PATH": "$PATH:/root/.local/bin"} if has_pipx else {}),
+        "env": py_env,
         "package_list": (
             [f"{py3}-devel", py3, pip3]
             + os_version.common_devel_packages
@@ -102,11 +109,9 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
     }
 
     config_sh_script = ""
-    if has_pipx:
-        config_sh_script += "install -d -o root -g root -m 0700 /root/.local/bin"
 
     if not is_system_py:
-        config_sh_script += rf"""; if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
+        config_sh_script += rf"""if test -x /usr/bin/python3; then echo 'is_system_py is wrong - report a bug'; exit 1; fi; \
     ln -s /usr/bin/python{py3_ver} /usr/local/bin/python3; \
     ln -s /usr/bin/pydoc{py3_ver} /usr/local/bin/pydoc"""
 
