@@ -35,7 +35,7 @@
         "version_format": "minor"
     },
     "kea": {
-        "16.0": "2.6",
+        "16.0": "3.0",
         "7": "2.6",
         "Tumbleweed": "3.0",
         "version_format": "minor"
