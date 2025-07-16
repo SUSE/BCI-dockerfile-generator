@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/kea:2.6-%RELEASE%
-#!BuildTag: suse/kea:2.6
-#!BuildName: suse-kea-2.6
-#!BuildVersion: 16.0.2.6
+#!BuildTag: suse/kea:3.0-%RELEASE%
+#!BuildTag: suse/kea:3.0
+#!BuildName: suse-kea-3.0
+#!BuildVersion: 16.0.3.0
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
@@ -31,13 +31,13 @@ RUN set -euo pipefail; zypper -n clean -a; \
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE Kea DHCP Server"
 LABEL org.opencontainers.image.description="Kea DHCP Server container based on the SLE Base Container Image."
-LABEL org.opencontainers.image.version="2.6"
+LABEL org.opencontainers.image.version="3.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="2.6-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/kea:2.6-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="3.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/kea:3.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-eula"
