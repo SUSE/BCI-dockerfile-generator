@@ -3,6 +3,10 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
+        source_package: 389-ds-container
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
         source_package: base-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -95,6 +99,18 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
+        source_package: php8-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: php-apache8-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: php-fpm8-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
         source_package: postgres-16-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -158,6 +174,9 @@ refresh_staging_project:
 
 refresh_devel_BCI:
   steps:
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: 389-ds-container
     - trigger_services:
         project: devel:BCI:16.0
         package: base-image
@@ -227,6 +246,15 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: pcp-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: php8-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: php-apache8-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: php-fpm8-image
     - trigger_services:
         project: devel:BCI:16.0
         package: postgres-16-image
