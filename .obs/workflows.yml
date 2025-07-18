@@ -3,6 +3,10 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
+        source_package: 389-ds-container
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
         source_package: base-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -158,6 +162,9 @@ refresh_staging_project:
 
 refresh_devel_BCI:
   steps:
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: 389-ds-container
     - trigger_services:
         project: devel:BCI:16.0
         package: base-image
