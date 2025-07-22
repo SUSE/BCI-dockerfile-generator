@@ -87,7 +87,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="gzip"/>
     <package name="netcfg"/>
     <package name="openssl-3"/>
-    <package name="skelcd-EULA-SLES"/>
+    <package name="skelcd-EULA-BCI"/>
     <package name="suse-build-key"/>
     <package name="tar"/>
     <package name="timezone"/>
