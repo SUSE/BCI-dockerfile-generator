@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 22 12:21:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- include BCI EULA and trademark
+
+-------------------------------------------------------------------
 Tue Jul  8 17:05:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop /var/cache/ldconfig/aux-cache from the containers
