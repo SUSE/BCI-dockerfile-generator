@@ -18,6 +18,7 @@
 #!BuildTag: bci/python:%%py313_ver%%-%RELEASE%
 #!BuildTag: bci/python:%%py313_ver%%
 #!BuildTag: bci/python:3.13
+#!BuildTag: bci/python:3
 #!BuildName: bci-python-3.13
 #!BuildVersion: 16.0.3.13
 FROM bci/bci-base:16.0
