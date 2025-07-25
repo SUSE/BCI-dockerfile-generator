@@ -1,4 +1,4 @@
-# KIWI Appliance Builder (kiwi) container image
+# KIWI Appliance Builder 10.2 (kiwi) container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
