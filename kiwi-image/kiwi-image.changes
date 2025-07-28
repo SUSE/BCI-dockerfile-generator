@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 28 09:48:03 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- include the version number in the description as we have multiple kiwi containers under maintenance
+
+-------------------------------------------------------------------
 Tue Jun  3 09:04:42 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - disable runtime checks for the filesystem temporarily until next kiwi release
