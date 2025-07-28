@@ -117,13 +117,14 @@ single container image into a specified directory:
 
 .. code-block:: bash
 
-   poetry run package postgres-12-sp4 ~/tmp/postgres/
+   poetry run package postgres-15-sp7 ~/tmp/postgres/
 
-The first argument is the name of the container image, this is the concatenation
+The first argument, the name of the container image, results from the concatenation
 of the image name (:py:attr:`~bci_build.package.BaseContainerImage.name`) and
 the operating system version
 (:py:attr:`~bci_build.package.BaseContainerImage.os_version`).
 
-
 The second entry point is the github automation bot, which is not intended for
-end user usage. You can find some details in the chapter :ref:`staging-bot`.
+end user usage. It automates several operations, like rendering all templates and
+then testing them for build with the Open Build Service.
+You can find some details in the chapter :ref:`staging-bot`.
