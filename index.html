@@ -119,15 +119,17 @@ title (<a class="reference internal" href="api.html#bci_build.package.BaseContai
 <p>The projects currently provides two entry points. The first is the package build
 description “dumper” called <code class="docutils literal notranslate"><span class="pre">package</span></code>. It writes the build description of a
 single container image into a specified directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>package<span class="w"> </span>postgres-12-sp4<span class="w"> </span>~/tmp/postgres/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>package<span class="w"> </span>postgres-15-sp7<span class="w"> </span>~/tmp/postgres/
 </pre></div>
 </div>
-<p>The first argument is the name of the container image, this is the concatenation
+<p>The first argument, the name of the container image, results from the concatenation
 of the image name (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.name" title="bci_build.package.BaseContainerImage.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>) and
 the operating system version
 (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.os_version" title="bci_build.package.BaseContainerImage.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a>).</p>
 <p>The second entry point is the github automation bot, which is not intended for
-end user usage. You can find some details in the chapter <a class="reference internal" href="staging_bot.html#staging-bot"><span class="std std-ref">Staging Bot</span></a>.</p>
+end user usage. It automates several operations, like rendering all templates and
+then testing them for build with the Open Build Service.
+You can find some details in the chapter <a class="reference internal" href="staging_bot.html#staging-bot"><span class="std std-ref">Staging Bot</span></a>.</p>
 </section>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h2>
