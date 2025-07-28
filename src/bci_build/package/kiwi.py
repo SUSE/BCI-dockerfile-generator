@@ -25,7 +25,6 @@ def generate_kiwi_10_config():
 KIWI_CONTAINERS = [
     DevelopmentContainer(
         name="kiwi",
-        pretty_name="KIWI Appliance Builder (kiwi)",
         custom_description="{pretty_name} container {based_on_container}. {privileged_only}",
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
@@ -38,6 +37,7 @@ KIWI_CONTAINERS = [
                 get_pkg_version("python-kiwi", os_version), ParseVersion.MINOR
             )
         ),
+        pretty_name=f"KIWI Appliance Builder {kiwi_minor} (kiwi)",
         version_in_uid=False,
         additional_versions=[
             format_version(
