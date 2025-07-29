@@ -635,7 +635,7 @@ FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target
 
 RUN \\
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
     zypper -n --installroot /target remove util-linux
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
