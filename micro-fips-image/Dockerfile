@@ -24,6 +24,7 @@ FROM bci/bci-base:15.6 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-bci sles-release patterns-base-fips libopenssl3
 
 RUN set -euo pipefail; zypper -n install jdupes \
