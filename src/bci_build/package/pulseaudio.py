@@ -10,8 +10,10 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import OsContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package import _build_tag_prefix
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
 from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
@@ -38,6 +40,7 @@ PULSEAUDIO_CONTAINERS = [
         version=(pulseaudio_ver_re := "%%pulseaudio_ver%%"),
         pretty_name="Pulseaudio",
         package_list=["pulseaudio", "pulseaudio-utils", "procps"],
+        from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         replacements_via_service=[
             Replacement(
