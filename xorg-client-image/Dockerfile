@@ -26,6 +26,7 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libavcodec58_134 libpulse0 noto-sans-cjk-fonts xorg-x11-fonts
 RUN set -euo pipefail; useradd -m -u 1000 -U user
 
