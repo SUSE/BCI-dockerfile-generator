@@ -28,6 +28,7 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bind bind-utils
 
 # patch named.prep to not call logger (provided by systemd)

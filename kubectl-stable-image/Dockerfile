@@ -29,6 +29,7 @@ FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.33-client
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
