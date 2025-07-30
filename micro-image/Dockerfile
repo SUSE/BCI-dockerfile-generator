@@ -24,6 +24,7 @@ FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-BCI SLES-release
 RUN set -euo pipefail; rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
 RUN set -euo pipefail; zypper -n install jdupes \

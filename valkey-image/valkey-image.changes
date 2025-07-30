@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 30 09:50:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC to allow operation without accessible /proc filesystem
+
+-------------------------------------------------------------------
 Mon Jul  7 20:34:20 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for SL 16
