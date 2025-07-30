@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 30 09:53:49 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC to allow operation without accessible /proc filesystem
+
+-------------------------------------------------------------------
 Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - increase buildrelease
