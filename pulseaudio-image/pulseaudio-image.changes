@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:14:21 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to micro as base layer
+
+-------------------------------------------------------------------
 Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - increase buildrelease
