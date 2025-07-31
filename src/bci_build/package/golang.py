@@ -70,7 +70,7 @@ def _get_golang_kwargs(
             f"""
             # only available on go's tsan_arch architectures
             #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean; fi
+            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean -a; fi
             {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
             {DOCKERFILE_RUN} {LOG_CLEAN}
             WORKDIR /go

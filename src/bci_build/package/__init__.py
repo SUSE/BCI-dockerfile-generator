@@ -599,7 +599,7 @@ fi
 # Clean up after zypper if it is present
 #---------------------------------------
 if command -v zypper > /dev/null; then
-    zypper -n clean
+    zypper -n clean -a
 fi
 
 {LOG_CLEAN}
