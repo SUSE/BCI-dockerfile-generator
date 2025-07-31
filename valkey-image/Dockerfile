@@ -33,7 +33,7 @@ RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' valkey | \
     cut -d '.' -f -2)" = "8.0" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM bci/bci-micro:16.0
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers

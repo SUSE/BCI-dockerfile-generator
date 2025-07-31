@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
 Tue Jul  1 16:24:43 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for SLE 16
