@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:19:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
 Tue Jul  8 17:05:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop /var/cache/ldconfig/aux-cache from the containers
