@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
 Mon Jul 28 09:48:40 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - include the version number in the description as we have multiple kiwi containers under maintenance
