@@ -22,13 +22,17 @@
 #!BuildName: suse-kiosk-pulseaudio
 #!BuildVersion: 15.7.17
 #!BuildRelease: 60
-FROM registry.suse.com/bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM suse/sle15:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends pulseaudio pulseaudio-utils procps
-RUN set -euo pipefail; zypper -n clean -a; \
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends pulseaudio pulseaudio-utils procps
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
-
+FROM registry.suse.com/bci/bci-micro:15.7
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.pulseaudio
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
