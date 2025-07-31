@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
 Wed Jul 16 08:22:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update for new kea version
