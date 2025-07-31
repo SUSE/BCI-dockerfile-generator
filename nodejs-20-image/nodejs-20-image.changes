@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 31 11:18:38 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
 Tue Jun 17 17:36:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - drop buildrelease (obsolete, now set on SP7)
