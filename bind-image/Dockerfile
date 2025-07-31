@@ -39,7 +39,7 @@ RUN set -euo pipefail; \
     sed -i -e 's|logger "Warning: \$1"|echo "Warning: \$1" >\&2|' -e '/\. \$SYSCONFIG_FILE/d' /target/usr/local/lib/bind/named.prep
 
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers

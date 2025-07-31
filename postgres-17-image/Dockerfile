@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql17-server findutils coreutils sed util-linux
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
