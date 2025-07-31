@@ -51,11 +51,8 @@ registry.suse.com/bci/bci-base
 ### The SLE_BCI repository
 
 The container image comes with the free `SLE_BCI` repository. The repository
-contains a subset of all packages from SUSE Linux Enterprise. The packages are
-available free of charge, and they can be redistributed freely. However, they
-are provided without support. The repository also contains the latest version of
-packages only.
-
+provides the latest version of a subset of packages from SUSE Linux Enterprise.
+These packages are available at no cost and can be freely redistributed.
 
 ### Getting access to the SLE repositories
 
