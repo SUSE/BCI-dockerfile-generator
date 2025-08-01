@@ -29,7 +29,7 @@ FROM registry.suse.com/bci/bci-base:15.6
 RUN set -euo pipefail; \
     zypper -n ref; \
     zypper -n in skopeo; \
-    zypper -n clean; \
+    zypper -n clean -a ; \
     rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ```
 
