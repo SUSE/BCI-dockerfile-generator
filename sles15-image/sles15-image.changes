@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  1 14:26:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean all the files
+
+-------------------------------------------------------------------
 Thu Jul 31 11:24:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - simplify wording about SLE_BCI repo
