@@ -39,7 +39,11 @@ PULSEAUDIO_CONTAINERS = [
         is_singleton_image=True,
         version=(pulseaudio_ver_re := "%%pulseaudio_ver%%"),
         pretty_name="Pulseaudio",
-        package_list=["pulseaudio", "pulseaudio-utils", "procps"],
+        package_list=(
+            ["pulseaudio", "pulseaudio-utils", "procps"]
+            # workaround xf86-input-evdev pulling udev/kmod/rpm
+            + (["rpm-ndb"] if os_version.is_sle15 else [])
+        ),
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
         replacements_via_service=[
