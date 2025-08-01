@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  1 13:44:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- include rpm-ndb to avoid rpm being pulled into the container
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
