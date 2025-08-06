@@ -17,6 +17,7 @@ from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import LOG_CLEAN
 from bci_build.package import OsContainer
 from bci_build.package import Package
 from bci_build.package import generate_disk_size_constraints
@@ -435,6 +436,11 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 + (["tar"] if os_version == OsVersion.SP4 else [])
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
+            custom_end=textwrap.dedent(f"""
+                #!ArchExclusiveLine: x86_64 aarch64 ppc64le
+                {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
+                {DOCKERFILE_RUN} {LOG_CLEAN}
+            """),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
