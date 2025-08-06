@@ -53,7 +53,18 @@ COPY --from=target / /target
       {%- else %}export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1;
       {%- endif %} \\
     {% endif -%} zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}{%- if image.packages_to_delete %}; \\
-    zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}{%- endif %}{%- endif %}
+    zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}{%- endif %}
+{%- endif %}
+{% if image.stable %}# changing user id and group id created by package installation to stable values
+{{ DOCKERFILE_RUN }} \\
+    OLD_GID=$(chroot /target getent group {{ image.stable.group_name }}| cut -d: -f3);\\
+    OLD_UID=$(chroot /target id -u {{ image.stable.user_name }});\\
+    chroot /target groupmod -g {{ image.stable.group_id }} {{ image.stable.group_name }}; \\
+    chroot /target usermod -u {{ image.stable.user_id }} {{ image.stable.user_name }}; \\
+    chroot /target  find / \\( -gid $OLD_GID -o -uid $OLD_UID \\) -exec chown {{ image.stable.user_id }}:{{ image.stable.group_id }} {} \\;
+{% endif %}
+
+
 {%- if image.build_stage_custom_end %}
 {{ image.build_stage_custom_end }}
 {%- endif %}
