@@ -5,7 +5,37 @@ on:
   pull_request:
 
 jobs:
+  check-secrets:
+    name: Check project secrets
+    runs-on: ubuntu-latest
+    outputs:
+      have-secrets: ${{ steps.check.outputs.have-secrets }}
+    steps:
+      - id: check
+        run: |
+          missing=()
+
+          if [ -z "${{ secrets.CHECKOUT_TOKEN }}" ]; then
+            missing+=("CHECKOUT_TOKEN")
+          fi
+
+          if [ -z "${{ secrets.OSC_PASSWORD }}" ]; then
+            missing+=("OSC_PASSWORD")
+          fi
+
+          if [ ${#missing[@]} -eq 0 ]; then
+            echo "✅ All required secrets are set."
+            echo "have-secrets=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Missing required secrets: ${missing[*]}"
+            echo "⚠️ PRs must be sent from branches, not forks!"
+            echo "have-secrets=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
   obs-build:
+    needs: check-secrets
+    if: needs.check-secrets.outputs.have-secrets == 'true'
     name: build all images on OBS
     runs-on: ubuntu-latest
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
