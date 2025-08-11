@@ -103,7 +103,7 @@ RUN zypper --non-interactive install --no-recommends libicu {% if image.os_versi
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
-RUN rm -rf /tmp/* && zypper clean && """
+RUN rm -rf /tmp/* && zypper clean -a && """
     + LOG_CLEAN
     + """
 
