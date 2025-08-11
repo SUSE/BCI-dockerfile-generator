@@ -88,5 +88,5 @@ RUN zypper --non-interactive install --no-recommends libicu libopenssl1_1 /tmp/*
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
-RUN rm -rf /tmp/* && zypper clean && rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
+RUN rm -rf /tmp/* && zypper clean -a && rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
