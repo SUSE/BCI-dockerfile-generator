@@ -1507,6 +1507,7 @@ from .helm import HELM_CONTAINERS  # noqa: E402
 from .kea import KEA_DHCP_CONTAINERS  # noqa: E402
 from .kiwi import KIWI_CONTAINERS  # noqa: E402
 from .kubectl import KUBECTL_CONTAINERS  # noqa: E402
+from .kubevirt import KUBEVIRT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
@@ -1586,6 +1587,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *SPACK_CONTAINERS,
         *KEA_DHCP_CONTAINERS,
         *KUBECTL_CONTAINERS,
+        *KUBEVIRT_CONTAINERS,
         *STUNNEL_CONTAINERS,
         *XORG_CONTAINERS,
         *XORG_CLIENT_CONTAINERS,
