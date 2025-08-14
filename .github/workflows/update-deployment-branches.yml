@@ -31,7 +31,7 @@ jobs:
           - Tumbleweed
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # we need all branches for the build checks
           fetch-depth: 0

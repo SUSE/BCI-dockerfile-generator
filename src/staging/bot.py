@@ -420,16 +420,16 @@ on:
 jobs:
   changelog-check:
     name: changelog check
-    runs-on: ubuntu-22.04
-    container: ghcr.io/dcermak/bci-ci:latest
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
@@ -472,22 +472,22 @@ on:
 
 jobs:
   create-issues-for-dan:
-    name: create an issue for Dan to create the packages in devel:BCI
+    name: create an issue about missing packages in devel:BCI
     runs-on: ubuntu-latest
-    container: ghcr.io/dcermak/bci-ci:latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     strategy:
       fail-fast: false
 
     steps:
       # we need all branches for the build checks
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: main
           token: ${{ secrets.CHECKOUT_TOKEN }}
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
