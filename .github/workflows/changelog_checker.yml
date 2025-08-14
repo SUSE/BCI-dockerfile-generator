@@ -7,16 +7,16 @@ on:
 jobs:
   changelog-check:
     name: changelog check
-    runs-on: ubuntu-22.04
-    container: ghcr.io/dcermak/bci-ci:latest
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
