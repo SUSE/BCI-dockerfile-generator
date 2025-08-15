@@ -437,7 +437,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
             custom_end=textwrap.dedent(f"""
-                #!ArchExclusiveLine: x86_64 aarch64 ppc64le
+                #!ArchExclusiveLine: x86_64 aarch64
                 {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
                 {DOCKERFILE_RUN} {LOG_CLEAN}
             """),
