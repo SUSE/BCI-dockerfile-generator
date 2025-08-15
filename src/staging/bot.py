@@ -417,6 +417,9 @@ name: Check the changelogs
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   changelog-check:
     name: changelog check
@@ -470,8 +473,12 @@ on:
             + self.deployment_branch_name
             + """'
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
-  create-issues-for-dan:
+  create-issues-for-dockerfile-generator:
     name: create an issue about missing packages in devel:BCI
     runs-on: ubuntu-latest
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
