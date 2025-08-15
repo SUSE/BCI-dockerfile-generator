@@ -6,8 +6,12 @@ on:
     branches:
       - '16.0'
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
-  create-issues-for-dan:
+  create-issues-for-dockerfile-generator:
     name: create an issue about missing packages in devel:BCI
     runs-on: ubuntu-latest
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
