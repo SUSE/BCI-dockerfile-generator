@@ -52,6 +52,6 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 
-#!ArchExclusiveLine: x86_64 aarch64 ppc64le
+#!ArchExclusiveLine: x86_64 aarch64
 RUN set -euo pipefail; if zypper -n install mokutil; then zypper -n clean -a; fi
 RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
