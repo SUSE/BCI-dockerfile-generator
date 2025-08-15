@@ -4,6 +4,9 @@ name: Check the changelogs
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   changelog-check:
     name: changelog check
