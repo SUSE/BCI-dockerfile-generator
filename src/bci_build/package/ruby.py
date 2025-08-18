@@ -53,6 +53,8 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
         )
         + [
             f"{ruby}-devel",
+            # force the correct gem2rpm version to avoid system ruby being pulled
+            f"{ruby}-rubygem-gem2rpm",
             # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
             "util-linux",
             # additional dependencies to build rails, ffi, sqlite3 gems -->
