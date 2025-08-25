@@ -19,21 +19,21 @@
 #!BuildTag: bci/golang:stable
 #!BuildTag: bci/golang:%%golang_version%%-1.%RELEASE%
 #!BuildTag: bci/golang:%%golang_version%%
-#!BuildTag: bci/golang:1.24
+#!BuildTag: bci/golang:1.25
 #!BuildName: bci-golang-stable
-#!BuildVersion: 16.0.1.24.1
+#!BuildVersion: 16.0.1.25.1
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.24 go1.24-doc make curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends go1.25 go1.25-doc make curl findutils gawk git-core procps util-linux
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Go 1.24 development"
-LABEL org.opencontainers.image.description="Go 1.24 development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Go 1.25 development"
+LABEL org.opencontainers.image.description="Go 1.25 development container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%golang_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -55,7 +55,7 @@ ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin
 
 # only available on go's tsan_arch architectures
 #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.24-race; then zypper -n clean -a; fi
+RUN set -euo pipefail; if zypper -n install go1.25-race; then zypper -n clean -a; fi
 RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
 RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 WORKDIR /go
