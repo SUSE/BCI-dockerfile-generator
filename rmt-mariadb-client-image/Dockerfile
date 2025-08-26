@@ -17,10 +17,10 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/mariadb-client:11.4
+#!BuildTag: suse/mariadb-client:11.8
 #!BuildTag: suse/mariadb-client:latest
-#!BuildName: suse-mariadb-client-11.4
-#!BuildVersion: 15.7.11.4
+#!BuildName: suse-mariadb-client-11.8
+#!BuildVersion: 15.7.11.8
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
@@ -32,7 +32,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of mariadb-client that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
-    cut -d '.' -f -2)" = "11.4" ]
+    cut -d '.' -f -2)" = "11.8" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM registry.suse.com/bci/bci-micro:15.7

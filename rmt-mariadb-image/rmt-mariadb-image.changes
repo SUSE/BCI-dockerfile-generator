@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 26 09:27:00 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update 15 sp7 mariadb version to 11.8
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
