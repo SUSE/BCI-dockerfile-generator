@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 27 12:44:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix typo in entrypoint script
+
+-------------------------------------------------------------------
 Tue Aug 26 09:27:00 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update 15 sp7 mariadb version to 11.8
