@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 27 13:00:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set GF_PATHS_CONFIG variable (bsc#1248221)
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
