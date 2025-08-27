@@ -57,6 +57,8 @@ XORG_CONTAINERS = [
                 "xf86-input-libinput",
                 "xkeyboard-config",
                 "xinput",
+                # to allow for custom automations in initrc
+                "xdotool",
                 # indirect dependencies
                 "xorg-x11-essentials",
                 "xdm",
