@@ -16,7 +16,7 @@ This container provides the SUSE LLC version of Git.
 Example of using Git container:
 
 ```ShellSession
-$ podman run registry.suse.com/suse/git:2.43 git help
+$ podman run registry.suse.com/suse/git:2.51 git help
 ```
 
 As Git requires a repository, the container
