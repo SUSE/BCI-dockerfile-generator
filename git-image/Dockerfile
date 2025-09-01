@@ -17,11 +17,11 @@
 
 #!BuildTag: suse/git:%%git_version%%-%RELEASE%
 #!BuildTag: suse/git:%%git_version%%
-#!BuildTag: suse/git:2.43
+#!BuildTag: suse/git:2.51
 #!BuildTag: suse/git:%%git_major_version%%
 #!BuildTag: suse/git:latest
 #!BuildName: suse-git
-#!BuildVersion: 15.7.2.43
+#!BuildVersion: 15.7.2.51
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
@@ -33,7 +33,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of git-core that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' git-core | \
-    cut -d '.' -f -2)" = "2.43" ]
+    cut -d '.' -f -2)" = "2.51" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM registry.suse.com/bci/bci-micro:15.7
