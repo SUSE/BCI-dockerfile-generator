@@ -3,7 +3,7 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: 389-ds-container
+        source_package: 389-ds-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -147,10 +147,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: slm60-kernel-module-devel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: stunnel-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -176,7 +172,7 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:16.0
-        package: 389-ds-container
+        package: 389-ds-image
     - trigger_services:
         project: devel:BCI:16.0
         package: base-image
@@ -282,9 +278,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: sle16-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: slm60-kernel-module-devel-image
     - trigger_services:
         project: devel:BCI:16.0
         package: stunnel-image
