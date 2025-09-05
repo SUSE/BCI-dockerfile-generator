@@ -259,7 +259,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: rust-stable-image
+        source_package: rust-oldstable-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -508,7 +508,7 @@ refresh_devel_BCI:
         package: rust-oldstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: rust-stable-image
+        package: rust-oldstable-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: samba-client-image
