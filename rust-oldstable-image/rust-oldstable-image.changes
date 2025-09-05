@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  5 09:00:00 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.89 for stable, move 1.88 to oldstable
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
