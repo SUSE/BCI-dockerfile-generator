@@ -8,6 +8,7 @@ import packaging.version
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
@@ -19,6 +20,7 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.89": datetime.date(2025, 8, 7) + _RUST_SUPPORT_OVERLAP,
     "1.88": datetime.date(2025, 6, 26) + _RUST_SUPPORT_OVERLAP,
     "1.87": datetime.date(2025, 5, 15) + _RUST_SUPPORT_OVERLAP,
     "1.86": datetime.date(2025, 4, 3) + _RUST_SUPPORT_OVERLAP,
@@ -36,7 +38,9 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS = ["1.87", "1.88"]
+_RUST_VERSIONS: list[str] = ["1.88", "1.89"]
+
+_RUST_TW_VERSIONS: list[str] = ["1.87", "1.88"]
 
 assert len(_RUST_VERSIONS) == 2, (
     "Only two versions of rust must be supported at the same time"
@@ -102,8 +106,12 @@ RUN ${{CC}} --version
 COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}
 """,
     )
-    for rust_version, os_version in product(
-        _RUST_VERSIONS,
-        ALL_NONBASE_OS_VERSIONS,
+    for rust_version, os_version in (
+        *product(
+            _RUST_VERSIONS,
+            set(ALL_NONBASE_OS_VERSIONS)
+            - set([OsVersion.TUMBLEWEED, OsVersion.SL16_0]),
+        ),
+        *product(_RUST_TW_VERSIONS, [OsVersion.TUMBLEWEED, OsVersion.SL16_0]),
     )
 ]
