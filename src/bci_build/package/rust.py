@@ -42,6 +42,14 @@ _RUST_VERSIONS: list[str] = ["1.88", "1.89"]
 
 _RUST_TW_VERSIONS: list[str] = ["1.87", "1.88"]
 
+
+def _rust_is_stable_version(os_version: OsVersion, rust_version: str) -> bool:
+    """Return the latest stable rust version"""
+    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0):
+        return _RUST_TW_VERSIONS[-1] == rust_version
+    return _RUST_VERSIONS[-1] == rust_version
+
+
 assert len(_RUST_VERSIONS) == 2, (
     "Only two versions of rust must be supported at the same time"
 )
@@ -55,14 +63,16 @@ RUST_CONTAINERS = [
         name="rust",
         stability_tag=(
             stability_tag := (
-                "stable" if (rust_version == _RUST_VERSIONS[-1]) else "oldstable"
+                "stable"
+                if _rust_is_stable_version(os_version, rust_version)
+                else "oldstable"
             )
         ),
         package_name=f"rust-{stability_tag}-image",
         os_version=os_version,
         support_level=SupportLevel.L3,
         is_latest=(
-            rust_version == _RUST_VERSIONS[-1]
+            _rust_is_stable_version(os_version, rust_version)
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
         supported_until=_RUST_SUPPORT_ENDS.get(rust_version),
