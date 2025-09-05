@@ -101,7 +101,7 @@ _389DS_FILES[_fname] = (Path(__file__).parent / "389-ds" / _fname).read_bytes()
 THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
         name="389-ds",
-        package_name="389-ds-container",
+        package_name=("389-ds-container" if os_version.is_sle15 else None),
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
