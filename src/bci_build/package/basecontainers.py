@@ -402,9 +402,9 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.SL16_0:
+    if os_version.is_sl16:
         prefix = "sle16"
-        pretty_prefix = "SLE 16"
+        pretty_prefix = "SLES 16"
     else:
         assert os_version.is_sle15
         prefix = "sle15"

@@ -616,7 +616,7 @@ exit 0
 
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        if self.os_version == OsVersion.SL16_0:
+        if self.os_version.is_sl16:
             return f"{_build_tag_prefix(self.os_version)}/bci-base:{self.os_version}"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
@@ -1405,7 +1405,7 @@ class OsContainer(BaseContainerImage):
     def version_to_container_os_version(os_version: OsVersion) -> str:
         if os_version == OsVersion.TUMBLEWEED:
             return "latest"
-        if os_version == OsVersion.SL16_0:
+        if os_version.is_sl16:
             return str(os_version)
         return f"15.{os_version}"
 
