@@ -308,11 +308,11 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
-    #: Optional build_release setting that will be inserted as the
-    #: ``#!BuildRelease`` magic comment for the build service to ensure that
-    #: the release suffix of a container tag is sequentially increasing (for
-    #: webui sorting)
-    _min_release_counter: int | None = None
+    #: Optional release counter that will be used in ``#!BuildRelease``
+    #: magic comment to ensure that versions are sequentially increasing.
+    #: In cases where containers switch the base OS the counter resets and
+    #: it needs help to keep images in a chronological order.
+    min_release_counter: dict[OsVersion, str] = field(default_factory=dict)
 
     #: The registry implementation for which this container is being built.
     _publish_registry: Registry | None = None
@@ -442,14 +442,12 @@ class BaseContainerImage(abc.ABC):
 
     @property
     def build_release(self) -> str | None:
-        if self.os_version not in (OsVersion.SP7,):
-            return None
+        counter = self.min_release_counter.get(self.os_version, None)
 
-        return (
-            str(self._min_release_counter)
-            if self._min_release_counter is not None
-            else None
-        )
+        if counter:
+            return str(counter)
+
+        return None
 
     @property
     def eula(self) -> str:
@@ -1373,8 +1371,8 @@ class DevelopmentContainer(BaseContainerImage):
 @dataclass
 class ApplicationStackContainer(DevelopmentContainer):
     def __post_init__(self) -> None:
-        if self._min_release_counter is None:
-            self._min_release_counter = 60
+        if self.min_release_counter.get(OsVersion.SP7, None) is None:
+            self.min_release_counter[OsVersion.SP7] = 60
         super().__post_init__()
 
     @property

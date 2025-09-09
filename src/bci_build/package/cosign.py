@@ -4,6 +4,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import OsVersion
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
@@ -42,7 +43,9 @@ COSIGN_CONTAINERS = [
         license="Apache-2.0",
         support_level=SupportLevel.L3,
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
-        _min_release_counter=10,
+        min_release_counter={
+            OsVersion.SP7: 10,
+        },
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]

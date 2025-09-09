@@ -82,7 +82,9 @@ KIWI_CONTAINERS = [
         )
         + (generate_kiwi_10_config() if float(kiwi_minor) >= 10 else ""),
         build_recipe_type=BuildType.DOCKER,
-        _min_release_counter=(15 if os_version.is_sle15 else None),
+        min_release_counter={
+            OsVersion.SP7: 15,
+        },
         extra_labels={
             "usage": "This container requires an openSUSE/SUSE host kernel for full functionality.",
         },
