@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 10 12:26:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to 9.0.9
+
+-------------------------------------------------------------------
 Mon Aug 11 08:35:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove all zypper related caches
