@@ -52,7 +52,7 @@ _CONFIG_T = Literal["meta", "prjconf"]
 _CONF_TO_ROUTE: dict[_CONFIG_T, str] = {"meta": "_meta", "prjconf": "_config"}
 
 
-_DEFAULT_REPOS = ["images", "containerfile"]
+_DEFAULT_REPOS = ["containerfile"]
 
 #: environment variable name from which the osc username for the bot is read
 OSC_USER_ENVVAR_NAME = "OSC_USER"
