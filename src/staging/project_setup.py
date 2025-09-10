@@ -160,6 +160,8 @@ def generate_meta(
             assert os_version.is_sl16
             first_prj = "SUSE:SLFO:Products:SLES:16.0"
             last_prj = "SUSE:SLFO:Main:Build"
+            if os_version == OsVersion.SL16_0:
+                last_prj = "SUSE:SLFO:1.2"
 
         repository_paths: tuple[tuple[str, str], ...] = ((first_prj, "standard"),)
         if (os_version.is_sl16 or os_version.is_sle15) and (
