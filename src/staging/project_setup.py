@@ -41,7 +41,11 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
     <arch>ppc64le</arch>
 {%- endif %}
   </repository>
+{%- if with_product_repo %}
+  <repository name="containerkiwi">
+{%- else %}
   <repository name="images">
+{%- endif %}
 {%- if not with_released_containers %}
     <path project="{{ project_name }}" repository="containerfile"/>
 {%- endif %}
@@ -55,7 +59,11 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
   </repository>{% if with_product_repo %}
   <repository name="product">
     <path project="{{ project_name }}" repository="containerfile"/>
+{%- if with_product_repo %}
+    <path project="{{ project_name }}" repository="containerkiwi"/>
+{%- else %}
     <path project="{{ project_name }}" repository="images"/>
+{%- endif %}
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -70,7 +78,11 @@ META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
   </repository>{% endif %}
   <repository name="containerfile">
 {%- if not with_released_containers %}
+{%- if with_product_repo %}
+    <path project="{{ project_name }}" repository="containerkiwi"/>
+{%- else %}
     <path project="{{ project_name }}" repository="images"/>
+{%- endif %}
 {%- endif %}
     <path project="{{ project_name }}" repository="standard"/>
     <arch>x86_64</arch>
@@ -160,7 +172,7 @@ def generate_meta(
                     ),
                     "containerfile",
                 ),
-                (devel_prj, "images"),
+                (devel_prj, "containerkiwi" if os_version.is_sl16 else "images"),
                 (devel_prj, "standard"),
             )
         repository_paths += ((last_prj, "standard"),)
