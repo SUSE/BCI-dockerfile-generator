@@ -148,6 +148,7 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildName: bci-test-stable
 #!BuildVersion: 16.0
+#!BuildRelease: 10
 FROM bci/bci-base:16.0
 
 RUN \\
@@ -238,6 +239,7 @@ Copyright header
                 stability_tag="stable",
                 os_version=OsVersion.SL16_0,
                 version="%%emacs_ver%%",
+                min_release_counter={OsVersion.SL16_0: 10},
             ),
         ),
         (
@@ -364,6 +366,7 @@ Copyright header
 #!BuildTag: opensuse/bci/emacs:28
 #!BuildTag: opensuse/bci/emacs:latest
 
+#!BuildRelease: 50
 FROM suse/base:18
 
 RUN \\
@@ -492,6 +495,7 @@ Copyright header
                 license="BSD",
                 version="28.2",
                 tag_version="28",
+                min_release_counter={OsVersion.TUMBLEWEED: 50},
                 additional_names=["emacs"],
                 extra_labels={"emacs_version": "28", "GCC_version": "15"},
                 env={
@@ -629,7 +633,7 @@ def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
 #!ForceMultiVersion
 #!BuildName: containers-test-42
 #!BuildVersion: %%emacs_version%%
-#!BuildRelease: 60
+#!BuildRelease: 30
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target
@@ -676,8 +680,71 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
                 from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
                 version="%%emacs_version%%",
                 tag_version=42,
+                min_release_counter={os_version: 30},
             ),
-        )
+        ),
+        (
+            """# SPDX-License-Identifier: MIT
+
+# Copyright header
+
+#!UseOBSRepositories
+#!ExclusiveArch: aarch64 x86_64
+#!BuildTag: containers/git:%%git_version%%-%RELEASE%
+#!BuildTag: containers/git:%%git_version%%
+#!BuildTag: containers/git:42
+#!ForceMultiVersion
+#!BuildName: containers-git-42
+#!BuildVersion: %%git_version%%
+#!BuildRelease: 60
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM bci/bci-base:15.7 AS builder
+COPY --from=target / /target
+
+RUN \\
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core; \\
+    zypper -n --installroot /target remove util-linux
+RUN zypper -n --installroot /target clean -a; \\
+    ##LOGCLEAN##
+FROM registry.suse.com/bci/bci-micro:15.7
+COPY --from=builder /target /
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=com.suse.application.git
+LABEL org.opencontainers.image.authors=""
+LABEL org.opencontainers.image.title="Git"
+LABEL org.opencontainers.image.description="Git container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.version="%%git_version%%"
+LABEL org.opencontainers.image.url="https://apps.rancher.io/applications/git"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="%%git_version%%-%RELEASE%"
+LABEL org.opensuse.reference="dp.apps.rancher.io/containers/git:%%git_version%%-%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel.until="2024-02-01"
+LABEL com.suse.eula="sle-eula"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+LABEL com.suse.release-stage="released"
+# endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+""",
+            ApplicationStackContainer(
+                name="git",
+                pretty_name="Git",
+                supported_until=date(2024, 2, 1),
+                package_list=["git-core", Package("util-linux", PackageType.DELETE)],
+                package_name="test-image",
+                os_version=(os_version := OsVersion.SP7),
+                _publish_registry=publish_registry(os_version, app_collection=True),
+                from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
+                version="%%git_version%%",
+                tag_version=42,
+            ),
+        ),
     ],
 )
 def test_appcollection_app_templates(

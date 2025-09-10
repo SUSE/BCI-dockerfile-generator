@@ -3,7 +3,6 @@
 import datetime
 import os
 import textwrap
-from dataclasses import dataclass
 from pathlib import Path
 
 from bci_build.container_attributes import Arch
@@ -56,7 +55,9 @@ MICRO_CONTAINERS = [
         from_target_image="scratch",
         cmd=["/bin/sh"],
         package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
-        _min_release_counter=41,  # be newer than the newest kiwi based image on SP6
+        min_release_counter={
+            OsVersion.SP7: 41,  # be newer than the newest kiwi based image on SP6
+        },
         build_stage_custom_end=(
             (
                 f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
@@ -88,7 +89,9 @@ INIT_CONTAINERS = [
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=["systemd", "gzip", *os_version.release_package_names],
-        _min_release_counter=40,
+        min_release_counter={
+            OsVersion.SP7: 40,
+        },
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             os_version not in (OsVersion.SP6, OsVersion.TUMBLEWEED)
@@ -242,15 +245,10 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
         },
         "custom_end": _get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
+        "min_release_counter": {
+            OsVersion.SP6: 30,
+        },
     }
-
-
-@dataclass
-class Sles15Sp6BaseFipsContainer(OsContainer):
-    @property
-    def build_release(self) -> str | None:
-        assert self.os_version == OsVersion.SP6
-        return "30"
 
 
 FIPS_BASE_CONTAINERS = [
@@ -258,8 +256,8 @@ FIPS_BASE_CONTAINERS = [
         **_get_fips_base_kwargs(os_version),
     )
     # SP5 is known to be having a non-working libgcrypt for FIPS mode
-    for os_version in ALL_OS_VERSIONS - {OsVersion.SP5, OsVersion.SP6}
-] + [Sles15Sp6BaseFipsContainer(**_get_fips_base_kwargs(OsVersion.SP6))]
+    for os_version in ALL_OS_VERSIONS - {OsVersion.SP5}
+]
 
 FIPS_MICRO_CONTAINERS = [
     OsContainer(
@@ -416,7 +414,9 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             pretty_name=f"{pretty_prefix} Kernel module development",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
-            _min_release_counter=40,
+            min_release_counter={
+                OsVersion.SP7: 40,
+            },
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
             package_list=(
