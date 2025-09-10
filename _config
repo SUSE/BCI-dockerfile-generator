@@ -1,4 +1,4 @@
-%if "%_repository" == "images"
+%if "%_repository" == "containerkiwi"
 Type: kiwi
 Repotype: none
 Patterntype: none
@@ -24,7 +24,7 @@ Patterntype: none
 %endif
 %endif
 
-%if "%_repository" == "containerfile" || "%_repository" == "images"
+%if "%_repository" == "containerfile" || "%_repository" == "containerkiwi"
 # Revert split of customer facing for container builds
 Prefer: !cpp-build cpp
 Prefer: !gcc-build-ada gcc-ada
