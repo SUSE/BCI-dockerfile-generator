@@ -59,6 +59,8 @@ XORG_CONTAINERS = [
                 "xinput",
                 # indirect dependencies
                 "xorg-x11-essentials",
+                # needed by electron at runtime
+                "libglib-2_0-0",
                 "xdm",
                 # for /sbin/pidof, required by xdm
                 "sysvinit-tools",
