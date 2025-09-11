@@ -137,13 +137,13 @@ This project is automatically updated from git. Please do **not** send submit re
   </debuginfo>
   <repository name="standard">
     <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
-    <path project="SUSE:SLFO:Main:Build" repository="standard"/>
+    <path project="SUSE:SLFO:1.2" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
     <arch>ppc64le</arch>
   </repository>
-  <repository name="images">
+  <repository name="containerkiwi">
     <path project="{prj_name}" repository="containerfile"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
@@ -153,7 +153,7 @@ This project is automatically updated from git. Please do **not** send submit re
   </repository>
   <repository name="product">
     <path project="{prj_name}" repository="containerfile"/>
-    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="containerkiwi"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -161,7 +161,7 @@ This project is automatically updated from git. Please do **not** send submit re
     <arch>ppc64le</arch>
   </repository>
   <repository name="containerfile">
-    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="containerkiwi"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -193,15 +193,15 @@ This project is automatically updated from git. Please do **not** send submit re
   <repository name="standard">
     <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
     <path project="devel:BCI:16.0" repository="containerfile"/>
-    <path project="devel:BCI:16.0" repository="images"/>
+    <path project="devel:BCI:16.0" repository="containerkiwi"/>
     <path project="devel:BCI:16.0" repository="standard"/>
-    <path project="SUSE:SLFO:Main:Build" repository="standard"/>
+    <path project="SUSE:SLFO:1.2" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
     <arch>ppc64le</arch>
   </repository>
-  <repository name="images">
+  <repository name="containerkiwi">
     <path project="{prj_name}" repository="containerfile"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
@@ -211,7 +211,7 @@ This project is automatically updated from git. Please do **not** send submit re
   </repository>
   <repository name="product">
     <path project="{prj_name}" repository="containerfile"/>
-    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="containerkiwi"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
@@ -219,7 +219,7 @@ This project is automatically updated from git. Please do **not** send submit re
     <arch>ppc64le</arch>
   </repository>
   <repository name="containerfile">
-    <path project="{prj_name}" repository="images"/>
+    <path project="{prj_name}" repository="containerkiwi"/>
     <path project="{prj_name}" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>

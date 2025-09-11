@@ -299,14 +299,14 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list.extend(_get_micro_package_list(os_version))
     package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0):
-        package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
-    else:
+    if os_version.is_sle15:
         # in SLE15, rpm still depends on Perl.
         package_list.extend(
             Package(name, pkg_type=PackageType.BOOTSTRAP)
             for name in ("rpm-ndb", "perl-base")
         )
+    else:
+        package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     kwargs = {
         "from_image": None,
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
@@ -400,9 +400,9 @@ BUSYBOX_CONTAINERS = [
 KERNEL_MODULE_CONTAINERS = []
 
 for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
-    if os_version == OsVersion.SL16_0:
+    if os_version.is_sl16:
         prefix = "sle16"
-        pretty_prefix = "SLE 16"
+        pretty_prefix = "SLES 16"
     else:
         assert os_version.is_sle15
         prefix = "sle15"

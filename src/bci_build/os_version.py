@@ -20,6 +20,9 @@ class OsVersion(enum.Enum):
     SP3 = 3
     #: SUSE Linux 16.0
     SL16_0 = "16.0"
+    #: SUSE Linux 16.1
+    SL16_1 = "16.1"
+
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
 
@@ -104,7 +107,7 @@ class OsVersion(enum.Enum):
 
     @property
     def is_sl16(self) -> bool:
-        return self.value in (OsVersion.SL16_0.value,)
+        return self.value in (OsVersion.SL16_0.value, OsVersion.SL16_1.value)
 
     @property
     def is_tumbleweed(self) -> bool:
@@ -124,6 +127,9 @@ class OsVersion(enum.Enum):
             return f"15.{str(self.value)}"
         if self.value == OsVersion.SL16_0.value:
             return "16.0"
+        if self.value == OsVersion.SL16_1.value:
+            return "16.1"
+
         # Tumbleweed rolls too fast, just use latest
         return "latest"
 
@@ -135,7 +141,7 @@ class OsVersion(enum.Enum):
     def eula_package_names(self) -> tuple[str, ...]:
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
-        if self.value == OsVersion.SL16_0.value:
+        if self.is_sl16:
             return ("skelcd-EULA-BCI",)
         return ()
 
@@ -143,7 +149,7 @@ class OsVersion(enum.Enum):
     def release_package_names(self) -> tuple[str, ...]:
         if self.value == OsVersion.TUMBLEWEED.value:
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
-        if self.value == OsVersion.SL16_0.value:
+        if self.is_sl16:
             return ("SLES-release",)
         if self.is_ltss:
             return ("sles-ltss-release",)
@@ -182,6 +188,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
     OsVersion.SL16_0,
+    OsVersion.SL16_1,
 ]
 
 # List of SPs that are already under LTSS
@@ -208,4 +215,5 @@ _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP5: datetime.date(2024, 12, 31),
     OsVersion.SP6: datetime.date(2025, 12, 31),
     OsVersion.SP7: datetime.date(2031, 7, 31),
+    # OsVersion.SL16_0: datetime.date(2027, 12, 31),
 }
