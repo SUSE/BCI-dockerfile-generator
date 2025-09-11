@@ -2,297 +2,122 @@
 staging_build:
   steps:
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: 389-ds-container
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: base-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: base-fips-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: bind-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: busybox-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: cosign-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: gcc-15-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: git-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: golang-oldstable-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: golang-stable-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: helm-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: init-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: kea-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: kiwi-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: mariadb-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: mariadb-client-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: micro-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: micro-fips-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: minimal-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: nginx-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: nodejs-22-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: openjdk-21-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: openjdk-21-devel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: pcp-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: php8-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: php-apache8-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: php-fpm8-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: postgres-16-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: postgres-17-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: prometheus-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: python-3.13-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: distribution-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: ruby-3.4-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: rust-oldstable-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: rust-stable-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
+        source_project: home:pushman:BCI:CR:16.1
         source_package: sle16-kernel-module-devel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: slm60-kernel-module-devel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: stunnel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: valkey-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
+        target_project: home:pushman:BCI:CR:16.1:Staging
   filters:
     event: pull_request
 
 refresh_staging_project:
   steps:
     - trigger_services:
-        project: home:pushman:BCI:CR:16.0
+        project: home:pushman:BCI:CR:16.1
         package: _project
   filters:
     event: push
     branches:
       only:
-        - "16.0"
+        - "16.1"
 
 
 refresh_devel_BCI:
   steps:
     - trigger_services:
-        project: devel:BCI:16.0
-        package: 389-ds-container
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: base-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: base-fips-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: bind-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: busybox-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: cosign-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: gcc-15-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: git-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: golang-oldstable-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: golang-stable-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: helm-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: init-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: kea-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: kiwi-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: mariadb-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: mariadb-client-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: micro-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: micro-fips-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: minimal-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: nginx-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: nodejs-22-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: openjdk-21-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: openjdk-21-devel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: pcp-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: php8-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: php-apache8-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: php-fpm8-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: postgres-16-image
     - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: postgres-17-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: prometheus-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: python-3.13-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: distribution-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: ruby-3.4-image
     - trigger_services:
-        project: devel:BCI:16.0
-        package: rust-oldstable-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: rust-stable-image
-    - trigger_services:
-        project: devel:BCI:16.0
+        project: devel:BCI:16.1
         package: sle16-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: slm60-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: stunnel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: valkey-image
   filters:
     event: push
     branches:
       only:
-        - "16.0"
+        - "16.1"

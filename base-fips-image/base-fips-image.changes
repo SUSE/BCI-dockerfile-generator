@@ -1,0 +1,44 @@
+-------------------------------------------------------------------
+Thu Sep 11 11:07:12 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Fri May 23 11:26:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Thu May 15 12:20:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set 16.0.0 as base container version
+
+-------------------------------------------------------------------
+Tue May  6 11:22:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Tue Apr 22 09:45:29 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to singleton images for init as requested by Dan
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Thu Nov 28 12:15:08 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the 16 FIPS-140-3 BCI

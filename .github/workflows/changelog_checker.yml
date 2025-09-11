@@ -36,7 +36,7 @@ jobs:
       - name: check the changelog
         run: |
           poetry run scratch-build-bot \
-              --os-version 16.0 -vvvv \
+              --os-version 16.1 -vvvv \
               changelog_check \
                   --base-ref origin/${{ github.base_ref }} \
                   --head-ref ${{ github.event.pull_request.head.sha }}
