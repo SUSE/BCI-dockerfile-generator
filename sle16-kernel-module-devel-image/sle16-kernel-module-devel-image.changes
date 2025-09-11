@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 11 19:34:42 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- typo fix in title/description
+
+-------------------------------------------------------------------
 Fri Aug 15 12:56:49 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove mokutil from ppc64le
