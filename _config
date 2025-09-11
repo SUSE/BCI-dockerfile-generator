@@ -1,3 +1,4 @@
+
 %if "%_repository" == "containerkiwi"
 Type: kiwi
 Repotype: none
