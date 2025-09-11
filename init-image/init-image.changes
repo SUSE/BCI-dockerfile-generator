@@ -1,4 +1,104 @@
 -------------------------------------------------------------------
-Thu Sep 11 10:55:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Thu Sep 11 11:07:14 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
-- First version of the 16 Init BCI
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Fri May 23 11:26:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Thu May 15 12:20:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set 16.0.0 as base container version
+
+-------------------------------------------------------------------
+Wed May 14 09:47:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- preallocate users with fixed uids
+
+-------------------------------------------------------------------
+Tue May  6 11:22:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Tue Apr 22 09:45:29 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to singleton images for init as requested by Dan
+
+-------------------------------------------------------------------
+Mon Apr 14 08:40:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Nov 26 17:34:14 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- add buildname setting for stable container aggregation
+
+-------------------------------------------------------------------
+Wed Oct 30 15:34:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
+Fri Oct 11 15:13:21 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
+Fri Oct 11 14:59:37 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to the more standard - separator also for OsContainers
+
+-------------------------------------------------------------------
+Wed Sep 25 17:36:27 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rerender installation step in multiple lines, allow uninstalling optional packages
+
+-------------------------------------------------------------------
+Wed Sep 25 17:12:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
+Thu Sep 19 13:41:14 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- install SLES-release to avoid have-choice errors
+
+-------------------------------------------------------------------
+Thu Sep 12 10:37:09 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
+Tue Sep 10 15:08:36 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove latest tag from unreleased sle16 containers
+
+-------------------------------------------------------------------
+Fri Aug 23 10:39:00 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Correct distribution name
+
+-------------------------------------------------------------------
+Tue Aug 20 09:12:12 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the Framework One Init BCI
