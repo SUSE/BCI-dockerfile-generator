@@ -19,6 +19,7 @@
 #!BuildTag: bci/bci-init:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-init
 #!BuildVersion: 16.0.0
+#!BuildRelease: 4
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
