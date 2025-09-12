@@ -190,10 +190,15 @@ def _get_fips_custom_env() -> str:
 
 
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
+    name_suffix = "without FIPS certified binaries"
+    if os_version.is_ltss:
+        name_suffix = "with FIPS certified binaries"
+
     if os_version == OsVersion.SP3:
-        return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
+        return f"{os_version.pretty_os_version_no_dash} FIPS-140-2 {name_suffix}"
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
-        return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
+        return f"{os_version.pretty_os_version_no_dash} FIPS-140-3 {name_suffix}"
+
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
 
