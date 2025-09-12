@@ -84,6 +84,7 @@ KIWI_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         min_release_counter={
             OsVersion.SP7: 15,
+            OsVersion.SL16_0: 9,
         },
         extra_labels={
             "usage": "This container requires an openSUSE/SUSE host kernel for full functionality.",
@@ -93,5 +94,5 @@ KIWI_CONTAINERS = [
             "_constraints": generate_disk_size_constraints(8)
         },
     )
-    for os_version in list(set(ALL_NONBASE_OS_VERSIONS) | {OsVersion.SL16_0})
+    for os_version in list(set(ALL_NONBASE_OS_VERSIONS))
 ]

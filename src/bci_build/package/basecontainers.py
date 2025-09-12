@@ -57,6 +57,7 @@ MICRO_CONTAINERS = [
         package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
         min_release_counter={
             OsVersion.SP7: 41,  # be newer than the newest kiwi based image on SP6
+            OsVersion.SL16_0: 6,
         },
         build_stage_custom_end=(
             (
@@ -91,6 +92,7 @@ INIT_CONTAINERS = [
         package_list=["systemd", "gzip", *os_version.release_package_names],
         min_release_counter={
             OsVersion.SP7: 40,
+            OsVersion.SL16_0: 4,
         },
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
@@ -247,6 +249,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
         "custom_end": _get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
         "min_release_counter": {
             OsVersion.SP6: 30,
+            OsVersion.SL16_0: 4,
         },
     }
 
@@ -283,6 +286,9 @@ FIPS_MICRO_CONTAINERS = [
                 && jdupes -1 -L -r /target/usr/"""
         ),
         custom_end=_get_fips_custom_env(),
+        min_release_counter={
+            OsVersion.SL16_0: 5,
+        },
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -416,6 +422,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             os_version=os_version,
             min_release_counter={
                 OsVersion.SP7: 40,
+                OsVersion.SL16_0: 17,
             },
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
