@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 12 08:38:31 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add minimum buildrelease
+
+-------------------------------------------------------------------
 Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
