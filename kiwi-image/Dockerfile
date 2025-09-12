@@ -21,6 +21,7 @@
 #!BuildTag: bci/kiwi:10
 #!BuildName: bci-kiwi
 #!BuildVersion: 16.0.10.2
+#!BuildRelease: 9
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \

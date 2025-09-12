@@ -19,6 +19,7 @@
 #!BuildTag: bci/bci-sle16-kernel-module-devel:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-sle16-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.0.0
+#!BuildRelease: 17
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \

@@ -19,6 +19,7 @@
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-base-fips
 #!BuildVersion: 16.0.0
+#!BuildRelease: 4
 FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
@@ -29,8 +30,8 @@ RUN set -euo pipefail; zypper -n clean -a; \
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.base-fips
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI 16 FIPS-140-3"
-LABEL org.opencontainers.image.description="16 FIPS-140-3 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI 16 FIPS-140-3 without FIPS certified binaries"
+LABEL org.opencontainers.image.description="16 FIPS-140-3 without FIPS certified binaries container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
