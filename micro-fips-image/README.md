@@ -1,4 +1,4 @@
-# openSUSE Tumbleweed BCI FIPS-140-3 Micro: Suitable for deploying static binaries
+# openSUSE Tumbleweed BCI FIPS-140-3 without FIPS certified binaries Micro: Suitable for deploying static binaries
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
 ## Description
