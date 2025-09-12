@@ -84,7 +84,24 @@ POSTGRES_CONTAINERS = [
         ],
         volumes=["$PGDATA"],
         exposes_ports=[TCP(5432)],
-        custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
+        custom_end=(
+            rf"""COPY docker-entrypoint.sh /usr/local/bin/
+{DOCKERFILE_RUN} groupmod -g 999 postgres; \
+    usermod -u 999 postgres; \
+    chown -R postgres:postgres /var/lib/pgsql; \
+    chmod +x /usr/local/bin/docker-entrypoint.sh; \
+    sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
+    mkdir /docker-entrypoint-initdb.d; \
+    install -m 1775 -o postgres -g postgres -d /run/postgresql; \
+    install -d -m 0700 -o postgres -g postgres $PGDATA; \
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
+
+STOPSIGNAL SIGINT
+HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
+    CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
+"""
+            if ver == 16
+            else rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
@@ -95,7 +112,8 @@ POSTGRES_CONTAINERS = [
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
-""",
+"""
+        ),
     )
     for ver, os_version in (
         [(15, variant) for variant in (OsVersion.TUMBLEWEED,)]
