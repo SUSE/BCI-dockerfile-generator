@@ -19,6 +19,7 @@
 #!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-micro-fips
 #!BuildVersion: 16.0.0
+#!BuildRelease: 5
 FROM scratch AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
