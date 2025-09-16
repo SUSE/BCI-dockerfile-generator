@@ -10,7 +10,7 @@ use case for the image is deploying static binaries produced externally or
 during multi-stage builds.
 
 This base container image is configured with FIPS mode enabled by default, but
-does not include any certified binaries.
+**does not** include any certified binaries.
 
 ## Usage
 
