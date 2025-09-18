@@ -24,6 +24,7 @@ FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends python312-devel python312 python312-pip curl findutils gawk git-core procps util-linux python312-wheel python312-pipx
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 

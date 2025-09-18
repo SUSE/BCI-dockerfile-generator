@@ -23,6 +23,7 @@ FROM opensuse/bci/openjdk:21
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-21-openjdk-devel maven
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 

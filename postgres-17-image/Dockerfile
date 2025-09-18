@@ -28,6 +28,14 @@ COPY --from=target / /target
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql17-server findutils coreutils sed util-linux postgresql17-pgvector
+# changing user id and group id created by package installation to stable values
+RUN set -euo pipefail; \
+    OLD_GID=$(chroot /target getent group postgres| cut -d: -f3);\
+    OLD_UID=$(chroot /target id -u postgres);\
+    chroot /target groupmod -g 999 postgres; \
+    chroot /target usermod -u 999 postgres; \
+    chroot /target  find / \( -gid $OLD_GID -o -uid $OLD_UID \) -exec chown 999:999 {} \;
+
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 FROM opensuse/bci/bci-micro:latest
