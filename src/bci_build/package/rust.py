@@ -20,6 +20,7 @@ _RUST_GCC_PATH = "/usr/local/bin/gcc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.90": datetime.date(2025, 9, 18) + _RUST_SUPPORT_OVERLAP,
     "1.89": datetime.date(2025, 8, 7) + _RUST_SUPPORT_OVERLAP,
     "1.88": datetime.date(2025, 6, 26) + _RUST_SUPPORT_OVERLAP,
     "1.87": datetime.date(2025, 5, 15) + _RUST_SUPPORT_OVERLAP,
@@ -38,7 +39,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS: list[str] = ["1.88", "1.89"]
+_RUST_VERSIONS: list[str] = ["1.89", "1.90"]
 
 _RUST_TW_VERSIONS: list[str] = ["1.87", "1.88"]
 
