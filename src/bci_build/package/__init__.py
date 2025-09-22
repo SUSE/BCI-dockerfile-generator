@@ -652,13 +652,9 @@ exit 0
         _from_image = self._from_image
         return bool(
             _from_image
+            and self.from_target_image != "scratch"
             and self.os_version in RELEASED_OS_VERSIONS
-            and (
-                self.from_target_image
-                or _from_image.startswith(self.base_image_registry)
-            )
             and not self.os_version.is_tumbleweed
-            and not self.os_version.is_sl16  # waiting for ibs#345975
         )
 
     @property
