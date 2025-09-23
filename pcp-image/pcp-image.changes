@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 23 15:59:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add o.o.image.base annotations
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
