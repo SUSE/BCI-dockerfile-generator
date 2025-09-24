@@ -71,9 +71,9 @@ MICRO_CONTAINERS = [
         ),
         custom_end=textwrap.dedent(f"""
             # not making sense in a zypper-free image
-            {DOCKERFILE_RUN} rm -v /var/lib/zypp/AutoInstalled
+            {DOCKERFILE_RUN} rm -vf /var/lib/zypp/AutoInstalled
             # includes device and inode numbers that change on deploy
-            {DOCKERFILE_RUN} rm -v /var/cache/ldconfig/aux-cache
+            {DOCKERFILE_RUN} rm -vf /var/cache/ldconfig/aux-cache
         """),
     )
     for os_version in ALL_BASE_OS_VERSIONS
@@ -346,13 +346,13 @@ MINIMAL_CONTAINERS = [
             rpm -e jdupes
 
             # not making sense in a zypper-free image
-            rm -v /var/lib/zypp/AutoInstalled
+            rm -vf /var/lib/zypp/AutoInstalled
 
             # includes device and inode numbers that change on deploy
-            rm -v /var/cache/ldconfig/aux-cache
+            rm -vf /var/cache/ldconfig/aux-cache
 
             # Will be recreated by the next rpm(1) run as root user
-            rm -v /usr/lib/sysimage/rpm/Index.db
+            rm -vf /usr/lib/sysimage/rpm/Index.db
             """
         ),
     )
@@ -388,13 +388,13 @@ BUSYBOX_CONTAINERS = [
             sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
 
             # not making sense in a zypper-free image
-            rm -v /var/lib/zypp/AutoInstalled
+            rm -vf /var/lib/zypp/AutoInstalled
 
             # includes device and inode numbers that change on deploy
-            rm -v /var/cache/ldconfig/aux-cache
+            rm -vf /var/cache/ldconfig/aux-cache
 
             # Will be recreated by the next rpm(1) run as root user
-            rm -v /usr/lib/sysimage/rpm/Index.db
+            rm -vf /usr/lib/sysimage/rpm/Index.db
         """
         ),
         config_sh_interpreter="/bin/sh",
