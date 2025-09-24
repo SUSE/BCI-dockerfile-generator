@@ -44,11 +44,14 @@ LABEL org.opensuse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
-EXPOSE 80/tcp
+EXPOSE 8080/tcp
 # sanity check that the version from the tag is equal to the version of nginx that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' nginx | \
     cut -d '.' -f -2)" = "1.29" ]
+# Modify the default Nginx config to listen on port 8080 and PID file location to a writable path
+RUN set -euo pipefail; sed -i 's/listen  *80;/listen 8080;/g' /etc/nginx/nginx.conf &&\
+    sed -i 's|#pid /run/nginx.pid;|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf
 RUN set -euo pipefail; mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin
