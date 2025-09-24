@@ -153,6 +153,42 @@ staging_build:
         source_project: home:pushman:BCI:CR:16.0
         source_package: valkey-image
         target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-api-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-controller-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-exportproxy-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-exportserver-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-handler-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-launcher-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-operator-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-pr-helper-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: virt-sidecar-shim-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
   filters:
     event: pull_request
 
@@ -284,6 +320,33 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: valkey-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-api-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-controller-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-exportproxy-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-exportserver-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-handler-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-launcher-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-operator-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-pr-helper-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: virt-sidecar-shim-image
   filters:
     event: push
     branches:
