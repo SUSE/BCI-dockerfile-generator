@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 25 16:44:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- pick the right systemd-defaults branding package
+
+-------------------------------------------------------------------
 Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove shadow backup from container
