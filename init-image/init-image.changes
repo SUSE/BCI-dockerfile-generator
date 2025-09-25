@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 25 16:44:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- pick the right systemd-defaults branding package
+
+-------------------------------------------------------------------
 Thu Sep 25 16:25:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark container as released
