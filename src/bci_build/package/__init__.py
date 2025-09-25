@@ -649,10 +649,15 @@ exit 0
     @property
     def is_base_container_annotation_available(self) -> bool:
         """return True if the obs-service-kiwi_metainfo_helper can provide base.name/digest annotations."""
-        _from_image = self._from_image
+        base_image = (
+            self.dockerfile_from_target_ref
+            if self.from_target_image
+            else self._from_image
+        )
+
         return bool(
-            _from_image
-            and self.from_target_image != "scratch"
+            base_image
+            and base_image.startswith(self.base_image_registry)
             and self.os_version in RELEASED_OS_VERSIONS
             and not self.os_version.is_tumbleweed
         )
