@@ -43,11 +43,13 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.opencontainers.image.ref.name" value="%%registry_version%%-%RELEASE%"/>
             <label name="org.opensuse.reference" value="registry.suse.com/suse/registry:%%registry_version%%-%RELEASE%"/>
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
-            <label name="com.suse.supportlevel" value="techpreview"/>
+            <label name="com.suse.supportlevel" value="l3"/>
             <label name="com.suse.eula" value="sle-eula"/>
-            <label name="com.suse.release-stage" value="beta"/>
+            <label name="com.suse.release-stage" value="released"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
           </suse_label_helper:add_prefix>
+          <label name="org.opencontainers.image.base.name" value="%BASE_REFNAME%"/>
+          <label name="org.opencontainers.image.base.digest" value="%BASE_DIGEST%"/>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
         </labels>
         <subcommand execute="serve">

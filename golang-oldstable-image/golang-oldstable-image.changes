@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 25 16:25:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark container as released
+
+-------------------------------------------------------------------
 Mon Aug 25 14:29:23 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update go stable/oldstable to 1.24/1.25
