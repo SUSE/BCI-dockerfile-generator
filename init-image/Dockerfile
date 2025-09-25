@@ -24,7 +24,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends systemd gzip sles-release
+    zypper -n install --no-recommends systemd systemd-default-settings-branding-SLE gzip sles-release
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
