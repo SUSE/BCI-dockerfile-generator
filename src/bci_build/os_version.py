@@ -172,6 +172,7 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP5,
     OsVersion.SP6,
     OsVersion.SP7,
+    OsVersion.SL16_0,
     OsVersion.TUMBLEWEED,
 ]
 
