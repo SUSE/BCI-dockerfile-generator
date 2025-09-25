@@ -429,7 +429,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
             package_list=(
                 [
                     "kernel-devel",
-                    "kernel-syms",
+                    "kernel-default-devel",
                     "gcc",
                     "git-core",
                     "kmod",
