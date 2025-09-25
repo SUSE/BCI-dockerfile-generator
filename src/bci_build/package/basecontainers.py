@@ -443,11 +443,17 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 + (["tar"] if os_version == OsVersion.SP4 else [])
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
-            custom_end=textwrap.dedent(f"""
+            custom_end=textwrap.dedent(
+                (
+                    ""
+                    if os_version.is_sl16
+                    else f"""
                 #!ArchExclusiveLine: x86_64 aarch64
                 {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
                 {DOCKERFILE_RUN} {LOG_CLEAN}
-            """),
+            """
+                )
+            ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
