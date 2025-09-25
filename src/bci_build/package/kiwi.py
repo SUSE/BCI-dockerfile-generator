@@ -63,6 +63,12 @@ KIWI_CONTAINERS = [
             "python3-devel",
             "python3-kiwi",
             "python3-pip",
+            # LVM2 requires systemd, so we need the right branding package
+            (
+                "systemd-default-settings-branding-openSUSE"
+                if os_version.is_tumbleweed
+                else "systemd-default-settings-branding-SLE"
+            ),
             "tack",
             "timezone",
             "xorriso",

@@ -89,7 +89,16 @@ INIT_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
-        package_list=["systemd", "gzip", *os_version.release_package_names],
+        package_list=[
+            "systemd",
+            (
+                "systemd-default-settings-branding-openSUSE"
+                if os_version.is_tumbleweed
+                else "systemd-default-settings-branding-SLE"
+            ),
+            "gzip",
+            *os_version.release_package_names,
+        ],
         min_release_counter={
             OsVersion.SP7: 40,
             OsVersion.SL16_0: 4,
