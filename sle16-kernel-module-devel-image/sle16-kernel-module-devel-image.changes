@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 25 16:35:03 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to kernel-default-devel and temporarily remove mokutil
+
+-------------------------------------------------------------------
 Thu Sep 11 11:07:17 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
