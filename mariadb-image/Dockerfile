@@ -20,7 +20,7 @@
 #!BuildTag: suse/mariadb:11.8
 #!BuildName: suse-mariadb-11.8
 #!BuildVersion: 16.0.11.8
-FROM bci/bci-micro:16.0 AS target
+FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
@@ -33,7 +33,7 @@ RUN set -euo pipefail; \
     cut -d '.' -f -2)" = "11.8" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
-FROM bci/bci-micro:16.0
+FROM registry.suse.com/bci/bci-micro:16.0
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.mariadb
@@ -48,11 +48,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%mariadb_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/mariadb:%%mariadb_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mariadbd"]

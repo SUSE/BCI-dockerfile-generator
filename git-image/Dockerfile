@@ -21,7 +21,7 @@
 #!BuildTag: suse/git:%%git_major_version%%
 #!BuildName: suse-git
 #!BuildVersion: 16.0.2.51
-FROM bci/bci-micro:16.0 AS target
+FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
@@ -34,7 +34,7 @@ RUN set -euo pipefail; \
     cut -d '.' -f -2)" = "2.51" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
-FROM bci/bci-micro:16.0
+FROM registry.suse.com/bci/bci-micro:16.0
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.git
@@ -49,9 +49,11 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%git_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/git:%%git_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
