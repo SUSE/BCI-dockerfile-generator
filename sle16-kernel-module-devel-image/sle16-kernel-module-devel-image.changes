@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 25 16:35:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to kernel-default-devel and temporarily remove mokutil
+
+-------------------------------------------------------------------
 Thu Sep 25 16:25:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark container as released
