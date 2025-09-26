@@ -32,7 +32,13 @@ RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
     cut -d '.' -f -2)" = "10.11" ]
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/run/*; \
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
+    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+
 FROM registry.suse.com/bci/bci-micro:15.6
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
