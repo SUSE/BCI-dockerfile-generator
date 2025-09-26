@@ -19,7 +19,7 @@ _POSTGRES_ENTRYPOINT = (
 _POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes()
 
 # first list the SLE15 versions, then the TW specific versions
-_POSTGRES_MAJOR_VERSIONS = [17, 16, 15, 14] + [13]
+_POSTGRES_MAJOR_VERSIONS = [17, 16, 15, 14] + [13, 18]
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         name="postgres",
@@ -118,5 +118,5 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             )
         ]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (14, 13)]
+    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (18, 14, 13)]
 ]
