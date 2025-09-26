@@ -278,8 +278,11 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "build_recipe_type": BuildType.DOCKER,
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
-        "exposes_ports": [TCP(80)],
+        "exposes_ports": [TCP(8080)],
         "custom_end": f"""{version_check_lines}
+# Modify the default Nginx config to listen on port 8080 and PID file location to a writable path
+{DOCKERFILE_RUN} sed -i 's/listen  *80;/listen 8080;/g' /etc/nginx/nginx.conf &&\\
+    sed -i 's|#pid /run/nginx.pid;|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf
 {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
 COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin
