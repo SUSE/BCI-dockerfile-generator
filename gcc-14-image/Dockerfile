@@ -23,6 +23,7 @@ FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc14 gcc14-c++ gcc14-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
