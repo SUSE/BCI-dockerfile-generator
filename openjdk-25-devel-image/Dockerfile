@@ -17,20 +17,20 @@
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
 #!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%
-#!BuildTag: opensuse/bci/openjdk-devel:24
+#!BuildTag: opensuse/bci/openjdk-devel:25
 #!BuildTag: opensuse/bci/openjdk-devel:latest
 
-FROM opensuse/bci/openjdk:24
+FROM opensuse/bci/openjdk:25
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends java-24-openjdk-devel maven
+    zypper -n install --no-recommends java-25-openjdk-devel maven
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.openjdk.devel
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 24 development"
-LABEL org.opencontainers.image.description="OpenJDK 24 development container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 25 development"
+LABEL org.opencontainers.image.description="OpenJDK 25 development container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -43,8 +43,8 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV JAVA_BINDIR="/usr/lib64/jvm/java-24-openjdk-24/bin"
-ENV JAVA_HOME="/usr/lib64/jvm/java-24-openjdk-24"
-ENV JAVA_ROOT="/usr/lib64/jvm/java-24-openjdk-24"
-ENV JAVA_VERSION="24"
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-25-openjdk-25/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-25-openjdk-25"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-25-openjdk-25"
+ENV JAVA_VERSION="25"
 RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]

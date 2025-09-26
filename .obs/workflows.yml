@@ -163,7 +163,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-24-image
+        source_package: openjdk-25-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -179,7 +179,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-24-devel-image
+        source_package: openjdk-25-devel-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -436,7 +436,7 @@ refresh_devel_BCI:
         package: openjdk-21-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: openjdk-24-image
+        package: openjdk-25-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-11-devel-image
@@ -448,7 +448,7 @@ refresh_devel_BCI:
         package: openjdk-21-devel-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: openjdk-24-devel-image
+        package: openjdk-25-devel-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: pcp-image
