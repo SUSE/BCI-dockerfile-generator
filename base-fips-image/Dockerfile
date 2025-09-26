@@ -45,8 +45,6 @@ LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
-LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
 RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
