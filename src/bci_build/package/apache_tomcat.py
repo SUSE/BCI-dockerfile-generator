@@ -33,7 +33,7 @@ TOMCAT_CONTAINERS = [
         is_latest=(
             (os_version in CAN_BE_LATEST_OS_VERSION)
             and tomcat_ver == _TOMCAT_VERSIONS[-1]
-            and jre_version == 22
+            and jre_version == 25
             and os_version.is_tumbleweed
         ),
         build_flavor=f"openjdk{jre_version}",
@@ -81,7 +81,7 @@ WORKDIR $CATALINA_HOME
         logo_url="https://tomcat.apache.org/res/images/tomcat.png",
     )
     for tomcat_ver, os_version, jre_version in (
-        ("10.1", OsVersion.TUMBLEWEED, 24),
+        ("10.1", OsVersion.TUMBLEWEED, 25),
         ("10.1", OsVersion.TUMBLEWEED, 21),
         ("10.1", OsVersion.TUMBLEWEED, 17),
         ("9", OsVersion.TUMBLEWEED, 21),
