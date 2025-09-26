@@ -42,9 +42,15 @@ _BASH_SET: str = "set -euo pipefail"
 #: from not being noticed
 DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 
-#: Remove various log files. While it is possible to just ``rm -rf /var/log/*``,
+#: Remove various log files and temporary files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
-LOG_CLEAN: str = "rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-"
+LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \\
+    rm -rf {/target,}/run/*; \\
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \\
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \\
+    rm -f {/target,}/var/cache/ldconfig/aux-cache; \\
+    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+""")
 
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
@@ -600,6 +606,9 @@ if command -v zypper > /dev/null; then
     zypper -n clean -a
 fi
 
+#=============================================
+# Clean up logs and temporary files if present
+#---------------------------------------------
 {LOG_CLEAN}
 
 exit 0
