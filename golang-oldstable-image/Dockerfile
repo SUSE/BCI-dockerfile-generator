@@ -26,6 +26,7 @@ FROM bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends go1.24 go1.24-doc make curl findutils gawk git-core procps util-linux
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
 
