@@ -20,7 +20,7 @@
 #!BuildTag: suse/389-ds:3.0
 #!BuildName: suse-389-ds-3.0
 #!BuildVersion: 16.0.3.0
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends 389-ds timezone openssl nss_synth

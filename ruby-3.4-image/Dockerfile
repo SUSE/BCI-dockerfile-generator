@@ -20,7 +20,7 @@
 #!BuildTag: bci/ruby:3
 #!BuildName: bci-ruby-3.4
 #!BuildVersion: 16.0.3.4
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel ruby3.4-rubygem-gem2rpm util-linux gcc-c++ sqlite3-devel make timezone curl findutils gawk git-core procps util-linux

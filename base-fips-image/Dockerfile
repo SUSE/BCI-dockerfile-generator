@@ -20,7 +20,7 @@
 #!BuildName: bci-bci-base-fips
 #!BuildVersion: 16.0.0
 #!BuildRelease: 4
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends SLES-release coreutils crypto-policies-scripts patterns-base-fips

@@ -20,7 +20,7 @@
 #!BuildTag: bci/gcc:15
 #!BuildName: bci-gcc-15
 #!BuildVersion: 16.0.15
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux

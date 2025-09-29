@@ -20,7 +20,7 @@
 #!BuildName: bci-bci-sle16-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.0.0
 #!BuildRelease: 17
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets

@@ -19,7 +19,7 @@
 #!BuildTag: suse/kea:3.0
 #!BuildName: suse-kea-3.0
 #!BuildVersion: 16.0.3.0
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kea util-linux

@@ -23,7 +23,7 @@
 #!BuildTag: bci/node:22
 #!BuildName: bci-nodejs-22
 #!BuildVersion: 16.0.22
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends nodejs22 npm22 update-alternatives curl findutils gawk git-core procps util-linux

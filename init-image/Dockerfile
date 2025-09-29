@@ -20,7 +20,7 @@
 #!BuildName: bci-bci-init
 #!BuildVersion: 16.0.0
 #!BuildRelease: 4
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends systemd systemd-default-settings-branding-SLE gzip SLES-release

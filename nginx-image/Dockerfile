@@ -19,7 +19,7 @@
 #!BuildTag: suse/nginx:1.27
 #!BuildName: suse-nginx-1.27
 #!BuildVersion: 16.0.1.27
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gawk nginx findutils gettext-runtime

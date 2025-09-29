@@ -22,7 +22,7 @@
 #!BuildTag: bci/rust:1.88
 #!BuildName: bci-rust-stable
 #!BuildVersion: 16.0.1.88.1
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends rust1.88 cargo1.88
