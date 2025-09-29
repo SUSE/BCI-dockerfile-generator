@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 29 09:39:27 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
 Thu Sep 25 16:37:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to kernel-default-devel
