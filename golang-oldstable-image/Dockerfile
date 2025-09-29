@@ -28,7 +28,13 @@ FROM registry.suse.com/bci/bci-base:15.7
 RUN set -euo pipefail; \
     zypper -n install --no-recommends go1.24 go1.24-doc make curl findutils gawk git-core procps lifecycle-data-sle-module-development-tools
 RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/run/*; \
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
+    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.golang
@@ -56,9 +62,15 @@ ENV GOPATH="/go"
 ENV GOTOOLCHAIN="local"
 ENV PATH="/go/bin:/usr/local/go/bin:/root/go/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-# only available on go's tsan_arch architectures
-#!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-RUN set -euo pipefail; if zypper -n install go1.24-race; then zypper -n clean -a; fi
-RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; rm -f {/target,}/etc/shadow-
-WORKDIR /go
+        # only available on go's tsan_arch architectures
+        #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
+        RUN set -euo pipefail; if zypper -n install go1.24-race; then zypper -n clean -a; fi
+        RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
+        RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+rm -rf {/target,}/run/*; \
+rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+rm -f {/target,}/var/cache/ldconfig/aux-cache; \
+command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+
+        WORKDIR /go
