@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 29 08:54:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove base-name annotation when not built against released container
+
+-------------------------------------------------------------------
 Tue Sep 23 15:59:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add o.o.image.base annotations
