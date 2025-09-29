@@ -20,7 +20,7 @@
 #!BuildTag: bci/php:8
 #!BuildName: bci-php-8
 #!BuildVersion: 16.0.8
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring php8-readline

@@ -21,7 +21,7 @@
 #!BuildTag: bci/python:3
 #!BuildName: bci-python-3.13
 #!BuildVersion: 16.0.3.13
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends python313-devel python313 python313-pip curl findutils gawk git-core procps util-linux python313-wheel python313-pipx

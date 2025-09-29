@@ -22,7 +22,7 @@
 #!BuildTag: bci/rust:1.87
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 16.0.1.87.2
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends rust1.87 cargo1.87

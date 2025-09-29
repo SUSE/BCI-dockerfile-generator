@@ -22,7 +22,7 @@
 #!BuildTag: bci/golang:1.24
 #!BuildName: bci-golang-oldstable
 #!BuildVersion: 16.0.1.24.2
-FROM bci/bci-base:16.0
+FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends go1.24 go1.24-doc make curl findutils gawk git-core procps util-linux
