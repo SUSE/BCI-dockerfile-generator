@@ -136,8 +136,8 @@ This project is automatically updated from git. Please do **not** send submit re
     <enable/>
   </debuginfo>
   <repository name="standard">
+    <path project="SUSE:Registry" repository="standard"/>
     <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
-    <path project="SUSE:SLFO:1.2" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
@@ -191,11 +191,11 @@ This project is automatically updated from git. Please do **not** send submit re
     <enable/>
   </debuginfo>
   <repository name="standard">
-    <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
+    <path project="SUSE:Registry" repository="standard"/>
     <path project="devel:BCI:16.0" repository="containerfile"/>
     <path project="devel:BCI:16.0" repository="containerkiwi"/>
     <path project="devel:BCI:16.0" repository="standard"/>
-    <path project="SUSE:SLFO:1.2" repository="standard"/>
+    <path project="SUSE:SLFO:Products:SLES:16.0" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
