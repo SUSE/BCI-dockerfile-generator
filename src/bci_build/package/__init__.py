@@ -84,6 +84,22 @@ class ParseVersion(enum.StrEnum):
 
 
 @dataclass
+class StableUser:
+    """Data class that stores information about stable user and group
+    configuration
+    """
+
+    # name of the user
+    user_name: str
+    # id of the user
+    user_id: int
+    # name of the group
+    group_name: str
+    # id of the group
+    group_id: int
+
+
+@dataclass
 class Replacement:
     """Represents a replacement via the `obs-service-replace_using_package_version
     <https://github.com/openSUSE/obs-service-replace_using_package_version>`_.
@@ -193,6 +209,9 @@ class BaseContainerImage(abc.ABC):
     #: If your entrypoint must not be called through a shell, then pass the
     #: binary and its parameters as a list
     entrypoint: list[str] | None = None
+
+    # user&group that needs to be stabilized for the package
+    user_chown: StableUser | None = None
 
     # The user to use for entrypoint service
     entrypoint_user: str | None = ""

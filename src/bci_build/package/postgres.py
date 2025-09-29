@@ -10,6 +10,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import ParseVersion
 from bci_build.package import Replacement
+from bci_build.package import StableUser
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
 
@@ -20,6 +21,9 @@ _POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes(
 
 # first list the SLE15 versions, then the TW specific versions
 _POSTGRES_MAJOR_VERSIONS = [17, 16, 15, 14] + [13, 18]
+# postgres versions that supports stable user id and stable group ids
+# starting from version _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
+_STABLE_USER_GROUP_ID_SUPPORTED_SINCE = 18
 POSTGRES_CONTAINERS = [
     ApplicationStackContainer(
         name="postgres",
@@ -84,7 +88,18 @@ POSTGRES_CONTAINERS = [
         ],
         volumes=["$PGDATA"],
         exposes_ports=[TCP(5432)],
-        custom_end=rf"""COPY docker-entrypoint.sh /usr/local/bin/
+        user_chown=(
+            StableUser(
+                user_name="postgres",
+                user_id=999,
+                group_name="postgres",
+                group_id=999,
+            )
+        )
+        if ver >= _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
+        else None,
+        custom_end=(
+            rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
@@ -95,7 +110,8 @@ POSTGRES_CONTAINERS = [
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432
-""",
+"""
+        ),
     )
     for ver, os_version in (
         [(15, variant) for variant in (OsVersion.TUMBLEWEED,)]
