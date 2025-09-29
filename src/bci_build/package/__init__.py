@@ -611,22 +611,20 @@ exit 0
             return None
         if self.from_image:
             return self.from_image
-
         if self.os_version == OsVersion.TUMBLEWEED:
             return "opensuse/tumbleweed:latest"
-        if self.os_version.is_sl16:
-            return f"{_build_tag_prefix(self.os_version)}/bci-base:{self.os_version}"
         if self.os_version in ALL_OS_LTSS_VERSIONS:
             return f"{_build_tag_prefix(self.os_version)}/sle15:15.{self.os_version}"
         if not self.from_target_image and self.os_version in RELEASED_OS_VERSIONS:
-            return f"{self.base_image_registry}/bci/bci-base:15.{self.os_version}"
+            return f"{self.base_image_registry}/bci/bci-base:{OsContainer.version_to_container_os_version(self.os_version)}"
         if (
             not isinstance(self._publish_registry, ApplicationCollectionRegistry)
             and self.image_type == ImageType.APPLICATION
+            and self.os_version.is_sle15
         ):
             return f"suse/sle15:15.{self.os_version}"
 
-        return f"bci/bci-base:15.{self.os_version}"
+        return f"bci/bci-base:{OsContainer.version_to_container_os_version(self.os_version)}"
 
     @property
     def dockerfile_from_target_ref(self) -> str:
@@ -649,10 +647,15 @@ exit 0
     @property
     def is_base_container_annotation_available(self) -> bool:
         """return True if the obs-service-kiwi_metainfo_helper can provide base.name/digest annotations."""
-        _from_image = self._from_image
+        base_image = (
+            self.dockerfile_from_target_ref
+            if self.from_target_image
+            else self._from_image
+        )
+
         return bool(
-            _from_image
-            and self.from_target_image != "scratch"
+            base_image
+            and base_image.startswith(self.base_image_registry)
             and self.os_version in RELEASED_OS_VERSIONS
             and not self.os_version.is_tumbleweed
         )
