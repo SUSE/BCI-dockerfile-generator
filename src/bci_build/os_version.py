@@ -38,9 +38,9 @@ class OsVersion(enum.Enum):
 
     @property
     def pretty_print(self) -> str:
-        if self.value in (OsVersion.TUMBLEWEED.value, OsVersion.SL16_0.value):
-            return self.value
-        return f"SP{self.value}"
+        if self.is_sle15:
+            return f"SP{self.value}"
+        return self.value
 
     @property
     def pretty_os_version_no_dash(self) -> str:
