@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 29 09:39:27 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
 Thu Sep 11 10:31:53 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - include libglib2 as this is needed at dlopen time by some apps
