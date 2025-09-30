@@ -1,9 +1,10 @@
-"""Common Definitions for the SUSE containers."""
+"""Common Definitions for the KubeVirt containers."""
 
 import textwrap
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -11,12 +12,11 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.registry import SUSERegistry
 
 KUBEVIRT_EXCLUSIVE_ARCH = [Arch.X86_64]
-
-VERSION_SUFFIXES = {"1.5.2": "r1"}
 
 
 class KubeVirtRegistry(SUSERegistry):
@@ -37,26 +37,26 @@ def _get_kubevirt_kwargs(
     if user is None:
         user = "1001"
     kubevirt_version = get_pkg_version("kubevirt", os_version)
-    tag_version = kubevirt_version
-    if tag_version not in VERSION_SUFFIXES:
-        raise ValueError(f"Unknown KubeVirt version: {tag_version}")
-    tag_version += f"{VERSION_SUFFIXES[tag_version]}"
+    kubevirt_version_re = "%%kubevirt_ver%%"
+    tag_version = format_version(kubevirt_version, ParseVersion.MINOR)
     return {
         "name": f"virt-{service}",
         "pretty_name": f"KubeVirt virt-{service} container",
+        "package_name": "kubevirt-image",
         "license": "Apache-2.0",
         "os_version": os_version,
         "tag_version": tag_version,
-        "version": (kubevirt_re := f"%%kubevirt_virt_{service}_ver%%"),
+        "version": kubevirt_version_re,
         "replacements_via_service": [
             Replacement(
-                kubevirt_re,
-                package_name=f"kubevirt-virt-{service}",
+                kubevirt_version_re,
+                package_name="kubevirt",
                 parse_version=ParseVersion.PATCH,
             )
         ],
         "is_singleton_image": True,
         "is_latest": False,
+        "build_flavor": service,
         "version_in_uid": False,
         "entrypoint_user": user if user != "0" else None,
         "exclusive_arch": KUBEVIRT_EXCLUSIVE_ARCH,
@@ -174,3 +174,5 @@ KUBEVIRT_CONTAINERS = (
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
 )
+
+KUBEVIRT_CRATE = ContainerCrate(KUBEVIRT_CONTAINERS)
