@@ -46,7 +46,7 @@ POSTGRES_CONTAINERS = [
             [
                 f"postgresql{ver}-pgvector",
             ]
-            if os_version.is_tumbleweed and ver != 18
+            if os_version.is_tumbleweed
             else []
         ),
         version="%%pg_patch_version%%",
