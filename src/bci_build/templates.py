@@ -81,7 +81,12 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL org.opensuse.release-stage="{{ image.release_stage }}"
 {%- else %}
+{%- if image.support_level | string == "build_arg" %}
+ARG CONTAINER_SUPPORT_LEVEL
+LABEL com.suse.supportlevel="${CONTAINER_SUPPORT_LEVEL:-techpreview}"
+{%- else %}
 LABEL com.suse.supportlevel="{{ image.support_level }}"
+{%- endif %}
 {%- if image.supported_until %}
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}

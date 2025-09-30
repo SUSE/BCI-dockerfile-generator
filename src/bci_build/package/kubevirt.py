@@ -60,7 +60,7 @@ def _get_kubevirt_kwargs(
         "version_in_uid": False,
         "entrypoint_user": user if user != "0" else None,
         "exclusive_arch": KUBEVIRT_EXCLUSIVE_ARCH,
-        "support_level": SupportLevel.L3,
+        "support_level": SupportLevel.CUSTOM_BUILD_ARG,
         "_publish_registry": (
             KubeVirtRegistry() if os_version == OsVersion.SL16_0 else None
         ),

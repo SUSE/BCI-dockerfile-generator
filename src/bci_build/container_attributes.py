@@ -68,6 +68,7 @@ class SupportLevel(enum.Enum):
     ACC = "acc"
     UNSUPPORTED = "unsupported"
     TECHPREVIEW = "techpreview"
+    CUSTOM_BUILD_ARG = "build_arg"
 
     def __str__(self) -> str:
         return self.value
