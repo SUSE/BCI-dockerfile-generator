@@ -2,10 +2,10 @@
 
 
 class ContainerCrate:
-    """ContainerCrate is combining multiple container build flavors.
+    """ContainerCrate combines container build flavors into a single OBS multibuild
 
-    This provides package-central functions like generating _service and
-    _multibuild files.
+    The class provides functions like generating _service and
+    _multibuild files for all containers in the crate.
     """
 
     def __init__(self, containers: list):
