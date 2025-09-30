@@ -450,6 +450,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 ]
                 # tar is not in bci-base in 15.4, but we need it to unpack tarballs
                 + (["tar"] if os_version == OsVersion.SP4 else [])
+                + (["kernel-syms"] if os_version.is_sle15 else [])
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
             custom_end=textwrap.dedent(
