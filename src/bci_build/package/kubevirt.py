@@ -30,12 +30,22 @@ class KubeVirtRegistry(SUSERegistry):
 
 
 def _get_kubevirt_kwargs(
-    service: str, os_version: OsVersion, *, user=None, custom_end=True
+    service: str,
+    os_version: OsVersion,
+    *,
+    user=None,
+    custom_end=True,
+    custom_service_pkg_name=None,
 ) -> dict:
     """Generate common kwargs for KubeVirt containers."""
 
     if user is None:
         user = "1001"
+    service_pkg_name = (
+        f"kubevirt-virt-{service}"
+        if custom_service_pkg_name is None
+        else custom_service_pkg_name
+    )
     kubevirt_version = get_pkg_version("kubevirt", os_version)
     kubevirt_version_re = "%%kubevirt_ver%%"
     tag_version = format_version(kubevirt_version, ParseVersion.MINOR)
@@ -67,7 +77,7 @@ def _get_kubevirt_kwargs(
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (
             generate_package_version_check(
-                f"kubevirt-virt-{service}",
+                service_pkg_name,
                 kubevirt_version,
                 ParseVersion.PATCH,
                 use_target=True,
@@ -166,7 +176,13 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_kubevirt_kwargs("pr-helper", os_version, user="0", custom_end=False),
+            **_get_kubevirt_kwargs(
+                "pr-helper",
+                os_version,
+                user="0",
+                custom_end=False,
+                custom_service_pkg_name="kubevirt-pr-helper-conf",
+            ),
             package_list=sorted(["kubevirt-pr-helper-conf", "qemu-pr-helper"]),
             entrypoint=["/usr/bin/qemu-pr-helper"],
             custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/kube-virt/pr-helper/multipath.conf /etc/",
