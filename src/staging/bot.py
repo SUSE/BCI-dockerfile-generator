@@ -376,10 +376,10 @@ staging_build:
   steps:
 """
         source_project = self.continuous_rebuild_project_name
-        for bci in self._bcis:
+        for pkg_name in sorted({bci.package_name for bci in self._bcis}):
             workflows += f"""    - branch_package:
         source_project: {source_project}
-        source_package: {bci.package_name}
+        source_package: {pkg_name}
         target_project: {source_project}:Staging
 """
         workflows += f"""  filters:
@@ -396,10 +396,10 @@ refresh_devel_BCI:
   steps:
 """
         devel_prj = _get_bci_project_name(self.os_version)
-        for bci in self._bcis:
+        for pkg_name in sorted({bci.package_name for bci in self._bcis}):
             workflows += f"""    - trigger_services:
         project: {devel_prj}
-        package: {bci.package_name}
+        package: {pkg_name}
 """
 
         workflows += deployment_branch_push_filter
