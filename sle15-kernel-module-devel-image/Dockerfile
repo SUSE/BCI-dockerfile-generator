@@ -22,7 +22,7 @@
 FROM registry.suse.com/bci/bci-base:15.6
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build sles-release
+    zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build sles-release kernel-syms
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
