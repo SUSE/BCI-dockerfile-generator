@@ -165,9 +165,9 @@ class DotNetBCI(DevelopmentContainer):
         # Set the lifecycle information taken from
         # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
         self.supported_until = {
-            "6.0": datetime.date(2024, 11, 12),
             "8.0": datetime.date(2026, 11, 10),
-            "9.0": datetime.date(2026, 5, 12),
+            "9.0": datetime.date(2026, 11, 10),
+            "10.0": datetime.date(2028, 11, 12),
         }.get(str(self.tag_version))
         assert self.supported_until, (
             f".Net version missing in lifecycle information: {self.tag_version}"
@@ -183,7 +183,7 @@ class DotNetBCI(DevelopmentContainer):
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
         self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
-        min_release_counter = {"8.0": 60, "9.0": 20}[str(self.tag_version)]
+        min_release_counter = {"8.0": 60, "9.0": 20, "10.0": 0}[str(self.tag_version)]
         self.min_release_counter = {
             self.os_version: min_release_counter,
         }
@@ -329,14 +329,14 @@ class DotNetBCI(DevelopmentContainer):
         super().prepare_template()
 
 
-_DOTNET_VERSION_T = Literal["8.0", "9.0"]
+_DOTNET_VERSION_T = Literal["8.0", "9.0", "10.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0", "10.0"]
 
-_LATEST_DOTNET_VERSION = "9.0"
+_LATEST_DOTNET_VERSION = "10.0"
 
 assert _LATEST_DOTNET_VERSION in _DOTNET_VERSIONS
-assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS)
+assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS, key=version.parse)
 assert _DOTNET_VERSIONS[-1] == _LATEST_DOTNET_VERSION
 
 
