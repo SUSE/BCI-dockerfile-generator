@@ -11,6 +11,14 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: aspnet-runtime-8.0
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: aspnet-runtime-9.0
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: base-fips-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -31,19 +39,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: aspnet-runtime-8.0
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: aspnet-runtime-9.0
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: dotnet-runtime-8.0
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: dotnet-runtime-9.0
+        source_package: distribution-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -55,7 +51,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: kiosk-firefox-esr-image
+        source_package: dotnet-runtime-8.0
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: dotnet-runtime-9.0
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -99,6 +99,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: kiosk-firefox-esr-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: kiwi-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -111,19 +115,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: rmt-mariadb-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: rmt-mariadb-client-image
+        source_package: micro-fips-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: micro-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: micro-fips-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -139,15 +135,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: openjdk-17-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: openjdk-21-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: openjdk-17-devel-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: openjdk-17-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -155,11 +147,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: pcp-image
+        source_package: openjdk-21-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: php8-image
+        source_package: pcp-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -168,6 +160,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: php-fpm8-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: php8-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -199,7 +195,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: distribution-image
+        source_package: rmt-mariadb-client-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: rmt-mariadb-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
@@ -255,11 +255,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: xorg-image
+        source_package: xorg-client-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: xorg-client-image
+        source_package: xorg-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
   filters:
     event: pull_request
@@ -286,6 +286,12 @@ refresh_devel_BCI:
         package: alertmanager-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: aspnet-runtime-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: aspnet-runtime-9.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: base-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -301,16 +307,7 @@ refresh_devel_BCI:
         package: cosign-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: aspnet-runtime-8.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: aspnet-runtime-9.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: dotnet-runtime-8.0
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: dotnet-runtime-9.0
+        package: distribution-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: dotnet-8.0
@@ -319,7 +316,10 @@ refresh_devel_BCI:
         package: dotnet-9.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: kiosk-firefox-esr-image
+        package: dotnet-runtime-8.0
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: dotnet-runtime-9.0
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: gcc-14-image
@@ -352,6 +352,9 @@ refresh_devel_BCI:
         package: kea-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
+        package: kiosk-firefox-esr-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
         package: kiwi-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
@@ -361,16 +364,10 @@ refresh_devel_BCI:
         package: kubectl-stable-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: rmt-mariadb-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: rmt-mariadb-client-image
+        package: micro-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: micro-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: micro-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: minimal-image
@@ -382,28 +379,28 @@ refresh_devel_BCI:
         package: nodejs-22-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: openjdk-17-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: openjdk-21-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
         package: openjdk-17-devel-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: openjdk-17-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: openjdk-21-devel-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: pcp-image
+        package: openjdk-21-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: php8-image
+        package: pcp-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: php-apache8-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: php-fpm8-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: php8-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: postgres-16-image
@@ -427,7 +424,10 @@ refresh_devel_BCI:
         package: python-3.6-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: distribution-image
+        package: rmt-mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: rmt-mariadb-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: rmt-server-image
@@ -469,10 +469,10 @@ refresh_devel_BCI:
         package: valkey-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: xorg-image
+        package: xorg-client-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
-        package: xorg-client-image
+        package: xorg-image
   filters:
     event: push
     branches:
