@@ -24,6 +24,7 @@ Patterntype: none
 %endif
 %endif
 
+%if 0%{?_is_in_project}
 %if "%_repository" == "containerfile" || "%_repository" == "containerkiwi"
 # Revert split of customer facing for container builds
 Prefer: !cpp-build cpp
@@ -50,7 +51,6 @@ Prefer: !gccjit-build-devel gccjit-devel
 Prefer: !libstdc++-build-devel libstdc++-devel
 Prefer: !libgccjit-build-devel libgccjit-devel
 
-
 Conflict: !cpp
 Conflict: !gcc-ada
 Conflict: !gcc-go
@@ -75,8 +75,11 @@ Conflict: !gccjit-devel
 Conflict: !libgccjit-devel
 Conflict: !libstdc++-devel
 
-%endif
+# Avoid the unreleased containers
+Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init
 
+%endif
+%endif  # is_in_project
 
 %if "%_repository" == "product"
 Repotype: slepool:nobuildid
