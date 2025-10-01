@@ -3,11 +3,11 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
-        source_package: base-image
+        source_package: base-fips-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
-        source_package: base-fips-image
+        source_package: base-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -19,19 +19,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
-        source_package: micro-image
-        target_project: home:pushman:BCI:CR:16.1:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.1
         source_package: micro-fips-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
-        source_package: minimal-image
+        source_package: micro-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
-        source_package: php8-image
+        source_package: minimal-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -40,6 +36,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
         source_package: php-fpm8-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: php8-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -76,10 +76,10 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:16.1
-        package: base-image
+        package: base-fips-image
     - trigger_services:
         project: devel:BCI:16.1
-        package: base-fips-image
+        package: base-image
     - trigger_services:
         project: devel:BCI:16.1
         package: busybox-image
@@ -88,22 +88,22 @@ refresh_devel_BCI:
         package: init-image
     - trigger_services:
         project: devel:BCI:16.1
-        package: micro-image
-    - trigger_services:
-        project: devel:BCI:16.1
         package: micro-fips-image
     - trigger_services:
         project: devel:BCI:16.1
-        package: minimal-image
+        package: micro-image
     - trigger_services:
         project: devel:BCI:16.1
-        package: php8-image
+        package: minimal-image
     - trigger_services:
         project: devel:BCI:16.1
         package: php-apache8-image
     - trigger_services:
         project: devel:BCI:16.1
         package: php-fpm8-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: php8-image
     - trigger_services:
         project: devel:BCI:16.1
         package: postgres-16-image
