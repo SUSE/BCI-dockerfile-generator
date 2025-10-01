@@ -15,18 +15,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: apache-tomcat-10-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: apache-tomcat-10-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: apache-tomcat-9-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: apache-tomcat-9-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -52,6 +40,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: cosign-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: distribution-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -123,7 +115,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: mariadb-image
+        source_package: kubevirt-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -131,11 +123,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: micro-image
+        source_package: mariadb-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: micro-fips-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: micro-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -151,23 +147,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-11-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-17-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-21-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-25-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: openjdk-11-devel-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: openjdk-11-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -175,7 +159,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: openjdk-17-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: openjdk-21-devel-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: openjdk-21-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -183,11 +175,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: pcp-image
+        source_package: openjdk-25-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: php8-image
+        source_package: pcp-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -196,6 +188,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: php-fpm8-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: php8-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -247,10 +243,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: distribution-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: rmt-server-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -295,11 +287,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: xorg-image
+        source_package: xorg-client-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: xorg-client-image
+        source_package: xorg-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
   filters:
     event: pull_request
@@ -329,15 +321,6 @@ refresh_devel_BCI:
         package: apache-tomcat-10-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: apache-tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: apache-tomcat-10-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: apache-tomcat-9-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: apache-tomcat-9-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -357,6 +340,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: cosign-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: distribution-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: gcc-13-image
@@ -410,16 +396,19 @@ refresh_devel_BCI:
         package: kubectl-1.34-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: mariadb-image
+        package: kubevirt-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: mariadb-client-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: micro-image
+        package: mariadb-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: micro-fips-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: micro-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: minimal-image
@@ -431,40 +420,40 @@ refresh_devel_BCI:
         package: nodejs-22-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: openjdk-11-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-17-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-21-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: openjdk-25-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: openjdk-11-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-11-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-17-devel-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
+        package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
         package: openjdk-21-devel-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-21-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-25-devel-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: pcp-image
+        package: openjdk-25-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: php8-image
+        package: pcp-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: php-apache8-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: php-fpm8-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: php8-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postfix-image
@@ -503,9 +492,6 @@ refresh_devel_BCI:
         package: python-3.13-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: distribution-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: rmt-server-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -539,10 +525,10 @@ refresh_devel_BCI:
         package: valkey-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: xorg-image
+        package: xorg-client-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: xorg-client-image
+        package: xorg-image
   filters:
     event: push
     branches:
