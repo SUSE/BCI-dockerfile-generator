@@ -7,11 +7,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: base-image
+        source_package: base-fips-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: base-fips-image
+        source_package: base-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -24,6 +24,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: cosign-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: distribution-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -59,7 +63,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: mariadb-image
+        source_package: kubevirt-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -67,11 +71,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: micro-image
+        source_package: mariadb-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: micro-fips-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: micro-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -87,19 +95,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: openjdk-21-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: openjdk-21-devel-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: pcp-image
+        source_package: openjdk-21-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: php8-image
+        source_package: pcp-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -108,6 +112,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: php-fpm8-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
+        source_package: php8-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -124,10 +132,6 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: python-3.13-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: distribution-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -175,10 +179,10 @@ refresh_devel_BCI:
         package: 389-ds-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: base-image
+        package: base-fips-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: base-fips-image
+        package: base-image
     - trigger_services:
         project: devel:BCI:16.0
         package: bind-image
@@ -188,6 +192,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: cosign-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: distribution-image
     - trigger_services:
         project: devel:BCI:16.0
         package: gcc-15-image
@@ -214,16 +221,19 @@ refresh_devel_BCI:
         package: kiwi-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: mariadb-image
+        package: kubevirt-image
     - trigger_services:
         project: devel:BCI:16.0
         package: mariadb-client-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: micro-image
+        package: mariadb-image
     - trigger_services:
         project: devel:BCI:16.0
         package: micro-fips-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: micro-image
     - trigger_services:
         project: devel:BCI:16.0
         package: minimal-image
@@ -235,22 +245,22 @@ refresh_devel_BCI:
         package: nodejs-22-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: openjdk-21-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: openjdk-21-devel-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: pcp-image
+        package: openjdk-21-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: php8-image
+        package: pcp-image
     - trigger_services:
         project: devel:BCI:16.0
         package: php-apache8-image
     - trigger_services:
         project: devel:BCI:16.0
         package: php-fpm8-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: php8-image
     - trigger_services:
         project: devel:BCI:16.0
         package: postgres-16-image
@@ -263,9 +273,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: python-3.13-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: distribution-image
     - trigger_services:
         project: devel:BCI:16.0
         package: ruby-3.4-image
