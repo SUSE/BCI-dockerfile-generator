@@ -42,15 +42,15 @@ def _get_cdi_kwargs(
     if user is None:
         user = "1001"
     service_pkg_name = (
-        f"kubevirt-cdi-{service}"
+        f"containerized-data-importer-{service}"
         if custom_service_pkg_name is None
         else custom_service_pkg_name
     )
-    cdi_version = get_pkg_version("kubevirt-cdi", os_version)
+    cdi_version = get_pkg_version("containerized-data-importer", os_version)
     cdi_version_re = "%%cdi_ver%%"
     tag_version = format_version(cdi_version, ParseVersion.MINOR)
     return {
-        "name": f"virt-{service}",
+        "name": f"cdi-{service}",
         "pretty_name": f"KubeVirt cdi-{service} container",
         "package_name": "cdi-image",
         "license": "Apache-2.0",
@@ -60,7 +60,7 @@ def _get_cdi_kwargs(
         "replacements_via_service": [
             Replacement(
                 cdi_version_re,
-                package_name="cdi",
+                package_name=service_pkg_name,
                 parse_version=ParseVersion.PATCH,
             )
         ],
@@ -92,6 +92,7 @@ def _get_cdi_kwargs(
         ),
     }
 
+
 KUBEVIRT_CDI_CONTAINERS = (
     [
         ApplicationStackContainer(
@@ -104,7 +105,15 @@ KUBEVIRT_CDI_CONTAINERS = (
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs("cloner", os_version),
-            package_list=sorted(["containerized-data-importer-cloner", "curl", "tar", "util-linux", "shadow"]),
+            package_list=sorted(
+                [
+                    "containerized-data-importer-cloner",
+                    "curl",
+                    "tar",
+                    "util-linux",
+                    "shadow",
+                ]
+            ),
             entrypoint=["/usr/bin/cloner_startup.sh"],
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
@@ -131,7 +140,7 @@ KUBEVIRT_CDI_CONTAINERS = (
                     "qemu-img",
                     "shadow",
                     "tar",
-                    "util-linux"
+                    "util-linux",
                 ]
             ),
             entrypoint=["/usr/bin/virt-cdi-importer", "-alsologtostderr"],
@@ -165,7 +174,7 @@ KUBEVIRT_CDI_CONTAINERS = (
                     "qemu-img",
                     "shadow",
                     "tar",
-                    "util-linux"
+                    "util-linux",
                 ]
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadserver", "-alsologtostderr"],
