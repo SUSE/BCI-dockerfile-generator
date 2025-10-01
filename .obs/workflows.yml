@@ -15,19 +15,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP6
-        source_package: rmt-mariadb-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP6
-        source_package: rmt-mariadb-client-image
+        source_package: micro-fips-image
         target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP6
         source_package: micro-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP6
-        source_package: micro-fips-image
         target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP6
@@ -40,6 +32,14 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP6
         source_package: python-3.12-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP6
+        source_package: rmt-mariadb-client-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP6
+        source_package: rmt-mariadb-image
         target_project: home:pushman:BCI:CR:SLE-15-SP6:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP6
@@ -77,16 +77,10 @@ refresh_devel_BCI:
         package: init-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
-        package: rmt-mariadb-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: rmt-mariadb-client-image
+        package: micro-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: micro-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP6
-        package: micro-fips-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: minimal-image
@@ -96,6 +90,12 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: python-3.12-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: rmt-mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP6
+        package: rmt-mariadb-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP6
         package: sle15-kernel-module-devel-image
