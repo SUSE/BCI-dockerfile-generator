@@ -68,6 +68,7 @@ def _get_kubevirt_kwargs(
         "is_latest": False,
         "build_flavor": service,
         "version_in_uid": False,
+        "use_build_flavor_in_tag": False,
         "entrypoint_user": user if user != "0" else None,
         "exclusive_arch": KUBEVIRT_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,

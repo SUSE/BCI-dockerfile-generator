@@ -214,6 +214,9 @@ class BaseContainerImage(abc.ABC):
     #: build flavors to produce for this container variant
     build_flavor: str | None = None
 
+    #: if true, then the build flavor is used in the tag, i.e. ``$name-$flavor:tag``
+    use_build_flavor_in_tag: bool = True
+
     #: create that this container is part of
     crate: ContainerCrate = None
 
@@ -1250,7 +1253,9 @@ class DevelopmentContainer(BaseContainerImage):
     def _version_variant(self) -> str:
         """return the version-build_flavor or version."""
         return (
-            f"{self.version}-{self.build_flavor}" if self.build_flavor else self.version
+            f"{self.version}-{self.build_flavor}"
+            if (self.use_build_flavor_in_tag and self.build_flavor)
+            else self.version
         )
 
     @property
@@ -1258,7 +1263,7 @@ class DevelopmentContainer(BaseContainerImage):
         """return the tag_version-build_flavor or tag_version."""
         return (
             f"{self.tag_version}-{self.build_flavor}"
-            if self.build_flavor
+            if (self.use_build_flavor_in_tag and self.build_flavor)
             else self.tag_version
         )
 
