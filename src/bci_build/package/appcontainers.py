@@ -107,6 +107,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version_in_uid=False,
         support_level=SupportLevel.L3,
+        min_release_counter={OsVersion.TUMBLEWEED: 35},
         oci_authors="william.brown@suse.com",
         pretty_name="389 Directory Server",
         package_list=["389-ds", "timezone", "openssl", "nss_synth"],
