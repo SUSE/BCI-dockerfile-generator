@@ -27,6 +27,7 @@ FROM bci/bci-init:15.7
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends pcp hostname procps shadow gettext-runtime util-linux-systemd
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \

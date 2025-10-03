@@ -139,3 +139,7 @@ Software Bill of Materials (SBOM).
 
 This image is based on [SUSE Linux Enterprise Server](https://www.suse.com/products/server/), a reliable,
 secure, and scalable server operating system built to power mission-critical workloads in physical and virtual environments.
+
+## PostgreSQL 18: Standardizing postgres UID/GID to 999:999
+
+Note that PostgreSQL version 18 updates the Postgres UID and GID from 499:486 to 999:999. Adjust ownership and definitions accordingly when migrating.
