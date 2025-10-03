@@ -36,6 +36,7 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
@@ -153,6 +154,7 @@ FROM bci/bci-base:16.1
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
@@ -257,6 +259,7 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
@@ -371,6 +374,7 @@ FROM suse/base:18
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
 
@@ -642,6 +646,7 @@ RUN \\
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
     zypper -n --installroot /target remove util-linux
+
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
 FROM registry.suse.com/bci/bci-micro:15.7
@@ -705,6 +710,7 @@ RUN \\
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core; \\
     zypper -n --installroot /target remove util-linux
+
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
 FROM registry.suse.com/bci/bci-micro:15.7
