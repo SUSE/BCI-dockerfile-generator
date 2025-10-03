@@ -23,6 +23,7 @@ FROM bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets
+
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
