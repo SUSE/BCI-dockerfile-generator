@@ -454,16 +454,17 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
             custom_end=textwrap.dedent(
-                (
-                    ""
-                    if os_version.is_sl16
-                    else f"""
+                f"""
+                #!ArchExclusiveLine: aarch64
+                {DOCKERFILE_RUN} if [ "$(uname -m)" = "aarch64" ] && zypper -n install kernel-64kb-devel; then zypper -n clean -a; fi
+                """
+                if os_version.is_sl16
+                else f"""
                 #!ArchExclusiveLine: x86_64 aarch64
                 {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
-                {DOCKERFILE_RUN} {LOG_CLEAN}
-            """
-                )
-            ),
+                """
+            )
+            + f"{DOCKERFILE_RUN} {LOG_CLEAN}",
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
