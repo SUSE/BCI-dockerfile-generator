@@ -66,15 +66,17 @@ def _get_golang_kwargs(
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        "custom_end": textwrap.dedent(
-            f"""
+        "custom_end": (
+            textwrap.dedent(
+                f"""
             # only available on go's tsan_arch architectures
             #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
             {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean -a; fi
-            {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
-            {DOCKERFILE_RUN} {LOG_CLEAN}
             WORKDIR /go
+            {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
             """
+            )
+            + f"{DOCKERFILE_RUN} {LOG_CLEAN}"
         ),
         "package_list": [*go_packages, "make"]
         + os_version.common_devel_packages
