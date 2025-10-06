@@ -61,7 +61,7 @@ KUBECTL_CONTAINERS = [
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        package_list=[f"kubernetes{ver}-client"],
+        package_list=[f"kubernetes{ver}-client", "diffutils"],
         entrypoint=["kubectl"],
         license="Apache-2.0",
         support_level=SupportLevel.L3,
