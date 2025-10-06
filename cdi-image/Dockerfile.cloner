@@ -26,10 +26,10 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends containerized-data-importer-cloner curl shadow tar util-linux
-# sanity check that the version from the tag is equal to the version of containerized-data-importer-cloner that we expect
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends containerized-data-importer-cloner curl obs-service-cdi_containers_meta shadow tar util-linux
+# sanity check that the version from the tag is equal to the version of obs-service-cdi_containers_meta that we expect
 RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' containerized-data-importer-cloner | \
+    [ "$(rpm --root /target -q --qf '%{version}' obs-service-cdi_containers_meta | \
     cut -d '.' -f -3)" = "1.62.0" ]
 RUN set -euo pipefail; useradd -u 1001 --create-home -s /bin/bash cdi-cloner
 
