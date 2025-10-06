@@ -1,4 +1,15 @@
+import enum
+
 import aiofiles
+
+
+@enum.unique
+class ParseVersion(enum.StrEnum):
+    MAJOR = enum.auto()
+    MINOR = enum.auto()
+    PATCH = enum.auto()
+    PATCH_UPDATE = enum.auto()
+    OFFSET = enum.auto()
 
 
 async def write_to_file(fname: str, contents: str | bytes) -> None:

@@ -11,12 +11,12 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _MARIADB_IDEXEC = b"""#!/bin/bash
 

@@ -10,8 +10,8 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.replacement import Replacement
 
 _RUST_GCC_PATH = "/usr/local/bin/gcc"
 
