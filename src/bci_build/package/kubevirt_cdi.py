@@ -12,10 +12,9 @@ from bci_build.package import ParseVersion
 from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.kubevirt import KubeVirtRegistry
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
-from bci_build.package.kubevirt import KubeVirtRegistry
-from bci_build.registry import SUSERegistry
 
 CDI_EXCLUSIVE_ARCH = [Arch.X86_64]
 
