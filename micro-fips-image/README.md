@@ -1,4 +1,4 @@
-# SLE BCI 15 SP7 in FIPS-140-3 mode Micro: Suitable for deploying static binaries
+# SLE BCI Micro 15 SP7 FIPS-140-3 mode: Suitable for deploying static binaries
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
