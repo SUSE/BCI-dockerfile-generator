@@ -55,11 +55,12 @@ COPY --from=target / /target
     {% endif -%} zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}{%- if image.packages_to_delete %}; \\
     zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}{%- endif %}
 {%- endif %}
-{% if image.user_chown %}# changing user id and group id created by package installation to stable values
+{%- if image.user_chown %}
+# changing user id and group id created by package installation to stable values
 {{ DOCKERFILE_RUN }} \\
     {% if image.from_target_image %}chroot /target {% endif %}chown -R --from={{ image.user_chown.user_name }}:{{ image.user_chown.group_name }} {{ image.user_chown.user_id }}:{{ image.user_chown.group_id }} /; \\
     groupmod {% if image.from_target_image %}-R /target {% endif %}-g {{ image.user_chown.group_id }} {{ image.user_chown.group_name }}; \\
-    usermod {% if image.from_target_image %}-R /target {% endif %}-u {{ image.user_chown.user_id }} {{ image.user_chown.user_name }};
+    usermod {% if image.from_target_image %}-R /target {% endif %}-u {{ image.user_chown.user_id }} {{ image.user_chown.user_name }}
 {%- endif %}
 {%- if image.build_stage_custom_end %}
 {{ image.build_stage_custom_end }}
