@@ -127,9 +127,12 @@ $ cat dump.sql | podman exec -i $CONTAINER_ID psql -U $POSTGRES_USER -d $POSTGRE
 ```
 
 For more information on how to perform backup and restore, refer to the [PostgreSQL documentation](https://www.postgresql.org/docs/current/backup.html).
+{%- if image.tag_version >= "18"  %}
+
+
+## PostgreSQL 18: Standardizing postgres UID/GID
+
+Note that PostgreSQL version 18 updates the Postgres UID and GID to 999:999. Adjust file and user ownership accordingly when migrating.
+{%- endif %}
 
 {% include 'licensing_and_eula.j2' %}
-
-## PostgreSQL 18: Standardizing postgres UID/GID to 999:999
-
-Note that PostgreSQL version 18 updates the Postgres UID and GID from 499:486 to 999:999. Adjust ownership and definitions accordingly when migrating.
