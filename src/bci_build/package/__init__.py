@@ -1106,9 +1106,13 @@ exit 0
             tasks.append(write_file_to_dest(mname, self.crate.multibuild(self)))
             files.append(mname)
 
-        tasks.append(
-            write_file_to_dest("_service", SERVICE_TEMPLATE.render(image=self))
-        )
+            sname = "_service"
+            tasks.append(write_file_to_dest(sname, self.crate.service(self)))
+            files.append(sname)
+        else:
+            sname = "_service"
+            tasks.append(write_file_to_dest(sname, SERVICE_TEMPLATE.render(image=self)))
+            files.append(sname)
 
         changes_file_name = self.package_name + ".changes"
         if not (Path(dest) / changes_file_name).exists():
