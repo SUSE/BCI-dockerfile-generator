@@ -14,19 +14,10 @@ from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
+from bci_build.package.kubevirt import KubeVirtRegistry
 from bci_build.registry import SUSERegistry
 
 CDI_EXCLUSIVE_ARCH = [Arch.X86_64]
-
-
-class CDIRegistry(SUSERegistry):
-    """Registry for KubeVirt CDI containers."""
-
-    @staticmethod
-    def registry_prefix(*, is_application: bool) -> str:
-        if not is_application:
-            raise RuntimeError("Kubevirt CDI containers must be Application Containers")
-        return "suse/sles/16.0"
 
 
 def _get_cdi_kwargs(
@@ -73,7 +64,7 @@ def _get_cdi_kwargs(
         "exclusive_arch": CDI_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
         "_publish_registry": (
-            CDIRegistry() if os_version == OsVersion.SL16_0 else None
+            KubeVirtRegistry() if os_version == OsVersion.SL16_0 else None
         ),
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (
