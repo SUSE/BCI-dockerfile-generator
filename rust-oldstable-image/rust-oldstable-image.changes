@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct  6 20:44:19 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.90 for stable, 1.88 for oldstable
+
+-------------------------------------------------------------------
 Mon Sep 29 09:31:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove non-reproducible files from container
