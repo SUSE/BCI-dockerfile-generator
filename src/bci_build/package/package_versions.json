@@ -7,6 +7,10 @@
         "Tumbleweed": "3.1",
         "version_format": "minor"
     },
+    "containerized-data-importer": {
+        "16.0": "1.60.1",
+        "Tumbleweed": "1.62.0"
+    },
     "cosign": {
         "16.0": "2.5",
         "16.1": "2.5",
