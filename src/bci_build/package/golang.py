@@ -10,9 +10,9 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _GO_VER_T = Literal["1.20", "1.21", "1.22", "1.23", "1.24", "1.25"]
 _GOLANG_VERSIONS: list[_GO_VER_T] = ["1.24", "1.25"]

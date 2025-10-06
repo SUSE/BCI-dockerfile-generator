@@ -76,7 +76,7 @@ import requests
 from packaging import version
 
 from bci_build.os_version import OsVersion
-from bci_build.package import ParseVersion
+from bci_build.util import ParseVersion
 
 _VERS_FMT_KEY = "version_format"
 

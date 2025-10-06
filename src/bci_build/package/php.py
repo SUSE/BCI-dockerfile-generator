@@ -8,7 +8,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
-from bci_build.package import Replacement
+from bci_build.replacement import Replacement
 
 
 @enum.unique

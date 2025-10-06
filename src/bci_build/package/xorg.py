@@ -10,14 +10,14 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
 from bci_build.package.kiosk import KIOSK_SUPPORT_ENDS
 from bci_build.package.kiosk import KioskRegistry
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _XORG_FILES = {
     "entrypoint.sh": (

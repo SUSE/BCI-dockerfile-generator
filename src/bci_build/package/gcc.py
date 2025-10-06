@@ -8,9 +8,9 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import DevelopmentContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _GCC_VERSIONS = Literal[7, 12, 13, 14, 15]
 

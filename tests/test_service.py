@@ -4,10 +4,10 @@ from bci_build.container_attributes import BuildType
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
+from bci_build.replacement import Replacement
 from bci_build.service import Service
 from bci_build.templates import SERVICE_TEMPLATE
+from bci_build.util import ParseVersion
 
 
 def test_service_without_params_as_xml():

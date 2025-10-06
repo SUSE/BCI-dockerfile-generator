@@ -7,9 +7,9 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import generate_disk_size_constraints
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _RUBY_SUPPORT_ENDS = {"2.5": None, "3.4": datetime.date(2028, 3, 31)}
 

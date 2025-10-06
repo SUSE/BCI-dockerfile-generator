@@ -8,7 +8,7 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
-from bci_build.package import Replacement
+from bci_build.replacement import Replacement
 
 _NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24]
 
