@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct  6 15:27:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove excessive whitespace
+
+-------------------------------------------------------------------
 Tue Sep 30 12:30:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - readd kernel-syms to avoid a bci repo mismatch
