@@ -24,18 +24,18 @@ def _get_cdi_kwargs(
     os_version: OsVersion,
     *,
     user=None,
-    custom_end=True,
-    custom_service_pkg_name=None,
+    package_list=None,
 ) -> dict:
     """Generate common kwargs for KubeVirt CDI containers."""
 
     if user is None:
         user = "1001"
-    service_pkg_name = (
-        f"containerized-data-importer-{service}"
-        if custom_service_pkg_name is None
-        else custom_service_pkg_name
-    )
+    service_pkg_name = "obs-service-cdi_containers_meta"
+    if package_list is None:
+        package_list = []
+    package_list.append(service_pkg_name)
+    package_list.sort()
+
     cdi_version = get_pkg_version("containerized-data-importer", os_version)
     cdi_version_re = "%%cdi_ver%%"
     tag_version = format_version(cdi_version, ParseVersion.MINOR)
@@ -58,6 +58,7 @@ def _get_cdi_kwargs(
         "is_latest": False,
         "build_flavor": service,
         "version_in_uid": False,
+        "package_list": package_list,
         "use_build_flavor_in_tag": False,
         "entrypoint_user": user if user != "0" else None,
         "exclusive_arch": CDI_EXCLUSIVE_ARCH,
@@ -87,23 +88,27 @@ def _get_cdi_kwargs(
 KUBEVIRT_CDI_CONTAINERS = (
     [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("apiserver", os_version),
-            package_list=sorted(["containerized-data-importer-api", "shadow"]),
+            **_get_cdi_kwargs(
+                "apiserver",
+                os_version,
+                package_list=["containerized-data-importer-api", "shadow"],
+            ),
             entrypoint=["/usr/bin/virt-cdi-apiserver", "-alsologtostderr"],
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("cloner", os_version),
-            package_list=sorted(
-                [
+            **_get_cdi_kwargs(
+                "cloner",
+                os_version,
+                package_list=[
                     "containerized-data-importer-cloner",
                     "curl",
                     "tar",
                     "util-linux",
                     "shadow",
-                ]
+                ],
             ),
             entrypoint=["/usr/bin/cloner_startup.sh"],
         )
@@ -111,17 +116,21 @@ KUBEVIRT_CDI_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("controller", os_version),
-            package_list=sorted(["containerized-data-importer-controller", "shadow"]),
+            **_get_cdi_kwargs(
+                "controller",
+                os_version,
+                package_list=["containerized-data-importer-controller", "shadow"],
+            ),
             entrypoint=["/usr/bin/virt-cdi-controller", "-alsologtostderr"],
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("importer", os_version),
-            package_list=sorted(
-                [
+            **_get_cdi_kwargs(
+                "importer",
+                os_version,
+                package_list=[
                     "containerized-data-importer-importer",
                     "curl",
                     "nbdkit-server",
@@ -132,7 +141,7 @@ KUBEVIRT_CDI_CONTAINERS = (
                     "shadow",
                     "tar",
                     "util-linux",
-                ]
+                ],
             ),
             entrypoint=["/usr/bin/virt-cdi-importer", "-alsologtostderr"],
         )
@@ -140,25 +149,32 @@ KUBEVIRT_CDI_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("operator", os_version),
-            package_list=sorted(["containerized-data-importer-operator", "shadow"]),
+            **_get_cdi_kwargs(
+                "operator",
+                os_version,
+                package_list=["containerized-data-importer-operator", "shadow"],
+            ),
             entrypoint=["/usr/bin/virt-cdi-operator"],
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("uploadproxy", os_version),
-            package_list=sorted(["containerized-data-importer-uploadproxy", "shadow"]),
+            **_get_cdi_kwargs(
+                "uploadproxy",
+                os_version,
+                package_list=["containerized-data-importer-uploadproxy", "shadow"],
+            ),
             entrypoint=["/usr/bin/virt-cdi-uploadproxy", "-alsologtostderr"],
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
     + [
         ApplicationStackContainer(
-            **_get_cdi_kwargs("uploadserver", os_version),
-            package_list=sorted(
-                [
+            **_get_cdi_kwargs(
+                "uploadserver",
+                os_version,
+                package_list=[
                     "containerized-data-importer-uploadserver",
                     "curl",
                     "libnbd",
@@ -166,7 +182,7 @@ KUBEVIRT_CDI_CONTAINERS = (
                     "shadow",
                     "tar",
                     "util-linux",
-                ]
+                ],
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadserver", "-alsologtostderr"],
         )
