@@ -201,6 +201,8 @@ def _get_fips_custom_env() -> str:
 
 
 def _get_fips_pretty_name(os_version: OsVersion) -> str:
+    """Return a pretty name for FIPS enforcing containers."""
+
     if os_version.is_ltss:
         if os_version == OsVersion.SP3:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
@@ -208,7 +210,7 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
 
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
-        return f"{os_version.pretty_os_version_no_dash} in FIPS-140-3 mode"
+        return f"{os_version.pretty_os_version_no_dash} FIPS-140-3 mode".strip()
 
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
@@ -288,8 +290,8 @@ FIPS_MICRO_CONTAINERS = [
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
         ),
-        pretty_name=f"{_get_fips_pretty_name(os_version)} Micro",
-        custom_description="A FIPS enforcing micro environment for containers {based_on_container}.",
+        pretty_name=f"Micro {_get_fips_pretty_name(os_version)}",
+        custom_description="A micro container in FIPS-140-3 mode for containers {based_on_container}.",
         from_target_image="scratch",
         cmd=["/bin/sh"],
         package_list=[pkg.name for pkg in _get_micro_package_list(os_version)]
