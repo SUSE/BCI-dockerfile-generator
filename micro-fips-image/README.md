@@ -1,4 +1,4 @@
-# SLE BCI 15 SP6 FIPS-140-3 Micro: Suitable for deploying static binaries
+# SLE BCI 15 SP6 in FIPS-140-3 mode Micro: Suitable for deploying static binaries
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/server-linux/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
@@ -10,7 +10,7 @@ use case for the image is deploying static binaries produced externally or
 during multi-stage builds.
 
 This base container image is configured with FIPS mode enabled by default, but
-does not include any certified binaries.
+**does not** include any certified binaries.
 
 ## Usage
 
