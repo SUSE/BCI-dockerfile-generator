@@ -19,13 +19,13 @@
 #!BuildTag: bci/rust:stable
 #!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:1.88
+#!BuildTag: bci/rust:1.90
 #!BuildName: bci-rust-stable
-#!BuildVersion: 16.0.1.88.1
+#!BuildVersion: 16.0.1.90.1
 FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rust1.88 cargo1.88
+    zypper -n install --no-recommends rust1.90 cargo1.90
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
@@ -38,8 +38,8 @@ RUN set -euo pipefail; zypper -n clean -a; \
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.rust
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Rust 1.88"
-LABEL org.opencontainers.image.description="Rust 1.88 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Rust 1.90"
+LABEL org.opencontainers.image.description="Rust 1.90 container based on the SLE Base Container Image."
 LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -49,7 +49,7 @@ LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-1.%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-1.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2025-10-09"
+LABEL com.suse.supportlevel.until="2026-01-01"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
 LABEL com.suse.release-stage="released"
