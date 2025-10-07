@@ -27,7 +27,11 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core openssh-clients
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core openssh-clients shadow
+# create the user and group with the given ids
+RUN set -euo pipefail; \
+    groupadd -R /target -g 1000 -r git; \
+    useradd -R /target -u 1000 -g 1000 -m -r -s /bin/bash git
 # sanity check that the version from the tag is equal to the version of git-core that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' git-core | \
