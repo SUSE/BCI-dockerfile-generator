@@ -41,13 +41,18 @@ _RUST_SUPPORT_ENDS = {
 # ensure that the **latest** rust version is the last one!
 _RUST_VERSIONS: list[str] = ["1.88", "1.89"]
 
+_RUST_SL16_VERSIONS: list[str] = ["1.87", "1.88"]
+
 _RUST_TW_VERSIONS: list[str] = ["1.88", "1.90"]
 
 
 def _rust_is_stable_version(os_version: OsVersion, rust_version: str) -> bool:
     """Return the latest stable rust version"""
-    if os_version in (OsVersion.TUMBLEWEED, OsVersion.SL16_0):
+    if os_version in (OsVersion.TUMBLEWEED,):
         return _RUST_TW_VERSIONS[-1] == rust_version
+    if os_version in (OsVersion.SL16_0,):
+        return _RUST_SL16_VERSIONS[-1] == rust_version
+
     return _RUST_VERSIONS[-1] == rust_version
 
 
@@ -123,6 +128,7 @@ COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}
             set(ALL_NONBASE_OS_VERSIONS)
             - set([OsVersion.TUMBLEWEED, OsVersion.SL16_0]),
         ),
-        *product(_RUST_TW_VERSIONS, [OsVersion.TUMBLEWEED, OsVersion.SL16_0]),
+        *product(_RUST_TW_VERSIONS, [OsVersion.TUMBLEWEED]),
+        *product(_RUST_SL16_VERSIONS, [OsVersion.SL16_0]),
     )
 ]
