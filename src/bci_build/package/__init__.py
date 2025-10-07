@@ -82,7 +82,6 @@ class ParseVersion(enum.StrEnum):
     PATCH_UPDATE = enum.auto()
     OFFSET = enum.auto()
 
-
 @dataclass
 class StableUser:
     """Data class that stores information about stable user and group
@@ -97,7 +96,8 @@ class StableUser:
     group_name: str
     # id of the group
     group_id: int
-
+    # boolean flag that checks if user needs to be created
+    user_create: bool = False
 
 @dataclass
 class Replacement:
