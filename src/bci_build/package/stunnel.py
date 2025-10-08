@@ -6,10 +6,10 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 STUNNEL_CONTAINERS = [
     ApplicationStackContainer(

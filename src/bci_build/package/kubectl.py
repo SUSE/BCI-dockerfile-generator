@@ -5,9 +5,9 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _KUBECTL_VERSIONS = {
     OsVersion.TUMBLEWEED: ("1.31", "1.31", "1.32", "1.33", "1.34"),

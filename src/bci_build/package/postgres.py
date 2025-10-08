@@ -8,11 +8,11 @@ from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package import StableUser
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _POSTGRES_ENTRYPOINT = (
     Path(__file__).parent / "postgres" / "entrypoint.sh"

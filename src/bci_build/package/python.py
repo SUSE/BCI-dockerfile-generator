@@ -9,9 +9,9 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
-from bci_build.package import ParseVersion
-from bci_build.package import Replacement
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
 
 _PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12", "3.13"]
 

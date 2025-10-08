@@ -2,8 +2,8 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import RELEASED_OS_VERSIONS
 from bci_build.package import OsContainer
-from bci_build.package import ParseVersion
 from bci_build.package import _build_tag_prefix
+from bci_build.util import ParseVersion
 
 
 def generate_package_version_check(
