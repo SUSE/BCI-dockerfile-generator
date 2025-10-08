@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  8 09:59:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- revert rust version update temporily again
+
+-------------------------------------------------------------------
 Mon Oct  6 20:44:19 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.90 for stable, 1.88 for oldstable
