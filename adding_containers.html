@@ -102,17 +102,17 @@ this service via the attribute
 use it in your container image, pick a replacement string that is unique for
 your whole build description. For the PostgreSQL version we could for instance
 pick <code class="docutils literal notranslate"><span class="pre">%%pg_version%%</span></code>. Then an instance of
-<a class="reference internal" href="api.html#bci_build.package.Replacement" title="bci_build.package.Replacement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Replacement</span></code></a> needs to be added to the list
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Replacement</span></code> needs to be added to the list
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.replacements_via_service" title="bci_build.package.BaseContainerImage.replacements_via_service"><code class="xref py py-attr docutils literal notranslate"><span class="pre">replacements_via_service</span></code></a>, where
 the attribute
-<a class="reference internal" href="api.html#bci_build.package.Replacement.regex_in_build_description" title="bci_build.package.Replacement.regex_in_build_description"><code class="xref py py-attr docutils literal notranslate"><span class="pre">regex_in_build_description</span></code></a> is set to
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">regex_in_build_description</span></code> is set to
 the replacement string. Additionally the attribute
-<a class="reference internal" href="api.html#bci_build.package.Replacement.package_name" title="bci_build.package.Replacement.package_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_name</span></code></a> has to be set to the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">package_name</span></code> has to be set to the
 <strong>exact</strong> name of the package which version we wish to extract. If only a part
 of the version is required, e.g. as with <code class="docutils literal notranslate"><span class="pre">PG_VERSION</span></code> where we only care about
 the major and minor version, but not the patch level, we can instruct the
 service to only extract the version up to a certain point via the attribute
-<a class="reference internal" href="api.html#bci_build.package.Replacement.parse_version" title="bci_build.package.Replacement.parse_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parse_version</span></code></a>.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">parse_version</span></code>.</p>
 <p>Our PostgreSQL example would result in the following code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ApplicationStackContainer</span><span class="p">(</span>
     <span class="n">additional_versions</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;%%pg_version%%&quot;</span><span class="p">],</span>
