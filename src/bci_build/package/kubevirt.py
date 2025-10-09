@@ -5,6 +5,7 @@ import textwrap
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -65,7 +66,9 @@ def _get_kubevirt_kwargs(
             )
         ],
         "is_singleton_image": True,
-        "is_latest": False,
+        "is_latest": (
+            os_version in CAN_BE_LATEST_OS_VERSION and os_version.is_tumbleweed
+        ),
         "build_flavor": service,
         "version_in_uid": False,
         "use_build_flavor_in_tag": False,
