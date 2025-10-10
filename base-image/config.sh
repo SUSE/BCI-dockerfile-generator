@@ -29,7 +29,6 @@ jdupes -1 -L -r /usr/share/licenses
 
 zypper --non-interactive rm -u jdupes
 
-
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
 # which would avoid it being installed by filesystem package
 rpm -q compat-usrmerge-tools && rpm -e compat-usrmerge-tools
