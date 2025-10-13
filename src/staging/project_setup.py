@@ -17,12 +17,12 @@ USERS_FOR_PRODUCTION = [
 
 USERS_FOR_STAGING = ["avicenzi"]
 
-META_TEMPLATE = jinja2.Template("""<project name="{{ project_name }}">
+META_TEMPLATE = jinja2.Environment(autoescape=True).from_string("""<project name="{{ project_name }}">
   <title>{{ project_title }}</title>
 {% if project_description %}  <description>{{ project_description }}</description>{% else %}  <description/>{% endif %}
 {% for user in maintainers %}  <person userid="{{ user }}" role="maintainer"/>
 {% endfor %}{% if extra_header %}
-{{ extra_header }}{% endif %}
+{{ extra_header | safe }}{% endif %}
   <build>
     <enable/>
   </build>
