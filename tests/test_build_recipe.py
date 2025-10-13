@@ -36,8 +36,12 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
+# cleanup logs and temporary files
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -153,8 +157,12 @@ FROM bci/bci-base:16.1
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
+# cleanup logs and temporary files
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -257,8 +265,12 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
+# cleanup logs and temporary files
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.test
@@ -371,8 +383,12 @@ FROM suse/base:18
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
+
+# cleanup logs and temporary files
 RUN zypper -n clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.test
@@ -642,8 +658,12 @@ RUN \\
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends emacs; \\
     zypper -n --installroot /target remove util-linux
+
+# cleanup logs and temporary files
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /target/etc/shadow
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -705,8 +725,12 @@ RUN \\
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core; \\
     zypper -n --installroot /target remove util-linux
+
+# cleanup logs and temporary files
 RUN zypper -n --installroot /target clean -a; \\
     ##LOGCLEAN##
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /target/etc/shadow
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers

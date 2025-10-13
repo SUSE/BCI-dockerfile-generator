@@ -321,6 +321,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list.extend(_get_micro_package_list(os_version))
     package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
+    package_list.append(Package("sed", pkg_type=PackageType.BOOTSTRAP))
     if os_version.is_sle15:
         # in SLE15, rpm still depends on Perl.
         package_list.extend(
@@ -360,6 +361,10 @@ MINIMAL_CONTAINERS = [
             # don't have duplicate licenses of the same type
             jdupes -1 -L -r /usr/share/licenses
             rpm -e jdupes
+
+            # set the day of last password change to empty
+            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
+            rpm -e sed
 
             # not making sense in a zypper-free image
             rm -vf /var/lib/zypp/AutoInstalled
@@ -411,6 +416,9 @@ BUSYBOX_CONTAINERS = [
 
             # Will be recreated by the next rpm(1) run as root user
             rm -vf /usr/lib/sysimage/rpm/Index.db
+
+            # set the day of last password change to empty
+            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
         """
         ),
         config_sh_interpreter="/bin/sh",
