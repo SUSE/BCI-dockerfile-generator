@@ -37,7 +37,7 @@ add-yast-repos
 zypper --non-interactive rm -u live-add-yast-repos jdupes
 {% else -%}
 zypper --non-interactive rm -u jdupes
-{% endif %}
+{%- endif %}
 
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
 # which would avoid it being installed by filesystem package
@@ -106,6 +106,13 @@ fi
 #------------------------------------------
 rm -f /var/log/lastlog
 
+{% if os_version.is_sle15 and not os_version.is_ltss -%}
+#======================================
+# Avoid blkid waiting on udev (bsc#1247914)
+#--------------------------------------
+sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
+
+{% endif -%}
 #======================================
 # Remove locale files
 #--------------------------------------
