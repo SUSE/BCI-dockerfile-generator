@@ -51,9 +51,6 @@ from staging.util import get_obs_project_url
 _CONFIG_T = Literal["meta", "prjconf"]
 _CONF_TO_ROUTE: dict[_CONFIG_T, str] = {"meta": "_meta", "prjconf": "_config"}
 
-
-_DEFAULT_REPOS = ["containerfile"]
-
 #: environment variable name from which the osc username for the bot is read
 OSC_USER_ENVVAR_NAME = "OSC_USER"
 
@@ -167,7 +164,7 @@ class StagingBot:
     #: raises an exception.
     osc_username: str = ""
 
-    repositories: list[str] = field(default_factory=lambda: _DEFAULT_REPOS)
+    repositories: list[str] | None = None
 
     _packages: list[str] | None = None
 
@@ -194,6 +191,12 @@ class StagingBot:
 
         if not self.osc_username:
             raise RuntimeError("osc_username is not set, cannot continue")
+
+        if self.repositories is None:
+            if self.os_version.is_sl16:
+                self.repositories = ["containerfile", "containerkiwi"]
+            else:
+                self.repositories = ["containerfile", "images"]
 
     def _read_file_from_branch(self, branch_name: str, file_name: str) -> bytes:
         tmp = BytesIO()
