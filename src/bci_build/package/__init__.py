@@ -92,10 +92,8 @@ class StableUser:
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
         return "opensuse/bci"
-    if os_version == OsVersion.SP3:
-        return "suse/ltss/sle15.3"
-    if os_version == OsVersion.SP4:
-        return "suse/ltss/sle15.4"
+    if os_version.is_sle15 and os_version.is_ltss:
+        return "suse/ltss/sle%OS_VERSION_ID_SP%"
 
     return "bci"
 
@@ -389,7 +387,7 @@ class BaseContainerImage(abc.ABC):
             if self.build_recipe_type == BuildType.KIWI:
                 return f"{str(datetime.datetime.now().year)}.0"
         elif self.os_version.is_sle15:
-            if isinstance(self, OsContainer):
+            if not self.os_version.is_ltss and isinstance(self, OsContainer):
                 return f"15.{int(self.os_version.value)}.0"
             return f"15.{int(self.os_version.value)}"
         elif self.os_version.is_sl16:
@@ -926,6 +924,8 @@ exit 0
         :py:attr:`~OsVersion.distribution_base_name`.
 
         """
+        if self.os_version.is_ltss:
+            return f"%OS_PRETTY_NAME% LTSS {self.pretty_name}"
         return f"{self.os_version.distribution_base_name} BCI {self.pretty_name}"
 
     @property
@@ -1388,7 +1388,11 @@ class OsContainer(BaseContainerImage):
     @property
     def oci_version(self) -> str:
         # use the more standard VERSION-RELEASE scheme we use everywhere else for new containers
-        if self.os_version not in (OsVersion.SP4, OsVersion.SP5, OsVersion.SP6):
+        if self.os_version.is_ltss or self.os_version not in (
+            OsVersion.SP4,
+            OsVersion.SP5,
+            OsVersion.SP6,
+        ):
             return f"%OS_VERSION_ID_SP%-{_RELEASE_PLACEHOLDER}"
 
         return f"%OS_VERSION_ID_SP%.{_RELEASE_PLACEHOLDER}"

@@ -64,17 +64,17 @@ This project is automatically updated from git. Please do **not** send submit re
 </project>""",
         ),
         (
-            OsVersion.SP5,
+            OsVersion.SP6,
             ProjectType.CR,
             None,
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:CR:SLE-15-SP5"),
+            (prj_name := f"home:{_OSC_USERNAME}:BCI:CR:SLE-15-SP6"),
             f"""<project name="{prj_name}">
-  <title>Continuous Rebuild project for SLE 15 SP5</title>
-  <description>Continuous Rebuild project for SLE 15 SP5</description>
+  <title>Continuous Rebuild project for SLE 15 SP6</title>
+  <description>Continuous Rebuild project for SLE 15 SP6</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
-  <scmsync>https://github.com/SUSE/bci-dockerfile-generator#sle15-sp5</scmsync>
+  <scmsync>https://github.com/SUSE/bci-dockerfile-generator#sle15-sp6</scmsync>
   <build>
     <enable/>
   </build>
@@ -86,7 +86,7 @@ This project is automatically updated from git. Please do **not** send submit re
   </debuginfo>
   <repository name="standard">
     <path project="SUSE:Registry" repository="standard"/>
-    <path project="SUSE:SLE-15-SP5:Update" repository="standard"/>
+    <path project="SUSE:SLE-15-SP6:Update" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>

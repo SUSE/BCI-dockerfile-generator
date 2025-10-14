@@ -123,7 +123,7 @@ class OsVersion(enum.Enum):
         ``latest``).
 
         """
-        if self.is_sle15:
+        if self.is_sle15 and not self.is_ltss:
             return f"15.{str(self.value)}"
         if self.value == OsVersion.SL16_0.value:
             return "16.0"
@@ -139,6 +139,8 @@ class OsVersion(enum.Enum):
 
     @property
     def eula_package_names(self) -> tuple[str, ...]:
+        if self.is_ltss:
+            return ("skelcd-EULA-sles",)
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
         if self.is_sl16:
@@ -152,7 +154,7 @@ class OsVersion(enum.Enum):
         if self.is_sl16:
             return ("SLES-release",)
         if self.is_ltss:
-            return ("sles-ltss-release",)
+            return ("sles-ltss-release", "sles-release")
 
         assert self.is_sle15
         return ("sles-release",)
@@ -193,7 +195,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
 ]
 
 # List of SPs that are already under LTSS
-ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP3, OsVersion.SP4]
+ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP3, OsVersion.SP4, OsVersion.SP5]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS: set[OsVersion] = {
