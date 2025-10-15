@@ -7,6 +7,7 @@ from jinja2 import Template
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import ImageType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
@@ -53,14 +54,17 @@ sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.c
 #--------------------------------------
 sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
 
+{% if os_version.is_sle15 and not os_version.is_ltss -%}
 #======================================
 # Configure SLE BCI repositories
 #--------------------------------------
-{% if os_version.is_sle15 and not os_version.is_ltss -%}
 zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product/' SLE_BCI
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_source/' SLE_BCI_source
 {%- elif os_version.is_sl16 and not os_version.is_ltss -%}
+#======================================
+# Configure SLE BCI repositories
+#--------------------------------------
 zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product/' SLE_BCI
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_source/' SLE_BCI_source
@@ -126,18 +130,51 @@ class Sles15Image(OsContainer):
     @property
     def build_tags(self) -> list[str]:
         tags: list[str] = []
-        if self.os_version.is_sle15:
+        if self.os_version.is_ltss:
+            tags.extend(
+                (
+                    f"suse/ltss/sle%OS_VERSION_ID_SP%/sle15:{self.image_ref_name}",
+                    "suse/ltss/sle%OS_VERSION_ID_SP%/sle15:%OS_VERSION_ID_SP%",
+                    "suse/ltss/sle%OS_VERSION_ID_SP%/sle15:latest",
+                    f"suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:{self.image_ref_name}",
+                    "suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:%OS_VERSION_ID_SP%",
+                )
+            )
+        elif self.os_version.is_sle15:
             tags.extend(
                 ("suse/sle15:%OS_VERSION_ID_SP%", f"suse/sle15:{self.image_ref_name}")
             )
             if self.os_version in CAN_BE_LATEST_BASE_OS_VERSION:
                 tags.append("suse/sle15:latest")
-        tags += super().build_tags
+            tags += super().build_tags
         return tags
 
     @property
+    def image_type(self) -> ImageType:
+        if self.os_version.is_ltss:
+            return ImageType.LTSS
+        return super().image_type
+
+    @property
     def uid(self) -> str:
-        return "sles15"
+        return "sles15-ltss" if self.os_version.is_ltss else "sles15"
+
+    @property
+    def eula(self) -> str:
+        if self.os_version.is_ltss:
+            return "sle-eula"
+        return super().eula
+
+    @property
+    def registry_prefix(self) -> str:
+        if self.os_version.is_ltss:
+            if self.os_version == OsVersion.SP3:
+                return "suse/ltss/sle15.3"
+            if self.os_version == OsVersion.SP4:
+                return "suse/ltss/sle15.4"
+            if self.os_version == OsVersion.SP5:
+                return "suse/ltss/sle15.5"
+        return super().registry_prefix
 
 
 def _get_base_kwargs(os_version: OsVersion) -> dict:
@@ -149,15 +186,21 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 
     return {
         "name": "base",
-        "pretty_name": "%OS_VERSION_NO_DASH% Base",
+        "pretty_name": ("Base" if os_version.is_ltss else "%OS_VERSION_NO_DASH% Base"),
         "package_name": package_name,
         "custom_description": "Image for containers based on %OS_PRETTY_NAME%.",
-        "logo_url": "https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
+        "logo_url": (
+            None
+            if os_version.is_ltss
+            else "https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
+        ),
         "build_recipe_type": BuildType.KIWI,
         "from_image": None,
         "os_version": os_version,
         "support_level": SupportLevel.L3,
-        "supported_until": _SUPPORTED_UNTIL_SLE.get(os_version),
+        "supported_until": (
+            _SUPPORTED_UNTIL_SLE.get(os_version) if not os_version.is_ltss else None
+        ),
         # we need to exclude i586 and other ports arches from building base images
         "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],
         "kiwi_ignore_packages": ["rpm"] if os_version.is_sle15 else [],
@@ -177,19 +220,20 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "gzip",
                     "netcfg",
                     "openssl-3",
+                    "patterns-base-minimal_base",
                     "tar",
                     "timezone",
-                    # for run.oci.keep_original_groups=1 (see bsc#1212118)
-                    "user(nobody)",
                     *os_version.eula_package_names,
                 ]
+                # for run.oci.keep_original_groups=1 (see bsc#1212118)
+                + (["user(nobody)"] if not os_version.is_ltss else [])
                 + (
                     [
                         "sle-module-basesystem-release",
                         "sle-module-server-applications-release",
                         "sle-module-python3-release",
                     ]
-                    if os_version.is_sle15
+                    if os_version.is_sle15 and not os_version.is_ltss
                     else []
                 )
                 + (
@@ -197,6 +241,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version.is_tumbleweed
                     else ["suse-build-key"]
                 )
+                + (["procps"] if os_version in (OsVersion.SP5,) else [])
             )
         ]
         + [
@@ -220,11 +265,6 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version.is_sle15
                     else ["glibc-locale-base"]
                 )
-                + (
-                    ["patterns-base-minimal_base"]
-                    if os_version not in (OsVersion.SP5,)
-                    else []
-                )
                 + [*os_version.release_package_names]
             )
         ]
@@ -242,7 +282,14 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 
 # TODO merge in tumbleweed changes and switch to ALL_BASE_OS_VERSIONS
 BASE_CONTAINERS = [
-    Sles15Image(**_get_base_kwargs(os_ver)) for os_ver in (OsVersion.SP6, OsVersion.SP7)
+    Sles15Image(**_get_base_kwargs(os_ver))
+    for os_ver in (
+        OsVersion.SP3,
+        OsVersion.SP4,
+        OsVersion.SP5,
+        OsVersion.SP6,
+        OsVersion.SP7,
+    )
 ] + [
     OsContainer(**_get_base_kwargs(os_version=os_ver))
     for os_ver in (OsVersion.SL16_0, OsVersion.SL16_1)
