@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 15 11:22:05 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- move patterns to image section rather than bootstrap, small README fixes
+
+-------------------------------------------------------------------
 Mon Oct 13 09:48:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Set lsblk handling to scan to avoid hanging on missing udev (bsc#1247914)
