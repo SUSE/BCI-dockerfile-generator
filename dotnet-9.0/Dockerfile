@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-sdk:9.0.9-%RELEASE%
-#!BuildTag: bci/dotnet-sdk:9.0.9
+#!BuildTag: bci/dotnet-sdk:9.0.10-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:9.0.10
 #!BuildTag: bci/dotnet-sdk:9.0
 #!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-9.0
@@ -32,13 +32,13 @@ FROM registry.suse.com/bci/bci-base:15.7
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI .NET SDK 9.0"
 LABEL org.opencontainers.image.description="The .NET SDK 9.0 based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="9.0.9"
+LABEL org.opencontainers.image.version="9.0.10"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="9.0.9-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:9.0.9-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="9.0.10-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:9.0.10-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-05-12"
@@ -54,26 +54,26 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.9-1.x86_64.rpm sha256:8b45a83cf0a27c6166d818a442a78e462bdd4fd7b5c92472540999b637d4d550
-COPY dotnet-host-9.0.9-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.10-1.x86_64.rpm sha256:a56c06eebbe664d295de06db9b8071f7d19bd272e27b7d0c436a0c4f7c995a18
+COPY dotnet-host-9.0.10-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-9.0-9.0.9-1.x86_64.rpm sha256:f94acd36b07eac5c4ab9e1b20936e103f555b527f96e849b304eb3eb2661784b
-COPY dotnet-targeting-pack-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.9-1.x86_64.rpm sha256:034485b9a5545b2dab189931e869205cb81c1803c963ea9cdbce885f536b0534
-COPY dotnet-hostfxr-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.9-1.x86_64.rpm sha256:a12cfdbf9ff8d8bb74a7df957f98e2f296b9ef6c483c9cbe01c2a6b31a1aa413
-COPY dotnet-runtime-deps-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.9-1.x86_64.rpm sha256:08a93ef612be27bf2ec3e4cff1de1b7c0d246a726fb4ec425ffbd1c8df2a535f
-COPY dotnet-runtime-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-9.0-9.0.9-1.x86_64.rpm sha256:4450b3e067eafa20ed27ed4d84a9eb23f7269c0a2b4699444767cc6ce1fe080b
-COPY dotnet-apphost-pack-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-9.0-9.0.9-1.x86_64.rpm sha256:176bd409e702b38911ca840905b4ea84d54a8c098a63b6fc5c5872040ff6d799
-COPY aspnetcore-targeting-pack-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.9-1.x86_64.rpm sha256:850b89c0222f33c5790075e4a40668260cf1f23d4911456ba43228b9ea1830e2
-COPY aspnetcore-runtime-9.0-9.0.9-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.305-1.x86_64.rpm sha256:77f3bda1aaa3cb481c4b161cd73bd9ae2c06983495dcfeaa53c6b164ac12bac6
-COPY dotnet-sdk-9.0-9.0.305-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-9.0-9.0.10-1.x86_64.rpm sha256:9c46f3b71f479d8cc2fa6f0fae915f7bfc49f36d44a127bc8f601002a0bb4ae0
+COPY dotnet-targeting-pack-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.10-1.x86_64.rpm sha256:9e0a9d00f886fd655419c511b2ef9a9bd1995b282d119339dd38bb1062a29b09
+COPY dotnet-hostfxr-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.10-1.x86_64.rpm sha256:56918b6c1ad18126e041c531011d3079773b81afcb746e8934336b0e64b8041e
+COPY dotnet-runtime-deps-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.10-1.x86_64.rpm sha256:517794e088d76fa41f10ed90083a7cbf5e588a78097a1607033d0f5ce787ec12
+COPY dotnet-runtime-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-apphost-pack-9.0-9.0.10-1.x86_64.rpm sha256:3e79f9c96b6af36a6fb619876b0f8c244b1ae0dc541aff92497277f245968225
+COPY dotnet-apphost-pack-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-targeting-pack-9.0-9.0.10-1.x86_64.rpm sha256:cf414f2a14f4f9cdf37db6804f8d9c2213b47af44c2b732704e7622fa861c40f
+COPY aspnetcore-targeting-pack-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.10-1.x86_64.rpm sha256:412076ca47ad8ccdad0c7db98af6cf56b217279f713e39ff54838f6de8c3c530
+COPY aspnetcore-runtime-9.0-9.0.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.306-1.x86_64.rpm sha256:7080c130bdcdbc1a06b6a5752c65abea3ec14ed21b357149defdedb74ed42253
+COPY dotnet-sdk-9.0-9.0.306-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
