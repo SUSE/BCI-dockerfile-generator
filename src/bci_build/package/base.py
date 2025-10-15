@@ -241,7 +241,11 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version.is_tumbleweed
                     else ["suse-build-key"]
                 )
-                + (["procps"] if os_version in (OsVersion.SP5,) else [])
+                + (
+                    ["procps"]
+                    if os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP5)
+                    else []
+                )
             )
         ]
         + [

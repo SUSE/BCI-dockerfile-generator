@@ -387,7 +387,9 @@ class BaseContainerImage(abc.ABC):
             if self.build_recipe_type == BuildType.KIWI:
                 return f"{str(datetime.datetime.now().year)}.0"
         elif self.os_version.is_sle15:
-            if not self.os_version.is_ltss and isinstance(self, OsContainer):
+            if self.os_version not in (OsVersion.SP5,) and isinstance(
+                self, OsContainer
+            ):
                 return f"15.{int(self.os_version.value)}.0"
             return f"15.{int(self.os_version.value)}"
         elif self.os_version.is_sl16:
