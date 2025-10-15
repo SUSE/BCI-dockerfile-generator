@@ -69,7 +69,6 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="jdupes"/>
     <package name="kubic-locale-archive"/>
     <package name="patterns-base-fips"/>
-    <package name="patterns-base-minimal_base"/>
     <package name="rpm-ndb"/>
     <package name="shadow"/>
     <package name="sles-release"/>
@@ -84,6 +83,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="gzip"/>
     <package name="netcfg"/>
     <package name="openssl-3"/>
+    <package name="patterns-base-minimal_base"/>
     <package name="skelcd-EULA-bci"/>
     <package name="sle-module-basesystem-release"/>
     <package name="sle-module-python3-release"/>
