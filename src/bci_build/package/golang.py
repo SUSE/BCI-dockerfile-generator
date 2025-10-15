@@ -112,11 +112,11 @@ GOLANG_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_golang_kwargs(ver, govariant, sle15sp),
+            **_get_golang_kwargs(ver, govariant, os_version),
             support_level=SupportLevel.L3,
         )
-        for ver, govariant, sle15sp in product(
-            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP7,)
+        for ver, govariant, os_version in product(
+            _GOLANG_OPENSSL_VERSIONS, ("-openssl",), (OsVersion.SP7, OsVersion.SL16_0)
         )
     ]
     + [
