@@ -74,7 +74,6 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="jdupes"/>
     <package name="libcurl-mini4"/>
     <package name="libopenssl-3-fips-provider"/>
-    <package name="patterns-base-minimal_base"/>
     <package name="shadow"/>
     <package name="zypper"/>
   </packages>
@@ -87,6 +86,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="gzip"/>
     <package name="netcfg"/>
     <package name="openssl-3"/>
+    <package name="patterns-base-minimal_base"/>
     <package name="skelcd-EULA-BCI"/>
     <package name="suse-build-key"/>
     <package name="tar"/>
