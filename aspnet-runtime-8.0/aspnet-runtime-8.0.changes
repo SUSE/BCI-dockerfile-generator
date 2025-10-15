@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 15 10:57:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix bugzilla link in README
+
+-------------------------------------------------------------------
 Wed Oct 15 08:29:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to 8.0.21
