@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
-Thu Oct 16 12:50:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Thu Oct 16 12:53:52 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- switch to SL16 (rerender the template)
+
+-------------------------------------------------------------------
+Mon Sep 29 09:39:27 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Mon Sep 29 08:54:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove base-name annotation when not built against released container
+
+-------------------------------------------------------------------
+Tue Sep 23 15:59:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add o.o.image.base annotations
+
+-------------------------------------------------------------------
+Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Mon Mar 03 10:13:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the OpenJDK 17 development BCI
