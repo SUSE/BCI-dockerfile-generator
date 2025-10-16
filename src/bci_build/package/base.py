@@ -219,8 +219,6 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "curl",
                     "gzip",
                     "netcfg",
-                    "openssl-3",
-                    "patterns-base-minimal_base",
                     "tar",
                     "timezone",
                     *os_version.eula_package_names,
@@ -240,6 +238,11 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     ["openSUSE-build-key"]
                     if os_version.is_tumbleweed
                     else ["suse-build-key"]
+                )
+                + (
+                    ["openssl-3", "patterns-base-minimal_base"]
+                    if os_version not in (OsVersion.SP3, OsVersion.SP4)
+                    else []
                 )
                 + (
                     ["procps"]
