@@ -135,7 +135,7 @@ OPENJDK_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
-            (OsVersion.SP7, OsVersion.TUMBLEWEED), (True, False)
+            (OsVersion.SP7, OsVersion.SL16_0, OsVersion.TUMBLEWEED), (True, False)
         )
     ]
     + [
