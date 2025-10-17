@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
 Mon Oct  6 20:58:12 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - fixup service corruption
