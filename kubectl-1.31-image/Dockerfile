@@ -25,7 +25,11 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.31-client
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.31-client shadow
+# create the user and group with the given ids
+RUN set -euo pipefail; \
+    groupadd -R /target -g 1000 -r kubectl; \
+    useradd -R /target -u 1000 -g 1000 -m -r -s /bin/bash kubectl
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \

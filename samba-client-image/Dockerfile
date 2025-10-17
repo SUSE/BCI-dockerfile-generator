@@ -26,7 +26,11 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends samba-client
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends samba-client shadow
+# create the user and group with the given ids
+RUN set -euo pipefail; \
+    groupadd -R /target -g 1000 -r smbc; \
+    useradd -R /target -u 1000 -g 1000 -m -r -s /bin/bash smbc
 # sanity check that the version from the tag is equal to the version of samba-client that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' samba-client | \
