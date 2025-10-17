@@ -65,9 +65,13 @@ COPY --from=target / /target
 {%- if image.build_stage_custom_end %}
 {{ image.build_stage_custom_end }}
 {%- endif %}
-{% if image.packages %}{{ DOCKERFILE_RUN }} zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} clean -a; \\
+{% if image.packages %}
+# cleanup logs and temporary files
+{{ DOCKERFILE_RUN }} zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} clean -a; \\
     {{ LOG_CLEAN }}
 {%- endif %}
+# set the day of last password change to empty
+{{ DOCKERFILE_RUN }} sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' {% if image.from_target_image %}/target{% endif %}/etc/shadow
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
 COPY --from=builder /target /{% endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
