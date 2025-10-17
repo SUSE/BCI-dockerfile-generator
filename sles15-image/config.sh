@@ -71,6 +71,9 @@ rm -vf /etc/{shadow-,group-,passwd-,.pwd.lock}
 rm -vrf /run/*
 rm -vf /usr/lib/sysimage/rpm/.rpm.lock
 
+# set the day of last password change to empty
+sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
+
 #==========================================
 # Hack! The go container management tools can't handle sparse files:
 # https://github.com/golang/go/issues/13548
