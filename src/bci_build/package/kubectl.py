@@ -5,6 +5,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import StableUser
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -61,7 +62,14 @@ KUBECTL_CONTAINERS = [
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        package_list=[f"kubernetes{ver}-client"],
+        package_list=[f"kubernetes{ver}-client", "shadow"],
+        user_chown=StableUser(
+            user_id=1000,
+            user_name="kubectl",
+            group_id=1000,
+            group_name="kubectl",
+            user_create=True
+        ),
         entrypoint=["kubectl"],
         license="Apache-2.0",
         support_level=SupportLevel.L3,

@@ -72,7 +72,6 @@ class Package:
     def __str__(self) -> str:
         return self.name
 
-
 @dataclass
 class StableUser:
     """Data class that stores information about stable user and group
@@ -87,7 +86,8 @@ class StableUser:
     group_name: str
     # id of the group
     group_id: int
-
+    # boolean flag that checks if user needs to be created
+    user_create: bool = False
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:

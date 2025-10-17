@@ -9,6 +9,7 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsVersion
+from bci_build.package import StableUser
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
@@ -121,7 +122,15 @@ for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
         license="GPL-3.0-or-later",
         package_list=[
             "samba-client",
+            "shadow"
         ],
+        user_chown=StableUser(
+            user_id=1000,
+            user_name="smbc",
+            group_id=1000,
+            group_name="smbc",
+            user_create=True
+        ),
     )
 
     toolbox = ApplicationStackContainer(
@@ -149,9 +158,17 @@ for os_version in (OsVersion.TUMBLEWEED, OsVersion.SP7):
         package_list=[
             "samba-client",
             "tdb-tools",
+            "shadow",
         ]
         # FIXME: unavailable on SLES
         + (["samba-test"] if os_version.is_tumbleweed else []),
+        user_chown=StableUser(
+            user_id=1000,
+            user_name="smbc",
+            group_id=1000,
+            group_name="smbc",
+            user_create=True
+        ),
     )
 
     SAMBA_SERVER_CONTAINERS.append(srv)
