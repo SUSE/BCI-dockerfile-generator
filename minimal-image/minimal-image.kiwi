@@ -74,6 +74,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="skelcd-EULA-bci"/>
     <package name="sles-release"/>
     <package name="jdupes"/>
+    <package name="sed"/>
     <package name="rpm-ndb"/>
     <package name="perl-base"/>
   </packages>

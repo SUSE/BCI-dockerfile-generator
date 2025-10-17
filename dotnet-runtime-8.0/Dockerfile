@@ -25,6 +25,8 @@ FROM registry.suse.com/bci/bci-base:15.7
 
 
 
+# set the day of last password change to empty
+RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.runtime
