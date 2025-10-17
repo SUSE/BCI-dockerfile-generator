@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
 Wed Oct 15 11:21:38 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - move patterns to image section rather than bootstrap, small README fixes
