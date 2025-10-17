@@ -4,6 +4,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import StableUser
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
@@ -42,9 +43,17 @@ GIT_CONTAINERS = [
         package_list=[
             "git-core",
             "openssh-clients",
+            "shadow"
         ],
         build_stage_custom_end=generate_package_version_check(
             "git-core", git_version, ParseVersion.MINOR, use_target=True
+        ),
+        user_chown=StableUser(
+            user_id=1000,
+            user_name="git",
+            group_id=1000,
+            group_name="git",
+            user_create=True
         ),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
