@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 20 13:46:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
 Fri Oct 17 11:00:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix link in README
