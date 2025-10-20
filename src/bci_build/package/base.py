@@ -91,6 +91,9 @@ rm -vf /etc/{shadow-,group-,passwd-,.pwd.lock}
 rm -vrf /run/*
 rm -vf /usr/lib/sysimage/rpm/.rpm.lock
 
+# set the day of last password change to empty
+sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
+
 {% if os_version.is_tumbleweed -%}
 # Assign a fixed architecture in zypp.conf, to use the container's arch even if
 # the host arch differs (e.g. docker with --platform doesn't affect uname)

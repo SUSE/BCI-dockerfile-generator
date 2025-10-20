@@ -112,14 +112,17 @@ INIT_CONTAINERS = [
             "usage": "This container should only be used to build containers for daemons. Add your packages and enable services using systemctl."
         },
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        custom_end=textwrap.dedent(
+        build_stage_custom_end=textwrap.dedent(
             f"""
             {DOCKERFILE_RUN} install -d -m 0755 /etc/systemd/system.conf.d/ \\
                 && printf "[Manager]\\nLogColor=no" > \\
                     /etc/systemd/system.conf.d/01-sle-bci-nocolor.conf
             {DOCKERFILE_RUN} {_DISABLE_GETTY_AT_TTY1_SERVICE}
             {DOCKERFILE_RUN} useradd --no-create-home --uid 497 systemd-coredump
-
+            """
+        ),
+        custom_end=textwrap.dedent(
+            """
             HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
             """
         ),
@@ -321,6 +324,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list.extend(_get_micro_package_list(os_version))
     package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
+    package_list.append(Package("sed", pkg_type=PackageType.BOOTSTRAP))
     if os_version.is_sle15:
         # in SLE15, rpm still depends on Perl.
         package_list.extend(
@@ -360,6 +364,10 @@ MINIMAL_CONTAINERS = [
             # don't have duplicate licenses of the same type
             jdupes -1 -L -r /usr/share/licenses
             rpm -e jdupes
+
+            # set the day of last password change to empty
+            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
+            rpm -e sed
 
             # not making sense in a zypper-free image
             rm -vf /var/lib/zypp/AutoInstalled
@@ -411,6 +419,9 @@ BUSYBOX_CONTAINERS = [
 
             # Will be recreated by the next rpm(1) run as root user
             rm -vf /usr/lib/sysimage/rpm/Index.db
+
+            # set the day of last password change to empty
+            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
         """
         ),
         config_sh_interpreter="/bin/sh",
