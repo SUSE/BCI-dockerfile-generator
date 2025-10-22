@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 22 10:30:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- docker-entrypoint: updating instructions for postgresql 18+
+
+-------------------------------------------------------------------
 Mon Oct 20 20:10:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove password change date from /etc/shadow to make the file reproducible
