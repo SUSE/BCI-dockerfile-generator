@@ -1,6 +1,7 @@
 """Rust language BCI container"""
 
 import datetime
+import textwrap
 from itertools import product
 
 import packaging.version
@@ -13,7 +14,7 @@ from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
 
-_RUST_GCC_PATH = "/usr/local/bin/gcc"
+_RUST_CC_PATH = "/usr/local/bin/cc"
 
 # release dates are coming from upstream - https://raw.githubusercontent.com/rust-lang/rust/master/RELEASES.md
 # we expect a new release every 6 weeks, two releases are supported at any point in time
@@ -93,8 +94,8 @@ RUST_CONTAINERS = [
         env={
             "RUST_VERSION": "%%RUST_VERSION%%",
             "CARGO_VERSION": "%%CARGO_VERSION%%",
-            "CC": _RUST_GCC_PATH,
-        },
+        }
+        | ({"CC": _RUST_CC_PATH} if os_version.is_sle15 else {}),
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6),
@@ -114,13 +115,15 @@ requires:rust{rust_version}
                 package_name=f"cargo{rust_version}",
             ),
         ],
-        custom_end=f"""# workaround for gcc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") {_RUST_GCC_PATH}
-# smoke test that gcc works
-RUN gcc --version
-RUN ${{CC}} --version
-COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}
-""",
+        custom_end=textwrap.dedent(
+            """
+            # workaround for cc only existing as /usr/bin/gcc-N
+            RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") ${CC} && ${CC} --version
+            """
+            if os_version.is_sle15
+            else ""
+        )
+        + f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
     )
     for rust_version, os_version in (
         *product(
