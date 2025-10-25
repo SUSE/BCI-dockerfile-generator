@@ -1,77 +1,20 @@
 -------------------------------------------------------------------
-Mon Oct 20 12:54:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Sat Oct 25 14:31:16 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
-- remove password change date from /etc/shadow to make the file reproducible
-
--------------------------------------------------------------------
-Fri Oct 17 11:01:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- fix link in README
+- include image cleanups to make it more reproducible
+- fix README url
 
 -------------------------------------------------------------------
-Wed Oct 15 11:22:05 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Tue Jun 10 09:56:25 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
-- move patterns to image section rather than bootstrap, small README fixes
-
--------------------------------------------------------------------
-Mon Oct 13 09:48:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- Set lsblk handling to scan to avoid hanging on missing udev (bsc#1247914)
+- add support EOL date for SP6 general support
+- fix use SOURCEURL_WITH for proper README url in all cases
+- do check rpm signatures
 
 -------------------------------------------------------------------
-Mon Sep 29 09:37:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Tue Feb  4 09:01:22 UTC 2025 - Dirk Müller <dmueller@suse.com>
 
-- remove non-reproducible files from container
-
--------------------------------------------------------------------
-Fri Aug  1 14:26:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- zypper clean all the files
-
--------------------------------------------------------------------
-Thu Jul 31 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- simplify wording about SLE_BCI repo
-
--------------------------------------------------------------------
-Thu Jul 31 11:18:38 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- remove shadow backup from container
-
--------------------------------------------------------------------
-Tue Jul  8 17:05:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- drop /var/cache/ldconfig/aux-cache from the containers
-
--------------------------------------------------------------------
-Tue Jul  8 11:09:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- remove autoinstalled from zypper-free base container
-
--------------------------------------------------------------------
-Fri May 23 11:26:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- use SOURCEURL_WITH to generate proper artifacthub urls
-
--------------------------------------------------------------------
-Tue May  6 11:24:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- avoid double slash in readme url
-
--------------------------------------------------------------------
-Fri May  2 13:56:35 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- build with signature checks
-
--------------------------------------------------------------------
-Fri Feb 21 07:40:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- Fix support end date
-
--------------------------------------------------------------------
-Tue Jan 14 09:55:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
-
-- add nobody user/group to the base container
+- add nobody user into the image (bsc#1212118)
 
 -------------------------------------------------------------------
 Wed Jan  8 17:43:35 UTC 2025 - Dirk Müller <dmueller@suse.com>
@@ -80,79 +23,12 @@ Wed Jan  8 17:43:35 UTC 2025 - Dirk Müller <dmueller@suse.com>
 - update copyright year
 
 -------------------------------------------------------------------
-Wed Jan  1 14:14:47 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+Tue Dec  3 09:04:27 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
-- update copyright year
-
--------------------------------------------------------------------
-Fri Nov 29 12:38:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
-
-- fix typo in README
-
--------------------------------------------------------------------
-Thu Nov 28 13:40:16 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
-
-- Switch to the unauthenticated CDN for the SLE BCI repository
-
--------------------------------------------------------------------
-Wed Oct 30 15:35:19 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
-
-- point to a contact location for SLE BCI
-
--------------------------------------------------------------------
-Fri Oct 11 15:13:29 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
-
-- make the tag with -%RELEASE% the first tag listed
-
--------------------------------------------------------------------
-Wed Sep 25 17:12:22 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- improved log cleaning
-
--------------------------------------------------------------------
-Mon Sep 23 17:22:46 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- explicitly install openssl cli package
-
--------------------------------------------------------------------
-Fri Sep 13 09:55:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- Remove trailing whitespace
-
--------------------------------------------------------------------
-Fri Sep  6 09:29:43 UTC 2024 - Dan Čermák <dcermak@suse.com>
-
-- update / extend README
-
--------------------------------------------------------------------
-Tue Aug 20 10:08:00 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- Re-render templates
-
--------------------------------------------------------------------
-Thu Aug  8 19:28:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- add oci.image.ref.name
-
--------------------------------------------------------------------
-Thu Aug  8 12:57:16 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- remove oci reference annotation again
-
--------------------------------------------------------------------
-Mon Aug  5 11:38:12 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- add OCI reference annotation
-
--------------------------------------------------------------------
-Sat Aug  3 08:56:59 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- set OCI.authors attribute instead of deprecated MAINTAINER
-
--------------------------------------------------------------------
-Wed Jul 31 12:40:05 UTC 2024 - Dirk Mueller <dmueller@suse.com>
-
-- update SLSA badge to v1.0 in README.md
+- README.md updates
+- explicitly require openssl-3 cli
+- reorder tags (list the more specific ones first)
+- set oci.ref.name and oci.authors correctly
 
 -------------------------------------------------------------------
 Mon Jul 29 11:25:07 UTC 2024 - Dirk Mueller <dmueller@suse.com>
