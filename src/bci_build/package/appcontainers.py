@@ -136,7 +136,10 @@ COPY nsswitch.conf /etc/nsswitch.conf
     mkdir -p /var/run/dirsrv; \
     ln -s /data/config /etc/dirsrv/slapd-localhost; \
     ln -s /data/ssca /etc/dirsrv/ssca; \
-    ln -s /data/run /var/run/dirsrv
+    ln -s /data/run /var/run/dirsrv; \
+    chown -R dirsrv: /data;\
+    chown -R dirsrv: /run/dirsrv; \
+    chgrp -R dirsrv /etc/dirsrv;
 
 HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
     CMD /usr/lib/dirsrv/dscontainer -H
