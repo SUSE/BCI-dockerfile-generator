@@ -83,7 +83,7 @@ jobs:
         run: poetry run sphinx-build -M html source build
 
       - name: upload the build directory
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build
           path: ./build/html
