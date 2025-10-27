@@ -41,6 +41,9 @@ _BASH_SET: str = "set -euo pipefail"
 #: from not being noticed
 DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 
+#: a sed statement to avoid using `EVALUATE=udev` in `/etc/blkid.conf` which doesn't work inside containers
+SET_BLKID_SCAN: str = f"# Avoid blkid waiting on udev (bsc#1247914)\n{DOCKERFILE_RUN} sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf"
+
 #: Remove various log files and temporary files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
 LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \\

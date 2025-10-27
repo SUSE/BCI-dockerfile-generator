@@ -7,6 +7,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import StableUser
 from bci_build.package import generate_disk_size_constraints
@@ -98,7 +99,8 @@ POSTGRES_CONTAINERS = [
         )
         if ver >= _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
         else None,
-        custom_end=(
+        custom_end=(f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else "")
+        + (
             rf"""COPY docker-entrypoint.sh /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
@@ -106,7 +108,6 @@ POSTGRES_CONTAINERS = [
     install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql{ver}/postgresql.conf.sample
-
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${{POSTGRES_USER:-postgres}} -h localhost -p 5432

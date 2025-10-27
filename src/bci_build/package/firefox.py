@@ -9,6 +9,7 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.kiosk import KIOSK_EXCLUSIVE_ARCH
@@ -82,7 +83,8 @@ FIREFOX_CONTAINERS = [
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
             COPY --from=builder /home/user /home/user
-        """),
+        """)
+        + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
     for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
