@@ -330,14 +330,16 @@ REGISTRY_CONTAINERS = [
         ],
         license="Apache-2.0",
         package_list=[
-            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            Package(name, pkg_type=PackageType.IMAGE)
             for name in (
                 "apache2-utils",
                 "ca-certificates-mozilla",
                 "distribution-registry",
-                "perl",
-                "util-linux",
             )
+        ]
+        + [
+            Package(name, pkg_type=PackageType.BOOTSTRAP)
+            for name in os_version.release_package_names
         ],
         entrypoint=["/usr/bin/registry"],
         entrypoint_user="registry",
