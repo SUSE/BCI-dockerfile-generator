@@ -70,7 +70,8 @@ def _get_cdi_kwargs(
             KubeVirtRegistry() if os_version == OsVersion.SL16_0 else None
         ),
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
-        "build_stage_custom_end": (
+        "build_stage_custom_end": (f"{DOCKERFILE_RUN} rm -f /etc/blkid.conf\n")
+        + (
             generate_package_version_check(
                 service_pkg_name,
                 cdi_version,

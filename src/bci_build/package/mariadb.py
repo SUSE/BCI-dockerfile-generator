@@ -10,6 +10,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
@@ -121,7 +122,8 @@ for os_version in (
             cmd=["mariadbd"],
             volumes=["/var/lib/mysql"],
             exposes_ports=[TCP(3306)],
-            custom_end=rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
+            custom_end=(
+                rf"""{DOCKERFILE_RUN} mkdir /docker-entrypoint-initdb.d
 
 # docker-entrypoint from https://github.com/MariaDB/mariadb-docker.git
 COPY {_ENTRYPOINT_FNAME} /usr/local/bin/
@@ -149,7 +151,9 @@ COPY idexec /usr/local/bin/idexec
 
 {DOCKERFILE_RUN} install -d -m 0755 -o mysql -g mysql /run/mysql
 {DOCKERFILE_RUN} install -d -m 0700 -o mysql -g root /var/lib/mysql
-""",
+"""
+            )
+            + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
         )
     )
 
