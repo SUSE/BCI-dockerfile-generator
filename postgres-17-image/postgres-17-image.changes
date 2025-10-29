@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 13:10:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rerender template (no change)
+
+-------------------------------------------------------------------
 Wed Oct 22 10:30:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - docker-entrypoint: updating instructions for postgresql 18+
