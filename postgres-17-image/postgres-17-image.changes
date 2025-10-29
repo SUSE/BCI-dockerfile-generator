@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 11:46:09 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf for micro based containers which install util-linux
+
+-------------------------------------------------------------------
 Wed Oct 22 10:30:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - docker-entrypoint: updated instructions for postgresql 18+

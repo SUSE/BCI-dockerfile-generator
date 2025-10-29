@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 11:46:09 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf for micro based containers which install util-linux
+
+-------------------------------------------------------------------
 Mon Oct 20 13:46:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove password change date from /etc/shadow to make the file reproducible
