@@ -37,7 +37,7 @@ class RepoMDParser:
 
         repomd: requests.Response = requests.get(
             urllib.parse.urljoin(baserepo_url, "repodata/repomd.xml"),
-            _REPOMD_REQ_HEADERS,
+            headers=_REPOMD_REQ_HEADERS,
         )
         repomd.raise_for_status()
         primary_xml_location = None
@@ -57,7 +57,7 @@ class RepoMDParser:
 
         primary_xml_response = requests.get(
             urllib.parse.urljoin(baserepo_url, primary_xml_location),
-            _REPOMD_REQ_HEADERS,
+            headers=_REPOMD_REQ_HEADERS,
         )
         primary_xml_response.raise_for_status()
         primary_xml: ET.Element[str] = ET.fromstring(
