@@ -72,6 +72,8 @@ ENV PG_VERSION="%%pg_minor_version%%"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
 EXPOSE 5432/tcp
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     sed -i -e 's/exec gosu postgres "/exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "/g' /usr/local/bin/docker-entrypoint.sh; \
@@ -79,7 +81,6 @@ RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
     sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql17/postgresql.conf.sample
-
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${POSTGRES_USER:-postgres} -h localhost -p 5432
