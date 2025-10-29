@@ -60,9 +60,6 @@ KIWI_CONTAINERS = [
             "lvm2",
             "make",
             "netcat-openbsd",
-            "python3-devel",
-            "python3-kiwi",
-            "python3-pip",
             # LVM2 requires systemd, so we need the right branding package
             (
                 "systemd-default-settings-branding-openSUSE"
@@ -75,16 +72,29 @@ KIWI_CONTAINERS = [
             "xz",
             *os_version.release_package_names,
         ]
+        + (
+            ["python311-devel", "python311-kiwi", "python311-pip"]
+            if os_version.is_sle15
+            else ["python3-devel", "python3-kiwi", "python3-pip"]
+        )
         + os_version.common_devel_packages,
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%kiwi_version%%",
-                package_name="python3-kiwi",
+                package_name=(
+                    "python311-kiwi" if os_version.is_sle15 else "python3-kiwi"
+                ),
                 parse_version=ParseVersion.PATCH,
             )
         ],
         custom_end=(
-            f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}\n"
+            f"{
+                generate_package_version_check(
+                    'python311-kiwi' if os_version.is_sle15 else 'python3-kiwi',
+                    kiwi_minor,
+                    ParseVersion.MINOR,
+                )
+            }\n"
         )
         + (generate_kiwi_10_config() if float(kiwi_minor) >= 10 else ""),
         build_recipe_type=BuildType.DOCKER,
