@@ -113,7 +113,8 @@ def _get_openjdk_kwargs(
     return common | {
         "name": "openjdk",
         "pretty_name": f"OpenJDK {java_version} runtime",
-        "package_list": [f"java-{java_version}-openjdk"]
+        # adding nss-sysinit for /etc/pki/nssdb which is needed for NSS
+        "package_list": [f"java-{java_version}-openjdk", "mozilla-nss-sysinit"]
         + os_version.common_devel_packages,
     }
 
