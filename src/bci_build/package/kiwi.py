@@ -45,39 +45,41 @@ KIWI_CONTAINERS = [
             ),
         ],
         license="GPL-3.0-or-later",
-        package_list=[
-            "checkmedia",
-            "dracut-kiwi-oem-repart",
-            "enchant-devel",
-            "gcc",
-            "glibc-devel",
-            "iproute2",
-            "java-21-openjdk-headless",
-            "jing",
-            "kiwi-systemdeps-filesystems",
-            "kpartx",
-            "libxml2-devel",
-            "lvm2",
-            "make",
-            "netcat-openbsd",
-            # LVM2 requires systemd, so we need the right branding package
-            (
-                "systemd-default-settings-branding-openSUSE"
-                if os_version.is_tumbleweed
-                else "systemd-default-settings-branding-SLE"
-            ),
-            "tack",
-            "timezone",
-            "xorriso",
-            "xz",
-            *os_version.release_package_names,
-        ]
-        + (
-            ["python311-devel", "python311-kiwi", "python311-pip"]
-            if os_version.is_sle15
-            else ["python3-devel", "python3-kiwi", "python3-pip"]
-        )
-        + os_version.common_devel_packages,
+        package_list=sorted(
+            [
+                "checkmedia",
+                "dracut-kiwi-oem-repart",
+                "enchant-devel",
+                "gcc",
+                "glibc-devel",
+                "iproute2",
+                "java-21-openjdk-headless",
+                "jing",
+                "kiwi-systemdeps-filesystems",
+                "kpartx",
+                "libxml2-devel",
+                "lvm2",
+                "make",
+                "netcat-openbsd",
+                # LVM2 requires systemd, so we need the right branding package
+                (
+                    "systemd-default-settings-branding-openSUSE"
+                    if os_version.is_tumbleweed
+                    else "systemd-default-settings-branding-SLE"
+                ),
+                "tack",
+                "timezone",
+                "xorriso",
+                "xz",
+                *os_version.release_package_names,
+            ]
+            + (
+                ["python311-devel", "python311-kiwi", "python311-pip"]
+                if os_version.is_sle15
+                else ["python3-devel", "python3-kiwi", "python3-pip"]
+            )
+            + os_version.common_devel_packages
+        ),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%kiwi_version%%",
