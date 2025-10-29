@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 10:33:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- install xz so that rails can bootstrap
+
+-------------------------------------------------------------------
 Mon Oct 20 20:11:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove password change date from /etc/shadow to make the file reproducible
