@@ -179,7 +179,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/test:%%emacs_ver%%-1.%RELEAS
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
@@ -220,7 +220,7 @@ Copyright header
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.eula" value="sle-bci"/>
             <label name="com.suse.release-stage" value="beta"/>
-            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle"/>
+            <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"/>
           </suse_label_helper:add_prefix>
           <label name="io.artifacthub.package.readme-url" value="%SOURCEURL_WITH(README.md)%"/>
         </labels>

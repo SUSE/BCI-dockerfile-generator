@@ -218,5 +218,6 @@ _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP5: datetime.date(2024, 12, 31),
     OsVersion.SP6: datetime.date(2025, 12, 31),
     OsVersion.SP7: datetime.date(2031, 7, 31),
-    # OsVersion.SL16_0: datetime.date(2027, 12, 31),
+    OsVersion.SL16_0: datetime.date(2027, 11, 30),
+    OsVersion.SL16_1: datetime.date(2028, 11, 30),
 }
