@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 13:37:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf to avoid udev dependency inside the container
+
+-------------------------------------------------------------------
 Mon Oct 20 12:54:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove password change date from /etc/shadow to make the file reproducible

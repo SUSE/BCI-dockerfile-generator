@@ -97,5 +97,7 @@ RUN set -euo pipefail; sed -i -e 's|^\(bind-address.*\)|#\1|g' /etc/my.cnf
 
 RUN set -euo pipefail; install -d -m 0755 -o mysql -g mysql /run/mysql
 RUN set -euo pipefail; install -d -m 0700 -o mysql -g root /var/lib/mysql
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 
 VOLUME /var/lib/mysql
