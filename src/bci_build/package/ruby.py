@@ -63,6 +63,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
             "make",
             # additional dependencies supplementing rails
             "timezone",
+            "xz",
         ]
         + os_version.common_devel_packages,
         "extra_files": {
