@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 29 21:01:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to a docker based build
+
+-------------------------------------------------------------------
 Fri Oct 17 11:00:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix link in README
