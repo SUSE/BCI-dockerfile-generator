@@ -24,7 +24,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends java-21-openjdk curl findutils gawk git-core procps
+    zypper -n install --no-recommends java-21-openjdk mozilla-nss-sysinit curl findutils gawk git-core procps
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
