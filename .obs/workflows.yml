@@ -103,10 +103,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
-        source_package: kiwi-image
-        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: kubectl-oldstable-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -353,9 +349,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: kiosk-firefox-esr-image
-    - trigger_services:
-        project: devel:BCI:SLE-15-SP7
-        package: kiwi-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: kubectl-oldstable-image
