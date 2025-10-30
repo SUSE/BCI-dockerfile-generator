@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 30 14:57:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
 Wed Oct 29 09:20:00 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - install missing dependency for rails 8
