@@ -89,7 +89,6 @@ KIWI_CONTAINERS = [
         + (generate_kiwi_10_config() if float(kiwi_minor) >= 10 else ""),
         build_recipe_type=BuildType.DOCKER,
         min_release_counter={
-            OsVersion.SP7: 15,
             OsVersion.SL16_0: 9,
         },
         extra_labels={
@@ -101,4 +100,5 @@ KIWI_CONTAINERS = [
         },
     )
     for os_version in list(set(ALL_NONBASE_OS_VERSIONS))
+    if not os_version.is_sle15
 ]
