@@ -1,6 +1,7 @@
 """KIWI Appliances Builder SDK container for easy appliance building on SLE Micro."""
 
 from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
@@ -29,8 +30,7 @@ KIWI_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         is_singleton_image=True,
-        # kiwi is not L3 supported
-        # support_level=SupportLevel.L3,
+        support_level=SupportLevel.L3,
         version="%%kiwi_version%%",
         tag_version=(
             kiwi_minor := format_version(
@@ -86,10 +86,9 @@ KIWI_CONTAINERS = [
         custom_end=(
             f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}\n"
         )
-        + (generate_kiwi_10_config() if float(kiwi_minor) >= 10 else ""),
+        + generate_kiwi_10_config(),
         build_recipe_type=BuildType.DOCKER,
         min_release_counter={
-            OsVersion.SP7: 15,
             OsVersion.SL16_0: 9,
         },
         extra_labels={
@@ -101,4 +100,5 @@ KIWI_CONTAINERS = [
         },
     )
     for os_version in list(set(ALL_NONBASE_OS_VERSIONS))
+    if not os_version.is_sle15
 ]
