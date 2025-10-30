@@ -435,6 +435,8 @@ class BaseContainerImage(abc.ABC):
     def lifecycle_url(self) -> str:
         if self.os_version.is_tumbleweed:
             return "https://en.opensuse.org/Lifetime#openSUSE_BCI"
+        if self.os_version.is_sl16:
+            return "https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
         if self.os_version.is_sle15:
             return "https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
         return "https://www.suse.com/lifecycle"
