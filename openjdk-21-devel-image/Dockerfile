@@ -52,7 +52,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/openjdk-devel:%%java_version
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"

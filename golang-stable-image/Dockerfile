@@ -54,7 +54,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/golang:%%golang_version%%-1.
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
