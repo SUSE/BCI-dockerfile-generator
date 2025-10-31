@@ -148,6 +148,13 @@ class OsVersion(enum.Enum):
         return ()
 
     @property
+    def build_time_scanning_packages(self) -> tuple[str, ...]:
+        if self.value in (OsVersion.SP7,):
+            return ("post-build-checks-containers",)
+
+        return ()
+
+    @property
     def release_package_names(self) -> tuple[str, ...]:
         if self.value == OsVersion.TUMBLEWEED.value:
             return ("openSUSE-release", "openSUSE-release-appliance-docker")
