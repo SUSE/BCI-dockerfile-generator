@@ -93,9 +93,9 @@ $ podman run --rm -v "$PWD":/app:Z -w /app {{ image.pretty_reference }} go test 
 ```
 
 
-### Building from SLE BCI
+### Building from {{ short_bci }}
 
-The [SLE BCI General Purpose Base Containers](https://opensource.suse.com/bci-docs/documentation/general-purpose-bci/)
+The [{{ short_bci }} General Purpose Base Containers](https://opensource.suse.com/bci-docs/documentation/general-purpose-bci/)
 images offer four different options for deployment, depending on your exact requirements.
 
 ```Dockerfile
@@ -121,8 +121,8 @@ COPY --from=build /hello /usr/local/bin/hello
 CMD ["/usr/local/bin/hello"]
 ```
 
-The above example uses the SLE BCI micro image as the deployment image for
-the resulting application. See the [SLE BCI use with Go
+The above example uses the {{ short_bci }} micro image as the deployment image for
+the resulting application. See the [{{ short_bci }} use with Go
 documentation](https://opensource.suse.com/bci-docs/guides/use-with-golang/)
 for further details.
 
@@ -142,7 +142,7 @@ import _ "crypto/tls/fipsonly"
 
 ## Additional tools
 
-In addition to the standard SLE BCI development packages, the following tools
+In addition to the standard {{ short_bci }} development packages, the following tools
 are included in the image:
 
 - go{{ image.tag_version }}-race
