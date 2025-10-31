@@ -2,7 +2,7 @@
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
-Systemd environment for containers based on the SLE Base Container Image. This container is only supported with podman.
+Systemd environment for containers based on the SUSE Linux Enterprise Base Container Image. This container is only supported with podman.
 
 ## Licensing
 
