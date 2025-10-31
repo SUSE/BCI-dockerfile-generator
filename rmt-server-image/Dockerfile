@@ -43,7 +43,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # labelprefix=com.suse.application.rmt-server
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE SUSE RMT server"
-LABEL org.opencontainers.image.description="SUSE RMT server container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.description="SUSE RMT server container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%rmt_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
