@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 31 08:02:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
 Wed Oct 29 10:33:36 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - install mozilla-nss-sysinit so that crypto providers work

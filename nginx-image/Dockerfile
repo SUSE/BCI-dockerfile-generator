@@ -51,7 +51,7 @@ LABEL org.opensuse.reference="registry.suse.com/suse/nginx:1.27-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
-LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
