@@ -272,6 +272,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version.is_sle15
                     else ["glibc-locale-base"]
                 )
+                + [*os_version.build_time_scanning_packages]
                 + [*os_version.release_package_names]
             )
         ]
