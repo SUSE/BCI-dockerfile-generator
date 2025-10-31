@@ -912,7 +912,7 @@ exit 0
         description_formatters = {
             "pretty_name": self.pretty_name,
             "based_on_container": (
-                f"based on the {self.os_version.distribution_base_name} Base Container Image"
+                f"based on the {self.os_version.pretty_product_name[:-1]}"
             ),
             "podman_only": "This container is only supported with podman.",
             "privileged_only": "This container is only supported in privileged mode.",
@@ -974,7 +974,11 @@ exit 0
             loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
             autoescape=jinja2.select_autoescape(["md"]),
         )
-        return jinja2_env.from_string(readme_template).render(image=self)
+        return jinja2_env.from_string(readme_template).render(
+            short_bci=self.os_version.short_product_name,
+            pretty_bci=self.os_version.pretty_product_name,
+            image=self,
+        )
 
     @property
     def extra_label_lines(self) -> str:
