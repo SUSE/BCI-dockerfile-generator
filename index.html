@@ -88,7 +88,7 @@ files of each container.</p>
 <p>To create a new <code class="file docutils literal notranslate"><span class="pre">README.md</span></code>, create a new file in the location
 <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package/$name/README.md.j2</span></code> where <code class="docutils literal notranslate"><span class="pre">$name</span></code> is the
 container image name
-(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.name" title="bci_build.package.BaseContainerImage.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>). Add a markdown
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code>). Add a markdown
 formatted README that explains the specifics of using this container
 images. Focus on anything container specific, like volumes, the behavior of the
 entrypoint and differences to the package in SLES/SLFO/Tumbleweed. If there is
@@ -107,11 +107,11 @@ paywall. It only needs to be added at the bottom of paywalled images.</p></li>
 </pre></div>
 </div>
 <p>The <code class="file docutils literal notranslate"><span class="pre">README.md.j2</span></code> template is rendered with the respective
-<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a> being passed as the parameter
+<code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code> being passed as the parameter
 <code class="docutils literal notranslate"><span class="pre">image</span></code> to the templating engine. This allows you to use all properties of the
-<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a> in the README, e.g. the image
-title (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.title" title="bci_build.package.BaseContainerImage.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a>) or the reference
-(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.pretty_reference" title="bci_build.package.BaseContainerImage.pretty_reference"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pretty_reference</span></code></a>).</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code> in the README, e.g. the image
+title (<code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code>) or the reference
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">pretty_reference</span></code>).</p>
 </section>
 </section>
 <section id="entrypoints">
@@ -123,9 +123,9 @@ single container image into a specified directory:</p>
 </pre></div>
 </div>
 <p>The first argument, the name of the container image, results from the concatenation
-of the image name (<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.name" title="bci_build.package.BaseContainerImage.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>) and
+of the image name (<code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code>) and
 the operating system version
-(<a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.os_version" title="bci_build.package.BaseContainerImage.os_version"><code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code></a>).</p>
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">os_version</span></code>).</p>
 <p>The second entry point is the github automation bot, which is not intended for
 end user usage. It automates several operations, like rendering all templates and
 then testing them for build with the Open Build Service.
@@ -151,12 +151,12 @@ You can find some details in the chapter <a class="reference internal" href="sta
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#bci-build-package-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.package.versions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.package.versions</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-bci_build.templates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bci_build.templates</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-dotnet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dotnet</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-staging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging</span></code> module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.bot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.bot</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#staging-bot-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.bot</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.build_result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.build_result</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-staging.project_setup"><code class="xref py py-mod docutils literal notranslate"><span class="pre">staging.project_setup</span></code> module</a></li>
 </ul>
