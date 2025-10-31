@@ -268,6 +268,11 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     else []
                 )
                 + (
+                    ["post-build-checks-containers"]
+                    if os_version == OsVersion.SP7
+                    else []
+                )
+                + (
                     ["kubic-locale-archive", "rpm-ndb", "patterns-base-fips"]
                     if os_version.is_sle15
                     else ["glibc-locale-base"]

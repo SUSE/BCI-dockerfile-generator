@@ -33,6 +33,7 @@ def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
             # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
             "coreutils",
         )
+        + (["post-build-checks-containers"] if os_version in (OsVersion.SP7) else [])
         + os_version.eula_package_names
         + os_version.release_package_names
     ]
@@ -261,6 +262,15 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
                 else ["crypto-policies-scripts"]
             )
             + (["patterns-base-fips"] if os_version.is_sl16 else [])
+            + (
+                [
+                    Package(
+                        "post-build-checks-containers", pkg_type=PackageType.BOOTSTRAP
+                    )
+                ]
+                if os_version in (OsVersion.SP7)
+                else []
+            )
         ),
         "extra_labels": {
             "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
@@ -403,6 +413,11 @@ BUSYBOX_CONTAINERS = [
                     "busybox",
                     "busybox-links",
                     "ca-certificates-mozilla-prebuilt",
+                )
+                + (
+                    ["post-build-checks-containers"]
+                    if os_version in (OsVersion.SP7)
+                    else []
                 )
                 + os_version.eula_package_names
             )
