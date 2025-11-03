@@ -44,6 +44,37 @@ The template above is then rendered to `/etc/nginx/conf.d/default.conf` as follo
 listen  80;
 ```
 
+## Running nginx as a non-root user
+It is possible to run the image as a less privileged user. This requires updating the nginx configuration to use directories writable by a specific UID/GID:
+```ShellSession
+$ podman run -it --user nginx --rm -p 8080:8080 -v /path/to/html/:/srv/www/htdocs/:Z -v $PWD/nginx.conf:/etc/nginx/nginx.conf:Z registry.suse.com/suse/nginx:1.27
+```
+
+Define a new path for the process ID in `nginx.conf`:
+
+```ShellSession
+pid        /tmp/nginx.pid;
+```
+
+Adjust the HTTP context paths and ports in `nginx.conf`:
+```ShellSession
+http {
+    client_body_temp_path /tmp/client_temp;
+    proxy_temp_path       /tmp/proxy_temp_path;
+    fastcgi_temp_path     /tmp/fastcgi_temp;
+    uwsgi_temp_path       /tmp/uwsgi_temp;
+    scgi_temp_path        /tmp/scgi_temp;
+    ...
+    ...
+    server {
+        listen       8080;
+        ...
+        ...
+    }
+...
+}
+```
+
 ## Environment variables
 
 ### NGINX_ENTRYPOINT_QUIET_LOGS
