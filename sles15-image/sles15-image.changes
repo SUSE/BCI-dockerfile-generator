@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  4 21:56:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- inject the post_build_checks_containers service to get the buildtime attestations.
+
+-------------------------------------------------------------------
 Mon Oct 20 13:46:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove password change date from /etc/shadow to make the file reproducible
