@@ -75,6 +75,7 @@ MICRO_CONTAINERS = [
             # includes device and inode numbers that change on deploy
             {DOCKERFILE_RUN} rm -vf /var/cache/ldconfig/aux-cache
         """),
+        post_build_checks_containers=True if os_version == OsVersion.SP7 else False,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -126,6 +127,7 @@ INIT_CONTAINERS = [
             HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
             """
         ),
+        post_build_checks_containers=True if os_version == OsVersion.SP7 else False,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
