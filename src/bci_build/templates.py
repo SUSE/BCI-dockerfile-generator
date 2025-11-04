@@ -232,6 +232,9 @@ SERVICE_TEMPLATE = jinja2.Template(
   </service>
 {%- endfor -%}
 {% endfor %}
+{%- if image.post_build_checks_containers %}
+  <service mode="buildtime" name="post_build_checks_containers"/>
+{%- endif %}
 </services>
 """
 )

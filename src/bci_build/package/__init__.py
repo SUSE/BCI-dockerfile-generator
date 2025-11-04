@@ -173,6 +173,9 @@ class BaseContainerImage(abc.ABC):
         default_factory=dict
     )
 
+    #: add reports from checking with trivy, clamav, and neuvector to the OCI
+    post_build_checks_containers: bool = False
+
     #: build flavors to produce for this container variant
     build_flavor: str | None = None
 
