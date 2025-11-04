@@ -1,9 +1,9 @@
-# The SLE KubeVirt cdi-uploadserver container container image
+# The SLE KubeVirt cdi-uploadserver container image
 
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
-KubeVirt cdi-uploadserver container container based on the SLE Base Container Image.
+KubeVirt cdi-uploadserver container based on the SLE Base Container Image.
 
 ## Licensing
 
