@@ -12,7 +12,7 @@ from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-_GCC_VERSIONS = Literal[7, 12, 13, 14, 15]
+_GCC_VERSIONS = Literal[7, 13, 14, 15]
 
 # The lifecycle is two years after the XX.2 release
 # according to upstream release date at
@@ -27,14 +27,14 @@ def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED:
         return gcc_version == 15
     if os_version.is_sle15:
-        return gcc_version == 14
+        return gcc_version == 15
     if os_version.is_sl16:
         return gcc_version == 15
     return False
 
 
 def _is_main_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
-    if os_version == OsVersion.TUMBLEWEED and gcc_version == 14:
+    if os_version == OsVersion.TUMBLEWEED and gcc_version == 15:
         return True
     if os_version.is_sle15 and gcc_version == 7:
         return True
@@ -95,7 +95,7 @@ GCC_CONTAINERS = [
         ),
     )
     for (gcc_version, os_version) in (
-        (14, OsVersion.SP7),
+        (15, OsVersion.SP7),
         (15, OsVersion.SL16_0),
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
