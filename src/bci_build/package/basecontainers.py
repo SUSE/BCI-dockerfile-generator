@@ -13,6 +13,7 @@ from bci_build.os_version import ALL_BASE_OS_VERSIONS
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import ALL_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
+from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -75,7 +76,7 @@ MICRO_CONTAINERS = [
             # includes device and inode numbers that change on deploy
             {DOCKERFILE_RUN} rm -vf /var/cache/ldconfig/aux-cache
         """),
-        post_build_checks_containers=True if os_version == OsVersion.SP7 else False,
+        post_build_checks_containers=os_version in CAN_BE_SAC_VERSION,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -127,7 +128,6 @@ INIT_CONTAINERS = [
             HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
             """
         ),
-        post_build_checks_containers=True if os_version == OsVersion.SP7 else False,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
@@ -272,6 +272,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
             OsVersion.SP6: 30,
             OsVersion.SL16_0: 4,
         },
+        "post_build_checks_containers": os_version in CAN_BE_SAC_VERSION,
     }
 
 
@@ -310,6 +311,7 @@ FIPS_MICRO_CONTAINERS = [
         min_release_counter={
             OsVersion.SL16_0: 5,
         },
+        post_build_checks_containers=os_version in CAN_BE_SAC_VERSION,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]

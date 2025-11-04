@@ -11,6 +11,7 @@ from bci_build.container_attributes import ImageType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
+from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import OsContainer
@@ -284,6 +285,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
             else []
         ),
         "config_sh_script": _get_base_config_sh_script(os_version),
+        "post_build_checks_containers": os_version in CAN_BE_SAC_VERSION,
     }
 
 

@@ -212,6 +212,8 @@ CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.TUMBLEWEED,
 ]
 
+CAN_BE_SAC_VERSION: list[OsVersion] = [OsVersion.SP7]
+
 # End of General Support Dates
 _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SP4: datetime.date(2023, 12, 31),
