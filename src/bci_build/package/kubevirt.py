@@ -52,7 +52,7 @@ def _get_kubevirt_kwargs(
     tag_version = format_version(kubevirt_version, ParseVersion.MINOR)
     return {
         "name": f"virt-{service}",
-        "pretty_name": f"KubeVirt virt-{service} container",
+        "pretty_name": f"KubeVirt virt-{service}",
         "package_name": "kubevirt-image",
         "license": "Apache-2.0",
         "os_version": os_version,

@@ -42,7 +42,7 @@ def _get_cdi_kwargs(
     tag_version = format_version(cdi_version, ParseVersion.MINOR)
     return {
         "name": f"cdi-{service}",
-        "pretty_name": f"KubeVirt cdi-{service} container",
+        "pretty_name": f"KubeVirt cdi-{service}",
         "package_name": "cdi-image",
         "license": "Apache-2.0",
         "os_version": os_version,
