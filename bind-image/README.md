@@ -1,4 +1,4 @@
-# SLE ISC BIND 9: BIND9 Application Container
+# SUSE Linux ISC BIND 9: BIND9 Application Container
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -13,7 +13,7 @@ queries.
 ## Usage
 
 This container image provides the `named` daemon from
-SLE 16, including the default configuration that comes
+SUSE Linux 16, including the default configuration that comes
 with the RPM package.
 
 When no additional parameters are specified, the container entrypoint launches `named` in the foreground mode by default:

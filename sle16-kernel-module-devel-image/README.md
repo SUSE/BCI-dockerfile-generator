@@ -1,14 +1,14 @@
-# SLE 16 Kernel Module Development Container
+# SUSE Linux BCI 16 Kernel Module Development Container
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
 ## Description
 
-The SLE 16 Kernel Module
-Development Container Image includes all necessary tools to build kernel modules
-for SLE and SLE Micro. It is intended to be used for building out-of-tree kernel
-modules in restricted environments for the SLE kernel.
+The SUSE Linux BCI Kernel Module Development Container Image includes all
+necessary tools to build kernel modules for SLES and SL Micro. It is intended
+to be used for building out-of-tree kernel modules in restricted environments
+for the SLES kernel.
 
 
 ## Usage

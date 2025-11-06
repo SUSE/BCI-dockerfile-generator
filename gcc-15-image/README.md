@@ -1,4 +1,4 @@
-# SLE BCI GNU Compiler Collection container image (GCC)
+# SUSE Linux BCI GNU Compiler Collection container image (GCC)
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -86,7 +86,7 @@ podman run --rm -it -v $(pwd):/src/:Z --workdir /src/ \
 
 Note that the binary built using this approach are unlikely to work on a local
 machine. They only work on operating systems that are binary-compatible to
-SLE.
+SUSE Linux.
 
 ## Licensing
 

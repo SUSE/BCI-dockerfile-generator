@@ -1,9 +1,9 @@
-# The SLE KubeVirt cdi-operator container image
+# The SUSE Linux KubeVirt cdi-operator container image
 
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
-KubeVirt cdi-operator container based on the SLE Base Container Image.
+KubeVirt cdi-operator container based on the SUSE Linux Base Container Image.
 
 ## Licensing
 
