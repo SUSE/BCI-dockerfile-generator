@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
 Sat Oct 25 14:58:13 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - Fix CC override to workaround (bsc#1252698)

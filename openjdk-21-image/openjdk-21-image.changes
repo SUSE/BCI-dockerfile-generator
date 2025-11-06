@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
 Wed Oct 29 10:26:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add mozilla-nss-sysinit to enable initialization of crypto providers

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
 Wed Oct 29 21:01:04 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to a docker based build
