@@ -59,10 +59,40 @@ class OsVersion(enum.Enum):
             return "openSUSE Tumbleweed"
         elif self.is_ltss:
             return "SLE LTSS"
-        elif self.is_sle15 or self.is_sl16:
+        elif self.is_sle15:
             return "SLE"
+        elif self.is_sl16:
+            return "SUSE Linux"
 
         raise NotImplementedError(f"Unknown os_version: {self.value}")
+
+    @property
+    def pretty_distribution_base_name(self) -> str:
+        if self.is_tumbleweed:
+            return "openSUSE Tumbleweed"
+        elif self.is_ltss:
+            return "SUSE Linux Enterprise Long Term Service Pack Support (LTSS)"
+        elif self.is_sle15 or self.is_sl16:
+            return "SUSE Linux Enterprise Server"
+
+        raise NotImplementedError(f"Unknown os_version: {self.value}")
+
+    @property
+    def short_product_name(self) -> str:
+        if self.is_tumbleweed:
+            return "openSUSE BCI"
+        if self.is_sle15:
+            return "SLE BCI"
+        return "SUSE Linux BCI"
+
+    @property
+    def pretty_product_name(self) -> str:
+        if self.is_tumbleweed:
+            return "openSUSE Tumbleweed Base Container Images"
+        if self.is_sle15:
+            return "SUSE Linux Enterprise Base Container Images"
+        if self.is_sl16:
+            return "SUSE Linux Base Container Images"
 
     @property
     def full_os_name(self) -> str:
