@@ -41,8 +41,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.pcp
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE Performance Co-Pilot (pcp)"
-LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container based on the SLE Base Container Image. This container is only supported with podman."
+LABEL org.opencontainers.image.title="SUSE Linux Performance Co-Pilot (pcp)"
+LABEL org.opencontainers.image.description="Performance Co-Pilot (pcp) container based on the SUSE Linux Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="6.2.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

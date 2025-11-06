@@ -40,8 +40,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.ruby
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Ruby 3.4"
-LABEL org.opencontainers.image.description="Ruby 3.4 container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux BCI Ruby 3.4"
+LABEL org.opencontainers.image.description="Ruby 3.4 container based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="3.4"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

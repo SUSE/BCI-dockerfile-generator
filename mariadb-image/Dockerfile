@@ -48,8 +48,8 @@ COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.mariadb
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE MariaDB Server"
-LABEL org.opencontainers.image.description="MariaDB Server container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux MariaDB Server"
+LABEL org.opencontainers.image.description="MariaDB Server container based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="%%mariadb_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

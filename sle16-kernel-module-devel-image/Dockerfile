@@ -40,8 +40,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.sle16-kernel-module-devel
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI SLES 16 Kernel module development"
-LABEL org.opencontainers.image.description="SLES 16 Kernel module development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux BCI SLES 16 Kernel module development"
+LABEL org.opencontainers.image.description="SLES 16 Kernel module development container based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
