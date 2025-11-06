@@ -57,8 +57,8 @@ RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.21-1.x86_64.rpm sha256:7b5f9809f14957621a249bd3e7005e53f95698ac224d0d735fb500b4e33199e2
 COPY dotnet-host-8.0.21-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1-2.1.0-1.x86_64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
-COPY netstandard-targeting-pack-2.1-2.1.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/n/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
+COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-targeting-pack-8.0-8.0.21-1.x86_64.rpm sha256:cf1125cab44b254883a2fbb452f6c6793533f5871661f1720f379262309ef395
 COPY dotnet-targeting-pack-8.0-8.0.21-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.21-1.x86_64.rpm sha256:74011a0313448b9e20e18db687a5e7b5071d62501a5e3fa18ca4b9a9e850b09c

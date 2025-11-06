@@ -4,12 +4,12 @@
 
 ## Description
 
-SUSE Linux Enterprise Base Container Images (SLE BCI) provide open, flexible,
+SUSE Linux Enterprise Base Container Images provide open, flexible,
 and secure container images. The images include container environments based on
 SUSE Linux Enterprise Server and are available at no cost, they can be freely
 re-distributed, and they are supported across different environments.
 
-The Base Container Image is an image used as a foundation for most SLE BCIs. The
+The Base Container Image is an image used as a foundation for many SLE BCIs. The
 image is intended to be extended for further use, such as a development or a
 testing environment.
 
@@ -19,7 +19,7 @@ testing environment.
 The container image comes with the `zypper` package manager
 , the free `SLE_BCI` repository
 and the `container-suseconnect` utility. This allows you to access
-the full SLE repositories with a valid SLE subscription. The image is designed
+the full SUSE Linux Enterprise Server repositories with a subscription. The image is designed
 to be extended by installing packages required for your specific scenario.
 
 To build a custom image using a `Containerfile` that includes the
@@ -51,14 +51,14 @@ registry.suse.com/bci/bci-base
 ### The SLE_BCI repository
 
 The container image comes with the free `SLE_BCI` repository. The repository
-provides the latest version of a subset of packages from SUSE Linux Enterprise.
+provides the latest version of a subset of packages from SUSE Linux Enterprise Server.
 These packages are available at no cost and can be freely redistributed.
 
 ### Getting access to the SLE repositories
 
 The `container-suseconnect` utility in the image can automatically add the full
-SUSE Linux Enterprise repositories into the running container if you have a
-valid SLE subscription.
+repositories into the running container if you have a valid
+SUSE Linux Enterprise Server subscription.
 
 Find more information about container-suseconnect in the
 [`container-suseconnect`](https://documentation.suse.com/container/all/single-html/Container-guide/index.html#sec-container-suseconnect)
