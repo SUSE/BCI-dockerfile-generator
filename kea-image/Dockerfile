@@ -42,7 +42,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # labelprefix=com.suse.application.kea
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE Kea DHCP Server"
-LABEL org.opencontainers.image.description="Kea DHCP Server container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.description="Kea DHCP Server container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="2.6"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

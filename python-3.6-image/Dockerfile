@@ -43,7 +43,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # labelprefix=com.suse.bci.python
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI Python 3.6 development"
-LABEL org.opencontainers.image.description="Python 3.6 development container based on the SLE Base Container Image."
+LABEL org.opencontainers.image.description="Python 3.6 development container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%py36_ver%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
