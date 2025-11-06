@@ -22,7 +22,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
   <description type="system">
     <author>SUSE LLC</author>
     <contact>https://www.suse.com/</contact>
-    <specification>SLE BCI %OS_VERSION_NO_DASH% Base Container Image</specification>
+    <specification>SUSE Linux BCI %OS_VERSION_NO_DASH% Base Container Image</specification>
   </description>
   <preferences>
     <type image="docker">
@@ -33,7 +33,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
         <labels>
           <suse_label_helper:add_prefix prefix="com.suse.bci.base">
             <label name="org.opencontainers.image.authors" value="https://github.com/SUSE/bci/discussions"/>
-            <label name="org.opencontainers.image.title" value="SLE BCI %OS_VERSION_NO_DASH% Base"/>
+            <label name="org.opencontainers.image.title" value="SUSE Linux BCI %OS_VERSION_NO_DASH% Base"/>
             <label name="org.opencontainers.image.description" value="Image for containers based on %OS_PRETTY_NAME%."/>
             <label name="org.opencontainers.image.version" value="%OS_VERSION_ID_SP%-%RELEASE%"/>
             <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
