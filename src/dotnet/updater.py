@@ -154,7 +154,7 @@ class DotNetBCI(DevelopmentContainer):
         if self.tag_version != "6.0":
             self.use_nonprivileged_user = True
 
-        self.custom_description = f"The {self.pretty_name} based on the SLE Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+        self.custom_description = f"The {self.pretty_name} {based_on_container}. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
 
         ver = version.parse(str(self.tag_version))
 
