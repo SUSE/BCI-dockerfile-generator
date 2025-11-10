@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 10 10:38:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf for micro based containers which install util-linux
+
+-------------------------------------------------------------------
 Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use marketing-approved naming
