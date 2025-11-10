@@ -141,7 +141,8 @@ XORG_CLIENT_CONTAINERS = [
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
             COPY --from=builder /home/user /home/user
-        """),
+        """)
+        + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
     for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
 ]
