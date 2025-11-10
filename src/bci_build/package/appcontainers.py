@@ -1,5 +1,6 @@
 """Application Containers that are generated with the BCI tooling"""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import TCP
@@ -258,8 +259,6 @@ for filename in (
 def _get_nginx_kwargs(os_version: OsVersion):
     nginx_version = get_pkg_version("nginx", os_version)
 
-    version_check_lines = generate_package_version_check("nginx", nginx_version)
-
     kwargs = {
         "os_version": os_version,
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
@@ -274,23 +273,25 @@ def _get_nginx_kwargs(os_version: OsVersion):
         ],
         "package_list": ["gawk", "nginx", "findutils", _envsubst_pkg_name(os_version)],
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
+        "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "cmd": ["nginx", "-g", "daemon off;"],
         "build_recipe_type": BuildType.DOCKER,
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
         "exposes_ports": [TCP(80)],
-        "custom_end": f"""{version_check_lines}
-{DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-COPY [1-3]0-*.sh /docker-entrypoint.d/
-COPY docker-entrypoint.sh /usr/local/bin
-COPY index.html /srv/www/htdocs/
-{DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-{DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
-    ln -sf /dev/stdout /var/log/nginx/access.log; \
-    ln -sf /dev/stderr /var/log/nginx/error.log
-
-STOPSIGNAL SIGQUIT
-""",
+        "build_stage_custom_end": generate_package_version_check(
+            "nginx", nginx_version, use_target=True
+        ),
+        "custom_end": textwrap.dedent(f"""
+            {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
+            COPY [1-3]0-*.sh /docker-entrypoint.d/
+            COPY docker-entrypoint.sh /usr/local/bin
+            COPY index.html /srv/www/htdocs/
+            {DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
+            {DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
+                ln -sf /dev/stdout /var/log/nginx/access.log; \
+                ln -sf /dev/stderr /var/log/nginx/error.log
+            STOPSIGNAL SIGQUIT"""),
     }
 
     return kwargs
