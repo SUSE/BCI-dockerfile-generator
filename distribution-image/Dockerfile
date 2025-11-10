@@ -29,6 +29,13 @@ COPY --from=target / /target
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends apache2-utils ca-certificates-mozilla distribution-registry
+# sanity check that the version from the tag is equal to the version of distribution-registry that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' distribution-registry | \
+    cut -d '.' -f -2)" = "2.8" ]
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
+
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -67,5 +74,6 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["/usr/bin/registry"]
 CMD ["serve", "/etc/registry/config.yml"]
 EXPOSE 5000/tcp
+COPY --from=builder /etc/blkid.conf /etc
 USER registry
 VOLUME /var/lib/docker-registry
