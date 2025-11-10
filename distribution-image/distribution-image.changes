@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 10 17:26:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add version check ; fix blkid.conf
+
+-------------------------------------------------------------------
 Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use marketing-approved naming
