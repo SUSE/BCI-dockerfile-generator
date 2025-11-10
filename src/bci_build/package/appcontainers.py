@@ -10,6 +10,7 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
 from bci_build.package import _build_tag_prefix
@@ -315,8 +316,10 @@ REGISTRY_CONTAINERS = [
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%registry_version%%",
-        tag_version=format_version(
-            get_pkg_version("distribution", os_version), ParseVersion.MINOR
+        tag_version=(
+            distribution_version := format_version(
+                get_pkg_version("distribution", os_version), ParseVersion.MINOR
+            )
         ),
         version_in_uid=False,
         replacements_via_service=[
@@ -341,6 +344,15 @@ REGISTRY_CONTAINERS = [
         min_release_counter={
             OsVersion.SP7: 15,
         },
+        build_stage_custom_end=generate_package_version_check(
+            "distribution-registry", distribution_version, use_target=True
+        )
+        + (f"\n{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
+        custom_end=(
+            "COPY --from=builder /etc/blkid.conf /etc\n"
+            if os_version.is_sle15
+            else None
+        ),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
