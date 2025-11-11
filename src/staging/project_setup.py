@@ -9,9 +9,6 @@ from bci_build.os_version import OsVersion
 USERS_FOR_PRODUCTION = [
     "avicenzi",
     "dirkmueller",
-    "favogt",
-    "fcrozat",
-    "pvlasin",
     "pushman",
 ]
 

@@ -21,9 +21,6 @@ _OSC_USERNAME = "foobar"
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
-  <person userid="favogt" role="maintainer"/>
-  <person userid="fcrozat" role="maintainer"/>
-  <person userid="pvlasin" role="maintainer"/>
   <person userid="pushman" role="maintainer"/>
 
   <build>
@@ -121,9 +118,6 @@ This project is automatically updated from git. Please do **not** send submit re
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
-  <person userid="favogt" role="maintainer"/>
-  <person userid="fcrozat" role="maintainer"/>
-  <person userid="pvlasin" role="maintainer"/>
   <person userid="pushman" role="maintainer"/>
 
   <build>
