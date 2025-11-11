@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: bci/dotnet-runtime:9.0.11-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:9.0.11
-#!BuildTag: bci/dotnet-runtime:9.0
-#!BuildName: bci-dotnet-runtime-9.0
-#!BuildVersion: 15.7.9.0
-#!BuildRelease: 20
+#!BuildTag: bci/dotnet-runtime:10.0.0-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:10.0.0
+#!BuildTag: bci/dotnet-runtime:10.0
+#!BuildTag: bci/dotnet-runtime:latest
+#!BuildName: bci-dotnet-runtime-10.0
+#!BuildVersion: 15.7.10.0
 FROM registry.suse.com/bci/bci-base:15.7
 
 
@@ -31,18 +31,18 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.runtime
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 9.0"
-LABEL org.opencontainers.image.description="The .NET Runtime 9.0 based on the SUSE Linux Enterprise Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
-LABEL org.opencontainers.image.version="9.0.11"
+LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 10.0"
+LABEL org.opencontainers.image.description="The .NET Runtime 10.0 based on the SUSE Linux Enterprise Base Container Image. The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+LABEL org.opencontainers.image.version="10.0.0"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="9.0.11-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:9.0.11-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.0.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:10.0.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2026-11-10"
+LABEL com.suse.supportlevel.until="2028-11-12"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
@@ -54,14 +54,14 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.11-1.x86_64.rpm sha256:59d427ea8a6a0e6cf0a6f910a07c935a2dfbef04def9a931137a1b451cae8283
-COPY dotnet-host-9.0.11-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm sha256:5157d14c95efa5b95fa37f599f6bb8469c0c57914634235d1050a55ce644d339
-COPY dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm sha256:f2b062d76e21fb57951b9497752c4d35c8d2725c369285ea484a3defad3911c6
-COPY dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.11-1.x86_64.rpm sha256:8f7aa0a2553477341bb832f89b035b2fce3654ed277808dc757daa2d91109a8d
-COPY dotnet-runtime-9.0-9.0.11-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.0-1.x86_64.rpm sha256:0367de591ce206589496d4c1489dfaeec748a0cbab2612cd64087de4d92a90dd
+COPY dotnet-host-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.0-1.x86_64.rpm sha256:6541a4345ba7c0efed58d932c47470a55f906125222c3f634e0f59dee290ded7
+COPY dotnet-hostfxr-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.0-1.x86_64.rpm sha256:987ac9d24088187d2b2bead6e81f0d3f58705db7a104c8326e5077245224ebc6
+COPY dotnet-runtime-deps-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.0-1.x86_64.rpm sha256:aa7eb160c0e20dd7a4b2070b962062b7850d1a9c660d51ae5186650cef648bef
+COPY dotnet-runtime-10.0-10.0.0-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
@@ -86,7 +86,7 @@ RUN rm -rf /tmp/* && zypper clean -a && rm -rf {/target,}/var/log/{alternatives.
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=9.0.11
+ENV DOTNET_VERSION=10.0.0
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080

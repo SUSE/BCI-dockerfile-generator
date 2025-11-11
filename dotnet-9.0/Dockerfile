@@ -18,7 +18,6 @@
 #!BuildTag: bci/dotnet-sdk:9.0.11-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:9.0.11
 #!BuildTag: bci/dotnet-sdk:9.0
-#!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-9.0
 #!BuildVersion: 15.7.9.0
 #!BuildRelease: 20
@@ -43,7 +42,7 @@ LABEL org.opencontainers.image.ref.name="9.0.11-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:9.0.11-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.supportlevel.until="2026-05-12"
+LABEL com.suse.supportlevel.until="2026-11-10"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
