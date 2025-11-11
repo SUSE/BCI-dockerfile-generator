@@ -28,6 +28,7 @@ echo "Configure image: [$kiwi_iname]..."
 #--------------------------------------
 suseSetupProduct
 
+{% if os_version | string != "3" -%}
 # don't have duplicate licenses of the same type
 jdupes -1 -L -r /usr/share/licenses
 
@@ -39,6 +40,7 @@ add-yast-repos
 zypper --non-interactive rm -u live-add-yast-repos jdupes
 {% else -%}
 zypper --non-interactive rm -u jdupes
+{%- endif %}
 {%- endif %}
 
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
@@ -223,14 +225,17 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "curl",
                     "gzip",
                     "netcfg",
-                    "openssl-3",
-                    "patterns-base-minimal_base",
                     "tar",
                     "timezone",
                     *os_version.eula_package_names,
                 ]
                 # for run.oci.keep_original_groups=1 (see bsc#1212118)
                 + (["user(nobody)"] if not os_version.is_ltss else [])
+                + (
+                    ["openssl-3", "patterns-base-minimal_base"]
+                    if os_version not in (OsVersion.SP3, OsVersion.SP4)
+                    else []
+                )
                 + (
                     [
                         "sle-module-basesystem-release",
@@ -259,10 +264,10 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "aaa_base",
                     "cracklib-dict-small",
                     "filesystem",
-                    "jdupes",
                     "shadow",
                     "zypper",
                 ]
+                + (["jdupes"] if os_version not in (OsVersion.SP3,) else [])
                 + (
                     ["libcurl-mini4", "libopenssl-3-fips-provider"]
                     if os_version.is_sl16
