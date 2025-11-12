@@ -44,16 +44,6 @@ DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 #: a sed statement to avoid using `EVALUATE=udev` in `/etc/blkid.conf` which doesn't work inside containers
 SET_BLKID_SCAN: str = f"# Avoid blkid waiting on udev (bsc#1247914)\n{DOCKERFILE_RUN} sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf"
 
-#: Remove various log files and temporary files. While it is possible to just ``rm -rf /var/log/*``,
-#: that would also remove some package owned directories (not %ghost)
-LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \\
-    rm -rf {/target,}/run/*; \\
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \\
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \\
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \\
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
-""")
-
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
 
@@ -198,16 +188,23 @@ class BaseContainerImage(abc.ABC):
     #: Packages to be installed inside the container image
     package_list: list[str] | list[Package] = field(default_factory=list)
 
-    #: This string is appended to the automatically generated dockerfile and can
-    #: contain arbitrary instructions valid for a :file:`Dockerfile`.
+    #: This string is appended to the end of the automatically generated dockerfile
+    #: and can contain arbitrary instructions valid for a :file:`Dockerfile`.
     #:
     #: .. note::
     #:   Setting both this property and :py:attr:`~BaseContainerImage.config_sh_script`
     #:   is not possible and will result in an error.
+    #:
+    #:   Installing packages or calling Zypper is forbidden, as it will polute the image
+    #:   after cleanup. Use :py:attr:`~BaseContainerImage.build_stage_custom_end` instead.
     custom_end: str = ""
 
-    #: This string is appended to the the build stage in a multistage build and can
-    #: contain arbitrary instructions valid for a :file:`Dockerfile`.
+    #: This string is appended to the build area of the automatically generated dockerfile
+    #: and can contain arbitrary instructions valid for a :file:`Dockerfile`.
+    #:
+    #: .. note::
+    #:   Use this if you need to customize package installation, call Zypper,
+    #:   or perform critical changes to the image.
     build_stage_custom_end: str | None = None
 
     #: This string defines which build counter identifier should be used for this
@@ -571,20 +568,130 @@ fi
 
 {self.config_sh_script}
 
-#=======================================
-# Clean up after zypper if it is present
-#---------------------------------------
-if command -v zypper > /dev/null; then
-    zypper -n clean -a
-fi
+exit 0
+"""
 
-#=============================================
-# Clean up logs and temporary files if present
-#---------------------------------------------
-{LOG_CLEAN}
+    @property
+    def images_sh(self) -> str:
+        """The full :file:`images.sh` script used to cleanup kiwi builds."""
+        return f"""#!{self.config_sh_interpreter}
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: (c) 2022-{datetime.datetime.now().date().strftime("%Y")} SUSE LLC
+
+{_BASH_SET}
+
+{self.file_cleanup_script}
 
 exit 0
 """
+
+    @property
+    def file_cleanup_script(self) -> str:
+        """
+        The container cleanup script appended to `Dockerfiles` or used by `images.sh`.
+
+        This will purge logs, temporary files, locks and everything else that should
+        not be shipped in containers, specially for reproducible builds.
+        """
+        if self.custom_end and (
+            "zypper -n" in self.custom_end
+            or "zypper --non-interactive" in self.custom_end
+        ):
+            raise ValueError(
+                "Zypper calls in `custom_end` are forbidden. Use `build_stage_custom_end` instead"
+            )
+
+        file_list = [
+            # remove zypper-related logs
+            "/var/log/alternatives.log",
+            "/var/log/lastlog",
+            "/var/log/tallylog",
+            "/var/log/zypper.log",
+            "/var/log/zypp/history",
+            "/var/log/YaST2",
+            # remove zypp uuid (bsc#1098535)
+            "/var/lib/zypp/AnonymousUniqueId",
+            # remove the entire zypper cache content
+            "/var/cache/zypp/*",
+            # remove tmpfs data because it is ephemeral
+            "/run/*",
+            # remove user/group backups
+            "/etc/shadow-",
+            "/etc/group-",
+            "/etc/passwd-",
+            "/etc/.pwd.lock",
+            # remove rpm lock
+            "/usr/lib/sysimage/rpm/.rpm.lock",
+            # drop useless device/inode specific cache file
+            # see https://github.com/docker-library/official-images/issues/16044
+            "/var/cache/ldconfig/aux-cache",
+        ]
+
+        zypp_free_list = [
+            # does not make sense in zypper-free images
+            "/var/lib/zypp/AutoInstalled",
+            # recreated by rpm on the next run
+            "/usr/lib/sysimage/rpm/Index.db",
+        ]
+
+        if self.from_target_image:
+            target = "/target"
+            zypp_clean = f"zypper -n --installroot {target} clean -a"
+        else:
+            target = ""
+            zypp_clean = "zypper -n clean -a"
+
+        if self.build_recipe_type == BuildType.KIWI:
+            rm_files = "\n".join(f"rm -vrf {target}{f}" for f in file_list)
+            rm_zypp_files = "\n".join(
+                f"    rm -vrf {target}{f}" for f in zypp_free_list
+            )
+            # this needs to be portable because it executes on all Kiwi images
+            return rf"""#======================================
+# Image Cleanup
+#--------------------------------------
+if command -v zypper > /dev/null; then
+    {zypp_clean}
+    # drop timestamp
+    tail -n +2 /var/lib/zypp/AutoInstalled > /var/lib/zypp/AutoInstalled.new && mv /var/lib/zypp/AutoInstalled.new /var/lib/zypp/AutoInstalled
+else
+    # it does not make sense in a zypper-free image
+{rm_zypp_files}
+fi
+
+# set the day of last password change to empty
+# prefer sed if available
+if command -v sed > /dev/null; then
+    sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' {target}/etc/shadow
+else
+    while IFS=: read -r username password last_change min_age max_age warn inactive expire reserved; do
+        echo "$username:$password::$min_age:$max_age:$warn:$inactive:$expire:$reserved" >> /etc/shadow.new
+    done < /etc/shadow
+    mv /etc/shadow.new /etc/shadow
+    chmod 640 /etc/shadow
+fi
+
+# remove logs and temporary files
+{rm_files}
+"""
+        elif self.build_recipe_type == BuildType.DOCKER:
+            if self.from_target_image:
+                # Multi-stage images have zypper on the first stage
+                # but don't have a package manager on the final stage.
+                file_list = file_list + zypp_free_list
+
+            rm_files = "\n".join(f"    rm -vrf {target}{f}; \\" for f in file_list)
+
+            return rf"""# image cleanup
+{DOCKERFILE_RUN} {zypp_clean}; \
+{rm_files}
+    [ -f /var/lib/zypp/AutoInstalled ] && sed -i '1d' /var/lib/zypp/AutoInstalled; \
+    sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' {target}/etc/shadow
+"""
+        else:
+            raise ValueError(
+                f"Cleanup is tot supported for type '{self.build_recipe_type}'"
+            )
 
     @property
     def _from_image(self) -> str | None:
@@ -1083,7 +1190,7 @@ exit 0
                 image=self,
                 INFOHEADER=infoheader,
                 DOCKERFILE_RUN=DOCKERFILE_RUN,
-                LOG_CLEAN=LOG_CLEAN,
+                CLEAN_SCRIPT=self.file_cleanup_script,
                 BUILD_FLAVOR=self.build_flavor,
             )
             if dockerfile[-1] != "\n":
@@ -1105,6 +1212,10 @@ exit 0
             if self.config_sh:
                 tasks.append(write_file_to_dest("config.sh", self.config_sh))
                 files.append("config.sh")
+
+            if self.images_sh:
+                tasks.append(write_file_to_dest("images.sh", self.images_sh))
+                files.append("images.sh")
 
         else:
             assert False, (
