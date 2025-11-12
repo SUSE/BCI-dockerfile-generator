@@ -16,6 +16,7 @@ Prefer: -systemd-mini
 Prefer: -libsystemd0-mini
 Prefer: -libudev-mini1
 Prefer: -udev-mini
+Prefer: -docker-kubic -docker-stable -podman-docker
 Prefer: kiwi-boot-requires
 Prefer: sles-release
 Prefer: sles-release-MINI
