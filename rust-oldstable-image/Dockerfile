@@ -64,7 +64,4 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV CC="/usr/local/bin/cc"
 ENV RUST_VERSION="%%RUST_VERSION%%"
-
-# workaround for cc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") ${CC} && ${CC} --version
 COPY rust-and-cargo-pin.check /etc/zypp/systemCheck.d/rust-and-cargo-pin.check
