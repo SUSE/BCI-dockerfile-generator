@@ -8,7 +8,6 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
@@ -66,17 +65,16 @@ def _get_golang_kwargs(
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        "custom_end": (
+        "build_stage_custom_end": (
             textwrap.dedent(
                 f"""
             # only available on go's tsan_arch architectures
             #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
-            {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean -a; fi
+            {DOCKERFILE_RUN} zypper -n install {go}-race
             WORKDIR /go
             {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
             """
             )
-            + f"{DOCKERFILE_RUN} {LOG_CLEAN}"
         ),
         "package_list": [*go_packages, "make"]
         + os_version.common_devel_packages

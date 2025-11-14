@@ -22,7 +22,6 @@ from version_utils import rpm
 from bci_build.logger import LOGGER
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
-from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from staging.build_result import Arch
@@ -102,10 +101,6 @@ RUN zypper --non-interactive install --no-recommends libicu {% if image.os_versi
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
-
-RUN rm -rf /tmp/* && zypper clean -a && """
-    + LOG_CLEAN
-    + """
 
 {% if not image.is_sdk and image.use_nonprivileged_user %}
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
@@ -317,7 +312,7 @@ class DotNetBCI(DevelopmentContainer):
                 f"additional_versions property must be unset, but got {self.additional_versions}"
             )
 
-        self.custom_end = CUSTOM_END_TEMPLATE.render(
+        self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             dotnet_packages=pkgs,
             dotnet_version=self.version,
