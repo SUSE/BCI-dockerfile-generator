@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 14 10:42:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- docker-entrypoint: remove now obsolete code path
+
+-------------------------------------------------------------------
 Thu Nov  6 08:20:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use marketing-approved naming
