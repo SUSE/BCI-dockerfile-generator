@@ -135,5 +135,5 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             )
         ]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (18, 14, 13)]
+    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (18, 14)]
 ]
