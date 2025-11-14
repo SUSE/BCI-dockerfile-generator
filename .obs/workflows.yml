@@ -203,10 +203,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: postgres-13-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: postgres-14-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -464,9 +460,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postfix-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
-        package: postgres-13-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: postgres-14-image
