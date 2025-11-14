@@ -24,18 +24,25 @@ FROM bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring php8-readline
-
-# cleanup logs and temporary files
+# image cleanup
 RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
-
-# set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
+    rm -vrf /var/log/alternatives.log; \
+    rm -vrf /var/log/lastlog; \
+    rm -vrf /var/log/tallylog; \
+    rm -vrf /var/log/zypper.log; \
+    rm -vrf /var/log/zypp/history; \
+    rm -vrf /var/log/YaST2; \
+    rm -vrf /var/lib/zypp/AnonymousUniqueId; \
+    rm -vrf /var/cache/zypp/*; \
+    rm -vrf /run/*; \
+    rm -vrf /etc/shadow-; \
+    rm -vrf /etc/group-; \
+    rm -vrf /etc/passwd-; \
+    rm -vrf /etc/.pwd.lock; \
+    rm -vrf /usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -vrf /var/cache/ldconfig/aux-cache; \
+    [ -f /var/lib/zypp/AutoInstalled ] && sed -i '1d' /var/lib/zypp/AutoInstalled; \
+    sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.php

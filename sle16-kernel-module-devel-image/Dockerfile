@@ -24,17 +24,28 @@ FROM bci/bci-base:16.1
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets
 
-# cleanup logs and temporary files
-RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+#!ArchExclusiveLine: aarch64
+RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then zypper -n install kernel-64kb-devel; fi
 
-# set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
+# image cleanup
+RUN set -euo pipefail; zypper -n clean -a; \
+    rm -vrf /var/log/alternatives.log; \
+    rm -vrf /var/log/lastlog; \
+    rm -vrf /var/log/tallylog; \
+    rm -vrf /var/log/zypper.log; \
+    rm -vrf /var/log/zypp/history; \
+    rm -vrf /var/log/YaST2; \
+    rm -vrf /var/lib/zypp/AnonymousUniqueId; \
+    rm -vrf /var/cache/zypp/*; \
+    rm -vrf /run/*; \
+    rm -vrf /etc/shadow-; \
+    rm -vrf /etc/group-; \
+    rm -vrf /etc/passwd-; \
+    rm -vrf /etc/.pwd.lock; \
+    rm -vrf /usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -vrf /var/cache/ldconfig/aux-cache; \
+    [ -f /var/lib/zypp/AutoInstalled ] && sed -i '1d' /var/lib/zypp/AutoInstalled; \
+    sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.sle16-kernel-module-devel
@@ -57,12 +68,3 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-
-#!ArchExclusiveLine: aarch64
-RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ] && zypper -n install kernel-64kb-devel; then zypper -n clean -a; fi
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled

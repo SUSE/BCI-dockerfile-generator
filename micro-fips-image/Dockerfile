@@ -29,18 +29,28 @@ RUN set -euo pipefail; \
 
 RUN set -euo pipefail; zypper -n install jdupes \
     && jdupes -1 -L -r /target/usr/
-
-# cleanup logs and temporary files
+# image cleanup
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+    rm -vrf /target/var/log/alternatives.log; \
+    rm -vrf /target/var/log/lastlog; \
+    rm -vrf /target/var/log/tallylog; \
+    rm -vrf /target/var/log/zypper.log; \
+    rm -vrf /target/var/log/zypp/history; \
+    rm -vrf /target/var/log/YaST2; \
+    rm -vrf /target/var/lib/zypp/AnonymousUniqueId; \
+    rm -vrf /target/var/cache/zypp/*; \
+    rm -vrf /target/run/*; \
+    rm -vrf /target/etc/shadow-; \
+    rm -vrf /target/etc/group-; \
+    rm -vrf /target/etc/passwd-; \
+    rm -vrf /target/etc/.pwd.lock; \
+    rm -vrf /target/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -vrf /target/var/cache/ldconfig/aux-cache; \
+    rm -vrf /target/var/lib/zypp/AutoInstalled; \
+    rm -vrf /target/usr/lib/sysimage/rpm/Index.db; \
+    [ -f /var/lib/zypp/AutoInstalled ] && sed -i '1d' /var/lib/zypp/AutoInstalled; \
+    sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
 
-# set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
 FROM scratch
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
