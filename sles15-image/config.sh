@@ -51,38 +51,6 @@ zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.su
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_source/' SLE_BCI_source
 
 #======================================
-# Remove zypp uuid (bsc#1098535)
-#--------------------------------------
-rm -f /var/lib/zypp/AnonymousUniqueId
-
-# Remove the entire zypper cache content (not the dir itself, owned by libzypp)
-rm -rf /var/cache/zypp/*
-
-# drop timestamp
-tail -n +2 /var/lib/zypp/AutoInstalled > /var/lib/zypp/AutoInstalled.new && mv /var/lib/zypp/AutoInstalled.new /var/lib/zypp/AutoInstalled
-
-# drop useless device/inode specific cache file (see https://github.com/docker-library/official-images/issues/16044)
-rm -vf /var/cache/ldconfig/aux-cache
-
-# remove backup of /etc/{shadow,group,passwd} and lock file
-rm -vf /etc/{shadow-,group-,passwd-,.pwd.lock}
-
-# drop pid and lock files
-rm -vrf /run/*
-rm -vf /usr/lib/sysimage/rpm/.rpm.lock
-
-# set the day of last password change to empty
-sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
-
-#==========================================
-# Hack! The go container management tools can't handle sparse files:
-# https://github.com/golang/go/issues/13548
-# If lastlog doesn't exist, useradd doesn't attempt to reserve space,
-# also in derived containers.
-#------------------------------------------
-rm -f /var/log/lastlog
-
-#======================================
 # Avoid blkid waiting on udev (bsc#1247914)
 #--------------------------------------
 sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
@@ -91,23 +59,5 @@ sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 # Remove locale files
 #--------------------------------------
 (shopt -s globstar; rm -f /usr/share/locale/**/*.mo)
-
-#=======================================
-# Clean up after zypper if it is present
-#---------------------------------------
-if command -v zypper > /dev/null; then
-    zypper -n clean -a
-fi
-
-#=============================================
-# Clean up logs and temporary files if present
-#---------------------------------------------
-rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
-
 
 exit 0
