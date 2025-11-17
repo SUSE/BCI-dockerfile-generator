@@ -5,6 +5,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import StableUser
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
@@ -36,7 +37,15 @@ HELM_CONTAINERS = [
         package_list=[
             "ca-certificates-mozilla",
             "helm",
+            "shadow",
         ],
+        user_chown=StableUser(
+            user_id=1000,
+            user_name="helm",
+            group_id=1000,
+            group_name="helm",
+            user_create=True
+        ),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%helm_version%%",
