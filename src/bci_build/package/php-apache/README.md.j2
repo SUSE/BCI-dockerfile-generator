@@ -15,7 +15,7 @@ To deploy an application, copy its sources into the htdocs folder
 FROM {{ image.pretty_reference }}
 
 RUN set -eux; \
-    zypper -n in $my_dependencies; \
+    zypper -n install $my_dependencies; \
     # additional setup steps
 
 # Copy the app into the Apache2 document root
