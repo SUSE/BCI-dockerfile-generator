@@ -19,13 +19,13 @@ from jinja2 import Template
 from packaging import version
 from version_utils import rpm
 
+from bci_build.container_attributes import Arch
 from bci_build.logger import LOGGER
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
-from staging.build_result import Arch
 
 from .repomdparser import RepoMDParser
 from .repomdparser import RpmPackage
@@ -92,13 +92,14 @@ COPY {{ pkg.url.split('/') | last }} /tmp/
 {% endfor %}
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper --non-interactive install --no-recommends coreutils sles-release
+RUN zypper -n install --no-recommends coreutils sles-release
 
 # Importing MS GPG keys
 COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
-RUN zypper --non-interactive install --no-recommends libicu {% if image.os_version.is_sle15 -%} libopenssl1_1 {%- else -%} libopenssl3 {%- endif %} /tmp/*rpm
+RUN zypper -n install --no-recommends libicu {% if image.os_version.is_sle15 -%} libopenssl1_1{%- else -%} libopenssl3{%- endif %}
+RUN if [ "$(uname -m)" = "aarch64" ]; then zypper -n install /tmp/*aarch64.rpm; elif [ "$(uname -m)" = "x86_64" ]; then zypper -n install /tmp/*x64.rpm /tmp/*x86_64.rpm; fi
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
@@ -127,7 +128,7 @@ class Package:
         return self.name
 
 
-_DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64]
+_DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64, Arch.AARCH64]
 
 
 @dataclass
