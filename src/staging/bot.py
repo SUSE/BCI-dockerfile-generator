@@ -852,12 +852,26 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
         action: Callable[[str], Coroutine[None, None, bool]],
     ) -> str | None:
         assert not origin_branch_name.startswith("origin/")
+        git_authentication = (
+            await self._run_cmd(
+                "git --no-pager config --local --path --get includeif.gitdir:$(git rev-parse --show-toplevel)/.git.path",
+                raise_on_error=False,
+            )
+        ).stdout.strip()
         await self._run_cmd(
             f"git worktree add -B {new_branch_name} {new_branch_name} origin/{origin_branch_name}"
         )
         worktree_dir = os.path.join(os.getcwd(), new_branch_name)
+
         commit = None
         try:
+            if git_authentication:
+                # add git_authentication from main repo to the worktree repo
+                await self._run_cmd(
+                    f"git --no-pager config --local --replace-all include.path '{git_authentication}'",
+                    cwd=worktree_dir,
+                )
+
             if await action(worktree_dir):
                 commit = (
                     await self._run_cmd(
