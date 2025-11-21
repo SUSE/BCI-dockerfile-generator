@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: x86_64
+#!ExclusiveArch: x86_64 aarch64
 #!BuildTag: bci/dotnet-aspnet:10.0.0-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:10.0.0
 #!BuildTag: bci/dotnet-aspnet:10.0
@@ -56,24 +56,35 @@ RUN mkdir -p /tmp/
 
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.0-1.x86_64.rpm sha256:0367de591ce206589496d4c1489dfaeec748a0cbab2612cd64087de4d92a90dd
 COPY dotnet-host-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.0-1.aarch64.rpm sha256:4039fafb70832128c7b3880455e28643ea860a20d0a6ff5c8c26d94080aacd39
+COPY dotnet-host-10.0.0-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.0-1.x86_64.rpm sha256:6541a4345ba7c0efed58d932c47470a55f906125222c3f634e0f59dee290ded7
 COPY dotnet-hostfxr-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.0-1.aarch64.rpm sha256:00ee18289cc2b8a4396cf87a9900cec7b8d86397c09d6d70dcabb8a5ea406a13
+COPY dotnet-hostfxr-10.0-10.0.0-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.0-1.x86_64.rpm sha256:987ac9d24088187d2b2bead6e81f0d3f58705db7a104c8326e5077245224ebc6
 COPY dotnet-runtime-deps-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.0-1.aarch64.rpm sha256:1b5bc407a767ecfa7f2817cfa6c060cccba82084371a310977ae9854295fa400
+COPY dotnet-runtime-deps-10.0-10.0.0-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.0-1.x86_64.rpm sha256:aa7eb160c0e20dd7a4b2070b962062b7850d1a9c660d51ae5186650cef648bef
 COPY dotnet-runtime-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.0-1.aarch64.rpm sha256:30db9c1db68222307d46081b91eaab0cf961cf047cc75080417b39bcb42c1eb1
+COPY dotnet-runtime-10.0-10.0.0-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-10.0-10.0.0-1.x86_64.rpm sha256:a0dc272d0111dcc82769352b91c5f4d70549f6d8cdfa146ed5bbb49d44d3acbe
 COPY aspnetcore-runtime-10.0-10.0.0-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-10.0-10.0.0-1.aarch64.rpm sha256:17c9436f60e94eb18647defe2c5fdda7ffd7af5bd37a871a0a7ba61b6b066ab8
+COPY aspnetcore-runtime-10.0-10.0.0-1.aarch64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper --non-interactive install --no-recommends coreutils sles-release
+RUN zypper -n install --no-recommends coreutils sles-release
 
 # Importing MS GPG keys
 COPY microsoft.asc /tmp
 RUN rpm --import /tmp/microsoft.asc
 
-RUN zypper --non-interactive install --no-recommends libicu libopenssl1_1 /tmp/*rpm
+RUN zypper -n install --no-recommends libicu libopenssl1_1
+RUN if [ "$(uname -m)" = "aarch64" ]; then zypper -n install /tmp/*aarch64.rpm; elif [ "$(uname -m)" = "x86_64" ]; then zypper -n install /tmp/*x64.rpm /tmp/*x86_64.rpm; fi
 
 COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
 COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
