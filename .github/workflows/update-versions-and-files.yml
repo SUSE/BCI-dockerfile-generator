@@ -11,7 +11,7 @@ jobs:
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
     steps:
       - name: checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
