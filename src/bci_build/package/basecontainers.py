@@ -17,7 +17,6 @@ from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
-from bci_build.package import LOG_CLEAN
 from bci_build.package import OsContainer
 from bci_build.package import Package
 from bci_build.package import generate_disk_size_constraints
@@ -70,12 +69,6 @@ MICRO_CONTAINERS = [
             {DOCKERFILE_RUN} zypper -n install jdupes \\
                 && jdupes -1 -L -r /target/usr/""")
         ),
-        custom_end=textwrap.dedent(f"""
-            # not making sense in a zypper-free image
-            {DOCKERFILE_RUN} rm -vf /var/lib/zypp/AutoInstalled
-            # includes device and inode numbers that change on deploy
-            {DOCKERFILE_RUN} rm -vf /var/cache/ldconfig/aux-cache
-        """),
         post_build_checks_containers=os_version in CAN_BE_SAC_VERSION,
     )
     for os_version in ALL_BASE_OS_VERSIONS
@@ -328,7 +321,6 @@ def _get_minimal_kwargs(os_version: OsVersion):
 
     package_list.extend(_get_micro_package_list(os_version))
     package_list.append(Package("jdupes", pkg_type=PackageType.BOOTSTRAP))
-    package_list.append(Package("sed", pkg_type=PackageType.BOOTSTRAP))
     if os_version.is_sle15:
         # in SLE15, rpm still depends on Perl.
         package_list.extend(
@@ -368,19 +360,6 @@ MINIMAL_CONTAINERS = [
             # don't have duplicate licenses of the same type
             jdupes -1 -L -r /usr/share/licenses
             rpm -e jdupes
-
-            # set the day of last password change to empty
-            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
-            rpm -e sed
-
-            # not making sense in a zypper-free image
-            rm -vf /var/lib/zypp/AutoInstalled
-
-            # includes device and inode numbers that change on deploy
-            rm -vf /var/cache/ldconfig/aux-cache
-
-            # Will be recreated by the next rpm(1) run as root user
-            rm -vf /usr/lib/sysimage/rpm/Index.db
             """
         ),
     )
@@ -414,18 +393,6 @@ BUSYBOX_CONTAINERS = [
         config_sh_script=textwrap.dedent(
             """
             sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
-
-            # not making sense in a zypper-free image
-            rm -vf /var/lib/zypp/AutoInstalled
-
-            # includes device and inode numbers that change on deploy
-            rm -vf /var/cache/ldconfig/aux-cache
-
-            # Will be recreated by the next rpm(1) run as root user
-            rm -vf /usr/lib/sysimage/rpm/Index.db
-
-            # set the day of last password change to empty
-            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
         """
         ),
         config_sh_interpreter="/bin/sh",
@@ -475,18 +442,17 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 + (["kernel-syms"] if os_version.is_sle15 else [])
                 + (["suse-module-tools-scriptlets"] if os_version.is_sl16 else [])
             ),
-            custom_end=textwrap.dedent(
+            build_stage_custom_end=textwrap.dedent(
                 f"""
                 #!ArchExclusiveLine: aarch64
-                {DOCKERFILE_RUN} if [ "$(uname -m)" = "aarch64" ] && zypper -n install kernel-64kb-devel; then zypper -n clean -a; fi
+                {DOCKERFILE_RUN} if [ "$(uname -m)" = "aarch64" ]; then zypper -n install kernel-64kb-devel; fi
                 """
                 if os_version.is_sl16
                 else f"""
                 #!ArchExclusiveLine: x86_64 aarch64
-                {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
+                {DOCKERFILE_RUN} zypper -n install mokutil
                 """
-            )
-            + f"{DOCKERFILE_RUN} {LOG_CLEAN}",
+            ),
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
     )
