@@ -16,7 +16,7 @@ The image can be used to launch a container and build a kernel
 module. The following example below shows how to do this for the DRBD kernel module:
 ```ShellSession
 $ podman run --rm -it --name drbd-build registry.suse.com/bci/bci-sle15-kernel-module-devel:15.6
-# zypper -n in coccinelle tar
+# zypper -n install coccinelle tar
 # curl -Lsf -o - https://pkg.linbit.com/downloads/drbd/9/drbd-9.2.11.tar.gz | tar xzf -
 # cd drbd-9.2.11/
 # make -C drbd all KDIR=/usr/src/linux-obj/$(uname -m)/default
@@ -37,7 +37,7 @@ a `Dockerfile`:
 FROM registry.suse.com/bci/bci-sle15-kernel-module-devel:15.6
 ENV DRBD_VERSION=9.2.11
 WORKDIR /src/
-RUN zypper -n in coccinelle tar
+RUN zypper -n install coccinelle tar
 
 RUN set -euxo pipefail; \
     curl -Lsf -o - https://pkg.linbit.com/downloads/drbd/9/drbd-${DRBD_VERSION}.tar.gz | tar xzf - ; \
