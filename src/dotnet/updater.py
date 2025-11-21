@@ -128,7 +128,7 @@ class Package:
         return self.name
 
 
-_DOTNET_EXCLUSIVE_ARCH = [Arch.X86_64, Arch.AARCH64]
+_DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 
 
 @dataclass
