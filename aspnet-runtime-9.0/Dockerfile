@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: x86_64 aarch64
+#!ExclusiveArch: aarch64 x86_64
 #!BuildTag: bci/dotnet-aspnet:9.0.11-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:9.0.11
 #!BuildTag: bci/dotnet-aspnet:9.0
@@ -54,26 +54,26 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.11-1.x86_64.rpm sha256:59d427ea8a6a0e6cf0a6f910a07c935a2dfbef04def9a931137a1b451cae8283
-COPY dotnet-host-9.0.11-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.11-1.aarch64.rpm sha256:04b1ca36b92c6790cced8343fbe20687a3961dccc47fc6560a7446bfc61a3310
 COPY dotnet-host-9.0.11-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm sha256:5157d14c95efa5b95fa37f599f6bb8469c0c57914634235d1050a55ce644d339
-COPY dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.11-1.x86_64.rpm sha256:59d427ea8a6a0e6cf0a6f910a07c935a2dfbef04def9a931137a1b451cae8283
+COPY dotnet-host-9.0.11-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.11-1.aarch64.rpm sha256:a588b4966c688d96b7039d9756d201703f5e5e000f0359b39ae7f8bb49caaaf6
 COPY dotnet-hostfxr-9.0-9.0.11-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm sha256:f2b062d76e21fb57951b9497752c4d35c8d2725c369285ea484a3defad3911c6
-COPY dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm sha256:5157d14c95efa5b95fa37f599f6bb8469c0c57914634235d1050a55ce644d339
+COPY dotnet-hostfxr-9.0-9.0.11-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.11-1.aarch64.rpm sha256:c3cd7478266ac119e6774dfc0b90c70ffc153638ba1f48d0ee0e79cbb86f7c61
 COPY dotnet-runtime-deps-9.0-9.0.11-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.11-1.x86_64.rpm sha256:8f7aa0a2553477341bb832f89b035b2fce3654ed277808dc757daa2d91109a8d
-COPY dotnet-runtime-9.0-9.0.11-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm sha256:f2b062d76e21fb57951b9497752c4d35c8d2725c369285ea484a3defad3911c6
+COPY dotnet-runtime-deps-9.0-9.0.11-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.11-1.aarch64.rpm sha256:cfe869bc3c0e0795bf48e8db9029b9b0229c86e3deaf3e7c6fd2f2218d9dcc55
 COPY dotnet-runtime-9.0-9.0.11-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.11-1.x86_64.rpm sha256:4cb45f53d40b656d07a92cada658c9e75eb79a9e3caa46eb2bad1d019153574d
-COPY aspnetcore-runtime-9.0-9.0.11-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.11-1.x86_64.rpm sha256:8f7aa0a2553477341bb832f89b035b2fce3654ed277808dc757daa2d91109a8d
+COPY dotnet-runtime-9.0-9.0.11-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.11-1.aarch64.rpm sha256:792cec208755b88f9dc3301ac00aee286e423f03263a1fd9d3ad6fe119fa42d2
 COPY aspnetcore-runtime-9.0-9.0.11-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.11-1.x86_64.rpm sha256:4cb45f53d40b656d07a92cada658c9e75eb79a9e3caa46eb2bad1d019153574d
+COPY aspnetcore-runtime-9.0-9.0.11-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487

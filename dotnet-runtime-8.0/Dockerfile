@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: x86_64 aarch64
+#!ExclusiveArch: aarch64 x86_64
 #!BuildTag: bci/dotnet-runtime:8.0.22-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:8.0.22
 #!BuildTag: bci/dotnet-runtime:8.0
@@ -54,22 +54,22 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.22-1.x86_64.rpm sha256:a2decad0b520900d4a037b18df553b6392bd06ec4c1c897c437dd0b95a30a381
-COPY dotnet-host-8.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.22-1.aarch64.rpm sha256:f20e60d98621061f4e60a055b6adec4fa1c895b243fd08924f4b198c54256346
 COPY dotnet-host-8.0.22-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.22-1.x86_64.rpm sha256:ae21f871be17d6982ebc272c0c34f0809f8442cd26895d23bd501837a10d3e1e
-COPY dotnet-hostfxr-8.0-8.0.22-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.22-1.x86_64.rpm sha256:a2decad0b520900d4a037b18df553b6392bd06ec4c1c897c437dd0b95a30a381
+COPY dotnet-host-8.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.22-1.aarch64.rpm sha256:06757fc10fd71eb950853cc8b0ad45c250f4799ef18d7165d17991936cce67fb
 COPY dotnet-hostfxr-8.0-8.0.22-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.22-1.x86_64.rpm sha256:87d6b157abee0a024267b73c0ceefa76d4689e67f4890e402e8f0cbcdaac4542
-COPY dotnet-runtime-deps-8.0-8.0.22-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-8.0-8.0.22-1.x86_64.rpm sha256:ae21f871be17d6982ebc272c0c34f0809f8442cd26895d23bd501837a10d3e1e
+COPY dotnet-hostfxr-8.0-8.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.22-1.aarch64.rpm sha256:000e98773f29f82a4d8462fb5690fcae198a5e9cd8315a994fa37d18a7eff62e
 COPY dotnet-runtime-deps-8.0-8.0.22-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.22-1.x86_64.rpm sha256:d7f95e886ee1f349a17cb34bc14765d75889f87e8d88093da1a738c3fed55ae5
-COPY dotnet-runtime-8.0-8.0.22-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-8.0-8.0.22-1.x86_64.rpm sha256:87d6b157abee0a024267b73c0ceefa76d4689e67f4890e402e8f0cbcdaac4542
+COPY dotnet-runtime-deps-8.0-8.0.22-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.22-1.aarch64.rpm sha256:5d426dadfefa442e368f4110bd7e5a1b267c19358458a9795acefdaa73d0e25b
 COPY dotnet-runtime-8.0-8.0.22-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-8.0-8.0.22-1.x86_64.rpm sha256:d7f95e886ee1f349a17cb34bc14765d75889f87e8d88093da1a738c3fed55ae5
+COPY dotnet-runtime-8.0-8.0.22-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
