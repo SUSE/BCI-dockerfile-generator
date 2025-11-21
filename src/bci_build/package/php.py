@@ -183,7 +183,7 @@ for ext in $@; do
     [[ "$ext" =~ ^- ]] || extensions+=("php{php_version}-$ext")
 done
 
-zypper -n in ${{extensions[*]}}
+zypper -n install ${{extensions[*]}}
 """,
         },
         custom_end=custom_end,

@@ -667,7 +667,7 @@ exit 0
     @property
     def packages(self) -> str:
         """The list of packages joined so that it can be appended to a
-        :command:`zypper in`.
+        :command:`zypper install`.
 
         """
         packages_to_install: list[str] = []

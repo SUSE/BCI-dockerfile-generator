@@ -7,7 +7,7 @@ and they can be installed as follows:
 ```Dockerfile
 FROM {{ image.pretty_reference }}
 
-RUN zypper -n in php{{ image.tag_version }}-gd php{{ image.tag_version }}-intl
+RUN zypper -n install php{{ image.tag_version }}-gd php{{ image.tag_version }}-intl
 ```
 
 Alternatively, you can use the `docker-php-ext-install` script. It is provided
@@ -34,7 +34,7 @@ Install PECL extensions as follows:
 FROM {{ image.pretty_reference }}
 
 RUN set -euo pipefail; \
-    zypper -n in $PHPIZE_DEPS php8-pecl; \
+    zypper -n install $PHPIZE_DEPS php8-pecl; \
     pecl install APCu-5.1.21;
 ```
 

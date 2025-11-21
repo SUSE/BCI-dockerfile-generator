@@ -23,7 +23,7 @@ To deploy an application in the PHP-FPM container, copy the application into
 FROM {{ image.pretty_reference }}
 
 RUN set -eux; \
-    zypper -n in $my_dependencies; \
+    zypper -n install $my_dependencies; \
     # additional setup steps
 
 # Copy the app into the PHP-FPM document root
