@@ -428,7 +428,7 @@ jobs:
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
@@ -489,7 +489,7 @@ jobs:
 
     steps:
       # we need all branches for the build checks
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: main
