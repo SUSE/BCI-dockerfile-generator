@@ -30,7 +30,7 @@ To build a custom image using a `Containerfile` that includes the
 FROM registry.suse.com/bci/bci-base:16.0
 RUN set -euo pipefail; \
     zypper -n ref; \
-    zypper -n in skopeo; \
+    zypper -n install skopeo; \
     zypper -n clean -a ; \
     rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ```
@@ -44,7 +44,7 @@ The image can also be used interactively to create a container with skopeo
 installed in it:
 ```ShellSession
 $ podman run -ti --rm registry.suse.com/bci/bci-base:16.0
-# zypper -n in skopeo
+# zypper -n install skopeo
 ...
 # skopeo inspect -f "{{ .Name }}" docker://registry.suse.com/bci/bci-base:16.0
 registry.suse.com/bci/bci-base
