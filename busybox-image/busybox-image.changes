@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 24 16:39:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add post_build_checks_containers
+
+-------------------------------------------------------------------
 Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use marketing-approved naming
