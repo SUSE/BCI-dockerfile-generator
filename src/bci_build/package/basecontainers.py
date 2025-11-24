@@ -429,6 +429,7 @@ BUSYBOX_CONTAINERS = [
         """
         ),
         config_sh_interpreter="/bin/sh",
+        post_build_checks_containers=os_version in CAN_BE_SAC_VERSION,
     )
     for os_version in ALL_BASE_OS_VERSIONS
 ]
