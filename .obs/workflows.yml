@@ -1,0 +1,10 @@
+workflow:
+  steps:
+    - rebuild_package:
+        project: home:pushman
+        package: dummy
+  filters:
+    event: pull_request
+    branches:
+      only:
+        - this-is-a-dummy-branch-for-obs
