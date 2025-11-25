@@ -323,6 +323,7 @@ REGISTRY_CONTAINERS = [
             )
         ),
         version_in_uid=False,
+        is_singleton_image=True,
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%registry_version%%",
