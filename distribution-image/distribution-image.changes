@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 25 22:10:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update build name to be more stable beyond version changes
+
+-------------------------------------------------------------------
 Mon Nov 10 17:26:30 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add version check ; fix blkid.conf

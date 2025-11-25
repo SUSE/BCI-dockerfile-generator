@@ -19,7 +19,7 @@
 #!BuildTag: suse/registry:%%registry_version%%
 #!BuildTag: suse/registry:2.8
 #!BuildTag: suse/registry:latest
-#!BuildName: suse-registry-2.8
+#!BuildName: suse-registry
 #!BuildVersion: 15.7.2.8
 #!BuildRelease: 15
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
