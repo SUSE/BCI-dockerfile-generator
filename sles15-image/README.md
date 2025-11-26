@@ -6,25 +6,25 @@
 
 SUSE Linux Enterprise Base Container Images provide open, flexible,
 and secure container images. The images include container environments based on
-SUSE Linux Enterprise Server and are available at no cost, they can be freely
-re-distributed, and they are supported across different environments.
+SUSE Linux Enterprise Server and are available at no cost, may be freely
+redistributed under the BCI EULA, and are supported across a large variety of environments.
 
-The Base Container Image is an image used as a foundation for many SLE BCIs. The
-image is intended to be extended for further use, such as a development or a
-testing environment.
+This image serves as a foundation for many SLE BCIs. It is designed to
+be extended for additional use cases, such as development or testing environments.
 
 
 ## Usage
 
-The container image comes with the `zypper` package manager
-, the free `SLE_BCI` repository
-and the `container-suseconnect` utility. This allows you to access
-the full SUSE Linux Enterprise Server repositories with a subscription. The image is designed
-to be extended by installing packages required for your specific scenario.
 
-To build a custom image using a `Containerfile` that includes the
-[`skopeo`](https://github.com/containers/skopeo) utility, create the following
-`Containerfile`:
+The container image includes the `zypper` package manager
+, the free `SLE_BCI` repository
+and the `container-suseconnect` utility. This enables access to the full
+SUSE Linux Enterprise Server repositories with a valid subscription.
+The image is intended to be extended by installing packages required for your specific use case.
+
+To build a custom image that includes the [`skopeo`](https://github.com/containers/skopeo) utility,
+ use the following `Containerfile`:
+
 ```Dockerfile
 FROM registry.suse.com/bci/bci-base:15.6
 RUN set -euo pipefail; \
@@ -39,8 +39,8 @@ Then build the container using `buildah`:
 buildah bud -t bci-skopeo .
 ```
 
-The image can also be used interactively to create a container with skopeo
-installed in it:
+You can also use the image interactively to create a container with `skopeo` installed:
+
 ```ShellSession
 $ podman run -ti --rm registry.suse.com/bci/bci-base:15.6
 # zypper -n install skopeo
@@ -50,11 +50,12 @@ registry.suse.com/bci/bci-base
 ```
 ### The SLE_BCI repository
 
-The container image comes with the free `SLE_BCI` repository. The repository
-provides the latest version of a subset of packages from SUSE Linux Enterprise Server.
-These packages are available at no cost and can be freely redistributed.
+The container image includes the free `SLE_BCI` repository, which provides
+the latest versions of a subset of packages from SUSE Linux Enterprise Server.
+These packages are available at no cost and may be freely redistributed.
 
 ### Getting access to the SLE repositories
+
 
 The `container-suseconnect` utility in the image can automatically add the full
 repositories into the running container if you have a valid
