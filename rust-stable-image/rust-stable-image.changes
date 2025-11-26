@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 26 09:32:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.91 for stable, rust 1.90 for oldstable
+
+-------------------------------------------------------------------
 Thu Nov  6 08:18:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - use marketing-approved naming
