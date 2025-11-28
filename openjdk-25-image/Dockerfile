@@ -15,15 +15,16 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64 ppc64le s390x
-#!BuildTag: bci/openjdk-devel:%%java_version%%-%RELEASE%
-#!BuildTag: bci/openjdk-devel:%%java_version%%
-#!BuildTag: bci/openjdk-devel:21
-#!BuildName: bci-openjdk-devel-21
-#!BuildVersion: 15.7.21
-FROM bci/openjdk:21
+#!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
+#!BuildTag: bci/openjdk:%%java_version%%
+#!BuildTag: bci/openjdk:25
+#!BuildTag: bci/openjdk:latest
+#!BuildName: bci-openjdk-25
+#!BuildVersion: 15.7.25
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends java-21-openjdk-devel maven
+    zypper -n install --no-recommends java-25-openjdk mozilla-nss-sysinit curl findutils gawk git-core procps
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -38,27 +39,28 @@ RUN set -euo pipefail; zypper -n clean -a; \
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.openjdk.devel
+# labelprefix=com.suse.bci.openjdk
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI OpenJDK 21 development"
-LABEL org.opencontainers.image.description="OpenJDK 21 development container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI OpenJDK 25 runtime"
+LABEL org.opencontainers.image.description="OpenJDK 25 runtime container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/openjdk-devel:%%java_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2031-06-30"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV JAVA_BINDIR="/usr/lib64/jvm/java-21-openjdk-21/bin"
-ENV JAVA_HOME="/usr/lib64/jvm/java-21-openjdk-21"
-ENV JAVA_ROOT="/usr/lib64/jvm/java-21-openjdk-21"
-ENV JAVA_VERSION="21"
+ENV JAVA_BINDIR="/usr/lib64/jvm/java-25-openjdk-25/bin"
+ENV JAVA_HOME="/usr/lib64/jvm/java-25-openjdk-25"
+ENV JAVA_ROOT="/usr/lib64/jvm/java-25-openjdk-25"
+ENV JAVA_VERSION="25"
 RUN set -euo pipefail; [ -d $JAVA_HOME ]; [ -d $JAVA_BINDIR ]; [ -f "$JAVA_BINDIR/java" ] && [ -x "$JAVA_BINDIR/java" ]
