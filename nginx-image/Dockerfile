@@ -27,7 +27,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends gawk nginx findutils gettext-runtime
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends curl gawk nginx findutils gettext-runtime
 # sanity check that the version from the tag is equal to the version of nginx that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' nginx | \
