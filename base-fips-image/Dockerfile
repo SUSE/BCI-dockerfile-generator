@@ -60,6 +60,16 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP6:Update/pool/x86_64/openssl-3.35141/libopenssl-3-fips-provider-3.1.4-150600.5.15.1.x86_64.rpm
+COPY libopenssl-3-fips-provider-3.1.4-150600.5.15.1.x86_64.rpm .
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP6:Update/pool/x86_64/libgcrypt.38414/libgcrypt20-1.10.3-150600.3.6.1.x86_64.rpm
+COPY libgcrypt20-1.10.3-150600.3.6.1.x86_64.rpm .
+RUN set -euo pipefail; \
+    [ $(LC_ALL=C rpm --checksig -v *rpm | \
+        grep -c -E "^ *V3.*key ID 39db7c82: OK") = 2 ] \
+    && rpm -Uvh --oldpackage --force *.rpm \
+    && rm -vf *.rpm \
+    && rpmqpack | grep -E '(openssl|libgcrypt)' | xargs zypper -n addlock
 RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
 
 ENV GNUTLS_FORCE_FIPS_MODE=1
