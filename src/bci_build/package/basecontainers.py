@@ -153,6 +153,14 @@ _FIPS_15_SP4_BINARIES: list[str] = [
     for name in ("libgcrypt20", "libgcrypt20-hmac")
 ]
 
+_FIPS_15_SP6_BINARIES: list[str] = [
+    f"SUSE:SLE-15-SP6:Update/pool/x86_64/openssl-3.35141/{name}-3.1.4-150600.5.15.1.x86_64.rpm"
+    for name in ("libopenssl-3-fips-provider",)
+] + [
+    f"SUSE:SLE-15-SP6:Update/pool/x86_64/libgcrypt.38414/{name}-1.10.3-150600.3.6.1.x86_64.rpm"
+    for name in ("libgcrypt20",)
+]
+
 
 def _get_asset_script(baseurl: str, binaries: list[str]) -> str:
     return "".join(
@@ -171,6 +179,8 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
             bins = _FIPS_15_SP2_BINARIES
         case OsVersion.SP4:
             bins = _FIPS_15_SP4_BINARIES
+        case OsVersion.SP6:
+            bins = _FIPS_15_SP6_BINARIES
 
     if os_version not in ALL_BASE_OS_VERSIONS:
         raise NotImplementedError(f"Unsupported os_version: {os_version}")
@@ -211,7 +221,7 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     if os_version.is_ltss:
         if os_version == OsVersion.SP3:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
-        elif os_version == OsVersion.SP4:
+        elif os_version in (OsVersion.SP4, OsVersion.SP6):
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
 
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
