@@ -1480,14 +1480,14 @@ files = [
 
 [[package]]
 name = "sphinx"
-version = "9.0.1"
+version = "9.0.4"
 description = "Python documentation generator"
 optional = false
 python-versions = ">=3.11"
 groups = ["dev"]
 files = [
-    {file = "sphinx-9.0.1-py3-none-any.whl", hash = "sha256:5a9506b709d6bd3d4c3f142b5b58801c202837b54875727e3adcba98d4839735"},
-    {file = "sphinx-9.0.1.tar.gz", hash = "sha256:c820d856657ce7cd41ce2c097f478ac3d7ddad9779ad83de4f0136a81ff388fd"},
+    {file = "sphinx-9.0.4-py3-none-any.whl", hash = "sha256:5bebc595a5e943ea248b99c13814c1c5e10b3ece718976824ffa7959ff95fffb"},
+    {file = "sphinx-9.0.4.tar.gz", hash = "sha256:594ef59d042972abbc581d8baa577404abe4e6c3b04ef61bd7fc2acbd51f3fa3"},
 ]
 
 [package.dependencies]
