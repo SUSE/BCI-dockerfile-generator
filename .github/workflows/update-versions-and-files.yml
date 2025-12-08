@@ -35,7 +35,7 @@ jobs:
         run: ./update-files.sh
 
       - name: create a pull request with the updated versions and files
-        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
         with:
           # separate token https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
           token: ${{ secrets.CHECKOUT_TOKEN }}
