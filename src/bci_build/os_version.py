@@ -49,7 +49,7 @@ class OsVersion(enum.Enum):
             # already part of the base identifier
             return ""
         if self.is_sl16:
-            return "16"
+            return self.pretty_print
 
         return f"15 SP{self.value}"
 
