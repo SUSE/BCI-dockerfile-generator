@@ -51,7 +51,7 @@ MICRO_CONTAINERS = [
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
         ),
-        pretty_name=f"{os_version.pretty_os_version_no_dash} Micro",
+        pretty_name=f"Micro {os_version.pretty_os_version_no_dash}",
         custom_description="A micro environment for containers {based_on_container}.",
         from_target_image="scratch",
         cmd=["/bin/sh"],
@@ -89,7 +89,7 @@ INIT_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
-        pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
+        pretty_name=f"Init {os_version.pretty_os_version_no_dash}",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=[
             "systemd",
@@ -210,12 +210,12 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
 
     if os_version.is_ltss:
         if os_version == OsVersion.SP3:
-            return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
+            return f"FIPS-140-2 {os_version.pretty_os_version_no_dash}"
         elif os_version == OsVersion.SP4:
-            return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
+            return f"FIPS-140-3 {os_version.pretty_os_version_no_dash}"
 
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
-        return f"{os_version.pretty_os_version_no_dash} FIPS-140-3 mode".strip()
+        return f"FIPS-140-3 mode {os_version.pretty_os_version_no_dash}".strip()
 
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
@@ -339,7 +339,7 @@ def _get_minimal_kwargs(os_version: OsVersion):
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
     kwargs = {
         "from_image": None,
-        "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
+        "pretty_name": f"Minimal {os_version.pretty_os_version_no_dash}",
         "package_list": package_list,
     }
 
@@ -394,7 +394,7 @@ BUSYBOX_CONTAINERS = [
         os_version=os_version,
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
+        pretty_name=f"BusyBox {os_version.pretty_os_version_no_dash}",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
         build_recipe_type=BuildType.KIWI,
@@ -449,7 +449,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
     KERNEL_MODULE_CONTAINERS.append(
         OsContainer(
             name=f"{prefix}-kernel-module-devel",
-            pretty_name=f"{pretty_prefix} Kernel module development",
+            pretty_name=f"Kernel module {pretty_prefix} development",
             logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
             os_version=os_version,
             min_release_counter={
