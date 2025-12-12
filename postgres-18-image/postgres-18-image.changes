@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Dec 12 16:43:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest link
+
+-------------------------------------------------------------------
 Fri Nov 14 10:43:24 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - docker-entrypoint: remove now obsolete code path
