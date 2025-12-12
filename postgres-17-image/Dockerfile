@@ -19,7 +19,6 @@
 #!BuildTag: suse/postgres:%%pg_patch_version%%
 #!BuildTag: suse/postgres:17
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildTag: suse/postgres:latest
 #!BuildName: suse-postgres-17
 #!BuildVersion: 16.1.17
 FROM bci/bci-micro:16.1 AS target
