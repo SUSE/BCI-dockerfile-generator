@@ -21,7 +21,7 @@ _POSTGRES_ENTRYPOINT = (
 _POSTGRES_LICENSE = (Path(__file__).parent / "postgres" / "LICENSE").read_bytes()
 
 # first list the SLE15 versions, then the TW specific versions
-_POSTGRES_MAJOR_VERSIONS = [17, 16, 15, 14] + [13, 18]
+_POSTGRES_MAJOR_VERSIONS = [18, 17, 16, 15, 14] + [13, 18]
 # postgres versions that supports stable user id and stable group ids
 # starting from version _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
 _STABLE_USER_GROUP_ID_SUPPORTED_SINCE = 18
@@ -134,6 +134,13 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
                 OsVersion.TUMBLEWEED,
             )
         ]
+        + [
+            (18, variant)
+            for variant in (
+                OsVersion.SP7,
+                OsVersion.TUMBLEWEED,
+            )
+        ]
     )
-    + [(pg_ver, OsVersion.TUMBLEWEED) for pg_ver in (18, 14)]
+    + [(14, OsVersion.TUMBLEWEED)]
 ]
