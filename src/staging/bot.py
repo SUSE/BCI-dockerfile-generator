@@ -433,7 +433,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
@@ -495,7 +495,7 @@ jobs:
           ref: main
           token: ${{ secrets.CHECKOUT_TOKEN }}
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('poetry.lock') }}
