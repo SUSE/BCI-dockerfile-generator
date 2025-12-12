@@ -17,10 +17,11 @@
 
 #!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_patch_version%%
-#!BuildTag: suse/postgres:17
+#!BuildTag: suse/postgres:18
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildName: suse-postgres-17
-#!BuildVersion: 15.7.17
+#!BuildTag: suse/postgres:latest
+#!BuildName: suse-postgres-18
+#!BuildVersion: 15.7.18
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
@@ -28,7 +29,12 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql17-server findutils coreutils sed util-linux
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql18-server findutils coreutils sed util-linux
+# changing user id and group id created by package installation to stable values
+RUN set -euo pipefail; \
+    chroot /target chown -R --from=postgres:postgres 999:999 /; \
+    groupmod -R /target -g 999 postgres; \
+    usermod -R /target -u 999 postgres
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -46,8 +52,8 @@ COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.postgres
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE PostgreSQL 17"
-LABEL org.opencontainers.image.description="PostgreSQL 17 container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.title="SLE PostgreSQL 18"
+LABEL org.opencontainers.image.description="PostgreSQL 18 container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%pg_patch_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -66,7 +72,7 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV LANG="en_US.utf8"
 ENV PGDATA="/var/lib/pgsql/data"
-ENV PG_MAJOR="17"
+ENV PG_MAJOR="18"
 ENV PG_VERSION="%%pg_minor_version%%"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
@@ -79,7 +85,7 @@ RUN set -euo pipefail; chmod +x /usr/local/bin/docker-entrypoint.sh; \
     mkdir /docker-entrypoint-initdb.d; \
     install -m 1775 -o postgres -g postgres -d /run/postgresql; \
     install -d -m 0700 -o postgres -g postgres $PGDATA; \
-    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql17/postgresql.conf.sample
+    sed -ri "s|^#?(listen_addresses)\s*=\s*\S+.*|\1 = '*'|" /usr/share/postgresql18/postgresql.conf.sample
 STOPSIGNAL SIGINT
 HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
     CMD pg_isready -U ${POSTGRES_USER:-postgres} -h localhost -p 5432
