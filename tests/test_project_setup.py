@@ -113,8 +113,8 @@ This project is automatically updated from git. Please do **not** send submit re
             None,
             (prj_name := "devel:BCI:16.0"),
             f"""<project name="{prj_name}">
-  <title>BCI Development project for SUSE Linux 16</title>
-  <description>BCI Development project for SUSE Linux 16
+  <title>BCI Development project for SUSE Linux 16.0</title>
+  <description>BCI Development project for SUSE Linux 16.0
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
@@ -170,8 +170,8 @@ This project is automatically updated from git. Please do **not** send submit re
             (branch := "pr-404"),
             (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:16.0:{branch}"),
             f"""<project name="{prj_name}">
-  <title>Staging project for SUSE Linux 16</title>
-  <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SUSE Linux 16</description>
+  <title>Staging project for SUSE Linux 16.0</title>
+  <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SUSE Linux 16.0</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
