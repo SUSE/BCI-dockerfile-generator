@@ -7,6 +7,7 @@ from typing import Literal
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -131,26 +132,20 @@ OPENJDK_CONTAINERS = (
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=17),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(
-            (OsVersion.SP7, OsVersion.SL16_0, OsVersion.TUMBLEWEED), (True, False)
-        )
+        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
     ]
     + [
         DevelopmentContainer(
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=21),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(
-            (OsVersion.SP7, OsVersion.SL16_0, OsVersion.TUMBLEWEED), (True, False)
-        )
+        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
     ]
     + [
         DevelopmentContainer(
             **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=25),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(
-            (OsVersion.SP7, OsVersion.TUMBLEWEED), (True, False)
-        )
+        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
     ]
 )
