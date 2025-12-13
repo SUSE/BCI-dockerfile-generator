@@ -21,7 +21,7 @@ VALKEY_CONTAINERS = [
         name="valkey",
         pretty_name="Persistent key-value database",
         custom_description=(
-            "Valkey is an open-source high-performance key/value "
+            "Valkey is an open source high-performance key/value "
             "data store designed for a variety of workloads such as "
             "caching, message queuing and primary database use. "
             "This image is {based_on_container}."
