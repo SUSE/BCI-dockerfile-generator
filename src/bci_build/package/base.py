@@ -174,8 +174,6 @@ class Sles15Image(OsContainer):
     @property
     def registry_prefix(self) -> str:
         if self.os_version.is_ltss:
-            if self.os_version == OsVersion.SP3:
-                return "suse/ltss/sle15.3"
             if self.os_version == OsVersion.SP4:
                 return "suse/ltss/sle15.4"
             if self.os_version == OsVersion.SP5:
@@ -233,7 +231,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                 + (["user(nobody)"] if not os_version.is_ltss else [])
                 + (
                     ["openssl-3", "patterns-base-minimal_base"]
-                    if os_version not in (OsVersion.SP3, OsVersion.SP4)
+                    if os_version != OsVersion.SP4
                     else []
                 )
                 + (
@@ -250,11 +248,7 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     if os_version.is_tumbleweed
                     else ["suse-build-key"]
                 )
-                + (
-                    ["procps"]
-                    if os_version in (OsVersion.SP3, OsVersion.SP4, OsVersion.SP5)
-                    else []
-                )
+                + (["procps"] if os_version in (OsVersion.SP4, OsVersion.SP5) else [])
             )
         ]
         + [
@@ -264,10 +258,10 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     "aaa_base",
                     "cracklib-dict-small",
                     "filesystem",
+                    "jdupes",
                     "shadow",
                     "zypper",
                 ]
-                + (["jdupes"] if os_version not in (OsVersion.SP3,) else [])
                 + (
                     ["libcurl-mini4", "libopenssl-3-fips-provider"]
                     if os_version.is_sl16
@@ -298,7 +292,6 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
 BASE_CONTAINERS = [
     Sles15Image(**_get_base_kwargs(os_ver))
     for os_ver in (
-        OsVersion.SP3,
         OsVersion.SP4,
         OsVersion.SP5,
         OsVersion.SP6,

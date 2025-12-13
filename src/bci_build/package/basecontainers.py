@@ -134,16 +134,6 @@ INIT_CONTAINERS = [
 
 _FIPS_ASSET_BASEURL = "https://api.opensuse.org/public/build/"
 
-# https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3991.pdf
-# Chapter 9.1 Crypto Officer Guidance
-_FIPS_15_SP2_BINARIES: list[str] = [
-    f"SUSE:SLE-15-SP2:Update/pool/x86_64/openssl-1_1.18804/{name}-1.1.1d-11.20.1.x86_64.rpm"
-    for name in ("openssl-1_1", "libopenssl1_1", "libopenssl1_1-hmac")
-] + [
-    f"SUSE:SLE-15-SP1:Update/pool/x86_64/libgcrypt.15117/{name}-1.8.2-8.36.1.x86_64.rpm"
-    for name in ("libgcrypt20", "libgcrypt20-hmac")
-]
-
 # submitted, not yet certified
 _FIPS_15_SP4_BINARIES: list[str] = [
     f"SUSE:SLE-15-SP4:Update/pool/x86_64/openssl-1_1.28168/{name}-1.1.1l-150400.7.28.1.x86_64.rpm"
@@ -167,8 +157,6 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
         f"{DOCKERFILE_RUN} update-crypto-policies --no-reload --set FIPS\n"
     )
     match os_version:
-        case OsVersion.SP3:
-            bins = _FIPS_15_SP2_BINARIES
         case OsVersion.SP4:
             bins = _FIPS_15_SP4_BINARIES
 
@@ -187,8 +175,8 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
 
     return (
         _get_asset_script(_FIPS_ASSET_BASEURL, bins)
+        + custom_set_fips_mode
         + (custom_install_bins if bins else "")
-        + (custom_set_fips_mode if os_version not in (OsVersion.SP3,) else "")
     )
 
 
@@ -209,9 +197,7 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     """Return a pretty name for FIPS enforcing containers."""
 
     if os_version.is_ltss:
-        if os_version == OsVersion.SP3:
-            return f"{os_version.pretty_os_version_no_dash} FIPS-140-2"
-        elif os_version == OsVersion.SP4:
+        if os_version == OsVersion.SP4:
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
 
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
@@ -223,8 +209,6 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
 def _get_supported_until_fips(os_version: OsVersion) -> datetime.date | None:
     """Returns the end of LTSS for images under LTSS, otherwise end of general support if known"""
     match os_version:
-        case OsVersion.SP3:
-            return datetime.date(2025, 12, 31)
         case OsVersion.SP4:
             return datetime.date(2026, 12, 31)
         case _:
@@ -242,7 +226,6 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
             # preserve backwards compatibility on already released distributions
             os_version
             not in (
-                OsVersion.SP3,
                 OsVersion.SP4,
                 OsVersion.SP5,
                 OsVersion.SP6,
@@ -256,12 +239,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
         ),
         "pretty_name": _get_fips_pretty_name(os_version),
         "package_list": (
-            [*os_version.release_package_names, "coreutils"]
-            + (
-                ["fipscheck"]
-                if os_version == OsVersion.SP3
-                else ["crypto-policies-scripts"]
-            )
+            [*os_version.release_package_names, "coreutils", "crypto-policies-scripts"]
             + (["patterns-base-fips"] if os_version.is_sl16 else [])
         ),
         "extra_labels": {

@@ -16,8 +16,6 @@ class OsVersion(enum.Enum):
     SP5 = 5
     #: SLE 15 Service Pack 4
     SP4 = 4
-    #: SLE 15 Service Pack 3
-    SP3 = 3
     #: SUSE Linux 16.0
     SL16_0 = "16.0"
     #: SUSE Linux 16.1
@@ -128,7 +126,6 @@ class OsVersion(enum.Enum):
     @property
     def is_sle15(self) -> bool:
         return self.value in (
-            OsVersion.SP3.value,
             OsVersion.SP4.value,
             OsVersion.SP5.value,
             OsVersion.SP6.value,
@@ -199,7 +196,6 @@ class OsVersion(enum.Enum):
 #: Operating system versions that have the label ``com.suse.release-stage`` set
 #: to ``released``.
 RELEASED_OS_VERSIONS: list[OsVersion] = [
-    OsVersion.SP3,
     OsVersion.SP4,
     OsVersion.SP5,
     OsVersion.SP6,
@@ -225,7 +221,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
 ]
 
 # List of SPs that are already under LTSS
-ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP3, OsVersion.SP4, OsVersion.SP5]
+ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP4, OsVersion.SP5]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS: set[OsVersion] = {
