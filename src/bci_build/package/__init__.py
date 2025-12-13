@@ -380,7 +380,7 @@ class BaseContainerImage(abc.ABC):
         is newer than the other in the build service."""
         # KIWI used to require an at least 3 component version X.Y.Z. For SLE, we set
         # X.Y to MAJOR.MINOR and set Z to 0 for OsContainers. Derived
-        # containers inhert the base build_version X.Y and append a suffix .Z.ZZ
+        # containers inherit the base build_version X.Y and append a suffix .Z.ZZ
 
         # It is important that the behavior for OsContainers is identical
         # between KIWI and Dockerfile builds so that we can switch between these
