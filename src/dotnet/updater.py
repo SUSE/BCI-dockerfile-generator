@@ -157,8 +157,8 @@ class DotNetBCI(DevelopmentContainer):
 
         self.custom_description = (
             "The " + self.pretty_name + " {based_on_container}. "
-            "The .NET packages contained in this image come from a 3rd-party repository http://packages.microsoft.com. "
-            "You can find the respective source code in https://github.com/dotnet. SUSE doesn't provide any support or warranties."
+            "The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. "
+            "You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
         )
 
         ver = version.parse(str(self.tag_version))
