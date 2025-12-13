@@ -13,7 +13,7 @@ queries.
 ## Usage
 
 This container image provides the `named` daemon from
-SUSE Linux 16, including the default configuration that comes
+SUSE Linux 16.0, including the default configuration that comes
 with the RPM package.
 
 When no additional parameters are specified, the container entrypoint launches `named` in the foreground mode by default:
