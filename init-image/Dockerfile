@@ -46,7 +46,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.init
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SUSE Linux BCI 16.1 Init"
+LABEL org.opencontainers.image.title="SUSE Linux BCI Init 16.1"
 LABEL org.opencontainers.image.description="Systemd environment for containers based on the SUSE Linux Base Container Image. This container is only supported with podman."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
