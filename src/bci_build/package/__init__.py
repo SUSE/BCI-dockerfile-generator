@@ -311,9 +311,7 @@ class BaseContainerImage(abc.ABC):
             )
 
         if self.build_recipe_type is None:
-            self.build_recipe_type = (
-                BuildType.KIWI if self.os_version == OsVersion.SP3 else BuildType.DOCKER
-            )
+            self.build_recipe_type = BuildType.DOCKER
 
         if not self._publish_registry:
             self._publish_registry = publish_registry(self.os_version)

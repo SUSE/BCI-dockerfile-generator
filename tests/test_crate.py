@@ -7,7 +7,7 @@ _BASE_KWARGS = {
     "name": "test",
     "package_name": "test-image",
     "pretty_name": "Test",
-    "os_version": OsVersion.SP3,
+    "os_version": OsVersion.SP7,
     "package_list": ["sh"],
     "version": "1.0",
 }
