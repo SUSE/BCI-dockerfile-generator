@@ -47,7 +47,7 @@ COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.micro-fips
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Micro 15 SP7 FIPS-140-3 mode"
+LABEL org.opencontainers.image.title="SLE BCI Micro FIPS-140-3 mode 15 SP7"
 LABEL org.opencontainers.image.description="A micro container in FIPS-140-3 mode for containers based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
