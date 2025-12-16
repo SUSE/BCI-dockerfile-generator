@@ -54,10 +54,19 @@ VALKEY_CONTAINERS = [
         ),
         custom_end=textwrap.dedent(
             f"""
-            {DOCKERFILE_RUN} sed -e 's/^protected-mode yes/protected-mode no/' -e 's/^bind .*//' < /etc/valkey/default.conf.example > /etc/valkey/valkey.conf
             {DOCKERFILE_RUN} install -o valkey -g valkey -m 750 -d /data
             WORKDIR /data
-        """
+            """
+        )
+        + (
+            textwrap.dedent(
+                f"""
+                {DOCKERFILE_RUN} install -m 0640 -o root -g valkey /etc/valkey/valkey.default.conf.template /etc/valkey/valkey.conf
+                {DOCKERFILE_RUN} printf 'protected-mode no\\nbind * -::*\\n' >> /etc/valkey/valkey.conf && chmod 0640 /etc/valkey/valkey.conf && chown root:valkey /etc/valkey/valkey.conf
+                """
+            )
+            if os_version.is_tumbleweed
+            else f"{DOCKERFILE_RUN} sed -e 's/^protected-mode yes/protected-mode no/' -e 's/^bind .*//' < /etc/valkey/default.conf.example > /etc/valkey/valkey.conf\n"
         ),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
