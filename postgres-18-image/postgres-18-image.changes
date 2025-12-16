@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 16 15:28:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
 Fri Dec 12 16:32:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the PostgreSQL 18 BCI

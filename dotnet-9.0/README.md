@@ -56,7 +56,7 @@ ENTRYPOINT ["./dotnetapp"]
 Build and run the container image:
 
 ```ShellSession
-podmanbuild -t my-dotnet-app .
+podman build -t my-dotnet-app .
 podman run -it --rm my-dotnet-app
 ```
 

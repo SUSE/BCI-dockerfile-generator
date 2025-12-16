@@ -78,7 +78,7 @@ podman run --rm -it -p 8081:8081 \
     -e ASPNETCORE_HTTPS_PORTS=8081 \
     -e ASPNETCORE_Kestrel__Certificates__Default__Password="<PASSWORD>" \
     -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx \
-    -v "$PWD/https":/https:Z my-apsnet-app
+    -v "$PWD/https":/https:Z my-aspnet-app
 ```
 
 ## Globalization

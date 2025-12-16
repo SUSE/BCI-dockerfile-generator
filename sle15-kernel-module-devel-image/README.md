@@ -4,7 +4,7 @@
 
 ## Description
 
-The SLE BCI Kernel Module Development Container Image includes all
+The SLE BCI Kernel Module Development Container Image includes all the
 necessary tools to build kernel modules for SLES and SL Micro. It is intended
 to be used for building out-of-tree kernel modules in restricted environments
 for the SLES kernel.
