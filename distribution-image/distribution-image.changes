@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 16 15:28:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
 Tue Nov 25 22:10:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - update build name to be more stable beyond version changes
