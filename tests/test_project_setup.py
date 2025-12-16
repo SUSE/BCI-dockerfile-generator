@@ -11,13 +11,13 @@ _OSC_USERNAME = "foobar"
     "os_version, project_type, branch_name, expected_prj_name, expected_meta",
     [
         (
-            OsVersion.SP6,
+            OsVersion.SP7,
             ProjectType.DEVEL,
             None,
-            "devel:BCI:SLE-15-SP6",
-            """<project name="devel:BCI:SLE-15-SP6">
-  <title>BCI Development project for SLE 15 SP6</title>
-  <description>BCI Development project for SLE 15 SP6
+            "devel:BCI:SLE-15-SP7",
+            """<project name="devel:BCI:SLE-15-SP7">
+  <title>BCI Development project for SLE 15 SP7</title>
+  <description>BCI Development project for SLE 15 SP7
 This project is automatically updated from git. Please do **not** send submit requests, create an issue in the [bci-dockerfile-generator](https://github.com/SUSE/bci-dockerfile-generator) repository instead</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="dirkmueller" role="maintainer"/>
@@ -34,25 +34,25 @@ This project is automatically updated from git. Please do **not** send submit re
   </debuginfo>
   <repository name="standard">
     <path project="SUSE:Registry" repository="standard"/>
-    <path project="SUSE:SLE-15-SP6:Update" repository="standard"/>
+    <path project="SUSE:SLE-15-SP7:Update" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
     <arch>ppc64le</arch>
   </repository>
   <repository name="images">
-    <path project="devel:BCI:SLE-15-SP6" repository="standard"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
     <arch>ppc64le</arch>
   </repository>
   <repository name="helmcharts">
-    <path project="devel:BCI:SLE-15-SP6" repository="standard"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="standard"/>
     <arch>x86_64</arch>
   </repository>
   <repository name="containerfile">
-    <path project="devel:BCI:SLE-15-SP6" repository="standard"/>
+    <path project="devel:BCI:SLE-15-SP7" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
@@ -61,17 +61,17 @@ This project is automatically updated from git. Please do **not** send submit re
 </project>""",
         ),
         (
-            OsVersion.SP6,
+            OsVersion.SP7,
             ProjectType.CR,
             None,
-            (prj_name := f"home:{_OSC_USERNAME}:BCI:CR:SLE-15-SP6"),
+            (prj_name := f"home:{_OSC_USERNAME}:BCI:CR:SLE-15-SP7"),
             f"""<project name="{prj_name}">
-  <title>Continuous Rebuild project for SLE 15 SP6</title>
-  <description>Continuous Rebuild project for SLE 15 SP6</description>
+  <title>Continuous Rebuild project for SLE 15 SP7</title>
+  <description>Continuous Rebuild project for SLE 15 SP7</description>
   <person userid="avicenzi" role="maintainer"/>
   <person userid="{_OSC_USERNAME}" role="maintainer"/>
 
-  <scmsync>https://github.com/SUSE/bci-dockerfile-generator#sle15-sp6</scmsync>
+  <scmsync>https://github.com/SUSE/bci-dockerfile-generator#sle15-sp7</scmsync>
   <build>
     <enable/>
   </build>
@@ -83,7 +83,7 @@ This project is automatically updated from git. Please do **not** send submit re
   </debuginfo>
   <repository name="standard">
     <path project="SUSE:Registry" repository="standard"/>
-    <path project="SUSE:SLE-15-SP6:Update" repository="standard"/>
+    <path project="SUSE:SLE-15-SP7:Update" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>

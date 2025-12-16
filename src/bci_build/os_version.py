@@ -213,7 +213,6 @@ ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
 
 # For which versions to create Base Container Images?
 ALL_BASE_OS_VERSIONS: list[OsVersion] = [
-    OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
     OsVersion.SL16_0,
@@ -221,7 +220,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
 ]
 
 # List of SPs that are already under LTSS
-ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP4, OsVersion.SP5]
+ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP4, OsVersion.SP5, OsVersion.SP6]
 
 # joint set of BASE and NON_BASE versions
 ALL_OS_VERSIONS: set[OsVersion] = {
