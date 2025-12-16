@@ -71,8 +71,8 @@ ENTRYPOINT ["/usr/bin/valkey-server"]
 CMD ["/etc/valkey/valkey.conf"]
 EXPOSE 6379/tcp
 
-RUN set -euo pipefail; sed -e 's/^protected-mode yes/protected-mode no/' -e 's/^bind .*//' < /etc/valkey/default.conf.example > /etc/valkey/valkey.conf
 RUN set -euo pipefail; install -o valkey -g valkey -m 750 -d /data
 WORKDIR /data
+RUN set -euo pipefail; sed -e 's/^protected-mode yes/protected-mode no/' -e 's/^bind .*//' < /etc/valkey/default.conf.example > /etc/valkey/valkey.conf
 USER valkey
 VOLUME /data
