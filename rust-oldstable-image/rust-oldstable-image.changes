@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 16 15:28:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
 Wed Nov 26 09:32:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.91 for stable, rust 1.90 for oldstable
