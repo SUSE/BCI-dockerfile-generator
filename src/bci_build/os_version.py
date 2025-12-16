@@ -222,9 +222,9 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
 # List of SPs that are already under LTSS
 ALL_OS_LTSS_VERSIONS: list[OsVersion] = [OsVersion.SP4, OsVersion.SP5, OsVersion.SP6]
 
-# joint set of BASE and NON_BASE versions
+# joint set of BASE, NON_BASE and LTSS versions
 ALL_OS_VERSIONS: set[OsVersion] = {
-    v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS)
+    v for v in (*ALL_BASE_OS_VERSIONS, *ALL_NONBASE_OS_VERSIONS, *ALL_OS_LTSS_VERSIONS)
 }
 
 CAN_BE_LATEST_BASE_OS_VERSION: list[OsVersion] = [

@@ -172,7 +172,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
         case OsVersion.SP6:
             bins = _FIPS_15_SP6_BINARIES
 
-    if os_version not in ALL_BASE_OS_VERSIONS:
+    if os_version not in ALL_OS_VERSIONS:
         raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
     custom_install_bins: str = textwrap.dedent(
@@ -187,8 +187,8 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
 
     return (
         _get_asset_script(_FIPS_ASSET_BASEURL, bins)
-        + custom_set_fips_mode
         + (custom_install_bins if bins else "")
+        + custom_set_fips_mode
     )
 
 
