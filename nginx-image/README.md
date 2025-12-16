@@ -41,6 +41,11 @@ The template above is then rendered to `/etc/nginx/conf.d/default.conf` as follo
 ```nginx
 listen  80;
 ```
+## Running nginx as a non-root user
+It is possible to run the image as a less privileged user.
+```ShellSession
+$ podman run -it --user nginx --rm -p 8080:8080 -v /path/to/html/:/srv/www/htdocs/:Z -v $PWD/nginx.conf:/etc/nginx/nginx.conf:Z registry.opensuse.org/opensuse/nginx:1.29
+```
 
 ## Environment variables
 
