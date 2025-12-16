@@ -278,6 +278,8 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 "nginx",
                 "findutils",
                 _envsubst_pkg_name(os_version),
+                "sed",
+                "grep",
             ]
         )
         + (["libcurl-mini4"] if os_version.is_sl16 else []),
@@ -298,8 +300,15 @@ def _get_nginx_kwargs(os_version: OsVersion):
             COPY index.html /srv/www/htdocs/
             {DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
             {DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
+                install -d /var/cache/nginx /var/run/nginx; \
                 ln -sf /dev/stdout /var/log/nginx/access.log; \
-                ln -sf /dev/stderr /var/log/nginx/error.log
+                ln -sf /dev/stderr /var/log/nginx/error.log; \
+                chown -R nginx:nginx /var/cache/nginx; \
+                chown -R nginx:nginx /etc/nginx; \
+                chown -R nginx:nginx /var/run/nginx; \
+                install -d -o nginx -g nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp; \
+                chown -R nginx:nginx /tmp; \
+                chmod -R g+w /var/cache/nginx /var/log/nginx /etc/nginx /var/run/nginx /tmp
             STOPSIGNAL SIGQUIT"""),
     }
 
