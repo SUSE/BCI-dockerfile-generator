@@ -15,6 +15,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: apache-tomcat-11-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: apache-tomcat-9-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -319,6 +323,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: apache-tomcat-10-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: apache-tomcat-11-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: apache-tomcat-9-image
