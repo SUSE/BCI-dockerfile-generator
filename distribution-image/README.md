@@ -4,7 +4,7 @@
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
 ## Description
-This container image allows to run a local OCI registry.
+This container image allows running a local OCI registry.
 
 
 ## Usage
