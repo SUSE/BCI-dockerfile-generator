@@ -116,7 +116,7 @@ fi
 #------------------------------------------
 rm -f /var/log/lastlog
 
-{% if os_version.is_sle15 and not os_version.is_ltss -%}
+{% if os_version.is_sle15 -%}
 #======================================
 # Avoid blkid waiting on udev (bsc#1247914)
 #--------------------------------------
@@ -228,7 +228,11 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
                     *os_version.eula_package_names,
                 ]
                 # for run.oci.keep_original_groups=1 (see bsc#1212118)
-                + (["user(nobody)"] if not os_version.is_ltss else [])
+                + (
+                    ["user(nobody)"]
+                    if os_version not in (OsVersion.SP4, OsVersion.SP5)
+                    else []
+                )
                 + (
                     ["openssl-3", "patterns-base-minimal_base"]
                     if os_version != OsVersion.SP4
