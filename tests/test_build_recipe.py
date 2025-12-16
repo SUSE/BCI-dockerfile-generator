@@ -31,8 +31,8 @@ from bci_build.templates import KIWI_TEMPLATE
 #!BuildTag: bci/test:27-%RELEASE%
 #!BuildTag: bci/test:27
 #!BuildName: bci-test-27
-#!BuildVersion: 15.6.27
-FROM registry.suse.com/bci/bci-base:15.6
+#!BuildVersion: 15.7.27
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
@@ -83,7 +83,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
       <containerconfig
           name="bci/test"
           tag="27-%RELEASE%"
@@ -113,7 +113,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>15.6.27</version>
+    <version>15.7.27</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -132,7 +132,7 @@ Copyright header
                 supported_until=date(2024, 2, 1),
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
-                os_version=OsVersion.SP6,
+                os_version=OsVersion.SP7,
                 version="27",
                 custom_end="""COPY test.el .
 RUN emacs -Q --batch test.el
@@ -260,8 +260,8 @@ Copyright header
 #!BuildTag: bci/test:29-%RELEASE%
 #!BuildTag: bci/test:29
 #!BuildName: bci-test-29
-#!BuildVersion: 15.6.29
-FROM registry.suse.com/bci/bci-base:15.6
+#!BuildVersion: 15.7.29
+FROM registry.suse.com/bci/bci-base:15.7
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
@@ -309,7 +309,7 @@ Copyright header
     <specification>SLE BCI Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.6">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#15.7">
       <containerconfig
           name="bci/test"
           tag="29-%RELEASE%"
@@ -339,7 +339,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>15.6.29</version>
+    <version>15.7.29</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -357,7 +357,7 @@ Copyright header
                 pretty_name="Test",
                 package_list=["gcc", "emacs"],
                 package_name="emacs-image",
-                os_version=OsVersion.SP6,
+                os_version=OsVersion.SP7,
                 entrypoint_user="emacs",
                 version="29",
             ),

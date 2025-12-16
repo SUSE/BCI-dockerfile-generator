@@ -134,13 +134,23 @@ INIT_CONTAINERS = [
 
 _FIPS_ASSET_BASEURL = "https://api.opensuse.org/public/build/"
 
-# submitted, not yet certified
+# https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3992.pdf
+# https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp4725.pdf
 _FIPS_15_SP4_BINARIES: list[str] = [
     f"SUSE:SLE-15-SP4:Update/pool/x86_64/openssl-1_1.28168/{name}-1.1.1l-150400.7.28.1.x86_64.rpm"
     for name in ("openssl-1_1", "libopenssl1_1", "libopenssl1_1-hmac")
 ] + [
     f"SUSE:SLE-15-SP4:Update/pool/x86_64/libgcrypt.28151/{name}-1.9.4-150400.6.8.1.x86_64.rpm"
     for name in ("libgcrypt20", "libgcrypt20-hmac")
+]
+
+# https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp5096.pdf
+_FIPS_15_SP6_BINARIES: list[str] = [
+    f"SUSE:SLE-15-SP6:Update/pool/x86_64/openssl-3.35141/{name}-3.1.4-150600.5.15.1.x86_64.rpm"
+    for name in ("libopenssl-3-fips-provider",)
+] + [
+    f"SUSE:SLE-15-SP6:Update/pool/x86_64/libgcrypt.38414/{name}-1.10.3-150600.3.6.1.x86_64.rpm"
+    for name in ("libgcrypt20",)
 ]
 
 
@@ -159,8 +169,10 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     match os_version:
         case OsVersion.SP4:
             bins = _FIPS_15_SP4_BINARIES
+        case OsVersion.SP6:
+            bins = _FIPS_15_SP6_BINARIES
 
-    if os_version not in ALL_BASE_OS_VERSIONS:
+    if os_version not in ALL_OS_VERSIONS:
         raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
     custom_install_bins: str = textwrap.dedent(
@@ -175,8 +187,8 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
 
     return (
         _get_asset_script(_FIPS_ASSET_BASEURL, bins)
-        + custom_set_fips_mode
         + (custom_install_bins if bins else "")
+        + custom_set_fips_mode
     )
 
 
@@ -197,7 +209,7 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     """Return a pretty name for FIPS enforcing containers."""
 
     if os_version.is_ltss:
-        if os_version == OsVersion.SP4:
+        if os_version in (OsVersion.SP4, OsVersion.SP6):
             return f"{os_version.pretty_os_version_no_dash} FIPS-140-3"
 
     if os_version.is_sle15 or os_version.is_sl16 or os_version.is_tumbleweed:
@@ -211,11 +223,14 @@ def _get_supported_until_fips(os_version: OsVersion) -> datetime.date | None:
     match os_version:
         case OsVersion.SP4:
             return datetime.date(2026, 12, 31)
+        case OsVersion.SP6:
+            return datetime.date(2028, 12, 31)
         case _:
             return _SUPPORTED_UNTIL_SLE.get(os_version)
 
 
 def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
+    """Return the kwargs for FIPS base container images."""
     return {
         "name": "base-fips",
         "exclusive_arch": [Arch.X86_64] if os_version.is_ltss else None,
