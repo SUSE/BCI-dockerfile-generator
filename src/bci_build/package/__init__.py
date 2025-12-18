@@ -96,7 +96,7 @@ def _build_tag_prefix(os_version: OsVersion) -> str:
     if os_version == OsVersion.TUMBLEWEED:
         return "opensuse/bci"
     if os_version.is_sle15 and os_version.is_ltss:
-        return "suse/ltss/sle%OS_VERSION_ID_SP%"
+        return f"suse/ltss/sle15.{os_version}"
 
     return "bci"
 
