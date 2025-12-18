@@ -1,6 +1,5 @@
 """Base container images maintained by the BCI generator"""
 
-import datetime
 import os
 import textwrap
 from pathlib import Path
@@ -16,6 +15,7 @@ from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
 from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
+from bci_build.os_version import get_supported_until_ltss
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import LOG_CLEAN
 from bci_build.package import OsContainer
@@ -218,17 +218,6 @@ def _get_fips_pretty_name(os_version: OsVersion) -> str:
     raise NotImplementedError(f"Unsupported os_version: {os_version}")
 
 
-def _get_supported_until_fips(os_version: OsVersion) -> datetime.date | None:
-    """Returns the end of LTSS for images under LTSS, otherwise end of general support if known"""
-    match os_version:
-        case OsVersion.SP4:
-            return datetime.date(2026, 12, 31)
-        case OsVersion.SP6:
-            return datetime.date(2028, 12, 31)
-        case _:
-            return _SUPPORTED_UNTIL_SLE.get(os_version)
-
-
 def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
     """Return the kwargs for FIPS base container images."""
     return {
@@ -247,7 +236,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
                 OsVersion.TUMBLEWEED,
             )
         ),
-        "supported_until": _get_supported_until_fips(os_version),
+        "supported_until": get_supported_until_ltss(os_version),
         "is_latest": (
             os_version in CAN_BE_LATEST_BASE_OS_VERSION
             or os_version in ALL_OS_LTSS_VERSIONS
