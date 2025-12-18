@@ -14,6 +14,7 @@ from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
 from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
+from bci_build.os_version import get_supported_until_ltss
 from bci_build.package import OsContainer
 from bci_build.package import Package
 
@@ -203,7 +204,9 @@ def _get_base_kwargs(os_version: OsVersion) -> dict:
         "os_version": os_version,
         "support_level": SupportLevel.L3,
         "supported_until": (
-            _SUPPORTED_UNTIL_SLE.get(os_version) if not os_version.is_ltss else None
+            get_supported_until_ltss(os_version)
+            if os_version.is_ltss
+            else _SUPPORTED_UNTIL_SLE.get(os_version)
         ),
         # we need to exclude i586 and other ports arches from building base images
         "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],

@@ -248,3 +248,16 @@ _SUPPORTED_UNTIL_SLE: dict[OsVersion, datetime.date | None] = {
     OsVersion.SL16_0: datetime.date(2027, 11, 30),
     OsVersion.SL16_1: datetime.date(2028, 11, 30),
 }
+
+
+def get_supported_until_ltss(os_version: OsVersion) -> datetime.date | None:
+    """Returns the end of LTSS for images under LTSS, otherwise end of general support if known"""
+    match os_version:
+        case OsVersion.SP4:
+            return datetime.date(2026, 12, 31)
+        case OsVersion.SP5:
+            return datetime.date(2027, 12, 31)
+        case OsVersion.SP6:
+            return datetime.date(2028, 12, 31)
+        case _:
+            return _SUPPORTED_UNTIL_SLE.get(os_version)
