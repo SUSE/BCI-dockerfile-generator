@@ -23,7 +23,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends sles-release coreutils crypto-policies-scripts
+    zypper -n install --no-recommends sles-release coreutils crypto-policies-scripts perl-Bootloader
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -60,7 +60,15 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL usage="This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
-RUN set -euo pipefail; update-crypto-policies --no-reload --set FIPS
+
+RUN set -euo pipefail; fips-mode-setup --enable --no-bootcfg
+RUN set -euo pipefail; rpm -e libopenssl1_1 python3-base libpython3_6m1_0 perl-Bootloader crypto-policies-scripts
+RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/run/*; \
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
+    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
 
 ENV GNUTLS_FORCE_FIPS_MODE=1
 ENV LIBGCRYPT_FORCE_FIPS_MODE=1
