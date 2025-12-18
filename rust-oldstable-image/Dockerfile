@@ -19,13 +19,13 @@
 #!BuildTag: bci/rust:oldstable
 #!BuildTag: bci/rust:%%RUST_VERSION%%-2.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:1.90
+#!BuildTag: bci/rust:1.91
 #!BuildName: bci-rust-oldstable
-#!BuildVersion: 15.7.1.90.2
+#!BuildVersion: 15.7.1.91.2
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rust1.90 cargo1.90 lifecycle-data-sle-module-development-tools
+    zypper -n install --no-recommends rust1.91 cargo1.91 lifecycle-data-sle-module-development-tools
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -42,8 +42,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.rust
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Rust 1.90"
-LABEL org.opencontainers.image.description="Rust 1.90 container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Rust 1.91"
+LABEL org.opencontainers.image.description="Rust 1.91 container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -53,7 +53,7 @@ LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-2.%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-2.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2026-01-01"
+LABEL com.suse.supportlevel.until="2026-02-12"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
