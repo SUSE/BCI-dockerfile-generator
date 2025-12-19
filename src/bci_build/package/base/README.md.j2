@@ -9,8 +9,11 @@
 
 {{ pretty_bci }} provide open, flexible,
 and secure container images. The images include container environments based on
-{{ image.os_version.pretty_distribution_base_name }} and are available at no cost, may be freely
-redistributed under the BCI EULA, and are supported across a large variety of environments.
+{{ image.os_version.pretty_distribution_base_name }}
+{%- if not image.os_version.is_ltss %}
+and are available at no cost, may be freely redistributed under the BCI EULA,
+{%- endif %}
+and are supported across a large variety of environments.
 
 This image serves as a foundation for many {{ short_bci }}s. It is designed to
 be extended for additional use cases, such as development or testing environments.
