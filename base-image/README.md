@@ -7,8 +7,9 @@
 
 SUSE Linux Base Container Images provide open, flexible,
 and secure container images. The images include container environments based on
-SUSE Linux Enterprise Server and are available at no cost, may be freely
-redistributed under the BCI EULA, and are supported across a large variety of environments.
+SUSE Linux Enterprise Server
+and are available at no cost, may be freely redistributed under the BCI EULA,
+and are supported across a large variety of environments.
 
 This image serves as a foundation for many SUSE Linux BCIs. It is designed to
 be extended for additional use cases, such as development or testing environments.
