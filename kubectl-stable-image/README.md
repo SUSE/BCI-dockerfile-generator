@@ -11,7 +11,7 @@ To run commands inside the container for the current cluster for which the kubec
 
 ```ShellSession
 podman run --rm --name kubectl\
-      registry.suse.com/suse/kubectl:1.33 get nodes
+      registry.suse.com/suse/kubectl:1.35 get nodes
 ```
 
 To pass configuration of a remote cluster to the container:
@@ -19,7 +19,7 @@ To pass configuration of a remote cluster to the container:
 ```ShellSession
 podman run --rm --name kubectl\
       -v /localpath/to/kubeconfig:/root/.kube/config:Z
-      registry.suse.com/suse/kubectl:1.33 get nodes
+      registry.suse.com/suse/kubectl:1.35 get nodes
 ```
 
 ## Licensing

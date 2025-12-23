@@ -19,10 +19,10 @@
 #!BuildTag: suse/kubectl:stable
 #!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
-#!BuildTag: suse/kubectl:1.33
+#!BuildTag: suse/kubectl:1.35
 #!BuildTag: suse/kubectl:latest
 #!BuildName: suse-kubectl-stable
-#!BuildVersion: 15.7.1.33.1
+#!BuildVersion: 15.7.1.35.1
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
@@ -30,7 +30,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.33-client diffutils
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.35-client diffutils
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
