@@ -17,7 +17,8 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: opensuse/kubectl:%%kubectl_version%%-%RELEASE%
 #!BuildTag: opensuse/kubectl:%%kubectl_version%%
-#!BuildTag: opensuse/kubectl:1.31
+#!BuildTag: opensuse/kubectl:1.35
+#!BuildTag: opensuse/kubectl:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
@@ -25,7 +26,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.31-client diffutils
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.35-client diffutils
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
