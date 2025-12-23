@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 23 18:14:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- kubectl 1.35 for stable, kubectl 1.33 for oldstable
+
+-------------------------------------------------------------------
 Tue Dec 23 16:10:50 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add diffutils (bsc#1251168)
