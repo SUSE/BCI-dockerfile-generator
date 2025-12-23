@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 23 16:23:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag, is now on 1.35
+
+-------------------------------------------------------------------
 Tue Dec 23 16:10:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add diffutils (bsc#1251168)
