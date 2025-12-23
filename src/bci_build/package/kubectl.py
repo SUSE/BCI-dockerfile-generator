@@ -11,7 +11,7 @@ from bci_build.util import ParseVersion
 
 _KUBECTL_VERSIONS = {
     OsVersion.TUMBLEWEED: ("1.32", "1.33", "1.34", "1.35"),
-    OsVersion.SP7: ("1.31", "1.33"),
+    OsVersion.SP7: ("1.33", "1.35"),
 }
 
 
