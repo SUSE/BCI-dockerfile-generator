@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan  1 14:16:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
 Mon Nov 24 16:39:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
 
 - add post_build_checks_containers
