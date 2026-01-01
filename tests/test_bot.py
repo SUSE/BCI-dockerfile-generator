@@ -90,7 +90,7 @@ def test_from_empty_github_comment():
     )
 
 
-_bot = StagingBot(os_version=OsVersion.SP6, osc_username=_osc_user)
+_bot = StagingBot(os_version=OsVersion.SP7, osc_username=_osc_user)
 
 
 @pytest.mark.parametrize(

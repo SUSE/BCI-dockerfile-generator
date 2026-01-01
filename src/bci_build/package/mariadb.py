@@ -36,7 +36,6 @@ MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
 
 for os_version in (
-    OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.SL16_0,
     OsVersion.TUMBLEWEED,
