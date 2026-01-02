@@ -25,7 +25,6 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     "3.10": None,
     # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers additional 2 years
     "3.11": datetime.date(2029, 12, 31),
-    "3.12": _SUPPORTED_UNTIL_SLE[OsVersion.SP6],
     # see jsc#PED-12365 - maybe superseded by 3.14/3.15
     "3.13": datetime.date(2026, 12, 31),
 }
@@ -157,16 +156,6 @@ PYTHON_3_11_CONTAINERS = (
     )
     for os_version in (OsVersion.SP7,)
 )
-
-PYTHON_3_12_CONTAINERS = [
-    PythonDevelopmentContainer(
-        **_get_python_kwargs("3.12", os_version),
-        package_name="python-3.12-image",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        additional_versions=["3"],
-    )
-    for os_version in (OsVersion.SP6,)
-]
 
 PYTHON_3_13_CONTAINERS = [
     PythonDevelopmentContainer(

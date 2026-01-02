@@ -1502,7 +1502,6 @@ from .pulseaudio import PULSEAUDIO_CONTAINERS  # noqa: E402
 from .python import BCI_CI_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
-from .python import PYTHON_3_12_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_13_CONTAINERS  # noqa: E402
 from .python import PYTHON_TW_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
@@ -1525,7 +1524,6 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *COSIGN_CONTAINERS,
         *PYTHON_3_6_CONTAINERS,
         *PYTHON_3_11_CONTAINERS,
-        *PYTHON_3_12_CONTAINERS,
         *PYTHON_3_13_CONTAINERS,
         *PYTHON_TW_CONTAINERS,
         *BCI_CI_CONTAINERS,
