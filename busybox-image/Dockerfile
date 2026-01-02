@@ -15,21 +15,21 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/rust:stable-1.%RELEASE%
-#!BuildTag: bci/rust:stable
-#!BuildTag: bci/rust:%%RUST_VERSION%%-1.%RELEASE%
-#!BuildTag: bci/rust:%%RUST_VERSION%%
-#!BuildTag: bci/rust:1.92
-#!BuildTag: bci/rust:latest
-#!BuildName: bci-rust-stable
-#!BuildVersion: 15.7.1.92.1
-FROM registry.suse.com/bci/bci-base:15.7
+#!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-busybox:latest
+#!BuildName: bci-bci-busybox-%OS_VERSION_ID_SP%
+#!BuildVersion: 15.7.0
+FROM scratch AS target
+FROM bci/bci-base:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rust1.92 cargo1.92 lifecycle-data-sle-module-development-tools
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt sles-release skelcd-EULA-bci
 
 # cleanup logs and temporary files
-RUN set -euo pipefail; zypper -n clean -a; \
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
@@ -38,34 +38,33 @@ RUN set -euo pipefail; zypper -n clean -a; \
     command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
 
 # set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
-
+RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
+FROM scratch
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.rust
+# labelprefix=com.suse.bci.busybox
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Rust 1.92"
-LABEL org.opencontainers.image.description="Rust 1.92 container based on the SUSE Linux Enterprise Base Container Image."
-LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
+LABEL org.opencontainers.image.title="SLE BCI 15 SP7 BusyBox"
+LABEL org.opencontainers.image.description="15 SP7 BusyBox container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-1.%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-1.%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2026-03-26"
+LABEL com.suse.supportlevel.until="2031-07-31"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
 # endlabelprefix
-LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
-LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV CARGO_VERSION="%%CARGO_VERSION%%"
-ENV CC="/usr/local/bin/cc"
-ENV RUST_VERSION="%%RUST_VERSION%%"
+LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
+CMD ["/bin/sh"]
 
-# workaround for cc only existing as /usr/bin/gcc-N
-RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") ${CC} && ${CC} --version
-COPY rust-and-cargo-pin.check /etc/zypp/systemCheck.d/rust-and-cargo-pin.check
+RUN set -euo pipefail; sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
+
+# Will be recreated by the next rpm(1) run as root user
+RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
