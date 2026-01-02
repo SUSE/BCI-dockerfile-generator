@@ -183,6 +183,11 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
         {DOCKERFILE_RUN} fips-mode-setup --enable --no-bootcfg
         {DOCKERFILE_RUN} rpm -e {" ".join(sorted(crypto_policies_deps))}
         """)
+        + (
+            f"{DOCKERFILE_RUN} rpmqpack | grep -E '(openssl|libgcrypt)' | xargs zypper -n addlock\n"
+            if bins
+            else ""
+        )
         + f"{DOCKERFILE_RUN} {LOG_CLEAN}"
     )
 
@@ -201,8 +206,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
                 [ $(LC_ALL=C rpm --checksig -v *rpm | \\
                     grep -c -E "^ *V3.*key ID 39db7c82: OK") = {len(bins)} ] \\
                 && rpm -Uvh --oldpackage --force *.rpm \\
-                && rm -vf *.rpm \\
-                && rpmqpack | grep -E '(openssl|libgcrypt)' | xargs zypper -n addlock\n"""
+                && rm -vf *.rpm\n"""
     )
 
     return (
