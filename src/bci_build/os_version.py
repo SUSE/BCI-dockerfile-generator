@@ -87,6 +87,8 @@ class OsVersion(enum.Enum):
     def pretty_product_name(self) -> str:
         if self.is_tumbleweed:
             return "openSUSE Tumbleweed Base Container Images"
+        if self.is_ltss:
+            return "SLE LTSS Base Container Images"
         if self.is_sle15:
             return "SUSE Linux Enterprise Base Container Images"
         if self.is_sl16:

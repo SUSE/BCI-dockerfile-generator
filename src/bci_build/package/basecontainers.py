@@ -163,18 +163,25 @@ def _get_asset_script(baseurl: str, binaries: list[str]) -> str:
 
 def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     bins: list[str] = []
-    crypto_policies_deps = ""
+    crypto_policies_deps = ("crypto-policies-scripts",)
     if os_version.is_sle15:
-        crypto_policies_deps = (
-            "libopenssl1_1 python3-base libpython3_6m1_0 perl-Bootloader"
+        crypto_policies_deps += (
+            "libopenssl1_1",
+            "python3-base",
+            "libpython3_6m1_0",
+            "perl-Bootloader",
         )
     else:
-        crypto_policies_deps = "libpython3_13-1_0 python313-base update-bootloader"
+        crypto_policies_deps += (
+            "libpython3_13-1_0",
+            "python313-base",
+            "update-bootloader",
+        )
 
     custom_set_fips_mode: str = (
         textwrap.dedent(f"""
         {DOCKERFILE_RUN} fips-mode-setup --enable --no-bootcfg
-        {DOCKERFILE_RUN} rpm -e {crypto_policies_deps} crypto-policies-scripts
+        {DOCKERFILE_RUN} rpm -e {" ".join(sorted(crypto_policies_deps))}
         """)
         + f"{DOCKERFILE_RUN} {LOG_CLEAN}"
     )
@@ -255,7 +262,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
             or os_version in ALL_OS_LTSS_VERSIONS
         ),
         "pretty_name": _get_fips_pretty_name(os_version),
-        "package_list": (
+        "package_list": sorted(
             [
                 *os_version.release_package_names,
                 "coreutils",
