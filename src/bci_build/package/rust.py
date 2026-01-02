@@ -1,7 +1,6 @@
 """Rust language BCI container"""
 
 import datetime
-import textwrap
 from itertools import product
 
 import packaging.version
@@ -117,15 +116,7 @@ requires:rust{rust_version}
                 package_name=f"cargo{rust_version}",
             ),
         ],
-        custom_end=textwrap.dedent(
-            """
-            # workaround for cc only existing as /usr/bin/gcc-N
-            RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") ${CC} && ${CC} --version
-            """
-            if os_version.is_sle15
-            else ""
-        )
-        + f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
+        custom_end=f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
     )
     for rust_version, os_version in (
         *product(
