@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan  2 13:31:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- readd workaround for SLE15.
+
+-------------------------------------------------------------------
 Fri Jan  2 12:53:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove obsolete gcc link workaround
