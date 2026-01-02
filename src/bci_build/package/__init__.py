@@ -38,7 +38,7 @@ from bci_build.util import write_to_file
 _BASH_SET: str = "set -euo pipefail"
 
 #: a ``RUN`` command with a common set of bash flags applied to prevent errors
-#: from not being noticed
+#: from going unnoticed
 DOCKERFILE_RUN: str = f"RUN {_BASH_SET};"
 
 #: a sed statement to avoid using `EVALUATE=udev` in `/etc/blkid.conf` which doesn't work inside containers
@@ -115,7 +115,7 @@ class BaseContainerImage(abc.ABC):
     #: Human readable name that will be inserted into the image title and description
     pretty_name: str
 
-    #: Optional a package_name, used for creating the package name on OBS or IBS in
+    #: Optional package_name, used for creating the package name on OBS or IBS in
     # ``devel:BCI:SLE-15-SP$ver`` (on  OBS) or ``SUSE:SLE-15-SP$ver:Update:BCI`` (on IBS)
     package_name: str | None = None
 
@@ -182,7 +182,7 @@ class BaseContainerImage(abc.ABC):
     #: if true, then the build flavor is used in the tag, i.e. ``$name-$flavor:tag``
     use_build_flavor_in_tag: bool = True
 
-    #: create that this container is part of
+    #: crate that this container is part of
     crate: ContainerCrate = None
 
     #: Add any replacements via `obs-service-replace_using_package_version
@@ -206,7 +206,7 @@ class BaseContainerImage(abc.ABC):
     #:   is not possible and will result in an error.
     custom_end: str = ""
 
-    #: This string is appended to the the build stage in a multistage build and can
+    #: This string is appended to the build stage in a multistage build and can
     #: contain arbitrary instructions valid for a :file:`Dockerfile`.
     build_stage_custom_end: str | None = None
 
@@ -217,7 +217,7 @@ class BaseContainerImage(abc.ABC):
 
     #: A script that is put into :file:`config.sh` if a kiwi image is
     #: created. If a :file:`Dockerfile` based build is used then this script is
-    #: prependend with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
+    #: prepended with a :py:const:`~bci_build.package.DOCKERFILE_RUN` and added
     #: at the end of the ``Dockerfile``. It must thus fit on a single line if
     #: you want to be able to build from a kiwi and :file:`Dockerfile` at the
     #: same time!
@@ -407,7 +407,7 @@ class BaseContainerImage(abc.ABC):
         """Return a BuildVersion that is compatible with the requirements that KIWI imposes.
         https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
 
-        It a version strictly in the format X.Y.Z.
+        It is a version strictly in the format X.Y.Z.
         """
         build_ver: str | None = self.build_version
         if build_ver:
@@ -480,7 +480,7 @@ class BaseContainerImage(abc.ABC):
         """This part is appended at the end of the :file:`Dockerfile`. It is either
         generated from :py:attr:`BaseContainerImage.custom_end` or by prepending
         ``RUN`` in front of :py:attr:`BaseContainerImage.config_sh_script`. The
-        later implies that the script in that variable fits on a single line or
+        latter implies that the script in that variable fits on a single line or
         newlines are escaped, e.g. via `ansi escapes
         <https://stackoverflow.com/a/33439625>`_.
 
@@ -883,7 +883,7 @@ exit 0
         """Returns the human readable registry URL to this image. It is intended
         to be used in the image documentation.
 
-        This url needn't point to an exact version-release but can include just
+        This url does not need to point to an exact version-release but can include just
         the major os version or the latest tag.
 
         """
@@ -1043,7 +1043,7 @@ exit 0
         description.
 
         This attribute is used by kiwi to add additional tags to the image under
-        it's primary name. This string contains a coma separated list of all
+        it's primary name. This string contains a comma-separated list of all
         build tags (except for the primary one) that have the **same** name as
         the image itself.
 
@@ -1597,7 +1597,7 @@ def main() -> None:
         type=str,
         nargs=1,
         choices=SORTED_CONTAINER_IMAGE_NAMES,
-        help="The BCI container image, which package contents should be written to the disk",
+        help="The BCI container image, whose package contents should be written to the disk",
     )
     parser.add_argument(
         "destination",

@@ -1,6 +1,6 @@
 # Contributing to the BCI-dockerfile-generator
 
-##  Opening an pull request
+##  Opening a pull request
 
 The BCI-dockerfile-generator documentation has a section on contributing a
 new container or modifying an existing container. Please check the chapter
@@ -28,13 +28,13 @@ poetry run sphinx-build -M html source build -W
 
 ## Reviewing a pull request
 
-The following guidelines are respected by the maintainers on reviewing a Pull Request:
+The following guidelines are respected by the maintainers when reviewing a Pull Request:
 
 * CI failures are treated seriously. As a general rule changes with failing CI are not being merged.
 
 * A reviewer who has requested a change should be notified when the feedback
 has been handled. This can be done by clicking the "re-request review" button
-on the particular reviewers handle.
+on the particular reviewer's handle.
 
 * A pull request is considered mergeable if it has no outstanding change
 requests, at least one approval by the maintainers and sufficient time has

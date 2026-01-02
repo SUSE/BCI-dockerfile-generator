@@ -56,7 +56,7 @@ files:
 It is sometimes necessary to include additional files in a Container Image,
 e.g. a longer script or configuration file. This can be achieved by adding the
 file to the :py:attr:`~bci_build.package.BaseContainerImage.extra_files`
-dictionary. The key should be the file name and the value are the file contents.
+dictionary. The key should be the file name and the value is the file contents.
 
 Please only include very short files directly in
 :py:mod:`~bci_build.package`. Longer files should go into a subdirectory of
@@ -116,7 +116,7 @@ Our PostgreSQL example would result in the following code:
        # rest follows here
    )
 
-Note that this process is **not** limited to environment variable, it can be
+Note that this process is **not** limited to environment variables, it can be
 used to replace **anything** inside the container build description. This can be
 seen in the above code block, where we also set the
 :py:attr:`~bci_build.package.DevelopmentContainer.additional_versions`
@@ -135,7 +135,7 @@ attribute via this mechanism.
 Installing Packages into the Container Image
 --------------------------------------------
 
-In most cases it sufficient to just set the
+In most cases it is sufficient to just set the
 :py:attr:`~bci_build.package.BaseContainerImage.package_list` attribute to a
 list of package names as strings. This will yield a :command:`RUN zypper -n
 in --no-recommends $list_of_packages` line in the :file:`Dockerfile` or the
@@ -175,7 +175,8 @@ Applying additional changes to your Image
 
 Container Images can be tweaked extensively via a plethora of different keywords
 in :file:`Dockerfile`. To stay compatible with kiwi build descriptions and to
-avoid some common pitfalls when creating a :file:`Dockerfile`.
+avoid some common pitfalls when creating a :file:`Dockerfile`, please observe
+the following guidelines.
 
 For the following :file:`Dockerfile` settings, use the respective properties of
 :py:class:`~bci_build.package.BaseContainerImage`:

@@ -272,7 +272,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
             + (["patterns-base-fips"] if os_version.is_sl16 else [])
         ),
         "extra_labels": {
-            "usage": "This container should only be used on a FIPS enabled host (fips=1 on kernel cmdline)."
+            "usage": "This container should only be used on a FIPS-140-3-enabled host (fips=1 on kernel cmdline)."
         },
         "custom_end": _get_fips_base_custom_end(os_version) + _get_fips_custom_env(),
         "min_release_counter": {
@@ -380,7 +380,7 @@ MINIMAL_CONTAINERS = [
             sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
             rpm -e sed
 
-            # not making sense in a zypper-free image
+            # makes no sense in a zypper-free image
             rm -vf /var/lib/zypp/AutoInstalled
 
             # includes device and inode numbers that change on deploy
