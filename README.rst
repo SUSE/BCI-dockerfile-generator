@@ -83,7 +83,7 @@ upstream/downstream documentation, refer to it if applicable.
 
 There are additionally the following helper templates, to enhance the READMEs:
 
-- ``licensing_and_eula.j2``: Adds a standard licencing & EULA footer. **MUST**
+- ``licensing_and_eula.j2``: Adds a standard licensing & EULA footer. **MUST**
   be included at the bottom of every README.
 
 - ``badges.j2``: Adds a Redistributable & optional supportlevel badge. **MUST**
@@ -111,7 +111,7 @@ title (:py:attr:`~bci_build.package.BaseContainerImage.title`) or the reference
 Entrypoints
 -----------
 
-The projects currently provides two entry points. The first is the package build
+The project currently provides two entry points. The first is the package build
 description "dumper" called ``package``. It writes the build description of a
 single container image into a specified directory:
 

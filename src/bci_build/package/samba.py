@@ -20,7 +20,7 @@ SAMBA_CLIENT_CONTAINERS = []
 SAMBA_TOOLBOX_CONTAINERS = []
 
 # Samba is deprecated
-# Only available in SP7 because is where we released as Tech Preview
+# Only available in SP7 because that is where we released it as Tech Preview
 for os_version in (OsVersion.SP7,):
     samba_version = get_pkg_version("samba", os_version)
 

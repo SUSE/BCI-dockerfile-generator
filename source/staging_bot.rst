@@ -22,7 +22,7 @@ Branch setup
 ------------
 
 The source code of the generator and all utilities lives in the ``main`` branch,
-while the build recipes are written into separate, so called, deployment
+while the build recipes are written into separate, so-called deployment
 branches in this repository. For openSUSE Tumbleweed that is the `tumbleweed
 <https://github.com/SUSE/BCI-dockerfile-generator/tree/tumbleweed>`_ branch and
 for SLE these are ``sle15-sp$SERVICE_PACK_NUMBER``. All of these branches are
@@ -87,7 +87,7 @@ The personal access token is then used to create a SCM token on OBS as follows:
 
    osc token --create --operation workflow --scm-token $PAT
 
-OBS will respond with an xml response as the following:
+OBS will respond with an XML response as the following:
 
 .. code-block:: xml
 

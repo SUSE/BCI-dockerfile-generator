@@ -32,7 +32,7 @@ class Registry(ABC):
     @staticmethod
     @abstractmethod
     def url(container: "BaseContainerImage") -> str:
-        """Generate the url for the given for the given container"""
+        """Generate the url for the given container"""
 
     @staticmethod
     @abstractmethod
@@ -41,8 +41,8 @@ class Registry(ABC):
         TLD and the container name) for this registry.
 
         The flag ``is_application`` switches whether to return the registry
-        prefix for application containers, which are generally receive a
-        different registry prefix then all other container images.
+        prefix for application containers, which generally receive a
+        different registry prefix than all other container images.
 
         """
 
