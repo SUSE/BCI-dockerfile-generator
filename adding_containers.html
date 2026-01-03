@@ -79,7 +79,7 @@ files:</p>
 <p>It is sometimes necessary to include additional files in a Container Image,
 e.g. a longer script or configuration file. This can be achieved by adding the
 file to the <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.extra_files" title="bci_build.package.BaseContainerImage.extra_files"><code class="xref py py-attr docutils literal notranslate"><span class="pre">extra_files</span></code></a>
-dictionary. The key should be the file name and the value are the file contents.</p>
+dictionary. The key should be the file name and the value is the file contents.</p>
 <p>Please only include very short files directly in
 <a class="reference internal" href="api.html#module-bci_build.package" title="bci_build.package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">package</span></code></a>. Longer files should go into a subdirectory of
 <code class="file docutils literal notranslate"><span class="pre">src/bci_build/package/</span></code> and be read in on construction. In case you are
@@ -130,7 +130,7 @@ service to only extract the version up to a certain point via the attribute
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that this process is <strong>not</strong> limited to environment variable, it can be
+<p>Note that this process is <strong>not</strong> limited to environment variables, it can be
 used to replace <strong>anything</strong> inside the container build description. This can be
 seen in the above code block, where we also set the
 <a class="reference internal" href="api.html#bci_build.package.DevelopmentContainer.additional_versions" title="bci_build.package.DevelopmentContainer.additional_versions"><code class="xref py py-attr docutils literal notranslate"><span class="pre">additional_versions</span></code></a>
@@ -146,7 +146,7 @@ then you <strong>must</strong> hardcode the version using the mechanism outlined
 </section>
 <section id="installing-packages-into-the-container-image">
 <h2>Installing Packages into the Container Image<a class="headerlink" href="#installing-packages-into-the-container-image" title="Link to this heading">¶</a></h2>
-<p>In most cases it sufficient to just set the
+<p>In most cases it is sufficient to just set the
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage.package_list" title="bci_build.package.BaseContainerImage.package_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">package_list</span></code></a> attribute to a
 list of package names as strings. This will yield a <strong class="command">RUN zypper -n
 in --no-recommends $list_of_packages</strong> line in the <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> or the
@@ -180,7 +180,8 @@ example:</p>
 <h2>Applying additional changes to your Image<a class="headerlink" href="#applying-additional-changes-to-your-image" title="Link to this heading">¶</a></h2>
 <p>Container Images can be tweaked extensively via a plethora of different keywords
 in <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>. To stay compatible with kiwi build descriptions and to
-avoid some common pitfalls when creating a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p>
+avoid some common pitfalls when creating a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>, please observe
+the following guidelines.</p>
 <p>For the following <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> settings, use the respective properties of
 <a class="reference internal" href="api.html#bci_build.package.BaseContainerImage" title="bci_build.package.BaseContainerImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContainerImage</span></code></a>:</p>
 <ul class="simple">

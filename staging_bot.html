@@ -50,7 +50,7 @@ help of the command <strong class="command">poetry run scratch-build-bot</strong
 <section id="branch-setup">
 <h2>Branch setup<a class="headerlink" href="#branch-setup" title="Link to this heading">¶</a></h2>
 <p>The source code of the generator and all utilities lives in the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch,
-while the build recipes are written into separate, so called, deployment
+while the build recipes are written into separate, so-called deployment
 branches in this repository. For openSUSE Tumbleweed that is the <a class="reference external" href="https://github.com/SUSE/BCI-dockerfile-generator/tree/tumbleweed">tumbleweed</a> branch and
 for SLE these are <code class="docutils literal notranslate"><span class="pre">sle15-sp$SERVICE_PACK_NUMBER</span></code>. All of these branches are
 protected on Github and only allow to be updated via pull requests.</p>
@@ -100,7 +100,7 @@ The personal access token is then used to create a SCM token on OBS as follows:<
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">osc token --create --operation workflow --scm-token $PAT</span>
 </pre></div>
 </div>
-<p>OBS will respond with an xml response as the following:</p>
+<p>OBS will respond with an XML response as the following:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;status</span><span class="w"> </span><span class="na">code=</span><span class="s">&quot;ok&quot;</span><span class="nt">&gt;</span>
 <span class="w">    </span><span class="nt">&lt;summary&gt;</span>Ok<span class="nt">&lt;/summary&gt;</span>
 <span class="w">    </span><span class="nt">&lt;data</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;token&quot;</span><span class="nt">&gt;</span>$SECRET<span class="nt">&lt;/data&gt;</span>

@@ -117,7 +117,7 @@ If not set, then the build type will default to docker from SP4 onwards.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bci_build.package.BaseContainerImage.build_stage_custom_end">
 <span class="sig-name descname"><span class="pre">build_stage_custom_end</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#bci_build.package.BaseContainerImage.build_stage_custom_end" title="Link to this definition">¶</a></dt>
-<dd><p>This string is appended to the the build stage in a multistage build and can
+<dd><p>This string is appended to the build stage in a multistage build and can
 contain arbitrary instructions valid for a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p>
 </dd></dl>
 
@@ -182,7 +182,7 @@ for bash and not for a different shell.</p>
 <span class="sig-name descname"><span class="pre">config_sh_script</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#bci_build.package.BaseContainerImage.config_sh_script" title="Link to this definition">¶</a></dt>
 <dd><p>A script that is put into <code class="file docutils literal notranslate"><span class="pre">config.sh</span></code> if a kiwi image is
 created. If a <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> based build is used then this script is
-prependend with a <a class="reference internal" href="#bci_build.package.DOCKERFILE_RUN" title="bci_build.package.DOCKERFILE_RUN"><code class="xref py py-const docutils literal notranslate"><span class="pre">DOCKERFILE_RUN</span></code></a> and added
+prepended with a <a class="reference internal" href="#bci_build.package.DOCKERFILE_RUN" title="bci_build.package.DOCKERFILE_RUN"><code class="xref py py-const docutils literal notranslate"><span class="pre">DOCKERFILE_RUN</span></code></a> and added
 at the end of the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>. It must thus fit on a single line if
 you want to be able to build from a kiwi and <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code> at the
 same time!</p>
@@ -191,7 +191,7 @@ same time!</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bci_build.package.BaseContainerImage.crate">
 <span class="sig-name descname"><span class="pre">crate</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContainerCrate</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#bci_build.package.BaseContainerImage.crate" title="Link to this definition">¶</a></dt>
-<dd><p>create that this container is part of</p>
+<dd><p>crate that this container is part of</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -244,7 +244,7 @@ expand the custom description with the following options:</p>
 <dd><p>This part is appended at the end of the <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code>. It is either
 generated from <a class="reference internal" href="#bci_build.package.BaseContainerImage.custom_end" title="bci_build.package.BaseContainerImage.custom_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.custom_end</span></code></a> or by prepending
 <code class="docutils literal notranslate"><span class="pre">RUN</span></code> in front of <a class="reference internal" href="#bci_build.package.BaseContainerImage.config_sh_script" title="bci_build.package.BaseContainerImage.config_sh_script"><code class="xref py py-attr docutils literal notranslate"><span class="pre">BaseContainerImage.config_sh_script</span></code></a>. The
-later implies that the script in that variable fits on a single line or
+latter implies that the script in that variable fits on a single line or
 newlines are escaped, e.g. via <a class="reference external" href="https://stackoverflow.com/a/33439625">ansi escapes</a>.</p>
 </dd></dl>
 
@@ -413,7 +413,7 @@ under the same registry path.</p>
 <dd><p>Entry for the <code class="docutils literal notranslate"><span class="pre">additionaltags</span></code> attribute in the kiwi build
 description.</p>
 <p>This attribute is used by kiwi to add additional tags to the image under
-it’s primary name. This string contains a coma separated list of all
+it’s primary name. This string contains a comma-separated list of all
 build tags (except for the primary one) that have the <strong>same</strong> name as
 the image itself.</p>
 </dd></dl>
@@ -448,7 +448,7 @@ description file.</p>
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">kiwi_version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#bci_build.package.BaseContainerImage.kiwi_version" title="Link to this definition">¶</a></dt>
 <dd><p>Return a BuildVersion that is compatible with the requirements that KIWI imposes.
 <a class="reference external" href="https://osinside.github.io/kiwi/image_description/elements.html#preferences-version">https://osinside.github.io/kiwi/image_description/elements.html#preferences-version</a></p>
-<p>It a version strictly in the format X.Y.Z.</p>
+<p>It is a version strictly in the format X.Y.Z.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -575,7 +575,7 @@ container image.</p>
 <span class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pretty_reference</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#bci_build.package.BaseContainerImage.pretty_reference" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the human readable registry URL to this image. It is intended
 to be used in the image documentation.</p>
-<p>This url needn’t point to an exact version-release but can include just
+<p>This url does not need to point to an exact version-release but can include just
 the major os version or the latest tag.</p>
 </dd></dl>
 
@@ -719,7 +719,7 @@ returns the filenames (not full paths) that were written to the disk.</p>
 <dt class="sig sig-object py" id="bci_build.package.DOCKERFILE_RUN">
 <span class="sig-prename descclassname"><span class="pre">bci_build.package.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_RUN</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RUN</span> <span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail;'</span></span><a class="headerlink" href="#bci_build.package.DOCKERFILE_RUN" title="Link to this definition">¶</a></dt>
 <dd><p>a <code class="docutils literal notranslate"><span class="pre">RUN</span></code> command with a common set of bash flags applied to prevent errors
-from not being noticed</p>
+from going unnoticed</p>
 </dd></dl>
 
 <dl class="py class">
@@ -784,7 +784,7 @@ container image.</p>
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pretty_reference</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#bci_build.package.DevelopmentContainer.pretty_reference" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the human readable registry URL to this image. It is intended
 to be used in the image documentation.</p>
-<p>This url needn’t point to an exact version-release but can include just
+<p>This url does not need to point to an exact version-release but can include just
 the major os version or the latest tag.</p>
 </dd></dl>
 
@@ -884,7 +884,7 @@ container image.</p>
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pretty_reference</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#bci_build.package.OsContainer.pretty_reference" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the human readable registry URL to this image. It is intended
 to be used in the image documentation.</p>
-<p>This url needn’t point to an exact version-release but can include just
+<p>This url does not need to point to an exact version-release but can include just
 the major os version or the latest tag.</p>
 </dd></dl>
 
@@ -1082,19 +1082,19 @@ stream defined in <code class="xref py py-const docutils literal notranslate"><s
 descriptions.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.DOCKERFILE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2694aabe00&gt;</span></span><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">DOCKERFILE_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f0ef3453e00&gt;</span></span><a class="headerlink" href="#bci_build.templates.DOCKERFILE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">Dockerfile</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.KIWI_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2695ffc910&gt;</span></span><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">KIWI_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f0ef49a4910&gt;</span></span><a class="headerlink" href="#bci_build.templates.KIWI_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">$pkg_name.kiwi</span></code></p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="bci_build.templates.SERVICE_TEMPLATE">
-<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f2695ffcb90&gt;</span></span><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">bci_build.templates.</span></span><span class="sig-name descname"><span class="pre">SERVICE_TEMPLATE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Template</span> <span class="pre">memory:7f0ef49a4b90&gt;</span></span><a class="headerlink" href="#bci_build.templates.SERVICE_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd><p>Jinja2 template used to generate <code class="file docutils literal notranslate"><span class="pre">_service</span></code>.</p>
 </dd></dl>
 
