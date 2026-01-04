@@ -401,42 +401,27 @@ MINIMAL_CONTAINERS = [
 BUSYBOX_CONTAINERS = [
     OsContainer(
         name="busybox",
-        from_image=None,
+        from_target_image="scratch",
         os_version=os_version,
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
-        build_recipe_type=BuildType.KIWI,
         cmd=["/bin/sh"],
         package_list=[
-            Package(name, pkg_type=PackageType.BOOTSTRAP)
-            for name in (
-                os_version.release_package_names
-                + (
-                    "busybox",
-                    "busybox-links",
-                    "ca-certificates-mozilla-prebuilt",
-                )
-                + os_version.eula_package_names
-            )
-        ],
-        config_sh_script=textwrap.dedent(
-            """
-            sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
-
-            # not making sense in a zypper-free image
-            rm -vf /var/lib/zypp/AutoInstalled
-
-            # includes device and inode numbers that change on deploy
-            rm -vf /var/cache/ldconfig/aux-cache
+            "busybox",
+            "busybox-links",
+            "ca-certificates-mozilla-prebuilt",
+        ]
+        + [*os_version.release_package_names]
+        + [*os_version.eula_package_names],
+        custom_end=textwrap.dedent(
+            f"""
+            {DOCKERFILE_RUN} sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
 
             # Will be recreated by the next rpm(1) run as root user
-            rm -vf /usr/lib/sysimage/rpm/Index.db
-
-            # set the day of last password change to empty
-            sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
+            {DOCKERFILE_RUN} rm -vf /usr/lib/sysimage/rpm/Index.db
         """
         ),
         config_sh_interpreter="/bin/sh",
