@@ -14,7 +14,7 @@ from bci_build.util import ParseVersion
 _RUBY_SUPPORT_ENDS = {"2.5": None, "3.4": datetime.date(2028, 3, 31)}
 
 
-def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion):
+def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsVersion):
     ruby = f"ruby{ruby_version}"
     ruby_major = ruby_version.split(".")[0]
 
@@ -24,7 +24,11 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4"], os_version: OsVersion)
         "pretty_name": f"Ruby {ruby_version}",
         "version": ruby_version,
         "additional_versions": [ruby_major],
-        "is_latest": ruby_version == "3.4" and os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION
+        and (
+            (ruby_version == "3.4" and not os_version.is_tumbleweed)
+            or (ruby_version == "4.0" and os_version.is_tumbleweed)
+        ),
         "os_version": os_version,
         "supported_until": (
             _RUBY_SUPPORT_ENDS.get(ruby_version) if os_version.is_sle15 else None
@@ -106,5 +110,5 @@ RUBY_CONTAINERS = [
         **_get_ruby_kwargs("3.4", OsVersion.SL16_1),
         support_level=SupportLevel.L3,
     ),
-    DevelopmentContainer(**_get_ruby_kwargs("3.4", OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_ruby_kwargs("4.0", OsVersion.TUMBLEWEED)),
 ]
