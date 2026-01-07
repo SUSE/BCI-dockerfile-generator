@@ -15,15 +15,15 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/bci/ruby:3.4-%RELEASE%
-#!BuildTag: opensuse/bci/ruby:3.4
-#!BuildTag: opensuse/bci/ruby:3
+#!BuildTag: opensuse/bci/ruby:4.0-%RELEASE%
+#!BuildTag: opensuse/bci/ruby:4.0
+#!BuildTag: opensuse/bci/ruby:4
 #!BuildTag: opensuse/bci/ruby:latest
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends ruby3.4 ruby3.4-rubygem-bundler ruby3.4-devel ruby3.4-rubygem-gem2rpm util-linux gcc-c++ sqlite3-devel make timezone xz curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends ruby4.0 ruby4.0-rubygem-bundler ruby4.0-devel ruby4.0-rubygem-gem2rpm util-linux gcc-c++ sqlite3-devel make timezone xz curl findutils gawk git-core procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -39,15 +39,15 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.ruby
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Ruby 3.4"
-LABEL org.opencontainers.image.description="Ruby 3.4 container based on the openSUSE Tumbleweed Base Container Image."
-LABEL org.opencontainers.image.version="3.4"
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Ruby 4.0"
+LABEL org.opencontainers.image.description="Ruby 4.0 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.version="4.0"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="3.4-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/ruby:3.4-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="4.0-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/ruby:4.0-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
