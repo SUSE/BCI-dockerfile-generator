@@ -209,8 +209,9 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 # For which versions to create Application and Language Containers?
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP7,
-    OsVersion.SL16_0,
     OsVersion.TUMBLEWEED,
+    OsVersion.SL16_0,
+    OsVersion.SL16_1,
 ]
 
 # For which versions to create Base Container Images?

@@ -5,7 +5,6 @@ import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -102,7 +101,7 @@ XORG_CONTAINERS = [
             """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
 ]
 
 XORG_CLIENT_CONTAINERS = [
@@ -144,5 +143,5 @@ XORG_CLIENT_CONTAINERS = [
         """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
 ]

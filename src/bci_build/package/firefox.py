@@ -41,18 +41,20 @@ FIREFOX_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
-                # Provides necessary codecs for video/audio playback
-                "libavcodec58_134",
             ]
             + (
                 [
                     "gconf2",
+                    # Provides necessary codecs for video/audio playback
+                    "libavcodec58_134",
                 ]
                 if os_version.is_sle15
                 else []
             )
             + (
                 [
+                    # Provides necessary codecs for video/audio playback
+                    "libavcodec58_134",
                     "MozillaFirefox-branding-openSUSE",
                 ]
                 if os_version.is_tumbleweed
