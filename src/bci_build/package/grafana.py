@@ -56,5 +56,9 @@ GRAFANA_CONTAINERS = [
 {DOCKERFILE_RUN} chmod +x /run.sh
         """,
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in {
+        v
+        for v in ALL_NONBASE_OS_VERSIONS
+        if v not in (OsVersion.SL16_0, OsVersion.SL16_1)
+    }
 ]

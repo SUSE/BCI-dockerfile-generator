@@ -125,7 +125,7 @@ def get_pkg_version(pkg_name: str, os_version: OsVersion) -> str:
 #: projects from which to take package versions
 _OBS_PROJECTS: dict[OsVersion, str] = {
     OsVersion.SL16_0: "SUSE:SLFO:1.2",
-    OsVersion.SL16_1: "SUSE:SLFO:Main:Build",
+    OsVersion.SL16_1: "SUSE:SLFO:Main",
     OsVersion.TUMBLEWEED: "openSUSE:Factory",
 } | {OsVersion(ver): f"SUSE:SLE-15-SP{ver}:Update" for ver in range(4, 8)}
 

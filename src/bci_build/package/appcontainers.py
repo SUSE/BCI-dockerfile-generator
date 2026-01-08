@@ -211,7 +211,11 @@ ALERTMANAGER_CONTAINERS = [
         exposes_ports=[TCP(_ALERTMANAGER_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_ALERTMANAGER_PORT),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in {
+        v
+        for v in ALL_NONBASE_OS_VERSIONS
+        if v not in (OsVersion.SL16_0, OsVersion.SL16_1)
+    }
 ]
 
 _BLACKBOX_EXPORTER_PACKAGE_NAME = "prometheus-blackbox_exporter"
@@ -241,7 +245,11 @@ BLACKBOX_EXPORTER_CONTAINERS = [
         exposes_ports=[TCP(_BLACKBOX_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_BLACKBOX_PORT),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in {
+        v
+        for v in ALL_NONBASE_OS_VERSIONS
+        if v not in (OsVersion.SL16_0, OsVersion.SL16_1)
+    }
 ]
 
 

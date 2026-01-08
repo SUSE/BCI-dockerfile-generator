@@ -102,7 +102,11 @@ XORG_CONTAINERS = [
             """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in {
+        v
+        for v in ALL_NONBASE_OS_VERSIONS
+        if v not in (OsVersion.SL16_0, OsVersion.SL16_1)
+    }
 ]
 
 XORG_CLIENT_CONTAINERS = [
@@ -144,5 +148,9 @@ XORG_CLIENT_CONTAINERS = [
         """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in {
+        v
+        for v in ALL_NONBASE_OS_VERSIONS
+        if v not in (OsVersion.SL16_0, OsVersion.SL16_1)
+    }
 ]

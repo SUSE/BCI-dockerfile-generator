@@ -155,8 +155,9 @@ def generate_meta(
             last_prj = f"SUSE:SLE-15-SP{str(os_version)}:Update"
         else:
             assert os_version.is_sl16
+            # TODO(dmllr): fix to SLES:16.1 when it becomes available in OBS
             first_prj = "SUSE:SLFO:Products:SLES:16.0"
-            last_prj = "SUSE:SLFO:Main:Build"
+            last_prj = "SUSE:SLFO:Main"
             if os_version == OsVersion.SL16_0:
                 first_prj = "SUSE:Registry"
                 last_prj = "SUSE:SLFO:Products:SLES:16.0"
