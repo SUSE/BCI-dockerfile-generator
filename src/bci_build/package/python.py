@@ -137,7 +137,7 @@ PYTHON_3_6_CONTAINERS = (
 )
 
 
-_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.11", "3.12", "3.13")
+_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.11", "3.13")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
