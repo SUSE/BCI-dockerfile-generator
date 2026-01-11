@@ -135,6 +135,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: rust-stable-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: sle16-kernel-module-devel-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -261,6 +265,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: rust-oldstable-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: rust-stable-image
     - trigger_services:
         project: devel:BCI:16.1
         package: sle16-kernel-module-devel-image
