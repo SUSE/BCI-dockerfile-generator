@@ -134,6 +134,6 @@ requires:rust{rust_version}
             - set([OsVersion.TUMBLEWEED, OsVersion.SL16_0]),
         ),
         *product(_RUST_TW_VERSIONS, [OsVersion.TUMBLEWEED]),
-        *product(_RUST_SL16_VERSIONS, [OsVersion.SL16_0]),
+        *product(_RUST_SL16_VERSIONS, [OsVersion.SL16_0, OsVersion.SL16_1]),
     )
 ]
