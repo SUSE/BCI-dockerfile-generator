@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jan 11 17:55:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for helm 3.19
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:12 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
