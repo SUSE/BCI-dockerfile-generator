@@ -156,7 +156,7 @@ def generate_meta(
         else:
             assert os_version.is_sl16
             first_prj = "SUSE:SLFO:Products:SLES:16.0"
-            last_prj = "SUSE:SLFO:Main:Build"
+            last_prj = "SUSE:SLFO:Main"
             if os_version == OsVersion.SL16_0:
                 first_prj = "SUSE:Registry"
                 last_prj = "SUSE:SLFO:Products:SLES:16.0"

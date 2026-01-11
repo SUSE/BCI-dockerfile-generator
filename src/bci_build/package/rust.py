@@ -53,7 +53,7 @@ def _rust_is_stable_version(os_version: OsVersion, rust_version: str) -> bool:
     """Return the latest stable rust version"""
     if os_version in (OsVersion.TUMBLEWEED,):
         return _RUST_TW_VERSIONS[-1] == rust_version
-    if os_version in (OsVersion.SL16_0,):
+    if os_version in (OsVersion.SL16_0, OsVersion.SL16_1):
         return _RUST_SL16_VERSIONS[-1] == rust_version
 
     return _RUST_VERSIONS[-1] == rust_version
