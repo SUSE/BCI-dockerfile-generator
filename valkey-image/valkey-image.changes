@@ -1,0 +1,109 @@
+-------------------------------------------------------------------
+Sun Jan 11 17:25:17 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jan  1 14:16:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec 16 15:28:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
+Tue Dec 16 14:17:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- minor refactoring
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Fri Oct 31 08:02:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Mon Oct 20 20:11:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Mon Sep 29 09:31:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Thu Sep 25 16:25:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark container as released
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Wed Jul 30 09:50:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC to allow operation without accessible /proc filesystem
+
+-------------------------------------------------------------------
+Mon Jul  7 20:34:20 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SL 16
+
+-------------------------------------------------------------------
+Tue Jun 17 17:17:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- increase buildrelease
+
+-------------------------------------------------------------------
+Tue Jun 17 13:58:41 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tags
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Wed Apr 30 12:23:28 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stable buildname for better aggregation
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Fri Mar  7 10:09:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Extend description
+
+-------------------------------------------------------------------
+Wed Feb 19 15:24:17 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the Persistent key-value database BCI

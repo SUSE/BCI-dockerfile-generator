@@ -1,0 +1,84 @@
+-------------------------------------------------------------------
+Sun Jan 11 17:25:14 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jan  1 14:16:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec 16 15:28:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Fri Oct 31 08:02:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Wed Oct 29 10:33:36 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- install mozilla-nss-sysinit so that crypto providers work
+
+-------------------------------------------------------------------
+Mon Oct 20 20:11:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Thu Oct 16 12:54:07 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- switch to SL16 (rerender the template)
+
+-------------------------------------------------------------------
+Mon Sep 29 09:39:27 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Thu Jul 31 11:19:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Mon Mar 03 10:13:46 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the OpenJDK 17 runtime BCI

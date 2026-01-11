@@ -1,0 +1,159 @@
+-------------------------------------------------------------------
+Sun Jan 11 17:25:14 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jan  1 14:16:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec 16 15:28:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Fri Oct 31 08:02:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Wed Oct 29 10:33:36 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- install mozilla-nss-sysinit so that crypto providers work
+
+-------------------------------------------------------------------
+Mon Oct 20 20:11:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Mon Sep 29 09:31:32 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Mon Sep 29 08:54:54 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove base-name annotation when not built against released container; switch to released base container
+
+-------------------------------------------------------------------
+Thu Sep 25 16:25:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark container as released
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Thu Jul  3 12:10:53 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for SL16
+
+-------------------------------------------------------------------
+Fri May 23 11:24:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Fri May 16 08:22:33 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue May  6 11:22:25 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Mon Apr 28 10:48:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean also the system repository from the container
+
+-------------------------------------------------------------------
+Mon Apr 14 08:43:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- stylistic changes to pass dockerfmt
+
+-------------------------------------------------------------------
+Fri Feb 14 18:01:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end dates
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec  3 14:08:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change attribute order in _service
+
+-------------------------------------------------------------------
+Wed Oct 30 15:35:27 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
+Tue Oct 29 15:26:38 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop tag_version-%RELEASE%
+
+-------------------------------------------------------------------
+Mon Oct 14 11:26:06 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the version-%release tag the first one listed; remove duplicates where they existed; update image.ref/reference to point to the version-%release(-) tag
+
+-------------------------------------------------------------------
+Fri Oct 11 15:13:11 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
+Tue Oct  1 09:38:58 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- remove org.opencontainers.image.base for unreleased versions
+
+-------------------------------------------------------------------
+Thu Sep 26 09:56:37 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- add org.opencontainers.image.base.* labels
+
+-------------------------------------------------------------------
+Wed Sep 25 17:36:32 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- rerender installation step in multiple lines, allow uninstalling optional packages
+
+-------------------------------------------------------------------
+Wed Sep 25 17:12:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
+Fri Sep 20 11:50:02 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set full version on oci labels
+
+-------------------------------------------------------------------
+Thu Sep 12 10:37:35 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- set useobsrepositories explicitly
+
+-------------------------------------------------------------------
+Thu Aug 29 07:05:34 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the OpenJDK 21 runtime BCI
