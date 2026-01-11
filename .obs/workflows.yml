@@ -3,6 +3,10 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: 389-ds-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: base-fips-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -11,11 +15,43 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: bind-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: busybox-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: cosign-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: distribution-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: git-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: helm-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: init-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: kea-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: kiosk-firefox-esr-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: kiwi-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -28,6 +64,38 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
         source_package: minimal-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: nginx-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-17-devel-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-17-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-21-devel-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-21-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-25-devel-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: openjdk-25-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: pcp-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -51,11 +119,31 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: prometheus-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: pulseaudio-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: ruby-3.4-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: rust-oldstable-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: sle16-kernel-module-devel-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: stunnel-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: valkey-image
         target_project: home:pushman:BCI:CR:16.1:Staging
   filters:
     event: pull_request
@@ -76,16 +164,43 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:16.1
+        package: 389-ds-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: base-fips-image
     - trigger_services:
         project: devel:BCI:16.1
         package: base-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: bind-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: busybox-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: cosign-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: distribution-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: git-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: helm-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: init-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: kea-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: kiosk-firefox-esr-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: kiwi-image
     - trigger_services:
         project: devel:BCI:16.1
         package: micro-fips-image
@@ -95,6 +210,30 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: minimal-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: nginx-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-17-devel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-17-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-21-devel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-21-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-25-devel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: openjdk-25-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: pcp-image
     - trigger_services:
         project: devel:BCI:16.1
         package: php-apache8-image
@@ -112,10 +251,25 @@ refresh_devel_BCI:
         package: postgres-17-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: prometheus-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: ruby-3.4-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: rust-oldstable-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: sle16-kernel-module-devel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: stunnel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: valkey-image
   filters:
     event: push
     branches:
