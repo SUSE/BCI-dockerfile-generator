@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 12 07:33:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- revert to 1.89
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:16 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
