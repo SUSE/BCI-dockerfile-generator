@@ -172,6 +172,9 @@ class OsVersion(enum.Enum):
             return ("skelcd-EULA-sles",)
         if self.is_sle15:
             return ("skelcd-EULA-bci",)
+        # TODO: remove when SL16_1 is released
+        if self.value == OsVersion.SL16_1.value:
+            return ("skelcd-EULA-SLES",)
         if self.is_sl16:
             return ("skelcd-EULA-BCI",)
         return ()
