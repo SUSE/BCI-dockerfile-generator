@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 12 21:24:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to SLES eula for Beta phase
+
+-------------------------------------------------------------------
 Sun Jan  4 19:47:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - change into a docker build which reduces size and leftover files in the container
