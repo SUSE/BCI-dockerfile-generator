@@ -1,2 +1,2 @@
-requires:cargo1.91
-requires:rust1.91
+requires:cargo1.89
+requires:rust1.89
