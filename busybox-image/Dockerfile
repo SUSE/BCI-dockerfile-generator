@@ -25,7 +25,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt SLES-release skelcd-EULA-BCI
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt SLES-release skelcd-EULA-SLES
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
