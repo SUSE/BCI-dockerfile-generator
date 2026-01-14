@@ -210,12 +210,6 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         pkgs = self.fetch_rpm_packages()
 
         self.version = self._guess_version_from_pkglist(pkgs)
-
-        if self.version:
-            assert not self.additional_versions, (
-                f"The `additional_versions` property must be unset, but got {self.additional_versions}"
-            )
-
         self.custom_end = CUSTOM_END_TEMPLATE.render(image=self)
 
         super().prepare_template()
@@ -258,6 +252,9 @@ for os_version in (OsVersion.SP7,):
                 pretty_name=f".NET SDK {ver}",
                 is_sdk=True,
                 is_latest=_is_latest_dotnet(ver, os_version),
+                additional_versions=(
+                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+                ),
                 package_name=f"dotnet-{ver}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
@@ -298,6 +295,9 @@ for os_version in (OsVersion.SP7,):
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-runtime-{ver}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                additional_versions=(
+                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+                ),
                 package_list=["libicu"]
                 + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
                 third_party_repo_url=MS_REPO_BASEURL,
@@ -329,6 +329,9 @@ for os_version in (OsVersion.SP7,):
                 pretty_name=f"ASP.NET Core Runtime {ver}",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"aspnet-runtime-{ver}",
+                additional_versions=(
+                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+                ),
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
                 + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),

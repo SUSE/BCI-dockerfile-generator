@@ -40,6 +40,9 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
         "additional_names": ["node"],
+        "additional_versions": (
+            [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+        ),
         "version": node_version_replacement,
         "tag_version": str(ver),
         "package_list": [

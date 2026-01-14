@@ -71,6 +71,9 @@ def _get_openjdk_kwargs(
         "tag_version": java_version,
         "version": "%%java_version%%",
         "os_version": os_version,
+        "additional_versions": (
+            [f"{java_version}-{os_version.dist_id}"] if os_version.dist_id else []
+        ),
         "is_latest": is_latest,
         "supported_until": supported_until(os_version, java_version),
         "package_name": (

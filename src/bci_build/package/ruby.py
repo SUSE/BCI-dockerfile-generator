@@ -23,7 +23,10 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsV
         "package_name": f"ruby-{ruby_version}-image",
         "pretty_name": f"Ruby {ruby_version}",
         "version": ruby_version,
-        "additional_versions": [ruby_major],
+        "additional_versions": (
+            [ruby_major]
+            + ([f"{ruby_version}-{os_version.dist_id}"] if os_version.dist_id else [])
+        ),
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION
         and (
             (ruby_version == "3.4" and not os_version.is_tumbleweed)
