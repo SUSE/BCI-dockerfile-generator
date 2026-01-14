@@ -53,6 +53,9 @@ def _get_golang_kwargs(
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "tag_version": f"{ver}{variant}",
         "version": f"{golang_version_regex}{variant}",
+        "additional_versions": (
+            [f"{ver}{variant}-sle15"] if os_version.is_sle15 else None
+        ),
         "env": {
             "GOLANG_VERSION": golang_version_regex,
             "GOPATH": "/go",
