@@ -17,10 +17,10 @@
 
 #!BuildTag: suse/git:%%git_version%%-%RELEASE%
 #!BuildTag: suse/git:%%git_version%%
-#!BuildTag: suse/git:2.46
+#!BuildTag: suse/git:2.51
 #!BuildTag: suse/git:%%git_major_version%%
 #!BuildName: suse-git
-#!BuildVersion: 16.1.2.46
+#!BuildVersion: 16.1.2.51
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of git-core that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' git-core | \
-    cut -d '.' -f -2)" = "2.46" ]
+    cut -d '.' -f -2)" = "2.51" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
