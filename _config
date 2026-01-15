@@ -96,6 +96,12 @@ Ignore: krb5-mini:this-is-only-for-build-envs
 # All repos
 #
 
+%define beta_flag 1
+
+Macros:
+%beta_flag 1
+:Macros
+
 BuildFlags: excludebuild:rpm
 
 Prefer: -postgresql16-devel-mini -postgresql17-devel-mini -ALP-dummy-release -SLES_SAP-release
