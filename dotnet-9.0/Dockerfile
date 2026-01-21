@@ -89,10 +89,10 @@ COPY aspnetcore-targeting-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 COPY aspnetcore-runtime-9.0-9.0.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.12-1.x86_64.rpm sha256:efd76d65e1afc1d2c4961185ac6690bf073df0a7dafe7ecde8f8eaba9c3b1891
 COPY aspnetcore-runtime-9.0-9.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.309-1.aarch64.rpm sha256:3eb6bf34ccb0d9b8be4f0fb7c77d84b3d9c2ecdb9c41464013fa171e88c206e3
-COPY dotnet-sdk-9.0-9.0.309-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.309-1.x86_64.rpm sha256:4ccca89dab3e0931c5239597eadf32eb1c5dea9ae796cb7be71f5c15652bd0f4
-COPY dotnet-sdk-9.0-9.0.309-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.310-1.aarch64.rpm sha256:135f6ce87098db84c8cc5c88bd4622274970e4eaaa93e376a5eb7a987b1b026a
+COPY dotnet-sdk-9.0-9.0.310-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-sdk-9.0-9.0.310-1.x86_64.rpm sha256:236353b6e07f94e109751c484c02febcc705efadbba7fb1170a4a490cafe0af4
+COPY dotnet-sdk-9.0-9.0.310-1.x86_64.rpm /tmp/
 
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
