@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 21 16:10:06 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- update to new dotnet-sdk release
+
+-------------------------------------------------------------------
 Wed Jan 14 08:35:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to 9.0.12
