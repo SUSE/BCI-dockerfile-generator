@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 21 21:39:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set permissions on volume mount directory
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:12 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
