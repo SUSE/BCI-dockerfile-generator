@@ -360,10 +360,11 @@ REGISTRY_CONTAINERS = [
         )
         + (f"\n{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
         custom_end=(
-            "COPY --from=builder /etc/blkid.conf /etc\n"
-            if os_version.is_sle15
-            else None
-        ),
+            f"{DOCKERFILE_RUN} install -d -m 0755 -o registry -g registry /var/lib/docker-registry\n"
+            if not os_version.is_sle15
+            else ""
+        )
+        + ("COPY --from=builder /etc/blkid.conf /etc\n" if os_version.is_sle15 else ""),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
