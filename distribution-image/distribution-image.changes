@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 21 21:40:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set permissions on volume mount directory
+
+-------------------------------------------------------------------
 Thu Jan  1 14:16:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
