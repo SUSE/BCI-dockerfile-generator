@@ -1,0 +1,270 @@
+import datetime
+from typing import Literal
+
+from jinja2 import Template
+from packaging import version
+
+from bci_build.container_attributes import Arch
+from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
+from bci_build.package import DevelopmentContainer
+from bci_build.package import generate_disk_size_constraints
+from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.repomdparser import RpmPackage
+
+MS_REPO_KEY_FILE = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+
+mQENBFYxWIwBCADAKoZhZlJxGNGWzqV+1OG1xiQeoowKhssGAKvd+buXCGISZJwT
+LXZqIcIiLP7pqdcZWtE9bSc7yBY2MalDp9Liu0KekywQ6VVX1T72NPf5Ev6x6DLV
+7aVWsCzUAF+eb7DC9fPuFLEdxmOEYoPjzrQ7cCnSV4JQxAqhU4T6OjbvRazGl3ag
+OeizPXmRljMtUUttHQZnRhtlzkmwIrUivbfFPD+fEoHJ1+uIdfOzZX8/oKHKLe2j
+H632kvsNzJFlROVvGLYAk2WRcLu+RjjggixhwiB+Mu/A8Tf4V6b+YppS44q8EvVr
+M+QvY7LNSOffSO6Slsy9oisGTdfE39nC7pVRABEBAAG0N01pY3Jvc29mdCAoUmVs
+ZWFzZSBzaWduaW5nKSA8Z3Bnc2VjdXJpdHlAbWljcm9zb2Z0LmNvbT6JATUEEwEC
+AB8FAlYxWIwCGwMGCwkIBwMCBBUCCAMDFgIBAh4BAheAAAoJEOs+lK2+EinPGpsH
+/32vKy29Hg51H9dfFJMx0/a/F+5vKeCeVqimvyTM04C+XENNuSbYZ3eRPHGHFLqe
+MNGxsfb7C7ZxEeW7J/vSzRgHxm7ZvESisUYRFq2sgkJ+HFERNrqfci45bdhmrUsy
+7SWw9ybxdFOkuQoyKD3tBmiGfONQMlBaOMWdAsic965rvJsd5zYaZZFI1UwTkFXV
+KJt3bp3Ngn1vEYXwijGTa+FXz6GLHueJwF0I7ug34DgUkAFvAs8Hacr2DRYxL5RJ
+XdNgj4Jd2/g6T9InmWT0hASljur+dJnzNiNCkbn9KbX7J/qK1IbR8y560yRmFsU+
+NdCFTW7wY0Fb1fWJ+/KTsC4=
+=J6gs
+-----END PGP PUBLIC KEY BLOCK-----
+"""
+
+MS_REPO_BASEURL = "https://packages.microsoft.com/sles/15/prod/"
+
+MS_REPO_KEY_URL = "https://packages.microsoft.com/keys/microsoft.asc"
+
+LICENSE = """Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+CUSTOM_END_TEMPLATE = Template("""
+{%- if image.is_sdk -%}
+# telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+{%- endif %}
+
+{% if not image.is_sdk and image.use_nonprivileged_user -%}
+ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
+ENV DOTNET_VERSION={{ dotnet_version }}
+RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
+WORKDIR /app
+EXPOSE 8080
+{%- endif %}
+""")
+
+
+class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
+    #: Specifies whether this package contains the full .Net SDK
+    is_sdk: bool
+
+    #: Specifies whether this container needs a nonprivileged user (defaults to True for dotnet 8.0+)
+    use_nonprivileged_user: bool
+
+    def __init__(
+        self, is_sdk: bool = False, use_nonprivileged_user: bool = False, **kwargs
+    ):
+        self.is_sdk = is_sdk
+        self.use_nonprivileged_user = use_nonprivileged_user
+
+        super().__init__(**kwargs)
+
+        self.version = self._guess_version()
+
+        self.custom_end = CUSTOM_END_TEMPLATE.render(image=self)
+
+    def __post_init__(self):
+        if OsVersion.TUMBLEWEED == self.os_version:
+            raise ValueError(".NET is not supported for openSUSE Tumbleweed")
+
+        super().__post_init__()
+
+        # https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/aspnet-port
+        self.use_nonprivileged_user = False
+        if self.tag_version != "6.0":
+            self.use_nonprivileged_user = True
+
+        self.custom_description = (
+            "The " + self.pretty_name + " {based_on_container}. "
+            "The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. "
+            "You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
+        )
+
+        ver = version.parse(str(self.tag_version))
+
+        # Set the lifecycle information taken from
+        # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
+        self.supported_until = {
+            "8.0": datetime.date(2026, 11, 10),
+            "9.0": datetime.date(2026, 11, 10),
+            "10.0": datetime.date(2028, 11, 12),
+        }.get(str(self.tag_version))
+        assert self.supported_until, (
+            f".NET version missing in lifecycle information: {self.tag_version}"
+        )
+
+        self.extra_files.update(
+            {
+                "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
+                "LICENSE": LICENSE,
+                "_constraints": generate_disk_size_constraints(8),
+            }
+        )
+
+        self.custom_labelprefix_end = self.name.replace("-", ".")
+        min_release_counter = {"8.0": 60, "9.0": 20, "10.0": 0}[str(self.tag_version)]
+        self.min_release_counter = {
+            self.os_version: min_release_counter,
+        }
+
+    def _guess_version(self) -> str | None:
+        pkg = RpmPackage(name=f"dotnet-runtime-{self.tag_version}")
+        rpm_pkgs = self.fetch_rpm_package(pkg)
+
+        if not rpm_pkgs:
+            return None
+
+        if len(set([p.version for p in rpm_pkgs])) > 1:
+            raise ValueError("Version miss-match between architectures")
+
+        return rpm_pkgs[0].version
+
+
+_DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
+
+_DOTNET_VERSION_T = Literal["8.0", "9.0", "10.0"]
+
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0", "10.0"]
+
+_LATEST_DOTNET_VERSION = "10.0"
+
+assert _LATEST_DOTNET_VERSION in _DOTNET_VERSIONS
+assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS, key=version.parse)
+assert _DOTNET_VERSIONS[-1] == _LATEST_DOTNET_VERSION
+
+
+def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool:
+    return version == _LATEST_DOTNET_VERSION and os_version in CAN_BE_LATEST_OS_VERSION
+
+
+DOTNET_CONTAINERS: list[DotNetBCI] = []
+
+for os_version in (OsVersion.SP7,):
+    for ver in _DOTNET_VERSIONS:
+        DOTNET_CONTAINERS.append(
+            DotNetBCI(
+                os_version=os_version,
+                tag_version=ver,
+                name="dotnet-sdk",
+                pretty_name=f".NET SDK {ver}",
+                is_sdk=True,
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"dotnet-{ver}",
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    RpmPackage(name="dotnet-host", version=ver),
+                    RpmPackage(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
+                ]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-targeting-pack",
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                        "dotnet-apphost-pack",
+                        "aspnetcore-targeting-pack",
+                        "aspnetcore-runtime",
+                        "dotnet-sdk",
+                    )
+                ],
+            )
+        )
+
+    DOTNET_CONTAINERS.extend(
+        [
+            DotNetBCI(
+                os_version=os_version,
+                tag_version=ver,
+                name="dotnet-runtime",
+                is_sdk=False,
+                pretty_name=f".NET Runtime {ver}",
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"dotnet-runtime-{ver}",
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    RpmPackage(name="dotnet-host", version=ver),
+                ]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                    )
+                ],
+            )
+            for ver in _DOTNET_VERSIONS
+        ]
+    )
+
+    DOTNET_CONTAINERS.extend(
+        [
+            DotNetBCI(
+                tag_version=ver,
+                os_version=os_version,
+                name="dotnet-aspnet",
+                is_sdk=False,
+                pretty_name=f"ASP.NET Core Runtime {ver}",
+                is_latest=_is_latest_dotnet(ver, os_version),
+                package_name=f"aspnet-runtime-{ver}",
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    RpmPackage(name="dotnet-host", version=ver),
+                ]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                        "aspnetcore-runtime",
+                    )
+                ],
+            )
+            for ver in _DOTNET_VERSIONS
+        ]
+    )
