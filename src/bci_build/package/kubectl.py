@@ -1,9 +1,12 @@
 """Kubectl (Kubernetes client) BCI container"""
 
+import textwrap
+
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
@@ -61,11 +64,23 @@ KUBECTL_CONTAINERS = [
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        package_list=[f"kubernetes{ver}-client", "diffutils"],
+        package_list=(
+            [f"kubernetes{ver}-client", "diffutils"]
+            + (["helm3"] if os_version.is_tumbleweed else ["helm"])
+        ),
         entrypoint=["kubectl"],
         license="Apache-2.0",
         support_level=SupportLevel.L3,
         logo_url="https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png",
+        build_stage_custom_end=(
+            f"{DOCKERFILE_RUN} ln -s /usr/bin/helm3 /target/usr/local/bin/helm"
+            if os_version.is_tumbleweed
+            else None
+        ),
+        custom_end=textwrap.dedent(f"""
+            {DOCKERFILE_RUN} echo "user:x:999:100:User for CLI:/home/user:/usr/sbin/nologin" >> /etc/passwd && install -d -o 999 -g 100 -m 0755 /home/user
+            WORKDIR /home/user
+            """),
     )
     for ver, os_version in (
         [
