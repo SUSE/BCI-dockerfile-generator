@@ -1,0 +1,6 @@
+[amdgpu-driver]
+name=amdgpu-driver
+baseurl=https://repo.radeon.com/amdgpu/7.0.3/sle/15.7/main/x86_64/
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key
