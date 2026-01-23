@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 23 09:25:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update asseturl references to the reflect the changed repository layout
+
+-------------------------------------------------------------------
 Wed Jan 14 08:35:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to 9.0.12
