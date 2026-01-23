@@ -1068,6 +1068,8 @@ exit 0
 
         self.prepare_template()
 
+        os.makedirs(dest, mode=0o755, exist_ok=True)
+
         async def write_file_to_dest(fname: str, contents: str | bytes) -> None:
             await write_to_file(os.path.join(dest, fname), contents)
 
