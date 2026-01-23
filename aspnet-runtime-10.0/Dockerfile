@@ -54,25 +54,25 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 RUN mkdir -p /tmp/
 
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.2-1.aarch64.rpm sha256:bc56336486353c798829dac915538b9cbebca025fb3085874bf37c0333961465
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/bc/5633/dotnet-host-10.0.2-1.aarch64.rpm sha256:bc56336486353c798829dac915538b9cbebca025fb3085874bf37c0333961465
 COPY dotnet-host-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.2-1.x86_64.rpm sha256:74a69d58f31884304ebdff75ab2bf3bf3f8df3f323f54f1b51f43769d8d05a0e
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/74/a69d/dotnet-host-10.0.2-1.x86_64.rpm sha256:74a69d58f31884304ebdff75ab2bf3bf3f8df3f323f54f1b51f43769d8d05a0e
 COPY dotnet-host-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm sha256:682ee2c3fbb1db843e2d09eb909872b4048217e2c3c833402d4e8772344356df
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/68/2ee2/dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm sha256:682ee2c3fbb1db843e2d09eb909872b4048217e2c3c833402d4e8772344356df
 COPY dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm sha256:f8ed4a40ccd07eff2df90579dbb5245a609731f0fa21a423dcf1c52f3f2ab6e4
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f8/ed4a/dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm sha256:f8ed4a40ccd07eff2df90579dbb5245a609731f0fa21a423dcf1c52f3f2ab6e4
 COPY dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm sha256:9aee48de81a7dbb3cc2a240523723bb34b42e3b51e98c71c4b45ee7cb80142f7
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/9a/ee48/dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm sha256:9aee48de81a7dbb3cc2a240523723bb34b42e3b51e98c71c4b45ee7cb80142f7
 COPY dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm sha256:23f321a39a9fa127b8b16d6bcd2d5b7ce860e388671d2d8042f5b66cced538ee
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/23/f321/dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm sha256:23f321a39a9fa127b8b16d6bcd2d5b7ce860e388671d2d8042f5b66cced538ee
 COPY dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.2-1.aarch64.rpm sha256:84a32b565ea7776d6dbf26ef20bbd700f3654bb67c68e425f267dbda974b9d6d
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/84/a32b/dotnet-runtime-10.0-10.0.2-1.aarch64.rpm sha256:84a32b565ea7776d6dbf26ef20bbd700f3654bb67c68e425f267dbda974b9d6d
 COPY dotnet-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.2-1.x86_64.rpm sha256:c7b629622f2047776553e2e99aa92f760017bcd45167678397d64609581f1a68
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/c7/b629/dotnet-runtime-10.0-10.0.2-1.x86_64.rpm sha256:c7b629622f2047776553e2e99aa92f760017bcd45167678397d64609581f1a68
 COPY dotnet-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm sha256:8deb174725abaffa7558f608fcd01fda86c1c4585b80451ad8cbeee896ba7eeb
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/8d/eb17/aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm sha256:8deb174725abaffa7558f608fcd01fda86c1c4585b80451ad8cbeee896ba7eeb
 COPY aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm sha256:ffda8812b061d1e94215a0c2ef3580d12115ab2ac3de164528ffe59fe3d6b84a
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/ff/da88/aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm sha256:ffda8812b061d1e94215a0c2ef3580d12115ab2ac3de164528ffe59fe3d6b84a
 COPY aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
 
 
