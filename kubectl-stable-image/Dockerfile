@@ -30,7 +30,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.35-client diffutils
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.35-client diffutils helm
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -68,3 +68,6 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png"
 ENTRYPOINT ["kubectl"]
+
+RUN set -euo pipefail; echo "user:x:999:100:User for CLI:/home/user:/usr/sbin/nologin" >> /etc/passwd && install -d -o 999 -g 100 -m 0755 /home/user
+WORKDIR /home/user

@@ -10,17 +10,27 @@ Kubectl is a command line tool for communicating with a Kubernetes cluster's con
 To run commands inside the container for the current cluster for which the kubeconfig is available in `/root/.kube.config`:
 
 ```ShellSession
-podman run --rm --name kubectl\
+podman run --rm --name kubectl \
       registry.suse.com/suse/kubectl:1.35 get nodes
 ```
 
 To pass configuration of a remote cluster to the container:
 
 ```ShellSession
-podman run --rm --name kubectl\
+podman run --rm --name kubectl \
       -v /localpath/to/kubeconfig:/root/.kube/config:Z
       registry.suse.com/suse/kubectl:1.35 get nodes
 ```
+
+This container also includes Helm, the package manager for Kubernetes and Helm charts.
+You can use `kubectl customize --enable-helm` for charts:
+
+```ShellSession
+podman run --rm --name kubectl \
+      -v /localpath/to/customize:/home/user:Z
+      registry.suse.com/suse/kubectl:1.35 kustomize --enable-helm
+```
+
 
 ## Licensing
 
