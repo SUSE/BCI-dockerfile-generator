@@ -41,8 +41,10 @@ def generate_package_version_check(
     cut -d '.' -f -{cut_count})" = "{pkg_version}" ]"""
 
 
-def generate_from_image_tag(os_version: OsVersion, container_name: str) -> str:
+def generate_from_image_tag(
+    os_version: OsVersion, container_name: str, fqdn: bool = True
+) -> str:
     repo = f"{_build_tag_prefix(os_version)}/{container_name}:{OsContainer.version_to_container_os_version(os_version)}"
-    if not os_version.is_tumbleweed and os_version in RELEASED_OS_VERSIONS:
+    if fqdn and not os_version.is_tumbleweed and os_version in RELEASED_OS_VERSIONS:
         return f"registry.suse.com/{repo}"
     return repo
