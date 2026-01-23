@@ -301,7 +301,13 @@ class BaseContainerImage(abc.ABC):
 
         if not self.package_name:
             self.package_name = f"{self.name}-image"
-        if not self.package_list:
+
+        if hasattr(self, "third_party_package_list"):
+            package_list = self.third_party_package_list
+        else:
+            package_list = self.package_list
+
+        if not package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
         if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
             raise ValueError(f"{Arch.LOCAL} must not appear in {self.exclusive_arch=}")
@@ -671,7 +677,7 @@ exit 0
         packages_to_install: list[str] = []
         for pkg in self.package_list:
             if isinstance(pkg, Package):
-                if pkg.pkg_type == PackageType.DELETE:
+                if pkg.pkg_type in [PackageType.DELETE, PackageType.BOOTSTRAP]:
                     continue
                 if pkg.pkg_type != PackageType.IMAGE:
                     raise ValueError(
@@ -679,6 +685,16 @@ exit 0
                     )
             packages_to_install.append(str(pkg))
         return " ".join(packages_to_install)
+
+    @property
+    def packages_to_bootstrap(self) -> str:
+        """The list of packages joined that is installed in the first stage in a multi stage image."""
+        packages: list[str] = [
+            str(pkg)
+            for pkg in self.package_list
+            if (isinstance(pkg, Package) and pkg.pkg_type == PackageType.BOOTSTRAP)
+        ]
+        return " ".join(packages)
 
     @property
     def packages_to_delete(self) -> str:
