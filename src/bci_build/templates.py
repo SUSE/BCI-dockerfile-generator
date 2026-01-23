@@ -46,7 +46,9 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {%- if image.from_target_image %}
 COPY --from=target / /target
 {%- endif %}
-
+{% if image.packages_to_bootstrap -%}
+{{ DOCKERFILE_RUN }} zypper -n install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages_to_bootstrap }}
+{%- endif %}
 {% if image.packages %}{{ DOCKERFILE_RUN }} \\
     {% if image.from_target_image -%}
       {%- if image.os_version.is_sle15 %}export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1;

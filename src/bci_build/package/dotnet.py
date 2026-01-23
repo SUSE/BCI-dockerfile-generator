@@ -1,18 +1,9 @@
 """
 This module contains classes and functions related to updating and generating Dockerfiles for .NET development containers.
-
-The main classes in this module are:
-- Package: Represents a package with its name and architecture.
-- RpmPackage: Represents an RPM package with additional attributes like version and URL.
-- DotNetBCI: Represents a .NET development container based on the SLE Base Container Image.
 """
 
 import datetime
 import functools
-import logging
-from dataclasses import dataclass
-from dataclasses import field
-from typing import ClassVar
 from typing import Literal
 
 from jinja2 import Template
@@ -20,17 +11,15 @@ from packaging import version
 from version_utils import rpm
 
 from bci_build.container_attributes import Arch
-from bci_build.logger import LOGGER
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
-from bci_build.package import LOG_CLEAN
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.thirdparty import ThirdPartyPackage
+from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.repomdparser import RpmPackage
 
-from .repomdparser import RepoMDParser
-from .repomdparser import RpmPackage
-
-MS_ASC = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+MS_REPO_KEY_FILE = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.7 (GNU/Linux)
 
 mQENBFYxWIwBCADAKoZhZlJxGNGWzqV+1OG1xiQeoowKhssGAKvd+buXCGISZJwT
@@ -53,13 +42,7 @@ NdCFTW7wY0Fb1fWJ+/KTsC4=
 
 MS_REPO_BASEURL = "https://packages.microsoft.com/sles/15/prod/"
 
-MS_REPO = f"""[packages-microsoft-com-prod]
-name=packages-microsoft-com-prod
-baseurl={MS_REPO_BASEURL}
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-"""
+MS_REPO_KEY_URL = "https://packages.microsoft.com/keys/microsoft.asc"
 
 LICENSE = """Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -80,74 +63,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-CUSTOM_END_TEMPLATE = Template(
-    """{% if image.is_sdk %}# telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1{% endif %}
+CUSTOM_END_TEMPLATE = Template("""
+{%- if image.is_sdk -%}
+COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
-RUN mkdir -p /tmp/
-
-{% for pkg in dotnet_packages -%}
-#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
-COPY {{ pkg.url.split('/') | last }} /tmp/
-{% endfor %}
+# telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+{%- endif %}
 
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
 RUN zypper -n install --no-recommends coreutils sles-release
 
-# Importing MS GPG keys
-COPY microsoft.asc /tmp
-RUN rpm --import /tmp/microsoft.asc
-
-RUN zypper -n install --no-recommends libicu {% if image.os_version.is_sle15 -%} libopenssl1_1{%- else -%} libopenssl3{%- endif %}
-RUN if [ "$(uname -m)" = "aarch64" ]; then zypper -n install /tmp/*aarch64.rpm; elif [ "$(uname -m)" = "x86_64" ]; then zypper -n install /tmp/*x64.rpm /tmp/*x86_64.rpm; fi
-
-COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
-
-RUN rm -rf /tmp/* && zypper clean -a && """
-    + LOG_CLEAN
-    + """
-
-{% if not image.is_sdk and image.use_nonprivileged_user %}
+{% if not image.is_sdk and image.use_nonprivileged_user -%}
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION={{ dotnet_version }}
+ENV DOTNET_VERSION={{ image.version }}
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
-{% endif %}
-"""
-)
+{%- endif %}
+""")
 
 
-@dataclass(frozen=True)
-class Package:
-    name: str
-    arch: Arch
+class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
+    """Represents a .NET development container based on the SLE Base Container Image."""
 
-    def __str__(self) -> str:
-        return self.name
-
-
-_DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
-
-
-@dataclass
-class DotNetBCI(DevelopmentContainer):
     #: Specifies whether this package contains the full .Net SDK
-    is_sdk: bool = False
+    is_sdk: bool
 
     #: Specifies whether this container needs a nonprivileged user (defaults to True for dotnet 8.0+)
-    use_nonprivileged_user: bool = False
+    use_nonprivileged_user: bool
 
-    package_list: list[str | Package] | list[str] = field(default_factory=list)
+    def __init__(self, is_sdk: bool, use_nonprivileged_user: bool = False, **kwargs):
+        self.is_sdk = is_sdk
+        self.use_nonprivileged_user = use_nonprivileged_user
 
-    _base: ClassVar[RepoMDParser | None] = None
-
-    _logger: ClassVar[logging.Logger] = LOGGER
+        super().__init__(**kwargs)
 
     def __post_init__(self):
         if OsVersion.TUMBLEWEED == self.os_version:
-            raise ValueError(".Net BCIs are not supported for openSUSE Tumbleweed")
+            raise ValueError(".NET is not supported for openSUSE Tumbleweed")
+
         super().__post_init__()
 
         # https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/aspnet-port
@@ -171,55 +126,22 @@ class DotNetBCI(DevelopmentContainer):
             "10.0": datetime.date(2028, 11, 12),
         }.get(str(self.tag_version))
         assert self.supported_until, (
-            f".Net version missing in lifecycle information: {self.tag_version}"
+            f".NET version missing in lifecycle information: {self.tag_version}"
         )
 
-        self.extra_files = {
-            "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
-            "microsoft.asc": MS_ASC,
-            "prod.repo": MS_REPO,
-            "LICENSE": LICENSE,
-            "_constraints": generate_disk_size_constraints(8),
-        }
+        self.extra_files.update(
+            {
+                "dotnet-host.check": f"requires:dotnet-host < {ver.major}.{ver.minor + 1}",
+                "LICENSE": LICENSE,
+                "_constraints": generate_disk_size_constraints(8),
+            }
+        )
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
-        self.exclusive_arch = _DOTNET_EXCLUSIVE_ARCH
         min_release_counter = {"8.0": 60, "9.0": 20, "10.0": 0}[str(self.tag_version)]
         self.min_release_counter = {
             self.os_version: min_release_counter,
         }
-
-    def _fetch_ordinary_package(self, pkg: str | Package) -> list[RpmPackage]:
-        """Fetches the package `pkg` from the microsoft .Net repository.
-
-        Returns:
-            list of :py:class:`RpmPackage` representing the downloaded rpms, one for each architecture
-        """
-        assert self._base and self.exclusive_arch
-        pkgs = []
-        pkg_name = str(pkg)
-
-        for arch in self.exclusive_arch:
-            if isinstance(pkg, Package) and pkg.arch != arch:
-                continue
-
-            pkgs_for_arch = DotNetBCI._base.query(
-                name=pkg_name, arch=str(arch), latest=True
-            )
-            self._logger.debug("Found package %s: %s", pkg_name, pkgs_for_arch)
-            if len(pkgs_for_arch) != 1:
-                raise RuntimeError(
-                    f"Repository contains {len(pkgs_for_arch)} packages with name='{pkg_name}' for {str(arch)}"
-                )
-
-            pkgs.append(pkgs_for_arch[0])
-
-        if isinstance(pkg, str):
-            assert len(pkgs) == len(self.exclusive_arch), (
-                "Must find one package per architecture"
-            )
-
-        return pkgs
 
     def _fetch_dotnet_host(self) -> list[RpmPackage]:
         """Fetches the dotnet-host package belonging to this image's major version.
@@ -235,10 +157,10 @@ class DotNetBCI(DevelopmentContainer):
         Returns:
             list of :py:class:`RpmPackage` representing the downloaded rpm
         """
-        assert self._base and self.exclusive_arch
+        assert self.exclusive_arch
         pkgs = []
         for arch in self.exclusive_arch:
-            pkgs_per_arch = DotNetBCI._base.query(
+            pkgs_per_arch = self._repo_parser.query(
                 name="dotnet-host", arch=str(arch), latest=False
             )
             matching_pkg = [
@@ -246,42 +168,13 @@ class DotNetBCI(DevelopmentContainer):
                 for pkg in pkgs_per_arch
                 if pkg.evr[1][: len(str(self.tag_version))] == self.tag_version
             ]
-            self._logger.debug(
-                "found the following packages matching dotnet-host version %s: %s",
-                self.tag_version,
-                matching_pkg,
-            )
             latest_pkg = sorted(
                 matching_pkg,
                 key=functools.cmp_to_key(lambda a, b: rpm.labelCompare(a.evr, b.evr)),
             )[-1]
-            self._logger.debug("latest package versions: %s", latest_pkg)
             pkgs.append(latest_pkg)
 
         return pkgs
-
-    def _fetch_packages(self) -> list[RpmPackage]:
-        """Fetches all packages in self.packages from the Microsoft .Net repo
-        and returns the list of files.
-
-        """
-        assert self.exclusive_arch
-        rpm_pkgs: list[RpmPackage] = []
-        for pkg in self.package_list:
-            if pkg == "dotnet-host":
-                rpm_pkgs.extend(self._fetch_dotnet_host())
-            else:
-                rpm_pkgs.extend(self._fetch_ordinary_package(pkg))
-
-        for pkg in rpm_pkgs:
-            assert pkg.arch in str(self.exclusive_arch), (
-                f"arch {pkg.arch} not in {str(self.exclusive_arch)}"
-            )
-
-            assert "/" not in pkg.name
-            assert pkg.url.startswith(MS_REPO_BASEURL)
-
-        return rpm_pkgs
 
     def _guess_version_from_pkglist(self, pkg_list: list[RpmPackage]) -> str | None:
         assert self.exclusive_arch
@@ -305,30 +198,38 @@ class DotNetBCI(DevelopmentContainer):
                     )
             return ver
 
-    def prepare_template(self) -> None:
-        assert self.package_list
-        if not DotNetBCI._base:
-            DotNetBCI._base = RepoMDParser()
-            DotNetBCI._base.parse(MS_REPO_BASEURL)
+    def fetch_rpm_package(
+        self, pkg: ThirdPartyPackage, latest: bool = True
+    ) -> list[RpmPackage]:
+        if pkg.name == "dotnet-host":
+            return self._fetch_dotnet_host()
+        else:
+            return super().fetch_rpm_package(pkg, latest)
 
-        pkgs = self._fetch_packages()
+    def prepare_template(self) -> None:
+        pkgs = self.fetch_rpm_packages()
+
         self.version = self._guess_version_from_pkglist(pkgs)
+
         if self.version:
             assert not self.additional_versions, (
-                f"additional_versions property must be unset, but got {self.additional_versions}"
+                f"The `additional_versions` property must be unset, but got {self.additional_versions}"
             )
 
-        self.custom_end = CUSTOM_END_TEMPLATE.render(
-            image=self,
-            dotnet_packages=pkgs,
-            dotnet_version=self.version,
-        )
-
-        # HACK ugly workaround to avoid installing these packages via zypper in the template generation
-        self.package_list = []
+        self.custom_end = CUSTOM_END_TEMPLATE.render(image=self)
 
         super().prepare_template()
 
+    @property
+    def repo_filename(self):
+        return "microsoft-dotnet-prod.repo"
+
+    @property
+    def repo_key_filename(self):
+        return "microsoft.asc"
+
+
+_DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 
 _DOTNET_VERSION_T = Literal["8.0", "9.0", "10.0"]
 
@@ -349,23 +250,6 @@ DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 for os_version in (OsVersion.SP7,):
     for ver in _DOTNET_VERSIONS:
-        package_list: list[Package | str] = [
-            "dotnet-host",
-            Package(name="netstandard-targeting-pack-2.1", arch=Arch.X86_64),
-        ] + [
-            f"{pkg}-{ver}"
-            for pkg in (
-                "dotnet-targeting-pack",
-                "dotnet-hostfxr",
-                "dotnet-runtime-deps",
-                "dotnet-runtime",
-                "dotnet-apphost-pack",
-                "aspnetcore-targeting-pack",
-                "aspnetcore-runtime",
-                "dotnet-sdk",
-            )
-        ]
-
         DOTNET_CONTAINERS.append(
             DotNetBCI(
                 os_version=os_version,
@@ -375,7 +259,31 @@ for os_version in (OsVersion.SP7,):
                 is_sdk=True,
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-{ver}",
-                package_list=package_list,
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    "dotnet-host",
+                    ThirdPartyPackage(
+                        name="netstandard-targeting-pack-2.1", arch=Arch.X86_64
+                    ),
+                ]
+                + [
+                    f"{pkg}-{ver}"
+                    for pkg in (
+                        "dotnet-targeting-pack",
+                        "dotnet-hostfxr",
+                        "dotnet-runtime-deps",
+                        "dotnet-runtime",
+                        "dotnet-apphost-pack",
+                        "aspnetcore-targeting-pack",
+                        "aspnetcore-runtime",
+                        "dotnet-sdk",
+                    )
+                ],
             )
         )
 
@@ -389,7 +297,15 @@ for os_version in (OsVersion.SP7,):
                 pretty_name=f".NET Runtime {ver}",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"dotnet-runtime-{ver}",
-                package_list=["dotnet-host"]
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    "dotnet-host",
+                ]
                 + [
                     f"{pkg}-{ver}"
                     for pkg in (
@@ -413,7 +329,15 @@ for os_version in (OsVersion.SP7,):
                 pretty_name=f"ASP.NET Core Runtime {ver}",
                 is_latest=_is_latest_dotnet(ver, os_version),
                 package_name=f"aspnet-runtime-{ver}",
-                package_list=["dotnet-host"]
+                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                package_list=["libicu"]
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                third_party_repo_url=MS_REPO_BASEURL,
+                third_party_repo_key_url=MS_REPO_KEY_URL,
+                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_package_list=[
+                    "dotnet-host",
+                ]
                 + [
                     f"{pkg}-{ver}"
                     for pkg in (

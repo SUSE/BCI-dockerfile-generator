@@ -664,14 +664,11 @@ exit 0
 
     @property
     def packages(self) -> str:
-        """The list of packages joined so that it can be appended to a
-        :command:`zypper install`.
-
-        """
+        """The packages list so that it can be appended to a :command:`zypper install`."""
         packages_to_install: list[str] = []
         for pkg in self.package_list:
             if isinstance(pkg, Package):
-                if pkg.pkg_type == PackageType.DELETE:
+                if pkg.pkg_type in (PackageType.DELETE, PackageType.BOOTSTRAP):
                     continue
                 if pkg.pkg_type != PackageType.IMAGE:
                     raise ValueError(
@@ -681,8 +678,18 @@ exit 0
         return " ".join(packages_to_install)
 
     @property
+    def packages_to_bootstrap(self) -> str:
+        """The packages list that is installed in the first stage in a multi stage image."""
+        packages: list[str] = [
+            str(pkg)
+            for pkg in self.package_list
+            if (isinstance(pkg, Package) and pkg.pkg_type == PackageType.BOOTSTRAP)
+        ]
+        return " ".join(packages)
+
+    @property
     def packages_to_delete(self) -> str:
-        """The list of packages joined that can be passed to zypper -n rm after an install`."""
+        """The packages list that can be passed to zypper -n rm after an install`."""
         packages_to_delete: list[str] = [
             str(pkg)
             for pkg in self.package_list
@@ -1461,8 +1468,6 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
-from dotnet.updater import DOTNET_CONTAINERS  # noqa: E402
-
 from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
@@ -1482,6 +1487,7 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .bind import BIND_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
+from .dotnet import DOTNET_CONTAINERS  # noqa: E402
 from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
