@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 26 09:06:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.92 for stable, 1.91 for oldstable
+
+-------------------------------------------------------------------
 Thu Jan  1 14:16:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
