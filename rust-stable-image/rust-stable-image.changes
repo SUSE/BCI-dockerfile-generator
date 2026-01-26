@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 26 09:06:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.92 for stable, 1.91 for oldstable
+
+-------------------------------------------------------------------
 Sun Jan 11 18:26:18 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
