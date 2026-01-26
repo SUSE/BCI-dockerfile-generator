@@ -97,7 +97,7 @@ RUST_CONTAINERS = [
             "RUST_VERSION": "%%RUST_VERSION%%",
             "CARGO_VERSION": "%%CARGO_VERSION%%",
         }
-        | ({"CC": _RUST_CC_PATH} if os_version.is_sle15 else {}),
+        | ({"CC": _RUST_CC_PATH} if not os_version.is_tumbleweed else {}),
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6),
@@ -122,7 +122,7 @@ requires:rust{rust_version}
             # workaround for cc only existing as /usr/bin/gcc-N
             RUN ln -sf $(ls /usr/bin/gcc-* | grep -P ".*gcc-[[:digit:]]+") ${CC} && ${CC} --version
             """
-            if os_version.is_sle15
+            if not os_version.is_tumbleweed
             else ""
         )
         + f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
