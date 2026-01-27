@@ -34,6 +34,7 @@ def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
             # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
             "coreutils",
         )
+        + (("patterns-base-fips",) if os_version.is_sle15 else ())
         + os_version.eula_package_names
         + os_version.release_package_names
     ]
@@ -63,7 +64,7 @@ MICRO_CONTAINERS = [
         build_stage_custom_end=(
             (
                 f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
-                if os_version.is_sle15 or os_version.is_sl16
+                if not os_version.is_tumbleweed
                 else ""
             )
             + textwrap.dedent(f"""
@@ -311,8 +312,10 @@ FIPS_MICRO_CONTAINERS = [
         custom_description="A micro container in FIPS-140-3 mode for containers {based_on_container}.",
         from_target_image="scratch",
         cmd=["/bin/sh"],
-        package_list=[pkg.name for pkg in _get_micro_package_list(os_version)]
-        + ["patterns-base-fips", "libopenssl3"],
+        package_list=sorted(
+            [pkg.name for pkg in _get_micro_package_list(os_version)]
+            + ["patterns-base-fips", "libopenssl3"]
+        ),
         build_stage_custom_end=textwrap.dedent(
             f"""
             {DOCKERFILE_RUN} zypper -n install jdupes \\
@@ -331,7 +334,10 @@ FIPS_MICRO_CONTAINERS = [
 def _get_minimal_kwargs(os_version: OsVersion):
     package_list = [
         Package(name, pkg_type=PackageType.DELETE)
-        for name in ("grep", "diffutils", "info", "fillup", "libzio1")
+        for name in sorted(
+            ["grep", "diffutils", "info", "fillup", "libzio1"]
+            + (["patterns-base-fips"] if os_version.is_sle15 else [])
+        )
     ]
     # the last user of libpcre1 on SP6 is grep which we deinstall above
     if os_version in (OsVersion.SP6,):
