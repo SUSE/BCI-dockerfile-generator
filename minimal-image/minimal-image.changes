@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 27 17:06:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- reorder packages alphabetically
+
+-------------------------------------------------------------------
 Mon Jan 12 21:24:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to SLES eula for Beta phase
