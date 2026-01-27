@@ -26,7 +26,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils skelcd-EULA-bci sles-release patterns-base-fips libopenssl3
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils libopenssl3 patterns-base-fips patterns-base-fips skelcd-EULA-bci sles-release
 
 RUN set -euo pipefail; zypper -n install jdupes \
     && jdupes -1 -L -r /target/usr/
