@@ -145,6 +145,7 @@ class Sles15Image(OsContainer):
                     "suse/ltss/sle%OS_VERSION_ID_SP%/sle15:latest",
                     f"suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:{self.image_ref_name}",
                     "suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:%OS_VERSION_ID_SP%",
+                    "suse/ltss/sle%OS_VERSION_ID_SP%/bci-base:latest",
                 )
             )
         elif self.os_version.is_sle15:
