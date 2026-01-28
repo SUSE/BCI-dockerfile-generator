@@ -439,7 +439,7 @@ BUSYBOX_CONTAINERS = [
 
 KERNEL_MODULE_CONTAINERS = []
 
-for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
+for os_version in set(ALL_BASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}:
     if os_version.is_sl16:
         prefix = "sle16"
         pretty_prefix = "SLES 16"
@@ -489,6 +489,7 @@ for os_version in ALL_OS_VERSIONS - {OsVersion.TUMBLEWEED}:
                 {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
                 """
             )
+            + f"{DOCKERFILE_RUN} sed -i -e 's,multiversion =.*,multiversion = ,' /etc/zypp/zypp.conf\n"
             + f"{DOCKERFILE_RUN} {LOG_CLEAN}",
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
