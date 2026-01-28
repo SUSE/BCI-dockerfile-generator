@@ -25,7 +25,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends curl gawk nginx findutils envsubst
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends curl gawk nginx findutils envsubst sed grep
 # sanity check that the version from the tag is equal to the version of nginx that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' nginx | \
@@ -69,5 +69,5 @@ COPY [1-3]0-*.sh /docker-entrypoint.d/
 COPY docker-entrypoint.sh /usr/local/bin
 COPY index.html /srv/www/htdocs/
 RUN set -euo pipefail; chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-RUN set -euo pipefail; install -d -o nginx -g nginx -m 750 /var/log/nginx;                 ln -sf /dev/stdout /var/log/nginx/access.log;                 ln -sf /dev/stderr /var/log/nginx/error.log
+RUN set -euo pipefail; install -d -o nginx -g nginx -m 750 /var/log/nginx;                 install -d /var/cache/nginx /var/run/nginx;                 ln -sf /dev/stdout /var/log/nginx/access.log;                 ln -sf /dev/stderr /var/log/nginx/error.log;                 chown -R nginx:nginx /var/cache/nginx;                 chown -R nginx:nginx /etc/nginx;                 chown -R nginx:nginx /var/run/nginx;                 install -d -o nginx -g nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;                 chown -R nginx:nginx /tmp;                 chmod -R g+w /var/cache/nginx /var/log/nginx /etc/nginx /var/run/nginx /tmp
 STOPSIGNAL SIGQUIT
