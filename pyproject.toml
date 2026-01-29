@@ -11,7 +11,6 @@ packages = [
     { include = "bci_dockerfile_generator", from = "src" },
     { include = "bci_build", from = "src" },
     { include = "staging", from = "src" },
-    { include = "dotnet", from = "src" },
 ]
 requires-python = ">=3.11,<4.0"
 
