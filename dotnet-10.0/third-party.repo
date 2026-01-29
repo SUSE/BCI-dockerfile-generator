@@ -1,5 +1,5 @@
-[packages-microsoft-com-prod]
-name=packages-microsoft-com-prod
+[dotnet-sdk]
+name=dotnet-sdk
 baseurl=https://packages.microsoft.com/sles/15/prod/
 enabled=1
 gpgcheck=1
