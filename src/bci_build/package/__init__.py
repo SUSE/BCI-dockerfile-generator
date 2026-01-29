@@ -301,7 +301,13 @@ class BaseContainerImage(abc.ABC):
 
         if not self.package_name:
             self.package_name = f"{self.name}-image"
-        if not self.package_list:
+
+        if hasattr(self, "third_party_package_list"):
+            package_list = self.third_party_package_list
+        else:
+            package_list = self.package_list
+
+        if not package_list:
             raise ValueError(f"No packages were added to {self.pretty_name}.")
         if self.exclusive_arch and Arch.LOCAL in self.exclusive_arch:
             raise ValueError(f"{Arch.LOCAL} must not appear in {self.exclusive_arch=}")
@@ -671,7 +677,7 @@ exit 0
         packages_to_install: list[str] = []
         for pkg in self.package_list:
             if isinstance(pkg, Package):
-                if pkg.pkg_type == PackageType.DELETE:
+                if pkg.pkg_type in [PackageType.DELETE, PackageType.BOOTSTRAP]:
                     continue
                 if pkg.pkg_type != PackageType.IMAGE:
                     raise ValueError(
@@ -679,6 +685,16 @@ exit 0
                     )
             packages_to_install.append(str(pkg))
         return " ".join(packages_to_install)
+
+    @property
+    def packages_to_bootstrap(self) -> str:
+        """The list of packages joined that is installed in the first stage in a multi stage image."""
+        packages: list[str] = [
+            str(pkg)
+            for pkg in self.package_list
+            if (isinstance(pkg, Package) and pkg.pkg_type == PackageType.BOOTSTRAP)
+        ]
+        return " ".join(packages)
 
     @property
     def packages_to_delete(self) -> str:
@@ -1067,6 +1083,8 @@ exit 0
         tasks = []
 
         self.prepare_template()
+
+        os.makedirs(dest, mode=0o755, exist_ok=True)
 
         async def write_file_to_dest(fname: str, contents: str | bytes) -> None:
             await write_to_file(os.path.join(dest, fname), contents)
@@ -1459,8 +1477,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
-from dotnet.updater import DOTNET_CONTAINERS  # noqa: E402
-
+from .amdgpu import AMD_GPU_CONTAINERS  # noqa: E402
 from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
@@ -1480,6 +1497,7 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .bind import BIND_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
+from .dotnet import DOTNET_CONTAINERS  # noqa: E402
 from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
@@ -1529,6 +1547,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *BCI_CI_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
+        *AMD_GPU_CONTAINERS,
         *DOTNET_CONTAINERS,
         *PCP_CONTAINERS,
         *REGISTRY_CONTAINERS,
