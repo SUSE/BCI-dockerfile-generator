@@ -66,13 +66,11 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="grep"/>
     <package name="info"/>
     <package name="libzio1"/>
-    <package name="patterns-base-fips"/>
   </packages>
   <packages type="bootstrap">
     <package name="bash"/>
     <package name="ca-certificates-mozilla-prebuilt"/>
     <package name="coreutils"/>
-    <package name="patterns-base-fips"/>
     <package name="skelcd-EULA-bci"/>
     <package name="sles-release"/>
     <package name="jdupes"/>

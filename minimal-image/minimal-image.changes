@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 29 16:02:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- revert patterns-base-fips addition
+
+-------------------------------------------------------------------
 Tue Jan 27 17:11:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add patterns-base-fips
