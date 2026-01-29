@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 29 12:48:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- disable multiversion to reduce friction with kernel release mismatches
+
+-------------------------------------------------------------------
 Thu Jan  1 14:16:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
