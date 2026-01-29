@@ -34,7 +34,6 @@ def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
             # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
             "coreutils",
         )
-        + (("patterns-base-fips",) if os_version.is_sle15 else ())
         + os_version.eula_package_names
         + os_version.release_package_names
     ]
@@ -334,10 +333,7 @@ FIPS_MICRO_CONTAINERS = [
 def _get_minimal_kwargs(os_version: OsVersion):
     package_list = [
         Package(name, pkg_type=PackageType.DELETE)
-        for name in sorted(
-            ["grep", "diffutils", "info", "fillup", "libzio1"]
-            + (["patterns-base-fips"] if os_version.is_sle15 else [])
-        )
+        for name in sorted(["grep", "diffutils", "info", "fillup", "libzio1"])
     ]
     # the last user of libpcre1 on SP6 is grep which we deinstall above
     if os_version in (OsVersion.SP6,):
