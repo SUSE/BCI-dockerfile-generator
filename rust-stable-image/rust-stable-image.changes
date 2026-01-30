@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 30 18:53:52 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.93 for stable, 1.92 for oldstable
+
+-------------------------------------------------------------------
 Fri Jan  2 13:31:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - readd workaround for SLE15.
