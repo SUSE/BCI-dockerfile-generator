@@ -317,7 +317,8 @@ FIPS_MICRO_CONTAINERS = [
         ),
         build_stage_custom_end=textwrap.dedent(
             f"""
-            {DOCKERFILE_RUN} zypper -n install jdupes \\
+            {DOCKERFILE_RUN} zypper -n install jdupes crypto-policies-scripts {("perl-Bootloader" if os_version.is_sle15 else "update-bootloader")} \\
+                && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \\
                 && jdupes -1 -L -r /target/usr/"""
         ),
         custom_end=_get_fips_custom_env(),
