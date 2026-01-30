@@ -28,7 +28,8 @@ RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils libopenssl3 patterns-base-fips skelcd-EULA-bci sles-release
 
-RUN set -euo pipefail; zypper -n install jdupes \
+RUN set -euo pipefail; zypper -n install jdupes crypto-policies-scripts perl-Bootloader \
+    && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \
     && jdupes -1 -L -r /target/usr/
 
 # cleanup logs and temporary files
