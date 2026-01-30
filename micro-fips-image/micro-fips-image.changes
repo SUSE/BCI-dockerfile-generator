@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 30 09:21:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set the crypto-policies to FIPS
+
+-------------------------------------------------------------------
 Thu Jan 29 16:02:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove duplicated patterns-base-fips
