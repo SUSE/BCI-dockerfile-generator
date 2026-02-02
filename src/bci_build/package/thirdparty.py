@@ -54,7 +54,7 @@ ARCH_FILENAME_MAP = {
 @dataclass(frozen=True)
 class ThirdPartyPackage:
     name: str
-    arch: Arch = None
+    arch: Arch | None = None
 
     def __str__(self) -> str:
         return self.name
