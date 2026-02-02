@@ -6,7 +6,9 @@ from bci_build.container_attributes import TCP
 from bci_build.container_attributes import UDP
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.versions import get_pkg_version
 
 _BASE_PODMAN_KEA_CMD = "podman run --replace -it --privileged --network=host"
@@ -20,8 +22,13 @@ KEA_DHCP_CONTAINERS = [
         version=get_pkg_version("kea", os_version),
         license="MPL-2.0",
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+        version_in_uid=False,
         pretty_name="Kea DHCP Server",
         package_list=["kea", "util-linux"],
+        build_stage_custom_end=textwrap.dedent(f"""
+            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
+                systemd-tmpfiles --create --root /target"""),
         custom_end=textwrap.dedent("""
             ENV KEA_PIDFILE_DIR="/var/run/kea"
             RUN install -m 0750 -o root -g root -d /var/run/kea"""),
