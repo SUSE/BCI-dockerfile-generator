@@ -35,8 +35,8 @@ RUN rm -rf /tmp/*
 """
 )
 
-REPO_FILE = """[{name}]
-name={name}
+REPO_FILE = """[{repo_name}]
+name={repo_name}
 baseurl={base_url}
 enabled=1
 gpgcheck=1
@@ -82,7 +82,8 @@ class ThirdPartyRepoMixin:
             {
                 "third-party.gpg.key": third_party_repo_key_file,
                 "third-party.repo": REPO_FILE.format(
-                    name=self.name,
+                    repo_name=self.repo_filename.rpartition(".")[0],
+                    repo_filename=self.repo_filename,
                     base_url=third_party_repo_url,
                     gpg_key=third_party_repo_key_url,
                 ),
