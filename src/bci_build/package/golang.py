@@ -52,6 +52,7 @@ def _get_golang_kwargs(
         "stability_tag": stability_tag,
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "tag_version": f"{ver}{variant}",
+        "logo_url": "https://go.dev/images/go-logo-blue.svg",
         "version": f"{golang_version_regex}{variant}",
         "env": {
             "GOLANG_VERSION": golang_version_regex,
