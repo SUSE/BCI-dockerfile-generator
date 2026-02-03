@@ -62,7 +62,7 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/dotnet-runtime-8.0-8.0.23-1.x86_64.rpm; \
     fi
 
-COPY third-party.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
+COPY third-party.repo /etc/zypp/repos.d/packages-microsoft-com-prod.repo
 
 RUN rm -rf /tmp/*
 
