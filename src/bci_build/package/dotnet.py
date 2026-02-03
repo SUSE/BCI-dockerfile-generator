@@ -100,8 +100,8 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         super().__init__(**kwargs)
 
     def __post_init__(self):
-        if OsVersion.TUMBLEWEED == self.os_version:
-            raise ValueError(".NET is not supported for openSUSE Tumbleweed")
+        if self.os_version in (OsVersion.TUMBLEWEED,):
+            raise ValueError(".NET is not supported for this os_version")
 
         super().__post_init__()
 
@@ -111,7 +111,7 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             self.use_nonprivileged_user = True
 
         self.custom_description = (
-            "The " + self.pretty_name + " {based_on_container}. "
+            f"The {self.pretty_name} {{based_on_container}}. "
             "The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. "
             "You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
         )
@@ -222,7 +222,7 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
     @property
     def repo_filename(self):
-        return "microsoft-dotnet-prod.repo"
+        return "packages-microsoft-com-prod.repo"
 
     @property
     def repo_key_filename(self):
