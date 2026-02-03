@@ -11,6 +11,8 @@ ExpandFlags: kiwi-nobasepackages
 Type: docker
 BuildEngine: podman
 
+ExpandFlags: filterbasecontainerpkgs
+
 %else
 Type: spec
 Repotype: none
