@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  3 19:59:20 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix repository naming
+
+-------------------------------------------------------------------
 Tue Feb  3 08:35:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rerender templates using the new thirdpartymixin
