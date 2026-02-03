@@ -23,7 +23,63 @@
 #!BuildVersion: 15.7.10.0
 FROM registry.suse.com/bci/bci-base:15.7
 
+RUN set -euo pipefail; \
+    zypper -n install --no-recommends libicu libopenssl1_1
+RUN mkdir -p /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/bc/5633/dotnet-host-10.0.2-1.aarch64.rpm sha256:bc56336486353c798829dac915538b9cbebca025fb3085874bf37c0333961465
+COPY dotnet-host-10.0.2-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/74/a69d/dotnet-host-10.0.2-1.x86_64.rpm sha256:74a69d58f31884304ebdff75ab2bf3bf3f8df3f323f54f1b51f43769d8d05a0e
+COPY dotnet-host-10.0.2-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f8/ed4a/dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm sha256:f8ed4a40ccd07eff2df90579dbb5245a609731f0fa21a423dcf1c52f3f2ab6e4
+COPY dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/68/2ee2/dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm sha256:682ee2c3fbb1db843e2d09eb909872b4048217e2c3c833402d4e8772344356df
+COPY dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/23/f321/dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm sha256:23f321a39a9fa127b8b16d6bcd2d5b7ce860e388671d2d8042f5b66cced538ee
+COPY dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/9a/ee48/dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm sha256:9aee48de81a7dbb3cc2a240523723bb34b42e3b51e98c71c4b45ee7cb80142f7
+COPY dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/84/a32b/dotnet-runtime-10.0-10.0.2-1.aarch64.rpm sha256:84a32b565ea7776d6dbf26ef20bbd700f3654bb67c68e425f267dbda974b9d6d
+COPY dotnet-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/c7/b629/dotnet-runtime-10.0-10.0.2-1.x86_64.rpm sha256:c7b629622f2047776553e2e99aa92f760017bcd45167678397d64609581f1a68
+COPY dotnet-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/8d/eb17/aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm sha256:8deb174725abaffa7558f608fcd01fda86c1c4585b80451ad8cbeee896ba7eeb
+COPY aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/ff/da88/aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm sha256:ffda8812b061d1e94215a0c2ef3580d12115ab2ac3de164528ffe59fe3d6b84a
+COPY aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
 
+COPY third-party.gpg.key /tmp/microsoft.asc
+RUN rpm --import /tmp/microsoft.asc
+
+
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+        zypper -n install \
+            /tmp/dotnet-host-10.0.2-1.aarch64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.2-1.aarch64.rpm \
+            /tmp/aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm; \
+    fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+        zypper -n install \
+            /tmp/dotnet-host-10.0.2-1.x86_64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.2-1.x86_64.rpm \
+            /tmp/aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm; \
+    fi
+
+COPY third-party.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
+
+RUN rm -rf /tmp/*
+
+# cleanup logs and temporary files
+RUN set -euo pipefail; zypper -n clean -a; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/run/*; \
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
+    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
@@ -52,51 +108,8 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 
-RUN mkdir -p /tmp/
-
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/bc/5633/dotnet-host-10.0.2-1.aarch64.rpm sha256:bc56336486353c798829dac915538b9cbebca025fb3085874bf37c0333961465
-COPY dotnet-host-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/74/a69d/dotnet-host-10.0.2-1.x86_64.rpm sha256:74a69d58f31884304ebdff75ab2bf3bf3f8df3f323f54f1b51f43769d8d05a0e
-COPY dotnet-host-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/68/2ee2/dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm sha256:682ee2c3fbb1db843e2d09eb909872b4048217e2c3c833402d4e8772344356df
-COPY dotnet-hostfxr-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f8/ed4a/dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm sha256:f8ed4a40ccd07eff2df90579dbb5245a609731f0fa21a423dcf1c52f3f2ab6e4
-COPY dotnet-hostfxr-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/9a/ee48/dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm sha256:9aee48de81a7dbb3cc2a240523723bb34b42e3b51e98c71c4b45ee7cb80142f7
-COPY dotnet-runtime-deps-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/23/f321/dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm sha256:23f321a39a9fa127b8b16d6bcd2d5b7ce860e388671d2d8042f5b66cced538ee
-COPY dotnet-runtime-deps-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/84/a32b/dotnet-runtime-10.0-10.0.2-1.aarch64.rpm sha256:84a32b565ea7776d6dbf26ef20bbd700f3654bb67c68e425f267dbda974b9d6d
-COPY dotnet-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/c7/b629/dotnet-runtime-10.0-10.0.2-1.x86_64.rpm sha256:c7b629622f2047776553e2e99aa92f760017bcd45167678397d64609581f1a68
-COPY dotnet-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/8d/eb17/aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm sha256:8deb174725abaffa7558f608fcd01fda86c1c4585b80451ad8cbeee896ba7eeb
-COPY aspnetcore-runtime-10.0-10.0.2-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/ff/da88/aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm sha256:ffda8812b061d1e94215a0c2ef3580d12115ab2ac3de164528ffe59fe3d6b84a
-COPY aspnetcore-runtime-10.0-10.0.2-1.x86_64.rpm /tmp/
-
-
 # Workaround for https://github.com/openSUSE/obs-build/issues/487
 RUN zypper -n install --no-recommends coreutils sles-release
-
-# Importing MS GPG keys
-COPY microsoft.asc /tmp
-RUN rpm --import /tmp/microsoft.asc
-
-RUN zypper -n install --no-recommends libicu libopenssl1_1
-RUN if [ "$(uname -m)" = "aarch64" ]; then zypper -n install /tmp/*aarch64.rpm; elif [ "$(uname -m)" = "x86_64" ]; then zypper -n install /tmp/*x64.rpm /tmp/*x86_64.rpm; fi
-
-COPY prod.repo /etc/zypp/repos.d/microsoft-dotnet-prod.repo
-COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
-
-RUN rm -rf /tmp/* && zypper clean -a && rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
-    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
-    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
-
-
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
 ENV DOTNET_VERSION=10.0.2
