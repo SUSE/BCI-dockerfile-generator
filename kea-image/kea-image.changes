@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  3 09:38:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add systemd-tmpfiles to create necessary directories outside /usr
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:13 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
