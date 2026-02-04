@@ -1589,7 +1589,9 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
 
 SORTED_CONTAINER_IMAGE_NAMES = sorted(
     ALL_CONTAINER_IMAGE_NAMES,
-    key=lambda bci: f"{ALL_CONTAINER_IMAGE_NAMES[bci].os_version}-{ALL_CONTAINER_IMAGE_NAMES[bci].name}",
+    key=lambda bci: (
+        f"{ALL_CONTAINER_IMAGE_NAMES[bci].os_version}-{ALL_CONTAINER_IMAGE_NAMES[bci].name}"
+    ),
 )
 
 
