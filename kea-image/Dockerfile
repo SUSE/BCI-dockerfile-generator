@@ -27,7 +27,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kea util-linux
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kea sed util-linux
 
 RUN set -euo pipefail; zypper -n install --no-recommends systemd && \
     systemd-tmpfiles --create --root /target
@@ -71,6 +71,7 @@ LABEL runcwd="podman run --replace -it --privileged --network=host --name kea-dh
 LABEL run_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v /etc/kea:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
 LABEL runcwd_dhcp6="podman run --replace -it --privileged --network=host --name kea-dhcp6 -v .:/etc/kea IMAGE kea-dhcp6  -c /etc/kea/kea-dhcp6.conf"
 EXPOSE 67/tcp 67/udp
-
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 ENV KEA_PIDFILE_DIR="/var/run/kea"
-RUN install -m 0750 -o root -g root -d /var/run/kea
+RUN set -euo pipefail; install -m 0750 -o root -g root -d /var/run/kea
