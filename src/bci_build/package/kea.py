@@ -7,6 +7,7 @@ from bci_build.container_attributes import UDP
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.versions import get_pkg_version
@@ -25,13 +26,14 @@ KEA_DHCP_CONTAINERS = [
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
         pretty_name="Kea DHCP Server",
-        package_list=["kea", "util-linux"],
+        package_list=sorted(["kea", "sed", "util-linux"]),
         build_stage_custom_end=textwrap.dedent(f"""
             {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
                 systemd-tmpfiles --create --root /target"""),
-        custom_end=textwrap.dedent("""
+        custom_end=(SET_BLKID_SCAN if os_version.is_sle15 else "")
+        + textwrap.dedent(f"""
             ENV KEA_PIDFILE_DIR="/var/run/kea"
-            RUN install -m 0750 -o root -g root -d /var/run/kea"""),
+            {DOCKERFILE_RUN} install -m 0750 -o root -g root -d /var/run/kea"""),
         extra_labels={
             "run": f"{_BASE_PODMAN_KEA_CMD} --name kea-dhcp4 -v /etc/kea:/etc/kea IMAGE kea-dhcp4  -c {_KEA_DHCP4_CONFIG_PATH}",
             "runcwd": f"{_BASE_PODMAN_KEA_CMD} --name kea-dhcp4 -v .:/etc/kea IMAGE kea-dhcp4  -c {_KEA_DHCP4_CONFIG_PATH}",
