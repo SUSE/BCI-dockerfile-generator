@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  5 16:47:29 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf for micro based containers which install util-linux
+
+-------------------------------------------------------------------
 Tue Feb  3 09:37:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add systemd-tmpfiles to create necessary directories outside /usr
