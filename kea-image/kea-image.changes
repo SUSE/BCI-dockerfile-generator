@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  5 16:46:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- use dockerfile run
+
+-------------------------------------------------------------------
 Tue Feb  3 09:38:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add systemd-tmpfiles to create necessary directories outside /usr
