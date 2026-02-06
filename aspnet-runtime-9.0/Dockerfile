@@ -42,10 +42,10 @@ COPY dotnet-runtime-deps-9.0-9.0.12-1.aarch64.rpm /tmp/
 COPY dotnet-runtime-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/7f/62b5/dotnet-runtime-9.0-9.0.12-1.aarch64.rpm sha256:7f62b544da0492309af8aea8c8afbc50171f118411b9d4534bbd455e745a6e2a
 COPY dotnet-runtime-9.0-9.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/58/a992/aspnetcore-runtime-9.0-9.0.12-1.aarch64.rpm sha256:58a9924d243e998c7aec22168bdec4b83f8e20aff8e2ef82fb4c96727d3255fe
-COPY aspnetcore-runtime-9.0-9.0.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/ef/d76d/aspnetcore-runtime-9.0-9.0.12-1.x86_64.rpm sha256:efd76d65e1afc1d2c4961185ac6690bf073df0a7dafe7ecde8f8eaba9c3b1891
 COPY aspnetcore-runtime-9.0-9.0.12-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/58/a992/aspnetcore-runtime-9.0-9.0.12-1.aarch64.rpm sha256:58a9924d243e998c7aec22168bdec4b83f8e20aff8e2ef82fb4c96727d3255fe
+COPY aspnetcore-runtime-9.0-9.0.12-1.aarch64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
 RUN rpm --import /tmp/microsoft.asc
