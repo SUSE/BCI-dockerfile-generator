@@ -38,10 +38,10 @@ COPY dotnet-hostfxr-8.0-8.0.23-1.aarch64.rpm /tmp/
 COPY dotnet-runtime-deps-8.0-8.0.23-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/28/9342/dotnet-runtime-deps-8.0-8.0.23-1.x86_64.rpm sha256:28934268cd887c1705d0bc809aa0d18b8c3f84fef210bc67142a847f859184f3
 COPY dotnet-runtime-deps-8.0-8.0.23-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/dd/0e71/dotnet-runtime-8.0-8.0.23-1.x86_64.rpm sha256:dd0e7160c54008b222b4efc382c29a7ce6da0137232099d18e412e964ad9a1bc
-COPY dotnet-runtime-8.0-8.0.23-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/24/6e35/dotnet-runtime-8.0-8.0.23-1.aarch64.rpm sha256:246e35f6c956d0fda918c115926f2299fe1ad8d1189d7085d56780f7da77f433
 COPY dotnet-runtime-8.0-8.0.23-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/dd/0e71/dotnet-runtime-8.0-8.0.23-1.x86_64.rpm sha256:dd0e7160c54008b222b4efc382c29a7ce6da0137232099d18e412e964ad9a1bc
+COPY dotnet-runtime-8.0-8.0.23-1.x86_64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
 RUN rpm --import /tmp/microsoft.asc
