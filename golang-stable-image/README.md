@@ -1,4 +1,4 @@
-# Go 1.25 development container image
+# Go 1.26 development container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -35,8 +35,8 @@ the following Dockerfile options.
 ### Building from `scratch`
 
 ```Dockerfile
-# Build the application using the Go 1.25 development container image
-FROM registry.suse.com/bci/golang:1.25 as build
+# Build the application using the Go 1.26 development container image
+FROM registry.suse.com/bci/golang:1.26 as build
 
 WORKDIR /app
 
@@ -74,13 +74,13 @@ There are situations when you don't want to run an application inside a containe
 To compile the application, without running it inside a container instance, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/golang:1.25 go build -v
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/golang:1.26 go build -v
 ```
 
 To run the application tests inside a container, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/golang:1.25 go test -v
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/golang:1.26 go test -v
 ```
 
 
@@ -90,8 +90,8 @@ The [SUSE Linux BCI General Purpose Base Containers](https://opensource.suse.com
 images offer four different options for deployment, depending on your exact requirements.
 
 ```Dockerfile
-# Build the application using the Go 1.25 development Container Image
-FROM registry.suse.com/bci/golang:1.25 as build
+# Build the application using the Go 1.26 development Container Image
+FROM registry.suse.com/bci/golang:1.26 as build
 
 WORKDIR /app
 
@@ -123,7 +123,7 @@ for further details.
 In addition to the standard SUSE Linux BCI development packages, the following tools
 are included in the image:
 
-- go1.25-race
+- go1.26-race
 - make
 
 ## Licensing
