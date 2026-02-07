@@ -1,0 +1,136 @@
+# OSC Packaging Container
+
+{% include 'badges.j2' %}
+
+This is the openSUSE packaging container image that includes all the required
+tools for creating and modifying packages in the [Open Build
+Service](https://build.opensuse.org/) using
+[osc](https://github.com/openSUSE/osc/).
+
+
+## How to use this container image
+
+The container image is intended for interactive usage with a `.oscrc` configuration file and
+the osc cookiejar mounted into the container:
+
+```ShellSession
+# podman run --rm -it \
+      -v ~/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z \
+      -v ~/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:rw,z \
+      {{ image.pretty_reference }}
+```
+
+The command launches an interactive shell environment that uses the local osc
+configuration. You can then check out packages, perform modifications, and send
+submissions to OBS.
+
+To work on an already checked out package, mount the current working directory:
+
+```ShellSession
+# podman run --rm -it \
+      -v ~/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z \
+      -v ~/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z \
+      -v .:/root/osc-workdir:z \
+      {{ image.pretty_reference }}
+```
+
+The container entrypoint recognizes whether you are launching it for interactive
+usage or invoking `osc` directly. You can omit the command `osc` in the second
+case. For example:
+
+```ShellSession
+# podman run --rm -it \
+      -v ~/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z \
+      -v ~/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z \
+      {{ image.pretty_reference }} \
+          ls openSUSE:Factory
+```
+
+The command automatically forwards the arguments to `osc` and calls
+`osc ls openSUSE:Factory`.
+
+
+### Building packages
+
+The container image can be used to build packages using the podman build backend
+(the default in this container image). The podman backend can only build RPM
+packages, building containers with docker or disk images with kiwi is not
+supported at the moment.
+
+`osc` will cache build dependencies in the pre-configured `packagecachedir`. The
+`packagecachedir` defaults to `/var/tmp/osbuild-packagecache` and is declared as
+a volume in this container image. To speed up package builds, it is recommended
+to bind mount the package cache directory onto the host or use a persistent
+container volume, e.g. as follows:
+
+```ShellSession
+# podman run --rm -it \
+      -v ~/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z \
+      -v ~/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z \
+      -v pkgcache:/var/tmp/osbuild-packagecache \
+          {{ image.pretty_reference }}
+```
+
+The above command only applies if you are using the default package cache
+location. Obtain the current setting via:
+
+```ShellSession
+# osc config general packagecachedir
+'general': 'packagecachedir' is set to '/var/tmp/osbuild-packagecache'
+```
+
+
+### Using the image labels
+
+The image provides four labels: `run`, `runv`, `runcwd`, `runcwdv`. The `run`
+label includes the full command, to run the `osc` container, while the `runcwd`
+label additionally mounts the current working directory to `/root/osc-workdir`
+(the container images' working directory). The labels with the `v` appended
+additionally include the directive to mount a container volume called `pkgcache`
+to `/var/tmp/osbuild-packagecache`.
+
+To view the labels, use the following command:
+
+```ShellSession
+# podman container runlabel run --display {{ image.pretty_reference }}
+```
+
+The labels can be used to run the container with Podman version 5.1.0 or later:
+
+```ShellSession
+# podman container runlabel run \
+      {{ image.pretty_reference }} \
+          ls openSUSE:Factory
+```
+
+
+### Connecting to build.suse.de
+
+build.suse.de uses an SSH-based authentication, which requires additional
+resources to be available in the container. You also must provide the internal certificate to the container:
+
+```ShellSession
+# podman run --rm -it \
+      -v ~/.config/osc/oscrc:/root/.config/osc/oscrc:ro,z \
+      -v ~/.local/state/osc/cookiejar:/root/.local/state/osc/cookiejar:z \
+      -v /etc/ssl/ca-bundle.pem:/etc/ssl/ca-bundle.pem:ro,z \
+      -v $SSH_AUTH_SOCK:/run/user/0/ssh-agent.socket:z \
+      -e SSH_AUTH_SOCK=/var/run/user/0/ssh-agent.socket:z \
+      -v "$PWD":/root/osc-workdir:z \
+      {{ image.pretty_reference }}
+```
+
+
+## Limitations
+
+- Currently, it is not possible to build container images or disk images in a
+  container.
+- The `runlabel run` command only works with Podman 5.1.0 and newer.
+
+
+## Volumes
+
+The container image is preconfigured to put `/var/tmp` into a volume. This
+directory is used by `osc` to store the buildroot and the package cache.
+
+{% include 'licensing_and_eula.j2' %}
