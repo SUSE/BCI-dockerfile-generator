@@ -17,9 +17,9 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
 #!BuildTag: suse/389-ds:%%389ds_version%%
-#!BuildTag: suse/389-ds:3.0
-#!BuildName: suse-389-ds-3.0
-#!BuildVersion: 16.1.3.0
+#!BuildTag: suse/389-ds:3.1
+#!BuildName: suse-389-ds-3.1
+#!BuildVersion: 16.1.3.1
 FROM bci/bci-base:16.1
 
 RUN set -euo pipefail; \
