@@ -1,10 +1,10 @@
 {
     "389-ds": {
         "16.0": "3.0",
-        "16.1": "3.0",
+        "16.1": "3.1",
         "6": "2.2",
         "7": "2.5",
-        "Tumbleweed": "3.2",
+        "Tumbleweed": "3.1",
         "version_format": "minor"
     },
     "containerized-data-importer": {
@@ -32,7 +32,7 @@
         "16.1": "2.51",
         "6": "2.51",
         "7": "2.51",
-        "Tumbleweed": "2.52",
+        "Tumbleweed": "2.53",
         "version_format": "minor"
     },
     "helm": {
