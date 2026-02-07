@@ -32,10 +32,10 @@ COPY dotnet-host-9.0.12-1.aarch64.rpm /tmp/
 COPY dotnet-host-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/fa/194a/netstandard-targeting-pack-2.1.0-x64.rpm sha256:fa194a8c12913dcec85c8d24bfc91686a7b93128b4c05346df16e2c641e2ba41
 COPY netstandard-targeting-pack-2.1.0-x64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f4/a7be/dotnet-targeting-pack-9.0-9.0.12-1.x86_64.rpm sha256:f4a7beebf94a89dcd0590856f2430e4263bb529c3b401b3d12420e77c3d156ed
-COPY dotnet-targeting-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/40/0c0a/dotnet-targeting-pack-9.0-9.0.12-1.aarch64.rpm sha256:400c0af0e21853d84952571aa8f5bcfb4744ba7943de20891a391ccdf73ea071
 COPY dotnet-targeting-pack-9.0-9.0.12-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f4/a7be/dotnet-targeting-pack-9.0-9.0.12-1.x86_64.rpm sha256:f4a7beebf94a89dcd0590856f2430e4263bb529c3b401b3d12420e77c3d156ed
+COPY dotnet-targeting-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f4/f5b8/dotnet-hostfxr-9.0-9.0.12-1.aarch64.rpm sha256:f4f5b8d9cfa6d62b26c98faee67424f728f5abaac10e934c6bb1557fb08d4560
 COPY dotnet-hostfxr-9.0-9.0.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/aa/cabe/dotnet-hostfxr-9.0-9.0.12-1.x86_64.rpm sha256:aacabefb8551f5cd5d49cc25042e991c4a5e8becb5aa684b0a789f2bbb664ba6
@@ -48,10 +48,10 @@ COPY dotnet-runtime-deps-9.0-9.0.12-1.aarch64.rpm /tmp/
 COPY dotnet-runtime-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/7f/62b5/dotnet-runtime-9.0-9.0.12-1.aarch64.rpm sha256:7f62b544da0492309af8aea8c8afbc50171f118411b9d4534bbd455e745a6e2a
 COPY dotnet-runtime-9.0-9.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/bf/0bb6/dotnet-apphost-pack-9.0-9.0.12-1.x86_64.rpm sha256:bf0bb66e17d46cb9e35949982147f04ae2a18db1d3a63247c2fede7e96bd40d5
-COPY dotnet-apphost-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/23/178e/dotnet-apphost-pack-9.0-9.0.12-1.aarch64.rpm sha256:23178e9881016fa2fc9bb7694272bbe77490e9793ce7de530be95f776590f992
 COPY dotnet-apphost-pack-9.0-9.0.12-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/bf/0bb6/dotnet-apphost-pack-9.0-9.0.12-1.x86_64.rpm sha256:bf0bb66e17d46cb9e35949982147f04ae2a18db1d3a63247c2fede7e96bd40d5
+COPY dotnet-apphost-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/de/1831/aspnetcore-targeting-pack-9.0-9.0.12-1.x86_64.rpm sha256:de1831c1dad990c8efdcb338d328d83eea575542129160ba643262f412510544
 COPY aspnetcore-targeting-pack-9.0-9.0.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/f3/0c26/aspnetcore-targeting-pack-9.0-9.0.12-1.aarch64.rpm sha256:f30c2607111c63a9570e798fec54b24bad783b7cb29953afd594322d43372202
