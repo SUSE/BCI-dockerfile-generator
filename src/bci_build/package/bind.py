@@ -60,6 +60,8 @@ BIND_CONTAINERS = [
         build_stage_custom_end=textwrap.dedent(rf"""
             # patch named.prep to not call logger (provided by systemd)
             # and just log to stdout
+            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \
+                systemd-tmpfiles --create --root /target
             {DOCKERFILE_RUN} \
                 mkdir -p /target/usr/local/lib/bind; \
                 cp /target/{os_version.libexecdir}bind/named.prep {(_named_prep := "/target/usr/local/lib/bind/named.prep")}; \
