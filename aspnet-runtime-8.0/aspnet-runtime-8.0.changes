@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  9 08:17:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- sort the assets also by name and architecture
+
+-------------------------------------------------------------------
 Tue Feb  3 19:59:20 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix repository naming
