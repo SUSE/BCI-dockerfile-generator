@@ -1,6 +1,7 @@
 """Container definition for the MariaDB database server and client."""
 
 import re
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import TCP
@@ -78,7 +79,10 @@ for os_version in (
             version_in_uid=False,
             pretty_name="MariaDB Server",
             from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-            build_stage_custom_end=generate_package_version_check(
+            build_stage_custom_end=textwrap.dedent(f"""
+            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
+                systemd-tmpfiles --create --root /target\n""")
+            + generate_package_version_check(
                 "mariadb", mariadb_version, use_target=True
             ),
             replacements_via_service=[
