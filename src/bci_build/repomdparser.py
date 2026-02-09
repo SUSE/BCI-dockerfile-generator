@@ -35,6 +35,14 @@ _REPOMD_REQ_HEADERS = {
 }
 
 
+def cmp_pkg(a, b):
+    if a.name != b.name:
+        return -1 if a.name > b.name else 1
+    if a.arch != b.arch:
+        return -1 if a.arch > b.arch else 1
+    return rpm.labelCompare(a.evr, b.evr)
+
+
 class RepoMDParser:
     """A helper class to parse repomd.xml."""
 
@@ -96,7 +104,7 @@ class RepoMDParser:
         # sort reverse so that query for latest just needs to return the first one
         self.pkgs = sorted(
             pkgs,
-            key=functools.cmp_to_key(lambda a, b: rpm.labelCompare(a.evr, b.evr)),
+            key=functools.cmp_to_key(lambda a, b: cmp_pkg(a, b)),
             reverse=True,
         )
 
