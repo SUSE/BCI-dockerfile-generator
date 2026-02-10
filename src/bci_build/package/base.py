@@ -58,21 +58,27 @@ sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.c
 #--------------------------------------
 sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
 
-{% if os_version.is_sle15 and not os_version.is_ltss -%}
+{% if not os_version.is_ltss -%}
 #======================================
 # Configure SLE BCI repositories
 #--------------------------------------
+{% if os_version.is_sle15 -%}
 zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product/' SLE_BCI
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major-SP$releasever_minor/$basearch/product_source/' SLE_BCI_source
-{%- elif os_version.is_sl16 and not os_version.is_ltss -%}
-#======================================
-# Configure SLE BCI repositories
-#--------------------------------------
+{%- elif os_version.is_sl16 -%}
 zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product/' SLE_BCI
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_source/' SLE_BCI_source
 {%- endif %}
+{% if os_version.is_sle15 or os_version.is_sl16 -%}
+for repo in /etc/zypp/repos.d/SLE_BCI*.repo; do
+    printf 'gpgkey=file:/usr/lib/rpm/gnupg/keys/{{SUSE_SIGNING_PGP_PUBKEY}}\n' >> "$repo"
+done
+test -f /usr/lib/rpm/gnupg/keys/{{SUSE_SIGNING_PGP_PUBKEY}} || { echo "ERROR: SUSE signing key not found!"; exit 1; }
+{%- endif %}
+{%- endif %}
+
 
 #======================================
 # Remove zypp uuid (bsc#1098535)
@@ -129,7 +135,10 @@ sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 #--------------------------------------
 (shopt -s globstar; rm -f /usr/share/locale/**/*.mo)
 """
-    ).render(os_version=os_version)
+    ).render(
+        os_version=os_version,
+        SUSE_SIGNING_PGP_PUBKEY="gpg-pubkey-3fa1d6ce-67c856ee.asc",
+    )
 
 
 @dataclass
