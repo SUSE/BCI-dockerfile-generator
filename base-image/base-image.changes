@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 10 17:30:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- configure gpgkey
+
+-------------------------------------------------------------------
 Mon Jan 12 21:24:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to SLES eula for Beta phase
