@@ -2,9 +2,11 @@
 
 import datetime
 from dataclasses import dataclass
+from itertools import product
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -165,8 +167,22 @@ PYTHON_3_13_CONTAINERS = [
         additional_versions=["3"]
         + (["3.13-" + os_version.dist_id] if os_version.dist_id else []),
     )
-    for os_version in (OsVersion.SP7, OsVersion.SL16_0)
+    for os_version in (OsVersion.SP7,)
+] + [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.13", os_version),
+        package_name="python-3.13-image",
+        build_flavor=flavor,
+        from_target_image=generate_from_image_tag(
+            os_version, "bci-micro" if flavor == "micro" else "bci-base"
+        ),
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        additional_versions=["3"],
+    )
+    for os_version, flavor in product((OsVersion.SL16_0,), ("base", "micro"))
 ]
+
+PYTHON_CRATE = ContainerCrate(PYTHON_3_13_CONTAINERS)
 
 _CI_PYTHON = ("3.13", "313")
 
