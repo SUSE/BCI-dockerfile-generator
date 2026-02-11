@@ -42,7 +42,9 @@ def _system_python(os_version: OsVersion) -> _PYTHON_VERSIONS:
     return "3.6" if os_version.is_sle15 else "3.13"
 
 
-def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
+def _get_python_kwargs(
+    py3_ver: _PYTHON_VERSIONS, os_version: OsVersion, build_flavor: str | None = None
+):
     is_system_py: bool = py3_ver == _system_python(os_version)
     py3_ver_nodots = py3_ver.replace(".", "")
 
@@ -78,20 +80,32 @@ def _get_python_kwargs(py3_ver: _PYTHON_VERSIONS, os_version: OsVersion):
             "PIPX_MAN_DIR": "/usr/local/man",
         }
 
+    package_list = (
+        (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
+        + os_version.lifecycle_data_pkg
+        + [py3]
+        + [pip3]
+    )
+    if build_flavor != "micro":
+        package_list = (
+            *package_list,
+            f"{py3}-devel",
+            *os_version.common_devel_packages,
+            *([f"{py3}-wheel"] if has_wheel else []),
+            *([f"{py3}-pipx"] if has_pipx else []),
+        )
+
     kwargs = {
         "name": "python",
-        "pretty_name": f"Python {py3_ver} development",
+        "pretty_name": (
+            f"Python {py3_ver} development"
+            if build_flavor != "micro"
+            else f"Python {py3_ver} {build_flavor} runtime"
+        ),
         "version": py3_ver_replacement,
         "tag_version": py3_ver,
         "env": py_env,
-        "package_list": (
-            [f"{py3}-devel", py3, pip3]
-            + os_version.common_devel_packages
-            + ([f"{py3}-wheel"] if has_wheel else [])
-            + ([f"{py3}-pipx"] if has_pipx else [])
-            + (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
-            + os_version.lifecycle_data_pkg
-        ),
+        "package_list": sorted(package_list),
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description=py3_ver_replacement,
@@ -170,14 +184,13 @@ PYTHON_3_13_CONTAINERS = [
     for os_version in (OsVersion.SP7,)
 ] + [
     PythonDevelopmentContainer(
-        **_get_python_kwargs("3.13", os_version),
+        **_get_python_kwargs("3.13", os_version, build_flavor=flavor),
         package_name="python-3.13-image",
         build_flavor=flavor,
         from_target_image=generate_from_image_tag(
             os_version, "bci-micro" if flavor == "micro" else "bci-base"
         ),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
-        additional_versions=["3"],
     )
     for os_version, flavor in product((OsVersion.SL16_0,), ("base", "micro"))
 ]
