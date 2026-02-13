@@ -18,6 +18,7 @@
 #!BuildTag: bci/openjdk-devel:%%java_version%%-%RELEASE%
 #!BuildTag: bci/openjdk-devel:%%java_version%%
 #!BuildTag: bci/openjdk-devel:17
+#!BuildTag: bci/openjdk-devel:17-sles15
 #!BuildName: bci-openjdk-devel-17
 #!BuildVersion: 15.7.17
 FROM bci/openjdk:17

@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-runtime:10.0.3-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:10.0.3
 #!BuildTag: bci/dotnet-runtime:10.0
+#!BuildTag: bci/dotnet-runtime:10.0-sles15
 #!BuildTag: bci/dotnet-runtime:latest
 #!BuildName: bci-dotnet-runtime-10.0
 #!BuildVersion: 15.7.10.0

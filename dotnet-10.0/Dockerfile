@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-sdk:10.0.3-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:10.0.3
 #!BuildTag: bci/dotnet-sdk:10.0
+#!BuildTag: bci/dotnet-sdk:10.0-sles15
 #!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-10.0
 #!BuildVersion: 15.7.10.0

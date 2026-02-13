@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-runtime:9.0.13-%RELEASE%
 #!BuildTag: bci/dotnet-runtime:9.0.13
 #!BuildTag: bci/dotnet-runtime:9.0
+#!BuildTag: bci/dotnet-runtime:9.0-sles15
 #!BuildName: bci-dotnet-runtime-9.0
 #!BuildVersion: 15.7.9.0
 #!BuildRelease: 20
