@@ -1,4 +1,4 @@
-# Python 3.13 development container image
+# Python 3.13 micro runtime container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -13,7 +13,7 @@
 To deploy an application, install dependencies, copy the sources, and configure the application's main script:
 
 ```Dockerfile
-FROM registry.suse.com/bci/python:3.13
+FROM registry.suse.com/bci/python:3.13-micro
 
 WORKDIR /app
 
@@ -35,7 +35,7 @@ $ podman run -it --rm my-python-app
 To run a single script inside a container, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/python:3.13 python3 script.py
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/python:3.13-micro python3 script.py
 ```
 
 ## Additional tools
