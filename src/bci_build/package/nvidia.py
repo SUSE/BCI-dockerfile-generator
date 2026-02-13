@@ -9,6 +9,7 @@ from bci_build.package import _RELEASE_PLACEHOLDER
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.package.thirdparty import ThirdPartyPackage
+from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ARCH_FILENAME_MAP
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -19,16 +20,58 @@ from bci_build.package import DOCKERFILE_RUN
 from pathlib import Path
 from bci_build.repomdparser import RpmPackage
 
-NVIDIA_REPO_KEY_URL = {
-    OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key",
-    OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key",
+# NVIDIA_REPO_KEY_URL = {
+#     OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key",
+#     OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key",
+# }
+
+# NVIDIA_REPO_BASEURL = {
+#     # OsVersion.SP7: "https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
+#     OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/",
+#     OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/",
+# }
+
+NVIDIA_REPOS = {
+    OsVersion.SP7: [
+        ThirdPartyRepo(
+            name="nvidia",
+            url="https://download.nvidia.com/suse/sle15sp7/",
+            key_url="https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key"
+        ),
+    ],
+    OsVersion.SL16_0: [
+        ThirdPartyRepo(
+            name="nvidia",
+            url="https://download.nvidia.com/suse/sle16/",
+            key_url="https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key"
+        ),
+    ],
 }
 
-NVIDIA_REPO_BASEURL = {
-    # OsVersion.SP7: "https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
-    OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/",
-    OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/",
-}
+
+
+# NVIDIA_REPOS = {
+#     OsVersion.SP7: [
+#         ThirdPartyRepo(
+#             name="cuda-sles15-x86_64",
+#             url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
+#             key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/D42D0685.pub",
+#         ),
+#         ThirdPartyRepo(
+#             name="cuda-sles15-sbsa",
+#             url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
+#             key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/D42D0685.pub"
+#         ),
+#     ],
+#     OsVersion.SL16_0: [
+#         # there are no CUDA repos for SLE 16 yet
+#         ThirdPartyRepo(
+#             name="nvidia",
+#             url="https://download.nvidia.com/suse/sle16/",
+#             key_url="https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key"
+#         ),
+#     ],
+# }
 
 CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
@@ -38,14 +81,15 @@ CUSTOM_END_TEMPLATE = Template(
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
 
-COPY third-party.gpg.key /tmp/{{ image.repo_key_filename }}
-RUN rpm --import /tmp/{{ image.repo_key_filename }}
-RUN rpm --root /target --import /tmp/{{ image.repo_key_filename }}
-
-COPY third-party.repo /etc/zypp/repos.d/{{ image.repo_filename }}
+{% for repo in image.third_party_repos %}
+COPY {{ repo.repo_filename }} /etc/zypp/repos.d/{{ repo.repo_filename }}
+COPY {{ repo.key_filename }} /tmp/{{ repo.key_filename }}
+RUN rpm --import /tmp/{{ repo.key_filename }}
+RUN rpm --root /target --import /tmp/{{ repo.key_filename }}
+{% endfor %}
 
 {% for arch in image.exclusive_arch %}
-{%- with pkgs=get_nvidia_persistenced_packages_for_arch(arch) %}
+{%- with pkgs=get_target_packages_for_arch(arch) %}
 {{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
         zypper -n --gpg-auto-import-keys --installroot /target install \\
             --capability \\
@@ -77,7 +121,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 {%- endfor %}
 
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
-{{ DOCKERFILE_RUN }} cp -rfx /lib/firmware /opt/lib/
+{{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
 
 FROM nvidia-driver-builder AS closed-driver-builder
 
@@ -228,6 +272,8 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
 
         open_packages = [p.name for p in self.open_drivers_package_list]
         closed_packages = [p.name for p in self.closed_drivers_package_list]
+        target_packages = open_packages + closed_packages
+        # ["nvidia-persistenced", "nvidia-compute-G06", "nvidia-compute-utils-G06", "libOpenCL1", "libnvidia-gpucomp"]
 
         self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
@@ -239,8 +285,8 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
             get_closed_packages_for_arch=lambda arch: [
                 pkg for pkg in pkgs if pkg.name not in open_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
-            get_nvidia_persistenced_packages_for_arch=lambda arch: [
-                pkg for pkg in pkgs if pkg.name == "nvidia-persistenced" and pkg.arch in ARCH_FILENAME_MAP[arch]
+            get_target_packages_for_arch=lambda arch: [
+                pkg for pkg in pkgs if pkg.name not in target_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
         )
 
@@ -265,90 +311,25 @@ for os_version in (OsVersion.SL16_0, OsVersion.SP7,):
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
                 package_name=f"nvidia-driver-{ver}",
                 package_list=[
-                    Package("binutils", PackageType.BOOTSTRAP),
-                    Package("cpp", PackageType.BOOTSTRAP),
-                    Package("cpp7", PackageType.BOOTSTRAP),
-                    Package("dbus-1", PackageType.BOOTSTRAP),
-                    Package("dracut", PackageType.BOOTSTRAP),
-                    Package("dracut-fips", PackageType.BOOTSTRAP),
+                    # needed by kernel GA
+                    Package("gcc", PackageType.BOOTSTRAP),
+                    Package("libelf-devel", PackageType.BOOTSTRAP),
                     Package("dwarves", PackageType.BOOTSTRAP),
                     Package("elfutils", PackageType.BOOTSTRAP),
-                    Package("file", PackageType.BOOTSTRAP),
-                    Package("gawk", PackageType.BOOTSTRAP),
-                    Package("gcc", PackageType.BOOTSTRAP),
-                    Package("gcc7", PackageType.BOOTSTRAP),
-                    Package("glibc-devel", PackageType.BOOTSTRAP),
-                    Package("hwdata", PackageType.BOOTSTRAP),
-                    Package("iputils", PackageType.BOOTSTRAP),
-                    Package("kbd", PackageType.BOOTSTRAP),
+                    Package("zstd", PackageType.BOOTSTRAP),
+                    # needed by nvidia-driver and nvidia-persistenced
+                    Package("mokutil", PackageType.BOOTSTRAP),
+                    Package("make", PackageType.BOOTSTRAP),
+                    Package("pciutils", PackageType.BOOTSTRAP),
+                    Package("perl-Bootloader", PackageType.BOOTSTRAP),
+                    Package("systemd", PackageType.BOOTSTRAP),
+
                     # Package("kernel-default", PackageType.BOOTSTRAP),
                     # Package("kernel-default-devel", PackageType.BOOTSTRAP),
                     # Package("kernel-devel", PackageType.BOOTSTRAP),
                     # Package("kernel-macros", PackageType.BOOTSTRAP),
-                    Package("kmod", PackageType.BOOTSTRAP),
-                    Package("libapparmor1", PackageType.BOOTSTRAP),
-                    Package("libargon2-1", PackageType.BOOTSTRAP),
-                    Package("libasan4", PackageType.BOOTSTRAP),
-                    Package("libasm1", PackageType.BOOTSTRAP),
-                    Package("libatomic1", PackageType.BOOTSTRAP),
-                    Package("libbpf1", PackageType.BOOTSTRAP),
-                    Package("libcilkrts5", PackageType.BOOTSTRAP),
-                    Package("libcryptsetup12", PackageType.BOOTSTRAP),
-                    Package("libctf-nobfd0", PackageType.BOOTSTRAP),
-                    Package("libctf0", PackageType.BOOTSTRAP),
-                    Package("libdbus-1-3", PackageType.BOOTSTRAP),
-                    Package("libdevmapper1_03", PackageType.BOOTSTRAP),
-                    Package("libdwarves1", PackageType.BOOTSTRAP),
-                    Package("libefivar1", PackageType.BOOTSTRAP),
-                    Package("libelf-devel", PackageType.BOOTSTRAP),
-                    Package("libexpat1", PackageType.BOOTSTRAP),
-                    Package("libgdbm4", PackageType.BOOTSTRAP),
-                    Package("libgomp1", PackageType.BOOTSTRAP),
-                    Package("libip4tc2", PackageType.BOOTSTRAP),
-                    Package("libisl15", PackageType.BOOTSTRAP),
-                    Package("libitm1", PackageType.BOOTSTRAP),
-                    Package("libjson-c5", PackageType.BOOTSTRAP),
-                    Package("libkcapi-tools", PackageType.BOOTSTRAP),
-                    Package("libkmod2", PackageType.BOOTSTRAP),
-                    Package("liblsan0", PackageType.BOOTSTRAP),
-                    Package("liblz4-1", PackageType.BOOTSTRAP),
-                    Package("libmpc3", PackageType.BOOTSTRAP),
-                    Package("libmpfr6", PackageType.BOOTSTRAP),
-                    Package("libmpx2", PackageType.BOOTSTRAP),
-                    Package("libmpxwrappers2", PackageType.BOOTSTRAP),
-                    Package("libopenssl1_1", PackageType.BOOTSTRAP),
-                    Package("libpci3", PackageType.BOOTSTRAP),
-                    Package("libpython3_6m1_0", PackageType.BOOTSTRAP),
-                    Package("libseccomp2", PackageType.BOOTSTRAP),
-                    Package("libsystemd0", PackageType.BOOTSTRAP),
-                    Package("libtsan0", PackageType.BOOTSTRAP),
-                    Package("libubsan0", PackageType.BOOTSTRAP),
-                    Package("libxcrypt-devel", PackageType.BOOTSTRAP),
-                    Package("linux-glibc-devel", PackageType.BOOTSTRAP),
-                    Package("make", PackageType.BOOTSTRAP),
-                    Package("mokutil", PackageType.BOOTSTRAP),
-                    Package("pam-config", PackageType.BOOTSTRAP),
-                    Package("pciutils", PackageType.BOOTSTRAP),
-                    Package("perl", PackageType.BOOTSTRAP),
-                    Package("perl-Bootloader", PackageType.BOOTSTRAP),
-                    Package("pigz", PackageType.BOOTSTRAP),
-                    Package("pkg-config", PackageType.BOOTSTRAP),
-                    Package("python3-base", PackageType.BOOTSTRAP),
-                    Package("suse-module-tools", PackageType.BOOTSTRAP),
-                    Package("system-group-kvm", PackageType.BOOTSTRAP),
-                    Package("systemd", PackageType.BOOTSTRAP),
-                    Package("systemd-default-settings", PackageType.BOOTSTRAP),
-                    Package("systemd-default-settings-branding-SLE", PackageType.BOOTSTRAP),
-                    Package("systemd-presets-branding-SLE", PackageType.BOOTSTRAP),
-                    Package("systemd-presets-common-SUSE", PackageType.BOOTSTRAP),
-                    Package("systemd-rpm-macros", PackageType.BOOTSTRAP),
-                    Package("udev", PackageType.BOOTSTRAP),
-                    Package("update-alternatives", PackageType.BOOTSTRAP),
-                    Package("util-linux-systemd", PackageType.BOOTSTRAP),
-                    Package("zlib-devel", PackageType.BOOTSTRAP),
-                    Package("zstd", PackageType.BOOTSTRAP),
 
-                    # required by nvidia-drive script
+                    # required by nvidia-driver script
                     Package("awk", PackageType.IMAGE),
                     Package("coreutils", PackageType.IMAGE),
                     Package("findutils", PackageType.IMAGE),
@@ -362,16 +343,15 @@ for os_version in (OsVersion.SL16_0, OsVersion.SP7,):
   # dbus-1 kbd libapparmor1 libdbus-1-3 libexpat1 libip4tc2 libkmod2 liblz4-1 libnvidia-cfg libseccomp2 libsystemd0 nvidia-persistenced pam-config pkg-config systemd systemd-default-settings
   # systemd-default-settings-branding-SLE systemd-presets-branding-SLE systemd-presets-common-SUSE update-alternatives
 
-
-
                 ],
                 support_level=SupportLevel.UNSUPPORTED,
                 # exclusive_arch=[Arch.X86_64],
                 exclusive_arch=[Arch.X86_64, Arch.AARCH64],
-                third_party_repo_url=NVIDIA_REPO_BASEURL[os_version],
-                third_party_repo_key_url=NVIDIA_REPO_KEY_URL[os_version],
+                third_party_repos=NVIDIA_REPOS[os_version],
+                # third_party_repo_url=NVIDIA_REPO_BASEURL[os_version],
+                # third_party_repo_key_url=NVIDIA_REPO_KEY_URL[os_version],
                 # third_party_repo_key_file=NVIDIA_REPO_KEY_FILE[os_version],
-                third_party_repo_key_file="",
+                # third_party_repo_key_file="",
                 open_drivers_package_list=[
                     # ThirdPartyPackage("nvidia-open-driver-G06-kmp-default", version=ver),
                     # ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-default", version=ver),

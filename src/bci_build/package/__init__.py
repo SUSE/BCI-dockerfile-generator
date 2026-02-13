@@ -1468,7 +1468,7 @@ def generate_disk_size_constraints(size_gb: int) -> str:
 """
 
 
-from .amdgpu import AMD_GPU_CONTAINERS  # noqa: E402
+# from .amdgpu import AMD_GPU_CONTAINERS  # noqa: E402
 from .apache_tomcat import TOMCAT_CONTAINERS  # noqa: E402
 from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
@@ -1488,7 +1488,7 @@ from .basecontainers import MICRO_CONTAINERS  # noqa: E402
 from .basecontainers import MINIMAL_CONTAINERS  # noqa: E402
 from .bind import BIND_CONTAINERS  # noqa: E402
 from .cosign import COSIGN_CONTAINERS  # noqa: E402
-from .dotnet import DOTNET_CONTAINERS  # noqa: E402
+# from .dotnet import DOTNET_CONTAINERS  # noqa: E402
 from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
@@ -1539,8 +1539,8 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *BCI_CI_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
-        *AMD_GPU_CONTAINERS,
-        *DOTNET_CONTAINERS,
+        # *AMD_GPU_CONTAINERS,
+        # *DOTNET_CONTAINERS,
         *PCP_CONTAINERS,
         *REGISTRY_CONTAINERS,
         *HELM_CONTAINERS,
