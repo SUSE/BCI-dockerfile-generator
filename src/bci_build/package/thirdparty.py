@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+import requests
 from jinja2 import Template
 
 from bci_build.container_attributes import Arch
@@ -54,7 +54,8 @@ ARCH_FILENAME_MAP = {
 @dataclass(frozen=True)
 class ThirdPartyPackage:
     name: str
-    arch: Arch | None = None
+    arch: Arch = None
+    version: str = None
 
     def __str__(self) -> str:
         return self.name
@@ -76,16 +77,21 @@ class ThirdPartyRepoMixin:
         self.third_party_repo_key_file = third_party_repo_key_file
         self.third_party_package_list = third_party_package_list
 
+        if not self.third_party_repo_key_file:
+            res = requests.get(third_party_repo_key_url)
+            res.raise_for_status()
+            self.third_party_repo_key_file = res.text
+
         super().__init__(**kwargs)
 
         self.extra_files.update(
             {
-                "third-party.gpg.key": third_party_repo_key_file,
+                "third-party.gpg.key": self.third_party_repo_key_file,
                 "third-party.repo": REPO_FILE.format(
                     repo_name=self.repo_filename.rpartition(".")[0],
                     repo_filename=self.repo_filename,
-                    base_url=third_party_repo_url,
-                    gpg_key=third_party_repo_key_url,
+                    base_url=self.third_party_repo_url,
+                    gpg_key=self.third_party_repo_key_url,
                 ),
             }
         )
@@ -111,36 +117,29 @@ class ThirdPartyRepoMixin:
         Returns:
             list of :py:class:`RpmPackage` representing the downloaded rpms
         """
+        pkgs = self._repo_parser.query(name=pkg.name, arch=pkg.arch, version=pkg.version, latest=latest)
 
-        pkgs = self._repo_parser.query(name=pkg.name, latest=latest)
+        if pkg.arch:
+            exclusive_arch = [pkg.arch]
+        else:
+            exclusive_arch = self.exclusive_arch
 
-        if self.exclusive_arch:
-            allowed_arch = list(
-                dict.fromkeys(
-                    arch
-                    for e_arch in self.exclusive_arch
-                    for arch in ARCH_FILENAME_MAP[e_arch]
+        for arch in exclusive_arch:
+            pkgs_found_for_arch = [
+                p for p in pkgs if p.arch in ARCH_FILENAME_MAP[arch]
+            ]
+            found = len(pkgs_found_for_arch)
+
+            if found > 1:
+                raise Exception(
+                    f"Found {found} packages for '{pkg.name}' and '{arch}': {pkgs_found_for_arch}"
                 )
-            )
-            pkgs = [p for p in pkgs if p.arch in allowed_arch]
-
-        if self.exclusive_arch:
-            for arch in self.exclusive_arch:
-                pkgs_found_for_arch = [
-                    p for p in pkgs if p.arch in ARCH_FILENAME_MAP[arch]
-                ]
-                found_for_arch = len(pkgs_found_for_arch)
-
-                if found_for_arch > 1:
-                    raise Exception(
-                        f"It should have found 1 package '{pkg.name}' for '{arch}' in the repository, but found {found_for_arch}"
-                    )
-                elif found_for_arch == 0:
-                    if pkg.arch is not None and pkg.arch != arch:
-                        continue
-                    raise Exception(
-                        f"It should have found 1 package '{pkg.name}' for '{arch}' in the repository, but found none"
-                    )
+            elif found == 0:
+                if pkg.arch is not None and pkg.arch != arch:
+                    continue
+                raise Exception(
+                    f"Found no packages for '{pkg.name}' and '{arch}'."
+                )
 
         return pkgs
 

@@ -1,0 +1,405 @@
+from typing import Literal
+
+from bci_build.container_attributes import Arch
+from bci_build.container_attributes import PackageType
+from bci_build.os_version import OsVersion
+from bci_build.package import OsContainer
+from bci_build.package import Package
+from bci_build.package import _RELEASE_PLACEHOLDER
+from bci_build.package.helpers import generate_from_image_tag
+from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.package.thirdparty import ThirdPartyPackage
+from bci_build.package.thirdparty import ARCH_FILENAME_MAP
+from bci_build.replacement import Replacement
+from bci_build.util import ParseVersion
+from bci_build.container_attributes import SupportLevel
+from jinja2 import Template
+from bci_build.container_attributes import BuildType
+from bci_build.package import DOCKERFILE_RUN
+from pathlib import Path
+from bci_build.repomdparser import RpmPackage
+
+NVIDIA_REPO_KEY_URL = {
+    OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key",
+    OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key",
+}
+
+NVIDIA_REPO_BASEURL = {
+    # OsVersion.SP7: "https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
+    OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/",
+    OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/",
+}
+
+CUSTOM_END_TEMPLATE = Template(
+    """RUN mkdir -p /tmp/
+
+{%- for pkg in packages %}
+#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
+COPY {{ pkg.filename }} /tmp/
+{%- endfor %}
+
+COPY third-party.gpg.key /tmp/{{ image.repo_key_filename }}
+RUN rpm --import /tmp/{{ image.repo_key_filename }}
+RUN rpm --root /target --import /tmp/{{ image.repo_key_filename }}
+
+COPY third-party.repo /etc/zypp/repos.d/{{ image.repo_filename }}
+
+{% for arch in image.exclusive_arch %}
+{%- with pkgs=get_nvidia_persistenced_packages_for_arch(arch) %}
+{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
+        zypper -n --gpg-auto-import-keys --installroot /target install \\
+            --capability \\
+            --no-recommends \\
+            --auto-agree-with-licenses \\
+        {%- for pkg in pkgs %}
+            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+        {%- endfor %}
+    fi
+{%- endwith %}
+{%- endfor %}
+
+FROM nvidia-driver-builder AS open-driver-builder
+
+{%- for arch in image.exclusive_arch %}
+{%- with pkgs=get_open_packages_for_arch(arch) %}
+{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
+        zypper -n --gpg-auto-import-keys install \\
+            --capability \\
+            --no-recommends \\
+            --auto-agree-with-licenses \\
+            "nvidia-open-driver-G06-signed-kmp = {{ image.driver_version }}" \\
+            nvidia-open-driver-G06-signed-kmp-default \\
+        {%- for pkg in pkgs %}
+            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+        {%- endfor %}
+    fi
+{%- endwith %}
+{%- endfor %}
+
+{{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
+{{ DOCKERFILE_RUN }} cp -rfx /lib/firmware /opt/lib/
+
+FROM nvidia-driver-builder AS closed-driver-builder
+
+{%- for arch in image.exclusive_arch %}
+{%- with pkgs=get_closed_packages_for_arch(arch) %}
+{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
+        zypper -n --gpg-auto-import-keys install \\
+            --capability \\
+            --no-recommends \\
+            --auto-agree-with-licenses \\
+        {%- for pkg in pkgs %}
+            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+        {%- endfor %}
+    fi
+{%- endwith %}
+{%- endfor %}
+
+{{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
+
+FROM nvidia-driver-builder AS builder
+
+COPY --from=open-driver-builder /opt/lib /target/opt/lib
+COPY --from=open-driver-builder /opt/open /target/opt/open
+COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
+"""
+)
+
+CUSTOM_END = rf"""
+COPY extract-vmlinux /usr/local/bin/
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/extract-vmlinux
+
+COPY nvidia-driver /usr/local/bin/
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
+# ensure the variable is set
+RUN sed -i '/DRIVER_ARCH=.*TARGETARCH/i TARGETARCH=$(uname -m)' /usr/local/bin/nvidia-driver
+
+{DOCKERFILE_RUN} mkdir /licenses
+COPY NGC-DL-CONTAINER-LICENSE /licenses
+
+{DOCKERFILE_RUN} mkdir /drivers
+COPY README.md /drivers
+
+WORKDIR /drivers
+
+ENTRYPOINT ["nvidia-driver", "load"]
+"""
+
+class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
+    def __init__(self, driver_version: str, open_drivers_package_list: list[ThirdPartyPackage], closed_drivers_package_list: list[ThirdPartyPackage], **kwargs):
+        self.driver_version = driver_version
+        self.open_drivers_package_list = open_drivers_package_list
+        self.closed_drivers_package_list = closed_drivers_package_list
+
+        third_party_package_list = kwargs.pop("third_party_package_list", [])
+
+        super().__init__(
+            third_party_package_list=(
+                self.open_drivers_package_list +
+                self.closed_drivers_package_list +
+                third_party_package_list
+            ),
+            **kwargs
+        )
+
+        if self.is_latest:
+            raise RuntimeError(
+                "NVIDIA explicitly requires the driver version in the tag"
+            )
+
+        self.custom_end = CUSTOM_END
+
+        nvidia_dir = Path(__file__).parent / self.name
+
+        self.extra_files.update({
+            "NGC-DL-CONTAINER-LICENSE": (nvidia_dir / "NGC-DL-CONTAINER-LICENSE").read_bytes(),
+            "README.md": (nvidia_dir / "vGPU-README.md").read_bytes(),
+            "extract-vmlinux": (nvidia_dir / "extract-vmlinux").read_bytes(),
+            "nvidia-driver": (nvidia_dir / "nvidia-driver").read_bytes(),
+            # "_constraints": generate_disk_size_constraints(8),
+        })
+
+    @property
+    def build_tags(self) -> list[str]:
+        return [
+            f"{self.registry_prefix}/{self.name}:{self.image_ref_name}",
+            f"{self.registry_prefix}/{self.name}:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
+        ]
+
+    @property
+    def image_ref_name(self) -> str:
+        # should match 580.126.09-sles15.7
+        return f"{self.driver_version}-sles%OS_VERSION_ID_SP%"
+
+    @property
+    def build_name(self) -> str | None:
+        return f"bci-{self.name}-%OS_VERSION_ID_SP%"
+
+    @property
+    def reference(self) -> str:
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}"
+
+    @property
+    def pretty_reference(self) -> str:
+        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.image_ref_name}"
+
+    @property
+    def dockerfile_from_line(self) -> str:
+        return f"FROM {self.dockerfile_from_target_ref} AS target\nFROM {self._from_image} AS nvidia-driver-builder"
+
+    def prepare_template(self) -> None:
+        """Prepare the custom template used in the build_stage_custom_end."""
+        assert self.build_recipe_type == BuildType.DOCKER, (
+            f"Build type '{self.build_recipe_type}' is not supported for Third Party images"
+        )
+        assert len(self.third_party_package_list) > 0, (
+            "The `third_party_package_list` is empty"
+        )
+
+        pkgs = self.fetch_rpm_packages()
+
+        # NVIDIA drivers are built on GA kernel
+        for name in ["kernel-default", "kernel-default-devel"]:
+            for arch in self.exclusive_arch:
+                pkgs.append(
+                    RpmPackage(
+                        name=name,
+                        arch=str(arch),
+                        evr=("", "6.4.0", "150700.51.1"),
+                        filename=f"{name}-6.4.0-150700.51.1.{arch}.rpm",
+                        url=f"https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/{arch}/kernel-default/{name}-6.4.0-150700.51.1.{arch}.rpm"
+                    )
+                )
+
+        for name in ["kernel-devel", "kernel-macros"]:
+            pkgs.append(
+                RpmPackage(
+                    name=name,
+                    arch="noarch",
+                    evr=("", "6.4.0", "150700.51.1"),
+                    filename=f"{name}-6.4.0-150700.51.1.noarch.rpm",
+                    url=f"https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/{name}-6.4.0-150700.51.1.noarch.rpm"
+                )
+            )
+
+        assert not self.build_stage_custom_end, (
+            "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
+        )
+
+        open_packages = [p.name for p in self.open_drivers_package_list]
+        closed_packages = [p.name for p in self.closed_drivers_package_list]
+
+        self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
+            image=self,
+            packages=pkgs,
+            DOCKERFILE_RUN=DOCKERFILE_RUN,
+            get_open_packages_for_arch=lambda arch: [
+                pkg for pkg in pkgs if pkg.name not in closed_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
+            ],
+            get_closed_packages_for_arch=lambda arch: [
+                pkg for pkg in pkgs if pkg.name not in open_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
+            ],
+            get_nvidia_persistenced_packages_for_arch=lambda arch: [
+                pkg for pkg in pkgs if pkg.name == "nvidia-persistenced" and pkg.arch in ARCH_FILENAME_MAP[arch]
+            ],
+        )
+
+        super(OsContainer, self).prepare_template()
+
+
+_NVIDIA_DRIVER_VERSIONS_T = Literal["580.126.09"]
+_NVIDIA_DRIVER_VERSIONS: list[_NVIDIA_DRIVER_VERSIONS_T] = ["580.126.09"]
+
+NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
+
+for os_version in (OsVersion.SL16_0, OsVersion.SP7,):
+    for ver in _NVIDIA_DRIVER_VERSIONS:
+        NVIDIA_CONTAINERS.append(
+            NvidiaDriverBCI(
+                os_version=os_version,
+                driver_version=ver,
+                name="nvidia-driver",
+                pretty_name="NVIDIA Driver",
+                is_latest=False,
+                from_image=generate_from_image_tag(os_version, "bci-base"),
+                from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+                package_name=f"nvidia-driver-{ver}",
+                package_list=[
+                    Package("binutils", PackageType.BOOTSTRAP),
+                    Package("cpp", PackageType.BOOTSTRAP),
+                    Package("cpp7", PackageType.BOOTSTRAP),
+                    Package("dbus-1", PackageType.BOOTSTRAP),
+                    Package("dracut", PackageType.BOOTSTRAP),
+                    Package("dracut-fips", PackageType.BOOTSTRAP),
+                    Package("dwarves", PackageType.BOOTSTRAP),
+                    Package("elfutils", PackageType.BOOTSTRAP),
+                    Package("file", PackageType.BOOTSTRAP),
+                    Package("gawk", PackageType.BOOTSTRAP),
+                    Package("gcc", PackageType.BOOTSTRAP),
+                    Package("gcc7", PackageType.BOOTSTRAP),
+                    Package("glibc-devel", PackageType.BOOTSTRAP),
+                    Package("hwdata", PackageType.BOOTSTRAP),
+                    Package("iputils", PackageType.BOOTSTRAP),
+                    Package("kbd", PackageType.BOOTSTRAP),
+                    # Package("kernel-default", PackageType.BOOTSTRAP),
+                    # Package("kernel-default-devel", PackageType.BOOTSTRAP),
+                    # Package("kernel-devel", PackageType.BOOTSTRAP),
+                    # Package("kernel-macros", PackageType.BOOTSTRAP),
+                    Package("kmod", PackageType.BOOTSTRAP),
+                    Package("libapparmor1", PackageType.BOOTSTRAP),
+                    Package("libargon2-1", PackageType.BOOTSTRAP),
+                    Package("libasan4", PackageType.BOOTSTRAP),
+                    Package("libasm1", PackageType.BOOTSTRAP),
+                    Package("libatomic1", PackageType.BOOTSTRAP),
+                    Package("libbpf1", PackageType.BOOTSTRAP),
+                    Package("libcilkrts5", PackageType.BOOTSTRAP),
+                    Package("libcryptsetup12", PackageType.BOOTSTRAP),
+                    Package("libctf-nobfd0", PackageType.BOOTSTRAP),
+                    Package("libctf0", PackageType.BOOTSTRAP),
+                    Package("libdbus-1-3", PackageType.BOOTSTRAP),
+                    Package("libdevmapper1_03", PackageType.BOOTSTRAP),
+                    Package("libdwarves1", PackageType.BOOTSTRAP),
+                    Package("libefivar1", PackageType.BOOTSTRAP),
+                    Package("libelf-devel", PackageType.BOOTSTRAP),
+                    Package("libexpat1", PackageType.BOOTSTRAP),
+                    Package("libgdbm4", PackageType.BOOTSTRAP),
+                    Package("libgomp1", PackageType.BOOTSTRAP),
+                    Package("libip4tc2", PackageType.BOOTSTRAP),
+                    Package("libisl15", PackageType.BOOTSTRAP),
+                    Package("libitm1", PackageType.BOOTSTRAP),
+                    Package("libjson-c5", PackageType.BOOTSTRAP),
+                    Package("libkcapi-tools", PackageType.BOOTSTRAP),
+                    Package("libkmod2", PackageType.BOOTSTRAP),
+                    Package("liblsan0", PackageType.BOOTSTRAP),
+                    Package("liblz4-1", PackageType.BOOTSTRAP),
+                    Package("libmpc3", PackageType.BOOTSTRAP),
+                    Package("libmpfr6", PackageType.BOOTSTRAP),
+                    Package("libmpx2", PackageType.BOOTSTRAP),
+                    Package("libmpxwrappers2", PackageType.BOOTSTRAP),
+                    Package("libopenssl1_1", PackageType.BOOTSTRAP),
+                    Package("libpci3", PackageType.BOOTSTRAP),
+                    Package("libpython3_6m1_0", PackageType.BOOTSTRAP),
+                    Package("libseccomp2", PackageType.BOOTSTRAP),
+                    Package("libsystemd0", PackageType.BOOTSTRAP),
+                    Package("libtsan0", PackageType.BOOTSTRAP),
+                    Package("libubsan0", PackageType.BOOTSTRAP),
+                    Package("libxcrypt-devel", PackageType.BOOTSTRAP),
+                    Package("linux-glibc-devel", PackageType.BOOTSTRAP),
+                    Package("make", PackageType.BOOTSTRAP),
+                    Package("mokutil", PackageType.BOOTSTRAP),
+                    Package("pam-config", PackageType.BOOTSTRAP),
+                    Package("pciutils", PackageType.BOOTSTRAP),
+                    Package("perl", PackageType.BOOTSTRAP),
+                    Package("perl-Bootloader", PackageType.BOOTSTRAP),
+                    Package("pigz", PackageType.BOOTSTRAP),
+                    Package("pkg-config", PackageType.BOOTSTRAP),
+                    Package("python3-base", PackageType.BOOTSTRAP),
+                    Package("suse-module-tools", PackageType.BOOTSTRAP),
+                    Package("system-group-kvm", PackageType.BOOTSTRAP),
+                    Package("systemd", PackageType.BOOTSTRAP),
+                    Package("systemd-default-settings", PackageType.BOOTSTRAP),
+                    Package("systemd-default-settings-branding-SLE", PackageType.BOOTSTRAP),
+                    Package("systemd-presets-branding-SLE", PackageType.BOOTSTRAP),
+                    Package("systemd-presets-common-SUSE", PackageType.BOOTSTRAP),
+                    Package("systemd-rpm-macros", PackageType.BOOTSTRAP),
+                    Package("udev", PackageType.BOOTSTRAP),
+                    Package("update-alternatives", PackageType.BOOTSTRAP),
+                    Package("util-linux-systemd", PackageType.BOOTSTRAP),
+                    Package("zlib-devel", PackageType.BOOTSTRAP),
+                    Package("zstd", PackageType.BOOTSTRAP),
+
+                    # required by nvidia-drive script
+                    Package("awk", PackageType.IMAGE),
+                    Package("coreutils", PackageType.IMAGE),
+                    Package("findutils", PackageType.IMAGE),
+                    Package("grep", PackageType.IMAGE),
+                    Package("jq", PackageType.IMAGE),
+                    Package("kmod", PackageType.IMAGE),
+                    Package("rpm", PackageType.IMAGE),
+                    Package("sed", PackageType.IMAGE),
+                    Package("util-linux", PackageType.IMAGE),
+
+  # dbus-1 kbd libapparmor1 libdbus-1-3 libexpat1 libip4tc2 libkmod2 liblz4-1 libnvidia-cfg libseccomp2 libsystemd0 nvidia-persistenced pam-config pkg-config systemd systemd-default-settings
+  # systemd-default-settings-branding-SLE systemd-presets-branding-SLE systemd-presets-common-SUSE update-alternatives
+
+
+
+                ],
+                support_level=SupportLevel.UNSUPPORTED,
+                # exclusive_arch=[Arch.X86_64],
+                exclusive_arch=[Arch.X86_64, Arch.AARCH64],
+                third_party_repo_url=NVIDIA_REPO_BASEURL[os_version],
+                third_party_repo_key_url=NVIDIA_REPO_KEY_URL[os_version],
+                # third_party_repo_key_file=NVIDIA_REPO_KEY_FILE[os_version],
+                third_party_repo_key_file="",
+                open_drivers_package_list=[
+                    # ThirdPartyPackage("nvidia-open-driver-G06-kmp-default", version=ver),
+                    # ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-default", version=ver),
+                    ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-meta", version=ver),
+                ],
+                closed_drivers_package_list=[
+                    ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=ver),
+                    ThirdPartyPackage("nvidia-driver-G06-kmp-meta", version=ver),
+                ],
+                third_party_package_list=[
+                    ThirdPartyPackage("libOpenCL1"),
+                    ThirdPartyPackage("libnvidia-gpucomp", version=ver),
+                    ThirdPartyPackage("nvidia-common-G06", version=ver),
+                    ThirdPartyPackage("nvidia-compute-G06", version=ver),
+                    ThirdPartyPackage("nvidia-compute-utils-G06", version=ver),
+                    ThirdPartyPackage("nvidia-modprobe", version=ver),
+                    ThirdPartyPackage("nvidia-persistenced", version=ver),
+                    ThirdPartyPackage("nvidia-userspace-meta-G06", version=ver),
+                ],
+                entrypoint=["nvidia-driver", "load"],
+                env={
+                    "DRIVER_VERSION": ver,
+                    "DRIVER_TYPE": "passthrough",
+                    "DRIVER_BRANCH": ver.split(".")[0],
+                    "VGPU_LICENSE_SERVER_TYPE": "NLS",
+                    "DISABLE_VGPU_VERSION_CHECK": "true",
+                    "NVIDIA_VISIBLE_DEVICES": "void",
+                    "KERNEL_VERSION": "latest",
+                },
+            )
+        )
