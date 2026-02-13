@@ -25,7 +25,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends python3-devel python3 python3-pip curl findutils gawk git-core procps python3-wheel lifecycle-data-sle-module-python3 lifecycle-data-sle-module-development-tools
+    zypper -n install --no-recommends curl findutils gawk git-core lifecycle-data-sle-module-development-tools lifecycle-data-sle-module-python3 procps python3 python3-devel python3-pip python3-wheel
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
