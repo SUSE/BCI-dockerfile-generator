@@ -41,6 +41,12 @@ class OsVersion(enum.Enum):
         return self.value
 
     @property
+    def dist_id(self) -> str | None:
+        if self.is_sle15:
+            return "sles15"
+        return None
+
+    @property
     def pretty_os_version_no_dash(self) -> str:
         if self.value == OsVersion.TUMBLEWEED.value:
             # TW has no version by itself and the "openSUSE Tumbleweed" is

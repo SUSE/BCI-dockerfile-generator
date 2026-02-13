@@ -138,6 +138,9 @@ EXPOSE 9000
         tag_version=php_version,
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
+        additional_versions=(
+            [f"{php_version}-{os_version.dist_id}"] if os_version.dist_id else []
+        ),
         os_version=os_version,
         is_latest=(
             php_version == _LATEST_PHP_VERSION

@@ -51,6 +51,9 @@ GCC_CONTAINERS = [
         os_version=os_version,
         version="%%gcc_minor_version%%",
         tag_version=str(gcc_version),
+        additional_versions=(
+            [f"{gcc_version}-{os_version.dist_id}"] if os_version.dist_id else []
+        ),
         support_level=SupportLevel.L3,
         supported_until=_GCC_SL16_SUPPORTED_UNTIL.get(gcc_version),
         package_list=(
