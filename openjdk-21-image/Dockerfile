@@ -18,6 +18,7 @@
 #!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
 #!BuildTag: bci/openjdk:%%java_version%%
 #!BuildTag: bci/openjdk:21
+#!BuildTag: bci/openjdk:21-sles15
 #!BuildName: bci-openjdk-21
 #!BuildVersion: 15.7.21
 FROM registry.suse.com/bci/bci-base:15.7

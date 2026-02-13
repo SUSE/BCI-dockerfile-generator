@@ -18,6 +18,7 @@
 #!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
 #!BuildTag: bci/openjdk:%%java_version%%
 #!BuildTag: bci/openjdk:25
+#!BuildTag: bci/openjdk:25-sles15
 #!BuildTag: bci/openjdk:latest
 #!BuildName: bci-openjdk-25
 #!BuildVersion: 15.7.25

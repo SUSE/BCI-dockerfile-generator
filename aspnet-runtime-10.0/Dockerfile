@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-aspnet:10.0.3-%RELEASE%
 #!BuildTag: bci/dotnet-aspnet:10.0.3
 #!BuildTag: bci/dotnet-aspnet:10.0
+#!BuildTag: bci/dotnet-aspnet:10.0-sles15
 #!BuildTag: bci/dotnet-aspnet:latest
 #!BuildName: bci-dotnet-aspnet-10.0
 #!BuildVersion: 15.7.10.0
