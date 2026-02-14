@@ -27,21 +27,21 @@ FROM registry.suse.com/bci/bci-base:15.7
 RUN set -euo pipefail; \
     zypper -n install --no-recommends libicu libopenssl1_1
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/9b/674d/dotnet-host-9.0.13-1.aarch64.rpm sha256:9b674d94e6b4314cb08ef8cdfc8c7d4cd336b2a19935dff780dca4c706052904
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.13-1.aarch64.rpm sha256:9b674d94e6b4314cb08ef8cdfc8c7d4cd336b2a19935dff780dca4c706052904
 COPY dotnet-host-9.0.13-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/20/48c9/dotnet-host-9.0.13-1.x86_64.rpm sha256:2048c9a0cabf2a02f9ebe11236552f45fd877cf39d1be6d6c3e584f66537cd06
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.13-1.x86_64.rpm sha256:2048c9a0cabf2a02f9ebe11236552f45fd877cf39d1be6d6c3e584f66537cd06
 COPY dotnet-host-9.0.13-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/4a/44ef/dotnet-hostfxr-9.0-9.0.13-1.aarch64.rpm sha256:4a44ef5a9e8f3f1f05dd313ebe5197a2bffba04be7ac5aa6928c15e440deeb76
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.13-1.aarch64.rpm sha256:4a44ef5a9e8f3f1f05dd313ebe5197a2bffba04be7ac5aa6928c15e440deeb76
 COPY dotnet-hostfxr-9.0-9.0.13-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/31/5b69/dotnet-hostfxr-9.0-9.0.13-1.x86_64.rpm sha256:315b6920b0212c9d5b416dbd035e84a18cc343e1ddfea4a2a5f996de434554d3
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.13-1.x86_64.rpm sha256:315b6920b0212c9d5b416dbd035e84a18cc343e1ddfea4a2a5f996de434554d3
 COPY dotnet-hostfxr-9.0-9.0.13-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/1d/5348/dotnet-runtime-deps-9.0-9.0.13-1.aarch64.rpm sha256:1d534860207e1dfaf207b77b60aa483ab4317a091fee07daa2ca9cd349b2dea4
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.13-1.aarch64.rpm sha256:1d534860207e1dfaf207b77b60aa483ab4317a091fee07daa2ca9cd349b2dea4
 COPY dotnet-runtime-deps-9.0-9.0.13-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/53/a845/dotnet-runtime-deps-9.0-9.0.13-1.x86_64.rpm sha256:53a845dada46212f5a43a76f9b1505b9c177e52b07a2f517fc116476b9554aa0
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.13-1.x86_64.rpm sha256:53a845dada46212f5a43a76f9b1505b9c177e52b07a2f517fc116476b9554aa0
 COPY dotnet-runtime-deps-9.0-9.0.13-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/80/40d3/dotnet-runtime-9.0-9.0.13-1.aarch64.rpm sha256:8040d3f4c8552f4fd96f992c3eb31ea5edcfc5af575c84418b6897a85a785f67
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.13-1.aarch64.rpm sha256:8040d3f4c8552f4fd96f992c3eb31ea5edcfc5af575c84418b6897a85a785f67
 COPY dotnet-runtime-9.0-9.0.13-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/e8/97db/dotnet-runtime-9.0-9.0.13-1.x86_64.rpm sha256:e897dbf70ad0c33c8930df6534f43ffc00c19b787b5efcfdfe53b2bfee7ca40b
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.13-1.x86_64.rpm sha256:e897dbf70ad0c33c8930df6534f43ffc00c19b787b5efcfdfe53b2bfee7ca40b
 COPY dotnet-runtime-9.0-9.0.13-1.x86_64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
