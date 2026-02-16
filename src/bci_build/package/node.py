@@ -72,10 +72,10 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(22, OsVersion.SP7), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(
-        **_get_node_kwargs(24, OsVersion.SP7), support_level=SupportLevel.L3
+        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
+        **_get_node_kwargs(24, OsVersion.SL16_0), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(**_get_node_kwargs(22, OsVersion.TUMBLEWEED)),
     DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED)),
