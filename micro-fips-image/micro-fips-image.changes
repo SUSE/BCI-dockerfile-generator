@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
 Fri Jan 30 09:19:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Set the crypto-policies to FIPS

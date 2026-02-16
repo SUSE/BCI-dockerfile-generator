@@ -51,7 +51,7 @@ LABEL org.opencontainers.image.ref.name="3.4-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/ruby:3.4-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-beta"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix

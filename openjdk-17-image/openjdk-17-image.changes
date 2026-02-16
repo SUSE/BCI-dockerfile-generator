@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:14 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
 Sun Jan 11 10:07:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the OpenJDK 21 development BCI
