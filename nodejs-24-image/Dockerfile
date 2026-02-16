@@ -17,15 +17,17 @@
 
 #!BuildTag: opensuse/bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/nodejs:%%nodejs_version%%
-#!BuildTag: opensuse/bci/nodejs:22
+#!BuildTag: opensuse/bci/nodejs:24
+#!BuildTag: opensuse/bci/nodejs:latest
 #!BuildTag: opensuse/bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: opensuse/bci/node:%%nodejs_version%%
-#!BuildTag: opensuse/bci/node:22
+#!BuildTag: opensuse/bci/node:24
+#!BuildTag: opensuse/bci/node:latest
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends nodejs22 npm22 update-alternatives curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends nodejs24 npm24 update-alternatives curl findutils gawk git-core procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -41,8 +43,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.nodejs
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Node.js 22 development"
-LABEL org.opencontainers.image.description="Node.js 22 development container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Node.js 24 development"
+LABEL org.opencontainers.image.description="Node.js 24 development container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%nodejs_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -55,4 +57,4 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV NODE_VERSION="22"
+ENV NODE_VERSION="24"

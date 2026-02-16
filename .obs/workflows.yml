@@ -155,6 +155,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: nodejs-24-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: openjdk-11-devel-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -412,6 +416,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: nodejs-22-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: nodejs-24-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-11-devel-image
