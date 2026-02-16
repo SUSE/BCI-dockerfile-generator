@@ -10,14 +10,16 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.replacement import Replacement
 
-_NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24]
+_NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24, 25]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
-    # upcoming LTS version ~ 2025-04
-    24: datetime.date(2028, 4, 30),
+    25: datetime.date(2026, 6, 1),
+    # upstream 2028/4/30 but we pick general support of SL16.1
+    24: datetime.date(2028, 11, 30),
     23: datetime.date(2025, 6, 1),
-    22: datetime.date(2027, 4, 30),
+    # ... upstream ends 2027/4/30, SP7 goes until 2027-12-31 but we pick the shorter SLES16 date
+    22: datetime.date(2027, 11, 30),
     21: datetime.date(2024, 6, 1),
     20: datetime.date(2026, 4, 30),
     # ... upstream is 2024/4/30 but SUSE ends earlier with SP5
@@ -70,10 +72,10 @@ NODE_CONTAINERS = [
         **_get_node_kwargs(22, OsVersion.SP7), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(
-        **_get_node_kwargs(24, OsVersion.SP7), support_level=SupportLevel.L3
+        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
+        **_get_node_kwargs(24, OsVersion.SL16_0), support_level=SupportLevel.L3
     ),
     DevelopmentContainer(**_get_node_kwargs(22, OsVersion.TUMBLEWEED)),
     DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED)),
