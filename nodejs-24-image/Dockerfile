@@ -17,18 +17,20 @@
 
 #!BuildTag: bci/nodejs:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/nodejs:%%nodejs_version%%
-#!BuildTag: bci/nodejs:22
-#!BuildTag: bci/nodejs:22-sles15
+#!BuildTag: bci/nodejs:24
+#!BuildTag: bci/nodejs:24-sles15
+#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%
-#!BuildTag: bci/node:22
-#!BuildTag: bci/node:22-sles15
-#!BuildName: bci-nodejs-22
-#!BuildVersion: 15.7.22
+#!BuildTag: bci/node:24
+#!BuildTag: bci/node:24-sles15
+#!BuildTag: bci/node:latest
+#!BuildName: bci-nodejs-24
+#!BuildVersion: 15.7.24
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends nodejs22 npm22 update-alternatives curl findutils gawk git-core procps
+    zypper -n install --no-recommends nodejs24 npm24 update-alternatives curl findutils gawk git-core procps
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -45,8 +47,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.nodejs
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Node.js 22 development"
-LABEL org.opencontainers.image.description="Node.js 22 development container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.title="SLE BCI Node.js 24 development"
+LABEL org.opencontainers.image.description="Node.js 24 development container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="%%nodejs_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
@@ -56,7 +58,7 @@ LABEL org.opencontainers.image.ref.name="%%nodejs_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/nodejs:%%nodejs_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
-LABEL com.suse.supportlevel.until="2027-04-30"
+LABEL com.suse.supportlevel.until="2028-04-30"
 LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
@@ -64,4 +66,4 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-ENV NODE_VERSION="22"
+ENV NODE_VERSION="24"
