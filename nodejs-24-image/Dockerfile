@@ -19,10 +19,12 @@
 #!BuildTag: bci/nodejs:%%nodejs_version%%
 #!BuildTag: bci/nodejs:24
 #!BuildTag: bci/nodejs:24-sles15
+#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:%%nodejs_version%%-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%
 #!BuildTag: bci/node:24
 #!BuildTag: bci/node:24-sles15
+#!BuildTag: bci/node:latest
 #!BuildName: bci-nodejs-24
 #!BuildVersion: 15.7.24
 FROM registry.suse.com/bci/bci-base:15.7
