@@ -45,7 +45,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
             <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
             <label name="com.suse.supportlevel" value="techpreview"/>
             <label name="com.suse.supportlevel.until" value="2028-11-30"/>
-            <label name="com.suse.eula" value="sle-bci"/>
+            <label name="com.suse.eula" value="sle-beta"/>
             <label name="com.suse.release-stage" value="beta"/>
             <label name="com.suse.lifecycle-url" value="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"/>
           </suse_label_helper:add_prefix>

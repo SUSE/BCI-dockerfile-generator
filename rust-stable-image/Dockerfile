@@ -54,7 +54,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-1.%REL
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-05-07"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-beta"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix

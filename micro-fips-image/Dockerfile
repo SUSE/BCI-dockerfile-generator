@@ -59,7 +59,7 @@ LABEL org.opensuse.reference="registry.suse.com/bci/bci-micro-fips:%OS_VERSION_I
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2028-11-30"
-LABEL com.suse.eula="sle-bci"
+LABEL com.suse.eula="sle-beta"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
