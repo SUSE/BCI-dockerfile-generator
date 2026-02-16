@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
 Tue Feb 10 17:30:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - configure gpgkey

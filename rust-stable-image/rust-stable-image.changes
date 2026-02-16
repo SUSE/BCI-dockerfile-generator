@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
 Mon Feb 16 09:13:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.92 for st/vc rust 1.93 for stable, 1.92 to oldstable
