@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 17 11:18:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rerender templates with generalized tmpfiles generation logic
+
+-------------------------------------------------------------------
 Thu Feb  5 16:47:29 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update blkid.conf for micro based containers which install util-linux
