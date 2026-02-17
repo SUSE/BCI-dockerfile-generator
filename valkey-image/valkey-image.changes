@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 17 11:18:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rerender templates with generalized tmpfiles generation logic
+
+-------------------------------------------------------------------
 Sun Jan 11 17:25:17 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
