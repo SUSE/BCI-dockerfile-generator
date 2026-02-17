@@ -71,6 +71,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: nodejs-24-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: openjdk-17-devel-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -221,6 +225,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: nginx-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: nodejs-24-image
     - trigger_services:
         project: devel:BCI:16.1
         package: openjdk-17-devel-image
