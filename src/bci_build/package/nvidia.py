@@ -19,6 +19,7 @@ from bci_build.container_attributes import BuildType
 from bci_build.package import DOCKERFILE_RUN
 from pathlib import Path
 from bci_build.repomdparser import RpmPackage
+from bci_build.package import generate_disk_size_constraints
 
 NVIDIA_REPOS = {
     OsVersion.SP7: [
@@ -47,8 +48,7 @@ NVIDIA_REPOS = {
 
 CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
-
-{%- for pkg in packages %}
+{% for pkg in packages %}
 #!RemoteAssetUrl: {{ pkg.url }}{% if not pkg.url.endswith(pkg.filename) %} {{ pkg.filename }}{% endif %}{% if pkg.checksum %} sha256:{{ pkg.checksum }}{% endif %}
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
@@ -58,12 +58,12 @@ COPY {{ repo.repo_filename }} /etc/zypp/repos.d/{{ repo.repo_filename }}
 COPY {{ repo.key_filename }} /tmp/{{ repo.key_filename }}
 RUN rpm --import /tmp/{{ repo.key_filename }}
 RUN rpm --root /target --import /tmp/{{ repo.key_filename }}
-{% endfor %}
+{%- endfor %}
 
 FROM nvidia-driver-builder AS open-driver-builder
 
 {%- for arch in image.exclusive_arch %}
-{%- with pkgs=get_open_packages_for_arch(arch) %}
+{% with pkgs=get_open_packages_for_arch(arch) -%}
 {{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
         zypper -n --gpg-auto-import-keys install \\
             --capability \\
@@ -77,14 +77,13 @@ FROM nvidia-driver-builder AS open-driver-builder
 {%- endfor %}
 
 {{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
-
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
 
 FROM nvidia-driver-builder AS closed-driver-builder
 
 {%- for arch in image.exclusive_arch %}
-{%- with pkgs=get_closed_packages_for_arch(arch) %}
+{% with pkgs=get_closed_packages_for_arch(arch) -%}
 {{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
         zypper -n --gpg-auto-import-keys install \\
             --capability \\
@@ -98,17 +97,17 @@ FROM nvidia-driver-builder AS closed-driver-builder
 {%- endfor %}
 
 {{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
-
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
 
 FROM nvidia-driver-builder AS builder
 
+COPY --from=open-driver-builder /usr/share/nvidia-driver-assistant/supported-gpus/supported-gpus.json /target/usr/share/nvidia-driver-assistant/supported-gpus/supported-gpus.json
 COPY --from=open-driver-builder /opt/lib /target/opt/lib
 COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 
-{% for arch in image.exclusive_arch %}
-{%- with pkgs=get_target_packages_for_arch(arch) %}
+{%- for arch in image.exclusive_arch %}
+{% with pkgs=get_target_packages_for_arch(arch) -%}
 {{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
         rpm --root /target -Uvh --nodeps \\
         {%- for pkg in pkgs %}
@@ -126,8 +125,9 @@ COPY extract-vmlinux /usr/local/bin/
 
 COPY nvidia-driver /usr/local/bin/
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
-# ensure the variable is set
-RUN sed -i '/DRIVER_ARCH=.*TARGETARCH/i TARGETARCH=$(uname -m)' /usr/local/bin/nvidia-driver
+
+COPY nvidia-driver-selector.sh /usr/local/bin/
+{DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver-selector.sh
 
 {DOCKERFILE_RUN} mkdir /licenses
 COPY NGC-DL-CONTAINER-LICENSE /licenses
@@ -171,14 +171,19 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
             "README.md": (nvidia_dir / "vGPU-README.md").read_bytes(),
             "extract-vmlinux": (nvidia_dir / "extract-vmlinux").read_bytes(),
             "nvidia-driver": (nvidia_dir / "nvidia-driver").read_bytes(),
-            # "_constraints": generate_disk_size_constraints(8),
+            "nvidia-driver-selector.sh": (nvidia_dir / "nvidia-driver-selector.sh").read_bytes(),
+            "_constraints": generate_disk_size_constraints(8),
         })
+
+    @property
+    def registry_prefix(self):
+        return "third-party"
 
     @property
     def build_tags(self) -> list[str]:
         return [
-            f"third-party/nvidia/driver:{self.image_ref_name}",
-            f"third-party/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
+            f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}",
+            f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
         ]
 
     @property
@@ -192,11 +197,11 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
 
     @property
     def reference(self) -> str:
-        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}"
+        return f"{self.registry}/{self.registry_prefix}/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}"
 
     @property
     def pretty_reference(self) -> str:
-        return f"{self.registry}/{self.registry_prefix}/{self.name}:{self.image_ref_name}"
+        return f"{self.registry}/{self.registry_prefix}/nvidia/driver:{self.image_ref_name}"
 
     @property
     def dockerfile_from_line(self) -> str:

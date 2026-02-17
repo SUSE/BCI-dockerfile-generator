@@ -46,9 +46,9 @@ curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/virtual_uid_maps https
 patch src/bci_build/package/postfix/entrypoint/entrypoint.sh src/bci_build/package/postfix/entrypoint/sles-entrypoint.patch -o src/bci_build/package/postfix/entrypoint/entrypoint.sles.sh
 
 ### nvidia-driver: Apache 2.0, GPL-2.0
-curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver https://raw.githubusercontent.com/fcrozat/gpu-driver-container/refs/heads/official-packages/sle15/official-packages/nvidia-driver
 # TODO: fcrozat needs to be merged into the upstream nvidia repo
-# curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver https://raw.githubusercontent.com/NVIDIA/gpu-driver-container/refs/heads/main/sle15/nvidia-driver
+curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver https://raw.githubusercontent.com/fcrozat/gpu-driver-container/refs/heads/cuda-packages/sle15/official-packages/nvidia-driver
+curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver-selector.sh https://raw.githubusercontent.com/fcrozat/gpu-driver-container/refs/heads/cuda-packages/sle15/official-packages/nvidia-driver-selector.sh
 curl -sf -o src/bci_build/package/nvidia-driver/extract-vmlinux https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
 curl -sf -o src/bci_build/package/nvidia-driver/NGC-DL-CONTAINER-LICENSE https://gitlab.com/nvidia/container-images/cuda/-/raw/master/NGC-DL-CONTAINER-LICENSE
 curl -sf -o src/bci_build/package/nvidia-driver/vGPU-README.md https://raw.githubusercontent.com/NVIDIA/gpu-driver-container/refs/heads/main/sle15/drivers/README.md
