@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 17 10:52:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rerender templates with generalized tmpfiles generation logic
+
+-------------------------------------------------------------------
 Thu Jan  1 14:16:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update copyright year
