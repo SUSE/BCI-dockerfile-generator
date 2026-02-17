@@ -46,6 +46,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
             [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
         ),
         "version": node_version_replacement,
+        "support_level": SupportLevel.L3,
         "tag_version": str(ver),
         "package_list": [
             f"nodejs{ver}",
@@ -68,15 +69,13 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
-    DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SP7), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(
-        **_get_node_kwargs(24, OsVersion.SL16_0), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(**_get_node_kwargs(22, OsVersion.TUMBLEWEED)),
-    DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_node_kwargs(node_version, os_version))
+    for node_version, os_version in (
+        (22, OsVersion.SP7),
+        (22, OsVersion.SL16_0),
+        (22, OsVersion.TUMBLEWEED),
+        (24, OsVersion.SL16_0),
+        (24, OsVersion.SL16_1),
+        (24, OsVersion.TUMBLEWEED),
+    )
 ]
