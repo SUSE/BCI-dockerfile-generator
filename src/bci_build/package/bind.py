@@ -10,6 +10,7 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
@@ -57,16 +58,17 @@ BIND_CONTAINERS = [
             # need to set this one so that we can override it
             "NAMED_CONF": "/etc/named.conf",
         },
-        build_stage_custom_end=textwrap.dedent(rf"""
+        build_stage_custom_end=(
+            generate_systemd_tmpfiles_command("bind.conf", use_target=True)
+            + textwrap.dedent(rf"""
             # patch named.prep to not call logger (provided by systemd)
             # and just log to stdout
-            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \
-                systemd-tmpfiles --create --root /target
             {DOCKERFILE_RUN} \
                 mkdir -p /target/usr/local/lib/bind; \
                 cp /target/{os_version.libexecdir}bind/named.prep {(_named_prep := "/target/usr/local/lib/bind/named.prep")}; \
                 sed -i -e 's|logger "Warning: \$1"|echo "Warning: \$1" >\&2|' -e '/\. \$SYSCONFIG_FILE/d' {_named_prep}
-            """),
+            """)
+        ),
         custom_end=textwrap.dedent(rf"""
             COPY entrypoint.sh {(_entrypoint := "/usr/local/bin/entrypoint.sh")}
             {DOCKERFILE_RUN} chmod +x {_entrypoint}
@@ -92,12 +94,9 @@ BIND_CONTAINERS = [
             )
         )
         + textwrap.dedent(f"""
-            # create files that tmpfiles.d would create for us
-            {DOCKERFILE_RUN} touch /var/lib/named/127.0.0.zone /var/lib/named/localhost.zone /var/lib/named/named.root.key /var/lib/named/root.hint
-
             ENTRYPOINT ["{_entrypoint}"]
             HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD dig +retry=0 +short @127.0.0.1 conncheck.opensuse.org >/dev/null && echo OK
-"""),
+        """),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]

@@ -11,6 +11,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
 from bci_build.package import _build_tag_prefix
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
@@ -49,8 +50,11 @@ VALKEY_CONTAINERS = [
         entrypoint_user="valkey",
         exposes_ports=[TCP(6379)],
         volumes=["/data"],
-        build_stage_custom_end=generate_package_version_check(
-            "valkey", valkey_version, ParseVersion.MINOR, use_target=True
+        build_stage_custom_end=(
+            generate_systemd_tmpfiles_command("valkey.conf", use_target=True)
+            + generate_package_version_check(
+                "valkey", valkey_version, ParseVersion.MINOR, use_target=True
+            )
         ),
         custom_end=textwrap.dedent(
             f"""
