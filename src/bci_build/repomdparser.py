@@ -12,7 +12,7 @@ import requests
 from version_utils import rpm
 
 
-@dataclass(frozen=True)
+@dataclass
 class RpmPackage:
     """Represents an RPM package with additional attributes."""
 
@@ -27,7 +27,7 @@ class RpmPackage:
         return str(self)
 
     def __str__(self):
-        return self.filename
+        return self.url
 
 
 _REPOMD_NS = {

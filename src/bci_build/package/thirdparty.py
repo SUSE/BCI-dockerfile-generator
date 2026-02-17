@@ -11,7 +11,7 @@ CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
 
 {%- for pkg in packages %}
-#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
+#!RemoteAssetUrl: {{ pkg.url }}{% if not pkg.url.endswith(pkg.filename) %} {{ pkg.filename }}{% endif %}{% if pkg.checksum %} sha256:{{ pkg.checksum }}{% endif %}
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
 
@@ -67,6 +67,7 @@ class ThirdPartyRepo:
     url: str
     key: str = None
     key_url: str = None
+    arch: Arch = None
     repo_filename: str = None
     key_filename: str = None
 
@@ -76,15 +77,32 @@ class ThirdPartyRepoParser:
     def __init__(self, repos: list[ThirdPartyRepo]):
         self.repos = repos
         self._repos = []
+        self._repo_map = {}
 
         for repo in self.repos:
+            self._repo_map[repo.url] = repo
             self._repos.append(RepoMDParser(repo.url))
 
     def query(self, *args, **kwargs) -> list[RpmPackage]:
         result = []
 
-        for repo in self._repos:
-            pkgs = repo.query(*args, **kwargs)
+        for repo_parser in self._repos:
+            pkgs = repo_parser.query(*args, **kwargs)
+
+            # if arch is defined, we rewrite the package arch
+            # this is needed in case two repos have the same package as noarch
+            # but with different contents for each arch
+            # I'm look at you CUDA repositories!
+            repo = self._repo_map.get(repo_parser.baserepo_url, None)
+            assert repo is not None, "Repository definition is missing"
+            if repo.arch:
+                for pkg in pkgs:
+                    if pkg.arch == repo.arch:
+                        continue
+
+                    pkg.arch = repo.arch
+                    pkg.filename = pkg.filename.replace(".noarch.", f".{repo.arch}.")
+
             result.extend(pkgs)
 
         return result

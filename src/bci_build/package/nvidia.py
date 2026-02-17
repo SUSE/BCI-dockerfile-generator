@@ -20,26 +20,23 @@ from bci_build.package import DOCKERFILE_RUN
 from pathlib import Path
 from bci_build.repomdparser import RpmPackage
 
-# NVIDIA_REPO_KEY_URL = {
-#     OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key",
-#     OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key",
-# }
-
-# NVIDIA_REPO_BASEURL = {
-#     # OsVersion.SP7: "https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
-#     OsVersion.SP7: "https://download.nvidia.com/suse/sle15sp7/",
-#     OsVersion.SL16_0: "https://download.nvidia.com/suse/sle16/",
-# }
-
 NVIDIA_REPOS = {
     OsVersion.SP7: [
         ThirdPartyRepo(
-            name="nvidia",
-            url="https://download.nvidia.com/suse/sle15sp7/",
-            key_url="https://download.nvidia.com/suse/sle15sp7/repodata/repomd.xml.key"
+            name="cuda-sles15-x86_64",
+            arch="x86_64",
+            url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/D42D0685.pub",
+        ),
+        ThirdPartyRepo(
+            name="cuda-sles15-sbsa",
+            arch="aarch64",
+            url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/D42D0685.pub"
         ),
     ],
     OsVersion.SL16_0: [
+        # there are no CUDA repos for SLE 16 yet
         ThirdPartyRepo(
             name="nvidia",
             url="https://download.nvidia.com/suse/sle16/",
@@ -48,36 +45,11 @@ NVIDIA_REPOS = {
     ],
 }
 
-
-
-# NVIDIA_REPOS = {
-#     OsVersion.SP7: [
-#         ThirdPartyRepo(
-#             name="cuda-sles15-x86_64",
-#             url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/",
-#             key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/D42D0685.pub",
-#         ),
-#         ThirdPartyRepo(
-#             name="cuda-sles15-sbsa",
-#             url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
-#             key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/D42D0685.pub"
-#         ),
-#     ],
-#     OsVersion.SL16_0: [
-#         # there are no CUDA repos for SLE 16 yet
-#         ThirdPartyRepo(
-#             name="nvidia",
-#             url="https://download.nvidia.com/suse/sle16/",
-#             key_url="https://download.nvidia.com/suse/sle16/repodata/repomd.xml.key"
-#         ),
-#     ],
-# }
-
 CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
 
 {%- for pkg in packages %}
-#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
+#!RemoteAssetUrl: {{ pkg.url }}{% if not pkg.url.endswith(pkg.filename) %} {{ pkg.filename }}{% endif %}{% if pkg.checksum %} sha256:{{ pkg.checksum }}{% endif %}
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
 
@@ -88,20 +60,6 @@ RUN rpm --import /tmp/{{ repo.key_filename }}
 RUN rpm --root /target --import /tmp/{{ repo.key_filename }}
 {% endfor %}
 
-{% for arch in image.exclusive_arch %}
-{%- with pkgs=get_target_packages_for_arch(arch) %}
-{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
-        zypper -n --gpg-auto-import-keys --installroot /target install \\
-            --capability \\
-            --no-recommends \\
-            --auto-agree-with-licenses \\
-        {%- for pkg in pkgs %}
-            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
-        {%- endfor %}
-    fi
-{%- endwith %}
-{%- endfor %}
-
 FROM nvidia-driver-builder AS open-driver-builder
 
 {%- for arch in image.exclusive_arch %}
@@ -111,14 +69,14 @@ FROM nvidia-driver-builder AS open-driver-builder
             --capability \\
             --no-recommends \\
             --auto-agree-with-licenses \\
-            "nvidia-open-driver-G06-signed-kmp = {{ image.driver_version }}" \\
-            nvidia-open-driver-G06-signed-kmp-default \\
         {%- for pkg in pkgs %}
             /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
         {%- endfor %}
     fi
 {%- endwith %}
 {%- endfor %}
+
+{{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
 
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -139,6 +97,8 @@ FROM nvidia-driver-builder AS closed-driver-builder
 {%- endwith %}
 {%- endfor %}
 
+{{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
+
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
 
 FROM nvidia-driver-builder AS builder
@@ -146,6 +106,17 @@ FROM nvidia-driver-builder AS builder
 COPY --from=open-driver-builder /opt/lib /target/opt/lib
 COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
+
+{% for arch in image.exclusive_arch %}
+{%- with pkgs=get_target_packages_for_arch(arch) %}
+{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
+        rpm --root /target -Uvh --nodeps \\
+        {%- for pkg in pkgs %}
+            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+        {%- endfor %}
+    fi
+{%- endwith %}
+{%- endfor %}
 """
 )
 
@@ -206,13 +177,13 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
     @property
     def build_tags(self) -> list[str]:
         return [
-            f"{self.registry_prefix}/{self.name}:{self.image_ref_name}",
-            f"{self.registry_prefix}/{self.name}:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
+            f"third-party/nvidia/driver:{self.image_ref_name}",
+            f"third-party/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
         ]
 
     @property
     def image_ref_name(self) -> str:
-        # should match 580.126.09-sles15.7
+        # tag should match 580.126.09-sles15.7
         return f"{self.driver_version}-sles%OS_VERSION_ID_SP%"
 
     @property
@@ -239,6 +210,9 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
         assert len(self.third_party_package_list) > 0, (
             "The `third_party_package_list` is empty"
         )
+        assert not self.build_stage_custom_end, (
+            "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
+        )
 
         pkgs = self.fetch_rpm_packages()
 
@@ -255,6 +229,18 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
                     )
                 )
 
+        for name in ["kernel-syms"]:
+            for arch in self.exclusive_arch:
+                pkgs.append(
+                    RpmPackage(
+                        name=name,
+                        arch=str(arch),
+                        evr=("", "6.4.0", "150700.51.1"),
+                        filename=f"{name}-6.4.0-150700.51.1.{arch}.rpm",
+                        url=f"https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/{arch}/kernel-syms/{name}-6.4.0-150700.51.1.{arch}.rpm"
+                    )
+                )
+
         for name in ["kernel-devel", "kernel-macros"]:
             pkgs.append(
                 RpmPackage(
@@ -266,14 +252,9 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
                 )
             )
 
-        assert not self.build_stage_custom_end, (
-            "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
-        )
-
         open_packages = [p.name for p in self.open_drivers_package_list]
         closed_packages = [p.name for p in self.closed_drivers_package_list]
-        target_packages = open_packages + closed_packages
-        # ["nvidia-persistenced", "nvidia-compute-G06", "nvidia-compute-utils-G06", "libOpenCL1", "libnvidia-gpucomp"]
+        ignore_in_target_packages = open_packages + closed_packages + ["dkms", "nvidia-driver-assistant", "kernel-default", "kernel-default-devel", "kernel-syms", "kernel-devel", "kernel-macros"]
 
         self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
@@ -286,7 +267,7 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, OsContainer):
                 pkg for pkg in pkgs if pkg.name not in open_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
             get_target_packages_for_arch=lambda arch: [
-                pkg for pkg in pkgs if pkg.name not in target_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
+                pkg for pkg in pkgs if pkg.name not in ignore_in_target_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
         )
 
@@ -311,25 +292,24 @@ for os_version in (OsVersion.SL16_0, OsVersion.SP7,):
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
                 package_name=f"nvidia-driver-{ver}",
                 package_list=[
-                    # needed by kernel GA
-                    Package("gcc", PackageType.BOOTSTRAP),
-                    Package("libelf-devel", PackageType.BOOTSTRAP),
+                    # needed by kernel packages
                     Package("dwarves", PackageType.BOOTSTRAP),
                     Package("elfutils", PackageType.BOOTSTRAP),
+                    Package("gcc", PackageType.BOOTSTRAP),
+                    Package("libelf-devel", PackageType.BOOTSTRAP),
+                    Package("pesign-obs-integration", PackageType.BOOTSTRAP),
                     Package("zstd", PackageType.BOOTSTRAP),
-                    # needed by nvidia-driver and nvidia-persistenced
-                    Package("mokutil", PackageType.BOOTSTRAP),
+                    # needed by nvidia packages
+                    Package("dracut", PackageType.BOOTSTRAP),
+                    Package("gcc-c++", PackageType.BOOTSTRAP),
                     Package("make", PackageType.BOOTSTRAP),
+                    Package("mokutil", PackageType.BOOTSTRAP),
                     Package("pciutils", PackageType.BOOTSTRAP),
                     Package("perl-Bootloader", PackageType.BOOTSTRAP),
+                    Package("python3", PackageType.BOOTSTRAP),
                     Package("systemd", PackageType.BOOTSTRAP),
-
-                    # Package("kernel-default", PackageType.BOOTSTRAP),
-                    # Package("kernel-default-devel", PackageType.BOOTSTRAP),
-                    # Package("kernel-devel", PackageType.BOOTSTRAP),
-                    # Package("kernel-macros", PackageType.BOOTSTRAP),
-
-                    # required by nvidia-driver script
+                    Package("xz", PackageType.BOOTSTRAP),
+                    # needed by nvidia-driver script
                     Package("awk", PackageType.IMAGE),
                     Package("coreutils", PackageType.IMAGE),
                     Package("findutils", PackageType.IMAGE),
@@ -339,37 +319,68 @@ for os_version in (OsVersion.SL16_0, OsVersion.SP7,):
                     Package("rpm", PackageType.IMAGE),
                     Package("sed", PackageType.IMAGE),
                     Package("util-linux", PackageType.IMAGE),
-
-  # dbus-1 kbd libapparmor1 libdbus-1-3 libexpat1 libip4tc2 libkmod2 liblz4-1 libnvidia-cfg libseccomp2 libsystemd0 nvidia-persistenced pam-config pkg-config systemd systemd-default-settings
-  # systemd-default-settings-branding-SLE systemd-presets-branding-SLE systemd-presets-common-SUSE update-alternatives
-
+                    Package("util-linux-systemd", PackageType.IMAGE),
                 ],
                 support_level=SupportLevel.UNSUPPORTED,
-                # exclusive_arch=[Arch.X86_64],
                 exclusive_arch=[Arch.X86_64, Arch.AARCH64],
                 third_party_repos=NVIDIA_REPOS[os_version],
                 # third_party_repo_url=NVIDIA_REPO_BASEURL[os_version],
                 # third_party_repo_key_url=NVIDIA_REPO_KEY_URL[os_version],
                 # third_party_repo_key_file=NVIDIA_REPO_KEY_FILE[os_version],
                 # third_party_repo_key_file="",
+                # open_drivers_package_list=[
+                #     # ThirdPartyPackage("nvidia-open-driver-G06-kmp-default", version=ver),
+                #     # ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-default", version=ver),
+                #     ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-meta", version=ver),
+                # ],
+                # closed_drivers_package_list=[
+                #     ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=ver),
+                #     ThirdPartyPackage("nvidia-driver-G06-kmp-meta", version=ver),
+                # ],
+                # third_party_package_list=[
+                #     ThirdPartyPackage("libOpenCL1"),
+                #     ThirdPartyPackage("libnvidia-gpucomp", version=ver),
+                #     ThirdPartyPackage("nvidia-common-G06", version=ver),
+                #     ThirdPartyPackage("nvidia-compute-G06", version=ver),
+                #     ThirdPartyPackage("nvidia-compute-utils-G06", version=ver),
+                #     ThirdPartyPackage("nvidia-modprobe", version=ver),
+                #     ThirdPartyPackage("nvidia-persistenced", version=ver),
+                #     ThirdPartyPackage("nvidia-userspace-meta-G06", version=ver),
+                # ],
                 open_drivers_package_list=[
-                    # ThirdPartyPackage("nvidia-open-driver-G06-kmp-default", version=ver),
-                    # ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-default", version=ver),
-                    ThirdPartyPackage("nvidia-open-driver-G06-signed-kmp-meta", version=ver),
+                    ThirdPartyPackage("nvidia-open-driver-G06", version=ver),
                 ],
                 closed_drivers_package_list=[
-                    ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=ver),
-                    ThirdPartyPackage("nvidia-driver-G06-kmp-meta", version=ver),
+                    ThirdPartyPackage("nvidia-driver-G06", version=ver),
                 ],
                 third_party_package_list=[
-                    ThirdPartyPackage("libOpenCL1"),
+                    # ThirdPartyPackage("nvidia-userspace-meta-G06", version=ver),
+
+                    # cuda relation
+                    # nvidia-compute-utils-G06
+                    #   nvidia-compute-G06
+                    #     libnvidia-cfg
+                    #     libnvidia-gpucomp
+                    #     libnvidia-ml
+                    #     libOpenCL1
+                    #     nvidia-common-G06
+                    #       nvidia-modprobe
+                    #     nvidia-persistenced
+                    #       libnvidia-cfg
+                    #   libnvidia-ml
+
+                    ThirdPartyPackage("nvidia-driver-assistant"),
+                    ThirdPartyPackage("dkms"),
+
+                    ThirdPartyPackage("libnvidia-cfg", version=ver),
+                    ThirdPartyPackage("libnvidia-ml", version=ver),
                     ThirdPartyPackage("libnvidia-gpucomp", version=ver),
+                    ThirdPartyPackage("libOpenCL1"),
                     ThirdPartyPackage("nvidia-common-G06", version=ver),
                     ThirdPartyPackage("nvidia-compute-G06", version=ver),
                     ThirdPartyPackage("nvidia-compute-utils-G06", version=ver),
                     ThirdPartyPackage("nvidia-modprobe", version=ver),
                     ThirdPartyPackage("nvidia-persistenced", version=ver),
-                    ThirdPartyPackage("nvidia-userspace-meta-G06", version=ver),
                 ],
                 entrypoint=["nvidia-driver", "load"],
                 env={
