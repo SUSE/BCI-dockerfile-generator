@@ -4,7 +4,7 @@ import datetime
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
@@ -37,7 +37,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "name": "nodejs",
         "os_version": os_version,
         # we label the newest LTS version as latest
-        "is_latest": ver == 24 and os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": ver == 24 and os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
@@ -46,6 +46,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
             [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
         ),
         "version": node_version_replacement,
+        "support_level": SupportLevel.L3,
         "tag_version": str(ver),
         "package_list": [
             f"nodejs{ver}",
@@ -68,15 +69,12 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
 
 
 NODE_CONTAINERS = [
-    DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SP7), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(
-        **_get_node_kwargs(22, OsVersion.SL16_0), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(
-        **_get_node_kwargs(24, OsVersion.SL16_0), support_level=SupportLevel.L3
-    ),
-    DevelopmentContainer(**_get_node_kwargs(22, OsVersion.TUMBLEWEED)),
-    DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED)),
+    DevelopmentContainer(**_get_node_kwargs(node_version, os_version))
+    for node_version, os_version in (
+        (22, OsVersion.SP7),
+        (22, OsVersion.SL16_0),
+        (24, OsVersion.SL16_0),
+        (24, OsVersion.SL16_1),
+        (24, OsVersion.TUMBLEWEED),
+    )
 ]
