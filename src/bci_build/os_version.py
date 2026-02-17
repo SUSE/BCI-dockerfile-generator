@@ -249,6 +249,11 @@ CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
     OsVersion.TUMBLEWEED,
 ]
 
+CAN_BE_LATEST_SLFO_OS_VERSION: list[OsVersion] = [
+    OsVersion.SL16_0,
+    OsVersion.TUMBLEWEED,
+]
+
 CAN_BE_SAC_VERSION: list[OsVersion] = [OsVersion.SP7]
 
 # End of General Support Dates
