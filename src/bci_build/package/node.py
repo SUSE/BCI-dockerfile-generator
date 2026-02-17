@@ -73,7 +73,6 @@ NODE_CONTAINERS = [
     for node_version, os_version in (
         (22, OsVersion.SP7),
         (22, OsVersion.SL16_0),
-        (22, OsVersion.TUMBLEWEED),
         (24, OsVersion.SL16_0),
         (24, OsVersion.SL16_1),
         (24, OsVersion.TUMBLEWEED),
