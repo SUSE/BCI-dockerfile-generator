@@ -1,110 +1,52 @@
-
-%if "%_repository" == "containerkiwi"
-Type: kiwi
-Repotype: none
-Patterntype: none
-
-Prefer: python3-kiwi
-
-# needed for busybox image building (at minimum)
-ExpandFlags: kiwi-nobasepackages
-
-# needed for micro image
-Prefer: -busybox-coreutils
-
-Binarytype: rpm
-%else
-%if "%_repository" == "containerfile"
-Type: docker
-BuildEngine: podman
-
-%else
-Type: spec
-Repotype: rpm-md
-Patterntype: none
-%endif
-%endif
-
-%if "%_repository" == "containerfile" || "%_repository" == "containerkiwi"
-# Revert split of customer facing for container builds
-Prefer: !cpp-build cpp
-Prefer: !gcc-build-ada gcc-ada
-Prefer: !gcc-build-go gcc-go
-Prefer: !gcc-build gcc
-Prefer: !gcc-build-info gcc-info
-Prefer: !gcc-build-c++ gcc-c++
-Prefer: !gcc-build-fortran gcc-fortran
-Prefer: !gcc-build-d gcc-d
-Prefer: !gcc-build-32bit gcc-32bit
-Prefer: !gcc-build-devel gcc-devel
-Prefer: !gcc-build-locale gcc-locale
-Prefer: !gcc-build-c++-32bit gcc-c++-32bit
-Prefer: !gcc-build-fortran-32bit gcc-fortran-32bit
-Prefer: !gcc-build-objc gcc-objc
-Prefer: !gcc-build-objc-32bit gcc-objc-32bit
-Prefer: !gcc-build-obj-c++ gcc-obj-c++
-Prefer: !gcc-build-PIE gcc-PIE
-Prefer: !gcc-build-ada-32bit gcc-ada-32bit
-Prefer: !gcc-build-go-32bit gcc-go-32bit
-Prefer: !gcc-build-d-32bit gcc-d-32bit
-Prefer: !gccjit-build-devel gccjit-devel
-Prefer: !libstdc++-build-devel libstdc++-devel
-Prefer: !libgccjit-build-devel libgccjit-devel
-
-
-Conflict: !cpp
-Conflict: !gcc-ada
-Conflict: !gcc-go
-Conflict: !gcc
-Conflict: !gcc-info
-Conflict: !gcc-c++
-Conflict: !gcc-fortran
-Conflict: !gcc-d
-Conflict: !gcc-32bit
-Conflict: !gcc-devel
-Conflict: !gcc-locale
-Conflict: !gcc-c++-32bit
-Conflict: !gcc-fortran-32bit
-Conflict: !gcc-objc
-Conflict: !gcc-objc-32bit
-Conflict: !gcc-obj-c++
-Conflict: !gcc-PIE
-Conflict: !gcc-ada-32bit
-Conflict: !gcc-go-32bit
-Conflict: !gcc-d-32bit
-Conflict: !gccjit-devel
-Conflict: !libgccjit-devel
-Conflict: !libstdc++-devel
-
-%endif
-
-
-%if "%_repository" == "product"
-Repotype: slepool:nobuildid
-Patterntype: none
-
-Type: productcompose
-Required: product-composer
-Required: package-translations
-Required: libeconf0
-Ignore: dummy-release:this-is-only-for-build-envs
-Ignore: libsystemd0-mini:this-is-only-for-build-envs
-Ignore: krb5-mini:this-is-only-for-build-envs
-%endif
-
-#
-# All repos
-#
-
-%define beta_flag 1
-
-Macros:
-%beta_flag 1
-:Macros
-
-BuildFlags: excludebuild:rpm
-
-Prefer: -postgresql16-devel-mini -postgresql17-devel-mini -ALP-dummy-release -SLES_SAP-release
-
-# prevent gdb from pulling in python 3.11 & 3.12 at the same time
-Substitute: obs:cli_debug_packages less
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>We're sorry, but something went wrong: Web application could not be started</title>
+    <style type="text/css">body{color:#222;font-family:Arial,Sans-Serif;font-size:13px;margin:0}.column{margin-left:auto;margin-right:auto;max-width:1000px;text-align:center}header{border-bottom:1px solid #e3e3e3;margin-bottom:45px}footer,header{margin-top:50px}footer{border-top:1px solid #e3e3e3;color:#7f7f7f;font-size:14px;padding:40px 0}h1{font-size:30px;margin-bottom:10px;margin-top:30px}.subtitle{font-size:20px;margin-bottom:110px;margin-top:0}#operator_info{display:none}#show_operator_info{font-size:17px;font-weight:400}.left{padding:8px;text-align:left}h3{font-size:23px;margin-bottom:10px;margin-top:30px}ul{padding-left:16px}a,li{color:#1781bf;text-decoration:none}.error,a,li{font-weight:700}.error{background:#e6f3fc;border-radius:5px;padding:7px 12px}.error.block{display:block}.bold{font-weight:700!important}pre{margin:0;overflow-x:auto;white-space:pre-wrap;word-break:break-all}dt{font-weight:700;margin-top:16px}dd{margin-left:0}.plain{color:inherit;font-weight:inherit}#content{height:800px;overflow-y:scroll}</style>
+  </head>
+  <body>
+    <header>
+      <div class="column">
+        <svg width="50" height="50" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="m731.234002 153.838666v-18.841339c0-4.417534-3.577416-7.997327-7.990382-7.997327h-6.414571c-4.417012 0-7.990383 3.580525-7.990383 7.997327v18.841339h-18.841339c-4.417534 0-7.997327 3.577416-7.997327 7.990383v6.414571c0 4.417011 3.580525 7.990382 7.997327 7.990382h18.841339v18.841339c0 4.417534 3.577416 7.997328 7.990383 7.997328h6.414571c4.417011 0 7.990382-3.580526 7.990382-7.997328v-18.841339h18.841339c4.417534 0 7.997328-3.577416 7.997328-7.990382v-6.414571c0-4.417012-3.580526-7.990383-7.997328-7.990383z" fill="#f87575" transform="matrix(.70710678 -.70710678 .70710678 .70710678 -593.80455139 424.48059756)"/></svg>
+        <h1>We're sorry, but something went wrong.</h1>
+        <p class="subtitle">The issue has been logged for investigation. Please try again later.</p>
+      </div>
+    </header>
+    <div class="column">
+      <a id="show_operator_info" href="#" onclick="showOperatorInfo()">Technical details for the administrator of this website</a>
+      <div id="operator_info">
+        <div class="left">
+          <h3>Error ID:</h3>
+          <span class="error">bd77b9a6</span>
+          <h3>Details:</h3>
+          <p>Web application could not be started by the Phusion Passenger(R) application server.</p>
+          <p class="bold">Please read <a href="https://www.phusionpassenger.com/library/admin/log_file/" class="plain">the Passenger log file</a> (search for the Error ID) to find the details of the error.</p>
+          <p>You can also get a detailed report to appear directly on this page, but for security reasons it is only provided if Phusion Passenger(R) is run with <i>environment</i> set to <i>development</i> and/or with the <i>friendly error pages</i> option set to <i>on</i>.</p>
+          <p>For more information about configuring environment and friendly error pages, see:</p>
+          <ul>
+            <li><a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_friendly_error_pages">Nginx integration mode</a></li>
+            <li><a href="https://www.phusionpassenger.com/library/config/apache/reference/#passengerfriendlyerrorpages">Apache integration mode</a></li>
+            <li><a href="https://www.phusionpassenger.com/library/config/standalone/reference/#--friendly-error-pages---no-friendly-error-pages-friendly_error_pages">Standalone mode</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <!--
+       You are free to modify the footer as you see fit,
+       but we kindly ask of you to preserve the following
+       text. Thank you.
+       -->
+      <div class="column">
+        This website is powered by <a href="https:<wbr>//www.phusionpassenger.com"><b>Phusion Passenger(R)</b></a>&reg;, the smart application server built by <b>Phusion</b>&reg;.
+      </div>
+    </footer>
+    <script>
+      function showOperatorInfo() {
+        document.getElementById('operator_info').style.display = 'block';
+      }
+    </script>
+  </body>
+</html>
