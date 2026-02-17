@@ -10,6 +10,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.package.versions import get_pkg_version
 
 _BASE_PODMAN_KEA_CMD = "podman run --replace -it --privileged --network=host"
@@ -27,9 +28,7 @@ KEA_DHCP_CONTAINERS = [
         version_in_uid=False,
         pretty_name="Kea DHCP Server",
         package_list=sorted(["kea", "sed", "util-linux"]),
-        build_stage_custom_end=textwrap.dedent(f"""
-            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
-                systemd-tmpfiles --create --root /target"""),
+        build_stage_custom_end=generate_systemd_tmpfiles_command(None, use_target=True),
         custom_end=(SET_BLKID_SCAN if os_version.is_sle15 else "")
         + textwrap.dedent(f"""
             ENV KEA_PIDFILE_DIR="/var/run/kea"

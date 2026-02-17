@@ -1,7 +1,6 @@
 """Container definition for the MariaDB database server and client."""
 
 import re
-import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import TCP
@@ -16,6 +15,7 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -79,11 +79,11 @@ for os_version in (
             version_in_uid=False,
             pretty_name="MariaDB Server",
             from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-            build_stage_custom_end=textwrap.dedent(f"""
-            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
-                systemd-tmpfiles --create --root /target\n""")
-            + generate_package_version_check(
-                "mariadb", mariadb_version, use_target=True
+            build_stage_custom_end=(
+                generate_systemd_tmpfiles_command("mariadb.conf", use_target=True)
+                + generate_package_version_check(
+                    "mariadb", mariadb_version, use_target=True
+                )
             ),
             replacements_via_service=[
                 Replacement(

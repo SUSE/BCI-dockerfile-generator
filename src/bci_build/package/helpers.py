@@ -1,3 +1,5 @@
+import textwrap
+
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import RELEASED_OS_VERSIONS
@@ -46,3 +48,12 @@ def generate_from_image_tag(os_version: OsVersion, container_name: str) -> str:
     if not os_version.is_tumbleweed and os_version in RELEASED_OS_VERSIONS:
         return f"registry.suse.com/{repo}"
     return repo
+
+
+def generate_systemd_tmpfiles_command(
+    tmpfiles_name: str | None, use_target: bool = False
+) -> str:
+    return textwrap.dedent(f"""
+            {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
+                systemd-tmpfiles --create {"--root /target" if use_target else ""}{f" {tmpfiles_name}" if tmpfiles_name else ""}
+    """)
