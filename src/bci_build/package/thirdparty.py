@@ -57,7 +57,8 @@ ARCH_FILENAME_MAP = {
 @dataclass(frozen=True)
 class ThirdPartyPackage:
     name: str
-    arch: Arch | None = None
+    arch: Arch = None
+    version: str = None
 
     def __str__(self) -> str:
         return self.name
@@ -148,8 +149,7 @@ class ThirdPartyRepoMixin:
         Returns:
             list of :py:class:`RpmPackage` representing the downloaded rpms
         """
-
-        pkgs = self._repo_parser.query(name=pkg.name, latest=latest)
+        pkgs = self._repo.query(name=pkg.name, version=pkg.version, latest=latest)
 
         if self.exclusive_arch:
             allowed_arch = list(
