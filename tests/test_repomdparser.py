@@ -30,13 +30,18 @@ for pkg in [
             s = _pkg_template.format(pkg=pkg, arch=arch, ver=ver)
             _packages += s + "\n"
 
-PRIMARY_XML = f"""<?xml version="1.0" encoding="UTF-8"?>
+SLE_PRIMARY_XML = f"""<?xml version="1.0" encoding="UTF-8"?>
 <metadata xmlns="http://linux.duke.edu/metadata/common" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
 {_packages}
 </metadata>
 """
 
-REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
+OPENSUSE_PRIMARY_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://linux.duke.edu/metadata/common" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+</metadata>
+"""
+
+SLE_REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
   <data type="primary">
     <location href="repodata/primary.xml.gz"/>
@@ -50,18 +55,36 @@ REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
 </repomd>
 """
 
+OPENSUSE_REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+  <data type="primary">
+    <location href="repodata/primary.xml.gz"/>
+  </data>
+</repomd>
+"""
+
 
 def fake_repo_get(url, *args, **kwargs):
     resp = Mock()
     resp.raise_for_status.return_value = None
 
     if url == "https://packages.example.com/sles/15.7/repodata/repomd.xml":
-        resp.content = REPO_XML
+        resp.content = SLE_REPO_XML
+        resp.status_code = 200
+        return resp
+
+    if url == "https://packages.example.org/opensuse/15.7/repodata/repomd.xml":
+        resp.content = OPENSUSE_REPO_XML
         resp.status_code = 200
         return resp
 
     if url == "https://packages.example.com/sles/15.7/repodata/primary.xml.gz":
-        resp.content = gzip.compress(PRIMARY_XML.encode("utf-8"))
+        resp.content = gzip.compress(SLE_PRIMARY_XML.encode("utf-8"))
+        resp.status_code = 200
+        return resp
+
+    if url == "https://packages.example.org/opensuse/15.7/repodata/primary.xml.gz":
+        resp.content = gzip.compress(OPENSUSE_PRIMARY_XML.encode("utf-8"))
         resp.status_code = 200
         return resp
 

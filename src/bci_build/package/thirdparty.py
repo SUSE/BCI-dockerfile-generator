@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+import requests
 from jinja2 import Template
 
 from bci_build.container_attributes import Arch
@@ -15,9 +16,10 @@ CUSTOM_END_TEMPLATE = Template(
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
 
-COPY third-party.gpg.key /tmp/{{ image.repo_key_filename }}
-RUN rpm --import /tmp/{{ image.repo_key_filename }}
-
+{% for repo in image.third_party_repos -%}
+COPY {{ repo.name }}.gpg.key /tmp/{{ repo.key_filename }}
+RUN rpm --import /tmp/{{ repo.key_filename }}
+{% endfor %}
 {% for arch in image.exclusive_arch %}
 {%- with pkgs=get_packages_for_arch(arch) %}
 RUN if [ "$(uname -m)" = "{{ arch }}" ]; then \\
@@ -29,8 +31,9 @@ RUN if [ "$(uname -m)" = "{{ arch }}" ]; then \\
 {%- endwith %}
 {%- endfor %}
 
-COPY third-party.repo /etc/zypp/repos.d/{{ image.repo_filename }}
-
+{% for repo in image.third_party_repos -%}
+COPY {{ repo.name }}.repo /etc/zypp/repos.d/{{ repo.repo_filename }}
+{% endfor %}
 RUN rm -rf /tmp/*
 """
 )
@@ -60,46 +63,80 @@ class ThirdPartyPackage:
         return self.name
 
 
+@dataclass
+class ThirdPartyRepo:
+    name: str
+    url: str
+    key: str = None
+    key_url: str = None
+    arch: Arch = None
+    repo_name: str = None
+    repo_filename: str = None
+    key_filename: str = None
+
+
+class ThirdPartyRepoParser:
+    def __init__(self, repos: list[ThirdPartyRepo]):
+        self.repos = repos
+        self._repos = []
+        self._repo_map = {}
+
+        for repo in self.repos:
+            self._repo_map[repo.url] = repo
+            self._repos.append(RepoMDParser(repo.url))
+
+    def query(self, *args, **kwargs) -> list[RpmPackage]:
+        result = []
+
+        for repo_parser in self._repos:
+            pkgs = repo_parser.query(*args, **kwargs)
+            result.extend(pkgs)
+
+        return result
+
+
 class ThirdPartyRepoMixin:
     """A mixin to be used by images that require a third party repository."""
 
     def __init__(
         self,
-        third_party_repo_url: str,
-        third_party_repo_key_url: str,
-        third_party_repo_key_file: str,
+        third_party_repos: list[ThirdPartyRepo],
         third_party_package_list: list[str | RpmPackage],
         **kwargs,
     ):
-        self.third_party_repo_url = third_party_repo_url
-        self.third_party_repo_key_url = third_party_repo_key_url
-        self.third_party_repo_key_file = third_party_repo_key_file
-        self.third_party_package_list = third_party_package_list
-
         super().__init__(**kwargs)
 
-        self.extra_files.update(
-            {
-                "third-party.gpg.key": third_party_repo_key_file,
-                "third-party.repo": REPO_FILE.format(
-                    repo_name=self.repo_filename.rpartition(".")[0],
-                    repo_filename=self.repo_filename,
-                    base_url=third_party_repo_url,
-                    gpg_key=third_party_repo_key_url,
-                ),
-            }
-        )
+        self.third_party_repos = third_party_repos
+        self.third_party_package_list = third_party_package_list
 
-        self._repo_parser = RepoMDParser(self.third_party_repo_url)
+        for repo in self.third_party_repos:
+            if not repo.key:
+                res = requests.get(repo.key_url)
+                res.raise_for_status()
+                repo.key = res.text
+
+            if not repo.repo_name:
+                repo.repo_name = repo.name
+
+            if not repo.repo_filename:
+                repo.repo_filename = f"{repo.name}.repo"
+
+            if not repo.key_filename:
+                repo.key_filename = f"{repo.name}.gpg.key"
+
+            self.extra_files.update(
+                {
+                    f"{repo.name}.gpg.key": repo.key,
+                    f"{repo.name}.repo": REPO_FILE.format(
+                        repo_name=repo.repo_name,
+                        base_url=repo.url,
+                        gpg_key=repo.key_url,
+                    ),
+                }
+            )
+
+        self._repo = ThirdPartyRepoParser(self.third_party_repos)
         self._rpms: list[RpmPackage] = []
-
-    @property
-    def repo_filename(self):
-        return f"{self.name}.repo"
-
-    @property
-    def repo_key_filename(self):
-        return f"{self.name}.gpg.key"
 
     def fetch_rpm_package(
         self, pkg: ThirdPartyPackage, latest: bool = True
@@ -159,11 +196,13 @@ class ThirdPartyRepoMixin:
 
                 self._rpms.extend(self.fetch_rpm_package(p))
 
+            repo_urls = tuple([repo.url for repo in self.third_party_repos])
+
             for pkg in self._rpms:
                 assert "/" not in pkg.name, (
                     f"Bad package name in repository: {pkg.name}"
                 )
-                assert pkg.url.startswith(self.third_party_repo_url), (
+                assert pkg.url.startswith(repo_urls), (
                     f"Package download URL does not match repository: {pkg.name}"
                 )
 

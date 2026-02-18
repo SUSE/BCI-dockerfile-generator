@@ -16,6 +16,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.package.thirdparty import ThirdPartyPackage
+from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.repomdparser import RpmPackage
 
@@ -39,10 +40,6 @@ NdCFTW7wY0Fb1fWJ+/KTsC4=
 =J6gs
 -----END PGP PUBLIC KEY BLOCK-----
 """
-
-MS_REPO_BASEURL = "https://packages.microsoft.com/sles/15/prod/"
-
-MS_REPO_KEY_URL = "https://packages.microsoft.com/keys/microsoft.asc"
 
 LICENSE = """Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +79,19 @@ WORKDIR /app
 EXPOSE 8080
 {%- endif %}
 """)
+
+
+MS_REPOS = [
+    ThirdPartyRepo(
+        name="third-party",
+        url="https://packages.microsoft.com/sles/15/prod/",
+        key=MS_REPO_KEY_FILE,
+        key_url="https://packages.microsoft.com/keys/microsoft.asc",
+        repo_name="packages-microsoft-com-prod",
+        repo_filename="packages-microsoft-com-prod.repo",
+        key_filename="microsoft.asc",
+    ),
+]
 
 
 class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
@@ -160,7 +170,7 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         assert self.exclusive_arch
         pkgs = []
         for arch in self.exclusive_arch:
-            pkgs_per_arch = self._repo_parser.query(
+            pkgs_per_arch = self._repo.query(
                 name="dotnet-host", arch=str(arch), latest=False
             )
             matching_pkg = [
@@ -214,14 +224,6 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
         super().prepare_template()
 
-    @property
-    def repo_filename(self):
-        return "packages-microsoft-com-prod.repo"
-
-    @property
-    def repo_key_filename(self):
-        return "microsoft.asc"
-
 
 _DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 
@@ -259,9 +261,7 @@ for os_version in (OsVersion.SP7,):
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
                 + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
-                third_party_repo_url=MS_REPO_BASEURL,
-                third_party_repo_key_url=MS_REPO_KEY_URL,
-                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
                     ThirdPartyPackage(
@@ -300,9 +300,7 @@ for os_version in (OsVersion.SP7,):
                 ),
                 package_list=["libicu"]
                 + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
-                third_party_repo_url=MS_REPO_BASEURL,
-                third_party_repo_key_url=MS_REPO_KEY_URL,
-                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
                 ]
@@ -335,9 +333,7 @@ for os_version in (OsVersion.SP7,):
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
                 + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
-                third_party_repo_url=MS_REPO_BASEURL,
-                third_party_repo_key_url=MS_REPO_KEY_URL,
-                third_party_repo_key_file=MS_REPO_KEY_FILE,
+                third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
                 ]
