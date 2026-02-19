@@ -109,7 +109,7 @@ class RepoMDParser:
         )
 
     def query(
-        self, name: str, arch: str = None, latest: bool = False
+        self, name: str, arch: str = None, version: str = None, latest: bool = False
     ) -> list[RpmPackage]:
         """
         Query packages in the repository and return the best match.
@@ -129,6 +129,11 @@ class RepoMDParser:
 
         if arch:
             query_result = filter(lambda p: p.arch == arch, query_result)
+
+        if version:
+            query_result = filter(
+                lambda p: p.evr[1][0 : len(version)] == version, query_result
+            )
 
         if latest:
             # group by arch and filter for the latest version in case there are multiple matches
