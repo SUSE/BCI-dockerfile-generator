@@ -1,0 +1,6 @@
+[cuda-sles15-sbsa]
+name=cuda-sles15-sbsa
+baseurl=https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/
+enabled=1
+gpgcheck=1
+gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/D42D0685.pub
