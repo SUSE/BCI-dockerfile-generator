@@ -16,6 +16,7 @@ class Arch(enum.Enum):
     PPC64LE = "ppc64le"
     S390X = "s390x"
     LOCAL = "local"
+    NOARCH = "noarch"
 
     def __str__(self) -> str:
         return self.value
