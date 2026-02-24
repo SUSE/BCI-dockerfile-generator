@@ -1,6 +1,5 @@
 """Application Containers for Docker/OCI Distribution registry"""
 
-
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
@@ -11,6 +10,7 @@ from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
@@ -57,10 +57,17 @@ REGISTRY_CONTAINERS = [
         build_stage_custom_end=generate_package_version_check(
             "distribution-registry", distribution_version, use_target=True
         )
+        + (
+            generate_systemd_tmpfiles_command(
+                "distribution-registry.conf", use_target=True
+            )
+            if os_version.is_tumbleweed
+            else ""
+        )
         + (f"\n{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
         custom_end=(
             f"{DOCKERFILE_RUN} install -d -m 0755 -o registry -g registry /var/lib/docker-registry\n"
-            if not os_version.is_sle15
+            if os_version.is_sl16
             else ""
         )
         + ("COPY --from=builder /etc/blkid.conf /etc\n" if os_version.is_sle15 else ""),
