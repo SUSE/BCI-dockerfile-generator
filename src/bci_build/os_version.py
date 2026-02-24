@@ -127,7 +127,7 @@ class OsVersion(enum.Enum):
         all development containers"""
         r = {"findutils", "gawk", "git-core", "curl", "procps"}
         if self.is_tumbleweed or self.is_sl16:
-            r.add("util-linux")
+            r |= {"util-linux", "libcurl4"}
 
         return sorted(list(r))
 
