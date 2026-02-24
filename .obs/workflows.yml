@@ -143,6 +143,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:SLE-15-SP7
+        source_package: nvidia-driver-image
+        target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:SLE-15-SP7
         source_package: openjdk-17-devel-image
         target_project: home:pushman:BCI:CR:SLE-15-SP7:Staging
     - branch_package:
@@ -403,6 +407,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: nodejs-22-image
+    - trigger_services:
+        project: devel:BCI:SLE-15-SP7
+        package: nvidia-driver-image
     - trigger_services:
         project: devel:BCI:SLE-15-SP7
         package: openjdk-17-devel-image
