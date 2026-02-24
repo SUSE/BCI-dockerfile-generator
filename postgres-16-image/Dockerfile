@@ -28,7 +28,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends libpq5 postgresql16-server findutils coreutils sed util-linux
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gzip libpq5 postgresql16-server sed tar zstdutil-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \

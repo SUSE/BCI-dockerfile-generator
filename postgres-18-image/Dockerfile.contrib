@@ -15,12 +15,13 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
-#!BuildTag: suse/postgres:%%pg_patch_version%%
-#!BuildTag: suse/postgres:18
+#!BuildTag: suse/postgres:%%pg_patch_version%%-contrib-%RELEASE%
+#!BuildTag: suse/postgres:%%pg_patch_version%%-contrib
+#!BuildTag: suse/postgres:18-contrib
 #!BuildTag: suse/postgres:%%pg_minor_version%%
 #!BuildTag: suse/postgres:latest
-#!BuildName: suse-postgres-18
+#!BcntSyncTag: postgres-18-image
+#!BuildName: suse-postgres-18-contrib
 #!BuildVersion: 15.7.18
 #!BuildRelease: 60
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
@@ -29,7 +30,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gzip libpq5 postgresql18-server sed tar zstdutil-linux
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gzip libpq5 postgresql18-contrib postgresql18-server sed tar zstdutil-linux
 # changing user id and group id created by package installation to stable values
 RUN set -euo pipefail; \
     chroot /target chown -R --from=postgres:postgres 999:999 /; \
@@ -59,8 +60,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%pg_patch_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/postgres:%%pg_patch_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%pg_patch_version%%-contrib-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/postgres:%%pg_patch_version%%-contrib-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="acc"
 LABEL com.suse.eula="sle-eula"
@@ -69,7 +70,7 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.contrib.md)%"
 ENV LANG="en_US.utf8"
 ENV PGDATA="/var/lib/pgsql/data"
 ENV PG_MAJOR="18"
