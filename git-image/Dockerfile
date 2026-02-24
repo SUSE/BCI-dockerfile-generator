@@ -65,3 +65,6 @@ LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterpri
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+RUN set -euo pipefail; mkdir -p /workspace && chgrp 0 /workspace && chmod g=u /workspace && chmod 1777 /workspace
+        WORKDIR /workspace
+        ENV HOME=/workspace
