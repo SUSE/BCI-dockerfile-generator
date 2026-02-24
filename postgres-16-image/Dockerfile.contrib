@@ -15,11 +15,12 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: suse/postgres:%%pg_patch_version%%-%RELEASE%
-#!BuildTag: suse/postgres:%%pg_patch_version%%
-#!BuildTag: suse/postgres:16
+#!BuildTag: suse/postgres:%%pg_patch_version%%-contrib-%RELEASE%
+#!BuildTag: suse/postgres:%%pg_patch_version%%-contrib
+#!BuildTag: suse/postgres:16-contrib
 #!BuildTag: suse/postgres:%%pg_minor_version%%
-#!BuildName: suse-postgres-16
+#!BcntSyncTag: postgres-16-image
+#!BuildName: suse-postgres-16-contrib
 #!BuildVersion: 16.1.16
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
@@ -27,7 +28,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gzip libpq5 postgresql16-server sed tar zstdutil-linux
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends coreutils findutils gzip libpq5 postgresql16-contrib postgresql16-server sed tar zstdutil-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -52,15 +53,15 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="%%pg_patch_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/suse/postgres:%%pg_patch_version%%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="%%pg_patch_version%%-contrib-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/suse/postgres:%%pg_patch_version%%-contrib-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="acc"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="beta"
 # endlabelprefix
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.contrib.md)%"
 ENV LANG="en_US.utf8"
 ENV PGDATA="/var/lib/pgsql/data"
 ENV PG_MAJOR="16"

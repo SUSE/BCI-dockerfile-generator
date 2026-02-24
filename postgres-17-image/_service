@@ -13,4 +13,5 @@
     <param name="package">postgresql17-server</param>
     <param name="parse-version">patch</param>
   </service>
+</services>ice>
 </services>
