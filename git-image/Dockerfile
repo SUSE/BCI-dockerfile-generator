@@ -69,3 +69,6 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+RUN set -euo pipefail; mkdir -p /workspace && chgrp 0 /workspace && chmod g=u /workspace && chmod 1777 /workspace
+        WORKDIR /workspace
+        ENV HOME=/workspace
