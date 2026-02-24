@@ -62,3 +62,6 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+RUN set -euo pipefail; mkdir -p /workspace && chgrp 0 /workspace && chmod g=u /workspace && chmod 1777 /workspace
+        WORKDIR /workspace
+        ENV HOME=/workspace
