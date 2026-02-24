@@ -12,7 +12,7 @@ CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
 
 {%- for pkg in packages %}
-#!RemoteAssetUrl: {{ pkg.url }} sha256:{{ pkg.checksum }}
+#!RemoteAssetUrl: {{ pkg.url }}{% if not pkg.url.endswith(pkg.filename) %} {{ pkg.filename }}{% endif %}{% if pkg.checksum %} sha256:{{ pkg.checksum }}{% endif %}
 COPY {{ pkg.filename }} /tmp/
 {%- endfor %}
 
@@ -47,10 +47,11 @@ gpgkey={gpg_key}
 """
 
 ARCH_FILENAME_MAP = {
-    Arch.X86_64: ["x86_64", "x86", "noarch"],
+    Arch.X86_64: ["x86_64", "noarch"],
     Arch.AARCH64: ["aarch64", "noarch"],
     Arch.PPC64LE: ["ppc64le", "noarch"],
     Arch.S390X: ["s390x", "noarch"],
+    Arch.NOARCH: ["noarch"],
 }
 
 
@@ -91,6 +92,22 @@ class ThirdPartyRepoParser:
 
         for repo_parser in self._repos:
             pkgs = repo_parser.query(*args, **kwargs)
+
+            # if arch is defined, we rewrite the package arch
+            # this is needed in case two repos have the same package as noarch
+            # but with different contents for each arch (e.g. CUDA repo)
+            repo = self._repo_map.get(repo_parser.baserepo_url, None)
+            assert repo is not None, "Repository definition is missing"
+            if repo.arch:
+                for pkg in pkgs:
+                    if pkg.arch == str(repo.arch):
+                        continue
+
+                    pkg.arch = str(repo.arch)
+                    pkg.filename = pkg.filename.replace(
+                        f".{Arch.NOARCH}.", f".{repo.arch}."
+                    )
+
             result.extend(pkgs)
 
         return result
@@ -149,35 +166,32 @@ class ThirdPartyRepoMixin:
         Returns:
             list of :py:class:`RpmPackage` representing the downloaded rpms
         """
-        pkgs = self._repo.query(name=pkg.name, version=pkg.version, latest=latest)
+        arch = str(pkg.arch) if pkg.arch else None
+        pkgs = self._repo.query(
+            name=pkg.name, arch=arch, version=pkg.version, latest=latest
+        )
 
-        if self.exclusive_arch:
-            allowed_arch = list(
-                dict.fromkeys(
-                    arch
-                    for e_arch in self.exclusive_arch
-                    for arch in ARCH_FILENAME_MAP[e_arch]
+        if pkg.arch:
+            exclusive_arch = [pkg.arch]
+        else:
+            exclusive_arch = self.exclusive_arch
+
+        for arch in exclusive_arch:
+            pkgs_found_for_arch = [
+                p for p in pkgs if p.arch in ARCH_FILENAME_MAP.get(arch, [])
+            ]
+            found = len(pkgs_found_for_arch)
+
+            if found > 1:
+                raise Exception(
+                    f"Found {found} packages for '{pkg.name} ({pkg.version})' and '{arch}': {pkgs_found_for_arch}"
                 )
-            )
-            pkgs = [p for p in pkgs if p.arch in allowed_arch]
-
-        if self.exclusive_arch:
-            for arch in self.exclusive_arch:
-                pkgs_found_for_arch = [
-                    p for p in pkgs if p.arch in ARCH_FILENAME_MAP[arch]
-                ]
-                found_for_arch = len(pkgs_found_for_arch)
-
-                if found_for_arch > 1:
-                    raise Exception(
-                        f"It should have found 1 package '{pkg.name}' for '{arch}' in the repository, but found {found_for_arch}"
-                    )
-                elif found_for_arch == 0:
-                    if pkg.arch is not None and pkg.arch != arch:
-                        continue
-                    raise Exception(
-                        f"It should have found 1 package '{pkg.name}' for '{arch}' in the repository, but found none"
-                    )
+            elif found == 0:
+                if pkg.arch is not None and pkg.arch != arch:
+                    continue
+                raise Exception(
+                    f"No packages found for '{pkg.name} ({pkg.version})' and '{arch}'."
+                )
 
         return pkgs
 
@@ -227,7 +241,7 @@ class ThirdPartyRepoMixin:
             image=self,
             packages=pkgs,
             get_packages_for_arch=lambda arch: [
-                pkg for pkg in pkgs if pkg.arch in ARCH_FILENAME_MAP[arch]
+                pkg for pkg in pkgs if pkg.arch in ARCH_FILENAME_MAP.get(arch, [])
             ],
         )
 
