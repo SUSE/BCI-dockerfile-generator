@@ -146,10 +146,9 @@ RUN emacs -Q --batch test.el
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/test:stable-1.%RELEASE%
-#!BuildTag: bci/test:stable
 #!BuildTag: bci/test:%%emacs_ver%%-1.%RELEASE%
 #!BuildTag: bci/test:%%emacs_ver%%
+#!BuildTag: bci/test:stable
 #!BuildName: bci-test-stable
 #!BuildVersion: 16.1
 #!BuildRelease: 10

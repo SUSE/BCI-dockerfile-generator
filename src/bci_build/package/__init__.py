@@ -1312,13 +1312,15 @@ class DevelopmentContainer(BaseContainerImage):
         tags = []
         for name in [self.name] + self.additional_names:
             ver_labels: list[str] = [self._version_variant]
-            if self.stability_tag:
+            if self.build_recipe_type == BuildType.KIWI and self.stability_tag:
                 ver_labels = [self.stability_tag] + ver_labels
             for ver_label in ver_labels:
                 tags.append(
                     f"{self.registry_prefix}/{name}:{ver_label}-{self._release_suffix}"
                 )
                 tags.append(f"{self.registry_prefix}/{name}:{ver_label}")
+            if self.build_recipe_type == BuildType.DOCKER and self.stability_tag:
+                tags.append(f"{self.registry_prefix}/{name}:{self.stability_tag}")
             additional_ver_labels: list[str] = self.additional_versions
             if self._version_variant != self._tag_variant:
                 additional_ver_labels = [self._tag_variant] + additional_ver_labels
