@@ -15,10 +15,9 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
-#!BuildTag: suse/kubectl:stable-1.%RELEASE%
-#!BuildTag: suse/kubectl:stable
 #!BuildTag: suse/kubectl:%%kubectl_version%%-1.%RELEASE%
 #!BuildTag: suse/kubectl:%%kubectl_version%%
+#!BuildTag: suse/kubectl:stable
 #!BuildTag: suse/kubectl:1.35
 #!BuildTag: suse/kubectl:latest
 #!BuildName: suse-kubectl-stable
