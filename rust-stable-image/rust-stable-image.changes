@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 26 15:02:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- simplify stability tags setup
+
+-------------------------------------------------------------------
 Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - mark containers as beta eula
