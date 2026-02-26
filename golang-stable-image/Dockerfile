@@ -15,10 +15,9 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/bci/golang:stable-1.%RELEASE%
-#!BuildTag: opensuse/bci/golang:stable
 #!BuildTag: opensuse/bci/golang:%%golang_version%%-1.%RELEASE%
 #!BuildTag: opensuse/bci/golang:%%golang_version%%
+#!BuildTag: opensuse/bci/golang:stable
 #!BuildTag: opensuse/bci/golang:1.25
 #!BuildTag: opensuse/bci/golang:latest
 
