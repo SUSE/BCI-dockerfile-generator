@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 26 15:03:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- simplify stability tags setup
+
+-------------------------------------------------------------------
 Fri Feb 13 10:46:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add a sles15 specific tag

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 26 15:03:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- simplify stability tags setup
+
+-------------------------------------------------------------------
 Fri Jan 23 10:11:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add helm for kubectl kustomize --enable-helm
