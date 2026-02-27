@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 27 20:23:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- go 1.26 for stable, 1.25 for oldstable
+
+-------------------------------------------------------------------
 Fri Feb 27 10:36:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - simplify stability tags setup

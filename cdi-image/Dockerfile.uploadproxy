@@ -17,10 +17,10 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: suse/sles/16.0/cdi-uploadproxy:%%cdi_ver%%-%RELEASE%
 #!BuildTag: suse/sles/16.0/cdi-uploadproxy:%%cdi_ver%%
-#!BuildTag: suse/sles/16.0/cdi-uploadproxy:1.60
+#!BuildTag: suse/sles/16.0/cdi-uploadproxy:1.64
 #!BcntSyncTag: cdi-image
 #!BuildName: suse-sles-16.0-cdi-uploadproxy
-#!BuildVersion: 16.0.1.60
+#!BuildVersion: 16.0.1.64
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
@@ -32,7 +32,7 @@ RUN set -euo pipefail; rm -f /etc/blkid.conf
 # sanity check that the version from the tag is equal to the version of obs-service-cdi_containers_meta that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' obs-service-cdi_containers_meta | \
-    cut -d '.' -f -3)" = "1.60.1" ]
+    cut -d '.' -f -3)" = "1.64.0" ]
 RUN set -euo pipefail; useradd -u 1001 --create-home -s /bin/bash cdi-uploadproxy
 
 
