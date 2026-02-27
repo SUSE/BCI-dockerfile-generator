@@ -4,6 +4,7 @@ This module contains classes and functions related to updating and generating Do
 NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 """
 
+import textwrap
 from pathlib import Path
 
 from jinja2 import Template
@@ -16,6 +17,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import _RELEASE_PLACEHOLDER
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Package
@@ -118,27 +120,6 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 """
 )
 
-CUSTOM_END = rf"""
-COPY extract-vmlinux /usr/local/bin/
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/extract-vmlinux
-
-COPY nvidia-driver /usr/local/bin/
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
-
-COPY nvidia-driver-selector.sh /usr/local/bin/
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver-selector.sh
-
-{DOCKERFILE_RUN} mkdir /licenses
-COPY NGC-DL-CONTAINER-LICENSE /licenses
-
-{DOCKERFILE_RUN} mkdir /drivers
-COPY vGPU-README.md /drivers/README.md
-
-WORKDIR /drivers
-
-ENTRYPOINT ["nvidia-driver", "load"]
-"""
-
 
 class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
     def __init__(
@@ -166,7 +147,27 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                 "NVIDIA explicitly requires the driver version in the tag"
             )
 
-        self.custom_end = CUSTOM_END
+        self.custom_end = textwrap.dedent(f"""
+            COPY extract-vmlinux /usr/local/bin/
+            {DOCKERFILE_RUN} chmod +x /usr/local/bin/extract-vmlinux
+
+            COPY nvidia-driver /usr/local/bin/
+            {DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
+
+            COPY nvidia-driver-selector.sh /usr/local/bin/
+            {DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver-selector.sh
+
+            {DOCKERFILE_RUN} mkdir /licenses
+            COPY NGC-DL-CONTAINER-LICENSE /licenses
+
+            {DOCKERFILE_RUN} mkdir /drivers
+            COPY vGPU-README.md /drivers/README.md
+
+            WORKDIR /drivers
+
+            ENTRYPOINT ["nvidia-driver", "load"]\n""") + (
+            SET_BLKID_SCAN if os_version.is_sle15 else ""
+        )
 
         nvidia_dir = Path(__file__).parent / self.name
 
