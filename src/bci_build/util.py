@@ -10,6 +10,8 @@ class ParseVersion(enum.StrEnum):
     PATCH = enum.auto()
     PATCH_UPDATE = enum.auto()
     OFFSET = enum.auto()
+    RELEASE = enum.auto()
+    RELEASE_INCREMENT = enum.auto()
 
 
 async def write_to_file(fname: str, contents: str | bytes) -> None:
