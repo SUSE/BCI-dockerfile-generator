@@ -15,10 +15,9 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/rust:oldstable-2.%RELEASE%
-#!BuildTag: bci/rust:oldstable
 #!BuildTag: bci/rust:%%RUST_VERSION%%-2.%RELEASE%
 #!BuildTag: bci/rust:%%RUST_VERSION%%
+#!BuildTag: bci/rust:oldstable
 #!BuildTag: bci/rust:1.92
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 16.0.1.92.2
