@@ -312,3 +312,5 @@ COPY vGPU-README.md /drivers/README.md
 WORKDIR /drivers
 
 ENTRYPOINT ["nvidia-driver", "load"]
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
