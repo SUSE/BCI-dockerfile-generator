@@ -17,10 +17,10 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: suse/sles/16.0/virt-launcher:%%kubevirt_ver%%-%RELEASE%
 #!BuildTag: suse/sles/16.0/virt-launcher:%%kubevirt_ver%%
-#!BuildTag: suse/sles/16.0/virt-launcher:1.5
+#!BuildTag: suse/sles/16.0/virt-launcher:1.7
 #!BcntSyncTag: kubevirt-image
 #!BuildName: suse-sles-16.0-virt-launcher
-#!BuildVersion: 16.0.1.5
+#!BuildVersion: 16.0.1.7
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of kubevirt-virt-launcher that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' kubevirt-virt-launcher | \
-    cut -d '.' -f -3)" = "1.5.2" ]
+    cut -d '.' -f -3)" = "1.7.0" ]
 RUN set -euo pipefail; useradd -u 1001 --create-home -s /bin/bash virt-launcher
 
 
