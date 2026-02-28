@@ -106,11 +106,11 @@ _load_driver() {
             echo "         Retaining the current configuration"
         else
             echo -n "$nv_fw_search_path" > "$fw_path_config_file" || echo "WARNING: Failed to configure the firmware search path"
-            if [ -d "/opt/lib/firmware/nvidia/${DRIVER_VERSION}" ]; then
-                rm -rf "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
-                mkdir -p "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
-                cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/gsp_*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
-            fi
+        fi
+        if [ -d "/opt/lib/firmware/nvidia/${DRIVER_VERSION}" ]; then
+            rm -rf "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
+            mkdir -p "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
+            cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/gsp_*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
         fi
     fi
 

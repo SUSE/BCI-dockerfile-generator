@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Feb 28 18:19:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update nvidia-driver entrypoint from git
+
+-------------------------------------------------------------------
 Tue Feb 24 16:52:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the NVIDIA Driver 580.126.09 BCI
