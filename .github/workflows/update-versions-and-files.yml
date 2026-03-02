@@ -11,7 +11,7 @@ permissions:
 jobs:
   update-files:
     runs-on: ubuntu-latest
-    container: registry.opensuse.org/opensuse/bci/bci-ci:latest
+    container: ghcr.io/dirkmueller/bci-ci:latest
     steps:
       - name: checkout source code
         uses: actions/checkout@v6
