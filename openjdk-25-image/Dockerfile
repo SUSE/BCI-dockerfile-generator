@@ -24,7 +24,7 @@
 FROM bci/bci-base:16.1
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends java-25-openjdk mozilla-nss-sysinit curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends java-25-openjdk mozilla-nss-sysinit curl findutils gawk git-core libcurl4 procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
