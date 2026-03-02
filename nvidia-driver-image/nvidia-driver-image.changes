@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar  2 10:26:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to a third-party label prefix
+
+-------------------------------------------------------------------
 Mon Mar  2 09:58:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update blkid.conf

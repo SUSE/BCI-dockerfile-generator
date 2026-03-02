@@ -265,7 +265,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/e
 FROM registry.suse.com/bci/bci-micro:15.7
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.nvidia-driver
+# labelprefix=com.suse.third-party.nvidia-driver
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="SLE BCI NVIDIA Driver"
 LABEL org.opencontainers.image.description="NVIDIA Driver container based on the SUSE Linux Enterprise Base Container Image."
