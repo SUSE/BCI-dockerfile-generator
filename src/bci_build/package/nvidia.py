@@ -187,6 +187,13 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
 
     @property
+    def labelprefix(self) -> str:
+        labelprefix = "com.suse"
+        if self.os_version.is_tumbleweed:
+            labelprefix = "org.opensuse"
+        return f"{labelprefix}.third-party.{(self.custom_labelprefix_end or self.name)}"
+
+    @property
     def release_stage(self) -> ReleaseStage:
         # TODO: Remove once the image is completed with all driver versions
         return ReleaseStage.BETA
