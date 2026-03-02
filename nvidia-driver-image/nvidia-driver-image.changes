@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar  2 09:58:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf
+
+-------------------------------------------------------------------
 Sat Feb 28 18:19:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update nvidia-driver entrypoint from git
