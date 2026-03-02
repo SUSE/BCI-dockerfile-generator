@@ -77,6 +77,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 {%- endwith %}
 {%- endfor %}
 
+{{ DOCKERFILE_RUN }} printf 'compress="zstd"\\n' /etc/dkms/framework.conf.d/module-compress.conf
 {{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
