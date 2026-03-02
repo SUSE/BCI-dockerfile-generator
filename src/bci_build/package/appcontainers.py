@@ -250,6 +250,7 @@ for filename in (
     "LICENSE",
     "20-envsubst-on-templates.sh",
     "30-tune-worker-processes.sh",
+    "40-unprivileged-mode.sh",
     "index.html",
 ):
     _NGINX_FILES[filename] = (Path(__file__).parent / "nginx" / filename).read_bytes()
@@ -277,6 +278,8 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 "nginx",
                 "findutils",
                 _envsubst_pkg_name(os_version),
+                "sed",
+                "grep",
             ]
         )
         + (["libcurl-mini4"] if os_version.is_sl16 else []),
@@ -292,13 +295,14 @@ def _get_nginx_kwargs(os_version: OsVersion):
         ),
         "custom_end": textwrap.dedent(f"""
             {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-            COPY [1-3]0-*.sh /docker-entrypoint.d/
+            COPY [1-4]0-*.sh /docker-entrypoint.d/
             COPY docker-entrypoint.sh /usr/local/bin
             COPY index.html /srv/www/htdocs/
             {DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-            {DOCKERFILE_RUN} install -d -o nginx -g nginx -m 750 /var/log/nginx; \
-                ln -sf /dev/stdout /var/log/nginx/access.log; \
-                ln -sf /dev/stderr /var/log/nginx/error.log
+            {DOCKERFILE_RUN} set -euo pipefail; mkdir -p /var/cache/nginx /var/run/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;\
+                ln -sf /dev/stdout /var/log/nginx/access.log;\
+                ln -sf /dev/stderr /var/log/nginx/error.log;\
+                chmod -R 777 /var/cache/nginx /etc/nginx /var/run/nginx /var/log/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;
             STOPSIGNAL SIGQUIT"""),
     }
 
