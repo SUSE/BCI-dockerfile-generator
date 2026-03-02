@@ -3,6 +3,7 @@
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
@@ -43,6 +44,10 @@ GIT_CONTAINERS = [
             "git-core",
             "openssh-clients",
         ],
+        custom_end=rf"""{DOCKERFILE_RUN} mkdir -p /workspace && chgrp 0 /workspace && chmod g=u /workspace && chmod 1777 /workspace
+        WORKDIR /workspace
+        ENV HOME=/workspace
+""",
         build_stage_custom_end=generate_package_version_check(
             "git-core", git_version, ParseVersion.MINOR, use_target=True
         ),
