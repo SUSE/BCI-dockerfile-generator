@@ -366,7 +366,11 @@ for os_version in (OsVersion.SP7,):
                     Package("grep", PackageType.IMAGE),
                     Package("jq", PackageType.IMAGE),
                     Package("kmod", PackageType.IMAGE),
-                    Package("rpm", PackageType.IMAGE),
+                    (
+                        Package("rpm-ndb", PackageType.IMAGE)
+                        if os_version.is_sle15
+                        else Package("rpm", PackageType.IMAGE)
+                    ),
                     Package("sed", PackageType.IMAGE),
                     Package("util-linux", PackageType.IMAGE),
                     Package("util-linux-systemd", PackageType.IMAGE),
