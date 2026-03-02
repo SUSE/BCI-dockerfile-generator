@@ -246,13 +246,13 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         pkgs = self.fetch_rpm_packages()
 
         kernel_packages = [
-            ("kernel-default", "kernel-default", self.exclusive_arch),
-            ("kernel-default-devel", "kernel-default", self.exclusive_arch),
-            ("kernel-syms", "kernel-syms", self.exclusive_arch),
-            ("kernel-devel", "kernel-source", self.exclusive_arch),
-            ("kernel-macros", "kernel-source", self.exclusive_arch),
             # needed only for aarch64
             ("kernel-64kb-devel", "kernel-64kb", [Arch.AARCH64]),
+            ("kernel-default", "kernel-default", self.exclusive_arch),
+            ("kernel-default-devel", "kernel-default", self.exclusive_arch),
+            ("kernel-devel", "kernel-source", self.exclusive_arch),
+            ("kernel-syms", "kernel-syms", self.exclusive_arch),
+            ("kernel-macros", "kernel-source", self.exclusive_arch),
         ]
 
         for name, pkg_name, exclusive_arch in kernel_packages:
