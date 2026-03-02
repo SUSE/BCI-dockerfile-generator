@@ -30,8 +30,7 @@ Overview
 This repository contains two major components:
 
 1. templating logic to autogenerate the :file:`Dockerfile` and kiwi build
-   descriptions for SLE BCI (see :py:mod:`bci_build`) including an updater for
-   our .Net images (see :py:mod:`dotnet`).
+   descriptions for SLE BCI (see :py:mod:`bci_build`).
 
 2. Github automation to render the templates into separate branches and
    synchronize them to the Open Build Service (see :py:mod:`staging`).
