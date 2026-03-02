@@ -32,14 +32,6 @@ API Documentation
    :undoc-members:
 
 
-:py:mod:`dotnet` module
-------------------------
-
-.. automodule:: dotnet
-   :members:
-   :undoc-members:
-
-
 :py:mod:`staging` module
 -------------------------
 
