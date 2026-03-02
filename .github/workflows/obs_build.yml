@@ -1,6 +1,10 @@
 ---
 name: OBS Scratch Build
 
+permissions:
+  contents: read
+  pullrequests: write
+
 on:
   pull_request:
 
@@ -32,6 +36,9 @@ jobs:
 
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
+
+      - name: log the IP address
+        run: ip r
 
       - name: install python dependencies
         run: poetry install
