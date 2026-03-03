@@ -376,6 +376,7 @@ for os_version in (OsVersion.SP7,):
                     Package("util-linux-systemd", PackageType.IMAGE),
                 ],
                 support_level=SupportLevel.TECHPREVIEW,
+                supported_until="",
                 exclusive_arch=[Arch.X86_64, Arch.AARCH64],
                 third_party_repos=NVIDIA_REPOS[os_version],
                 open_drivers_package_list=[
