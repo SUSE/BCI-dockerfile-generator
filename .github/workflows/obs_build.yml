@@ -3,7 +3,7 @@ name: OBS Scratch Build
 
 permissions:
   contents: read
-  pullrequests: write
+  pull-requests: write
 
 on:
   pull_request:
