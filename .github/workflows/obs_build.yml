@@ -3,7 +3,7 @@ name: OBS Scratch Build
 
 permissions:
   contents: read
-  pullrequests: write
+  pull-requests: write
 
 on:
   pull_request:
@@ -38,7 +38,7 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: log the IP address
-        run: ip r
+        run: zypper -n install iproute2 && ip r
 
       - name: install python dependencies
         run: poetry install

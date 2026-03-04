@@ -4,6 +4,10 @@ on:
   repository_dispatch:
     types: [vc-command]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   append-changelog:
     runs-on: ubuntu-latest
