@@ -190,6 +190,7 @@ BCI_CI_CONTAINERS = [
             "fish",
             "gcc",
             "git-core",
+            "iproute2",
             "jq",
             "osc",
             "patch",
