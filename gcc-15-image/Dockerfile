@@ -23,7 +23,7 @@
 FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends gcc15 gcc15-c++ gcc15-fortran make gcc gcc-c++ gcc-fortran curl findutils gawk git-core libcurl-mini4 procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
