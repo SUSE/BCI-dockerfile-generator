@@ -96,7 +96,7 @@ LABEL org.opensuse.lifecycle-url="{{ image.lifecycle_url }}"
 LABEL org.opensuse.release-stage="{{ image.release_stage }}"
 {%- else %}
 LABEL com.suse.supportlevel="{{ image.support_level }}"
-{%- if image.supported_until %}
+{%- if image.supported_until != None %}
 LABEL com.suse.supportlevel.until="{{ image.supported_until }}"
 {%- endif %}
 LABEL com.suse.eula="{{ image.eula }}"
