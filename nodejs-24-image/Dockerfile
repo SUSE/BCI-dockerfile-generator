@@ -27,7 +27,7 @@
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends nodejs24 npm24 update-alternatives curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends nodejs24 npm24 update-alternatives curl findutils gawk git-core libcurl-mini4 procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \

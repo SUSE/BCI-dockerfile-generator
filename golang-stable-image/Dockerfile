@@ -24,7 +24,7 @@
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends go1.26 go1.26-doc make curl findutils gawk git-core procps util-linux
+    zypper -n install --no-recommends go1.26 go1.26-doc make curl findutils gawk git-core libcurl-mini4 procps util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
