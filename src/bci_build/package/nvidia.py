@@ -77,7 +77,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 {%- endwith %}
 {%- endfor %}
 
-{{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
+{{ DOCKERFILE_RUN }} dkms autoinstall -k $(basename /lib/modules/*-default)
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
 
@@ -97,7 +97,7 @@ FROM nvidia-driver-builder AS closed-driver-builder
 {%- endwith %}
 {%- endfor %}
 
-{{ DOCKERFILE_RUN }} dkms autoinstall -k $(ls -1 /lib/modules/)
+{{ DOCKERFILE_RUN }} dkms autoinstall -k $(basename /lib/modules/*-default)
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
 
 FROM nvidia-driver-builder AS builder
