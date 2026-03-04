@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  4 15:16:25 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- build kernel modules only for the default flavor
+
+-------------------------------------------------------------------
 Mon Mar  2 13:05:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to rpm-ndb
