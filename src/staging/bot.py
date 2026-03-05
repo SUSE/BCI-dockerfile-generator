@@ -985,7 +985,7 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
         )
 
     async def write_all_image_build_recipes(
-        self, destination_prj_folder: str
+        self, destination_prj_folder_str: str
     ) -> list[str]:
         """Writes all build recipes into the folder
         :file:`destination_prj_folder` and returns a list of files that were
@@ -999,10 +999,10 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
 
         """
         files = []
-
-        Path(destination_prj_folder).mkdir(exist_ok=True)
+        dest_dir: Path = Path(destination_prj_folder_str)
+        dest_dir.mkdir(exist_ok=True)
         for bci in self.bcis:
-            img_dest_dir = Path(destination_prj_folder) / bci.package_name
+            img_dest_dir = dest_dir / bci.package_name
             img_dest_dir.mkdir(exist_ok=True)
             files.append(
                 [
@@ -1011,42 +1011,27 @@ PACKAGES={",".join(self.package_names) if self.package_names else None}
                 ]
             )
 
-        async def write_obs_workflows_yml() -> list[str]:
-            await aiofiles.os.makedirs(
-                (dot_obs := os.path.join(destination_prj_folder, ".obs")), exist_ok=True
-            )
-            async with aiofiles.open(
-                os.path.join(dot_obs, "workflows.yml"), "w"
-            ) as workflows_file:
-                await workflows_file.write(self.obs_workflows_yml)
-            return [".obs/workflows.yml"]
+        dot_obs: Path = dest_dir / ".obs"
+        dot_obs.mkdir(exist_ok=True)
 
-        async def write_github_actions() -> list[str]:
-            await aiofiles.os.makedirs(
-                (
-                    github_workflows := os.path.join(
-                        destination_prj_folder, ".github", "workflows"
-                    )
-                ),
-                exist_ok=True,
-            )
+        with (dot_obs / "workflows.yml").open(mode="w") as w:
+            w.write(self.obs_workflows_yml)
+        files.append([".obs/workflows.yml"])
 
-            actions = []
-            for fname, contents in (
-                ("changelog_checker.yml", self.changelog_check_github_action),
-                ("find-missing-packages.yml", self.find_missing_packages_action),
-            ):
-                async with aiofiles.open(
-                    os.path.join(github_workflows, fname), "w"
-                ) as workflows_file:
-                    await workflows_file.write(contents)
-                actions.append(fname)
+        gh_workflows_dir: Path = dest_dir / ".github" / "workflows"
+        gh_workflows_dir.mkdir(exist_ok=True)
 
-            async with aiofiles.open(
-                os.path.join(destination_prj_folder, ".github", "dependabot.yml"), "w"
-            ) as dependabot_yml:
-                await dependabot_yml.write(
-                    """---
+        for fname, contents in (
+            ("changelog_checker.yml", self.changelog_check_github_action),
+            ("find-missing-packages.yml", self.find_missing_packages_action),
+        ):
+            with (gh_workflows_dir / fname).open(mode="w") as w:
+                w.write(contents)
+            files.append([f".github/workflows/{fname}"])
+
+        with (dest_dir / ".github" / "dependabot.yml").open(mode="w") as d:
+            d.write(
+                """---
 version: 2
 updates:
   - package-ecosystem: "github-actions"
@@ -1054,26 +1039,15 @@ updates:
     schedule:
       interval: "daily"
 """
-                )
+            )
 
-            return [f".github/workflows/{fname}" for fname in actions] + [
-                ".github/dependabot.yml"
-            ]
+        files.append([".github/dependabot.yml"])
 
-        async def write_underscore_config() -> list[str]:
-            prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
-            async with aiofiles.open(
-                os.path.join(destination_prj_folder, "_config"), "w"
-            ) as conf:
-                await conf.write(prjconf)
+        prjconf = await _fetch_bci_devel_project_config(self.os_version, "prjconf")
+        with (dest_dir / "_config").open(mode="w") as conf:
+            conf.write(prjconf)
 
-            return ["_config"]
-
-        tasks: list[Coroutine[None, None, list[str]]] = []
-        tasks.append(write_obs_workflows_yml())
-        tasks.append(write_underscore_config())
-        tasks.append(write_github_actions())
-        files.extend(await asyncio.gather(*tasks))
+        files.append(["_config"])
         flattened_file_list = []
         for file_list in files:
             flattened_file_list.extend(file_list)
