@@ -10,7 +10,9 @@ Prefer: python3-kiwi
 ExpandFlags: kiwi-nobasepackages
 
 # needed for micro image
-Prefer: -busybox-coreutils
+Prefer: -busybox-coreutils 
+
+Prefer: -systemd-presets-branding-SLE_immutable
 
 Binarytype: rpm
 %else
