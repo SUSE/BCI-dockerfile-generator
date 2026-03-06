@@ -1,8 +1,25 @@
-# The SLE BCI NVIDIA Driver container image
+# NVIDIA Driver 580.126.16 Container Image
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
-NVIDIA Driver container based on the SUSE Linux Enterprise Base Container Image.
+## Description
+
+The NVIDIA Driver container image provides NVIDIA GPU drivers in a
+containerized environment. This image is based on
+SUSE Linux Enterprise Server and includes both the
+open-source and proprietary NVIDIA kernel modules, along with the necessary
+user-space tools.
+
+It is specifically designed for use with the NVIDIA GPU Operator or for manual
+driver deployment on container hosts. This image includes the NVIDIA driver
+580.126.16.
+
+## Usage
+
+The container is intended to be run with high privileges (`--privileged`) and
+requires access to several host directories to properly load and manage kernel
+modules.
+
 
 ## Licensing
 
