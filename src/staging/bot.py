@@ -1154,7 +1154,7 @@ updates:
         # in parallel, we can easily grab all wait slots that obs has
         for pkg_name in self.package_names:
             await self._run_cmd(
-                f"{self._osc} service wait {self.staging_project_name} {pkg_name}"
+                f"timout 15m {self._osc} service wait {self.staging_project_name} {pkg_name}"
             )
 
     async def wait_for_build_to_finish(
