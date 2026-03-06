@@ -57,6 +57,8 @@ XORG_CONTAINERS = [
                 "xf86-input-libinput",
                 "xkeyboard-config",
                 "xinput",
+                # explicit dependency for input device hotplug support via udevd
+                "udev",
                 # indirect dependencies
                 "xorg-x11-essentials",
                 # needed by electron at runtime
