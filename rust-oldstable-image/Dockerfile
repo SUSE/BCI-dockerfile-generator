@@ -18,12 +18,12 @@
 #!BuildTag: opensuse/bci/rust:%%RUST_VERSION%%-2.%RELEASE%
 #!BuildTag: opensuse/bci/rust:%%RUST_VERSION%%
 #!BuildTag: opensuse/bci/rust:oldstable
-#!BuildTag: opensuse/bci/rust:1.92
+#!BuildTag: opensuse/bci/rust:1.93
 
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rust1.92 cargo1.92
+    zypper -n install --no-recommends rust1.93 cargo1.93
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
@@ -31,16 +31,17 @@ RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache; \
-    command -v zypper >/dev/null 2>&1 || rm -f /var/lib/zypp/AutoInstalled
+    rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
+    rm -f {/target,}/var/lib/zypp/AutoInstalled; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.rust
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Rust 1.92"
-LABEL org.opencontainers.image.description="Rust 1.92 container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Rust 1.93"
+LABEL org.opencontainers.image.description="Rust 1.93 container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%RUST_VERSION%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
