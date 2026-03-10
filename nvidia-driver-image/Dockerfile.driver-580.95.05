@@ -160,6 +160,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
     fi
 
+RUN set -euo pipefail; printf 'compress="zstd"\n' /etc/dkms/framework.conf.d/module-compress.conf
 RUN set -euo pipefail; dkms autoinstall -k $(basename /lib/modules/*-default)
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/open
 RUN set -euo pipefail; mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -213,6 +214,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
     fi
 
+RUN set -euo pipefail; printf 'compress="zstd"\n' /etc/dkms/framework.conf.d/module-compress.conf
 RUN set -euo pipefail; dkms autoinstall -k $(basename /lib/modules/*-default)
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/proprietary
 
