@@ -38,7 +38,8 @@ jobs:
         run: chown -R $(id -un):$(id -gn) .
 
       - name: log the IP address
-        run: zypper -n install iproute2 && ip r
+        run: |
+            echo -n "IPv4 public: "; curl -4 ifconfig.me; echo ""
 
       - name: install python dependencies
         run: poetry install
