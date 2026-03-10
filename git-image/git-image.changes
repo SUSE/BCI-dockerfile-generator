@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 10 21:55:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove move files that make containers unreproducible
+
+-------------------------------------------------------------------
 Tue Mar 10 16:27:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to new version
