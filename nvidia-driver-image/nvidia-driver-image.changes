@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 10 10:38:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Ensure DKMS compression is enabled
+
+-------------------------------------------------------------------
 Fri Mar  6 17:24:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update README
