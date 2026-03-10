@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 10 21:55:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove move files that make containers unreproducible; fix name in README
+
+-------------------------------------------------------------------
 Wed Jan 21 21:40:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set permissions on volume mount directory
