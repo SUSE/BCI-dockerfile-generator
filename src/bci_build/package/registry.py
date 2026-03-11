@@ -52,7 +52,7 @@ REGISTRY_CONTAINERS = [
         exposes_ports=[TCP(5000)],
         support_level=SupportLevel.L3,
         min_release_counter={
-            OsVersion.SP7: 15,
+            OsVersion.SP7: 40,
         },
         build_stage_custom_end=generate_package_version_check(
             "distribution-registry", distribution_version, use_target=True
