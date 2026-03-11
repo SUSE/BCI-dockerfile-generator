@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:26 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Thu Jan 29 16:02:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - revert patterns-base-fips addition

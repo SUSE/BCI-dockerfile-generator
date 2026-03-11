@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:36 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Tue Mar 10 22:41:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to 10.0.4

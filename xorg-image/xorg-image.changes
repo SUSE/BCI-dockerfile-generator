@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:56 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Fri Mar  6 15:27:28 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add/enable physical input devices and hotplug support

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:45 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Fri Feb 13 10:46:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add a sles15 specific tag

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:54 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Thu Jan 29 12:48:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - disable multiversion to reduce friction with kernel release mismatches

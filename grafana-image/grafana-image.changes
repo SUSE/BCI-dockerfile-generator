@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:39 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Wed Jan 14 08:57:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - make sure entrypoint script uses exception mode, fix fallout

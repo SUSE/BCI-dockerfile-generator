@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:38 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Thu Feb 26 15:03:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - simplify stability tags setup

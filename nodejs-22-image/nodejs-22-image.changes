@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:43 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Mon Feb 16 22:18:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix end of support date

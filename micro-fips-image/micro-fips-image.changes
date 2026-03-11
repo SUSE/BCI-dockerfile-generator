@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:42 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Fri Jan 30 09:21:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Set the crypto-policies to FIPS

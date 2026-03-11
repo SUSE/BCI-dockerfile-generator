@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 11 13:27:34 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- remove more files that make containers unreproducible
+
+-------------------------------------------------------------------
 Sun Jan  4 19:48:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - change into a docker build which reduces size and leftover files in the container
