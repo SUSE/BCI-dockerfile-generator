@@ -42,9 +42,12 @@ POSTGRES_CONTAINERS = [
         package_list=[
             "libpq5",
             f"postgresql{ver}-server",
+            f"postgresql{ver}-contrib",
             "findutils",
+            "gzip",
             "coreutils",
             "sed",
+            "tar",
             "util-linux",  # for setpriv :-(
         ]
         + (
