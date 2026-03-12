@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 12 17:12:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- bump release number
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:35 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
