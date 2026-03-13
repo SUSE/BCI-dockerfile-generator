@@ -44,6 +44,20 @@ NVIDIA_REPOS = {
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/D42D0685.pub",
         ),
     ],
+    OsVersion.SL16_0: [
+        ThirdPartyRepo(
+            name="cuda-sles15-x86_64",
+            arch=Arch.X86_64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
+        ),
+        ThirdPartyRepo(
+            name="cuda-sles15-sbsa",
+            arch=Arch.AARCH64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
+        ),
+    ],
 }
 
 CUSTOM_END_TEMPLATE = Template(
@@ -253,7 +267,7 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         pkgs = self.fetch_rpm_packages()
 
         if self.os_version == OsVersion.SP7:
-            # GA kernel for SP7 is not in the standard repo, but in the pool repo
+            # GA kernel for SP7 is not in the in the pool repo
             kernel_packages = [
                 ("kernel-default", "kernel-default", self.exclusive_arch),
                 ("kernel-default-devel", "kernel-default", self.exclusive_arch),
@@ -264,26 +278,50 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                 ("kernel-64kb-devel", "kernel-64kb", [Arch.AARCH64]),
             ]
 
-            for name, pkg_name, exclusive_arch in kernel_packages:
-                for arch in exclusive_arch:
-                    # NVIDIA drivers are built on GA kernel version for compatibily
-                    filename_in_image = f"{name}-6.4.0-150700.51.1.{arch}.rpm"
-                    filename_in_repo = f"{name}-6.4.0-150700.51.1.{arch}.rpm"
+            project = "SUSE:SLE-15-SP7:GA"
+            repo = "pool"
+            version = "6.4.0"
+            revision = "150700.51.1"
+        elif self.os_version == OsVersion.SL16_0:
+            # GA kernel for 16.0 is in SLFO under patchinfo.ga
+            kernel_packages = [
+                ("kernel-default", "patchinfo.ga", self.exclusive_arch),
+                ("kernel-default-devel", "patchinfo.ga", self.exclusive_arch),
+                ("kernel-syms", "patchinfo.ga", self.exclusive_arch),
+                ("kernel-devel", "patchinfo.ga", self.exclusive_arch),
+                ("kernel-macros", "patchinfo.ga", self.exclusive_arch),
+                # needed only for aarch64
+                ("kernel-64kb-devel", "patchinfo.ga", [Arch.AARCH64]),
+            ]
 
-                    if pkg_name == "kernel-source":
-                        filename_in_repo = f"{name}-6.4.0-150700.51.1.noarch.rpm"
-
-                    pkgs.append(
-                        RpmPackage(
-                            name=name,
-                            arch=str(arch),
-                            evr=("", "6.4.0", "150700.51.1"),
-                            filename=filename_in_image,
-                            url=f"https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/{arch}/{pkg_name}/{filename_in_repo}",
-                        )
-                    )
+            project = "SUSE:SLFO:1.2"
+            repo = "standard"
+            version = "6.12.0"
+            revision = "160000.5.1"
         else:
-            raise ValueError(f"Unknown kernel packages for {self.os_version}")
+            raise ValueError(f"Unknown GA kernel packages for {self.os_version}")
+
+        for name, pkg_name, exclusive_arch in kernel_packages:
+            for arch in exclusive_arch:
+                filename_in_image = f"{name}-{version}-{revision}.{arch}.rpm"
+
+                if pkg_name == "kernel-source" or name in [
+                    "kernel-macros",
+                    "kernel-devel",
+                ]:
+                    filename_in_repo = f"{name}-{version}-{revision}.noarch.rpm"
+                else:
+                    filename_in_repo = f"{name}-{version}-{revision}.{arch}.rpm"
+
+                pkgs.append(
+                    RpmPackage(
+                        name=name,
+                        arch=str(arch),
+                        evr=("", version, revision),
+                        filename=filename_in_image,
+                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{pkg_name}/{filename_in_repo}",
+                    )
+                )
 
         open_packages = [p.name for p in self.open_drivers_package_list]
         closed_packages = [p.name for p in self.closed_drivers_package_list]
@@ -382,7 +420,9 @@ def _get_closed_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]
     raise ValueError(f"Unknown closed driver for {driver_version}")
 
 
-def _get_compute_packages(driver_version: str) -> list[ThirdPartyPackage]:
+def _get_compute_packages(
+    driver_version: str, os_version: OsVersion
+) -> list[ThirdPartyPackage]:
     """
     Get the correct common and compute packages an all its depedencies.
 
@@ -434,6 +474,14 @@ def _get_compute_packages(driver_version: str) -> list[ThirdPartyPackage]:
             ThirdPartyPackage("nvidia-persistenced", version=driver_version),
         ]
 
+        # on the CUDA repository for SLE 16 the libOpenCL1 package does
+        # not exists, but it is provided by cuda-toolkit but only on x86_64.
+        # for 16.0 we pick from SLE 16 repository as an extra package.
+        if os_version == OsVersion.SP7:
+            packages += [
+                ThirdPartyPackage("libOpenCL1"),
+            ]
+
     # since 580 nvidia-compute has these dependencies
     if driver_branch >= 580:
         packages += [
@@ -451,19 +499,16 @@ def _get_compute_packages(driver_version: str) -> list[ThirdPartyPackage]:
 
 
 def _get_packages(os_version: OsVersion):
-    # needed by kernel GA packages
-    # since kernel GA packages are using RemoteAssetUrl a few dependencies
-    # are not solved by zypper automatically
-    extra_packages: list[Package] = [
+    packages: list[Package] = [
+        # needed by kernel GA packages
+        # since kernel GA packages are using RemoteAssetUrl a few dependencies
+        # are not solved by zypper automatically
         Package("dwarves", PackageType.BOOTSTRAP),
         Package("elfutils", PackageType.BOOTSTRAP),
         Package("gcc", PackageType.BOOTSTRAP),
         Package("libelf-devel", PackageType.BOOTSTRAP),
         Package("pesign-obs-integration", PackageType.BOOTSTRAP),
         Package("zstd", PackageType.BOOTSTRAP),
-    ]
-
-    return extra_packages + [
         # needed by nvidia packages
         Package("dracut", PackageType.BOOTSTRAP),
         Package("gcc-c++", PackageType.BOOTSTRAP),
@@ -491,11 +536,27 @@ def _get_packages(os_version: OsVersion):
         Package("util-linux-systemd", PackageType.IMAGE),
     ]
 
+    if os_version == OsVersion.SL16_0:
+        packages += [
+            # GA kernel explicitly requires gcc13
+            Package("gcc13", PackageType.BOOTSTRAP),
+            Package("suse-kernel-rpm-scriptlets", PackageType.BOOTSTRAP),
+            # not available in the CUDA repository
+            # but available in the SLE repository
+            Package("libOpenCL1", PackageType.BOOTSTRAP),
+            # required by nvidia-persistenced
+            Package("libtirpc3", PackageType.BOOTSTRAP),
+            Package("libtirpc3", PackageType.IMAGE),
+        ]
+
+    return packages
+
 
 # We need to support all versions for GPU Operator Version v25.10.1
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
 _NVIDIA_DRIVER_VERSIONS = [
     # G07
+    "595.45.04",
     "590.48.01",
     # G06
     "580.126.16",
@@ -514,8 +575,18 @@ _NVIDIA_DRIVER_VERSIONS = [
 
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
-for os_version in (OsVersion.SP7,):
+for os_version in (OsVersion.SP7, OsVersion.SL16_0):
     for ver in _NVIDIA_DRIVER_VERSIONS:
+        driver_branch = _get_driver_branch(ver)
+
+        # older drivers are not available for SLE 16
+        # skip the image in this case
+        if os_version == OsVersion.SL16_0 and driver_branch < 595:
+            continue
+
+        if os_version not in NVIDIA_REPOS:
+            raise ValueError(f"Missing CUDA repositories for {os_version}")
+
         NVIDIA_CONTAINERS.append(
             NvidiaDriverBCI(
                 os_version=os_version,
@@ -537,7 +608,7 @@ for os_version in (OsVersion.SP7,):
                 third_party_repos=NVIDIA_REPOS[os_version],
                 open_drivers_package_list=_get_open_drivers_packages(ver),
                 closed_drivers_package_list=_get_closed_drivers_packages(ver),
-                third_party_package_list=_get_compute_packages(ver),
+                third_party_package_list=_get_compute_packages(ver, os_version),
                 entrypoint=["nvidia-driver", "load"],
                 env={
                     "DRIVER_VERSION": ver,
