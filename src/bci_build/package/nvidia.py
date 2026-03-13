@@ -317,6 +317,181 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         super(DevelopmentContainer, self).prepare_template()
 
 
+def _get_driver_branch(driver_version: str) -> int:
+    """Extract the driver branch from the driver version."""
+    try:
+        return int(driver_version.split(".")[0])
+    except Exception:
+        raise ValueError(f"Failed to parse driver branch: {driver_version}")
+
+
+def _get_open_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
+    """Select the correct open driver package for each version."""
+    driver_branch = _get_driver_branch(driver_version)
+
+    if driver_branch >= 590:
+        return [
+            ThirdPartyPackage("nvidia-open-driver-G07", version=driver_version),
+        ]
+
+    if driver_branch >= 575:
+        return [
+            ThirdPartyPackage("nvidia-open-driver-G06", version=driver_version),
+        ]
+
+    if driver_branch == 570:
+        return [
+            ThirdPartyPackage(
+                "nvidia-open-driver-G06-kmp-default", version=driver_version
+            ),
+        ]
+
+    if driver_branch == 550:
+        # 550 also requires gsp.bin for the open driver
+        return [
+            ThirdPartyPackage(
+                "kernel-firmware-nvidia-gspx-G06", version=driver_version
+            ),
+            ThirdPartyPackage(
+                "nvidia-open-driver-G06-kmp-default", version=driver_version
+            ),
+        ]
+
+    raise ValueError(f"Unknown open driver for {driver_version}")
+
+
+def _get_closed_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
+    """Select the correct closed driver package for each version."""
+    driver_branch = _get_driver_branch(driver_version)
+
+    if driver_branch >= 590:
+        return [
+            ThirdPartyPackage("nvidia-driver-G07", version=driver_version),
+        ]
+
+    if driver_branch >= 575:
+        return [
+            ThirdPartyPackage("nvidia-driver-G06", version=driver_version),
+        ]
+
+    if driver_branch >= 550:
+        return [
+            ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=driver_version),
+        ]
+
+    raise ValueError(f"Unknown closed driver for {driver_version}")
+
+
+def _get_compute_packages(driver_version: str) -> list[ThirdPartyPackage]:
+    """
+    Get the correct common and compute packages an all its depedencies.
+
+    Over the years, packages were split into smaller packages, and for
+    this reason, later releases require more packages, while on older releases
+    most dependencies were in nvidia-compute-utils.
+    """
+    driver_branch = _get_driver_branch(driver_version)
+
+    packages: list[ThirdPartyPackage] = [
+        # required on all versions and not tied to the driver version
+        ThirdPartyPackage("nvidia-driver-assistant"),
+    ]
+
+    # select the correct compute and common packages for each version
+    # these are required on all versions, but package name varies
+    if driver_branch >= 590:
+        packages += [
+            ThirdPartyPackage("nvidia-common-G07", version=driver_version),
+            ThirdPartyPackage("nvidia-compute-G07", version=driver_version),
+            ThirdPartyPackage("nvidia-compute-utils-G07", version=driver_version),
+        ]
+    elif driver_branch >= 570:
+        packages += [
+            ThirdPartyPackage("nvidia-common-G06", version=driver_version),
+            ThirdPartyPackage("nvidia-compute-G06", version=driver_version),
+            ThirdPartyPackage("nvidia-compute-utils-G06", version=driver_version),
+        ]
+    elif driver_branch >= 550:
+        packages += [
+            ThirdPartyPackage("nvidia-compute-G06", version=driver_version),
+            ThirdPartyPackage("nvidia-compute-utils-G06", version=driver_version),
+        ]
+    else:
+        raise ValueError(f"Unknown compute package for {driver_version}")
+
+    # since 575 the drivers are dkms-based
+    # and nvidia-compute has these dependencies
+    if driver_branch >= 575:
+        packages += [
+            ThirdPartyPackage("dkms"),
+            ThirdPartyPackage("libnvidia-gpucomp", version=driver_version),
+        ]
+
+    # since 570 nvidia-compute and nvidia-common have these dependencies
+    if driver_branch >= 570:
+        packages += [
+            ThirdPartyPackage("nvidia-modprobe", version=driver_version),
+            ThirdPartyPackage("nvidia-persistenced", version=driver_version),
+        ]
+
+    # since 580 nvidia-compute has these dependencies
+    if driver_branch >= 580:
+        packages += [
+            ThirdPartyPackage("libnvidia-cfg", version=driver_version),
+            ThirdPartyPackage("libnvidia-ml", version=driver_version),
+        ]
+
+    if driver_branch == 550:
+        # provides libnvidia-cfg.so for nvidia-persistenced
+        packages += [
+            ThirdPartyPackage("nvidia-gl-G06", version=driver_version),
+        ]
+
+    return packages
+
+
+def _get_packages(os_version: OsVersion):
+    # needed by kernel GA packages
+    # since kernel GA packages are using RemoteAssetUrl a few dependencies
+    # are not solved by zypper automatically
+    extra_packages: list[Package] = [
+        Package("dwarves", PackageType.BOOTSTRAP),
+        Package("elfutils", PackageType.BOOTSTRAP),
+        Package("gcc", PackageType.BOOTSTRAP),
+        Package("libelf-devel", PackageType.BOOTSTRAP),
+        Package("pesign-obs-integration", PackageType.BOOTSTRAP),
+        Package("zstd", PackageType.BOOTSTRAP),
+    ]
+
+    return extra_packages + [
+        # needed by nvidia packages
+        Package("dracut", PackageType.BOOTSTRAP),
+        Package("gcc-c++", PackageType.BOOTSTRAP),
+        Package("make", PackageType.BOOTSTRAP),
+        Package("mokutil", PackageType.BOOTSTRAP),
+        Package("pciutils", PackageType.BOOTSTRAP),
+        Package("perl-Bootloader", PackageType.BOOTSTRAP),
+        Package("python3", PackageType.BOOTSTRAP),
+        Package("systemd", PackageType.BOOTSTRAP),
+        Package("xz", PackageType.BOOTSTRAP),
+        # needed by nvidia-driver script
+        Package("awk", PackageType.IMAGE),
+        Package("coreutils", PackageType.IMAGE),
+        Package("findutils", PackageType.IMAGE),
+        Package("grep", PackageType.IMAGE),
+        Package("jq", PackageType.IMAGE),
+        Package("kmod", PackageType.IMAGE),
+        (
+            Package("rpm-ndb", PackageType.IMAGE)
+            if os_version.is_sle15
+            else Package("rpm", PackageType.IMAGE)
+        ),
+        Package("sed", PackageType.IMAGE),
+        Package("util-linux", PackageType.IMAGE),
+        Package("util-linux-systemd", PackageType.IMAGE),
+    ]
+
+
 # We need to support all versions for GPU Operator Version v25.10.1
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
 _NVIDIA_DRIVER_VERSIONS = [
@@ -340,109 +515,7 @@ _NVIDIA_DRIVER_VERSIONS = [
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
 for os_version in (OsVersion.SP7,):
-    extra_packages = []
-
-    if os_version == OsVersion.SP7:
-        # needed by kernel GA packages
-        # since kernel GA packages are using RemoteAssetUrl a few dependencies
-        # are not solved by zypper automatically
-        extra_packages = [
-            Package("dwarves", PackageType.BOOTSTRAP),
-            Package("elfutils", PackageType.BOOTSTRAP),
-            Package("gcc", PackageType.BOOTSTRAP),
-            Package("libelf-devel", PackageType.BOOTSTRAP),
-            Package("pesign-obs-integration", PackageType.BOOTSTRAP),
-            Package("zstd", PackageType.BOOTSTRAP),
-        ]
-
     for ver in _NVIDIA_DRIVER_VERSIONS:
-        driver_branch = ver.split(".")[0]
-        driver_version = int(driver_branch)
-
-        open_drivers_package_list = []
-        closed_drivers_package_list = []
-        third_party_package_list = [
-            ThirdPartyPackage("nvidia-driver-assistant"),
-        ]
-
-        if driver_version >= 590:
-            open_drivers_package_list += [
-                ThirdPartyPackage("nvidia-open-driver-G07", version=ver),
-            ]
-            closed_drivers_package_list += [
-                ThirdPartyPackage("nvidia-driver-G07", version=ver),
-            ]
-        elif driver_version >= 575:
-            open_drivers_package_list += [
-                ThirdPartyPackage("nvidia-open-driver-G06", version=ver),
-            ]
-            closed_drivers_package_list += [
-                ThirdPartyPackage("nvidia-driver-G06", version=ver),
-            ]
-        elif driver_version >= 550:
-            open_drivers_package_list += [
-                ThirdPartyPackage("nvidia-open-driver-G06-kmp-default", version=ver),
-            ]
-            closed_drivers_package_list += [
-                ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=ver),
-            ]
-        else:
-            raise ValueError(f"Unknown open/closed driver for {ver}")
-
-        if driver_version >= 590:
-            third_party_package_list += [
-                ThirdPartyPackage("nvidia-common-G07", version=ver),
-                ThirdPartyPackage("nvidia-compute-G07", version=ver),
-                ThirdPartyPackage("nvidia-compute-utils-G07", version=ver),
-            ]
-        elif driver_version >= 570:
-            third_party_package_list += [
-                ThirdPartyPackage("nvidia-common-G06", version=ver),
-                ThirdPartyPackage("nvidia-compute-G06", version=ver),
-                ThirdPartyPackage("nvidia-compute-utils-G06", version=ver),
-            ]
-        elif driver_version >= 550:
-            third_party_package_list += [
-                ThirdPartyPackage("nvidia-compute-G06", version=ver),
-                ThirdPartyPackage("nvidia-compute-utils-G06", version=ver),
-            ]
-        else:
-            raise ValueError(f"Unknown compute package for {ver}")
-
-        # since 575 drivers are dkms-based
-        # and nvidia-compute has these dependencies
-        if driver_version >= 575:
-            third_party_package_list += [
-                ThirdPartyPackage("dkms"),
-                ThirdPartyPackage("libnvidia-gpucomp", version=ver),
-            ]
-
-        #  since 570 nvidia-compute and nvidia-common have these dependencies
-        if driver_version >= 570:
-            third_party_package_list += [
-                ThirdPartyPackage("nvidia-modprobe", version=ver),
-                ThirdPartyPackage("nvidia-persistenced", version=ver),
-                ThirdPartyPackage("libOpenCL1"),
-            ]
-
-        # since 580 nvidia-compute has these dependencies
-        if driver_version >= 580:
-            third_party_package_list += [
-                ThirdPartyPackage("libnvidia-cfg", version=ver),
-                ThirdPartyPackage("libnvidia-ml", version=ver),
-            ]
-
-        if driver_version == 550:
-            # provides gsp.bin for the open driver
-            open_drivers_package_list += [
-                ThirdPartyPackage("kernel-firmware-nvidia-gspx-G06", version=ver),
-            ]
-
-            # provides libnvidia-cfg.so for nvidia-persistenced
-            third_party_package_list += [
-                ThirdPartyPackage("nvidia-gl-G06", version=ver),
-            ]
-
         NVIDIA_CONTAINERS.append(
             NvidiaDriverBCI(
                 os_version=os_version,
@@ -457,46 +530,19 @@ for os_version in (OsVersion.SP7,):
                 is_latest=False,
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-                package_list=extra_packages
-                + [
-                    # needed by nvidia packages
-                    Package("dracut", PackageType.BOOTSTRAP),
-                    Package("gcc-c++", PackageType.BOOTSTRAP),
-                    Package("make", PackageType.BOOTSTRAP),
-                    Package("mokutil", PackageType.BOOTSTRAP),
-                    Package("pciutils", PackageType.BOOTSTRAP),
-                    Package("perl-Bootloader", PackageType.BOOTSTRAP),
-                    Package("python3", PackageType.BOOTSTRAP),
-                    Package("systemd", PackageType.BOOTSTRAP),
-                    Package("xz", PackageType.BOOTSTRAP),
-                    # needed by nvidia-driver script
-                    Package("awk", PackageType.IMAGE),
-                    Package("coreutils", PackageType.IMAGE),
-                    Package("findutils", PackageType.IMAGE),
-                    Package("grep", PackageType.IMAGE),
-                    Package("jq", PackageType.IMAGE),
-                    Package("kmod", PackageType.IMAGE),
-                    (
-                        Package("rpm-ndb", PackageType.IMAGE)
-                        if os_version.is_sle15
-                        else Package("rpm", PackageType.IMAGE)
-                    ),
-                    Package("sed", PackageType.IMAGE),
-                    Package("util-linux", PackageType.IMAGE),
-                    Package("util-linux-systemd", PackageType.IMAGE),
-                ],
+                package_list=_get_packages(os_version),
                 support_level=SupportLevel.TECHPREVIEW,
                 supported_until="",
                 exclusive_arch=[Arch.X86_64, Arch.AARCH64],
                 third_party_repos=NVIDIA_REPOS[os_version],
-                open_drivers_package_list=open_drivers_package_list,
-                closed_drivers_package_list=closed_drivers_package_list,
-                third_party_package_list=third_party_package_list,
+                open_drivers_package_list=_get_open_drivers_packages(ver),
+                closed_drivers_package_list=_get_closed_drivers_packages(ver),
+                third_party_package_list=_get_compute_packages(ver),
                 entrypoint=["nvidia-driver", "load"],
                 env={
                     "DRIVER_VERSION": ver,
                     "DRIVER_TYPE": "passthrough",
-                    "DRIVER_BRANCH": driver_branch,
+                    "DRIVER_BRANCH": str(_get_driver_branch(ver)),
                     "VGPU_LICENSE_SERVER_TYPE": "NLS",
                     "DISABLE_VGPU_VERSION_CHECK": "true",
                     "NVIDIA_VISIBLE_DEVICES": "void",
