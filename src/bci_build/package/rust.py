@@ -21,6 +21,7 @@ _RUST_CC_PATH = "/usr/local/bin/cc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.94": datetime.date(2026, 3, 5) + _RUST_SUPPORT_OVERLAP,
     "1.93": datetime.date(2026, 1, 22) + _RUST_SUPPORT_OVERLAP,
     "1.92": datetime.date(2025, 12, 11) + _RUST_SUPPORT_OVERLAP,
     "1.91": datetime.date(2025, 10, 30) + _RUST_SUPPORT_OVERLAP,
@@ -42,7 +43,7 @@ _RUST_VERSIONS: list[str] = ["1.92", "1.93"]
 
 _RUST_SL16_VERSIONS: list[str] = ["1.92", "1.93"]
 
-_RUST_TW_VERSIONS: list[str] = ["1.92", "1.93"]
+_RUST_TW_VERSIONS: list[str] = ["1.93", "1.94"]
 
 
 def _rust_is_stable_version(os_version: OsVersion, rust_version: str) -> bool:
