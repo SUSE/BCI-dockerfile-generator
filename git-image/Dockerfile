@@ -27,7 +27,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core openssh-clients
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends git-core openssh-clients shadow
 # sanity check that the version from the tag is equal to the version of git-core that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' git-core | \
@@ -68,3 +68,9 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+RUN set -euo pipefail; useradd -r -u 1000 -g 0 -d /workspace -s /bin/bash git
+RUN set -euo pipefail; mkdir -p /workspace && chown git:0 /workspace && chmod 775 /workspace
+WORKDIR /workspace
+ENV HOME=/workspace
+
+VOLUME /workspace
