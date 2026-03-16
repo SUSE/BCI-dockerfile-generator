@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 16 21:02:16 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- split postgresql images in default and contrib variants
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:48 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
