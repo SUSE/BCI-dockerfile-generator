@@ -9,6 +9,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
@@ -89,6 +90,11 @@ POSTFIX_CONTAINERS = [
         support_level=SupportLevel.TECHPREVIEW,
         exposes_ports=[TCP(25), TCP(465), TCP(587)],
         volumes=["/var/spool/postfix", "/var/spool/vmail", "/etc/pki"],
+        build_stage_custom_end=(
+            generate_systemd_tmpfiles_command("postfix.conf", use_target=True)
+            if os_version.is_tumbleweed
+            else ""
+        ),
         custom_end=f"""{DOCKERFILE_RUN} mkdir -p /entrypoint/ldap
 COPY {"entrypoint.sh" if os_version == OsVersion.TUMBLEWEED else "entrypoint.sles.sh"} /entrypoint/entrypoint.sh
 {DOCKERFILE_RUN} chmod +x /entrypoint/entrypoint.sh
