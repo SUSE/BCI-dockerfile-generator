@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 17 17:45:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove compat-usrmerge-tools
+
+-------------------------------------------------------------------
 Fri Mar 13 12:52:02 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the NVIDIA Driver 595.45.04 BCI
