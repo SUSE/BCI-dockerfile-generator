@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 17 17:44:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove compat-usrmerge-tools
+
+-------------------------------------------------------------------
 Fri Mar 13 13:04:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add support for version 595.45.04
