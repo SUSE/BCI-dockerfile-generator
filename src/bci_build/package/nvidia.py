@@ -4,9 +4,12 @@ This module contains classes and functions related to updating and generating Do
 NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 """
 
+import functools
 import textwrap
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import requests
 from jinja2 import Template
 
 from bci_build.container_attributes import Arch
@@ -143,6 +146,146 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 )
 
 
+# GA (General Availability) kernel versions for each OS version
+# These are used as fallback if autodetection fails
+_GA_KERNEL_VERSIONS: dict[OsVersion, str] = {
+    OsVersion.SP7: "6.4.0-150700.51.1",
+    OsVersion.SL16_0: "6.12.0-160000.5.1",
+}
+
+# OBS projects and repositories for kernel packages
+_KERNEL_OBS_CONFIG: dict[OsVersion, tuple[str, str]] = {
+    OsVersion.SP7: ("SUSE:SLE-15-SP7:Update", "standard"),
+    OsVersion.SL16_0: ("SUSE:SLFO:1.2", "standard"),
+}
+
+
+def _fetch_kernel_versions_from_obs(
+    project: str, ga_version: str
+) -> list[str]:
+    """
+    Fetch all available kernel-default package versions from OBS.
+
+    This function queries the OBS source API to find all kernel-default update
+    packages and extracts their version-release strings.
+
+    Args:
+        project: OBS project name (e.g., "SUSE:SLE-15-SP7:Update")
+        ga_version: GA kernel version to include as fallback
+
+    Returns:
+        List of kernel version-release strings sorted chronologically.
+        Always includes the GA version. Returns [ga_version] if fetching fails.
+
+    Note:
+        If no kernel updates are found (beyond the GA kernel), this is expected
+        behavior for newly released service packs. Kernel update packages may
+        appear in the Update repository with release="0" until they are published.
+        The function will automatically pick them up once published.
+    """
+    versions = set()
+    versions.add(ga_version)  # Always include GA kernel
+
+    try:
+        # Query the OBS API for source packages in the project
+        url = f"https://api.opensuse.org/public/source/{project}"
+        response = requests.get(
+            url,
+            headers={"User-Agent": "BCI nvidia-driver-generator"},
+            timeout=30,
+        )
+        response.raise_for_status()
+
+        # Parse the XML response to find kernel-default packages
+        root = ET.fromstring(response.text)
+
+        # Look for kernel-default.INCIDENT packages (e.g., kernel-default.42560)
+        kernel_packages = []
+        for entry in root.findall(".//entry"):
+            name = entry.get("name", "")
+            if name.startswith("kernel-default.") and not name.endswith("-base"):
+                kernel_packages.append(name)
+
+        if not kernel_packages:
+            # No kernel update packages found - this is normal for new service packs
+            print(f"Info: No kernel update packages found in {project}, using GA kernel only")
+            return sorted(versions)
+
+        # Fetch version information for each kernel package
+        # Limit to recent packages to avoid too many API calls
+        published_count = 0
+        for pkg_name in sorted(kernel_packages)[-20:]:  # Last 20 updates
+            try:
+                ver_url = f"https://api.opensuse.org/public/source/{project}/{pkg_name}"
+                ver_response = requests.get(
+                    ver_url,
+                    params={"view": "info", "parse": "1"},
+                    headers={"User-Agent": "BCI nvidia-driver-generator"},
+                    timeout=30,
+                )
+                ver_response.raise_for_status()
+
+                ver_root = ET.fromstring(ver_response.text)
+                version_elem = ver_root.find("version")
+                release_elem = ver_root.find("release")
+
+                if version_elem is not None and release_elem is not None:
+                    version = version_elem.text
+                    release = release_elem.text
+
+                    # Skip if release is just "0" (incomplete/placeholder data)
+                    if release and release != "0":
+                        ver_string = f"{version}-{release}"
+                        versions.add(ver_string)
+                        published_count += 1
+
+            except Exception:
+                # Continue on individual package errors
+                continue
+
+        if published_count == 0:
+            print(f"Info: Found {len(kernel_packages)} kernel update packages in {project}, "
+                  f"but none are published yet (all have release=0)")
+            print(f"Info: Using GA kernel only: {ga_version}")
+
+    except Exception as e:
+        print(f"Warning: Failed to fetch kernel versions from {project}: {e}")
+        print(f"Warning: Falling back to GA kernel version: {ga_version}")
+
+    return sorted(versions)
+
+
+@functools.lru_cache(maxsize=None)
+def _get_kernel_versions_for_os(os_version: OsVersion) -> list[str]:
+    """
+    Get all kernel versions for which to create tags for a specific OS version.
+
+    This function automatically detects available kernel versions by querying
+    the OBS API for kernel-default packages in the Update repository.
+
+    Returns a list of kernel version-release strings suitable for tagging.
+    If autodetection fails, returns the GA kernel version as fallback.
+
+    For NVIDIA GPU Operator compatibility, each driver container is tagged with
+    multiple kernel versions following the format:
+    {driver_version}-{kernel_version}-sles{sp_version}
+
+    This allows the GPU Operator to select the appropriate driver image based on
+    the running kernel version, following NVIDIA's precompiled driver specification:
+    https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html
+    """
+    if os_version not in _KERNEL_OBS_CONFIG:
+        return []
+
+    project, _ = _KERNEL_OBS_CONFIG[os_version]
+    ga_version = _GA_KERNEL_VERSIONS.get(os_version, "")
+
+    if not ga_version:
+        return []
+
+    return _fetch_kernel_versions_from_obs(project, ga_version)
+
+
 class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
     def __init__(
         self,
@@ -228,10 +371,36 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
     @property
     def build_tags(self) -> list[str]:
-        return [
-            f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
-            f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}",
-        ]
+        """
+        Generate build tags following NVIDIA's precompiled driver tagging scheme.
+
+        Tags are generated in the format:
+        - {driver_version}-{kernel_version}-sles{sp_version}
+        - {driver_version}-sles{sp_version} (backward compatibility)
+
+        See: https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html
+        """
+        tags = []
+        base_tag = f"{self.registry_prefix}/nvidia/driver"
+
+        # Get kernel versions for this OS
+        kernel_versions = _get_kernel_versions_for_os(self.os_version)
+
+        # Generate a tag for each kernel version
+        for kernel_version in kernel_versions:
+            # Format: {driver_version}-{kernel_version}-sles{sp_version}
+            kernel_tag = f"{self.version}-{kernel_version}-sles%OS_VERSION_ID_SP%"
+            tags.append(f"{base_tag}:{kernel_tag}-{_RELEASE_PLACEHOLDER}")
+            tags.append(f"{base_tag}:{kernel_tag}")
+
+        # Always include the base tag without kernel version for backward compatibility
+        # and as a fallback when kernel versions can't be fetched
+        tags.extend([
+            f"{base_tag}:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
+            f"{base_tag}:{self.image_ref_name}",
+        ])
+
+        return tags
 
     @property
     def image_ref_name(self) -> str:
