@@ -137,6 +137,8 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
     fi
 {%- endwith %}
 {%- endfor %}
+
+{{ DOCKERFILE_RUN }} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
 """
 )
 
