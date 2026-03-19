@@ -500,15 +500,22 @@ GITEA_RUNNER_CONTAINER = OsContainer(
     pretty_name="Gitea action runner",
     os_version=OsVersion.TUMBLEWEED,
     is_latest=True,
-    package_list=[
-        "osc",
-        "expect",
-        "obs-service-format_spec_file",
-        "obs-service-source_validator",
-        "typescript",
-        "git-core",
-        *OsVersion.TUMBLEWEED.release_package_names,
-    ],
+    package_list=sorted(
+        [
+            "osc",
+            "build",
+            "rpm-build",
+            "expect",
+            "obs-service-format_spec_file",
+            "obs-service-source_validator",
+            "obs-service-tar_scm",
+            "obs-service-set_version",
+            "obs-scm-bridge",
+            "typescript",
+            "git-core",
+            *OsVersion.TUMBLEWEED.release_package_names,
+        ]
+    ),
     extra_files={"osc_checkout": OSC_CHECKOUT},
     custom_end=f"""COPY osc_checkout /usr/bin/osc_checkout
 {DOCKERFILE_RUN} chmod +x /usr/bin/osc_checkout""",
