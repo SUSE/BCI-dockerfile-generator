@@ -14,15 +14,27 @@ version per code stream in the git repository of the following form:
 .. code-block:: json
 
    {
-       "nginx": {
-           "Tumbleweed": "1.25.5",
-           "6": "1.21.5",
-           "5": "1.21.5"
-       }
+        "nginx": {
+            "latest": {
+                "16.0": "1.27",
+                "7": "1.21",
+                "Tumbleweed": "1.29"
+            },
+            "release_history": {
+                "16.0": ["1.27"],
+                "7": ["1.21"],
+                "Tumbleweed": ["1.29", 1.28, 1.27]
+            },
+            "version_format": "minor"
+        }
    }
 
+The key ``version_format`` sets the value to the version format limit
+(e.g. `major` or `minor`). The value must correspond to a enum value of
+:py:class:`~bci_build.package.ParseVersion`.
 
-The package versions are available via the function :py:func:`get_pkg_version`.
+The latest package version is available via the function
+:py:func:`get_pkg_version` and all versions via :py:func:`get_all_pkg_version`.
 
 The json file is updated via the function :py:func:`run_version_update`. It can
 also be called directly via :command:`poetry run update-versions` and is also
@@ -35,38 +47,23 @@ streams with a dummy version, e.g.:
 
    {
        "mariadb": {
-           "Tumbleweed": "",
-           "6": ""
+            "latest": {
+                "Tumbleweed": "",
+                "6": ""
+            }
        }
    }
 
 Save the file and run the version update. :py:func:`update_versions` will fetch
 the current version for every code stream that is present in the dictionary.
 
-For some packages we do not need to know the full version, to prevent pointless
-automated churn. In such a case, add the additional key ``version_format`` to a
-package dictionary and set the value to the version format limit (e.g. `major`
-or `minor`). The value must correspond to a enum value of
-:py:class:`~bci_build.package.ParseVersion`. Applied to the above example, this
-results in:
-
-.. code-block:: json
-
-   {
-       "nginx": {
-           "parse_version": "minor",
-           "Tumbleweed": "1.25",
-           "6": "1.21",
-           "5": "1.21"
-       }
-   }
-
-
 """
 
 import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from typing import Dict
+from typing import List
 from typing import Literal
 from typing import NoReturn
 from typing import TypedDict
@@ -78,28 +75,20 @@ from packaging import version
 from bci_build.os_version import OsVersion
 from bci_build.util import ParseVersion
 
-_VERS_FMT_KEY = "version_format"
 
-_pkg_version_fields: dict[str, type[ParseVersion] | type[str]] = {
-    _VERS_FMT_KEY: ParseVersion
-}
-for os_ver in OsVersion:
-    _pkg_version_fields[str(os_ver)] = str
-
-_PKG_VERSION_T = TypedDict("_PKG_VERSION_T", _pkg_version_fields, total=False)
+class PackageInfo(TypedDict, total=False):
+    latest: Dict[str, str]
+    release_history: Dict[str, List[str]]
+    version_format: str
 
 
-#: Type for storing versions of packages.
-#: The key is the package name.
-#: The value is a dictionary, where the key is the code stream and the value the
-#: version of the package
-_PACKAGE_VERSIONS_T = dict[str, _PKG_VERSION_T]
+PackageVersions = Dict[str, PackageInfo]
 
 #: Path to the json file where the package versions are stored
 PACKAGE_VERSIONS_JSON_PATH = Path(__file__).parent / "package_versions.json"
 
 
-def _read_pkg_versions() -> _PACKAGE_VERSIONS_T:
+def get_package_versions() -> PackageVersions:
     """Reads the package versions from the json file in
     :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS_JSON_PATH`.
 
@@ -108,16 +97,36 @@ def _read_pkg_versions() -> _PACKAGE_VERSIONS_T:
         return json.load(versions_json)
 
 
-#: versions of all packages where we have to hardcode the version
-_PACKAGE_VERSIONS: _PACKAGE_VERSIONS_T = _read_pkg_versions()
-
-
 def get_pkg_version(pkg_name: str, os_version: OsVersion) -> str:
-    if pkg_name not in _PACKAGE_VERSIONS:
-        raise ValueError(f"Package {pkg_name} not tracked")
+    package_versions = get_package_versions()
 
-    if (k := str(os_version)) not in (pkg_vers := _PACKAGE_VERSIONS[pkg_name]):
-        raise ValueError(f"OS Version {k} not tracked for package {pkg_name}")
+    if pkg_name not in package_versions:
+        raise ValueError(
+            f"Package '{pkg_name}' not tracked in '{PACKAGE_VERSIONS_JSON_PATH}'"
+        )
+
+    if (k := str(os_version)) not in (pkg_vers := package_versions[pkg_name]["latest"]):
+        raise ValueError(
+            f"OS Version '{k}' not tracked for package '{pkg_name}' in '{PACKAGE_VERSIONS_JSON_PATH}'"
+        )
+
+    return pkg_vers[k]
+
+
+def get_all_pkg_version(pkg_name: str, os_version: OsVersion) -> str:
+    package_versions = get_package_versions()
+
+    if pkg_name not in package_versions:
+        raise ValueError(
+            f"Package '{pkg_name}' not tracked in '{PACKAGE_VERSIONS_JSON_PATH}'"
+        )
+
+    if (k := str(os_version)) not in (
+        pkg_vers := package_versions[pkg_name].get("release_history", {})
+    ):
+        raise ValueError(
+            f"OS Version '{k}' not tracked for package '{pkg_name}' in '{PACKAGE_VERSIONS_JSON_PATH}'"
+        )
 
     return pkg_vers[k]
 
@@ -184,23 +193,30 @@ def update_versions() -> dict[str, dict[str, str]]:
     stream defined in :py:const:`~bci_build.package.versions.PACKAGE_VERSIONS`.
 
     """
-    new_versions: dict[str, dict[str, str]] = {}
-    for pkg, versions in _PACKAGE_VERSIONS.items():
-        new_versions[pkg] = {}
+    package_versions = get_package_versions()
 
-        v_format: ParseVersion = ParseVersion(
-            str(versions.get(_VERS_FMT_KEY, ParseVersion.PATCH))
-        )
-        for os_version in filter(lambda v: v != _VERS_FMT_KEY, versions):
+    for pkg_name, pkg_info in package_versions.items():
+        version_format: ParseVersion = ParseVersion(pkg_info["version_format"])
+
+        for os_version in pkg_info["latest"].keys():
             pkg_version: str = fetch_package_version(
-                prj=_OBS_PROJECTS[OsVersion.parse(os_version)], pkg=pkg
+                prj=_OBS_PROJECTS[OsVersion.parse(os_version)], pkg=pkg_name
             )
-            new_versions[pkg][os_version] = format_version(pkg_version, v_format)
 
-        if _VERS_FMT_KEY in versions:
-            new_versions[pkg][_VERS_FMT_KEY] = v_format
+            new_version = format_version(pkg_version, version_format)
+            package_versions[pkg_name]["latest"][os_version] = new_version
 
-    return new_versions
+            if "release_history" in package_versions[pkg_name]:
+                if os_version in package_versions[pkg_name]["release_history"]:
+                    package_versions[pkg_name]["release_history"][os_version].append(
+                        new_version
+                    )
+                else:
+                    package_versions[pkg_name]["release_history"][os_version] = [
+                        new_version
+                    ]
+
+    return package_versions
 
 
 def run_version_update() -> None:
@@ -208,7 +224,7 @@ def run_version_update() -> None:
     the result to the package versions json file.
 
     """
-    new_versions = update_versions()
+    data: PackageVersions = update_versions()
 
-    with open(PACKAGE_VERSIONS_JSON_PATH, "w") as versions_json:
-        json.dump(new_versions, versions_json, indent=4, sort_keys=True)
+    with open(PACKAGE_VERSIONS_JSON_PATH, "w") as f:
+        json.dump(data, f, indent=4, sort_keys=True)
