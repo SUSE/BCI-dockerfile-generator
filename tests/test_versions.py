@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
+from bci_build.container_attributes import Arch
 from bci_build.os_version import OsVersion
-from bci_build.package.versions import _OBS_PROJECTS
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_all_pkg_version
 from bci_build.package.versions import get_pkg_version
@@ -43,24 +43,46 @@ def fake_package_versions():
             "track_versions": True,
             "version_format": "patch",
         },
+        "pkg3": {
+            "codestreams": {
+                "16.0": {
+                    "latest": "6.12.0-160000.26",
+                    "versions": [
+                        "6.12.0-160000.5",
+                        "6.12.0-160000.6",
+                        "6.12.0-160000.7",
+                        "6.12.0-160000.8",
+                        "6.12.0-160000.9",
+                        "6.12.0-160000.26",
+                    ],
+                },
+            },
+            "track_versions": True,
+            "version_format": "release",
+        },
     }
 
 
-def fake_fetch_package_version(prj: str, pkg: str) -> str:
+def fake_fetch_package_version(
+    version_format: ParseVersion, os_version: str, package: str, arch: Arch
+) -> str:
     new_versions = {
         "pkg1": {
-            _OBS_PROJECTS[OsVersion.parse("16.0")]: "1.5",
-            _OBS_PROJECTS[OsVersion.parse("16.1")]: "1.5",
-            _OBS_PROJECTS[OsVersion.parse("7")]: "1.5",
-            _OBS_PROJECTS[OsVersion.parse("Tumbleweed")]: "2.0",
+            OsVersion.SL16_0: "1.5",
+            OsVersion.SL16_1: "1.5",
+            OsVersion.SP7: "1.5",
+            OsVersion.TUMBLEWEED: "2.0",
         },
         "pkg2": {
-            _OBS_PROJECTS[OsVersion.parse("16.0")]: "1.1.1",
-            _OBS_PROJECTS[OsVersion.parse("Tumbleweed")]: "1.2.0",
+            OsVersion.SL16_0: "1.1.1",
+            OsVersion.TUMBLEWEED: "1.2.0",
+        },
+        "pkg3": {
+            OsVersion.SL16_0: "6.12.0-160000.26.1",
         },
     }
 
-    return new_versions[pkg][prj]
+    return new_versions[package][os_version]
 
 
 def test_get_pkg_version():
@@ -74,6 +96,8 @@ def test_get_pkg_version():
         assert get_pkg_version("pkg2", "Tumbleweed") == "1.1.1"
         assert get_pkg_version("pkg2", "16.0") == "1.1.0"
 
+        assert get_pkg_version("pkg3", "16.0") == "6.12.0-160000.26"
+
 
 def test_get_all_pkg_version():
     with patch(
@@ -85,6 +109,15 @@ def test_get_all_pkg_version():
 
         assert get_all_pkg_version("pkg2", "Tumbleweed") == ["1.1.0", "1.1.1"]
         assert get_all_pkg_version("pkg2", "16.0") == ["1.1.0"]
+
+        assert get_all_pkg_version("pkg3", "16.0") == [
+            "6.12.0-160000.5",
+            "6.12.0-160000.6",
+            "6.12.0-160000.7",
+            "6.12.0-160000.8",
+            "6.12.0-160000.9",
+            "6.12.0-160000.26",
+        ]
 
 
 def test_update_versions():
@@ -117,10 +150,74 @@ def test_update_versions():
 
 
 def test_format_version():
-    assert format_version("1.2.3", ParseVersion.MAJOR) == "1"
-    assert format_version("1.2.3", ParseVersion.MINOR) == "1.2"
-    assert format_version("1.2.3", ParseVersion.PATCH) == "1.2.3"
+    v = "1"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.0"
+    assert format_version(v, ParseVersion.PATCH) == "1.0.0"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.0.0.0"
+    assert format_version(v, ParseVersion.RELEASE) == "1.0.0-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.0.0-1.1"
 
-    assert format_version("1.2.3+64845ffd9", ParseVersion.MAJOR) == "1"
-    assert format_version("1.2.3+64845ffd9", ParseVersion.MINOR) == "1.2"
-    assert format_version("1.2.3+64845ffd9", ParseVersion.PATCH) == "1.2.3"
+    v = "1.2"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.0"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.0.0"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.0-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.0-1.1"
+
+    v = "1.2.3"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.3"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.3.0"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.3-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.3-1.1"
+
+    v = "1.2.3~alpha1"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.3"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.3.0"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.3-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.3-1.1"
+
+    v = "1.2.3beta2"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.3"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.3.0"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.3-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.3-1.1"
+
+    v = "1.2.3.50+g994fd9e0cc"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.3"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.3.50"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.3-1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.3-1.1"
+
+    v = "3.0.6~git86.dce421a0d-160000.1.1"
+    assert format_version(v, ParseVersion.MAJOR) == "3"
+    assert format_version(v, ParseVersion.MINOR) == "3.0"
+    assert format_version(v, ParseVersion.PATCH) == "3.0.6"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "3.0.6.0"
+    assert format_version(v, ParseVersion.RELEASE) == "3.0.6-160000.1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "3.0.6-160000.1.1"
+
+    v = "1.2.3.50+git994fd9e0cc-150700.0.1.1"
+    assert format_version(v, ParseVersion.MAJOR) == "1"
+    assert format_version(v, ParseVersion.MINOR) == "1.2"
+    assert format_version(v, ParseVersion.PATCH) == "1.2.3"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "1.2.3.50"
+    assert format_version(v, ParseVersion.RELEASE) == "1.2.3-150700.0.1"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "1.2.3-150700.0.1.1"
+
+    v = "6.4.0-150700.53.31.1"
+    assert format_version(v, ParseVersion.MAJOR) == "6"
+    assert format_version(v, ParseVersion.MINOR) == "6.4"
+    assert format_version(v, ParseVersion.PATCH) == "6.4.0"
+    assert format_version(v, ParseVersion.PATCH_UPDATE) == "6.4.0.0"
+    assert format_version(v, ParseVersion.RELEASE) == "6.4.0-150700.53.31"
+    assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "6.4.0-150700.53.31.1"
