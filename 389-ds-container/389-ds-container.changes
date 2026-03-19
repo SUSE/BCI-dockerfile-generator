@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 19 11:22:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for 2.7 version update
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:31 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
