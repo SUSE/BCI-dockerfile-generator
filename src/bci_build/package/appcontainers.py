@@ -104,12 +104,16 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
         support_level=SupportLevel.L3,
         min_release_counter={OsVersion.TUMBLEWEED: 35},
         oci_authors="william.brown@suse.com",
         pretty_name="389 Directory Server",
-        package_list=["389-ds", "timezone", "openssl", "nss_synth"],
+        package_list=(
+            ["389-ds", "timezone", "openssl", "nss_synth"]
+            + (["aaa_base"] if os_version.is_sle15 else [])
+        ),
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
         version="%%389ds_version%%",
         tag_version=format_version(
@@ -126,6 +130,9 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         ],
         exposes_ports=[TCP(3389), TCP(3636)],
         volumes=["/data"],
+        build_stage_custom_end=generate_package_version_check(
+            "389-ds", three_eight_nine, use_target=True
+        ),
         custom_end=rf"""
 COPY nsswitch.conf /etc/nsswitch.conf
 
