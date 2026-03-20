@@ -34,6 +34,7 @@ POSTGRES_CONTAINERS = [
         os_version=os_version,
         is_latest=(
             ver == _POSTGRES_MAJOR_VERSIONS[0]
+            and flavor == "default"
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
         pretty_name=f"PostgreSQL {ver}",
