@@ -93,7 +93,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 
 {{ DOCKERFILE_RUN }} if rpm -q dkms >/dev/null 2>&1; then \\
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
-        dkms autoinstall -k $(basename /lib/modules/*-default); \\
+        dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -116,7 +116,7 @@ FROM nvidia-driver-builder AS closed-driver-builder
 
 {{ DOCKERFILE_RUN }} if rpm -q dkms >/dev/null 2>&1; then \\
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
-        dkms autoinstall -k $(basename /lib/modules/*-default); \\
+        dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
 
@@ -148,10 +148,12 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         self,
         open_drivers_package_list: list[ThirdPartyPackage],
         closed_drivers_package_list: list[ThirdPartyPackage],
+        kernel_variant: str,
         **kwargs,
     ):
         self.open_drivers_package_list = open_drivers_package_list
         self.closed_drivers_package_list = closed_drivers_package_list
+        self.kernel_variant = kernel_variant
 
         third_party_package_list = kwargs.pop("third_party_package_list", [])
         third_party_package_list = sorted(
@@ -231,16 +233,23 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         return [
             f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
             f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}",
+        ] + [
+            f"{self.registry_prefix}/nvidia/driver:{v}"
+            for v in self.additional_versions
         ]
 
     @property
     def image_ref_name(self) -> str:
         # tag should match 580.126.09-sles15.7
-        return f"{self.version}-sles%OS_VERSION_ID_SP%"
+        return f"{self.tag_version}-sles%OS_VERSION_ID_SP%"
 
     @property
-    def build_name(self) -> str | None:
-        return f"{self.name}-{self.version}"
+    def build_name(self) -> str:
+        return f"{self.name}-{self.tag_version}"
+
+    @property
+    def build_version(self) -> str:
+        return f"{self.os_version.os_version}.{self.version}"
 
     @property
     def reference(self) -> str:
@@ -268,68 +277,195 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
         pkgs = self.fetch_rpm_packages()
 
-        if self.os_version == OsVersion.SP7:
-            # GA kernel for SP7 is not in the in the pool repo
-            kernel_packages = [
-                ("kernel-default", "kernel-default", self.exclusive_arch),
-                ("kernel-default-devel", "kernel-default", self.exclusive_arch),
-                ("kernel-syms", "kernel-syms", self.exclusive_arch),
-                ("kernel-devel", "kernel-source", self.exclusive_arch),
-                ("kernel-macros", "kernel-source", self.exclusive_arch),
-                # needed only for aarch64
-                ("kernel-64kb-devel", "kernel-64kb", [Arch.AARCH64]),
-            ]
-
-            project = "SUSE:SLE-15-SP7:GA"
-            repo = "pool"
-            version = "6.4.0"
-            revision = "150700.51.1"
-        elif self.os_version == OsVersion.SL16_0:
+        repo_info = {
+            # GA kernel for SP7 is in the pool repo under multiple packages
+            OsVersion.SP7: {
+                "project": "SUSE:SLE-15-SP7:GA",
+                "repo": "pool",
+                "version": "6.4.0",
+                "package": "!unset!",
+                "release": "150700.51.1",
+                "arch": self.exclusive_arch,
+                "subpackages": {
+                    "default": [
+                        {
+                            "name": "kernel-default",
+                            "package": "kernel-default",
+                        },
+                        {
+                            "name": "kernel-default-devel",
+                            "package": "kernel-default",
+                        },
+                        {
+                            "name": "kernel-syms",
+                            "package": "kernel-syms",
+                        },
+                        {
+                            "name": "kernel-devel",
+                            "package": "kernel-source",
+                            "no_arch": True,
+                        },
+                        {
+                            "name": "kernel-macros",
+                            "package": "kernel-source",
+                            "no_arch": True,
+                        },
+                        # always needed on aarch64 for default
+                        {
+                            "name": "kernel-64kb-devel",
+                            "package": "kernel-64kb",
+                            "arch": [Arch.AARCH64],
+                        },
+                    ],
+                    "64kb": [
+                        {
+                            "name": "kernel-64kb",
+                            "package": "kernel-64kb",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-64kb-devel",
+                            "package": "kernel-64kb",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-default-devel",
+                            "package": "kernel-default",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-syms",
+                            "package": "kernel-syms",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-devel",
+                            "package": "kernel-source",
+                            "no_arch": True,
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-macros",
+                            "package": "kernel-source",
+                            "no_arch": True,
+                            "arch": [Arch.AARCH64],
+                        },
+                    ],
+                },
+            },
             # GA kernel for 16.0 is in SLFO under patchinfo.ga
-            kernel_packages = [
-                ("kernel-default", "patchinfo.ga", self.exclusive_arch),
-                ("kernel-default-devel", "patchinfo.ga", self.exclusive_arch),
-                ("kernel-syms", "patchinfo.ga", self.exclusive_arch),
-                ("kernel-devel", "patchinfo.ga", self.exclusive_arch),
-                ("kernel-macros", "patchinfo.ga", self.exclusive_arch),
-                # needed only for aarch64
-                ("kernel-64kb-devel", "patchinfo.ga", [Arch.AARCH64]),
-            ]
+            OsVersion.SL16_0: {
+                "project": "SUSE:SLFO:1.2",
+                "repo": "standard",
+                "package": "patchinfo.ga",
+                "version": "6.12.0",
+                "release": "160000.5.1",
+                "arch": self.exclusive_arch,
+                "subpackages": {
+                    "default": [
+                        {
+                            "name": "kernel-default",
+                        },
+                        {
+                            "name": "kernel-default-devel",
+                        },
+                        {
+                            "name": "kernel-syms",
+                        },
+                        {
+                            "name": "kernel-devel",
+                            "no_arch": True,
+                        },
+                        {
+                            "name": "kernel-macros",
+                            "no_arch": True,
+                        },
+                        # always needed on aarch64
+                        {
+                            "name": "kernel-64kb-devel",
+                            "arch": [Arch.AARCH64],
+                        },
+                    ],
+                    "64kb": [
+                        {
+                            "name": "kernel-64kb",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-64kb-devel",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-default-devel",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-syms",
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-devel",
+                            "no_arch": True,
+                            "arch": [Arch.AARCH64],
+                        },
+                        {
+                            "name": "kernel-macros",
+                            "no_arch": True,
+                            "arch": [Arch.AARCH64],
+                        },
+                    ],
+                },
+            },
+        }
 
-            project = "SUSE:SLFO:1.2"
-            repo = "standard"
-            version = "6.12.0"
-            revision = "160000.5.1"
-        else:
-            raise ValueError(f"Unknown GA kernel packages for {self.os_version}")
+        if self.os_version not in repo_info:
+            raise ValueError(
+                f"Unknown GA kernel packages for {self.os_version.os_version}"
+            )
 
-        for name, pkg_name, exclusive_arch in kernel_packages:
-            for arch in exclusive_arch:
-                filename_in_image = f"{name}-{version}-{revision}.{arch}.rpm"
+        os_info = repo_info[self.os_version]
 
-                if pkg_name == "kernel-source" or name in [
-                    "kernel-macros",
-                    "kernel-devel",
-                ]:
-                    filename_in_repo = f"{name}-{version}-{revision}.noarch.rpm"
+        if self.kernel_variant not in os_info["subpackages"]:
+            raise ValueError(
+                f"Unknown GA kernel versions for {self.os_version.os_version} and {self.kernel_variant}"
+            )
+
+        project = os_info["project"]
+        repo = os_info["repo"]
+        subpackages = os_info["subpackages"][self.kernel_variant]
+
+        for subpkg in subpackages:
+            name = subpkg["name"]
+            # if a subpackage defines a custom value
+            # override the default value for the OS
+            package = subpkg.get("package", os_info["package"])
+            arches = subpkg.get("arch", os_info["arch"])
+            version = subpkg.get("version", os_info["version"])
+            release = subpkg.get("release", os_info["release"])
+            no_arch = subpkg.get("no_arch", False)
+
+            for arch in arches:
+                filename_in_image = f"{name}-{version}-{release}.{arch}.rpm"
+
+                if no_arch:
+                    filename_in_repo = f"{name}-{version}-{release}.noarch.rpm"
                 else:
-                    filename_in_repo = f"{name}-{version}-{revision}.{arch}.rpm"
+                    filename_in_repo = f"{name}-{version}-{release}.{arch}.rpm"
 
                 pkgs.append(
                     RpmPackage(
                         name=name,
                         arch=str(arch),
-                        evr=("", version, revision),
+                        evr=("", version, release),
                         filename=filename_in_image,
-                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{pkg_name}/{filename_in_repo}",
+                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
                     )
                 )
 
         open_packages = [p.name for p in self.open_drivers_package_list]
         closed_packages = [p.name for p in self.closed_drivers_package_list]
-        ignore_in_target_packages = (
-            open_packages + closed_packages + [pkg[0] for pkg in kernel_packages]
-        )
+        kernel_packages = [pkg["name"] for pkg in subpackages]
+        ignore_in_target_packages = open_packages + closed_packages + kernel_packages
 
         self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
@@ -365,7 +501,9 @@ def _get_driver_branch(driver_version: str) -> int:
         raise ValueError(f"Failed to parse driver branch: {driver_version}")
 
 
-def _get_open_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
+def _get_open_drivers_packages(
+    driver_version: str, kernel_variant: str
+) -> list[ThirdPartyPackage]:
     """Select the correct open driver package for each version."""
     driver_branch = _get_driver_branch(driver_version)
 
@@ -382,7 +520,7 @@ def _get_open_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
     if driver_branch == 570:
         return [
             ThirdPartyPackage(
-                "nvidia-open-driver-G06-kmp-default", version=driver_version
+                f"nvidia-open-driver-G06-kmp-{kernel_variant}", version=driver_version
             ),
         ]
 
@@ -393,14 +531,16 @@ def _get_open_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
                 "kernel-firmware-nvidia-gspx-G06", version=driver_version
             ),
             ThirdPartyPackage(
-                "nvidia-open-driver-G06-kmp-default", version=driver_version
+                f"nvidia-open-driver-G06-kmp-{kernel_variant}", version=driver_version
             ),
         ]
 
     raise ValueError(f"Unknown open driver for {driver_version}")
 
 
-def _get_closed_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]:
+def _get_closed_drivers_packages(
+    driver_version: str, kernel_variant: str
+) -> list[ThirdPartyPackage]:
     """Select the correct closed driver package for each version."""
     driver_branch = _get_driver_branch(driver_version)
 
@@ -416,7 +556,9 @@ def _get_closed_drivers_packages(driver_version: str) -> list[ThirdPartyPackage]
 
     if driver_branch >= 550:
         return [
-            ThirdPartyPackage("nvidia-driver-G06-kmp-default", version=driver_version),
+            ThirdPartyPackage(
+                f"nvidia-driver-G06-kmp-{kernel_variant}", version=driver_version
+            ),
         ]
 
     raise ValueError(f"Unknown closed driver for {driver_version}")
@@ -554,31 +696,77 @@ def _get_packages(os_version: OsVersion):
     return packages
 
 
-# We need to support all versions for GPU Operator Version v25.10.1
+def _get_kernel_versions(variant: str, os_version: OsVersion):
+    """Return all kernel versions for a given kernel variant."""
+
+    # TODO: This should be moved to the package_versions.json
+    #       otherwise a new kernel version needs to be added here
+    #       for every release.
+    #       Azure is not currently included becuase the kABI is not
+    #       stable, and it would require a container for each version.
+    if os_version == OsVersion.SL16_0:
+        if variant in ["default", "64kb"]:
+            return [
+                "6.12.0-160000.26.1",
+                "6.12.0-160000.9.1",
+                "6.12.0-160000.8.1",
+                "6.12.0-160000.7.1",
+                "6.12.0-160000.6.1",
+                "6.12.0-160000.5.1",  # GA
+            ]
+
+    if os_version == OsVersion.SP7:
+        if variant in ["default", "64kb"]:
+            return [
+                "6.4.0-150700.53.31.1",
+                "6.4.0-150700.53.28.1",
+                "6.4.0-150700.53.25.1",
+                "6.4.0-150700.53.22.1",
+                "6.4.0-150700.53.19.1",
+                "6.4.0-150700.53.16.1",
+                "6.4.0-150700.53.11.1",
+                "6.4.0-150700.53.6.1",
+                "6.4.0-150700.53.3.1",
+                "6.4.0-150700.51.1",  # GA
+            ]
+
+    raise ValueError(f"Unknown kernel versions for '{variant}' on '{os_version}'")
+
+
+# we need to support all versions supported by the gpu operator
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-_NVIDIA_DRIVER_VERSIONS = [
+_NVIDIA_DRIVER_VERSIONS: list[tuple] = [
     # G07
-    "595.45.04",
-    "590.48.01",
+    ("595.45.04", True),
+    ("590.48.01", True),
     # G06
-    "580.126.16",
-    "580.126.09",
-    "580.105.08",
-    "580.95.05",
-    "580.82.07",
-    "575.57.08",
-    "570.211.01",
-    "570.195.03",
-    "550.163.01",
+    ("580.126.16", True),
+    ("580.126.09", False),
+    ("580.105.08", False),
+    ("580.95.05", False),
+    ("580.82.07", False),
+    ("575.57.08", True),
+    ("570.211.01", True),
+    ("570.195.03", False),
+    ("550.163.01", True),
     # G05 - Legacy
-    # "535.288.01",
-    # "535.274.02",
+    # ("535.288.01", True),
+    # ("535.274.02", False),
+]
+
+# we need to build a container for each kernel variant
+# azure is skipped for now because the kABI is not stable
+_NVIDIA_OS_VERSIONS: list[tuple] = [
+    (OsVersion.SP7, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SP7, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
 ]
 
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
-for os_version in (OsVersion.SP7, OsVersion.SL16_0):
-    for ver in _NVIDIA_DRIVER_VERSIONS:
+for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
+    for ver, is_latest_branch in _NVIDIA_DRIVER_VERSIONS:
         driver_branch = _get_driver_branch(ver)
 
         # older drivers are not available for SLE 16
@@ -589,14 +777,33 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
         if os_version not in NVIDIA_REPOS:
             raise ValueError(f"Missing CUDA repositories for {os_version}")
 
+        kernel_versions = []
+
+        # the latest image in a given branch should also include the tags
+        # expected when the container image is precompiled
+        # the expected tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
+        # e.g. 590-6.4.0-150700.53.6.1-default-sles15.7
+        if is_latest_branch:
+            for kernel_version in _get_kernel_versions(kernel_variant, os_version):
+                os_tag = f"sles{os_version.os_version}"
+                kernel_versions.append(
+                    f"{driver_branch}-{kernel_version}-{kernel_variant}-{os_tag}"
+                )
+
+        is_default = kernel_variant == "default"
+
         NVIDIA_CONTAINERS.append(
             NvidiaDriverBCI(
                 os_version=os_version,
                 version=ver,
-                tag_version=ver,
+                kernel_variant=kernel_variant,
+                tag_version=ver if is_default else f"{ver}-{kernel_variant}",
+                additional_versions=kernel_versions,
                 version_in_uid=True,
                 use_build_flavor_in_tag=False,
-                build_flavor=f"driver-{ver}",
+                build_flavor=(
+                    f"driver-{ver}" if is_default else f"driver-{ver}-{kernel_variant}"
+                ),
                 name="nvidia-driver",
                 pretty_name="NVIDIA Driver",
                 license="NVIDIA DEEP LEARNING CONTAINER LICENSE",
@@ -606,10 +813,14 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
                 package_list=_get_packages(os_version),
                 support_level=SupportLevel.TECHPREVIEW,
                 supported_until="",
-                exclusive_arch=[Arch.X86_64, Arch.AARCH64],
+                exclusive_arch=exclusive_arch,
                 third_party_repos=NVIDIA_REPOS[os_version],
-                open_drivers_package_list=_get_open_drivers_packages(ver),
-                closed_drivers_package_list=_get_closed_drivers_packages(ver),
+                open_drivers_package_list=_get_open_drivers_packages(
+                    ver, kernel_variant
+                ),
+                closed_drivers_package_list=_get_closed_drivers_packages(
+                    ver, kernel_variant
+                ),
                 third_party_package_list=_get_compute_packages(ver, os_version),
                 entrypoint=["nvidia-driver", "load"],
                 env={
