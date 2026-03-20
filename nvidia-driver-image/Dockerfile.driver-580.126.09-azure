@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: third-party/nvidia/driver:580.126.09-sles%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: third-party/nvidia/driver:580.126.09-sles%OS_VERSION_ID_SP%
+#!BuildTag: third-party/nvidia/driver:580.126.09-azure-sles%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: third-party/nvidia/driver:580.126.09-azure-sles%OS_VERSION_ID_SP%
 #!BcntSyncTag: nvidia-driver-image
-#!BuildName: nvidia-driver-580.126.09
+#!BuildName: nvidia-driver-580.126.09-azure
 #!BuildVersion: 7.580.126.09
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM registry.suse.com/bci/bci-base:15.7 AS nvidia-driver-builder
@@ -80,28 +80,28 @@ COPY nvidia-open-driver-G06-580.126.09-1.aarch64.rpm /tmp/
 COPY nvidia-persistenced-580.126.09-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-persistenced-580.126.09-1.aarch64.rpm sha256:59305a78a41f24acb377216916c547c8b198900a123a4d34041c654b6c633999
 COPY nvidia-persistenced-580.126.09-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-default-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-default-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-syms/kernel-syms-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-syms-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-syms/kernel-syms-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-syms-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-devel-6.4.0-150700.51.1.noarch.rpm kernel-devel-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-devel-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-devel-6.4.0-150700.51.1.noarch.rpm kernel-devel-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-macros-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-macros-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-azure/kernel-azure-6.4.0-150700.18.9.x86_64.rpm
+COPY kernel-azure-6.4.0-150700.18.9.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-azure/kernel-azure-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-azure-6.4.0-150700.18.9.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-azure/kernel-azure-devel-6.4.0-150700.18.9.x86_64.rpm
+COPY kernel-azure-devel-6.4.0-150700.18.9.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-azure/kernel-azure-devel-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-azure-devel-6.4.0-150700.18.9.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-syms/kernel-syms-6.4.0-150700.18.9.x86_64.rpm
+COPY kernel-syms-6.4.0-150700.18.9.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-syms/kernel-syms-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-syms-6.4.0-150700.18.9.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-devel-6.4.0-150700.18.9.noarch.rpm kernel-devel-6.4.0-150700.18.9.x86_64.rpm
+COPY kernel-devel-6.4.0-150700.18.9.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-devel-6.4.0-150700.18.9.noarch.rpm kernel-devel-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-devel-6.4.0-150700.18.9.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-macros-6.4.0-150700.18.9.noarch.rpm kernel-macros-6.4.0-150700.18.9.x86_64.rpm
+COPY kernel-macros-6.4.0-150700.18.9.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-macros-6.4.0-150700.18.9.noarch.rpm kernel-macros-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-macros-6.4.0-150700.18.9.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-devel-6.4.0-150700.18.9.aarch64.rpm
+COPY kernel-64kb-devel-6.4.0-150700.18.9.aarch64.rpm /tmp/
 
 COPY cuda-sles15-x86_64.repo /etc/zypp/repos.d/cuda-sles15-x86_64.repo
 COPY cuda-sles15-x86_64.gpg.key /tmp/cuda-sles15-x86_64.gpg.key
@@ -129,11 +129,11 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-modprobe-580.126.09-1.x86_64.rpm \
             /tmp/nvidia-open-driver-G06-580.126.09-1.x86_64.rpm \
             /tmp/nvidia-persistenced-580.126.09-1.x86_64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.x86_64.rpm; \
+            /tmp/kernel-azure-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-azure-devel-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-syms-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-devel-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-macros-6.4.0-150700.18.9.x86_64.rpm; \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n --gpg-auto-import-keys install \
@@ -152,17 +152,17 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-modprobe-580.126.09-1.aarch64.rpm \
             /tmp/nvidia-open-driver-G06-580.126.09-1.aarch64.rpm \
             /tmp/nvidia-persistenced-580.126.09-1.aarch64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
+            /tmp/kernel-azure-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-azure-devel-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-syms-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-devel-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-macros-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-64kb-devel-6.4.0-150700.18.9.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-azure); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/open
 RUN set -euo pipefail; mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -185,11 +185,11 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm \
             /tmp/nvidia-modprobe-580.126.09-1.x86_64.rpm \
             /tmp/nvidia-persistenced-580.126.09-1.x86_64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.x86_64.rpm; \
+            /tmp/kernel-azure-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-azure-devel-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-syms-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-devel-6.4.0-150700.18.9.x86_64.rpm \
+            /tmp/kernel-macros-6.4.0-150700.18.9.x86_64.rpm; \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n --gpg-auto-import-keys install \
@@ -208,17 +208,17 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
             /tmp/nvidia-modprobe-580.126.09-1.aarch64.rpm \
             /tmp/nvidia-persistenced-580.126.09-1.aarch64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
+            /tmp/kernel-azure-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-azure-devel-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-syms-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-devel-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-macros-6.4.0-150700.18.9.aarch64.rpm \
+            /tmp/kernel-64kb-devel-6.4.0-150700.18.9.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-azure); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/proprietary
 
@@ -283,8 +283,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="580.126.09-sles%OS_VERSION_ID_SP%"
-LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:580.126.09-sles%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="580.126.09-azure-sles%OS_VERSION_ID_SP%"
+LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:580.126.09-azure-sles%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until=""
@@ -294,7 +294,7 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-580.126.09.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-580.126.09-azure.md)%"
 ENV DISABLE_VGPU_VERSION_CHECK="true"
 ENV DRIVER_BRANCH="580"
 ENV DRIVER_TYPE="passthrough"
