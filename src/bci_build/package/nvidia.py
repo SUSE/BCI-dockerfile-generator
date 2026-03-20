@@ -93,7 +93,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 
 {{ DOCKERFILE_RUN }} if rpm -q dkms >/dev/null 2>&1; then \\
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
-        dkms autoinstall -k $(basename /lib/modules/*-default); \\
+        dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
 {{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -116,7 +116,7 @@ FROM nvidia-driver-builder AS closed-driver-builder
 
 {{ DOCKERFILE_RUN }} if rpm -q dkms >/dev/null 2>&1; then \\
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
-        dkms autoinstall -k $(basename /lib/modules/*-default); \\
+        dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
 {{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
 
@@ -148,10 +148,12 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         self,
         open_drivers_package_list: list[ThirdPartyPackage],
         closed_drivers_package_list: list[ThirdPartyPackage],
+        kernel_variant: str,
         **kwargs,
     ):
         self.open_drivers_package_list = open_drivers_package_list
         self.closed_drivers_package_list = closed_drivers_package_list
+        self.kernel_variant = kernel_variant
 
         third_party_package_list = kwargs.pop("third_party_package_list", [])
         third_party_package_list = sorted(
@@ -231,16 +233,23 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         return [
             f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}-{_RELEASE_PLACEHOLDER}",
             f"{self.registry_prefix}/nvidia/driver:{self.image_ref_name}",
+        ] + [
+            f"{self.registry_prefix}/nvidia/driver:{v}"
+            for v in self.additional_versions
         ]
 
     @property
     def image_ref_name(self) -> str:
         # tag should match 580.126.09-sles15.7
-        return f"{self.version}-sles%OS_VERSION_ID_SP%"
+        return f"{self.tag_version}-sles%OS_VERSION_ID_SP%"
 
     @property
-    def build_name(self) -> str | None:
-        return f"{self.name}-{self.version}"
+    def build_name(self) -> str:
+        return f"{self.name}-{self.tag_version}"
+
+    @property
+    def build_version(self) -> str:
+        return f"{self.os_version}.{self.version}"
 
     @property
     def reference(self) -> str:
@@ -269,32 +278,56 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         pkgs = self.fetch_rpm_packages()
 
         if self.os_version == OsVersion.SP7:
-            # GA kernel for SP7 is not in the in the pool repo
+            # GA kernel for SP7 is in the pool repo
             kernel_packages = [
-                ("kernel-default", "kernel-default", self.exclusive_arch),
-                ("kernel-default-devel", "kernel-default", self.exclusive_arch),
+                (
+                    f"kernel-{self.kernel_variant}",
+                    f"kernel-{self.kernel_variant}",
+                    self.exclusive_arch,
+                ),
+                (
+                    f"kernel-{self.kernel_variant}-devel",
+                    f"kernel-{self.kernel_variant}",
+                    self.exclusive_arch,
+                ),
                 ("kernel-syms", "kernel-syms", self.exclusive_arch),
                 ("kernel-devel", "kernel-source", self.exclusive_arch),
                 ("kernel-macros", "kernel-source", self.exclusive_arch),
-                # needed only for aarch64
-                ("kernel-64kb-devel", "kernel-64kb", [Arch.AARCH64]),
             ]
+
+            if self.kernel_variant != "64kb":
+                kernel_packages += [
+                    # always needed on aarch64
+                    ("kernel-64kb-devel", "kernel-64kb", [Arch.AARCH64]),
+                ]
 
             project = "SUSE:SLE-15-SP7:GA"
             repo = "pool"
             version = "6.4.0"
-            revision = "150700.51.1"
+            # GA for azure is not the same as default and 64kb
+            if self.kernel_variant == "azure":
+                revision = "150700.18.9"
+            else:
+                revision = "150700.51.1"
         elif self.os_version == OsVersion.SL16_0:
             # GA kernel for 16.0 is in SLFO under patchinfo.ga
             kernel_packages = [
-                ("kernel-default", "patchinfo.ga", self.exclusive_arch),
-                ("kernel-default-devel", "patchinfo.ga", self.exclusive_arch),
+                (f"kernel-{self.kernel_variant}", "patchinfo.ga", self.exclusive_arch),
+                (
+                    f"kernel-{self.kernel_variant}-devel",
+                    "patchinfo.ga",
+                    self.exclusive_arch,
+                ),
                 ("kernel-syms", "patchinfo.ga", self.exclusive_arch),
                 ("kernel-devel", "patchinfo.ga", self.exclusive_arch),
                 ("kernel-macros", "patchinfo.ga", self.exclusive_arch),
-                # needed only for aarch64
-                ("kernel-64kb-devel", "patchinfo.ga", [Arch.AARCH64]),
             ]
+
+            if self.kernel_variant != "64kb":
+                kernel_packages += [
+                    # always needed on aarch64
+                    ("kernel-64kb-devel", "patchinfo.ga", [Arch.AARCH64]),
+                ]
 
             project = "SUSE:SLFO:1.2"
             repo = "standard"
@@ -554,31 +587,81 @@ def _get_packages(os_version: OsVersion):
     return packages
 
 
-# We need to support all versions for GPU Operator Version v25.10.1
+def _get_kernel_versions(variant: str, os_version: OsVersion):
+    if os_version == OsVersion.SL16_0:
+        return [
+            "6.12.0-160000.26.1",
+            "6.12.0-160000.9.1",
+            "6.12.0-160000.8.1",
+            "6.12.0-160000.7.1",
+            "6.12.0-160000.6.1",
+            "6.12.0-160000.5.1",  # GA
+        ]
+    elif os_version == OsVersion.SP7:
+        if variant in ["default", "64kb"]:
+            return [
+                "6.4.0-150700.53.31.1",
+                "6.4.0-150700.53.28.1",
+                "6.4.0-150700.53.25.1",
+                "6.4.0-150700.53.22.1",
+                "6.4.0-150700.53.19.1",
+                "6.4.0-150700.53.16.1",
+                "6.4.0-150700.53.11.1",
+                "6.4.0-150700.53.6.1",
+                "6.4.0-150700.53.3.1",
+                "6.4.0-150700.51.1",  # GA
+            ]
+        elif variant == "azure":
+            return [
+                "6.4.0-150700.20.6.1",
+                "6.4.0-150700.20.3.1",
+                "6.4.0-150700.20.27.1",
+                "6.4.0-150700.20.24.1",
+                "6.4.0-150700.20.21.1",
+                "6.4.0-150700.20.18.1",
+                "6.4.0-150700.20.15.2",
+                "6.4.0-150700.20.11.1",
+                "6.4.0-150700.18.9",  # GA
+            ]
+
+    raise ValueError(f"Unknown kernel versions for '{variant}' on '{os_version}'")
+
+
+# we need to support all versions supported by the gpu operator
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-_NVIDIA_DRIVER_VERSIONS = [
+_NVIDIA_DRIVER_VERSIONS: list[tuple] = [
     # G07
-    "595.45.04",
-    "590.48.01",
+    ("595.45.04", True),
+    ("590.48.01", True),
     # G06
-    "580.126.16",
-    "580.126.09",
-    "580.105.08",
-    "580.95.05",
-    "580.82.07",
-    "575.57.08",
-    "570.211.01",
-    "570.195.03",
-    "550.163.01",
+    ("580.126.16", True),
+    ("580.126.09", False),
+    ("580.105.08", False),
+    ("580.95.05", False),
+    ("580.82.07", False),
+    ("575.57.08", True),
+    ("570.211.01", True),
+    ("570.195.03", False),
+    ("550.163.01", True),
     # G05 - Legacy
-    # "535.288.01",
-    # "535.274.02",
+    # ("535.288.01", True),
+    # ("535.274.02", False),
+]
+
+# we need to build a container for each kernel variant
+_NVIDIA_OS_VERSIONS: list[tuple] = [
+    (OsVersion.SP7, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SP7, "azure", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SP7, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_0, "azure", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
 ]
 
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
-for os_version in (OsVersion.SP7, OsVersion.SL16_0):
-    for ver in _NVIDIA_DRIVER_VERSIONS:
+for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
+    for ver, is_latest_branch in _NVIDIA_DRIVER_VERSIONS:
         driver_branch = _get_driver_branch(ver)
 
         # older drivers are not available for SLE 16
@@ -589,14 +672,33 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
         if os_version not in NVIDIA_REPOS:
             raise ValueError(f"Missing CUDA repositories for {os_version}")
 
+        kernel_versions = []
+
+        # the latest image in a given branch should also include the tags
+        # expected when the container image is precompiled
+        # the expected tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
+        # e.g. 590-6.4.0-150700.53.6.1-default-sles15.7
+        if is_latest_branch:
+            for kernel_version in _get_kernel_versions(kernel_variant, os_version):
+                os_tag = f"sles{os_version.os_version}"
+                kernel_versions.append(
+                    f"{driver_branch}-{kernel_version}-{kernel_variant}-{os_tag}"
+                )
+
+        is_default = kernel_variant == "default"
+
         NVIDIA_CONTAINERS.append(
             NvidiaDriverBCI(
                 os_version=os_version,
                 version=ver,
-                tag_version=ver,
+                kernel_variant=kernel_variant,
+                tag_version=ver if is_default else f"{ver}-{kernel_variant}",
+                additional_versions=kernel_versions,
                 version_in_uid=True,
                 use_build_flavor_in_tag=False,
-                build_flavor=f"driver-{ver}",
+                build_flavor=f"driver-{ver}"
+                if is_default
+                else f"driver-{ver}-{kernel_variant}",
                 name="nvidia-driver",
                 pretty_name="NVIDIA Driver",
                 license="NVIDIA DEEP LEARNING CONTAINER LICENSE",
@@ -606,7 +708,7 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
                 package_list=_get_packages(os_version),
                 support_level=SupportLevel.TECHPREVIEW,
                 supported_until="",
-                exclusive_arch=[Arch.X86_64, Arch.AARCH64],
+                exclusive_arch=exclusive_arch,
                 third_party_repos=NVIDIA_REPOS[os_version],
                 open_drivers_package_list=_get_open_drivers_packages(ver),
                 closed_drivers_package_list=_get_closed_drivers_packages(ver),
