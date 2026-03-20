@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 20 09:18:52 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to a bci-micro based multistage build
+
+-------------------------------------------------------------------
 Thu Mar 19 11:22:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust for 2.7 version update
