@@ -15,16 +15,16 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64 aarch64
-#!BuildTag: third-party/nvidia/driver:595.45.04-sles%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: third-party/nvidia/driver:595.45.04-sles%OS_VERSION_ID_SP%
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.26.1-default-sles16.0
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.9.1-default-sles16.0
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.8.1-default-sles16.0
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.7.1-default-sles16.0
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.6.1-default-sles16.0
-#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.5.1-default-sles16.0
+#!BuildTag: third-party/nvidia/driver:595.45.04-azure-sles%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: third-party/nvidia/driver:595.45.04-azure-sles%OS_VERSION_ID_SP%
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.26.1-azure-sles16.0
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.9.1-azure-sles16.0
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.8.1-azure-sles16.0
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.7.1-azure-sles16.0
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.6.1-azure-sles16.0
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.5.1-azure-sles16.0
 #!BcntSyncTag: nvidia-driver-image
-#!BuildName: nvidia-driver-595.45.04
+#!BuildName: nvidia-driver-595.45.04-azure
 #!BuildVersion: 16.0.595.45.04
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM registry.suse.com/bci/bci-base:16.0 AS nvidia-driver-builder
@@ -82,14 +82,14 @@ COPY nvidia-open-driver-G07-595.45.04-1.aarch64.rpm /tmp/
 COPY nvidia-persistenced-595.45.04-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-persistenced-595.45.04-1.aarch64.rpm sha256:8f60cb5cce5efdce3f620c395dac3ae99f938bf4f9568bb915374edd75282a32
 COPY nvidia-persistenced-595.45.04-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-default-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-default-6.12.0-160000.5.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/aarch64/patchinfo.ga/kernel-default-6.12.0-160000.5.1.aarch64.rpm
-COPY kernel-default-6.12.0-160000.5.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/aarch64/patchinfo.ga/kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm
-COPY kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-azure-6.12.0-160000.5.1.x86_64.rpm
+COPY kernel-azure-6.12.0-160000.5.1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/aarch64/patchinfo.ga/kernel-azure-6.12.0-160000.5.1.aarch64.rpm
+COPY kernel-azure-6.12.0-160000.5.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-azure-devel-6.12.0-160000.5.1.x86_64.rpm
+COPY kernel-azure-devel-6.12.0-160000.5.1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/aarch64/patchinfo.ga/kernel-azure-devel-6.12.0-160000.5.1.aarch64.rpm
+COPY kernel-azure-devel-6.12.0-160000.5.1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-syms-6.12.0-160000.5.1.x86_64.rpm
 COPY kernel-syms-6.12.0-160000.5.1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/aarch64/patchinfo.ga/kernel-syms-6.12.0-160000.5.1.aarch64.rpm
@@ -130,8 +130,8 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-modprobe-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-open-driver-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.x86_64.rpm \
-            /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
+            /tmp/kernel-azure-6.12.0-160000.5.1.x86_64.rpm \
+            /tmp/kernel-azure-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-macros-6.12.0-160000.5.1.x86_64.rpm; \
@@ -152,8 +152,8 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-modprobe-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-open-driver-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.aarch64.rpm \
-            /tmp/kernel-default-6.12.0-160000.5.1.aarch64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm \
+            /tmp/kernel-azure-6.12.0-160000.5.1.aarch64.rpm \
+            /tmp/kernel-azure-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-macros-6.12.0-160000.5.1.aarch64.rpm \
@@ -162,7 +162,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-azure); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/open
 RUN set -euo pipefail; mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
@@ -184,8 +184,8 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-driver-assistant-0.43.45.04-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.x86_64.rpm \
-            /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
+            /tmp/kernel-azure-6.12.0-160000.5.1.x86_64.rpm \
+            /tmp/kernel-azure-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-macros-6.12.0-160000.5.1.x86_64.rpm; \
@@ -206,8 +206,8 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-driver-assistant-0.43.45.04-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.aarch64.rpm \
-            /tmp/kernel-default-6.12.0-160000.5.1.aarch64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm \
+            /tmp/kernel-azure-6.12.0-160000.5.1.aarch64.rpm \
+            /tmp/kernel-azure-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-macros-6.12.0-160000.5.1.aarch64.rpm \
@@ -216,7 +216,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-azure); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/proprietary
 
@@ -279,8 +279,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="595.45.04-sles%OS_VERSION_ID_SP%"
-LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:595.45.04-sles%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="595.45.04-azure-sles%OS_VERSION_ID_SP%"
+LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:595.45.04-azure-sles%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until=""
@@ -290,7 +290,7 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-595.45.04.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-595.45.04-azure.md)%"
 ENV DISABLE_VGPU_VERSION_CHECK="true"
 ENV DRIVER_BRANCH="595"
 ENV DRIVER_TYPE="passthrough"
