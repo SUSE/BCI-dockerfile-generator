@@ -186,7 +186,6 @@ BCI_CI_CONTAINERS = [
         package_list=(
             "build",
             "buildah",
-            "dnf",
             "fish",
             "gcc",
             "git-core",
@@ -195,7 +194,6 @@ BCI_CI_CONTAINERS = [
             "osc",
             "patch",
             "python3-devel",
-            "python3-dnf",
             "python3-pipx",
             "python3-poetry",
         ),
