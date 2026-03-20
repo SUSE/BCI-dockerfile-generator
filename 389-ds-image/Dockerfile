@@ -20,13 +20,20 @@
 #!BuildTag: suse/389-ds:3.1
 #!BuildName: suse-389-ds-3.1
 #!BuildVersion: 16.1.3.1
-FROM bci/bci-base:16.1
+FROM bci/bci-micro:16.1 AS target
+FROM bci/bci-base:16.1 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends 389-ds timezone openssl nss_synth
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends 389-ds timezone openssl nss_synth
+# sanity check that the version from the tag is equal to the version of 389-ds that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' 389-ds | \
+    cut -d '.' -f -2)" = "3.1" ]
 
 # cleanup logs and temporary files
-RUN set -euo pipefail; zypper -n clean -a; \
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
@@ -36,8 +43,9 @@ RUN set -euo pipefail; zypper -n clean -a; \
     rm -f {/target,}/var/cache/ldconfig/aux-cache
 
 # set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
-
+RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
+FROM bci/bci-micro:16.1
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.389-ds
 LABEL org.opencontainers.image.authors="william.brown@suse.com"
