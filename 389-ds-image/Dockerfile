@@ -18,7 +18,7 @@
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:3.0
-#!BuildName: suse-389-ds-3.0
+#!BuildName: suse-389-ds
 #!BuildVersion: 16.0.3.0
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
