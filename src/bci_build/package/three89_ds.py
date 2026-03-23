@@ -32,6 +32,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
+        is_singleton_image=(os_version not in (OsVersion.SP7,)),
         support_level=SupportLevel.L3,
         min_release_counter={OsVersion.TUMBLEWEED: 35},
         oci_authors="william.brown@suse.com",
