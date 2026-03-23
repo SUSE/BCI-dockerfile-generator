@@ -41,6 +41,8 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
         "version": nginx_version,
         "version_in_uid": False,
+        # backward compatibility with SL15
+        "is_singleton_image": (os_version not in (OsVersion.SP7,)),
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description="%%nginx_version%%",
