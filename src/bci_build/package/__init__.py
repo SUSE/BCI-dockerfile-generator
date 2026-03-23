@@ -1478,7 +1478,6 @@ from .appcontainers import ALERTMANAGER_CONTAINERS  # noqa: E402
 from .appcontainers import BLACKBOX_EXPORTER_CONTAINERS  # noqa: E402
 from .appcontainers import PCP_CONTAINERS  # noqa: E402
 from .appcontainers import PROMETHEUS_CONTAINERS  # noqa: E402
-from .appcontainers import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .base import BASE_CONTAINERS  # noqa: E402
 from .basecontainers import BUSYBOX_CONTAINERS  # noqa: E402
 from .basecontainers import FIPS_BASE_CONTAINERS  # noqa: E402
@@ -1526,6 +1525,7 @@ from .samba import SAMBA_SERVER_CONTAINERS  # noqa: E402
 from .samba import SAMBA_TOOLBOX_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
+from .three89_ds import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .trivy import TRIVY_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
 from .xorg import XORG_CLIENT_CONTAINERS  # noqa: E402
