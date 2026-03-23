@@ -17,7 +17,7 @@
 
 #!BuildTag: suse/nginx:1.27-%RELEASE%
 #!BuildTag: suse/nginx:1.27
-#!BuildName: suse-nginx-1.27
+#!BuildName: suse-nginx
 #!BuildVersion: 16.1.1.27
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
