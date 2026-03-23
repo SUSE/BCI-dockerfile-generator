@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 23 11:38:23 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update blkid.conf to avoid udev setting
+
+-------------------------------------------------------------------
 Fri Mar 20 09:18:52 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to a bci-micro based multistage build
