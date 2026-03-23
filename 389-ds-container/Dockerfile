@@ -71,7 +71,8 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 CMD ["/usr/lib/dirsrv/dscontainer", "-r"]
 EXPOSE 3389/tcp 3636/tcp
-
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 COPY nsswitch.conf /etc/nsswitch.conf
 
 RUN set -euo pipefail; install -d -o dirsrv -g dirsrv /data; \
