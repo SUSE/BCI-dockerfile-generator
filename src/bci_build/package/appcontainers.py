@@ -11,6 +11,7 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
 from bci_build.package import _build_tag_prefix
@@ -133,20 +134,23 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         build_stage_custom_end=generate_package_version_check(
             "389-ds", three_eight_nine, use_target=True
         ),
-        custom_end=rf"""
-COPY nsswitch.conf /etc/nsswitch.conf
+        custom_end=(
+            (SET_BLKID_SCAN if os_version.is_sle15 else "")
+            + textwrap.dedent(rf"""
+                COPY nsswitch.conf /etc/nsswitch.conf
 
-{DOCKERFILE_RUN} install -d -o dirsrv -g dirsrv /data; \
-    install -d -o dirsrv -g dirsrv /data/config  /data/ssca /data/run /var/run/dirsrv; \
-    ln -s /data/config /etc/dirsrv/slapd-localhost; \
-    ln -s /data/ssca /etc/dirsrv/ssca; \
-    ln -s /data/run /var/run/dirsrv; \
-    chown -R dirsrv: /data /var/run/dirsrv;\
-    chgrp -R dirsrv /etc/dirsrv;
+                {DOCKERFILE_RUN} install -d -o dirsrv -g dirsrv /data; \
+                    install -d -o dirsrv -g dirsrv /data/config  /data/ssca /data/run /var/run/dirsrv; \
+                    ln -s /data/config /etc/dirsrv/slapd-localhost; \
+                    ln -s /data/ssca /etc/dirsrv/ssca; \
+                    ln -s /data/run /var/run/dirsrv; \
+                    chown -R dirsrv: /data /var/run/dirsrv;\
+                    chgrp -R dirsrv /etc/dirsrv;
 
-HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
-    CMD /usr/lib/dirsrv/dscontainer -H
-""",
+                HEALTHCHECK --start-period=5m --timeout=5s --interval=5s --retries=2 \
+                    CMD /usr/lib/dirsrv/dscontainer -H
+                """)
+        ),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
 ]
