@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 23 14:43:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- use a stable aggregate name
+
+-------------------------------------------------------------------
 Tue Mar 10 21:55:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove move files that make containers unreproducible; fix name in README
