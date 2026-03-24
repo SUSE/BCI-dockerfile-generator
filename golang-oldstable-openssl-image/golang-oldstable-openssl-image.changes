@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 24 09:42:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch openssl-stable to 1.26, oldstable to 1.25
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
