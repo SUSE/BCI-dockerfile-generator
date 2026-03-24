@@ -28,7 +28,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends nodejs22 npm22 update-alternatives curl findutils gawk git-core procps
+    zypper -n install --no-recommends curl findutils gawk git-core nodejs22 npm22 procps update-alternatives
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
