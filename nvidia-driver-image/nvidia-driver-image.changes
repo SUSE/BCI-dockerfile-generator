@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Mar 24 09:42:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
-- switch openssl-stable to 1.26, oldstable to 1.25
+- update nvidia-driver-assistant to 0.43.58.01
 
 -------------------------------------------------------------------
 Tue Mar 17 17:45:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
