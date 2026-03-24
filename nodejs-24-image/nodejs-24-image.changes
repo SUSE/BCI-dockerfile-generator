@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 24 15:14:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove update-alternatives from SLFO package list
+
+-------------------------------------------------------------------
 Tue Mar 10 21:55:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove move files that make containers unreproducible
