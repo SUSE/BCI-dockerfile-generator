@@ -4,10 +4,12 @@ import datetime
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
 
 _NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24, 25]
@@ -31,16 +33,29 @@ _NODEJS_SUPPORT_ENDS = {
 }
 
 
-def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
+def _get_node_kwargs(
+    ver: _NODE_VERSIONS, os_version: OsVersion, build_flavor: str | None = None
+):
     node_version_replacement = "%%nodejs_version%%"
+    node_devel_deps = [f"npm{ver}"]
     return {
         "name": "nodejs",
         "os_version": os_version,
         # we label the newest LTS version as latest
-        "is_latest": ver == 24 and os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
+        "is_latest": (
+            ver == 24
+            and os_version in CAN_BE_LATEST_SLFO_OS_VERSION
+            and build_flavor != "micro"
+        ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
+        "use_build_flavor_in_tag": (build_flavor == "micro"),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
+        "from_target_image": (
+            generate_from_image_tag(os_version, "bci-micro")
+            if build_flavor == "micro"
+            else None
+        ),
         "additional_names": ["node"],
         "additional_versions": (
             [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
@@ -48,14 +63,14 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "version": node_version_replacement,
         "support_level": SupportLevel.L3,
         "tag_version": str(ver),
-        "package_list": [
-            f"nodejs{ver}",
-            # devel dependencies:
-            f"npm{ver}",
-            # dependency of nodejs:
-            "update-alternatives",
-        ]
-        + os_version.common_devel_packages,
+        "package_list": sorted(
+            [
+                f"nodejs{ver}",
+            ]
+            + (["update-alternatives"] if os_version.is_sle15 else [])
+            + (node_devel_deps if build_flavor != "micro" else [])
+            + os_version.common_devel_packages
+        ),
         "replacements_via_service": [
             Replacement(
                 regex_in_build_description=node_version_replacement,
@@ -65,7 +80,7 @@ def _get_node_kwargs(ver: _NODE_VERSIONS, os_version: OsVersion):
         "env": {
             "NODE_VERSION": ver,
         },
-    }
+    } | ({"build_flavor": build_flavor} if build_flavor else {})
 
 
 NODE_CONTAINERS = [
@@ -75,6 +90,10 @@ NODE_CONTAINERS = [
         (22, OsVersion.SL16_0),
         (24, OsVersion.SL16_0),
         (24, OsVersion.SL16_1),
-        (24, OsVersion.TUMBLEWEED),
     )
+] + [
+    DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED, build_flavor))
+    for build_flavor in ("base", "micro")
 ]
+
+NODE_CRATE = ContainerCrate(NODE_CONTAINERS)
