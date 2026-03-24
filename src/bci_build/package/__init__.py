@@ -1492,6 +1492,7 @@ from .cosign import COSIGN_CONTAINERS  # noqa: E402
 from .dotnet import DOTNET_CONTAINERS  # noqa: E402
 from .firefox import FIREFOX_CONTAINERS  # noqa: E402
 from .gcc import GCC_CONTAINERS  # noqa: E402
+from .gemini import GEMINI_CONTAINERS  # noqa: E402
 from .git import GIT_CONTAINERS  # noqa: E402
 from .golang import GOLANG_CONTAINERS  # noqa: E402
 from .grafana import GRAFANA_CONTAINERS  # noqa: E402
@@ -1551,6 +1552,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *VALKEY_CONTAINERS,
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
+        *GEMINI_CONTAINERS,
         *GIT_CONTAINERS,
         *GOLANG_CONTAINERS,
         *KIWI_CONTAINERS,
