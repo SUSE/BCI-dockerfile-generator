@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 25 14:51:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- split by kernel variant
+
+-------------------------------------------------------------------
 Tue Mar 24 09:42:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update nvidia-driver-assistant to 0.43.58.01
