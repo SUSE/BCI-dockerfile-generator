@@ -707,27 +707,27 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     if os_version == OsVersion.SL16_0:
         if variant in ["default", "64kb"]:
             return [
-                "6.12.0-160000.26.1",
-                "6.12.0-160000.9.1",
-                "6.12.0-160000.8.1",
-                "6.12.0-160000.7.1",
-                "6.12.0-160000.6.1",
-                "6.12.0-160000.5.1",  # GA
+                "6.12.0-160000.26",
+                "6.12.0-160000.9",
+                "6.12.0-160000.8",
+                "6.12.0-160000.7",
+                "6.12.0-160000.6",
+                "6.12.0-160000.5",  # GA
             ]
 
     if os_version == OsVersion.SP7:
         if variant in ["default", "64kb"]:
             return [
-                "6.4.0-150700.53.31.1",
-                "6.4.0-150700.53.28.1",
-                "6.4.0-150700.53.25.1",
-                "6.4.0-150700.53.22.1",
-                "6.4.0-150700.53.19.1",
-                "6.4.0-150700.53.16.1",
-                "6.4.0-150700.53.11.1",
-                "6.4.0-150700.53.6.1",
-                "6.4.0-150700.53.3.1",
-                "6.4.0-150700.51.1",  # GA
+                "6.4.0-150700.53.31",
+                "6.4.0-150700.53.28",
+                "6.4.0-150700.53.25",
+                "6.4.0-150700.53.22",
+                "6.4.0-150700.53.19",
+                "6.4.0-150700.53.16",
+                "6.4.0-150700.53.11",
+                "6.4.0-150700.53.6",
+                "6.4.0-150700.53.3",
+                "6.4.0-150700.51",  # GA
             ]
 
     raise ValueError(f"Unknown kernel versions for '{variant}' on '{os_version}'")
@@ -782,7 +782,7 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         # the latest image in a given branch should also include the tags
         # expected when the container image is precompiled
         # the expected tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
-        # e.g. 590-6.4.0-150700.53.6.1-default-sles15.7
+        # e.g. 590-6.4.0-150700.53.6-default-sles15.7
         if is_latest_branch:
             for kernel_version in _get_kernel_versions(kernel_variant, os_version):
                 os_tag = f"sles{os_version.os_version}"
