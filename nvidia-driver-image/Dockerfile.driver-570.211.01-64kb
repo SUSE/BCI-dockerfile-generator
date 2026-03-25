@@ -14,21 +14,21 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: x86_64 aarch64
-#!BuildTag: third-party/nvidia/driver:570.211.01-sles%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: third-party/nvidia/driver:570.211.01-sles%OS_VERSION_ID_SP%
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.31.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.28.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.25.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.22.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.19.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.16.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.11.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.6.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.3.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.51.1-default-sles15.7
+#!ExclusiveArch: aarch64
+#!BuildTag: third-party/nvidia/driver:570.211.01-64kb-sles%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: third-party/nvidia/driver:570.211.01-64kb-sles%OS_VERSION_ID_SP%
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.31.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.28.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.25.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.22.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.19.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.16.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.11.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.6.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.53.3.1-64kb-sles15.7
+#!BuildTag: third-party/nvidia/driver:570-6.4.0-150700.51.1-64kb-sles15.7
 #!BcntSyncTag: nvidia-driver-image
-#!BuildName: nvidia-driver-570.211.01
+#!BuildName: nvidia-driver-570.211.01-64kb
 #!BuildVersion: 15.7.570.211.01
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM registry.suse.com/bci/bci-base:15.7 AS nvidia-driver-builder
@@ -54,10 +54,8 @@ COPY nvidia-compute-G06-570.211.01-1.aarch64.rpm /tmp/
 COPY nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm sha256:6a6d7c8c2ecaf5659b67ad9ee8e112deb65bede46db57b5275926826b5987edc
 COPY nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-G06-kmp-default-570.211.01-1.x86_64.rpm sha256:f7eff423fd549d324e80912b4555945269381ab16703691240ba34512cefc530
-COPY nvidia-driver-G06-kmp-default-570.211.01-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm sha256:5512bd9a9e08deb14b171eca67d150f79c3d8927cf584adaaf4da0614efb3dd6
-COPY nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm sha256:02c5b913075b29af4311b055be5736a5d0920d9dfd61cf0d71a3ad5feff8a3da
+COPY nvidia-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.46.126.20-1.noarch.rpm nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm sha256:00985339e19dfba6555738dffcfda80774f6415ff505142e1098e74139300198
 COPY nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.46.126.20-1.noarch.rpm nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm sha256:00985339e19dfba6555738dffcfda80774f6415ff505142e1098e74139300198
@@ -66,36 +64,24 @@ COPY nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm /tmp/
 COPY nvidia-modprobe-570.211.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-modprobe-570.211.01-1.aarch64.rpm sha256:9fc498948131eada79b370bd2e094c60b8ac496090d0879cd4a8963bfad439b7
 COPY nvidia-modprobe-570.211.01-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-open-driver-G06-kmp-default-570.211.01-1.x86_64.rpm sha256:bb6b1693e01f22a39f9a6c197985f909058fd374ee06ccea6e9d40fb9fe142dd
-COPY nvidia-open-driver-G06-kmp-default-570.211.01-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-open-driver-G06-kmp-default-570.211.01-1.aarch64.rpm sha256:048e33e2d04bd01472e5da33cc3de1e8ab1b753573c9c9a454c868145fcbe122
-COPY nvidia-open-driver-G06-kmp-default-570.211.01-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-open-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm sha256:15449e9e2829e710469a950e210516dfbba0122f2657be28dbad559149132eb2
+COPY nvidia-open-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-persistenced-570.211.01-1.x86_64.rpm sha256:89d7249be420ad06ad2d098cccef32bd22308be5de2be861ce49ceb35702ce88
 COPY nvidia-persistenced-570.211.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-persistenced-570.211.01-1.aarch64.rpm sha256:40c388033949520ef630e4e2f1c2e9a1a95642ff8ec736abe731c6bf2befce1c
 COPY nvidia-persistenced-570.211.01-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-default-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-default-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-syms/kernel-syms-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-syms-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-syms/kernel-syms-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-syms-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-devel-6.4.0-150700.51.1.noarch.rpm kernel-devel-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-devel-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-devel-6.4.0-150700.51.1.noarch.rpm kernel-devel-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.x86_64.rpm
-COPY kernel-macros-6.4.0-150700.51.1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.aarch64.rpm
-COPY kernel-macros-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm
+COPY kernel-64kb-6.4.0-150700.51.1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm
 COPY kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm
+COPY kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-syms/kernel-syms-6.4.0-150700.51.1.aarch64.rpm
+COPY kernel-syms-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-devel-6.4.0-150700.51.1.noarch.rpm kernel-devel-6.4.0-150700.51.1.aarch64.rpm
+COPY kernel-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.aarch64.rpm
+COPY kernel-macros-6.4.0-150700.51.1.aarch64.rpm /tmp/
 
 COPY cuda-sles15-x86_64.repo /etc/zypp/repos.d/cuda-sles15-x86_64.repo
 COPY cuda-sles15-x86_64.gpg.key /tmp/cuda-sles15-x86_64.gpg.key
@@ -106,25 +92,6 @@ COPY cuda-sles15-sbsa.gpg.key /tmp/cuda-sles15-sbsa.gpg.key
 RUN rpm --import /tmp/cuda-sles15-sbsa.gpg.key
 RUN rpm --root /target --import /tmp/cuda-sles15-sbsa.gpg.key
 FROM nvidia-driver-builder AS open-driver-builder
-RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
-        zypper -n --gpg-auto-import-keys install \
-            --capability \
-            --no-recommends \
-            --auto-agree-with-licenses \
-            /tmp/libOpenCL1-2.2.11-8.3.1.x86_64.rpm \
-            /tmp/nvidia-common-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-open-driver-G06-kmp-default-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.x86_64.rpm; \
-    fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n --gpg-auto-import-keys install \
             --capability \
@@ -136,43 +103,24 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.aarch64.rpm \
-            /tmp/nvidia-open-driver-G06-kmp-default-570.211.01-1.aarch64.rpm \
+            /tmp/nvidia-open-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.aarch64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.aarch64.rpm \
+            /tmp/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm \
+            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-syms-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
+            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-64kb); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/open
 RUN set -euo pipefail; mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
 
 FROM nvidia-driver-builder AS closed-driver-builder
-RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
-        zypper -n --gpg-auto-import-keys install \
-            --capability \
-            --no-recommends \
-            --auto-agree-with-licenses \
-            /tmp/libOpenCL1-2.2.11-8.3.1.x86_64.rpm \
-            /tmp/nvidia-common-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-G06-kmp-default-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-syms-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-devel-6.4.0-150700.51.1.x86_64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.x86_64.rpm; \
-    fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n --gpg-auto-import-keys install \
             --capability \
@@ -182,21 +130,21 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm \
+            /tmp/nvidia-driver-G06-kmp-64kb-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.aarch64.rpm \
-            /tmp/kernel-default-6.4.0-150700.51.1.aarch64.rpm \
+            /tmp/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm \
+            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-default-devel-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-syms-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-devel-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm \
-            /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm; \
+            /tmp/kernel-macros-6.4.0-150700.51.1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
-        dkms autoinstall -k $(basename /lib/modules/*-default); \
+        dkms autoinstall -k $(basename /lib/modules/*-64kb); \
     fi
 RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/proprietary
 
@@ -206,16 +154,6 @@ COPY --from=open-driver-builder /usr/share/nvidia-driver-assistant/supported-gpu
 COPY --from=open-driver-builder /opt/lib /target/opt/lib
 COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
-RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
-        rpm --root /target -Uvh --nodeps \
-            /tmp/libOpenCL1-2.2.11-8.3.1.x86_64.rpm \
-            /tmp/nvidia-common-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm; \
-    fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
             /tmp/libOpenCL1-2.2.11-8.3.1.aarch64.rpm \
@@ -253,8 +191,8 @@ LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="570.211.01-sles%OS_VERSION_ID_SP%"
-LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:570.211.01-sles%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="570.211.01-64kb-sles%OS_VERSION_ID_SP%"
+LABEL org.opensuse.reference="registry.suse.com/third-party/nvidia/driver:570.211.01-64kb-sles%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until=""
@@ -264,7 +202,7 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-570.211.01.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-570.211.01-64kb.md)%"
 ENV DISABLE_VGPU_VERSION_CHECK="true"
 ENV DRIVER_BRANCH="570"
 ENV DRIVER_TYPE="passthrough"
