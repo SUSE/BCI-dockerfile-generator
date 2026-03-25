@@ -533,6 +533,7 @@ def test_build_recipe_templates(
             image=image,
             INFOHEADER="# Copyright header",
             LOG_CLEAN="##LOGCLEAN##",
+            TARGET_REBUILDDB="##TARGET_REBUILDDB##",
         )
         == dockerfile
     )
@@ -779,6 +780,7 @@ def test_appcollection_app_templates(
             image=image,
             INFOHEADER="# Copyright header",
             LOG_CLEAN="##LOGCLEAN##",
+            TARGET_REBUILDDB="##TARGET_REBUILDDB##",
         )
         == dockerfile
     )

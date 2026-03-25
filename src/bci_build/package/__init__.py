@@ -55,6 +55,10 @@ LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,
     rm -f {/target,}/var/cache/ldconfig/aux-cache
 """)
 
+#: Rebuild the rpm database to make it reproducible
+TARGET_REBUILDDB: str = """t=$(mktemp -d); mv /target/usr/lib/sysimage/rpm/Packages.db $t; rpmdb --rebuilddb --dbpath=$t; \\
+    rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/"""
+
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
 
@@ -1094,6 +1098,7 @@ exit 0
                 INFOHEADER=infoheader,
                 DOCKERFILE_RUN=DOCKERFILE_RUN,
                 LOG_CLEAN=LOG_CLEAN,
+                TARGET_REBUILDDB=TARGET_REBUILDDB,
                 BUILD_FLAVOR=self.build_flavor,
             )
             if dockerfile[-1] != "\n":
