@@ -1,13 +1,24 @@
 <multibuild>
     <package>driver-550.163.01</package>
+    <package>driver-550.163.01-64kb</package>
     <package>driver-570.195.03</package>
+    <package>driver-570.195.03-64kb</package>
     <package>driver-570.211.01</package>
+    <package>driver-570.211.01-64kb</package>
     <package>driver-575.57.08</package>
+    <package>driver-575.57.08-64kb</package>
     <package>driver-580.105.08</package>
+    <package>driver-580.105.08-64kb</package>
     <package>driver-580.126.09</package>
+    <package>driver-580.126.09-64kb</package>
     <package>driver-580.126.16</package>
+    <package>driver-580.126.16-64kb</package>
     <package>driver-580.82.07</package>
+    <package>driver-580.82.07-64kb</package>
     <package>driver-580.95.05</package>
+    <package>driver-580.95.05-64kb</package>
     <package>driver-590.48.01</package>
+    <package>driver-590.48.01-64kb</package>
     <package>driver-595.45.04</package>
+    <package>driver-595.45.04-64kb</package>
 </multibuild>
