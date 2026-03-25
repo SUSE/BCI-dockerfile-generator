@@ -17,16 +17,16 @@
 #!ExclusiveArch: x86_64 aarch64
 #!BuildTag: third-party/nvidia/driver:590.48.01-sles%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: third-party/nvidia/driver:590.48.01-sles%OS_VERSION_ID_SP%
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.31.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.28.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.25.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.22.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.19.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.16.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.11.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.6.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.3.1-default-sles15.7
-#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.51.1-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.31-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.28-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.25-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.22-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.19-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.16-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.11-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.6-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.53.3-default-sles15.7
+#!BuildTag: third-party/nvidia/driver:590-6.4.0-150700.51-default-sles15.7
 #!BcntSyncTag: nvidia-driver-image
 #!BuildName: nvidia-driver-590.48.01
 #!BuildVersion: 15.7.590.48.01
