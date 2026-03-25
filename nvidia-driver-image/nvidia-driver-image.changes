@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 25 17:44:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Drop the build counter from the tag
+
+-------------------------------------------------------------------
 Wed Mar 25 14:51:59 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add 64kb variant and extra tags
