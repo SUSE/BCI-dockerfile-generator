@@ -25,7 +25,16 @@ GEMINI_CONTAINERS = [
         is_latest=True,
         support_level=SupportLevel.UNSUPPORTED,
         package_list=sorted(
-            ("gemini-cli", "git-core", "gzip", "which", "build", "rpm-build", "zstd")
+            (
+                "gemini-cli",
+                "git-core",
+                "gzip",
+                "which",
+                "build",
+                "quilt",
+                "rpm-build",
+                "zstd",
+            )
         ),
         replacements_via_service=[
             Replacement(
