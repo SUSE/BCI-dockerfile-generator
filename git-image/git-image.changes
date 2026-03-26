@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 26 12:42:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rebuild rpm database to make it reproducible
+
+-------------------------------------------------------------------
 Mon Mar 16 13:31:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - support using the container as non-root user
