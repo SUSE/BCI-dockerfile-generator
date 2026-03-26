@@ -29,6 +29,7 @@ GEMINI_CONTAINERS = [
                 "gemini-cli",
                 "git-core",
                 "gzip",
+                "hostname",
                 "which",
                 "build",
                 "quilt",
