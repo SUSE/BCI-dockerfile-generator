@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 26 12:42:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rebuild rpm database to make it reproducible
+
+-------------------------------------------------------------------
 Tue Mar 24 09:03:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - more stable buildname
