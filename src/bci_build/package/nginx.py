@@ -7,7 +7,7 @@ from bci_build.container_attributes import TCP
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -38,7 +38,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
 
     kwargs = {
         "os_version": os_version,
-        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION,
+        "is_latest": os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         "version": nginx_version,
         "version_in_uid": False,
         # backward compatibility with SL15

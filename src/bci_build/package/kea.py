@@ -4,8 +4,9 @@ import textwrap
 
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import UDP
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
@@ -23,9 +24,10 @@ KEA_DHCP_CONTAINERS = [
         os_version=os_version,
         version=get_pkg_version("kea", os_version),
         license="MPL-2.0",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
+        support_level=SupportLevel.L3,
         pretty_name="Kea DHCP Server",
         package_list=sorted(["kea", "sed", "util-linux"]),
         build_stage_custom_end=generate_systemd_tmpfiles_command(None, use_target=True),
