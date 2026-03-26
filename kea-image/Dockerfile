@@ -17,7 +17,6 @@
 
 #!BuildTag: suse/kea:2.6-%RELEASE%
 #!BuildTag: suse/kea:2.6
-#!BuildTag: suse/kea:latest
 #!BuildName: suse-kea-2.6
 #!BuildVersion: 15.7.2.6
 #!BuildRelease: 60
@@ -60,7 +59,7 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="2.6-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/kea:2.6-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
 LABEL com.suse.release-stage="released"
