@@ -17,6 +17,7 @@
 
 #!BuildTag: suse/nginx:1.27-%RELEASE%
 #!BuildTag: suse/nginx:1.27
+#!BuildTag: suse/nginx:latest
 #!BuildName: suse-nginx
 #!BuildVersion: 16.0.1.27
 FROM registry.suse.com/bci/bci-micro:16.0 AS target

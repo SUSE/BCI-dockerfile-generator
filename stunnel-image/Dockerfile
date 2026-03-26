@@ -18,6 +18,7 @@
 #!BuildTag: suse/stunnel:%%stunnel_re%%-%RELEASE%
 #!BuildTag: suse/stunnel:%%stunnel_re%%
 #!BuildTag: suse/stunnel:5
+#!BuildTag: suse/stunnel:latest
 #!BuildName: suse-stunnel
 #!BuildVersion: 16.0.5
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
@@ -59,7 +60,7 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%stunnel_re%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/stunnel:%%stunnel_re%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
 LABEL com.suse.release-stage="released"
