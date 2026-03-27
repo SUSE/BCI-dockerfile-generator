@@ -30,7 +30,18 @@ podman run --rm --name kubectl \
       -v /localpath/to/customize:/home/user:Z
       registry.suse.com/suse/kubectl:1.33 kustomize --enable-helm
 ```
+## Running as a non-root user
 
+By default, this container runs as the `root` user. However, it is prepared to run as a non-privileged user (UID `999`) for enhanced security.
+
+To run the container in rootless mode, you must explicitly set the user and the home environment variables:
+
+```ShellSession
+podman run --rm --name kubectl \
+      --user 999:100 \
+      -e HOME=/home/user \
+      -v /localpath/to/kubeconfig:/home/user/.kube/config:Z \
+      registry.suse.com/suse/kubectl:1.33 get nodes
 
 ## Licensing
 
