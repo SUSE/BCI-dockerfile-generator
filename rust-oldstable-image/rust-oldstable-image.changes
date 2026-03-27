@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 27 16:48:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.94 for stable, 1.93 to oldstable
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:52 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
