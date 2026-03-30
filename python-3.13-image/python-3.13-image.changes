@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 30 11:34:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- order package installation alphabetically
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
