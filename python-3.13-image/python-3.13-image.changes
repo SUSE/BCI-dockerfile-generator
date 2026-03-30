@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Mon Mar 30 11:34:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
-- order package installation alphabetically
+- split into base and -micro variant
 
 -------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
