@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 30 11:34:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- order package installation alphabetically
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:49 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
