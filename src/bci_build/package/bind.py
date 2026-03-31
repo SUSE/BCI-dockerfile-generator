@@ -6,7 +6,7 @@ from pathlib import Path
 from bci_build.container_attributes import NetworkPort
 from bci_build.container_attributes import NetworkProtocol
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -26,7 +26,7 @@ BIND_CONTAINERS = [
     ApplicationStackContainer(
         name="bind",
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=True,
         version=_BIND_PATCH_RE,
         tag_version="9",
