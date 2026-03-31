@@ -88,6 +88,7 @@ KIWI_CONTAINERS = [
         )
         + generate_kiwi_10_config(),
         build_recipe_type=BuildType.DOCKER,
+        logo_url="https://osinside.github.io/kiwi/_static/kiwi-logo.png",
         min_release_counter={
             OsVersion.SL16_0: 9,
         },
