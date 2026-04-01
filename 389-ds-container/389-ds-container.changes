@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  1 09:07:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tags
+
+-------------------------------------------------------------------
 Mon Mar 23 11:38:23 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update blkid.conf to avoid udev setting
