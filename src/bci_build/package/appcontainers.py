@@ -7,6 +7,7 @@ from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -41,10 +42,11 @@ PCP_CONTAINERS = [
         custom_description="{pretty_name} container {based_on_container}. {podman_only}",
         from_image=f"{_build_tag_prefix(os_version)}/bci-init:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         support_level=SupportLevel.L3,
         version=(pcp_ver := get_pkg_version("pcp", os_version)),
         version_in_uid=False,
+        is_singleton_image=True,
         additional_versions=[
             format_version(pcp_ver, ParseVersion.MINOR),
             format_version(pcp_ver, ParseVersion.MAJOR),
