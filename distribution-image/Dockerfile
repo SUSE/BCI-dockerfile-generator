@@ -18,6 +18,7 @@
 #!BuildTag: suse/registry:%%registry_version%%-%RELEASE%
 #!BuildTag: suse/registry:%%registry_version%%
 #!BuildTag: suse/registry:3.0
+#!BuildTag: suse/registry:latest
 #!BuildName: suse-registry
 #!BuildVersion: 16.0.3.0
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
