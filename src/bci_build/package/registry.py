@@ -3,7 +3,7 @@
 from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
@@ -23,7 +23,7 @@ REGISTRY_CONTAINERS = [
         pretty_name="OCI Container Registry (Distribution)",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         version="%%registry_version%%",
         tag_version=(
             distribution_version := format_version(

@@ -7,7 +7,7 @@ from bci_build.container_attributes import TCP
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
@@ -29,7 +29,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         package_name=("389-ds-container" if os_version.is_sle15 else None),
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
         is_singleton_image=(os_version not in (OsVersion.SP7,)),
