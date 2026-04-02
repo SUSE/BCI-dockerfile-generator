@@ -19,7 +19,8 @@
 #!BuildTag: suse/pcp:6.2.0
 #!BuildTag: suse/pcp:6.2
 #!BuildTag: suse/pcp:6
-#!BuildName: suse-pcp-6.2.0
+#!BuildTag: suse/pcp:latest
+#!BuildName: suse-pcp
 #!BuildVersion: 16.0.6.2.0
 FROM bci/bci-init:16.0
 
