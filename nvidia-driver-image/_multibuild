@@ -1,4 +1,6 @@
 <multibuild>
     <package>driver-595.45.04</package>
     <package>driver-595.45.04-64kb</package>
+    <package>driver-595.58.03</package>
+    <package>driver-595.58.03-64kb</package>
 </multibuild>
