@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  8 18:52:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add driver version 595.58.03
+
+-------------------------------------------------------------------
 Thu Mar 26 12:42:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rebuild rpm database to make it reproducible
