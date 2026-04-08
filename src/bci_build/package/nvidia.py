@@ -735,12 +735,16 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
 
 # we need to support all versions supported by the gpu operator
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
+# we should support versions only for data center
+# https://docs.nvidia.com/datacenter/tesla/index.html
 _NVIDIA_DRIVER_VERSIONS: list[tuple] = [
     # G07
-    ("595.45.04", True),
+    ("595.58.03", True),
+    ("595.45.04", False),
     ("590.48.01", True),
     # G06
-    ("580.126.16", True),
+    ("580.126.20", True),
+    ("580.126.16", False),
     ("580.126.09", False),
     ("580.105.08", False),
     ("580.95.05", False),
