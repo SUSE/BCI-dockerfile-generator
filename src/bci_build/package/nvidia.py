@@ -707,6 +707,7 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     if os_version == OsVersion.SL16_0:
         if variant in ["default", "64kb"]:
             return [
+                "6.12.0-160000.27",
                 "6.12.0-160000.26",
                 "6.12.0-160000.9",
                 "6.12.0-160000.8",
@@ -718,6 +719,7 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     if os_version == OsVersion.SP7:
         if variant in ["default", "64kb"]:
             return [
+                "6.4.0-150700.53.34",
                 "6.4.0-150700.53.31",
                 "6.4.0-150700.53.28",
                 "6.4.0-150700.53.25",
