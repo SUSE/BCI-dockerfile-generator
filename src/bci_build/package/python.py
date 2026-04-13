@@ -15,7 +15,7 @@ from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-_PYTHON_VERSIONS = Literal["3.6", "3.9", "3.10", "3.11", "3.12", "3.13"]
+_PYTHON_VERSIONS = Literal["3.6", "3.9", "3.11", "3.13", "3.14"]
 
 # The lifecycle is handcrafted by the SUSE Python maintainers
 _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
@@ -23,12 +23,12 @@ _SLE_15_PYTHON_SUPPORT_ENDS: dict[_PYTHON_VERSIONS, datetime.date | None] = {
     "3.6": _SUPPORTED_UNTIL_SLE[OsVersion.SP7],
     # per jsc#PED-10823
     "3.9": datetime.datetime(2027, 12, 31),
-    # only openSUSE
-    "3.10": None,
     # https://peps.python.org/pep-0664/ defines 2027/10/31, SUSE offers additional 2 years
     "3.11": datetime.date(2029, 12, 31),
     # see jsc#PED-12365 - maybe superseded by 3.14/3.15
     "3.13": datetime.date(2026, 12, 31),
+    #
+    "3.14": datetime.date(2028, 11, 30),
 }
 
 
@@ -195,10 +195,28 @@ PYTHON_3_13_CONTAINERS = [
     for os_version, flavor in product((OsVersion.SL16_0,), ("base", "micro"))
 ]
 
-PYTHON_CRATE = ContainerCrate(PYTHON_3_13_CONTAINERS)
+PYTHON_3_13_CRATE = ContainerCrate(PYTHON_3_13_CONTAINERS)
 
-_CI_PYTHON = ("3.13", "313")
+PYTHON_3_14_CONTAINERS = [
+    PythonDevelopmentContainer(
+        **_get_python_kwargs("3.14", os_version, build_flavor=flavor),
+        package_name="python-3.14-image",
+        build_flavor=flavor,
+        from_target_image=(
+            None
+            if os_version.is_tumbleweed
+            else generate_from_image_tag(
+                os_version, "bci-micro" if flavor == "micro" else "bci-base"
+            )
+        ),
+        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+    )
+    for os_version, flavor in product(
+        (OsVersion.SL16_1, OsVersion.TUMBLEWEED), ("base", "micro")
+    )
+]
 
+PYTHON_3_14_CRATE = ContainerCrate(PYTHON_3_14_CONTAINERS)
 
 BCI_CI_CONTAINERS = [
     DevelopmentContainer(
