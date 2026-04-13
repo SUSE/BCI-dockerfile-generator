@@ -73,14 +73,14 @@ COPY kernel-devel-6.4.0-150700.51.1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-source/kernel-macros-6.4.0-150700.51.1.noarch.rpm kernel-macros-6.4.0-150700.51.1.aarch64.rpm
 COPY kernel-macros-6.4.0-150700.51.1.aarch64.rpm /tmp/
 
-COPY cuda-sles15-x86_64.repo /etc/zypp/repos.d/cuda-sles15-x86_64.repo
-COPY cuda-sles15-x86_64.gpg.key /tmp/cuda-sles15-x86_64.gpg.key
-RUN rpm --import /tmp/cuda-sles15-x86_64.gpg.key
-RUN rpm --root /target --import /tmp/cuda-sles15-x86_64.gpg.key
-COPY cuda-sles15-sbsa.repo /etc/zypp/repos.d/cuda-sles15-sbsa.repo
-COPY cuda-sles15-sbsa.gpg.key /tmp/cuda-sles15-sbsa.gpg.key
-RUN rpm --import /tmp/cuda-sles15-sbsa.gpg.key
-RUN rpm --root /target --import /tmp/cuda-sles15-sbsa.gpg.key
+COPY cuda-sles15-x86_64.repo /etc/zypp/repos.d/None
+COPY cuda-sles15-x86_64.gpg.key /tmp/None
+RUN rpm --import /tmp/None
+RUN rpm --root /target --import /tmp/None
+COPY cuda-sles15-sbsa.repo /etc/zypp/repos.d/None
+COPY cuda-sles15-sbsa.gpg.key /tmp/None
+RUN rpm --import /tmp/None
+RUN rpm --root /target --import /tmp/None
 FROM nvidia-driver-builder AS open-driver-builder
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n --gpg-auto-import-keys install \
