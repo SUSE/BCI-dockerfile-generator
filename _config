@@ -14,7 +14,6 @@ BuildEngine: podman
 Substitute: system-packages:podman podman buildah createrepo_c release-compare container-build-checks-vendor-openSUSE container-build-checks-strict skopeo umoci post-build-checks
 
 ExpandFlags: filterbasecontainerpkgs
-
 # BuildFlags: container-timestamp:source_date_epoch
 BuildFlags: container-timestamp:0
 
