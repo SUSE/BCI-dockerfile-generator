@@ -135,6 +135,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: python-3.14-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: ruby-3.4-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -273,6 +277,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: python-3.14-image
     - trigger_services:
         project: devel:BCI:16.1
         package: ruby-3.4-image
