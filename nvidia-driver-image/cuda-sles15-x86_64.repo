@@ -1,6 +1,0 @@
-[cuda-sles15-x86_64]
-name=cuda-sles15-x86_64
-baseurl=https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/
-enabled=1
-gpgcheck=1
-gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub
