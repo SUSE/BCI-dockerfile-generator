@@ -60,10 +60,10 @@ COPY nvidia-compute-utils-G07-595.45.04-1.aarch64.rpm /tmp/
 COPY nvidia-driver-G07-595.45.04-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-G07-595.45.04-1.aarch64.rpm sha256:ae5350f2d32cf2a058303b09e9b130289d399b0288fdca3a86d8d80b66079912
 COPY nvidia-driver-G07-595.45.04-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-assistant-0.43.58.01-1.noarch.rpm nvidia-driver-assistant-0.43.58.01-1.x86_64.rpm sha256:c6c7833e0356d6d6223d8c050be02a0858e96918d5bfeed33ceff5f10e0fab5c
-COPY nvidia-driver-assistant-0.43.58.01-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-assistant-0.43.58.01-1.noarch.rpm nvidia-driver-assistant-0.43.58.01-1.aarch64.rpm sha256:c6c7833e0356d6d6223d8c050be02a0858e96918d5bfeed33ceff5f10e0fab5c
-COPY nvidia-driver-assistant-0.43.58.01-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-assistant-0.43.58.03-1.noarch.rpm nvidia-driver-assistant-0.43.58.03-1.x86_64.rpm sha256:5a3ab8c657c05cfbf74e6010e47dfc106cc81d111bd0286439b63ca309c62f6f
+COPY nvidia-driver-assistant-0.43.58.03-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-assistant-0.43.58.03-1.noarch.rpm nvidia-driver-assistant-0.43.58.03-1.aarch64.rpm sha256:5a3ab8c657c05cfbf74e6010e47dfc106cc81d111bd0286439b63ca309c62f6f
+COPY nvidia-driver-assistant-0.43.58.03-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-modprobe-595.45.04-1.x86_64.rpm sha256:275f6097380a10c7d2a9892838827c1dd5c412518c520dc334fc9740e833e00a
 COPY nvidia-modprobe-595.45.04-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-modprobe-595.45.04-1.aarch64.rpm sha256:14ba3e26e104ddacb634df32f3b3c65d874dc2b84577f6f50027a455a60dee1d
@@ -120,7 +120,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-open-driver-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.x86_64.rpm \
@@ -142,7 +142,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-open-driver-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.aarch64.rpm \
@@ -175,7 +175,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-compute-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-driver-G07-595.45.04-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
@@ -197,7 +197,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-compute-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-driver-G07-595.45.04-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.aarch64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.aarch64.rpm \
@@ -229,7 +229,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.x86_64.rpm; \
     fi
@@ -242,7 +242,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.45.04-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.43.58.01-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.43.58.03-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.45.04-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.45.04-1.aarch64.rpm; \
     fi
