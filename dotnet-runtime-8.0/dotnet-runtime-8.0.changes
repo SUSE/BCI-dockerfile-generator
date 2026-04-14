@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 14 18:49:06 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to 8.0.26
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:36 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
