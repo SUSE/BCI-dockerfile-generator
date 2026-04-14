@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 14 13:58:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.94 for stable, 1.93 for oldstable
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
