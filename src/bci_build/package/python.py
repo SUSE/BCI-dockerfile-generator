@@ -153,15 +153,14 @@ PYTHON_3_6_CONTAINERS = (
 )
 
 
-_PYTHON_TW_VERSIONS: tuple[_PYTHON_VERSIONS, ...] = ("3.11", "3.13")
 PYTHON_TW_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
-        is_latest=pyver == _PYTHON_TW_VERSIONS[-1],
+        is_latest=False,
         package_name=f"python-{pyver}-image",
         additional_versions=["3"],
     )
-    for pyver in _PYTHON_TW_VERSIONS
+    for pyver in ("3.11", "3.13")
 )
 
 PYTHON_3_11_CONTAINERS = (
