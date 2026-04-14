@@ -127,32 +127,6 @@ class ThirdPartyRepoMixin:
         self.third_party_repos = third_party_repos
         self.third_party_package_list = third_party_package_list
 
-        for repo in self.third_party_repos:
-            if not repo.key:
-                res = requests.get(repo.key_url)
-                res.raise_for_status()
-                repo.key = res.text
-
-            if not repo.repo_name:
-                repo.repo_name = repo.name
-
-            if not repo.repo_filename:
-                repo.repo_filename = f"{repo.name}.repo"
-
-            if not repo.key_filename:
-                repo.key_filename = f"{repo.name}.gpg.key"
-
-            self.extra_files.update(
-                {
-                    f"{repo.name}.gpg.key": repo.key,
-                    f"{repo.name}.repo": REPO_FILE.format(
-                        repo_name=repo.repo_name,
-                        base_url=repo.url,
-                        gpg_key=repo.key_url,
-                    ),
-                }
-            )
-
         self._repo = ThirdPartyRepoParser(self.third_party_repos)
         self._rpms: list[RpmPackage] = []
 
@@ -230,6 +204,32 @@ class ThirdPartyRepoMixin:
         assert len(self.third_party_package_list) > 0, (
             "The `third_party_package_list` is empty"
         )
+
+        for repo in self.third_party_repos:
+            if not repo.key:
+                res = requests.get(repo.key_url)
+                res.raise_for_status()
+                repo.key = res.text
+
+            if not repo.repo_name:
+                repo.repo_name = repo.name
+
+            if not repo.repo_filename:
+                repo.repo_filename = f"{repo.name}.repo"
+
+            if not repo.key_filename:
+                repo.key_filename = f"{repo.name}.gpg.key"
+
+            self.extra_files.update(
+                {
+                    f"{repo.name}.gpg.key": repo.key,
+                    f"{repo.name}.repo": REPO_FILE.format(
+                        repo_name=repo.repo_name,
+                        base_url=repo.url,
+                        gpg_key=repo.key_url,
+                    ),
+                }
+            )
 
         pkgs = self.fetch_rpm_packages()
 

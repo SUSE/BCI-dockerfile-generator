@@ -67,28 +67,21 @@ OPENSUSE_REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
 def fake_repo_get(url, *args, **kwargs):
     resp = Mock()
     resp.raise_for_status.return_value = None
+    resp.status_code = 200
 
-    if url == "https://packages.example.com/sles/15.7/repodata/repomd.xml":
-        resp.content = SLE_REPO_XML
-        resp.status_code = 200
-        return resp
+    match url:
+        case "https://packages.example.com/sles/15.7/repodata/repomd.xml":
+            resp.content = SLE_REPO_XML
+        case "https://packages.example.org/opensuse/15.7/repodata/repomd.xml":
+            resp.content = OPENSUSE_REPO_XML
+        case "https://packages.example.com/sles/15.7/repodata/primary.xml.gz":
+            resp.content = gzip.compress(SLE_PRIMARY_XML.encode("utf-8"))
+        case "https://packages.example.org/opensuse/15.7/repodata/primary.xml.gz":
+            resp.content = gzip.compress(OPENSUSE_PRIMARY_XML.encode("utf-8"))
+        case _:
+            raise ValueError(f"Unexpected URL: {url}")
 
-    if url == "https://packages.example.org/opensuse/15.7/repodata/repomd.xml":
-        resp.content = OPENSUSE_REPO_XML
-        resp.status_code = 200
-        return resp
-
-    if url == "https://packages.example.com/sles/15.7/repodata/primary.xml.gz":
-        resp.content = gzip.compress(SLE_PRIMARY_XML.encode("utf-8"))
-        resp.status_code = 200
-        return resp
-
-    if url == "https://packages.example.org/opensuse/15.7/repodata/primary.xml.gz":
-        resp.content = gzip.compress(OPENSUSE_PRIMARY_XML.encode("utf-8"))
-        resp.status_code = 200
-        return resp
-
-    raise ValueError(f"Unexpected URL: {url}")
+    return resp
 
 
 def test_parse():

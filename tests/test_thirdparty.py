@@ -14,14 +14,6 @@ class DummyThirdPartyImage(ThirdPartyRepoMixin, DevelopmentContainer):
     pass
 
 
-def fake_key_get(url, *args, **kwargs):
-    resp = Mock()
-    resp.raise_for_status.return_value = None
-    resp.text = "NICE-GPG-KEY"
-    resp.status_code = 200
-    return resp
-
-
 DOCKERFILE_RENDERED_SINGLE = """# SPDX-License-Identifier: MIT
 
 # Copyright
@@ -333,6 +325,7 @@ def test_multiple_third_party_repo_template():
 
 
 def test_third_party_repo():
+    """Test that we can set third_party_repos attribute on initialization and query it."""
     image = DummyThirdPartyImage(
         tag_version="1",
         version="1",
@@ -374,7 +367,26 @@ def test_third_party_repo():
     assert repo.repo_filename == "dummy-third-party-image.repo"
     assert repo.key_filename == "dummy-third-party-image.gpg.key"
 
-    with patch("bci_build.package.thirdparty.requests.get", side_effect=fake_key_get):
+
+def test_third_party_repo_with_prepare():
+    """Test that the GPG key is fetched from configured url."""
+
+    expected_key_url = "https://packages.example.com/keys/repo.asc"
+
+    def mock_request_get(url, *args, **kwargs):
+        if url != expected_key_url:
+            return fake_repo_get(url)
+
+        resp = Mock()
+        resp.raise_for_status.return_value = None
+        resp.text = "NICE-GPG-KEY"
+        resp.status_code = 200
+        return resp
+
+    with patch(
+        "bci_build.package.thirdparty.requests.get",
+        side_effect=mock_request_get,
+    ):
         image = DummyThirdPartyImage(
             tag_version="1",
             version="1",
@@ -389,7 +401,7 @@ def test_third_party_repo():
                 ThirdPartyRepo(
                     name="third-party",
                     url="https://packages.example.com/sles/15.7/",
-                    key_url="https://packages.example.com/keys/repo.asc",
+                    key_url=expected_key_url,
                 ),
             ],
             third_party_package_list=[
@@ -400,13 +412,14 @@ def test_third_party_repo():
                 "dummy-pkg-4",
             ],
         )
+        image.prepare_template()
 
         repo = image.third_party_repos[0]
 
         assert repo.name == "third-party"
         assert repo.url == "https://packages.example.com/sles/15.7/"
         assert repo.key == "NICE-GPG-KEY"
-        assert repo.key_url == "https://packages.example.com/keys/repo.asc"
+        assert repo.key_url == expected_key_url
         assert repo.arch is None
         assert repo.repo_name == "third-party"
         assert repo.repo_filename == "third-party.repo"
