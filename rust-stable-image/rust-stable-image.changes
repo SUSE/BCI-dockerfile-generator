@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 14 14:09:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop workaround for old rust packaging bug because of new rust packaging bug breaking it
+
+-------------------------------------------------------------------
 Fri Mar 27 16:48:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.94 for stable, 1.93 to oldstable
