@@ -13,11 +13,22 @@ It is specifically designed for use with the NVIDIA GPU Operator or for manual
 driver deployment on container hosts. This image includes the NVIDIA driver
 {{ image.version }}.
 
+This container image contains [precompiled drivers](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html), allowing faster deployment.
+
 ## Usage
 
-The container is intended to be run with high privileges (`--privileged`) and
-requires access to several host directories to properly load and manage kernel
-modules.
+To deploy this container image, NVIDIA gpu-operator v26.3.1 or later helm chart should be used, following [these steps](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#procedure).
 
+Arguments `--set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` must be added to `helm install` call. `<driver-branch>` is the major version of GPU driver (such as `595`, `590`, `580`..).
+
+As an example:
+```ShellSession
+helm install --wait gpu-operator \
+     -n gpu-operator --create-namespace \
+     nvidia/gpu-operator \
+     --version=v26.3.1 \
+     --set driver.usePrecompiled=true \
+     --set driver.version="<driver-branch>"
+```
 
 {% include 'licensing_and_eula.j2' %}
