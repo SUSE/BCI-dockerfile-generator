@@ -27,6 +27,7 @@ from bci_build.package.thirdparty import ARCH_FILENAME_MAP
 from bci_build.package.thirdparty import ThirdPartyPackage
 from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.package.versions import get_all_pkg_version
 from bci_build.repomdparser import RpmPackage
 
 NVIDIA_REPOS = {
@@ -698,41 +699,9 @@ def _get_packages(os_version: OsVersion):
 
 def _get_kernel_versions(variant: str, os_version: OsVersion):
     """Return all kernel versions for a given kernel variant."""
-
-    # TODO: This should be moved to the package_versions.json
-    #       otherwise a new kernel version needs to be added here
-    #       for every release.
-    #       Azure is not currently included becuase the kABI is not
-    #       stable, and it would require a container for each version.
-    if os_version == OsVersion.SL16_0:
-        if variant in ["default", "64kb"]:
-            return [
-                "6.12.0-160000.27",
-                "6.12.0-160000.26",
-                "6.12.0-160000.9",
-                "6.12.0-160000.8",
-                "6.12.0-160000.7",
-                "6.12.0-160000.6",
-                "6.12.0-160000.5",  # GA
-            ]
-
-    if os_version == OsVersion.SP7:
-        if variant in ["default", "64kb"]:
-            return [
-                "6.4.0-150700.53.34",
-                "6.4.0-150700.53.31",
-                "6.4.0-150700.53.28",
-                "6.4.0-150700.53.25",
-                "6.4.0-150700.53.22",
-                "6.4.0-150700.53.19",
-                "6.4.0-150700.53.16",
-                "6.4.0-150700.53.11",
-                "6.4.0-150700.53.6",
-                "6.4.0-150700.53.3",
-                "6.4.0-150700.51",  # GA
-            ]
-
-    raise ValueError(f"Unknown kernel versions for '{variant}' on '{os_version}'")
+    versions = get_all_pkg_version(f"kernel-{variant}", os_version)
+    versions.reverse()
+    return versions
 
 
 # we need to support all versions supported by the gpu operator
