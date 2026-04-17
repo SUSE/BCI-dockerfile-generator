@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr 17 12:02:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update tag to also include 3.14
+
+-------------------------------------------------------------------
 Mon Apr 13 10:40:29 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Python 3.14 development BCI
