@@ -46,8 +46,8 @@ GIT_CONTAINERS = [
             "shadow",
         ],
         volumes=["/workspace"],
-        custom_end=rf"""{DOCKERFILE_RUN} useradd -r -u 1000 -g 0 -d /workspace -s /bin/bash git
-{DOCKERFILE_RUN} mkdir -p /workspace && chown git:0 /workspace && chmod 775 /workspace
+        custom_end=rf"""{DOCKERFILE_RUN} useradd -U -u 1000 -d /workspace -s /bin/bash git
+{DOCKERFILE_RUN} mkdir -p /workspace && chown git: /workspace && chmod 755 /workspace
 WORKDIR /workspace
 ENV HOME=/workspace
 """,
