@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 20 15:44:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Explicitly set group ID to 100 (bsc#1262306)
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:56 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
