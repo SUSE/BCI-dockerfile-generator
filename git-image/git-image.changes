@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 20 16:15:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change group id and permissions
+
+-------------------------------------------------------------------
 Mon Mar 16 13:31:20 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - support using the container as non-root user
