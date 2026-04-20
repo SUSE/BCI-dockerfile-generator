@@ -71,8 +71,8 @@ LABEL com.suse.release-stage="released"
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-RUN set -euo pipefail; useradd -r -u 1000 -g 0 -d /workspace -s /bin/bash git
-RUN set -euo pipefail; mkdir -p /workspace && chown git:0 /workspace && chmod 775 /workspace
+RUN set -euo pipefail; useradd -U -u 1000 -d /workspace -s /bin/bash git
+RUN set -euo pipefail; mkdir -p /workspace && chown git: /workspace && chmod 755 /workspace
 WORKDIR /workspace
 ENV HOME=/workspace
 
