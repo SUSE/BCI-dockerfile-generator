@@ -55,7 +55,6 @@ Patterntype: none
 #
 
 # SBOM CHANGES
-ExpandFlags: filterbasecontainerpkgs
 BuildFlags: sbom:cyclonedx
 BuildFlags: sbom:spdx
 PublishFlags: withsbom
