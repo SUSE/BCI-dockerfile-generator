@@ -81,7 +81,8 @@ RUN set -euo pipefail; \
 # copy firmware to /firmwareDir
 RUN set -euo pipefail; \
     mkdir -p /target/firmwareDir/updates/amdgpu; \
-    cp -r /lib/firmware/updates/amdgpu /target/firmwareDir/updates/amdgpu
+    cp -r /lib/firmware/updates/amdgpu /target/firmwareDir/updates/amdgpu; \
+    install -p -D /usr/share/doc/packages/amdgpu-dkms-firmware/LICENSE /target/usr/share/licenses/amdgpu-dkms-firmware/LICENSE
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
