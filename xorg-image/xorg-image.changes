@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 22 14:59:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- explicitly set group to the previously implicitly defined value
+
+-------------------------------------------------------------------
 Wed Mar 11 13:27:56 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - remove more files that make containers unreproducible
