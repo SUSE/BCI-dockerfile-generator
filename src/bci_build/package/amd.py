@@ -44,7 +44,8 @@ CUSTOM_END_TEMPLATE = Template(
 # copy firmware to /firmwareDir
 {{ DOCKERFILE_RUN }} \\
     mkdir -p /target/firmwareDir/updates/amdgpu; \\
-    cp -r /lib/firmware/updates/amdgpu /target/firmwareDir/updates/amdgpu
+    cp -r /lib/firmware/updates/amdgpu /target/firmwareDir/updates/amdgpu; \\
+    install -p -D /usr/share/doc/packages/amdgpu-dkms-firmware/LICENSE /target/usr/share/licenses/amdgpu-dkms-firmware/LICENSE
 """
 )
 
