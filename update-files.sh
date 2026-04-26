@@ -23,7 +23,7 @@ curl -sf -o src/bci_build/package/grafana/run.sh https://raw.githubusercontent.c
 ### mariadb: GPLv2
 command -v jq > /dev/null || { echo "we need jq installed for update to work"; exit 1; }
 rm -f src/bci_build/package/mariadb/*/entrypoint.sh src/bci_build/package/mariadb/*/healthcheck.sh
-for v in $(jq -r '.mariadb | del(.version_format) | .[]' src/bci_build/package/package_versions.json | cut -d. -f1-2 | sort -u); do
+for v in $(jq -r '.mariadb | .latest | .[]' src/bci_build/package/package_versions.json | cut -d. -f1-2 | sort -u); do
     mkdir -p "src/bci_build/package/mariadb/$v"
     upstream_version=$v
     curl -sf -o "src/bci_build/package/mariadb/$v/LICENSE" "https://raw.githubusercontent.com/MariaDB/mariadb-docker/master/LICENSE"
