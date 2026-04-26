@@ -19,6 +19,8 @@ To deploy this container image, use the NVIDIA GPU Operator Helm chart version 2
 
 Add the arguments `--set driver.repository=registry.suse.com/third-party/nvidia --set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` to the `helm install` command. `<driver-branch>` is the major version of the GPU driver (such as `595`, `590` or `580`).
 
+For k3s or RKE2 cl, add `--set toolkit.env[0].name=CONTAINERD_SOCKET --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock` when [Node Resource Interface (NRI) plugin](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/cdi.html#nri-plugin) is not enabled.
+
 As an example:
 ```ShellSession
 helm install --wait gpu-operator \
@@ -27,7 +29,9 @@ helm install --wait gpu-operator \
      --version=v26.3.1 \
      --set driver.repository=registry.suse.com/third-party/nvidia \
      --set driver.usePrecompiled=true \
-     --set driver.version="<driver-branch>"
+     --set driver.version="<driver-branch> \
+     --set toolkit.env[0].name=CONTAINERD_SOCKET \
+     --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock"
 ```
 
 ## Licensing
