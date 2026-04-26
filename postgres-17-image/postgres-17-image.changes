@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Apr 26 20:54:38 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- entrypoint update from git
+
+-------------------------------------------------------------------
 Mon Mar 16 21:02:16 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - split postgresql images in default and contrib variants
