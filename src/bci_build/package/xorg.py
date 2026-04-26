@@ -87,7 +87,7 @@ XORG_CONTAINERS = [
         build_stage_custom_end=generate_package_version_check(
             "xorg-x11-server", tag_ver, ParseVersion.MAJOR, use_target=True
         )
-        + "\nRUN useradd -m user -u 1000 -g 100",
+        + "\nRUN useradd -m user -u 1000 -U",
         custom_end=textwrap.dedent(f"""
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
@@ -135,7 +135,7 @@ XORG_CLIENT_CONTAINERS = [
         supported_until=KIOSK_SUPPORT_ENDS,
         # TODO add package_version_check and tag_version
         build_stage_custom_end=textwrap.dedent(f"""\
-            {DOCKERFILE_RUN} useradd -m -u 1000 -g 100 user
+            {DOCKERFILE_RUN} useradd -m -u 1000 -U user
             """),
         custom_end=textwrap.dedent("""
             ENV DISPLAY=":0"
