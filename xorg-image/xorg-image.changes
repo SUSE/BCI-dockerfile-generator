@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Apr 26 19:47:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- create separate group for user
+
+-------------------------------------------------------------------
 Wed Apr 22 14:59:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - explicitly set group to the previously implicitly defined value
