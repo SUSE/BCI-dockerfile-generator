@@ -209,7 +209,7 @@ PYTHON_3_14_CONTAINERS = [
                 os_version, "bci-micro" if flavor == "micro" else "bci-base"
             )
         ),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(flavor != "micro" and os_version in CAN_BE_LATEST_OS_VERSION),
     )
     for os_version, flavor in product(
         (OsVersion.SL16_1, OsVersion.TUMBLEWEED), ("base", "micro")
