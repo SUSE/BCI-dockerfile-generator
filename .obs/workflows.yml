@@ -111,10 +111,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: kubectl-1.32-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: kubectl-1.33-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -124,6 +120,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: kubectl-1.35-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: kubectl-1.36-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -389,9 +389,6 @@ refresh_devel_BCI:
         package: kiwi-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: kubectl-1.32-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: kubectl-1.33-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -399,6 +396,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: kubectl-1.35-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: kubectl-1.36-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: kubevirt-image
