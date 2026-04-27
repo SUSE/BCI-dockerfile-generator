@@ -20,21 +20,12 @@ _RUST_CC_PATH = "/usr/local/bin/cc"
 # and we give us three weeks of buffer, leading to release date + 6 + 6 + 3
 _RUST_SUPPORT_OVERLAP: datetime.timedelta = datetime.timedelta(weeks=6 + 6 + 3)
 _RUST_SUPPORT_ENDS = {
+    "1.95": datetime.date(2026, 4, 16) + _RUST_SUPPORT_OVERLAP,
     "1.94": datetime.date(2026, 3, 5) + _RUST_SUPPORT_OVERLAP,
     "1.93": datetime.date(2026, 1, 22) + _RUST_SUPPORT_OVERLAP,
     "1.92": datetime.date(2025, 12, 11) + _RUST_SUPPORT_OVERLAP,
     "1.91": datetime.date(2025, 10, 30) + _RUST_SUPPORT_OVERLAP,
     "1.90": datetime.date(2025, 9, 18) + _RUST_SUPPORT_OVERLAP,
-    "1.89": datetime.date(2025, 8, 7) + _RUST_SUPPORT_OVERLAP,
-    "1.88": datetime.date(2025, 6, 26) + _RUST_SUPPORT_OVERLAP,
-    "1.87": datetime.date(2025, 5, 15) + _RUST_SUPPORT_OVERLAP,
-    "1.86": datetime.date(2025, 4, 3) + _RUST_SUPPORT_OVERLAP,
-    "1.85": datetime.date(2025, 2, 20) + _RUST_SUPPORT_OVERLAP,
-    "1.84": datetime.date(2025, 1, 9) + _RUST_SUPPORT_OVERLAP,
-    "1.83": datetime.date(2024, 11, 28) + _RUST_SUPPORT_OVERLAP,
-    "1.82": datetime.date(2024, 10, 17) + _RUST_SUPPORT_OVERLAP,
-    "1.81": datetime.date(2024, 9, 5) + _RUST_SUPPORT_OVERLAP,
-    "1.80": datetime.date(2024, 7, 25) + _RUST_SUPPORT_OVERLAP,
 }
 
 # ensure that the **latest** rust version is the last one!
@@ -42,7 +33,7 @@ _RUST_VERSIONS: list[str] = ["1.93", "1.94"]
 
 _RUST_SL16_VERSIONS: list[str] = ["1.93", "1.94"]
 
-_RUST_TW_VERSIONS: list[str] = ["1.93", "1.94"]
+_RUST_TW_VERSIONS: list[str] = ["1.94", "1.95"]
 
 
 def _rust_is_stable_version(os_version: OsVersion, rust_version: str) -> bool:
