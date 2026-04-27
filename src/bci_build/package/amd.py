@@ -7,6 +7,7 @@ from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import _RELEASE_PLACEHOLDER
 from bci_build.package import DevelopmentContainer
 from bci_build.package import Package
@@ -53,6 +54,8 @@ CUSTOM_END_TEMPLATE = Template(
 class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.custom_end = SET_BLKID_SCAN if self.os_version.is_sle15 else ""
 
         self.extra_files.update(
             {
