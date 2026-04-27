@@ -13,7 +13,7 @@ from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 _KUBECTL_VERSIONS = {
-    OsVersion.TUMBLEWEED: ("1.32", "1.33", "1.34", "1.35"),
+    OsVersion.TUMBLEWEED: ("1.33", "1.34", "1.35", "1.36"),
     OsVersion.SP7: ("1.33", "1.35"),
 }
 
