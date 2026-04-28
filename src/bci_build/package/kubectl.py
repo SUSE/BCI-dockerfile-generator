@@ -78,7 +78,8 @@ KUBECTL_CONTAINERS = [
             else None
         ),
         custom_end=textwrap.dedent(f"""
-            {DOCKERFILE_RUN} echo "user:x:999:100:User for CLI:/home/user:/usr/sbin/nologin" >> /etc/passwd && install -d -o 999 -g 100 -m 0755 /home/user
+            {DOCKERFILE_RUN} echo "user:x:999:100:User for CLI:/home/user:/usr/sbin/nologin" >> /etc/passwd && install -d -o 999 -g 100 -m 0755 /home/user /home/user/.kube
+
             WORKDIR /home/user
             """),
     )
