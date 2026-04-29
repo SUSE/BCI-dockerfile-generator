@@ -15,9 +15,9 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%
-#!BuildName: bci-bci-busybox-%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%
+#!BuildName: bci-bci-nano
 #!BuildVersion: 16.1.0
 FROM scratch AS target
 FROM bci/bci-base:16.1 AS builder
@@ -25,7 +25,15 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt SLES-release skelcd-EULA-SLES
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends ca-certificates-mozilla-prebuilt coreutils timezone skelcd-EULA-SLES SLES-release
+RUN set -euo pipefail; rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
+RUN set -euo pipefail; rpm --root /target -e --nodeps bash glibc compat-usrmerge-tools coreutils terminfo-base \
+    $(rpm --root /target -qa --qf '%{NAME}\n' | grep -E '^lib')
+
+RUN set -euo pipefail; zypper -n install jdupes \
+    && jdupes -1 -L -r /target/usr/
+RUN set -euo pipefail; rm -vf /target/var/lib/zypp/AutoInstalled /target/var/cache/ldconfig/aux-cache
+
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -44,17 +52,17 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/e
 FROM scratch
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.busybox
+# labelprefix=com.suse.bci.nano
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SUSE Linux BCI 16.1 BusyBox"
-LABEL org.opencontainers.image.description="16.1 BusyBox container based on the SUSE Linux Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux BCI 16.1 Nano"
+LABEL org.opencontainers.image.description="A nano environment for containers based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2028-11-30"
@@ -64,9 +72,3 @@ LABEL com.suse.release-stage="beta"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-CMD ["/bin/sh"]
-
-RUN set -euo pipefail; sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
-
-# Will be recreated by the next rpm(1) run as root user
-RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
