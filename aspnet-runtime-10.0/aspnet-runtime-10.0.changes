@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 29 17:42:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove BCI from third-party container descriptions
+
+-------------------------------------------------------------------
 Wed Apr 22 12:20:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Update .NET to 10.0.7

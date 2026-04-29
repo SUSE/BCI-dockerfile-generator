@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 29 17:42:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove BCI from third-party container descriptions
+
+-------------------------------------------------------------------
 Tue Apr 14 18:48:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to 9.0.15

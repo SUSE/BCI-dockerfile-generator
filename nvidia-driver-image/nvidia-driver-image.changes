@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 29 17:42:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove BCI from third-party container descriptions
+
+-------------------------------------------------------------------
 Wed Apr 29 07:01:28 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - nvidia-driver-assistant update
