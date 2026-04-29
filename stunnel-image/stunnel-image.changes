@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 29 11:06:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- handle retry and delay
+
+-------------------------------------------------------------------
 Thu Mar 26 10:52:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set supported/remove latest
