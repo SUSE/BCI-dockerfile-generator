@@ -15,22 +15,25 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%
-#!BuildName: bci-bci-micro-fips
+#!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%
+#!BuildName: bci-bci-nano
 #!BuildVersion: 16.0.0
-#!BuildRelease: 5
 FROM scratch AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends SLES-release bash ca-certificates-mozilla-prebuilt coreutils libopenssl3 patterns-base-fips skelcd-EULA-BCI
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends ca-certificates-mozilla-prebuilt coreutils timezone skelcd-EULA-BCI SLES-release
+RUN set -euo pipefail; rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
+RUN set -euo pipefail; rpm --root /target -e --nodeps bash glibc compat-usrmerge-tools coreutils terminfo-base \
+    $(rpm --root /target -qa --qf '%{NAME}\n' | grep -E '^lib')
 
-RUN set -euo pipefail; zypper -n install jdupes crypto-policies-scripts update-bootloader \
-    && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \
+RUN set -euo pipefail; zypper -n install jdupes \
     && jdupes -1 -L -r /target/usr/
+RUN set -euo pipefail; rm -vf /target/var/lib/zypp/AutoInstalled /target/var/cache/ldconfig/aux-cache
+
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -49,17 +52,17 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/e
 FROM scratch
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.micro-fips
+# labelprefix=com.suse.bci.nano
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SUSE Linux BCI Micro 16.0 FIPS-140-3 mode"
-LABEL org.opencontainers.image.description="A micro container in FIPS-140-3 mode for containers based on the SUSE Linux Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux BCI 16.0 Nano"
+LABEL org.opencontainers.image.description="A nano environment for containers based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/bci-micro-fips:%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2027-11-30"
@@ -69,11 +72,3 @@ LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-CMD ["/bin/sh"]
-
-ENV GNUTLS_FORCE_FIPS_MODE=1
-ENV LIBGCRYPT_FORCE_FIPS_MODE=1
-ENV LIBICA_FIPS_FLAG=1
-ENV NSS_FIPS=1
-ENV OPENSSL_FIPS=1
-ENV OPENSSL_FORCE_FIPS_MODE=1
