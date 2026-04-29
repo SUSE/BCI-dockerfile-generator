@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%
-#!BuildTag: opensuse/bci/bci-busybox:%OS_VERSION_ID_SP%
-#!BuildTag: opensuse/bci/bci-busybox:latest
-#!BuildName: opensuse-bci-bci-busybox-%OS_VERSION_ID_SP%
+#!BuildTag: opensuse/bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%
+#!BuildTag: opensuse/bci/bci-nano:%OS_VERSION_ID_SP%
+#!BuildTag: opensuse/bci/bci-nano:latest
+#!BuildName: opensuse-bci-bci-nano
 #!BuildVersion: %OS_VERSION_ID_SP%.0.0
 FROM scratch AS target
 FROM opensuse/tumbleweed:latest AS builder
@@ -26,7 +26,15 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt openSUSE-release openSUSE-release-appliance-docker
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends ca-certificates-mozilla-prebuilt coreutils timezone openSUSE-release openSUSE-release-appliance-docker
+
+RUN set -euo pipefail; rpm --root /target -e --nodeps bash glibc compat-usrmerge-tools coreutils terminfo-base \
+    $(rpm --root /target -qa --qf '%{NAME}\n' | grep -E '^lib')
+
+RUN set -euo pipefail; zypper -n install jdupes \
+    && jdupes -1 -L -r /target/usr/
+RUN set -euo pipefail; rm -vf /target/var/lib/zypp/AutoInstalled /target/var/cache/ldconfig/aux-cache
+
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -45,25 +53,19 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/e
 FROM scratch
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.bci.busybox
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI BusyBox"
-LABEL org.opencontainers.image.description="BusyBox container based on the openSUSE Tumbleweed Base Container Image."
+# labelprefix=org.opensuse.bci.nano
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Nano"
+LABEL org.opencontainers.image.description="A nano environment for containers based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
-CMD ["/bin/sh"]
-
-RUN set -euo pipefail; sed -i 's|/bin/bash|/bin/sh|' /etc/passwd
-
-# Will be recreated by the next rpm(1) run as root user
-RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
