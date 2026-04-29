@@ -83,7 +83,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dotnet.runtime
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI .NET Runtime 8.0"
+LABEL org.opencontainers.image.title=".NET Runtime 8.0 for SUSE Linux Enterprise Server 15 SP7"
 LABEL org.opencontainers.image.description="The .NET Runtime 8.0 based on the SUSE Linux Enterprise Base Container Image. The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
 LABEL org.opencontainers.image.version="8.0.26"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
