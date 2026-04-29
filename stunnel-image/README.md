@@ -53,9 +53,9 @@ be specified via the environment variables `STUNNEL_SERVICE_NAME`,
   `no`). Defaults to `no`. When set to `yes`, it is useful for dynamic DNS
   or when the network might not be available at startup.
 
-- `STUNNEL_RETRY`: retry connecting to the `connect` target (accepts `yes` or
+- `STUNNEL_RETRY`: retry connecting to the `connect` target (accepts a time in ms, `yes` or
   `no`). Defaults to `no`. When set to `yes`, stunnel will retry the connection
-  if it fails.
+  if it fails after 1000ms.
 
 
 For example, to create an SSL endpoint for a Web server listening on port `8000`
