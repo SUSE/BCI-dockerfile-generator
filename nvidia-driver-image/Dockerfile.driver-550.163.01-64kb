@@ -53,10 +53,10 @@ COPY nvidia-compute-utils-G06-550.163.01-1.x86_64.rpm /tmp/
 COPY nvidia-compute-utils-G06-550.163.01-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-G06-kmp-64kb-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm sha256:0c766b7eae4d073825834605fb95454530f667d66e6d0f223bf0d9bea97f4ef5
 COPY nvidia-driver-G06-kmp-64kb-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.46.126.20-1.noarch.rpm nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm sha256:00985339e19dfba6555738dffcfda80774f6415ff505142e1098e74139300198
-COPY nvidia-driver-assistant-0.46.126.20-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.46.126.20-1.noarch.rpm nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm sha256:00985339e19dfba6555738dffcfda80774f6415ff505142e1098e74139300198
-COPY nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm sha256:01f2f3380df4ba9e0e9b523bea93de6ec36e5e4e97695fa29619ef4af7e8d3c7
+COPY nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm sha256:01f2f3380df4ba9e0e9b523bea93de6ec36e5e4e97695fa29619ef4af7e8d3c7
+COPY nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-gl-G06-550.163.01-1.x86_64.rpm sha256:96128a5ee33723b8b4167080a7475aa4485edc08ec5e8f3255d78723d4feab43
 COPY nvidia-gl-G06-550.163.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-gl-G06-550.163.01-1.aarch64.rpm sha256:e64f30091a81371b6ad3056f3dd820749b90d7177e3e632fe629a12f5d997ffa
@@ -93,7 +93,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/kernel-firmware-nvidia-gspx-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-550.163.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
             /tmp/nvidia-gl-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-open-driver-G06-kmp-64kb-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm \
             /tmp/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm \
@@ -120,7 +120,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-compute-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-driver-G06-kmp-64kb-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
             /tmp/nvidia-gl-G06-550.163.01-1.aarch64.rpm \
             /tmp/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm \
             /tmp/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm \
@@ -146,7 +146,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
             /tmp/nvidia-compute-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-550.163.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.46.126.20-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
             /tmp/nvidia-gl-G06-550.163.01-1.aarch64.rpm; \
     fi
 
