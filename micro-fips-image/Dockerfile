@@ -48,7 +48,6 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
 FROM scratch
 COPY --from=builder /target /
-RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.micro-fips
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI Micro FIPS-140-3 mode"
