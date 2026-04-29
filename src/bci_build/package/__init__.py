@@ -1510,6 +1510,7 @@ from .kubevirt import KUBEVIRT_CONTAINERS  # noqa: E402
 from .kubevirt_cdi import KUBEVIRT_CDI_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CLIENT_CONTAINERS  # noqa: E402
 from .mariadb import MARIADB_CONTAINERS  # noqa: E402
+from .nano import NANO_CONTAINERS  # noqa: E402
 from .nginx import NGINX_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
 from .nvidia import NVIDIA_CONTAINERS  # noqa: E402
@@ -1582,6 +1583,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *GRAFANA_CONTAINERS,
         *MINIMAL_CONTAINERS,
         *MICRO_CONTAINERS,
+        *NANO_CONTAINERS,
         *FIPS_MICRO_CONTAINERS,
         *BUSYBOX_CONTAINERS,
         *KERNEL_MODULE_CONTAINERS,

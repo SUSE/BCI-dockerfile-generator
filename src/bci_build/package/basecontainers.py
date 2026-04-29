@@ -81,7 +81,6 @@ MICRO_CONTAINERS = [
     for os_version in ALL_BASE_OS_VERSIONS
 ]
 
-
 INIT_CONTAINERS = [
     OsContainer(
         name="init",
