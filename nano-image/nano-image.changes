@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 29 08:53:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove duplicated removal of Index.db
+
+-------------------------------------------------------------------
 Wed Apr 29 08:50:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the 16.1 Nano BCI
