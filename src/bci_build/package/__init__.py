@@ -77,7 +77,11 @@ class Package:
     #: defines into which ``<packages>`` element this package is inserted.
     pkg_type: PackageType = PackageType.IMAGE
 
+    version: str = None
+
     def __str__(self) -> str:
+        if self.version and len(self.version) > 0:
+            return f"{self.name}=={self.version}"
         return self.name
 
 

@@ -87,6 +87,9 @@ FROM nvidia-driver-builder AS open-driver-builder
             --capability \\
             --no-recommends \\
             --auto-agree-with-licenses \\
+        {%- if get_packages_for_open_layer %}
+            {{ get_packages_for_open_layer }} \\
+        {%- endif %}
         {%- for pkg in pkgs %}
             /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
         {%- endfor %}
@@ -149,19 +152,25 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
     def __init__(
         self,
-        open_drivers_package_list: list[ThirdPartyPackage],
-        closed_drivers_package_list: list[ThirdPartyPackage],
+        open_driver_package_list: list[Package],
+        third_party_open_drivers_package_list: list[ThirdPartyPackage],
+        third_party_closed_drivers_package_list: list[ThirdPartyPackage],
         kernel_variant: str,
         **kwargs,
     ):
-        self.open_drivers_package_list = open_drivers_package_list
-        self.closed_drivers_package_list = closed_drivers_package_list
+        self.open_driver_package_list = open_driver_package_list
+        self.third_party_open_drivers_package_list = (
+            third_party_open_drivers_package_list
+        )
+        self.third_party_closed_drivers_package_list = (
+            third_party_closed_drivers_package_list
+        )
         self.kernel_variant = kernel_variant
 
         third_party_package_list = kwargs.pop("third_party_package_list", [])
         third_party_package_list = sorted(
-            self.open_drivers_package_list
-            + self.closed_drivers_package_list
+            self.third_party_open_drivers_package_list
+            + self.third_party_closed_drivers_package_list
             + third_party_package_list,
             key=lambda p: p.name,
         )
@@ -469,9 +478,14 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                     )
                 )
 
-        open_packages = [p.name for p in self.open_drivers_package_list]
-        closed_packages = [p.name for p in self.closed_drivers_package_list]
+        open_packages = [p.name for p in self.third_party_open_drivers_package_list]
+        closed_packages = [p.name for p in self.third_party_closed_drivers_package_list]
         kernel_packages = [pkg["name"] for pkg in subpackages]
+
+        # since 595, dkms is only required on the closed driver
+        if _get_driver_branch(self.version) >= 595:
+            closed_packages.append("dkms")
+
         ignore_in_target_packages = open_packages + closed_packages + kernel_packages
 
         self.prepare_extra_files()
@@ -500,6 +514,9 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             image=self,
             packages=pkgs,
             DOCKERFILE_RUN=DOCKERFILE_RUN,
+            get_packages_for_open_layer=" ".join(
+                [str(pkg) for pkg in self.open_driver_package_list]
+            ),
             get_open_packages_for_arch=lambda arch: [
                 pkg
                 for pkg in pkgs
@@ -533,32 +550,36 @@ def _get_driver_branch(driver_version: str) -> int:
         raise ValueError(f"Failed to parse driver branch: {driver_version}")
 
 
-def _get_open_drivers_packages(
+def _get_third_party_open_drivers_packages(
     driver_version: str, kernel_variant: str
 ) -> list[ThirdPartyPackage]:
-    """Select the correct open driver package for each version."""
+    """
+    Get the correct open driver package from NVIDIA repositories for each version.
+    """
     driver_branch = _get_driver_branch(driver_version)
 
-    if driver_branch >= 590:
-        return [
+    packages: list[ThirdPartyPackage] = []
+
+    if driver_branch >= 595:
+        # for 595 we take the SUSE KMP drivers
+        pass
+    elif driver_branch >= 590:
+        packages += [
             ThirdPartyPackage("nvidia-open-driver-G07", version=driver_version),
         ]
-
-    if driver_branch >= 575:
-        return [
+    elif driver_branch >= 575:
+        packages += [
             ThirdPartyPackage("nvidia-open-driver-G06", version=driver_version),
         ]
-
-    if driver_branch == 570:
-        return [
+    elif driver_branch == 570:
+        packages += [
             ThirdPartyPackage(
                 f"nvidia-open-driver-G06-kmp-{kernel_variant}", version=driver_version
             ),
         ]
-
-    if driver_branch == 550:
+    elif driver_branch == 550:
         # 550 also requires gsp.bin for the open driver
-        return [
+        packages += [
             ThirdPartyPackage(
                 "kernel-firmware-nvidia-gspx-G06", version=driver_version
             ),
@@ -566,34 +587,40 @@ def _get_open_drivers_packages(
                 f"nvidia-open-driver-G06-kmp-{kernel_variant}", version=driver_version
             ),
         ]
+    else:
+        raise ValueError(f"Unknown open driver for {driver_version}")
 
-    raise ValueError(f"Unknown open driver for {driver_version}")
+    return packages
 
 
-def _get_closed_drivers_packages(
+def _get_third_party_closed_drivers_packages(
     driver_version: str, kernel_variant: str
 ) -> list[ThirdPartyPackage]:
-    """Select the correct closed driver package for each version."""
+    """
+    Get the correct closed driver package from NVIDIA repositories for each version.
+    """
     driver_branch = _get_driver_branch(driver_version)
 
+    packages: list[ThirdPartyPackage] = []
+
     if driver_branch >= 590:
-        return [
+        packages += [
             ThirdPartyPackage("nvidia-driver-G07", version=driver_version),
         ]
-
-    if driver_branch >= 575:
-        return [
+    elif driver_branch >= 575:
+        packages += [
             ThirdPartyPackage("nvidia-driver-G06", version=driver_version),
         ]
-
-    if driver_branch >= 550:
-        return [
+    elif driver_branch >= 550:
+        packages += [
             ThirdPartyPackage(
                 f"nvidia-driver-G06-kmp-{kernel_variant}", version=driver_version
             ),
         ]
+    else:
+        raise ValueError(f"Unknown closed driver for {driver_version}")
 
-    raise ValueError(f"Unknown closed driver for {driver_version}")
+    return packages
 
 
 def _get_compute_packages(
@@ -700,7 +727,10 @@ def _get_compute_packages(
     return packages
 
 
-def _get_packages(os_version: OsVersion):
+def _get_packages(os_version: OsVersion, driver_version: str, kernel_variant: str):
+    """
+    Get required packages and kernel depedencies.
+    """
     packages: list[Package] = [
         # needed by kernel GA packages
         # since kernel GA packages are using RemoteAssetUrl a few dependencies
@@ -753,6 +783,26 @@ def _get_packages(os_version: OsVersion):
         ]
 
     return packages
+
+
+def _get_sle_open_packages(driver_version: str, kernel_variant: str):
+    """
+    Get the correct open driver package from SUSE repositories for each version.
+
+    Since 595, we take the open driver from SUSE KMP packages.
+    """
+    driver_branch = _get_driver_branch(driver_version)
+
+    if driver_branch >= 595:
+        return [
+            Package(
+                f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}",
+                PackageType.BOOTSTRAP,
+                driver_version,
+            )
+        ]
+
+    return []
 
 
 def _get_kernel_versions(variant: str, os_version: OsVersion):
@@ -868,15 +918,16 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 is_latest=False,
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-                package_list=_get_packages(os_version),
+                package_list=_get_packages(os_version, ver, kernel_variant),
+                open_driver_package_list=_get_sle_open_packages(ver, kernel_variant),
                 support_level=SupportLevel.TECHPREVIEW,
                 supported_until="",
                 exclusive_arch=exclusive_arch,
                 third_party_repos=NVIDIA_REPOS[os_version],
-                open_drivers_package_list=_get_open_drivers_packages(
+                third_party_open_drivers_package_list=_get_third_party_open_drivers_packages(
                     ver, kernel_variant
                 ),
-                closed_drivers_package_list=_get_closed_drivers_packages(
+                third_party_closed_drivers_package_list=_get_third_party_closed_drivers_packages(
                     ver, kernel_variant
                 ),
                 third_party_package_list=_get_compute_packages(ver, os_version),
