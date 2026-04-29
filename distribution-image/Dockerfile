@@ -17,7 +17,7 @@
 
 #!BuildTag: opensuse/registry:%%registry_version%%-%RELEASE%
 #!BuildTag: opensuse/registry:%%registry_version%%
-#!BuildTag: opensuse/registry:3.0
+#!BuildTag: opensuse/registry:3.1
 #!BuildTag: opensuse/registry:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
@@ -30,7 +30,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of distribution-registry that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' distribution-registry | \
-    cut -d '.' -f -2)" = "3.0" ]
+    cut -d '.' -f -2)" = "3.1" ]
 RUN set -euo pipefail; zypper -n install --no-recommends systemd && \
     systemd-tmpfiles --create --root /target distribution-registry.conf
 
