@@ -93,7 +93,7 @@ RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dummy-third-party-image
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Dummy Third Party Image"
+LABEL org.opencontainers.image.title="Dummy Third Party Image for SUSE Linux Enterprise Server 15 SP7"
 LABEL org.opencontainers.image.description="Dummy Third Party Image container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="1"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
@@ -187,7 +187,7 @@ RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /etc/shadow
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.bci.dummy-third-party-image
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SLE BCI Dummy Third Party Image"
+LABEL org.opencontainers.image.title="Dummy Third Party Image for SUSE Linux Enterprise Server 15 SP7"
 LABEL org.opencontainers.image.description="Dummy Third Party Image container based on the SUSE Linux Enterprise Base Container Image."
 LABEL org.opencontainers.image.version="1"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"

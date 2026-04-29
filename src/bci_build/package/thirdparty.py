@@ -246,3 +246,10 @@ class ThirdPartyRepoMixin:
         )
 
         super().prepare_template()
+
+    @property
+    def title(self) -> str:
+        """
+        The image title that is inserted into the ``org.opencontainers.image.title`` label.
+        """
+        return f"{self.pretty_name} for {self.os_version.pretty_distribution_base_name} {self.os_version.pretty_os_version_no_dash}"
