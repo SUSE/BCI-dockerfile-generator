@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 30 10:40:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- create zypp.conf.d droplets instead of modifying zypp.conf
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
