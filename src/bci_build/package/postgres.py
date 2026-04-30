@@ -52,6 +52,7 @@ POSTGRES_CONTAINERS = [
                 f"postgresql{ver}-server",
                 "findutils",
                 "coreutils",
+                "grep",
                 "sed",
                 "tar",
                 "gzip",
