@@ -33,15 +33,8 @@ zypper --non-interactive rm -u jdupes
 # which would avoid it being installed by filesystem package
 rpm -q compat-usrmerge-tools && rpm -e compat-usrmerge-tools
 
-#======================================
-# Disable recommends
-#--------------------------------------
-sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.conf
+printf "[main]\\nsolver.onlyRequires = true\\nrpm.install.excludedocs = yes\\n" > /etc/zypp/zypp.conf.d/10-bci.conf
 
-#======================================
-# Exclude docs installation
-#--------------------------------------
-sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
 
 #======================================
 # Configure SLE BCI repositories
