@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 30 10:40:02 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- create zypp.conf.d droplets instead of modifying zypp.conf
+
+-------------------------------------------------------------------
 Tue Mar 10 21:55:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove move files that make containers unreproducible
