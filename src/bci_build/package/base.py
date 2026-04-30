@@ -48,6 +48,9 @@ zypper --non-interactive rm -u jdupes
 # which would avoid it being installed by filesystem package
 rpm -q compat-usrmerge-tools && rpm -e compat-usrmerge-tools
 
+{% if not os_version.is_sle15 -%}
+printf "[main]\\nsolver.onlyRequires = true\\nrpm.install.excludedocs = yes\\n" > /etc/zypp/zypp.conf.d/10-bci.conf
+{% else -%}
 #======================================
 # Disable recommends
 #--------------------------------------
@@ -57,6 +60,7 @@ sed -i 's/.*solver.onlyRequires.*/solver.onlyRequires = true/g' /etc/zypp/zypp.c
 # Exclude docs installation
 #--------------------------------------
 sed -i 's/.*rpm.install.excludedocs.*/rpm.install.excludedocs = yes/g' /etc/zypp/zypp.conf
+{%- endif %}
 
 {% if not os_version.is_ltss -%}
 #======================================
@@ -109,9 +113,7 @@ sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 # the host arch differs (e.g. docker with --platform doesn't affect uname)
 arch=$(rpm -q --qf %{arch} glibc)
 if [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-    sed -i "s/^# arch =.*\$/arch = i686/" /etc/zypp/zypp.conf
-    # Verify that it's applied
-    grep -q '^arch =' /etc/zypp/zypp.conf
+    printf "[main]\\narch = %s\\n" "$arch" >> /etc/zypp/zypp.conf.d/12-bci-arch.conf
 fi
 {%- endif -%}
 
