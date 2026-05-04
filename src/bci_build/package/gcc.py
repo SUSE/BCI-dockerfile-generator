@@ -12,7 +12,7 @@ from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-_GCC_VERSIONS = Literal[7, 12, 13, 14, 15]
+_GCC_VERSIONS = Literal[7, 12, 13, 14, 15, 16]
 
 # The lifecycle is two years after the XX.2 release
 # according to upstream release date at
@@ -20,6 +20,7 @@ _GCC_VERSIONS = Literal[7, 12, 13, 14, 15]
 _GCC_SL16_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
     13: datetime.date(2025, 7, 31),
     14: datetime.date(2026, 7, 31),
+    15: datetime.date(2027, 8, 31),
 }
 
 
@@ -103,5 +104,6 @@ GCC_CONTAINERS = [
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
         (15, OsVersion.TUMBLEWEED),
+        (16, OsVersion.TUMBLEWEED),
     )
 ]
