@@ -485,7 +485,11 @@ for os_version in set(ALL_BASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}:
                 {DOCKERFILE_RUN} if zypper -n install mokutil; then zypper -n clean -a; fi
                 """
             )
-            + f"{DOCKERFILE_RUN} sed -i -e 's,multiversion =.*,multiversion = ,' /etc/zypp/zypp.conf\n"
+            + (
+                f"{DOCKERFILE_RUN} sed -i -e 's,multiversion =.*,multiversion = ,' /etc/zypp/zypp.conf\n"
+                if os_version.is_sle15
+                else f"{DOCKERFILE_RUN} printf '[main]\\nmultiversion =\\n' /etc/zypp/zypp.conf.d/20-bci-no-multiversion.conf\n"
+            )
             + f"{DOCKERFILE_RUN} {LOG_CLEAN}",
             extra_files={"_constraints": generate_disk_size_constraints(8)},
         )
