@@ -30,7 +30,16 @@ podman run --rm --name kubectl \
       -v /localpath/to/customize:/home/user:Z
       registry.suse.com/suse/kubectl:1.33 kustomize --enable-helm
 ```
+## Running as a regular user
 
+The container provides a preconfigured user called "user" which can be explicitly set to lower the permissions of kubectl within the container
+
+
+```ShellSession
+podman run --rm --name kubectl \
+      --user user \
+      -v /localpath/to/kubeconfig:/home/user/.kube/config:Z \
+      registry.suse.com/suse/kubectl:1.33 version
 
 ## Licensing
 
