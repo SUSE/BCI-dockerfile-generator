@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  4 15:23:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add support end date
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
