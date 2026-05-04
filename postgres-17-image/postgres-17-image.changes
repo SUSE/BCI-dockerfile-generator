@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  4 07:11:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add grep for custom entrypoints
+
+-------------------------------------------------------------------
 Sun Apr 26 20:54:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - entrypoint update from git
