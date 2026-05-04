@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  4 07:56:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add tag for new kernel release
+
+-------------------------------------------------------------------
 Wed Apr 29 17:42:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove BCI from third-party container descriptions
