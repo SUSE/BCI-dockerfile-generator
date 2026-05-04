@@ -135,7 +135,7 @@ XORG_CLIENT_CONTAINERS = [
         supported_until=KIOSK_SUPPORT_ENDS,
         # TODO add package_version_check and tag_version
         build_stage_custom_end=textwrap.dedent(f"""\
-            {DOCKERFILE_RUN} useradd -m -u 1000 -U user
+            {DOCKERFILE_RUN} useradd -m -u 1000 -g 100 user
             """),
         custom_end=textwrap.dedent("""
             ENV DISPLAY=":0"
