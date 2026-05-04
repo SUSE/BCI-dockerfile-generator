@@ -40,9 +40,7 @@ jobs:
           [[ "$branch" =~ ^SUSE:for-deploy- ]]
           export OS_VERSION="${branch/SUSE:for-deploy-/}"
 
-          entry="${{ github.event.client_payload.slash_command.args.unnamed.all }}"
-          if [[ -z "$entry" ]]; then echo "No changelog entry provided!"; exit 1; fi
-          export entry
+          if [[ -z "{{ github.event.client_payload.slash_command.args.unnamed.all }}" ]]; then echo "No changelog entry provided!"; exit 1; fi
 
           PACKAGES="${{ github.event.client_payload.slash_command.args.named.packages }}"
           if [[ -z "$PACKAGES" ]]; then
@@ -54,7 +52,7 @@ jobs:
           poetry run scratch-build-bot \
               -vvvv --os-version $OS_VERSION \
                 add_changelog_entry \
-                "$entry"
+                '${{ github.event.client_payload.slash_command.args.unnamed.all }}'
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "pushman"
