@@ -1,6 +1,6 @@
---- entrypoint.sh	2024-08-15 16:10:04.731013750 +0200
-+++ entrypoint.sles.sh	2024-08-15 16:13:02.726848346 +0200
-@@ -360,15 +360,9 @@
+--- entrypoint.sh
++++ entrypoint.sles.sh
+@@ -359,15 +359,9 @@
      setup_aliases
  }
  
@@ -17,7 +17,7 @@
  
      if [ -n "$pid" ]; then
  	echo "Terminating $base..."
-@@ -384,16 +378,12 @@
+@@ -383,16 +377,12 @@
      trap stop_daemons TERM INT
  }
  
@@ -35,7 +35,7 @@
              ((ms-- <= 0)) && break
              usleep 10000
  	done
-@@ -405,7 +395,6 @@
+@@ -404,7 +394,6 @@
  
  stop_daemons() {
      stop_postfix "$@"
@@ -43,7 +43,7 @@
  }
  
  #
-@@ -424,18 +413,10 @@
+@@ -423,18 +412,10 @@
  # configure postfix even if postfix will not be started, to
  # allow to see the result with postconf for debugging/testing.
  configure_postfix
