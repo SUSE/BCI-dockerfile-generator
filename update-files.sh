@@ -51,4 +51,3 @@ curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver https://raw.github
 curl -sf -o src/bci_build/package/nvidia-driver/nvidia-driver-selector.sh https://raw.githubusercontent.com/fcrozat/gpu-driver-container/refs/heads/cuda-packages/sle15/official-packages/nvidia-driver-selector.sh
 curl -sf -o src/bci_build/package/nvidia-driver/extract-vmlinux https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
 curl -sf -o src/bci_build/package/nvidia-driver/NGC-DL-CONTAINER-LICENSE https://gitlab.com/nvidia/container-images/cuda/-/raw/master/NGC-DL-CONTAINER-LICENSE
-curl -sf -o src/bci_build/package/nvidia-driver/vGPU-README.md https://raw.githubusercontent.com/NVIDIA/gpu-driver-container/refs/heads/main/sle15/drivers/README.md
