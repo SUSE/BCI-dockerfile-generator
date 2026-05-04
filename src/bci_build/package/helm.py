@@ -4,6 +4,7 @@ from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
@@ -32,6 +33,7 @@ HELM_CONTAINERS = [
             "helm", helm_ver, ParseVersion.MINOR, use_target=True
         ),
         version_in_uid=False,
+        min_release_counter={OsVersion.SL16_0: 70},
         license="Apache-2.0",
         package_list=[
             "ca-certificates-mozilla",

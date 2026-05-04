@@ -3,6 +3,7 @@
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -26,6 +27,7 @@ GIT_CONTAINERS = [
         tag_version=format_version(
             git_version := get_pkg_version("git", os_version), ParseVersion.MINOR
         ),
+        min_release_counter={OsVersion.SL16_0: 80},
         additional_versions=["%%git_major_version%%"],
         version_in_uid=False,
         replacements_via_service=[
