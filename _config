@@ -3,9 +3,6 @@ Type: kiwi
 Repotype: none
 Patterntype: none
 
-# needed for busybox image building (at minimum)
-ExpandFlags: kiwi-nobasepackages
-
 %else
 %if %_repository == "containerfile"
 Type: docker
