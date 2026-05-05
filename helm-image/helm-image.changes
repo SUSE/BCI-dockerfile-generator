@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  5 13:08:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set a minrelease for SL16 to be able to migrate within the same version
+
+-------------------------------------------------------------------
 Mon May  4 07:57:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust for new version
