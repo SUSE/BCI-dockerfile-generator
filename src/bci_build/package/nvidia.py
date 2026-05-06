@@ -468,6 +468,8 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         kernel_packages = [pkg["name"] for pkg in subpackages]
         ignore_in_target_packages = open_packages + closed_packages + kernel_packages
 
+        self.prepare_extra_files()
+
         self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             packages=pkgs,
