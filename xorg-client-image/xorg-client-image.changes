@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May  6 11:19:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- next attempt at fixing gid settings
+
+-------------------------------------------------------------------
 Mon May  4 15:30:06 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - hardcode group id to 100
