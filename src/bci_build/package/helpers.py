@@ -55,5 +55,5 @@ def generate_systemd_tmpfiles_command(
 ) -> str:
     return textwrap.dedent(f"""
             {DOCKERFILE_RUN} zypper -n install --no-recommends systemd && \\
-                systemd-tmpfiles --create {"--root /target" if use_target else ""}{f" {tmpfiles_name}" if tmpfiles_name else ""}
+                systemd-tmpfiles --create{" --root /target" if use_target else ""}{f" {tmpfiles_name}" if tmpfiles_name else ""}
     """)
