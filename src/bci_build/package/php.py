@@ -8,6 +8,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.replacement import Replacement
 
@@ -68,7 +69,7 @@ RUN chmod +x /usr/local/bin/docker-php-*
             extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
         cmd = ["apache2-foreground"]
         build_stage_custom_end = (
-            generate_systemd_tmpfiles_command("apache2.conf", use_target=False)
+            generate_systemd_tmpfiles_command("apache2.conf", use_target=True)
             if os_version == OsVersion.TUMBLEWEED
             else None
         )
@@ -143,6 +144,11 @@ EXPOSE 9000
         no_recommends=False,
         version="%%php_version%%",
         tag_version=php_version,
+        from_target_image=(
+            "opensuse/tumbleweed:latest"
+            if os_version.is_tumbleweed
+            else generate_from_image_tag(os_version, "bci-base")
+        ),
         pretty_name=f"{str(php_variant)} {php_version}",
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         additional_versions=(
