@@ -68,7 +68,7 @@ RUN chmod +x /usr/local/bin/docker-php-*
             extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
         cmd = ["apache2-foreground"]
         build_stage_custom_end = (
-            generate_systemd_tmpfiles_command(None, use_target=True)
+            generate_systemd_tmpfiles_command("apache2.conf", use_target=False)
             if os_version == OsVersion.TUMBLEWEED
             else None
         )
