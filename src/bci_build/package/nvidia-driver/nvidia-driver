@@ -1,5 +1,8 @@
 #! /bin/bash -x
 # Copyright (c) 2018-2020, NVIDIA CORPORATION. All rights reserved.
+# Copyright (c) 2025-2026, SUSE LLC. All rights reserved.
+# Adaptation for SUSE Linux Enterprise of NVIDIA script
+
 
 set -eu
 
