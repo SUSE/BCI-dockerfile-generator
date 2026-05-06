@@ -17,10 +17,10 @@
 
 #!BuildTag: suse/registry:%%registry_version%%-%RELEASE%
 #!BuildTag: suse/registry:%%registry_version%%
-#!BuildTag: suse/registry:3.0
+#!BuildTag: suse/registry:3.1
 #!BuildTag: suse/registry:latest
 #!BuildName: suse-registry
-#!BuildVersion: 16.0.3.0
+#!BuildVersion: 16.0.3.1
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of distribution-registry that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' distribution-registry | \
-    cut -d '.' -f -2)" = "3.0" ]
+    cut -d '.' -f -2)" = "3.1" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
