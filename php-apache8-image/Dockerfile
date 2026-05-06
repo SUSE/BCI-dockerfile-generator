@@ -26,7 +26,7 @@ RUN set -euo pipefail; \
     zypper -n install php8 php8-cli php-composer2 php8-curl php8-zip php8-zlib php8-phar php8-mbstring apache2-mod_php8
 
 RUN set -euo pipefail; zypper -n install --no-recommends systemd && \
-    systemd-tmpfiles --create --root /target
+    systemd-tmpfiles --create apache2.conf
 
 
 # cleanup logs and temporary files
