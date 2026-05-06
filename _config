@@ -81,6 +81,8 @@ Conflict: !libstdc++-devel
 # temporary until https://src.suse.de/products/SLFO/pulls/4226 merges
 FileProvides: /usr/bin/cpio cpio
 FileProvides: /usr/bin/rpm2cpio rpm
+
+BuildFlags: container-timestamp:0
 %endif
 
 
