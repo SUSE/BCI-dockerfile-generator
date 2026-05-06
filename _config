@@ -77,6 +77,7 @@ Conflict: !libstdc++-devel
 
 # Avoid the unreleased containers
 Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init
+BuildFlags: container-timestamp:0
 
 %endif
 %endif  # is_in_project
