@@ -8,6 +8,7 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
 from bci_build.package import DevelopmentContainer
+from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.replacement import Replacement
 
 
@@ -55,6 +56,7 @@ def _create_php_bci(
 RUN chmod +x /usr/local/bin/docker-php-*
 """
     assert php_version in _PHP_VERSIONS, f"PHP version {php_version} is not supported"
+    build_stage_custom_end = None
 
     if php_variant == PhpVariant.apache:
         extra_pkgs = [f"apache2-mod_php{php_version}"]
@@ -65,6 +67,11 @@ RUN chmod +x /usr/local/bin/docker-php-*
         if os_version != OsVersion.TUMBLEWEED:
             extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
         cmd = ["apache2-foreground"]
+        build_stage_custom_end = (
+            generate_systemd_tmpfiles_command(None, use_target=True)
+            if os_version == OsVersion.TUMBLEWEED
+            else None
+        )
         custom_end = (
             common_end
             + """
@@ -190,6 +197,7 @@ zypper -n install ${{extensions[*]}}
 """,
         },
         custom_end=custom_end,
+        build_stage_custom_end=build_stage_custom_end,
     )
 
 
