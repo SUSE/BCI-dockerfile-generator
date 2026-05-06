@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May  6 20:16:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- run systemd-tmpfiles in builder stage
+
+-------------------------------------------------------------------
 Tue Mar 10 22:38:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid duplicate empty lines
