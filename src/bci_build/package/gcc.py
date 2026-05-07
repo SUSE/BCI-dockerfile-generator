@@ -14,13 +14,15 @@ from bci_build.util import ParseVersion
 
 _GCC_VERSIONS = Literal[7, 12, 13, 14, 15, 16]
 
-# The lifecycle is two years after the XX.2 release
-# according to upstream release date at
-# https://gcc.gnu.org/releases.html
+# The lifecycle complicated (tm).
+# For SLES16 public documentation is giving a bit of a hint:
+# https://documentation.suse.com/sles/16.0/html/SLE-packages-lifecycle/index.html#packages-lifecycle-toolchain-applications
+
 _GCC_SL16_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
     13: datetime.date(2025, 7, 31),
     14: datetime.date(2026, 7, 31),
-    15: datetime.date(2027, 8, 31),
+    15: datetime.date(2028, 11, 30),
+    16: datetime.date(2028, 10, 31),
 }
 
 
