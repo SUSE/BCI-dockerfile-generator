@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025-2026, SUSE LLC. All rights reserved.
+
 
 # Determines whether to use 'open' or 'proprietary' kernel modules based on detected NVIDIA GPUs.
 
