@@ -5,8 +5,10 @@ NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 """
 
 import textwrap
+from functools import lru_cache
 from pathlib import Path
 
+import requests
 from jinja2 import Template
 
 from bci_build.container_attributes import Arch
@@ -241,7 +243,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
     @property
     def image_ref_name(self) -> str:
-        # tag should match 580.126.09-sles15.7
         return f"{self.tag_version}-sles%OS_VERSION_ID_SP%"
 
     @property
@@ -274,6 +275,11 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
         assert not self.build_stage_custom_end, (
             "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
+        )
+
+        # ensure we do not ship versions that are not supported by NVIDIA datacenter
+        assert _is_datacenter_driver(self.version), (
+            f"Version '{self.version}' is not datacenter supported"
         )
 
         pkgs = self.fetch_rpm_packages()
@@ -755,29 +761,47 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     return versions
 
 
+@lru_cache(maxsize=1)
+def _get_datacenter_driver_versions():
+    """
+    Return the datacenter driver versions supported by NVIDIA.
+    """
+    res = requests.get("https://docs.nvidia.com/datacenter/tesla/drivers/releases.json")
+    res.raise_for_status()
+
+    data = res.json()
+
+    versions = []
+
+    for branch, info in data.items():
+        versions += [release["release_version"] for release in info["driver_info"]]
+
+    return versions
+
+
+def _is_datacenter_driver(version: str):
+    """
+    Check if the version is a datacenter driver version supported by NVIDIA.
+    """
+    versions = _get_datacenter_driver_versions()
+    return version in versions
+
+
 # we need to support all versions supported by the gpu operator
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
 # we should support versions only for data center
 # https://docs.nvidia.com/datacenter/tesla/index.html
-_NVIDIA_DRIVER_VERSIONS: list[tuple] = [
+_NVIDIA_DRIVER_VERSIONS: list[str] = [
     # G07
-    ("595.58.03", True),
-    ("595.45.04", False),
-    ("590.48.01", True),
+    "595.58.03",
+    "590.48.01",
     # G06
-    ("580.126.20", True),
-    ("580.126.16", False),
-    ("580.126.09", False),
-    ("580.105.08", False),
-    ("580.95.05", False),
-    ("580.82.07", False),
-    ("575.57.08", True),
-    ("570.211.01", True),
-    ("570.195.03", False),
-    ("550.163.01", True),
+    "580.126.20",
+    "575.57.08",
+    "570.211.01",
+    "550.163.01",
     # G05 - Legacy
-    # ("535.288.01", True),
-    # ("535.274.02", False),
+    # 535 and older are not planned
 ]
 
 # we need to build a container for each kernel variant
@@ -792,12 +816,19 @@ _NVIDIA_OS_VERSIONS: list[tuple] = [
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
-    for ver, is_latest_branch in _NVIDIA_DRIVER_VERSIONS:
-        driver_branch = _get_driver_branch(ver)
+    seen_versions = set()
+
+    for ver in _NVIDIA_DRIVER_VERSIONS:
+        branch = _get_driver_branch(ver)
+
+        if branch in seen_versions:
+            raise ValueError(f"Multiple versions provided for {branch}")
+        else:
+            seen_versions.add(branch)
 
         # older drivers are not available for SLE 16
         # skip the image in this case
-        if os_version == OsVersion.SL16_0 and driver_branch < 595:
+        if os_version == OsVersion.SL16_0 and branch < 595:
             continue
 
         if os_version not in NVIDIA_REPOS:
@@ -805,16 +836,14 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
 
         kernel_versions = []
 
-        # the latest image in a given branch should also include the tags
-        # expected when the container image is precompiled
-        # the expected tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
+        # these tags are expected when the container image is precompiled
+        # the tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
         # e.g. 590-6.4.0-150700.53.6-default-sles15.7
-        if is_latest_branch:
-            for kernel_version in _get_kernel_versions(kernel_variant, os_version):
-                os_tag = f"sles{os_version.os_version}"
-                kernel_versions.append(
-                    f"{driver_branch}-{kernel_version}-{kernel_variant}-{os_tag}"
-                )
+        for kernel_version in _get_kernel_versions(kernel_variant, os_version):
+            os_tag = f"sles{os_version.os_version}"
+            kernel_versions.append(
+                f"{branch}-{kernel_version}-{kernel_variant}-{os_tag}"
+            )
 
         is_default = kernel_variant == "default"
 
@@ -823,12 +852,14 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 os_version=os_version,
                 version=ver,
                 kernel_variant=kernel_variant,
-                tag_version=ver if is_default else f"{ver}-{kernel_variant}",
+                tag_version=branch if is_default else f"{branch}-{kernel_variant}",
                 additional_versions=kernel_versions,
                 version_in_uid=True,
                 use_build_flavor_in_tag=False,
                 build_flavor=(
-                    f"driver-{ver}" if is_default else f"driver-{ver}-{kernel_variant}"
+                    f"driver-{branch}"
+                    if is_default
+                    else f"driver-{branch}-{kernel_variant}"
                 ),
                 name="nvidia-driver",
                 pretty_name="NVIDIA Driver",
