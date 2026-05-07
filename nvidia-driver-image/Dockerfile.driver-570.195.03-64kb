@@ -32,6 +32,12 @@ RUN mkdir -p /tmp/
 COPY libOpenCL1-2.2.11-8.3.1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/libOpenCL1-2.2.11-8.3.1.aarch64.rpm sha256:a664cba336a0fb95fedaaf29b002ea064ef91d1b304dce263dcd1f99be03fadd
 COPY libOpenCL1-2.2.11-8.3.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/libnvidia-nscq-570-570.195.03-1.x86_64.rpm sha256:e022db1df26ed2d1f799675eff06d6064e92570f4c2df138083016a92dbdabf4
+COPY libnvidia-nscq-570-570.195.03-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/libnvidia-nscq-570-570.195.03-1.aarch64.rpm sha256:1478efb6ce24a2b0c86a9970bd8754a938f37846de8cfe7427625c7473be5f65
+COPY libnvidia-nscq-570-570.195.03-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/libnvsdm-570-570.195.03-1.x86_64.rpm sha256:25b4c8b29a509aec28e9767cb094b82288f0807442cba422222a7451d3fee14f
+COPY libnvsdm-570-570.195.03-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-common-G06-570.195.03-1.x86_64.rpm sha256:7464655a9c686d18cbcec1429240d308616894a841481f813b6f3b1f04841f59
 COPY nvidia-common-G06-570.195.03-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-common-G06-570.195.03-1.aarch64.rpm sha256:7b2c293c97097c2d21f2239fb6d6570eb4e6f89d9828a3675c4556214aaf3288
@@ -50,6 +56,10 @@ COPY nvidia-driver-G06-kmp-64kb-570.195.03-1.aarch64.rpm /tmp/
 COPY nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm sha256:01f2f3380df4ba9e0e9b523bea93de6ec36e5e4e97695fa29619ef4af7e8d3c7
 COPY nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-imex-570-570.195.03-1.x86_64.rpm sha256:306a8cf5f5711e4dd5c84b61dcd46b8649171e930a67e5a31db5b115d28eb671
+COPY nvidia-imex-570-570.195.03-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-imex-570-570.195.03-1.aarch64.rpm sha256:c520f29d1855609659f2f2cea3589562474ff97b2ab0b27d0f7f12437681cd69
+COPY nvidia-imex-570-570.195.03-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-modprobe-570.195.03-1.x86_64.rpm sha256:8118da1dc029897ff617dd8c2ced912594f96e4e27a3acb1048f6f91e1f7cab1
 COPY nvidia-modprobe-570.195.03-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-modprobe-570.195.03-1.aarch64.rpm sha256:2e3f16f8b88de0821839c785a432c2f234c3a1c97391ef422ed6af1ae501063c
@@ -60,6 +70,10 @@ COPY nvidia-open-driver-G06-kmp-64kb-570.195.03-1.aarch64.rpm /tmp/
 COPY nvidia-persistenced-570.195.03-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-persistenced-570.195.03-1.aarch64.rpm sha256:4a1690fa421e4c3b5e10c3a49ed62ec6f4c23cbfb452c671f11bd91e01e3349f
 COPY nvidia-persistenced-570.195.03-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvlsm-2025.10.12-1.x86_64.rpm sha256:dd3fd41f09c905497f68778f29ce3bf77719297b6ec730eea43aefcc5e7dc8cb
+COPY nvlsm-2025.10.12-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvlsm-2025.10.12-1.aarch64.rpm sha256:ae6ceb2a661baaa5c310db94f7d31c55e858c512c8d6b91226c1eecb639b3c33
+COPY nvlsm-2025.10.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-6.4.0-150700.51.1.aarch64.rpm
 COPY kernel-64kb-6.4.0-150700.51.1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-64kb/kernel-64kb-devel-6.4.0-150700.51.1.aarch64.rpm
@@ -147,12 +161,15 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
             /tmp/libOpenCL1-2.2.11-8.3.1.aarch64.rpm \
+            /tmp/libnvidia-nscq-570-570.195.03-1.aarch64.rpm \
             /tmp/nvidia-common-G06-570.195.03-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-570.195.03-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-570.195.03-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
+            /tmp/nvidia-imex-570-570.195.03-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.195.03-1.aarch64.rpm \
-            /tmp/nvidia-persistenced-570.195.03-1.aarch64.rpm; \
+            /tmp/nvidia-persistenced-570.195.03-1.aarch64.rpm \
+            /tmp/nvlsm-2025.10.12-1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi

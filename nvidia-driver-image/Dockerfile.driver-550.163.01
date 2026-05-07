@@ -44,6 +44,10 @@ RUN mkdir -p /tmp/
 COPY kernel-firmware-nvidia-gspx-G06-550.163.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/kernel-firmware-nvidia-gspx-G06-550.163.01-1.aarch64.rpm sha256:a2415c787ce57ce19752041194e6984f4a269aa085eb65e8871f6938a9f1f842
 COPY kernel-firmware-nvidia-gspx-G06-550.163.01-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/libnvidia-nscq-550-550.163.01-1.x86_64.rpm sha256:2ab2ab555dcee055dbe33fc0810e2a1fcdb60b8534c701f66b54920a13cd2db6
+COPY libnvidia-nscq-550-550.163.01-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/libnvidia-nscq-550-550.163.01-1.aarch64.rpm sha256:0793a1e91e66195bff8644a1924160f911a1e227cd6413a77dd0df13f481aaa3
+COPY libnvidia-nscq-550-550.163.01-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-compute-G06-550.163.01-1.x86_64.rpm sha256:9d040f728d0fe4975a66a8b782f6266d080b03f43a0170f295f3b55530606fff
 COPY nvidia-compute-G06-550.163.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-compute-G06-550.163.01-1.aarch64.rpm sha256:65e4e966c7fb3b0d376931125924d28010da1108b1c1d54813df1406a7f390d7
@@ -64,10 +68,18 @@ COPY nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm /tmp/
 COPY nvidia-gl-G06-550.163.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-gl-G06-550.163.01-1.aarch64.rpm sha256:e64f30091a81371b6ad3056f3dd820749b90d7177e3e632fe629a12f5d997ffa
 COPY nvidia-gl-G06-550.163.01-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-imex-550-550.163.01-1.x86_64.rpm sha256:d8538161733850fa5313aac53f9c573a7d8bb8a9ecbd51d514ad55da4c3b0c1a
+COPY nvidia-imex-550-550.163.01-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-imex-550-550.163.01-1.aarch64.rpm sha256:8575a7d5f9b4739bd31f7ad667d5af3f0c2ef6fd2826a1406bd1213f8a74fd8f
+COPY nvidia-imex-550-550.163.01-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-open-driver-G06-kmp-default-550.163.01_k6.4.0_150600.23.38-1.x86_64.rpm sha256:d0faf7ca58b037892f6d59a0f51d3010b19e85dddd148b0e01d77d0984b431e8
 COPY nvidia-open-driver-G06-kmp-default-550.163.01_k6.4.0_150600.23.38-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-open-driver-G06-kmp-default-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm sha256:16ab2f19f7f2b99e11880f80ae673a991cdb7e53db25220c0a27a54aa949ef88
 COPY nvidia-open-driver-G06-kmp-default-550.163.01_k6.4.0_150600.23.38-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvlsm-2025.10.12-1.x86_64.rpm sha256:dd3fd41f09c905497f68778f29ce3bf77719297b6ec730eea43aefcc5e7dc8cb
+COPY nvlsm-2025.10.12-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvlsm-2025.10.12-1.aarch64.rpm sha256:ae6ceb2a661baaa5c310db94f7d31c55e858c512c8d6b91226c1eecb639b3c33
+COPY nvlsm-2025.10.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-6.4.0-150700.51.1.x86_64.rpm
 COPY kernel-default-6.4.0-150700.51.1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-6.4.0-150700.51.1.aarch64.rpm
@@ -192,17 +204,23 @@ COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
         rpm --root /target -Uvh --nodeps \
+            /tmp/libnvidia-nscq-550-550.163.01-1.x86_64.rpm \
             /tmp/nvidia-compute-G06-550.163.01-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G06-550.163.01-1.x86_64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm \
-            /tmp/nvidia-gl-G06-550.163.01-1.x86_64.rpm; \
+            /tmp/nvidia-gl-G06-550.163.01-1.x86_64.rpm \
+            /tmp/nvidia-imex-550-550.163.01-1.x86_64.rpm \
+            /tmp/nvlsm-2025.10.12-1.x86_64.rpm; \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
+            /tmp/libnvidia-nscq-550-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-550.163.01-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
-            /tmp/nvidia-gl-G06-550.163.01-1.aarch64.rpm; \
+            /tmp/nvidia-gl-G06-550.163.01-1.aarch64.rpm \
+            /tmp/nvidia-imex-550-550.163.01-1.aarch64.rpm \
+            /tmp/nvlsm-2025.10.12-1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi

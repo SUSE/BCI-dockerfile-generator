@@ -48,6 +48,12 @@ COPY libnvidia-gpucomp-580.126.16-1.aarch64.rpm /tmp/
 COPY libnvidia-ml-580.126.16-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/libnvidia-ml-580.126.16-1.aarch64.rpm sha256:bcd8caed4f44c3152f0fb2b66a1a1ecfd808bf8e033e794018a98432a769d51c
 COPY libnvidia-ml-580.126.16-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/libnvidia-nscq-580.126.16-1.x86_64.rpm sha256:c95a5edafb3a1e4afbd1d28e2bbf1068135dd3287f0bc53686e22d1f6b5368ae
+COPY libnvidia-nscq-580.126.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/libnvidia-nscq-580.126.16-1.aarch64.rpm sha256:d6512c31aa43dae60bf34be0ece8e8ac0f1b925cc15b68ab72ca9a55a2b6bb26
+COPY libnvidia-nscq-580.126.16-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/libnvsdm-580.126.16-1.x86_64.rpm sha256:182a01aa3b708f473e9abbae8890b971fb109dc9073b8fc34dae44097df2482e
+COPY libnvsdm-580.126.16-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-common-G06-580.126.16-1.x86_64.rpm sha256:3c4bcc31e19ee8704e29a36cab662bc4cc06e8537bb91ecaf9d9f53031458386
 COPY nvidia-common-G06-580.126.16-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-common-G06-580.126.16-1.aarch64.rpm sha256:29f0fb9a32f4e55f9b6be92cc1d631b0ac27d7eb53da533f6dcab5a2b000930f
@@ -68,6 +74,14 @@ COPY nvidia-driver-G06-580.126.16-1.aarch64.rpm /tmp/
 COPY nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm sha256:01f2f3380df4ba9e0e9b523bea93de6ec36e5e4e97695fa29619ef4af7e8d3c7
 COPY nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-fabricmanager-580.126.16-1.x86_64.rpm sha256:49124082cb9a5ce41125f84e43509b53c01ec69015e9ccaef2f5b253c7ac5306
+COPY nvidia-fabricmanager-580.126.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-fabricmanager-580.126.16-1.aarch64.rpm sha256:518514253571f1ce0cc06e8083970050442c83801ed6878d80ee987888f18a9a
+COPY nvidia-fabricmanager-580.126.16-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-imex-580.126.16-1.x86_64.rpm sha256:1079856b7b41f51a515e6fa1ae9d8511e2603666f9e8249cf281d0a972248c9b
+COPY nvidia-imex-580.126.16-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-imex-580.126.16-1.aarch64.rpm sha256:a075e210bf65c14d644f946c40d05c970061295671e43dab0e9daeda994859d7
+COPY nvidia-imex-580.126.16-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-modprobe-580.126.16-1.x86_64.rpm sha256:21a0b339166cb9adfd3246263351fbf6bba43936619f152465f9f8e72d5e06f2
 COPY nvidia-modprobe-580.126.16-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-modprobe-580.126.16-1.aarch64.rpm sha256:3199ed1d9bbfc3f56678459e9ce7bc55f4f3f32576e188ffcf3a450f15cd2eb3
@@ -80,6 +94,10 @@ COPY nvidia-open-driver-G06-580.126.16-1.aarch64.rpm /tmp/
 COPY nvidia-persistenced-580.126.16-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-persistenced-580.126.16-1.aarch64.rpm sha256:34c6277276ca03a8d3d83b1e5c6434fd820b30f8a8981baf7dddb92f92201691
 COPY nvidia-persistenced-580.126.16-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvlsm-2025.10.12-1.x86_64.rpm sha256:dd3fd41f09c905497f68778f29ce3bf77719297b6ec730eea43aefcc5e7dc8cb
+COPY nvlsm-2025.10.12-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvlsm-2025.10.12-1.aarch64.rpm sha256:ae6ceb2a661baaa5c310db94f7d31c55e858c512c8d6b91226c1eecb639b3c33
+COPY nvlsm-2025.10.12-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/x86_64/kernel-default/kernel-default-6.4.0-150700.51.1.x86_64.rpm
 COPY kernel-default-6.4.0-150700.51.1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLE-15-SP7:GA/pool/aarch64/kernel-default/kernel-default-6.4.0-150700.51.1.aarch64.rpm
@@ -235,12 +253,17 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/libnvidia-cfg-580.126.16-1.x86_64.rpm \
             /tmp/libnvidia-gpucomp-580.126.16-1.x86_64.rpm \
             /tmp/libnvidia-ml-580.126.16-1.x86_64.rpm \
+            /tmp/libnvidia-nscq-580.126.16-1.x86_64.rpm \
+            /tmp/libnvsdm-580.126.16-1.x86_64.rpm \
             /tmp/nvidia-common-G06-580.126.16-1.x86_64.rpm \
             /tmp/nvidia-compute-G06-580.126.16-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G06-580.126.16-1.x86_64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm \
+            /tmp/nvidia-fabricmanager-580.126.16-1.x86_64.rpm \
+            /tmp/nvidia-imex-580.126.16-1.x86_64.rpm \
             /tmp/nvidia-modprobe-580.126.16-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-580.126.16-1.x86_64.rpm; \
+            /tmp/nvidia-persistenced-580.126.16-1.x86_64.rpm \
+            /tmp/nvlsm-2025.10.12-1.x86_64.rpm; \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
@@ -249,12 +272,16 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/libnvidia-cfg-580.126.16-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-580.126.16-1.aarch64.rpm \
             /tmp/libnvidia-ml-580.126.16-1.aarch64.rpm \
+            /tmp/libnvidia-nscq-580.126.16-1.aarch64.rpm \
             /tmp/nvidia-common-G06-580.126.16-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-580.126.16-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-580.126.16-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
+            /tmp/nvidia-fabricmanager-580.126.16-1.aarch64.rpm \
+            /tmp/nvidia-imex-580.126.16-1.aarch64.rpm \
             /tmp/nvidia-modprobe-580.126.16-1.aarch64.rpm \
-            /tmp/nvidia-persistenced-580.126.16-1.aarch64.rpm; \
+            /tmp/nvidia-persistenced-580.126.16-1.aarch64.rpm \
+            /tmp/nvlsm-2025.10.12-1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
