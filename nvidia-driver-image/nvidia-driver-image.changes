@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  7 09:15:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Cleanup versions that are no longer required
+
+-------------------------------------------------------------------
 Thu May  7 08:21:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add NVIDIA fabric manager
