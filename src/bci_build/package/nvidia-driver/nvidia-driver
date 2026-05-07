@@ -1,5 +1,8 @@
 #! /bin/bash -x
 # Copyright (c) 2018-2020, NVIDIA CORPORATION. All rights reserved.
+# Copyright (c) 2025-2026, SUSE LLC. All rights reserved.
+# Adaptation for SUSE Linux Enterprise of NVIDIA script
+
 
 set -eu
 
@@ -34,6 +37,31 @@ _assert_nvswitch_system() {
     fi
     return 0
 }
+
+_assert_nvlink5_system() (
+    for dir in /sys/class/infiniband/*/device; do
+        # Define the path to the VPD file
+        vpd_file="$dir/vpd"
+
+        # Check if the VPD file exists
+        if [ -f "$vpd_file" ]; then
+            # Search for 'SW_MNG' in the VPD file
+            if grep -q "SW_MNG" "$vpd_file"; then
+                echo "Detected NVLink5+ system"
+                return 0
+            fi
+        fi
+    done
+    return 1
+)
+
+_ensure_nvlink5_prerequisites() (
+    until  lsmod | grep mlx5_core > /dev/null 2>&1 && lsmod | grep ib_umad > /dev/null 2>&1;
+    do
+        echo "waiting for the mlx5_core and ib_umad kernel modules to be loaded"
+        sleep 10
+    done
+)
 
 # For each kernel module configuration file mounted into the container,
 # parse the file contents and extract the custom module parameters that
@@ -85,6 +113,47 @@ _get_module_params() {
     fi
 }
 
+_start_daemons() {
+    echo "Starting NVIDIA persistence daemon..."
+    nvidia-persistenced --persistence-mode
+
+    if [ "${DRIVER_TYPE}" = "vgpu" ]; then
+        echo "Copying gridd.conf..."
+        cp /drivers/gridd.conf /etc/nvidia/gridd.conf
+        if [ "${VGPU_LICENSE_SERVER_TYPE}" = "NLS" ]; then
+            echo "Copying ClientConfigToken..."
+            mkdir -p  /etc/nvidia/ClientConfigToken/
+            cp /drivers/ClientConfigToken/* /etc/nvidia/ClientConfigToken/
+        fi
+
+        echo "Starting nvidia-gridd.."
+        LD_LIBRARY_PATH=/usr/lib64/nvidia/gridd nvidia-gridd
+
+        # Start virtual topology daemon
+        _start_vgpu_topology_daemon
+    fi
+
+    if _assert_nvlink5_system; then
+        _ensure_nvlink5_prerequisites || return 1
+        echo "Starting NVIDIA fabric manager daemon for NVLink5+..."
+
+        fm_config_file=/usr/share/nvidia/nvswitch/fabricmanager.cfg
+        fm_pid_file=/var/run/nvidia-fabricmanager/nv-fabricmanager.pid
+        nvlsm_config_file=/usr/share/nvidia/nvlsm/nvlsm.conf
+        nvlsm_pid_file=/var/run/nvidia-fabricmanager/nvlsm.pid
+        /usr/bin/nvidia-fabricmanager-start.sh --mode start \
+                                               --fm-config-file $fm_config_file \
+                                               --fm-pid-file $fm_pid_file \
+                                               --nvlsm-config-file $nvlsm_config_file \
+                                               --nvlsm-pid-file $nvlsm_pid_file
+
+    # If not a NVLink5+ switch, check for the presence of NVLink4 (or below) switches
+    elif _assert_nvswitch_system; then
+        echo "Starting NVIDIA fabric manager daemon..."
+        nv-fabricmanager -c /usr/share/nvidia/nvswitch/fabricmanager.cfg
+    fi
+}
+
 # Load the kernel modules and start persistenced.
 _load_driver() {
     echo "Parsing kernel module parameters..."
@@ -133,32 +202,7 @@ _load_driver() {
     modprobe nvidia-modeset "${NVIDIA_MODESET_MODULE_PARAMS[@]}"
     set +o xtrace -o nounset
 
-    echo "Starting NVIDIA persistence daemon..."
-    nvidia-persistenced --persistence-mode
-
-    if [ "${DRIVER_TYPE}" = "vgpu" ]; then
-        echo "Copying gridd.conf..."
-        cp /drivers/gridd.conf /etc/nvidia/gridd.conf
-        if [ "${VGPU_LICENSE_SERVER_TYPE}" = "NLS" ]; then
-            echo "Copying ClientConfigToken..."
-            mkdir -p  /etc/nvidia/ClientConfigToken/
-            cp /drivers/ClientConfigToken/* /etc/nvidia/ClientConfigToken/
-        fi
-
-        echo "Starting nvidia-gridd.."
-        LD_LIBRARY_PATH=/usr/lib64/nvidia/gridd nvidia-gridd
-
-        # Start virtual topology daemon
-        _start_vgpu_topology_daemon
-    fi
-
-    if _assert_nvswitch_system; then
-        echo "Starting NVIDIA fabric manager daemon..."
-        nv-fabricmanager -c /usr/share/nvidia/nvswitch/fabricmanager.cfg
-        echo "Starting NVLink Subnet Manager daemon..."
-        nvlsm -c /usr/share/nvidia/nvswitch/fabricmanager.cfg
-    fi
-    return 0
+    _start_daemons
 }
 
 # Stop a daemon by sending SIGTERM and waiting for it to exit.

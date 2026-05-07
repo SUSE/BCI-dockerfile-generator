@@ -470,6 +470,26 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
         self.prepare_extra_files()
 
+        # These packages should only be in the final layer, not in driver build layers
+        # Other packages from third_party_package_list (dkms, nvidia-compute-*, etc.) ARE needed
+        # in driver build layers for DKMS compilation
+        target_layer_only_packages = [
+            "libnvidia-nscq",
+            "libnvidia-nscq-550",
+            "libnvidia-nscq-570",
+            "libnvidia-nscq-575",
+            "libnvsdm",
+            "libnvsdm-570",
+            "libnvsdm-575",
+            "libnvsdm",
+            "nvidia-fabricmanager",
+            "nvidia-imex",
+            "nvidia-imex-570",
+            "nvidia-imex-575",
+            "nvidia-imex-550",
+            "nvlsm",
+        ]
+
         self.build_stage_custom_end = CUSTOM_END_TEMPLATE.render(
             image=self,
             packages=pkgs,
@@ -478,12 +498,15 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                 pkg
                 for pkg in pkgs
                 if pkg.name not in closed_packages
+                and pkg.name not in target_layer_only_packages
                 and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
             get_closed_packages_for_arch=lambda arch: [
                 pkg
                 for pkg in pkgs
-                if pkg.name not in open_packages and pkg.arch in ARCH_FILENAME_MAP[arch]
+                if pkg.name not in open_packages
+                and pkg.name not in target_layer_only_packages
+                and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
             get_target_packages_for_arch=lambda arch: [
                 pkg
@@ -582,7 +605,33 @@ def _get_compute_packages(
     packages: list[ThirdPartyPackage] = [
         # required on all versions and not tied to the driver version
         ThirdPartyPackage("nvidia-driver-assistant"),
+        ThirdPartyPackage("nvlsm"),
     ]
+
+    if driver_branch >= 580:
+        packages += [
+            ThirdPartyPackage("libnvidia-nscq", version=driver_version),
+            ThirdPartyPackage("libnvsdm", version=driver_version, arch=Arch.X86_64),
+            ThirdPartyPackage("nvidia-imex", version=driver_version),
+            ThirdPartyPackage("nvidia-fabricmanager", version=driver_version),
+        ]
+    else:
+        packages += [
+            ThirdPartyPackage(
+                "libnvidia-nscq-" + str(driver_branch), version=driver_version
+            ),
+            ThirdPartyPackage(
+                "nvidia-imex-" + str(driver_branch), version=driver_version
+            ),
+        ]
+        if driver_branch >= 560:
+            packages += [
+                ThirdPartyPackage(
+                    "libnvsdm-" + str(driver_branch),
+                    version=driver_version,
+                    arch=Arch.X86_64,
+                ),
+            ]
 
     # select the correct compute and common packages for each version
     # these are required on all versions, but package name varies
