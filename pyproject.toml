@@ -22,7 +22,7 @@ dependencies = [
     "GitPython >=3.1.50",
     "oras >=0.2.2",
     "requests >= 2",
-    "urllib3 >= 2.5",
+    "urllib3 >= 2.7.0",
     "version-utils >= 0.3.2",
 ]
 
