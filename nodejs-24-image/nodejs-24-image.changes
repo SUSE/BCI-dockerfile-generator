@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 11 16:32:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- split into base and micro variants
+
+-------------------------------------------------------------------
 Tue Mar 24 15:14:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove update-alternatives from SLFO package list
