@@ -30,9 +30,9 @@ helm install --wait gpu-operator \
      --version=v26.3.1 \
      --set driver.repository=registry.suse.com/third-party/nvidia \
      --set driver.usePrecompiled=true \
-     --set driver.version="<driver-branch> \
+     --set driver.version=<driver-branch> \
      --set toolkit.env[0].name=CONTAINERD_SOCKET \
-     --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock"
+     --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock
 ```
 
 ## Licensing
