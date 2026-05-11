@@ -13,7 +13,7 @@
 To deploy an application, install dependencies, copy the sources, and configure the application's main script:
 
 ```Dockerfile
-FROM registry.suse.com/bci/nodejs:24
+FROM registry.suse.com/bci/nodejs:24-base
 
 WORKDIR /app
 
@@ -38,13 +38,13 @@ The example above assumes that there is a `package-lock.lock` file in the applic
 To generate a `package-lock.lock` file, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/nodejs:24 npm install --package-lock-only
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/nodejs:24-base npm install --package-lock-only
 ```
 
 To run a single script inside a container, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/nodejs:24 node script.js
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/nodejs:24-base node script.js
 ```
 
 ## Licensing
