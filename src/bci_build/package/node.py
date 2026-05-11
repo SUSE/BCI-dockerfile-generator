@@ -1,6 +1,7 @@
 """Node.js BCI container"""
 
 import datetime
+from itertools import product
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
@@ -48,7 +49,6 @@ def _get_node_kwargs(
             and build_flavor != "micro"
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
-        "use_build_flavor_in_tag": (build_flavor == "micro"),
         "package_name": f"nodejs-{ver}-image",
         "pretty_name": f"Node.js {ver} development",
         "from_target_image": (
@@ -59,7 +59,8 @@ def _get_node_kwargs(
         "additional_names": ["node"],
         "additional_versions": (
             [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
-        ),
+        )
+        + ([f"{ver}"] if build_flavor == "base" else []),
         "version": node_version_replacement,
         "support_level": SupportLevel.L3,
         "tag_version": str(ver),
@@ -88,12 +89,12 @@ NODE_CONTAINERS = [
     for node_version, os_version in (
         (22, OsVersion.SP7),
         (22, OsVersion.SL16_0),
-        (24, OsVersion.SL16_0),
-        (24, OsVersion.SL16_1),
     )
 ] + [
-    DevelopmentContainer(**_get_node_kwargs(24, OsVersion.TUMBLEWEED, build_flavor))
-    for build_flavor in ("base", "micro")
+    DevelopmentContainer(**_get_node_kwargs(24, os_version, build_flavor))
+    for os_version, build_flavor in product(
+        (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED), ("base", "micro")
+    )
 ]
 
 NODE_CRATE = ContainerCrate(NODE_CONTAINERS)
