@@ -34,17 +34,17 @@ jobs:
         id: vars
         run: |
           # this returns SUSE:$branch_name
-          branch="${{ github.event.client_payload.pull_request.head.label }}"
+          branch="${GITHUB_EVENT_CLIENT_PAYLOAD_PULL_REQUEST_HEAD_LABEL}"
           if [[ -z "$branch" ]]; then echo "No branch set!"; exit 1; fi
           # fail if the origin branch is wrong
           [[ "$branch" =~ ^SUSE:for-deploy- ]]
           export OS_VERSION="${branch/SUSE:for-deploy-/}"
 
-          entry="${{ github.event.client_payload.slash_command.args.unnamed.all }}"
+          entry="${GITHUB_EVENT_CLIENT_PAYLOAD_SLASH_COMMAND_ARGS_UNNAMED_ALL}"
           if [[ -z "$entry" ]]; then echo "No changelog entry provided!"; exit 1; fi
           export entry
 
-          PACKAGES="${{ github.event.client_payload.slash_command.args.named.packages }}"
+          PACKAGES="${GITHUB_EVENT_CLIENT_PAYLOAD_SLASH_COMMAND_ARGS_NAMED_PACKAGES}"
           if [[ -z "$PACKAGES" ]]; then
               unset PACKAGES
           else
@@ -58,6 +58,9 @@ jobs:
         env:
           OSC_PASSWORD: ${{ secrets.OSC_PASSWORD }}
           OSC_USER: "pushman"
+          GITHUB_EVENT_CLIENT_PAYLOAD_PULL_REQUEST_HEAD_LABEL: ${{ github.event.client_payload.pull_request.head.label }}
+          GITHUB_EVENT_CLIENT_PAYLOAD_SLASH_COMMAND_ARGS_UNNAMED_ALL: ${{ github.event.client_payload.slash_command.args.unnamed.all }}
+          GITHUB_EVENT_CLIENT_PAYLOAD_SLASH_COMMAND_ARGS_NAMED_PACKAGES: ${{ github.event.client_payload.slash_command.args.named.packages }}
 
       - name: Add reaction to the original comment on success
         if: ${{ success() }}
