@@ -616,7 +616,6 @@ def _get_compute_packages(
 
     if driver_branch >= 580:
         packages += [
-            ThirdPartyPackage("infiniband-diags"),
             ThirdPartyPackage("libnvidia-nscq", version=driver_version),
             ThirdPartyPackage("libnvsdm", version=driver_version, arch=Arch.X86_64),
             ThirdPartyPackage("nvidia-imex", version=driver_version),
@@ -737,6 +736,7 @@ def _get_packages(os_version: OsVersion):
         Package("sed", PackageType.IMAGE),
         Package("util-linux", PackageType.IMAGE),
         Package("util-linux-systemd", PackageType.IMAGE),
+        Package("infiniband-diags", PackageType.IMAGE),
     ]
 
     if os_version == OsVersion.SL16_0:
