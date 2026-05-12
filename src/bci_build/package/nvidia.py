@@ -616,6 +616,7 @@ def _get_compute_packages(
 
     if driver_branch >= 580:
         packages += [
+            ThirdPartyPackage("infiniband-diags"),
             ThirdPartyPackage("libnvidia-nscq", version=driver_version),
             ThirdPartyPackage("libnvsdm", version=driver_version, arch=Arch.X86_64),
             ThirdPartyPackage("nvidia-imex", version=driver_version),
