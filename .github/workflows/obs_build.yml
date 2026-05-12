@@ -50,6 +50,7 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body-includes: "Created a staging project on OBS for ${{ matrix.os_version }}"
+          comment-author: "github-actions[bot]"
           direction: last
 
       - name: cleanup the previously created staging project & branch
