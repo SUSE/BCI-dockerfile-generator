@@ -736,6 +736,7 @@ def _get_packages(os_version: OsVersion):
         Package("sed", PackageType.IMAGE),
         Package("util-linux", PackageType.IMAGE),
         Package("util-linux-systemd", PackageType.IMAGE),
+        Package("infiniband-diags", PackageType.IMAGE),
     ]
 
     if os_version == OsVersion.SL16_0:
