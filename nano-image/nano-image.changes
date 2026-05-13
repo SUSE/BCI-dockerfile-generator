@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 13 21:04:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add a pause binary
+
+-------------------------------------------------------------------
 Wed Apr 29 08:53:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove duplicated removal of Index.db
