@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 13 07:53:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- updated tags for new kernel release
+
+-------------------------------------------------------------------
 Tue May 12 11:01:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add infiniband-diags package for nvlink5 support
