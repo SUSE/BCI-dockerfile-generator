@@ -3,7 +3,7 @@
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -19,7 +19,7 @@ HELM_CONTAINERS = [
         pretty_name="Helm (Kubernetes Package Manager)",
         exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=True,
         version="%%helm_version%%",
         tag_version=format_version(
