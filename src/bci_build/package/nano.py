@@ -1,6 +1,7 @@
 """Base container images maintained by the BCI generator"""
 
 import textwrap
+from pathlib import Path
 
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
@@ -36,6 +37,9 @@ NANO_CONTAINERS = [
         custom_description="A nano environment for containers {based_on_container}.",
         from_target_image="scratch",
         package_list=[pkg.name for pkg in _get_nano_package_list(os_version)],
+        extra_files={
+            "pause.c": (Path(__file__).parent / "nano" / "pause.c").read_bytes(),
+        },
         build_stage_custom_end=(
             (
                 f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
@@ -43,8 +47,14 @@ NANO_CONTAINERS = [
                 else ""
             )
             + textwrap.dedent(f"""
-            {DOCKERFILE_RUN} rpm --root /target -e --nodeps bash glibc{"" if os_version.is_sle15 else " compat-usrmerge-tools"} coreutils terminfo-base \\
-                $(rpm --root /target -qa --qf '%{{NAME}}\\n' | grep -E '^lib')
+            {DOCKERFILE_RUN} rpm --root /target -e --noscripts --nodeps bash glibc{"" if os_version.is_sle15 else " compat-usrmerge-tools"} coreutils terminfo-base \\
+                $(rpm --root /target -qa --qf '%{{NAME}}\\n' | grep -E '^lib') \\
+                && rm /target/usr/{{sbin,bin}}/* -v
+
+            COPY pause.c ./pause.c
+            {DOCKERFILE_RUN} zypper -n install glibc-devel-static gcc binutils \\
+                && gcc -static -nostartfiles -fno-stack-protector pause.c -o /target/usr/bin/pause \\
+                && strip -s /target/usr/bin/pause
 
             {DOCKERFILE_RUN} zypper -n install jdupes \\
                 && jdupes -1 -L -r /target/usr/
