@@ -794,7 +794,7 @@ def _is_datacenter_driver(version: str):
 # https://docs.nvidia.com/datacenter/tesla/index.html
 _NVIDIA_DRIVER_VERSIONS: list[str] = [
     # G07
-    "595.58.03",
+    "595.71.05",
     "590.48.01",
     # G06
     "580.126.20",
