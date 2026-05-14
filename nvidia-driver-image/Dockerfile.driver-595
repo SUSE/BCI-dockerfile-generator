@@ -28,7 +28,7 @@
 #!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.5-default-sles16.0
 #!BcntSyncTag: nvidia-driver-image
 #!BuildName: nvidia-driver-595
-#!BuildVersion: 16.0.595.58.03
+#!BuildVersion: 16.0.595.71.05
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM registry.suse.com/bci/bci-base:16.0 AS nvidia-driver-builder
 COPY --from=target / /target
@@ -41,64 +41,64 @@ RUN mkdir -p /tmp/
 COPY dkms-3.4.0-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/dkms-3.4.0-1.noarch.rpm dkms-3.4.0-1.aarch64.rpm sha256:4d64074adf2d57f87f5424b76577fa0ff6bda2d61b5b7f896e925db6d846378c
 COPY dkms-3.4.0-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-cfg-595.58.03-1.x86_64.rpm sha256:d2c7b5863c5f0180f2c0f7d748f0dd80bb6f32e1fffe28fa557b70761ef777d7
-COPY libnvidia-cfg-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-cfg-595.58.03-1.aarch64.rpm sha256:98303a13e8ae977aed7f98717dea7b1b75bc5e72f513a99ac3929dddeb26000d
-COPY libnvidia-cfg-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-gpucomp-595.58.03-1.x86_64.rpm sha256:5a70643c6caeeb79cfa7e66c93ba365428e49a70d37f29821590c1ab5637fb9f
-COPY libnvidia-gpucomp-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-gpucomp-595.58.03-1.aarch64.rpm sha256:3c701d1964091275fea29d9a190d0ace990b4484833ce09b1cf6c18322a8122d
-COPY libnvidia-gpucomp-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-ml-595.58.03-1.x86_64.rpm sha256:d47f317cded8dd317061dc48e2b6f88ee6e3ecda0d4b8116ed477096322a7fd4
-COPY libnvidia-ml-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-ml-595.58.03-1.aarch64.rpm sha256:ead59351d47bcac42b0d98ec2d0554ff2dc585265c024afc4f76a80e22ee6855
-COPY libnvidia-ml-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-nscq-595.58.03-1.x86_64.rpm sha256:2bda7df562b4508df639f37b00c83446710aac4f041d9d8e27ed2794adb2c49a
-COPY libnvidia-nscq-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-nscq-595.58.03-1.aarch64.rpm sha256:522b37b2c115aff788b3fab33e90c3732d364d4f98585f8b07f1248f94516f9d
-COPY libnvidia-nscq-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvsdm-595.58.03-1.x86_64.rpm sha256:3a11bb9d8463eb52f4629553c76a8ed74e8d07c20bc00d8dfe69e21285d53547
-COPY libnvsdm-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-common-G07-595.58.03-1.x86_64.rpm sha256:1728682c0ae5cb8aa4c3192af8d8e0662844bbba959fb594d710442808b1fe47
-COPY nvidia-common-G07-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-common-G07-595.58.03-1.aarch64.rpm sha256:b5b284a7f1f1ed45576f8e65e5e9a2f5213dbb577c028fde483f0aef6613d324
-COPY nvidia-common-G07-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-compute-G07-595.58.03-1.x86_64.rpm sha256:45589148607b2ba2f21f3bd383958b328c99d4440c3095cb109b02e9b52b38ad
-COPY nvidia-compute-G07-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-compute-G07-595.58.03-1.aarch64.rpm sha256:4b0707164074b9918888c7b7abe66427217f981f1175e564415c02babebfbf8b
-COPY nvidia-compute-G07-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-compute-utils-G07-595.58.03-1.x86_64.rpm sha256:fd456f0f08e64eda1a18b87a6da769a94baf4a28c92f1b41b35fd4e9707d7fe0
-COPY nvidia-compute-utils-G07-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-compute-utils-G07-595.58.03-1.aarch64.rpm sha256:faac393bfc70e453451a7697308e84d5fc5daf79db0355eef8da9ade895c9111
-COPY nvidia-compute-utils-G07-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-G07-595.58.03-1.x86_64.rpm sha256:ac766ef455b057576cc5ea9884f4abc1989d13b8ca7b899e2e832404d23ab4bf
-COPY nvidia-driver-G07-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-G07-595.58.03-1.aarch64.rpm sha256:8412ad42db8197f7244933b36d1a29f15e26e2f994a00dfd6e8f1ea20e704ff8
-COPY nvidia-driver-G07-595.58.03-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-cfg-595.71.05-1.x86_64.rpm sha256:a89dd2b5dc6c6320e01fbaad06720317ddf9066d50255a95448cb8240bf5b267
+COPY libnvidia-cfg-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-cfg-595.71.05-1.aarch64.rpm sha256:89b2410bff58433424eb4e68b2fba07d6aeb60c3e5b52d472a0d65db472c9b9c
+COPY libnvidia-cfg-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-gpucomp-595.71.05-1.x86_64.rpm sha256:3146cad1e2a0092a5a1b3f2b7f574f82b9e1f2e23040d62d7d4a59c7d44bcf38
+COPY libnvidia-gpucomp-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-gpucomp-595.71.05-1.aarch64.rpm sha256:669456d180fd4256ebe1bd5107ccd508a170d025aecf0a167b98195042a800f5
+COPY libnvidia-gpucomp-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-ml-595.71.05-1.x86_64.rpm sha256:1b68c7731ffa5fc45b9b7f28e673beeef30225baec4fd39b89eaf79d25eff933
+COPY libnvidia-ml-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-ml-595.71.05-1.aarch64.rpm sha256:20c3720dab353b6e0e0511b632072f203ea94323e1e257c016af98b0005f81e6
+COPY libnvidia-ml-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-nscq-595.71.05-1.x86_64.rpm sha256:771c954ea4c187e4ccd3a5bd75283086a2396e6849b22f0ef4eb9397b0795041
+COPY libnvidia-nscq-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-nscq-595.71.05-1.aarch64.rpm sha256:aa31b3230b77d30742cc816072acc32934b5bcff2f87e426bb170f2388e09570
+COPY libnvidia-nscq-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvsdm-595.71.05-1.x86_64.rpm sha256:41df2fe36a90a1d3aa5cb43807e5ac8a02882e02fff7f7110cfdcb8bc3285d0f
+COPY libnvsdm-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-common-G07-595.71.05-1.x86_64.rpm sha256:f14cfa58bf5df719658b70319e73d0f4545cd3e2d852a038f7829e8550c20d5f
+COPY nvidia-common-G07-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-common-G07-595.71.05-1.aarch64.rpm sha256:c4772667df6faa1ea6b1e2eee32c8e3b92a16d5da53ee7cd5cf96ea8e4386e37
+COPY nvidia-common-G07-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-compute-G07-595.71.05-1.x86_64.rpm sha256:f94c252ee3c1b0999541a31f0e7dc84a42d68d2c5537b5add6a7168ae3aed15a
+COPY nvidia-compute-G07-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-compute-G07-595.71.05-1.aarch64.rpm sha256:1819a8a98b3eaa51ecea87e2f070b5399642a2200a9354de320224aab4ba8ff2
+COPY nvidia-compute-G07-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm sha256:ad9f7745f1c89cac43e8c1d27604f5027787d3fe8e62efc02a0d89f8fb37e010
+COPY nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm sha256:f909ab8bb2bd7941b8bdc993ff08c9a0834c6649ffe845020612ab6e57e39a6d
+COPY nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-G07-595.71.05-1.x86_64.rpm sha256:648e6b1ccab295b668e0c9019aaf2b8c46a89886569e4d1251e86a11a637db5d
+COPY nvidia-driver-G07-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-G07-595.71.05-1.aarch64.rpm sha256:2aa325a64e8bec096bdd6ec8739b6e25161fe2f8014ed1889d7bfd238474b3db
+COPY nvidia-driver-G07-595.71.05-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm sha256:b4d811eadd3f2364532811b6cd59618e26b80a16c1362c752cf294d7545d599c
 COPY nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-assistant-0.51.71.05-1.noarch.rpm nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm sha256:b4d811eadd3f2364532811b6cd59618e26b80a16c1362c752cf294d7545d599c
 COPY nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-fabricmanager-595.58.03-1.x86_64.rpm sha256:20e0d202fa3af52dd007439d69f15d4cee2b446acdff759258b58166cb5fc514
-COPY nvidia-fabricmanager-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-fabricmanager-595.58.03-1.aarch64.rpm sha256:6eeab072157dcae8a571826a7e55087d39276c37a8a14d97a7e7a1c7efecefd3
-COPY nvidia-fabricmanager-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-imex-595.58.03-1.x86_64.rpm sha256:a82d001b022ce536d2ae28d24c8baaf29f5d9942d229ca9f52bcd14d30397452
-COPY nvidia-imex-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-imex-595.58.03-1.aarch64.rpm sha256:b3ab2079f50a07dec8420e26fae760151237bec9d43bb100a9f33df6d8695082
-COPY nvidia-imex-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-modprobe-595.58.03-1.x86_64.rpm sha256:55850f7694c76e7417d8e22907b27195ea5ad7d39cb7a1fc9d73d7d1cfe9931f
-COPY nvidia-modprobe-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-modprobe-595.58.03-1.aarch64.rpm sha256:d66b2c8d47542d88c0ab09463455b12ec0c10f1492a989a083aafd9b2f3100bc
-COPY nvidia-modprobe-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-open-driver-G07-595.58.03-1.noarch.rpm nvidia-open-driver-G07-595.58.03-1.x86_64.rpm sha256:fd48dea202aaf2d99c7700b0e64b181d8e6316887c38fa9d2a711cd927b440b5
-COPY nvidia-open-driver-G07-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-open-driver-G07-595.58.03-1.noarch.rpm nvidia-open-driver-G07-595.58.03-1.aarch64.rpm sha256:fd48dea202aaf2d99c7700b0e64b181d8e6316887c38fa9d2a711cd927b440b5
-COPY nvidia-open-driver-G07-595.58.03-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-persistenced-595.58.03-1.x86_64.rpm sha256:33345b632e4fc26082d3c6bc3d32e7000c195b3e15c17e922aa946120213848a
-COPY nvidia-persistenced-595.58.03-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-persistenced-595.58.03-1.aarch64.rpm sha256:619765cc51ff6ce253c7b058368a4541013bbbed669e12fe8bf79de5b34ff267
-COPY nvidia-persistenced-595.58.03-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-fabricmanager-595.71.05-1.x86_64.rpm sha256:4af31419fd5fc0a7b62676de75c73f6226e82ee299f513d6b0ce95381bd44ac5
+COPY nvidia-fabricmanager-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-fabricmanager-595.71.05-1.aarch64.rpm sha256:43612bff8e1d782c0d1a3ec9dc6438f93165a736719917809fbf893c7c694d04
+COPY nvidia-fabricmanager-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-imex-595.71.05-1.x86_64.rpm sha256:d2c6da6cc1c8dba9dc318d8a106407bb59ac52d48578e0d181a66d20082a4424
+COPY nvidia-imex-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-imex-595.71.05-1.aarch64.rpm sha256:dd1706f97ec7e1448b73dbefe3a83bc059f04019938f28231caa309750549079
+COPY nvidia-imex-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-modprobe-595.71.05-1.x86_64.rpm sha256:4cb54c266f86f10b61caed6f8304d723051f4fedf0b6e1eacbffc2a83077094c
+COPY nvidia-modprobe-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-modprobe-595.71.05-1.aarch64.rpm sha256:cff8fb31103fad469537375d16fd35b21ffc72d1dfb32f371b333567443b8e7a
+COPY nvidia-modprobe-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-open-driver-G07-595.71.05-1.noarch.rpm nvidia-open-driver-G07-595.71.05-1.x86_64.rpm sha256:43fcaf532546fc186cdab6821f0b04082bb720436ccf6c2314ba29ad6c230834
+COPY nvidia-open-driver-G07-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-open-driver-G07-595.71.05-1.noarch.rpm nvidia-open-driver-G07-595.71.05-1.aarch64.rpm sha256:43fcaf532546fc186cdab6821f0b04082bb720436ccf6c2314ba29ad6c230834
+COPY nvidia-open-driver-G07-595.71.05-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-persistenced-595.71.05-1.x86_64.rpm sha256:c20d66f09a277b196172e88a80bae5ce2ebc3d3df23559ba90be8782f02900e0
+COPY nvidia-persistenced-595.71.05-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-persistenced-595.71.05-1.aarch64.rpm sha256:16c885468b65167605b4e4028d32f5f3c039d893fe0176cf4cc1d3ded718f7de
+COPY nvidia-persistenced-595.71.05-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvlsm-2025.10.12-1.x86_64.rpm sha256:4461f9ffbefb6db24b0efcf7158f345e01cb537270c0a6f9ba7905995f749426
 COPY nvlsm-2025.10.12-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvlsm-2025.10.12-1.aarch64.rpm sha256:5986000a5371e4dfe6baa8ff56bc437d32172b67642dacf63f0a3d9d87cdc44d
@@ -141,16 +141,16 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             --no-recommends \
             --auto-agree-with-licenses \
             /tmp/dkms-3.4.0-1.x86_64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.x86_64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-open-driver-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.x86_64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-open-driver-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
@@ -163,16 +163,16 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --no-recommends \
             --auto-agree-with-licenses \
             /tmp/dkms-3.4.0-1.aarch64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.aarch64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-open-driver-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.aarch64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-open-driver-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.aarch64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.aarch64.rpm \
@@ -195,16 +195,16 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             --no-recommends \
             --auto-agree-with-licenses \
             /tmp/dkms-3.4.0-1.x86_64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-driver-G07-595.58.03-1.x86_64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-driver-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.x86_64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
@@ -217,16 +217,16 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --no-recommends \
             --auto-agree-with-licenses \
             /tmp/dkms-3.4.0-1.aarch64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-driver-G07-595.58.03-1.aarch64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-driver-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.aarch64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.aarch64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-default-devel-6.12.0-160000.5.1.aarch64.rpm \
             /tmp/kernel-syms-6.12.0-160000.5.1.aarch64.rpm \
@@ -250,36 +250,36 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
         rpm --root /target -Uvh --nodeps \
             /tmp/dkms-3.4.0-1.x86_64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.x86_64.rpm \
-            /tmp/libnvidia-nscq-595.58.03-1.x86_64.rpm \
-            /tmp/libnvsdm-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.x86_64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
+            /tmp/libnvidia-nscq-595.71.05-1.x86_64.rpm \
+            /tmp/libnvsdm-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.x86_64.rpm \
-            /tmp/nvidia-fabricmanager-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-imex-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.x86_64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.x86_64.rpm \
+            /tmp/nvidia-fabricmanager-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-imex-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.x86_64.rpm \
             /tmp/nvlsm-2025.10.12-1.x86_64.rpm; \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
             /tmp/dkms-3.4.0-1.aarch64.rpm \
-            /tmp/libnvidia-cfg-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-gpucomp-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-ml-595.58.03-1.aarch64.rpm \
-            /tmp/libnvidia-nscq-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-common-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-G07-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-compute-utils-G07-595.58.03-1.aarch64.rpm \
+            /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
+            /tmp/libnvidia-nscq-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-common-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-driver-assistant-0.51.71.05-1.aarch64.rpm \
-            /tmp/nvidia-fabricmanager-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-imex-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-modprobe-595.58.03-1.aarch64.rpm \
-            /tmp/nvidia-persistenced-595.58.03-1.aarch64.rpm \
+            /tmp/nvidia-fabricmanager-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-imex-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
+            /tmp/nvidia-persistenced-595.71.05-1.aarch64.rpm \
             /tmp/nvlsm-2025.10.12-1.aarch64.rpm; \
     fi
 
@@ -307,7 +307,7 @@ RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="NVIDIA Driver for SUSE Linux Enterprise Server 16.0"
 LABEL org.opencontainers.image.description="NVIDIA Driver container based on the SUSE Linux Base Container Image."
-LABEL org.opencontainers.image.version="595.58.03"
+LABEL org.opencontainers.image.version="595.71.05"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
@@ -327,7 +327,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.driver-595.md)%"
 ENV DISABLE_VGPU_VERSION_CHECK="true"
 ENV DRIVER_BRANCH="595"
 ENV DRIVER_TYPE="passthrough"
-ENV DRIVER_VERSION="595.58.03"
+ENV DRIVER_VERSION="595.71.05"
 ENV KERNEL_VERSION="latest"
 ENV NVIDIA_VISIBLE_DEVICES="void"
 ENV VGPU_LICENSE_SERVER_TYPE="NLS"
