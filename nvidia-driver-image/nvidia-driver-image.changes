@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 14 18:45:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Update to 595.71.05
+
+-------------------------------------------------------------------
 Tue May 12 11:01:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add infiniband-diags package for nvlink5 support
