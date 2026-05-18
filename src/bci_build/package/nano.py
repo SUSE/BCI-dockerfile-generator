@@ -47,9 +47,9 @@ NANO_CONTAINERS = [
                 else ""
             )
             + textwrap.dedent(f"""
-            {DOCKERFILE_RUN} rpm --root /target -e --noscripts --nodeps bash glibc{"" if os_version.is_sle15 else " compat-usrmerge-tools"} coreutils terminfo-base \\
+            {DOCKERFILE_RUN} rpm --root /target -e --noscripts --nodeps bash bash-sh glibc{"" if os_version.is_sle15 else " compat-usrmerge-tools"} coreutils terminfo-base \\
                 $(rpm --root /target -qa --qf '%{{NAME}}\\n' | grep -E '^lib') \\
-                && rm /target/usr/{{sbin,bin}}/* -v
+                && rm /target/usr/sbin/* -v
 
             COPY pause.c ./pause.c
             {DOCKERFILE_RUN} zypper -n install glibc-devel-static gcc binutils \\
