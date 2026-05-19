@@ -191,7 +191,9 @@ PYTHON_3_13_CONTAINERS = [
         ),
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
     )
-    for os_version, flavor in product((OsVersion.SL16_0,), ("base", "micro"))
+    for os_version, flavor in product(
+        (OsVersion.SL16_0, OsVersion.SL16_1), ("base", "micro")
+    )
 ]
 
 PYTHON_3_13_CRATE = ContainerCrate(PYTHON_3_13_CONTAINERS)

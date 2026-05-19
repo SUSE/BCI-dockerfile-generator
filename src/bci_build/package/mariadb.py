@@ -39,6 +39,7 @@ MARIADB_CLIENT_CONTAINERS = []
 for os_version in (
     OsVersion.SP7,
     OsVersion.SL16_0,
+    OsVersion.SL16_1,
     OsVersion.TUMBLEWEED,
 ):
     mariadb_version = get_pkg_version("mariadb", os_version)
