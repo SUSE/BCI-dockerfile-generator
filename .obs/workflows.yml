@@ -31,7 +31,27 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: gcc-15-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: git-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: golang-oldstable-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: golang-oldstable-openssl-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: golang-stable-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: golang-stable-openssl-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -52,6 +72,14 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
         source_package: kiwi-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: mariadb-client-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: mariadb-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -139,6 +167,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: python-3.13-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: python-3.14-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -205,7 +237,22 @@ refresh_devel_BCI:
         package: distribution-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: gcc-15-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: git-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: golang-oldstable-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: golang-oldstable-openssl-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: golang-stable-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: golang-stable-openssl-image
     - trigger_services:
         project: devel:BCI:16.1
         package: helm-image
@@ -221,6 +268,12 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: kiwi-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: mariadb-client-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: mariadb-image
     - trigger_services:
         project: devel:BCI:16.1
         package: micro-fips-image
@@ -284,6 +337,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: pulseaudio-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: python-3.13-image
     - trigger_services:
         project: devel:BCI:16.1
         package: python-3.14-image
