@@ -33,7 +33,7 @@ Then you can start the container with the following command:
 
 ```bash
 podman run -it --restart=always -p 5000:5000 -v /path/to/config.yml:/etc/registry/config.yml \
-  -v /var/lib/docker-registry:/var/lib/docker-registry --name registry registry.suse.com/suse/registry:3.0
+  -v /var/lib/docker-registry:/var/lib/docker-registry --name registry registry.suse.com/suse/registry:3.1
 ```
 
 The registry is available at `http://localhost:5000`.
@@ -45,7 +45,7 @@ To run the registry as a Systemd service using Podman Quadlet, create a unit fil
 Description=SUSE Linux OCI Container Registry (Distribution)
 
 [Container]
-Image=registry.suse.com/suse/registry:3.0
+Image=registry.suse.com/suse/registry:3.1
 ContainerName=registry
 PublishPort=5000:5000
 Volume=/path/to/config.yml:/etc/registry/config.yml:Z
