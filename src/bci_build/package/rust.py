@@ -1,6 +1,7 @@
 """Rust language BCI container"""
 
 import datetime
+import textwrap
 from itertools import product
 
 import packaging.version
@@ -12,8 +13,6 @@ from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
-
-_RUST_CC_PATH = "/usr/local/bin/cc"
 
 # release dates are coming from upstream - https://raw.githubusercontent.com/rust-lang/rust/master/RELEASES.md
 # we expect a new release every 6 weeks, two releases are supported at any point in time
@@ -86,7 +85,8 @@ RUST_CONTAINERS = [
         env={
             "RUST_VERSION": "%%RUST_VERSION%%",
             "CARGO_VERSION": "%%CARGO_VERSION%%",
-        },
+        }
+        | ({"CC": "/usr/bin/gcc-15"} if os_version.is_sle15 else {}),
         extra_files={
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6),
@@ -106,7 +106,15 @@ requires:rust{rust_version}
                 package_name=f"cargo{rust_version}",
             ),
         ],
-        custom_end=f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
+        custom_end=textwrap.dedent(
+            """
+            # ensure we point $CC to a gcc that is pulled in by rust
+            RUN ${CC} --version
+            """
+            if os_version.is_sle15
+            else ""
+        )
+        + f"COPY {check_fname} /etc/zypp/systemCheck.d/{check_fname}\n",
     )
     for rust_version, os_version in (
         *product(
