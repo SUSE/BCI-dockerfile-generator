@@ -19,6 +19,7 @@
 #!BuildTag: suse/git:%%git_version%%
 #!BuildTag: suse/git:2.51
 #!BuildTag: suse/git:%%git_major_version%%
+#!BuildTag: suse/git:latest
 #!BuildName: suse-git
 #!BuildVersion: 16.0.2.51
 #!BuildRelease: 80
