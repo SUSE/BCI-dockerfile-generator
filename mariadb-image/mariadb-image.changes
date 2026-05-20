@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 20 16:14:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add MARIADB_USER_HOST env variable handling
+
+-------------------------------------------------------------------
 Tue May 19 09:19:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the MariaDB Server BCI
