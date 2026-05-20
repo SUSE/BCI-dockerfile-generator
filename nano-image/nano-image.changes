@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 20 16:34:48 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve pause.c handling
+
+-------------------------------------------------------------------
 Mon May 18 16:18:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove bash-sh from SBOM list
