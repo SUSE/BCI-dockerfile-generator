@@ -17,22 +17,12 @@ from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.repomdparser import RpmPackage
 
-AMD_REPOS = [
-    ThirdPartyRepo(
-        name="radeon-sles15sp7-x86_64",
-        arch=Arch.X86_64,
-        url="https://repo.radeon.com/amdgpu/7.0.3/sle/15.7/main/x86_64/",
-        key_url="https://repo.radeon.com/rocm/rocm.gpg.key",
-    ),
-]
-
-
 CUSTOM_END_TEMPLATE = Template(
     """
 # decompress modules for getKmodsToSign (kmmmodule.go) since it expects uncompressed files
 {{ DOCKERFILE_RUN }} \\
     find /lib/modules/{{ kernel_ga }} -name "*.ko.zst" -exec zstd -d --rm {} \\;; \\
-    depmod {{ kernel_ga }}
+    depmod {% if image.os_version.is_sl16 %}-m /lib/modules {% endif %}{{ kernel_ga }}
 
 # copy modules to /opt since getKmodsToSign (kmmmodule.go) expects it there
 {{ DOCKERFILE_RUN }} \\
@@ -40,15 +30,21 @@ CUSTOM_END_TEMPLATE = Template(
     cp /lib/modules/{{ kernel_ga }}/updates/amd* /target/opt/lib/modules/{{ kernel_ga }}/updates/dkms; \\
     cp /lib/modules/{{ kernel_ga }}/modules.* /target/opt/lib/modules/{{ kernel_ga }}/; \\
     cp -r /lib/modules/{{ kernel_ga }}/kernel /target/opt/lib/modules/{{ kernel_ga }}/kernel; \\
-    depmod -b /target/opt {{ kernel_ga }}
+    depmod {% if image.os_version.is_sl16 %}-m /lib/modules {% endif %}-b /target/opt {{ kernel_ga }}
 
 # copy firmware to /firmwareDir
 {{ DOCKERFILE_RUN }} \\
     mkdir -p /target/firmwareDir/updates/amdgpu; \\
-    cp -r /lib/firmware/updates/amdgpu /target/firmwareDir/updates/amdgpu; \\
+    cp -r /lib/firmware/updates/amdgpu/* /target/firmwareDir/updates/amdgpu; \\
     install -p -D /usr/share/doc/packages/amdgpu-dkms-firmware/LICENSE /target/usr/share/licenses/amdgpu-dkms-firmware/LICENSE
 """
 )
+
+
+KERNEL_GA_VERSIONS = {
+    OsVersion.SP7: "6.4.0-150700.51",
+    OsVersion.SL16_0: "6.12.0-160000.5",
+}
 
 
 class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
@@ -121,56 +117,86 @@ class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
         super().fetch_rpm_packages()
 
-        project = "SUSE:SLE-15-SP7:GA"
-        repo = "pool"
-        version = "6.4.0"
-        release = "150700.51.1"
-        arches = self.exclusive_arch
-        subpackages = [
-            {
-                "name": "kernel-default",
-                "package": "kernel-default",
-            },
-            {
-                "name": "kernel-default-devel",
-                "package": "kernel-default",
-            },
-            {
-                "name": "kernel-syms",
-                "package": "kernel-syms",
-            },
-            {
-                "name": "kernel-devel",
-                "package": "kernel-source",
-                "no_arch": True,
-            },
-            {
-                "name": "kernel-macros",
-                "package": "kernel-source",
-                "no_arch": True,
-            },
-        ]
+        if self.os_version == OsVersion.SP7:
+            project = "SUSE:SLE-15-SP7:GA"
+            repo = "pool"
+            package = None
+            version = "6.4.0"
+            release = "150700.51.1"
+            arches = self.exclusive_arch
+            subpackages = [
+                {
+                    "name": "kernel-default",
+                    "package": "kernel-default",
+                },
+                {
+                    "name": "kernel-default-devel",
+                    "package": "kernel-default",
+                },
+                {
+                    "name": "kernel-syms",
+                    "package": "kernel-syms",
+                },
+                {
+                    "name": "kernel-devel",
+                    "package": "kernel-source",
+                    "no_arch": True,
+                },
+                {
+                    "name": "kernel-macros",
+                    "package": "kernel-source",
+                    "no_arch": True,
+                },
+            ]
+        elif self.os_version == OsVersion.SL16_0:
+            project = "SUSE:SLFO:1.2"
+            repo = "standard"
+            package = "patchinfo.ga"
+            version = "6.12.0"
+            release = "160000.5.1"
+            arches = self.exclusive_arch
+            subpackages = [
+                {
+                    "name": "kernel-default",
+                },
+                {
+                    "name": "kernel-default-devel",
+                },
+                {
+                    "name": "kernel-syms",
+                },
+                {
+                    "name": "kernel-devel",
+                    "no_arch": True,
+                },
+                {
+                    "name": "kernel-macros",
+                    "no_arch": True,
+                },
+            ]
+        else:
+            raise ValueError(f"Unsupported OS version {self.os_version.os_version}")
 
         for subpkg in subpackages:
-            name = subpkg["name"]
-            package = subpkg["package"]
+            subpkg_name = subpkg["name"]
+            pkg_name = subpkg.get("package", package)
             no_arch = subpkg.get("no_arch", False)
 
             for arch in arches:
-                filename_in_image = f"{name}-{version}-{release}.{arch}.rpm"
+                filename_in_image = f"{subpkg_name}-{version}-{release}.{arch}.rpm"
 
                 if no_arch:
-                    filename_in_repo = f"{name}-{version}-{release}.noarch.rpm"
+                    filename_in_repo = f"{subpkg_name}-{version}-{release}.noarch.rpm"
                 else:
-                    filename_in_repo = f"{name}-{version}-{release}.{arch}.rpm"
+                    filename_in_repo = f"{subpkg_name}-{version}-{release}.{arch}.rpm"
 
                 self._rpms.append(
                     RpmPackage(
-                        name=name,
+                        name=subpkg_name,
                         arch=str(arch),
                         evr=("", version, release),
                         filename=filename_in_image,
-                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
+                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{pkg_name}/{filename_in_repo}",
                     )
                 )
 
@@ -179,27 +205,86 @@ class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
     def prepare_template(self) -> None:
         super().prepare_template()
 
+        kernel_ga_version = KERNEL_GA_VERSIONS[self.os_version]
+
         self.build_stage_custom_end += "\n" + CUSTOM_END_TEMPLATE.render(
             image=self,
             DOCKERFILE_RUN=DOCKERFILE_RUN,
-            kernel_ga="6.4.0-150700.51-default",
+            kernel_ga=f"{kernel_ga_version}-default",
         )
 
 
-_AMD_DRIVER_VERSIONS: list[str] = ["7.0.3"]
+def _get_packages(os_version: OsVersion):
+    packages: list[Package] = [
+        Package("rpm-ndb" if os_version.is_sle15 else "rpm", PackageType.IMAGE),
+        # needed by kernel GA packages
+        # since kernel GA packages are using RemoteAssetUrl a few dependencies
+        # are not solved by zypper automatically
+        Package("awk", PackageType.BOOTSTRAP),
+        Package("dwarves", PackageType.BOOTSTRAP),
+        Package("elfutils", PackageType.BOOTSTRAP),
+        Package("gcc", PackageType.BOOTSTRAP),
+        Package("libelf-devel", PackageType.BOOTSTRAP),
+        Package("pesign-obs-integration", PackageType.BOOTSTRAP),
+        Package("zstd", PackageType.BOOTSTRAP),
+        # build requirements for amdgpu-dkms
+        Package("autoconf", PackageType.BOOTSTRAP),
+        Package("automake", PackageType.BOOTSTRAP),
+        Package("bc", PackageType.BOOTSTRAP),
+        Package("bison", PackageType.BOOTSTRAP),
+        Package("dracut", PackageType.BOOTSTRAP),
+        Package("flex", PackageType.BOOTSTRAP),
+        Package("gawk", PackageType.BOOTSTRAP),
+        Package("libzstd-devel", PackageType.BOOTSTRAP),
+        Package("make", PackageType.BOOTSTRAP),
+        Package("mokutil", PackageType.BOOTSTRAP),
+        Package("perl", PackageType.BOOTSTRAP),
+        Package("perl-Bootloader", PackageType.BOOTSTRAP),
+        Package("python3", PackageType.BOOTSTRAP),
+        Package("python3-setuptools", PackageType.BOOTSTRAP),
+        Package("python3-wheel", PackageType.BOOTSTRAP),
+        # runtime requirement to load amdgpu-dkms
+        Package("kmod", PackageType.IMAGE),
+        *os_version.release_package_names,
+    ]
+
+    if os_version == OsVersion.SL16_0:
+        packages += [
+            # GA kernel explicitly requires gcc13
+            Package("gcc13", PackageType.BOOTSTRAP),
+            Package("suse-kernel-rpm-scriptlets", PackageType.BOOTSTRAP),
+        ]
+
+    return packages
+
+
+_AMD_DRIVER_VERSIONS: list[str] = ["31.30", "31.20", "31.10", "30.30.3", "30.20.1"]
 
 AMD_CONTAINERS: list[AMDDriverBCI] = []
 
-for os_version in (OsVersion.SP7,):
+for os_version in (OsVersion.SP7, OsVersion.SL16_0):
     for ver in _AMD_DRIVER_VERSIONS:
+        branch = int(ver.partition(".")[0])
+
+        if branch < 31 and os_version not in (OsVersion.SP7,):
+            continue
+
+        amd_repo = ThirdPartyRepo(
+            name=f"radeon-{ver}-x86_64",
+            arch=Arch.X86_64,
+            url=f"https://repo.radeon.com/amdgpu/{ver}/sle/{os_version.os_version}/main/x86_64/",
+            key_url="https://repo.radeon.com/rocm/rocm.gpg.key",
+        )
+
         AMD_CONTAINERS.append(
             AMDDriverBCI(
                 os_version=os_version,
                 version=ver,
                 tag_version=ver,
-                additional_versions=["6.4.0-150700.51"],
+                additional_versions=[KERNEL_GA_VERSIONS[os_version]],
                 version_in_uid=True,
                 use_build_flavor_in_tag=False,
+                build_flavor=ver,
                 name="amd-driver",
                 pretty_name="AMD GPU Driver",
                 license="GPL-2.0 WITH Linux-syscall-note",
@@ -209,43 +294,8 @@ for os_version in (OsVersion.SP7,):
                 support_level=SupportLevel.TECHPREVIEW,
                 supported_until="",
                 exclusive_arch=[Arch.X86_64],
-                package_list=[
-                    (
-                        Package("rpm-ndb", PackageType.IMAGE)
-                        if os_version.is_sle15
-                        else Package("rpm", PackageType.IMAGE)
-                    ),
-                    # needed by kernel GA packages
-                    # since kernel GA packages are using RemoteAssetUrl a few dependencies
-                    # are not solved by zypper automatically
-                    Package("awk", PackageType.BOOTSTRAP),
-                    Package("dwarves", PackageType.BOOTSTRAP),
-                    Package("elfutils", PackageType.BOOTSTRAP),
-                    Package("gcc", PackageType.BOOTSTRAP),
-                    Package("libelf-devel", PackageType.BOOTSTRAP),
-                    Package("pesign-obs-integration", PackageType.BOOTSTRAP),
-                    Package("zstd", PackageType.BOOTSTRAP),
-                    # build requirements for amdgpu-dkms
-                    Package("autoconf", PackageType.BOOTSTRAP),
-                    Package("automake", PackageType.BOOTSTRAP),
-                    Package("bc", PackageType.BOOTSTRAP),
-                    Package("bison", PackageType.BOOTSTRAP),
-                    Package("dracut", PackageType.BOOTSTRAP),
-                    Package("flex", PackageType.BOOTSTRAP),
-                    Package("gawk", PackageType.BOOTSTRAP),
-                    Package("libzstd-devel", PackageType.BOOTSTRAP),
-                    Package("make", PackageType.BOOTSTRAP),
-                    Package("mokutil", PackageType.BOOTSTRAP),
-                    Package("perl", PackageType.BOOTSTRAP),
-                    Package("perl-Bootloader", PackageType.BOOTSTRAP),
-                    Package("python3", PackageType.BOOTSTRAP),
-                    Package("python3-setuptools", PackageType.BOOTSTRAP),
-                    Package("python3-wheel", PackageType.BOOTSTRAP),
-                    # runtime requirement to load amdgpu-dkms
-                    Package("kmod", PackageType.IMAGE),
-                    *os_version.release_package_names,
-                ],
-                third_party_repos=AMD_REPOS,
+                package_list=_get_packages(os_version),
+                third_party_repos=[amd_repo],
                 third_party_package_list=[
                     "amdgpu-dkms",
                     "amdgpu-dkms-firmware",
