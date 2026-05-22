@@ -63,5 +63,9 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
+ENV CC="/usr/bin/gcc-15"
 ENV RUST_VERSION="%%RUST_VERSION%%"
+
+# ensure we point $CC to a gcc that is pulled in by rust
+RUN ${CC} --version
 COPY rust-and-cargo-pin.check /etc/zypp/systemCheck.d/rust-and-cargo-pin.check
