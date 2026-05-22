@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 22 12:48:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set CC env variable to the newest C compiler in the container
+
+-------------------------------------------------------------------
 Thu May 14 16:03:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.95 for stable, 1.94 to oldstable
