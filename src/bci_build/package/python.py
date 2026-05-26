@@ -206,7 +206,7 @@ PYTHON_3_14_CONTAINERS = [
         additional_versions=(["3.14"] if flavor != "micro" else []),
         from_target_image=(
             None
-            if os_version.is_tumbleweed
+            if os_version.is_tumbleweed and flavor != "micro"
             else generate_from_image_tag(
                 os_version, "bci-micro" if flavor == "micro" else "bci-base"
             )
