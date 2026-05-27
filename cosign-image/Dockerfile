@@ -19,7 +19,6 @@
 #!BuildTag: suse/cosign:%%cosign_version%%
 #!BuildTag: suse/cosign:3.0
 #!BuildTag: suse/cosign:3
-#!BuildTag: suse/cosign:latest
 #!BuildName: suse-cosign
 #!BuildVersion: 15.7.3.0
 #!BuildRelease: 10
