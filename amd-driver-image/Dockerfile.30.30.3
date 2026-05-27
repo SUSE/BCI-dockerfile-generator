@@ -85,6 +85,8 @@ RUN set -euo pipefail; \
     cp -r /lib/firmware/updates/amdgpu/* /target/firmwareDir/updates/amdgpu; \
     install -p -D /usr/share/doc/packages/amdgpu-dkms-firmware/LICENSE /target/usr/share/licenses/amdgpu-dkms-firmware/LICENSE
 
+RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
+
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \

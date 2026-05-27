@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 27 15:15:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- forcefully deinstall compat-usrmerge-tools
+
+-------------------------------------------------------------------
 Fri May 22 12:47:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - extended version of the AMD GPU Driver - convert to multibuild
