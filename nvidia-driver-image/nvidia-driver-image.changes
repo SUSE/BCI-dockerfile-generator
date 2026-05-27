@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed May 27 07:37:38 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to dkms 3.4.1
+
+-------------------------------------------------------------------
 Fri May 15 09:26:27 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add tag for new kernel release
