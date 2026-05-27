@@ -79,9 +79,6 @@ COPY --from=target / /target
 {{ DOCKERFILE_RUN }} sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' {% if image.from_target_image %}/target{% endif %}/etc/shadow
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
 COPY --from=builder /target /
-{%- if not image.os_version.is_sle15 and image.dockerfile_from_target_ref != "scratch" %}
-{{ DOCKERFILE_RUN }} rm -vf /usr/lib/sysimage/rpm/Index.db
-{%- endif %}
 {%- endif %}
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix={{ image.labelprefix }}
