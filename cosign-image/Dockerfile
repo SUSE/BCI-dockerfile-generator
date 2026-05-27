@@ -19,6 +19,7 @@
 #!BuildTag: suse/cosign:%%cosign_version%%
 #!BuildTag: suse/cosign:3.0
 #!BuildTag: suse/cosign:3
+#!BuildTag: suse/cosign:latest
 #!BuildName: suse-cosign
 #!BuildVersion: 16.0.3.0
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
