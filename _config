@@ -5,12 +5,6 @@ Patterntype: none
 
 Prefer: python3-kiwi
 
-# needed for busybox image building (at minimum)
-ExpandFlags: kiwi-nobasepackages
-
-# needed for micro image
-Prefer: -busybox-coreutils
-
 Binarytype: rpm
 %else
 %if "%_repository" == "containerfile"
