@@ -37,6 +37,8 @@ CUSTOM_END_TEMPLATE = Template(
     mkdir -p /target/firmwareDir/updates/amdgpu; \\
     cp -r /lib/firmware/updates/amdgpu/* /target/firmwareDir/updates/amdgpu; \\
     install -p -D /usr/share/doc/packages/amdgpu-dkms-firmware/LICENSE /target/usr/share/licenses/amdgpu-dkms-firmware/LICENSE
+
+{{ DOCKERFILE_RUN }} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
 """
 )
 
