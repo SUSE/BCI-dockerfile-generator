@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jun  1 08:45:16 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- unset passwords from environment
+
+-------------------------------------------------------------------
 Wed May 20 21:37:06 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.1
