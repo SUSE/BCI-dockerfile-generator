@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  2 10:08:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add README with usage example
+
+-------------------------------------------------------------------
 Wed May 27 15:17:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - forcefully deinstall compat-usrmerge-tools
