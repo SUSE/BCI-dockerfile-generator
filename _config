@@ -73,6 +73,11 @@ Conflict: !libstdc++-devel
 Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init
 BuildFlags: container-timestamp:0
 
+# available in IBS via SUSE:Products:SLES:16.0 defaults
+Substitute: system-packages:docker kmod docker createrepo_c container-build-checks-vendor-SUSE container-build-checks-strict skopeo umoci
+Substitute: system-packages:podman podman buildah createrepo_c release-compare container-build-checks-vendor-SUSE container-build-checks-strict skopeo umoci
+
+
 %endif
 %endif  # is_in_project
 
