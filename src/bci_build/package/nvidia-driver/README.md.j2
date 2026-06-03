@@ -34,6 +34,6 @@ helm install --wait gpu-operator \
 
 Secure Boot should be disabled on the host to allow kernel modules to be loaded from the container.
 
-This driver container image requires full kernel-default / kernel-default-64kb RPM package installed on host. Using kernel-default-base RPM package is not supported, driver container will fail to initialize properly.
+This driver container image requires the full kernel-default / kernel-default-64kb RPM package to be installed on the host. Using the kernel-default-base RPM package is not supported, and the driver container will fail to initialize properly.
 
 {% include 'licensing_and_eula.j2' %}
