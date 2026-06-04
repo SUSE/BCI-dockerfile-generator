@@ -10,6 +10,7 @@ from pathlib import Path
 
 import requests
 from jinja2 import Template
+from version_utils import rpm
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
@@ -31,7 +32,7 @@ from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.package.versions import get_all_pkg_version
 from bci_build.repomdparser import RpmPackage
 
-NVIDIA_REPOS = {
+_NVIDIA_REPOS = {
     OsVersion.SP7: [
         ThirdPartyRepo(
             name="cuda-sles15-x86_64",
@@ -61,6 +62,32 @@ NVIDIA_REPOS = {
         ),
     ],
 }
+
+# we need to support all versions supported by the gpu operator
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
+# we should support versions only for data center
+# https://docs.nvidia.com/datacenter/tesla/index.html
+_NVIDIA_DRIVER_VERSIONS: list[str] = [
+    # G07
+    "595.71.05",
+    "590.48.01",
+    # G06
+    "580.167.08",
+    "575.57.08",
+    "570.211.01",
+    "550.163.01",
+    # G05 - Legacy
+    # 535 and older are not planned
+]
+
+# we need to build a container for each kernel variant
+# azure is skipped for now because the kABI is not stable
+_NVIDIA_OS_VERSIONS: list[tuple] = [
+    (OsVersion.SP7, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SP7, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
+]
 
 CUSTOM_END_TEMPLATE = Template(
     """RUN mkdir -p /tmp/
@@ -276,196 +303,36 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             f"Version '{self.version}' is not datacenter supported"
         )
 
+        # Find the kernel version used to build the nvidia-kmp driver for branches >= 595
+        driver_branch = _get_driver_branch(self.version)
+        built_kernel = _get_built_kernel_version(
+            self.version, self.os_version, self.kernel_variant, self.exclusive_arch
+        )
+
         pkgs = self.fetch_rpm_packages()
+        kernel_packages = []
 
-        repo_info = {
-            # GA kernel for SP7 is in the pool repo under multiple packages
-            OsVersion.SP7: {
-                "project": "SUSE:SLE-15-SP7:GA",
-                "repo": "pool",
-                "version": "6.4.0",
-                "package": "!unset!",
-                "release": "150700.51.1",
-                "arch": self.exclusive_arch,
-                "subpackages": {
-                    "default": [
-                        {
-                            "name": "kernel-default",
-                            "package": "kernel-default",
-                        },
-                        {
-                            "name": "kernel-default-devel",
-                            "package": "kernel-default",
-                        },
-                        {
-                            "name": "kernel-syms",
-                            "package": "kernel-syms",
-                        },
-                        {
-                            "name": "kernel-devel",
-                            "package": "kernel-source",
-                            "no_arch": True,
-                        },
-                        {
-                            "name": "kernel-macros",
-                            "package": "kernel-source",
-                            "no_arch": True,
-                        },
-                        # always needed on aarch64 for default
-                        {
-                            "name": "kernel-64kb-devel",
-                            "package": "kernel-64kb",
-                            "arch": [Arch.AARCH64],
-                        },
-                    ],
-                    "64kb": [
-                        {
-                            "name": "kernel-64kb",
-                            "package": "kernel-64kb",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-64kb-devel",
-                            "package": "kernel-64kb",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-default-devel",
-                            "package": "kernel-default",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-syms",
-                            "package": "kernel-syms",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-devel",
-                            "package": "kernel-source",
-                            "no_arch": True,
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-macros",
-                            "package": "kernel-source",
-                            "no_arch": True,
-                            "arch": [Arch.AARCH64],
-                        },
-                    ],
-                },
-            },
-            # GA kernel for 16.0 is in SLFO under patchinfo.ga
-            OsVersion.SL16_0: {
-                "project": "SUSE:SLFO:1.2",
-                "repo": "standard",
-                "package": "patchinfo.ga",
-                "version": "6.12.0",
-                "release": "160000.5.1",
-                "arch": self.exclusive_arch,
-                "subpackages": {
-                    "default": [
-                        {
-                            "name": "kernel-default",
-                        },
-                        {
-                            "name": "kernel-default-devel",
-                        },
-                        {
-                            "name": "kernel-syms",
-                        },
-                        {
-                            "name": "kernel-devel",
-                            "no_arch": True,
-                        },
-                        {
-                            "name": "kernel-macros",
-                            "no_arch": True,
-                        },
-                        # always needed on aarch64
-                        {
-                            "name": "kernel-64kb-devel",
-                            "arch": [Arch.AARCH64],
-                        },
-                    ],
-                    "64kb": [
-                        {
-                            "name": "kernel-64kb",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-64kb-devel",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-default-devel",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-syms",
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-devel",
-                            "no_arch": True,
-                            "arch": [Arch.AARCH64],
-                        },
-                        {
-                            "name": "kernel-macros",
-                            "no_arch": True,
-                            "arch": [Arch.AARCH64],
-                        },
-                    ],
-                },
-            },
-        }
+        kernel_ga_rpms = _get_kernel_ga_rpms(
+            self.os_version,
+            self.kernel_variant,
+            self.exclusive_arch,
+            built_kernel=built_kernel,
+        )
+        pkgs.extend(kernel_ga_rpms)
+        kernel_packages += [rpm.name for rpm in kernel_ga_rpms]
 
-        if self.os_version not in repo_info:
-            raise ValueError(
-                f"Unknown GA kernel packages for {self.os_version.os_version}"
+        # since 595 we use kmp drivers instead of dkms
+        kmp_packages = []
+        if driver_branch >= 595:
+            nvidia_kmp_rpms = _get_nvidia_kmp_rpms(
+                self.version, self.os_version, self.kernel_variant, self.exclusive_arch
             )
-
-        os_info = repo_info[self.os_version]
-
-        if self.kernel_variant not in os_info["subpackages"]:
-            raise ValueError(
-                f"Unknown GA kernel versions for {self.os_version.os_version} and {self.kernel_variant}"
-            )
-
-        project = os_info["project"]
-        repo = os_info["repo"]
-        subpackages = os_info["subpackages"][self.kernel_variant]
-
-        for subpkg in subpackages:
-            name = subpkg["name"]
-            # if a subpackage defines a custom value
-            # override the default value for the OS
-            package = subpkg.get("package", os_info["package"])
-            arches = subpkg.get("arch", os_info["arch"])
-            version = subpkg.get("version", os_info["version"])
-            release = subpkg.get("release", os_info["release"])
-            no_arch = subpkg.get("no_arch", False)
-
-            for arch in arches:
-                filename_in_image = f"{name}-{version}-{release}.{arch}.rpm"
-
-                if no_arch:
-                    filename_in_repo = f"{name}-{version}-{release}.noarch.rpm"
-                else:
-                    filename_in_repo = f"{name}-{version}-{release}.{arch}.rpm"
-
-                pkgs.append(
-                    RpmPackage(
-                        name=name,
-                        arch=str(arch),
-                        evr=("", version, release),
-                        filename=filename_in_image,
-                        url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
-                    )
-                )
+            pkgs.extend(nvidia_kmp_rpms)
+            kernel_packages += [rpm.name for rpm in nvidia_kmp_rpms]
+            kmp_packages += [rpm.name for rpm in nvidia_kmp_rpms]
 
         open_packages = [p.name for p in self.open_drivers_package_list]
         closed_packages = [p.name for p in self.closed_drivers_package_list]
-        kernel_packages = [pkg["name"] for pkg in subpackages]
         ignore_in_target_packages = open_packages + closed_packages + kernel_packages
 
         self.prepare_extra_files()
@@ -505,6 +372,7 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                 pkg
                 for pkg in pkgs
                 if pkg.name not in open_packages
+                and pkg.name not in kmp_packages
                 and pkg.name not in target_layer_only_packages
                 and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
@@ -532,6 +400,10 @@ def _get_open_drivers_packages(
 ) -> list[ThirdPartyPackage]:
     """Select the correct open driver package for each version."""
     driver_branch = _get_driver_branch(driver_version)
+
+    if driver_branch >= 595:
+        # use kmp driver for newer versions instead of dkms
+        return []
 
     if driver_branch >= 590:
         return [
@@ -656,10 +528,16 @@ def _get_compute_packages(
         raise ValueError(f"Unknown compute package for {driver_version}")
 
     # since 575 the drivers are dkms-based
-    # and nvidia-compute has these dependencies
+    # however, since 595 we use kmp drivers for the open driver,
+    # but we still use dkms for the proprietary driver
     if driver_branch >= 575:
         packages += [
             ThirdPartyPackage("dkms"),
+        ]
+
+    # since 575 nvidia-compute has these dependencies
+    if driver_branch >= 575:
+        packages += [
             ThirdPartyPackage("libnvidia-gpucomp", version=driver_version),
         ]
 
@@ -749,6 +627,230 @@ def _get_packages(os_version: OsVersion):
     return packages
 
 
+def _get_built_kernel_version(
+    driver_version: str,
+    os_version: OsVersion,
+    kernel_variant: str,
+    exclusive_arch: list[Arch],
+) -> str | None:
+    """Find the kernel version used to build the nvidia-kmp driver for branches >= 595."""
+    driver_branch = _get_driver_branch(driver_version)
+    if driver_branch < 595:
+        return None
+
+    kmp_rpms = _get_nvidia_kmp_rpms(
+        driver_version, os_version, kernel_variant, exclusive_arch
+    )
+    if kmp_rpms:
+        kmp_rpm_version = kmp_rpms[0].evr[1]
+        if "_k" in kmp_rpm_version:
+            built_kernel_raw = kmp_rpm_version.split("_k")[-1]
+            return "-".join(built_kernel_raw.split("_", 1))
+
+    return None
+
+
+def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_arch):
+    match os_version:
+        case OsVersion.SL16_0:
+            project = "SUSE:SLFO:1.2"
+            repo = "standard"
+
+            match driver_version:
+                case "595.71.05":
+                    package = "patchinfo.20260504131235888449.187004354831441"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "595.71.05_k6.12.0_160000.29"
+                    release = "160000.1.1"
+                case _:
+                    raise ValueError(
+                        f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
+                    )
+        case OsVersion.SP7:
+            project = "SUSE:SLE-15-SP7:Update"
+            repo = "pool"
+
+            match driver_version:
+                case "595.71.05":
+                    package = "nvidia-open-driver-G07-signed.44120:cuda"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "595.71.05_k6.4.0_150700.53.40"
+                    release = "150700.16.8.1"
+                case _:
+                    raise ValueError(
+                        f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
+                    )
+        case _:
+            raise ValueError(f"KMP driver not found for '{os_version.os_version}'")
+
+    pkgs = []
+
+    for arch in exclusive_arch:
+        filename = f"{name}-{version}-{release}.{arch}.rpm"
+
+        pkgs.append(
+            RpmPackage(
+                name=name,
+                arch=str(arch),
+                evr=("", version, release),
+                filename=filename,
+                url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename}",
+            )
+        )
+
+    return pkgs
+
+
+_SL16_0_KERNEL_PATCHINFO_MAP = {
+    "6.12.0-160000.29": "patchinfo.20260501095726722273.187004354831441",
+}
+
+_SP7_KERNEL_PACKAGE_MAP = {
+    "6.4.0-150700.53.40": {
+        "kernel-default": "kernel-default.44023",
+        "kernel-syms": "kernel-syms.44023",
+        "kernel-source": "kernel-source.44023",
+        "kernel-64kb": "kernel-64kb.44023",
+    },
+}
+
+
+def _get_kernel_ga_rpms(
+    os_version: OsVersion,
+    kernel_variant: str,
+    exclusive_arch: list[Arch],
+    built_kernel: str | None = None,
+):
+    match os_version:
+        case OsVersion.SL16_0:
+            project = "SUSE:SLFO:1.2"
+            repo = "standard"
+            if built_kernel:
+                version, release_raw = built_kernel.split("-", 1)
+                release = f"{release_raw}.1"
+                obs_pkg = _SL16_0_KERNEL_PATCHINFO_MAP.get(built_kernel)
+                if not obs_pkg:
+                    raise ValueError(
+                        f"Kernel patchinfo not found for built_kernel '{built_kernel}' in SL16_0"
+                    )
+                obs_pkg_default = obs_pkg
+                obs_pkg_syms = obs_pkg
+                obs_pkg_source = obs_pkg
+                obs_pkg_64kb = obs_pkg
+            else:
+                version = "6.12.0"
+                release = "160000.5.1"
+                obs_pkg_default = "patchinfo.ga"
+                obs_pkg_syms = "patchinfo.ga"
+                obs_pkg_source = "patchinfo.ga"
+                obs_pkg_64kb = "patchinfo.ga"
+
+            match kernel_variant:
+                case "default":
+                    packages = [
+                        (obs_pkg_default, "kernel-default", []),
+                        (obs_pkg_default, "kernel-default-devel", []),
+                        (obs_pkg_syms, "kernel-syms", []),
+                        (obs_pkg_source, "kernel-devel", []),
+                        (obs_pkg_source, "kernel-macros", []),
+                        # always needed on aarch64 for default
+                        (obs_pkg_64kb, "kernel-64kb-devel", [Arch.AARCH64]),
+                    ]
+                case "64kb":
+                    packages = [
+                        (obs_pkg_64kb, "kernel-64kb", []),
+                        (obs_pkg_64kb, "kernel-64kb-devel", []),
+                        (obs_pkg_default, "kernel-default-devel", []),
+                        (obs_pkg_syms, "kernel-syms", []),
+                        (obs_pkg_source, "kernel-devel", []),
+                        (obs_pkg_source, "kernel-macros", []),
+                    ]
+                case _:
+                    raise ValueError(
+                        f"Kernel variant '{kernel_variant}' not found for '{os_version.os_version}'"
+                    )
+
+        case OsVersion.SP7:
+            if built_kernel:
+                project = "SUSE:SLE-15-SP7:Update"
+                repo = "pool"
+                version, release_raw = built_kernel.split("-", 1)
+                release = f"{release_raw}.1"
+                obs_pkg_map = _SP7_KERNEL_PACKAGE_MAP.get(built_kernel)
+                if not obs_pkg_map:
+                    raise ValueError(
+                        f"Kernel package not found for built_kernel '{built_kernel}' in SP7"
+                    )
+                obs_pkg_default = obs_pkg_map["kernel-default"]
+                obs_pkg_syms = obs_pkg_map["kernel-syms"]
+                obs_pkg_source = obs_pkg_map["kernel-source"]
+                obs_pkg_64kb = obs_pkg_map["kernel-64kb"]
+            else:
+                project = "SUSE:SLE-15-SP7:GA"
+                repo = "pool"
+                version = "6.4.0"
+                release = "150700.51.1"
+                obs_pkg_default = "kernel-default"
+                obs_pkg_syms = "kernel-syms"
+                obs_pkg_source = "kernel-source"
+                obs_pkg_64kb = "kernel-64kb"
+
+            match kernel_variant:
+                case "default":
+                    packages = [
+                        (obs_pkg_default, "kernel-default", []),
+                        (obs_pkg_default, "kernel-default-devel", []),
+                        (obs_pkg_syms, "kernel-syms", []),
+                        (obs_pkg_source, "kernel-devel", []),
+                        (obs_pkg_source, "kernel-macros", []),
+                        # always needed on aarch64 for default
+                        (obs_pkg_64kb, "kernel-64kb-devel", [Arch.AARCH64]),
+                    ]
+                case "64kb":
+                    packages = [
+                        (obs_pkg_64kb, "kernel-64kb", []),
+                        (obs_pkg_64kb, "kernel-64kb-devel", []),
+                        (obs_pkg_default, "kernel-default-devel", []),
+                        (obs_pkg_syms, "kernel-syms", []),
+                        (obs_pkg_source, "kernel-devel", []),
+                        (obs_pkg_source, "kernel-macros", []),
+                    ]
+                case _:
+                    raise ValueError(
+                        f"Kernel variant '{kernel_variant}' not found for '{os_version.os_version}'"
+                    )
+
+        case _:
+            raise ValueError(f"Kernel GA not found for '{os_version.os_version}'")
+
+    pkgs = []
+
+    for package, subpackage, arches in packages:
+        if not arches:
+            arches = exclusive_arch
+
+        for arch in arches:
+            filename_in_image = f"{subpackage}-{version}-{release}.{arch}.rpm"
+            is_no_arch = subpackage in ["kernel-devel", "kernel-macros"]
+
+            if is_no_arch:
+                filename_in_repo = f"{subpackage}-{version}-{release}.noarch.rpm"
+            else:
+                filename_in_repo = f"{subpackage}-{version}-{release}.{arch}.rpm"
+
+            pkgs.append(
+                RpmPackage(
+                    name=subpackage,
+                    arch=str(arch),
+                    evr=("", version, release),
+                    filename=filename_in_image,
+                    url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
+                )
+            )
+
+    return pkgs
+
+
 def _get_kernel_versions(variant: str, os_version: OsVersion):
     """Return all kernel versions for a given kernel variant."""
     versions = get_all_pkg_version(f"kernel-{variant}", os_version)
@@ -782,32 +884,6 @@ def _is_datacenter_driver(version: str):
     return version in versions
 
 
-# we need to support all versions supported by the gpu operator
-# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-# we should support versions only for data center
-# https://docs.nvidia.com/datacenter/tesla/index.html
-_NVIDIA_DRIVER_VERSIONS: list[str] = [
-    # G07
-    "595.71.05",
-    "590.48.01",
-    # G06
-    "580.167.08",
-    "575.57.08",
-    "570.211.01",
-    "550.163.01",
-    # G05 - Legacy
-    # 535 and older are not planned
-]
-
-# we need to build a container for each kernel variant
-# azure is skipped for now because the kABI is not stable
-_NVIDIA_OS_VERSIONS: list[tuple] = [
-    (OsVersion.SP7, "default", [Arch.X86_64, Arch.AARCH64]),
-    (OsVersion.SP7, "64kb", [Arch.AARCH64]),
-    (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
-    (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
-]
-
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
@@ -826,15 +902,23 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         if os_version == OsVersion.SL16_0 and branch < 595:
             continue
 
-        if os_version not in NVIDIA_REPOS:
+        if os_version not in _NVIDIA_REPOS:
             raise ValueError(f"Missing CUDA repositories for {os_version}")
 
         kernel_versions = []
+
+        # Find the kernel version used to build the nvidia-kmp driver for branches >= 595
+        built_kernel = _get_built_kernel_version(
+            ver, os_version, kernel_variant, exclusive_arch
+        )
 
         # these tags are expected when the container image is precompiled
         # the tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
         # e.g. 590-6.4.0-150700.53.6-default-sles15.7
         for kernel_version in _get_kernel_versions(kernel_variant, os_version):
+            if built_kernel and rpm.compare_versions(kernel_version, built_kernel) < 0:
+                continue
+
             os_tag = f"sles{os_version.os_version}"
             kernel_versions.append(
                 f"{branch}-{kernel_version}-{kernel_variant}-{os_tag}"
@@ -866,7 +950,7 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 support_level=SupportLevel.L3,
                 supported_until="",
                 exclusive_arch=exclusive_arch,
-                third_party_repos=NVIDIA_REPOS[os_version],
+                third_party_repos=_NVIDIA_REPOS[os_version],
                 open_drivers_package_list=_get_open_drivers_packages(
                     ver, kernel_variant
                 ),
