@@ -32,7 +32,7 @@ helm install --wait gpu-operator \
      --set driver.version=<driver-branch>
 ```
 
-Secure Boot should be disabled on the host to allow kernel modules to be loaded from the container.
+Secure Boot must be disabled on the host to allow the container to load kernel modules.
 
 This driver container image requires the full kernel-default / kernel-default-64kb RPM package to be installed on the host. Using the kernel-default-base RPM package is not supported, and the driver container will fail to initialize properly.
 
