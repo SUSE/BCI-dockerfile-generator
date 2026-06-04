@@ -19,7 +19,7 @@ To deploy this container image, use the NVIDIA GPU Operator Helm chart version 2
 
 Add the arguments `--set driver.repository=registry.suse.com/third-party/nvidia --set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` to the `helm install` command. `<driver-branch>` is the major version of the GPU driver (such as `595`, `590` or `580`).
 
-For k3s or RKE2 cl, add `--set toolkit.env[0].name=CONTAINERD_SOCKET --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock` when [Node Resource Interface (NRI) plugin](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/cdi.html#nri-plugin) is not enabled.
+For K3s or RKE2, the [Node Resource Interface (NRI) plug-in](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/cdi.html#nri-plugin) should be enabled by using `--set cdi.nriPluginEnabled=true`.
 
 As an example:
 ```ShellSession
@@ -27,12 +27,15 @@ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
      --version=v26.3.1 \
+     --set cdi.nriPluginEnabled=true \
      --set driver.repository=registry.suse.com/third-party/nvidia \
      --set driver.usePrecompiled=true \
-     --set driver.version=<driver-branch> \
-     --set toolkit.env[0].name=CONTAINERD_SOCKET \
-     --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock
+     --set driver.version=<driver-branch>
 ```
+
+Secure Boot must be disabled on the host to allow the container to load kernel modules.
+
+This driver container image requires the full kernel-default / kernel-default-64kb RPM package to be installed on the host. Using the kernel-default-base RPM package is not supported, and the driver container will fail to initialize properly.
 
 ## Licensing
 
