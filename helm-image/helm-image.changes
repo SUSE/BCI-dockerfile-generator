@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jun  7 17:03:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for helm 4.2
+
+-------------------------------------------------------------------
 Thu Mar 26 15:09:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rebuild rpm database to make it reproducible
