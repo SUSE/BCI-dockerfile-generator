@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 10 07:08:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- envsubst-on-templates: avoid direct interpolation of awk variable
+
+-------------------------------------------------------------------
 Thu Mar 26 10:52:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set supported/remove latest
