@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: bci/dotnet-runtime:10.0.8-%RELEASE%
-#!BuildTag: bci/dotnet-runtime:10.0.8
+#!BuildTag: bci/dotnet-runtime:10.0.9-%RELEASE%
+#!BuildTag: bci/dotnet-runtime:10.0.9
 #!BuildTag: bci/dotnet-runtime:10.0
 #!BuildTag: bci/dotnet-runtime:10.0-sles15
 #!BuildTag: bci/dotnet-runtime:latest
@@ -27,22 +27,22 @@ FROM registry.suse.com/bci/bci-base:15.7
 RUN set -euo pipefail; \
     zypper -n install --no-recommends libicu libopenssl1_1
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.8-1.aarch64.rpm sha256:6b0ad36aae06761e3097666b7be20a916a224ec23a28c9f73769aa3cc11cb74b
-COPY dotnet-host-10.0.8-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.8-1.x86_64.rpm sha256:e17218d126d6380c3e25df70725b3689f37ca12b177d42cab9c668c7e7c143ff
-COPY dotnet-host-10.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.8-1.aarch64.rpm sha256:43cc69b6bd558c53f1a79fc29762973e9698c5c8e803701b27ba62ff98e45a3e
-COPY dotnet-hostfxr-10.0-10.0.8-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.8-1.x86_64.rpm sha256:0a573117413d373fb3e35f84d72b55e540e6d9e30e8204a4c2d9573126f979b5
-COPY dotnet-hostfxr-10.0-10.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.8-1.aarch64.rpm sha256:65f2a9869b61fcf559d8210ac5360fe50dc2852d0985d3fe8f10018a17129ddf
-COPY dotnet-runtime-deps-10.0-10.0.8-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.8-1.x86_64.rpm sha256:ee8eee022a7986c52b67cc3e19a64ab2263391173642ea41e3cbb3cca50dc2a0
-COPY dotnet-runtime-deps-10.0-10.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.8-1.aarch64.rpm sha256:8c1d75cbc0f0282fb5972305c5352ac9fc61cb742a3c01a24a4f16d017fabee1
-COPY dotnet-runtime-10.0-10.0.8-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.8-1.x86_64.rpm sha256:d435efee3956a5c4286a03e3565935f7719220d22db711d00217169dcd14c16b
-COPY dotnet-runtime-10.0-10.0.8-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.9-1.aarch64.rpm sha256:0d0e5b8fe9140eed6469058c340f64e9d364f2b7ef81e1029c1f7c7a3f5dbbac
+COPY dotnet-host-10.0.9-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-10.0.9-1.x86_64.rpm sha256:136e8ddb423bb57da7c7755d2ae24247750d57ea9c8187c19a1d4ebfe7a7f325
+COPY dotnet-host-10.0.9-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.9-1.aarch64.rpm sha256:39e51694eb2ebf8bac803d896757f90fcf7a527050eda11ee3ba107afaa4ae50
+COPY dotnet-hostfxr-10.0-10.0.9-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-10.0-10.0.9-1.x86_64.rpm sha256:07735e490dc633ac4df6282868ff5151ffe459e2ebc3c50e2daff4ec0769d0b4
+COPY dotnet-hostfxr-10.0-10.0.9-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.9-1.aarch64.rpm sha256:85069425344700b100e44af708f0ec13456840c3a13ada828f9c6088c2a2caf8
+COPY dotnet-runtime-deps-10.0-10.0.9-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.9-1.x86_64.rpm sha256:b05e5d8b09143a14b8d79d0b8f2bb98350d5f190e967fe257ac597b0dc80d1b3
+COPY dotnet-runtime-deps-10.0-10.0.9-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.9-1.aarch64.rpm sha256:e0a5fb7cc59b7629be4385c1aa15c9d9899c2b4bcbb42ef8f8a173ce93afdc02
+COPY dotnet-runtime-10.0-10.0.9-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-10.0-10.0.9-1.x86_64.rpm sha256:a531cb5442867a1bd9146d03a2e15e0ffe21f207abe3e34cbfed057af4b77877
+COPY dotnet-runtime-10.0-10.0.9-1.x86_64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
 RUN rpm --import /tmp/microsoft.asc
@@ -50,17 +50,17 @@ RUN rpm --import /tmp/microsoft.asc
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-10.0.8-1.aarch64.rpm \
-            /tmp/dotnet-hostfxr-10.0-10.0.8-1.aarch64.rpm \
-            /tmp/dotnet-runtime-deps-10.0-10.0.8-1.aarch64.rpm \
-            /tmp/dotnet-runtime-10.0-10.0.8-1.aarch64.rpm; \
+            /tmp/dotnet-host-10.0.9-1.aarch64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.9-1.aarch64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.9-1.aarch64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.9-1.aarch64.rpm; \
     fi
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-10.0.8-1.x86_64.rpm \
-            /tmp/dotnet-hostfxr-10.0-10.0.8-1.x86_64.rpm \
-            /tmp/dotnet-runtime-deps-10.0-10.0.8-1.x86_64.rpm \
-            /tmp/dotnet-runtime-10.0-10.0.8-1.x86_64.rpm; \
+            /tmp/dotnet-host-10.0.9-1.x86_64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.9-1.x86_64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.9-1.x86_64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.9-1.x86_64.rpm; \
     fi
 
 COPY third-party.repo /etc/zypp/repos.d/packages-microsoft-com-prod.repo
@@ -85,13 +85,13 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title=".NET Runtime 10.0 for SUSE Linux Enterprise Server 15 SP7"
 LABEL org.opencontainers.image.description="The .NET Runtime 10.0 based on the SUSE Linux Enterprise Base Container Image. The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
-LABEL org.opencontainers.image.version="10.0.8"
+LABEL org.opencontainers.image.version="10.0.9"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10.0.8-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:10.0.8-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.0.9-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-runtime:10.0.9-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2028-11-12"
@@ -108,7 +108,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 RUN zypper -n install --no-recommends coreutils sles-release
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=10.0.8
+ENV DOTNET_VERSION=10.0.9
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
