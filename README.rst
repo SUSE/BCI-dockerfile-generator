@@ -76,7 +76,7 @@ To create a new :file:`README.md`, create a new file in the location
 container image name
 (:py:attr:`~bci_build.package.BaseContainerImage.name`). Add a markdown
 formatted README that explains the specifics of using this container
-images. Focus on anything container specific, like volumes, the behavior of the
+image. Focus on anything container-specific, like volumes, the behavior of the
 entrypoint and differences to the package in SLES/SLFO/Tumbleweed. If there is
 upstream/downstream documentation, refer to it if applicable.
 
