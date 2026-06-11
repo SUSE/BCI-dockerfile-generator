@@ -28,7 +28,7 @@ RUN set -euo pipefail; \
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
@@ -66,7 +66,7 @@ LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_l
 #!ArchExclusiveLine: x86_64 aarch64
 RUN set -euo pipefail; if zypper -n install mokutil; then zypper -n clean -a; fi
 RUN set -euo pipefail; sed -i -e 's,multiversion =.*,multiversion = ,' /etc/zypp/zypp.conf
-RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
