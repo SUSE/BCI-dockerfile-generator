@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 11 08:03:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
 Thu May  7 16:13:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update lifecycle information for gcc 15 based on the sle16 schedule
