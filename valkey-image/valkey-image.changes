@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 11 08:03:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
 Thu Mar 26 15:09:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rebuild rpm database to make it reproducible
