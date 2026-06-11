@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 11 08:03:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
 Mon Mar 30 11:34:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - split into base and -micro variant

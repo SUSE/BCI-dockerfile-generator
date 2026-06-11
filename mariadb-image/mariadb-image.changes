@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 11 08:03:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
 Mon Jun  1 08:46:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - unset passwords from environment
