@@ -6,7 +6,7 @@ from pathlib import Path
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_BASE_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -31,7 +31,7 @@ NANO_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=True,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Nano",
         custom_description="A nano environment for containers {based_on_container}.",
