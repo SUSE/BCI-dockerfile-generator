@@ -17,6 +17,7 @@
 
 #!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-nano:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-nano:latest
 #!BuildName: bci-bci-nano
 #!BuildVersion: 16.0.0
 FROM scratch AS target
