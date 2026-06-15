@@ -164,9 +164,37 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_kubevirt_kwargs("launcher", os_version),
-            package_list=sorted(["kubevirt-virt-launcher", "shadow"]),
+            **_get_kubevirt_kwargs("launcher", os_version, user="0", custom_end=False),
+            package_list=sorted(
+                [
+                    "kubevirt-virt-launcher",
+                    "kubevirt-container-disk",
+                    "libvirt-daemon-driver-qemu",
+                    "libvirt-client",
+                    "qemu-hw-usb-redirect",
+                    "usbredir",
+                    "xorriso",
+                    "qemu-ovmf-x86_64",
+                    "libcap-progs",
+                    "shadow",
+                ]
+            ),
             entrypoint=["/usr/bin/virt-launcher-monitor"],
+            custom_end=textwrap.dedent(f"""
+                {DOCKERFILE_RUN} rm -f /var/run && ln -s ../run /var/run && \\
+                    install -m 0644 /usr/share/kube-virt/virt-launcher/virtqemud.conf /etc/libvirt/virtqemud.conf && \\
+                    install -m 0644 /usr/share/kube-virt/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \\
+                    chmod 0755 /etc/libvirt && \\
+                    setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor
+                {DOCKERFILE_RUN} install -d -m 0755 /usr/share/edk2/ovmf && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-4m-code.bin     /usr/share/edk2/ovmf/OVMF_CODE.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-4m-vars.bin     /usr/share/edk2/ovmf/OVMF_VARS.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-smm-ms-code.bin /usr/share/edk2/ovmf/OVMF_CODE.secboot.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-smm-ms-vars.bin /usr/share/edk2/ovmf/OVMF_VARS.secboot.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-sev.bin         /usr/share/edk2/ovmf/OVMF_CODE.cc.fd && \\
+                    ln -s edk2/ovmf /usr/share/OVMF
+                ENV MALLOC_ARENA_MAX=1
+                """),
         )
         for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
     ]
