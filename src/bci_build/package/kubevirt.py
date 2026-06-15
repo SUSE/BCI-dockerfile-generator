@@ -18,6 +18,7 @@ from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 KUBEVIRT_EXCLUSIVE_ARCH = [Arch.X86_64]
+_KUBEVIRT_VERSIONS = (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
 
 
 class KubeVirtRegistry(SUSERegistry):
@@ -114,7 +115,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-api", "shadow"]),
             entrypoint=["/usr/bin/virt-api"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -122,7 +123,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-controller", "shadow"]),
             entrypoint=["/usr/bin/virt-controller"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -130,7 +131,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-exportproxy", "shadow"]),
             entrypoint=["/usr/bin/virt-exportproxy"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -140,7 +141,7 @@ KUBEVIRT_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-exportserver"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -160,7 +161,7 @@ KUBEVIRT_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-handler"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -196,7 +197,7 @@ KUBEVIRT_CONTAINERS = (
                 ENV MALLOC_ARENA_MAX=1
                 """),
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -204,7 +205,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-operator", "shadow"]),
             entrypoint=["/usr/bin/virt-operator"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -212,7 +213,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-synchronization-controller", "shadow"]),
             entrypoint=["/usr/bin/virt-synchronization-controller"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -227,7 +228,7 @@ KUBEVIRT_CONTAINERS = (
             entrypoint=["/usr/bin/qemu-pr-helper"],
             custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/kube-virt/pr-helper/multipath.conf /etc/",
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
 )
 
