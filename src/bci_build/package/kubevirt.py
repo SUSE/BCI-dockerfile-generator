@@ -180,6 +180,14 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
+            **_get_kubevirt_kwargs("synchronization-controller", os_version),
+            package_list=sorted(["kubevirt-virt-synchronization-controller", "shadow"]),
+            entrypoint=["/usr/bin/virt-synchronization-controller"],
+        )
+        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+    ]
+    + [
+        ApplicationStackContainer(
             **_get_kubevirt_kwargs(
                 "pr-helper",
                 os_version,
