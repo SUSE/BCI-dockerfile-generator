@@ -83,7 +83,7 @@ def _get_kubevirt_kwargs(
             generate_package_version_check(
                 service_pkg_name,
                 kubevirt_version,
-                ParseVersion.PATCH,
+                ParseVersion.MINOR,
                 use_target=True,
             )
             + (

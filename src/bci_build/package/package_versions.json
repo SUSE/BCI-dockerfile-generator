@@ -145,10 +145,10 @@
     },
     "kubevirt": {
         "latest": {
-            "16.0": "1.7.0",
-            "Tumbleweed": "1.8.3"
+            "16.0": "1.7",
+            "Tumbleweed": "1.8"
         },
-        "version_format": "patch"
+        "version_format": "minor"
     },
     "mariadb": {
         "latest": {
