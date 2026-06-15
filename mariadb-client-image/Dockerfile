@@ -17,7 +17,7 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: opensuse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: opensuse/mariadb-client:%%mariadb_version%%
-#!BuildTag: opensuse/mariadb-client:11.8
+#!BuildTag: opensuse/mariadb-client:12.3
 #!BuildTag: opensuse/mariadb-client:latest
 
 FROM opensuse/bci/bci-micro:latest AS target
@@ -30,13 +30,13 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of mariadb-client that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
-    cut -d '.' -f -2)" = "11.8" ]
+    cut -d '.' -f -2)" = "12.3" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     t=$(mktemp -d); mv /target/usr/lib/sysimage/rpm/Packages.db $t; rpmdb --rebuilddb --dbpath=$t; \
     rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/; \
-    rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
@@ -48,7 +48,6 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
 FROM opensuse/bci/bci-micro:latest
 COPY --from=builder /target /
-RUN set -euo pipefail; rm -vf /usr/lib/sysimage/rpm/Index.db
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.mariadb-client
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed MariaDB Client"
