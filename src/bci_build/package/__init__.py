@@ -1101,7 +1101,7 @@ exit 0
                 TARGET_REBUILDDB=TARGET_REBUILDDB,
                 BUILD_FLAVOR=self.build_flavor,
             )
-            if dockerfile[-1] != "\n":
+            if not dockerfile.endswith("\n"):
                 dockerfile += "\n"
 
             tasks.append(write_file_to_dest(fname, dockerfile))
@@ -1355,15 +1355,15 @@ class DevelopmentContainer(BaseContainerImage):
     @property
     def build_name(self) -> str | None:
         """Create a stable BuildName, either by using stability_tag or by falling back to _variant."""
-        if self.build_tags:
-            build_name = f"{self.registry_prefix}/{self.name}-{self._tag_variant}"
-            if self.stability_tag:
-                build_name = f"{self.registry_prefix}/{self.name}-{self.stability_tag}"
-            if self.is_singleton_image:
-                build_name = build_name.rpartition("-")[0]
-            return build_name.replace("/", ":").replace(":", "-")
+        if not self.build_tags:
+            return None
 
-        return None
+        build_name = f"{self.registry_prefix}/{self.name}-{self._tag_variant}"
+        if self.stability_tag:
+            build_name = f"{self.registry_prefix}/{self.name}-{self.stability_tag}"
+        if self.is_singleton_image:
+            build_name = build_name.rpartition("-")[0]
+        return build_name.replace("/", ":").replace(":", "-")
 
     @property
     def build_version(self) -> str | None:
@@ -1376,8 +1376,7 @@ class DevelopmentContainer(BaseContainerImage):
 @dataclass
 class ApplicationStackContainer(DevelopmentContainer):
     def __post_init__(self) -> None:
-        if self.min_release_counter.get(OsVersion.SP7, None) is None:
-            self.min_release_counter[OsVersion.SP7] = 60
+        self.min_release_counter.setdefault(OsVersion.SP7, 60)
         super().__post_init__()
 
     @property
