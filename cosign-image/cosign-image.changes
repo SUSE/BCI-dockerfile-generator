@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 16 19:54:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
 Mon Jun 15 08:02:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - improve image cleaning
