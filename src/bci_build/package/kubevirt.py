@@ -18,6 +18,7 @@ from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 KUBEVIRT_EXCLUSIVE_ARCH = [Arch.X86_64]
+_KUBEVIRT_VERSIONS = (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
 
 
 class KubeVirtRegistry(SUSERegistry):
@@ -83,7 +84,7 @@ def _get_kubevirt_kwargs(
             generate_package_version_check(
                 service_pkg_name,
                 kubevirt_version,
-                ParseVersion.PATCH,
+                ParseVersion.MINOR,
                 use_target=True,
             )
             + (
@@ -114,7 +115,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-api", "shadow"]),
             entrypoint=["/usr/bin/virt-api"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -122,7 +123,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-controller", "shadow"]),
             entrypoint=["/usr/bin/virt-controller"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -130,7 +131,7 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-exportproxy", "shadow"]),
             entrypoint=["/usr/bin/virt-exportproxy"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -140,7 +141,7 @@ KUBEVIRT_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-exportserver"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -160,15 +161,43 @@ KUBEVIRT_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-handler"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
-            **_get_kubevirt_kwargs("launcher", os_version),
-            package_list=sorted(["kubevirt-virt-launcher", "shadow"]),
+            **_get_kubevirt_kwargs("launcher", os_version, user="0", custom_end=False),
+            package_list=sorted(
+                [
+                    "kubevirt-virt-launcher",
+                    "kubevirt-container-disk",
+                    "libvirt-daemon-driver-qemu",
+                    "libvirt-client",
+                    "qemu-hw-usb-redirect",
+                    "usbredir",
+                    "xorriso",
+                    "qemu-ovmf-x86_64",
+                    "libcap-progs",
+                    "shadow",
+                ]
+            ),
             entrypoint=["/usr/bin/virt-launcher-monitor"],
+            custom_end=textwrap.dedent(f"""
+                {DOCKERFILE_RUN} rm -f /var/run && ln -s ../run /var/run && \\
+                    install -m 0644 /usr/share/kube-virt/virt-launcher/virtqemud.conf /etc/libvirt/virtqemud.conf && \\
+                    install -m 0644 /usr/share/kube-virt/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \\
+                    chmod 0755 /etc/libvirt && \\
+                    setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor
+                {DOCKERFILE_RUN} install -d -m 0755 /usr/share/edk2/ovmf && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-4m-code.bin     /usr/share/edk2/ovmf/OVMF_CODE.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-4m-vars.bin     /usr/share/edk2/ovmf/OVMF_VARS.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-smm-ms-code.bin /usr/share/edk2/ovmf/OVMF_CODE.secboot.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-smm-ms-vars.bin /usr/share/edk2/ovmf/OVMF_VARS.secboot.fd && \\
+                    ln -s /usr/share/qemu/ovmf-x86_64-sev.bin         /usr/share/edk2/ovmf/OVMF_CODE.cc.fd && \\
+                    ln -s edk2/ovmf /usr/share/OVMF
+                ENV MALLOC_ARENA_MAX=1
+                """),
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -176,7 +205,15 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(["kubevirt-virt-operator", "shadow"]),
             entrypoint=["/usr/bin/virt-operator"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
+    ]
+    + [
+        ApplicationStackContainer(
+            **_get_kubevirt_kwargs("synchronization-controller", os_version),
+            package_list=sorted(["kubevirt-virt-synchronization-controller", "shadow"]),
+            entrypoint=["/usr/bin/virt-synchronization-controller"],
+        )
+        for os_version in _KUBEVIRT_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -191,7 +228,7 @@ KUBEVIRT_CONTAINERS = (
             entrypoint=["/usr/bin/qemu-pr-helper"],
             custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/kube-virt/pr-helper/multipath.conf /etc/",
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _KUBEVIRT_VERSIONS
     ]
 )
 

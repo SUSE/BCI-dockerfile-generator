@@ -47,7 +47,7 @@ SET_BLKID_SCAN: str = f"# Avoid blkid waiting on udev (bsc#1247914)\n{DOCKERFILE
 #: Remove various log files and temporary files. While it is possible to just ``rm -rf /var/log/*``,
 #: that would also remove some package owned directories (not %ghost)
 LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \\
-    rm -rf {/target,}/run/*; \\
+    rm -rf /target/run/*; \\
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \\
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \\
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \\
