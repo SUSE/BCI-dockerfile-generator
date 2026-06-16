@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
+    rm -rf /target/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
@@ -73,7 +73,7 @@ RUN set -euo pipefail; if zypper -n install go1.25-openssl-race; then zypper -n 
 WORKDIR /go
 RUN set -euo pipefail; install -m 755 -d /go/bin /go/src
 RUN set -euo pipefail; rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
+    rm -rf /target/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
