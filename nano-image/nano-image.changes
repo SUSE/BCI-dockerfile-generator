@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 16 19:47:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
 Fri Jun 12 16:58:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove latest tag
