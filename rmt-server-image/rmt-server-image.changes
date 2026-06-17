@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 17 08:15:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to version 3 for tumbleweed
+
+-------------------------------------------------------------------
 Tue Jun 16 20:28:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fixes for 1.7 (better launcher config; adding synchronizer)

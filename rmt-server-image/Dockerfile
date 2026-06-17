@@ -17,7 +17,7 @@
 
 #!BuildTag: opensuse/rmt-server:%%rmt_version%%-%RELEASE%
 #!BuildTag: opensuse/rmt-server:%%rmt_version%%
-#!BuildTag: opensuse/rmt-server:2
+#!BuildTag: opensuse/rmt-server:3
 #!BuildTag: opensuse/rmt-server:latest
 
 FROM opensuse/tumbleweed:latest
@@ -61,6 +61,6 @@ CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' rmt-server | \
-    cut -d '.' -f -1)" = "2" ]
+    cut -d '.' -f -1)" = "3" ]
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
