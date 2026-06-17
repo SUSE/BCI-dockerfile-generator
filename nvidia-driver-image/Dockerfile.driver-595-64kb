@@ -17,6 +17,7 @@
 #!ExclusiveArch: aarch64
 #!BuildTag: third-party/nvidia/driver:595-64kb-sles%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: third-party/nvidia/driver:595-64kb-sles%OS_VERSION_ID_SP%
+#!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.35-64kb-sles16.0
 #!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.34-64kb-sles16.0
 #!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.33-64kb-sles16.0
 #!BuildTag: third-party/nvidia/driver:595-6.12.0-160000.32-64kb-sles16.0
