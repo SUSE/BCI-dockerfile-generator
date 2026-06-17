@@ -29,7 +29,7 @@ RUN set -euo pipefail; \
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
-    rm -rf {/target,}/run/*; \
+    rm -rf /target/run/*; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
@@ -57,6 +57,7 @@ LABEL org.opensuse.release-stage="released"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://osinside.github.io/kiwi/_static/kiwi-logo.png"
 LABEL usage="This container requires an openSUSE/SUSE host kernel for full functionality."
+CMD ["/usr/bin/kiwi"]
 # sanity check that the version from the tag is equal to the version of python3-kiwi that we expect
 RUN set -euo pipefail; \
     [ "$(rpm -q --qf '%{version}' python3-kiwi | \
