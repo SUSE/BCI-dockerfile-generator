@@ -4,6 +4,7 @@ from pathlib import Path
 
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -23,7 +24,9 @@ RMT_CONTAINERS = [
         pretty_name="SUSE RMT server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
-        tag_version="2",
+        tag_version=(
+            rmt_major_version := "2" if os_version in (OsVersion.SP7,) else "3"
+        ),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%rmt_version%%",
@@ -41,10 +44,10 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end=f"""{generate_package_version_check("rmt-server", "2", ParseVersion.MAJOR)}
+        custom_end=f"""{generate_package_version_check("rmt-server", rmt_major_version, ParseVersion.MAJOR)}
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
     )
-    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
