@@ -183,6 +183,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
+        source_package: rmt-server-image
+        target_project: home:pushman:BCI:CR:16.0:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.0
         source_package: ruby-3.4-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -357,6 +361,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: python-3.13-image
+    - trigger_services:
+        project: devel:BCI:16.0
+        package: rmt-server-image
     - trigger_services:
         project: devel:BCI:16.0
         package: ruby-3.4-image
