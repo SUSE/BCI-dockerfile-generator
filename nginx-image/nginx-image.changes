@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 17 08:07:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- support unprivileged operation
+
+-------------------------------------------------------------------
 Tue Jun 16 19:47:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - do not rm /run in the build stage
