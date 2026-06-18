@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 18 17:22:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- only clean specific files in /run
+
+-------------------------------------------------------------------
 Wed Jun 17 08:15:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to version 3 for tumbleweed
