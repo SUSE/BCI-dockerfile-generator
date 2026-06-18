@@ -15,6 +15,7 @@ class Arch(enum.Enum):
     AARCH64 = "aarch64"
     PPC64LE = "ppc64le"
     S390X = "s390x"
+    RISCV64 = "riscv64"
     LOCAL = "local"
     NOARCH = "noarch"
 
