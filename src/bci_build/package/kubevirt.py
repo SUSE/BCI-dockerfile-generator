@@ -172,6 +172,7 @@ KUBEVIRT_CONTAINERS = (
                     "kubevirt-container-disk",
                     "libvirt-daemon-driver-qemu",
                     "libvirt-client",
+                    "qemu-hw-usb-host",
                     "qemu-hw-usb-redirect",
                     "usbredir",
                     "xorriso",
