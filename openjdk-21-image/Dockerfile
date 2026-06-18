@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: aarch64 x86_64 ppc64le s390x
+#!ExclusiveArch: aarch64 ppc64le s390x riscv64 x86_64
 #!BuildTag: bci/openjdk:%%java_version%%-%RELEASE%
 #!BuildTag: bci/openjdk:%%java_version%%
 #!BuildTag: bci/openjdk:21
