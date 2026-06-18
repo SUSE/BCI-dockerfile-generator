@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 18 15:44:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- enable build for riscv64
+
+-------------------------------------------------------------------
 Tue Jun 16 19:47:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - do not rm /run in the build stage
