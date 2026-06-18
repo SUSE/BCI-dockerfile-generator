@@ -17,9 +17,9 @@
 #!ExclusiveArch: aarch64 ppc64le s390x x86_64
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%-%RELEASE%
 #!BuildTag: suse/mariadb-client:%%mariadb_version%%
-#!BuildTag: suse/mariadb-client:11.8
-#!BuildName: suse-mariadb-client-11.8
-#!BuildVersion: 16.1.11.8
+#!BuildTag: suse/mariadb-client:12.3
+#!BuildName: suse-mariadb-client-12.3
+#!BuildVersion: 16.1.12.3
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
@@ -30,7 +30,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of mariadb-client that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' mariadb-client | \
-    cut -d '.' -f -2)" = "11.8" ]
+    cut -d '.' -f -2)" = "12.3" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
