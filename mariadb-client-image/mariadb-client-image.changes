@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 18 11:29:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for new mariadb release
+
+-------------------------------------------------------------------
 Tue Jun 16 19:46:48 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - do not rm /run in the build stage
