@@ -3,8 +3,8 @@
 import textwrap
 from pathlib import Path
 
+from bci_build.container_attributes import ARCH_ONLY_64BIT
 from bci_build.container_attributes import TCP
-from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
@@ -27,7 +27,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
     ApplicationStackContainer(
         name="389-ds",
         package_name=("389-ds-container" if os_version.is_sle15 else None),
-        exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
+        exclusive_arch=ARCH_ONLY_64BIT,
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),

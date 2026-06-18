@@ -2,7 +2,7 @@
 
 import textwrap
 
-from bci_build.container_attributes import Arch
+from bci_build.container_attributes import ARCH_ONLY_64BIT
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
@@ -51,7 +51,7 @@ KUBECTL_CONTAINERS = [
         ),
         pretty_name="kubectl",
         custom_description="Kubernetes CLI for communicating with a Kubernetes cluster's control plane using the Kubernetes API, {based_on_container}.",
-        exclusive_arch=[Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.X86_64],
+        exclusive_arch=ARCH_ONLY_64BIT,
         os_version=os_version,
         is_latest=_is_latest_kubectl(ver, os_version),
         version="%%kubectl_version%%",

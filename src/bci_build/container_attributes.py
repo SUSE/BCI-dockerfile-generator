@@ -23,6 +23,9 @@ class Arch(enum.Enum):
         return self.value
 
 
+ARCH_ONLY_64BIT = (Arch.AARCH64, Arch.PPC64LE, Arch.S390X, Arch.RISCV64, Arch.X86_64)
+
+
 @enum.unique
 class ReleaseStage(enum.Enum):
     """Values for the ``release-stage`` label of a BCI"""

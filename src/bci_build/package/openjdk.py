@@ -5,7 +5,7 @@ import os
 from itertools import product
 from typing import Literal
 
-from bci_build.container_attributes import Arch
+from bci_build.container_attributes import ARCH_ONLY_64BIT
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
@@ -66,7 +66,7 @@ def _get_openjdk_kwargs(
 
     common = {
         # Hardcoding /usr/lib64 in JAVA_HOME atm
-        "exclusive_arch": [Arch.AARCH64, Arch.X86_64, Arch.PPC64LE, Arch.S390X],
+        "exclusive_arch": ARCH_ONLY_64BIT,
         "env": JAVA_ENV,
         "tag_version": java_version,
         "version": "%%java_version%%",
