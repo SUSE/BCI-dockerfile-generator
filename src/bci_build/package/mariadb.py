@@ -3,8 +3,8 @@
 import re
 from pathlib import Path
 
+from bci_build.container_attributes import ARCH_ONLY_64BIT
 from bci_build.container_attributes import TCP
-from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -74,13 +74,7 @@ for os_version in (
             package_name=f"{pkg_prefix}mariadb-image",
             version=_MARIADB_VERSION_PLACEHOLDER,
             tag_version=mariadb_version,
-            exclusive_arch=[
-                Arch.AARCH64,
-                Arch.PPC64LE,
-                Arch.RISCV64,
-                Arch.S390X,
-                Arch.X86_64,
-            ],
+            exclusive_arch=ARCH_ONLY_64BIT,
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             version_in_uid=False,
@@ -171,13 +165,7 @@ COPY idexec /usr/local/bin/idexec
         ApplicationStackContainer(
             name="mariadb-client",
             package_name=f"{pkg_prefix}mariadb-client-image",
-            exclusive_arch=[
-                Arch.AARCH64,
-                Arch.PPC64LE,
-                Arch.RISCV64,
-                Arch.S390X,
-                Arch.X86_64,
-            ],
+            exclusive_arch=ARCH_ONLY_64BIT,
             os_version=os_version,
             is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
             version_in_uid=False,
