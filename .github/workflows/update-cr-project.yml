@@ -28,7 +28,7 @@ jobs:
 
     steps:
       # we need all branches for the build checks
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 

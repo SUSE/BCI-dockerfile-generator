@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     container: registry.opensuse.org/opensuse/bci/bci-ci:latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           # ensure that we have write permissions for pushes
