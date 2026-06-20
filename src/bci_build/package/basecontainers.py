@@ -32,7 +32,7 @@ def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
             "bash",
             "ca-certificates-mozilla-prebuilt",
             # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
-            "coreutils",
+            "coreutils-single" if not os_version.is_sle15 else "coreutils",
         )
         + os_version.eula_package_names
         + os_version.release_package_names
