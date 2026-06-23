@@ -1,8 +1,14 @@
 import gzip
+import sys
 from unittest.mock import Mock
 from unittest.mock import patch
 
 from bci_build.repomdparser import RepoMDParser
+
+if sys.version_info >= (3, 14):
+    from compression import zstd
+else:
+    from backports import zstd
 
 _pkg_template = """<package type="rpm">
   <name>{pkg}</name>
@@ -67,6 +73,14 @@ SLE_REPO_XML = """<?xml version="1.0" encoding="UTF-8"?>
   </data>
   <data type="other">
     <location href="repodata/other.xml.gz"/>
+  </data>
+</repomd>
+"""
+
+SLE_REPO_ZST_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+  <data type="primary">
+    <location href="repodata/primary.xml.zst"/>
   </data>
 </repomd>
 """
@@ -190,3 +204,31 @@ def test_query_not_found():
 
     pkgs = repo.query("dummy-pkg-1", arch="ppc64le")
     assert len(pkgs) == 0
+
+
+def test_parse_zst():
+    repo = RepoMDParser("https://packages.example.com/sles/15.7/")
+
+    def fake_repo_get_zst(url, *args, **kwargs):
+        resp = Mock()
+        resp.raise_for_status.return_value = None
+        resp.status_code = 200
+
+        match url:
+            case "https://packages.example.com/sles/15.7/repodata/repomd.xml":
+                resp.content = SLE_REPO_ZST_XML
+            case "https://packages.example.com/sles/15.7/repodata/primary.xml.zst":
+                resp.content = zstd.compress(SLE_PRIMARY_XML.encode("utf-8"))
+            case "https://packages.example.com/keys/repo.asc":
+                resp.text = "GPGKEY"
+            case _:
+                raise ValueError(f"Unexpected URL: {url}")
+
+        return resp
+
+    with patch("bci_build.repomdparser.requests.get", side_effect=fake_repo_get_zst):
+        repo.parse()
+
+    assert repo.pkgs[0].name == "dummy-sle-pkg-1"
+    assert repo.pkgs[0].evr == ("", "1.0.2", "1")
+    assert repo.pkgs[0].arch == "aarch64"
