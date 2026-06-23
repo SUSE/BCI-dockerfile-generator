@@ -4,12 +4,18 @@ import functools
 import gzip
 import importlib.metadata
 import os
+import sys
 import urllib.parse
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 
 import requests
 from version_utils import rpm
+
+if sys.version_info >= (3, 14):
+    from compression import zstd
+else:
+    from backports import zstd
 
 
 @dataclass
@@ -76,16 +82,22 @@ class RepoMDParser:
             return None
 
         assert primary_xml_location.startswith(self.baserepo_url)
-        assert primary_xml_location.endswith(".gz")
+        assert primary_xml_location.endswith((".gz", ".zst"))
 
         primary_xml_response = requests.get(
             urllib.parse.urljoin(self.baserepo_url, primary_xml_location),
             headers=_REPOMD_REQ_HEADERS,
         )
         primary_xml_response.raise_for_status()
-        primary_xml: ET.Element[str] = ET.fromstring(
-            gzip.decompress(primary_xml_response.content)
-        )
+
+        if primary_xml_location.endswith(".gz"):
+            xml_data = gzip.decompress(primary_xml_response.content)
+        elif primary_xml_location.endswith(".zst"):
+            xml_data = zstd.decompress(primary_xml_response.content)
+        else:
+            raise ValueError(f"Unsupported compression: {primary_xml_location}")
+
+        primary_xml: ET.Element[str] = ET.fromstring(xml_data)
 
         pkgs = []
 
