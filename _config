@@ -18,6 +18,8 @@ BuildFlags: container-timestamp:0
 Type: spec
 Repotype: none
 Patterntype: none
+
+FileProvides: /usr/bin/coreutils coreutils-single
 %endif
 %endif
 
