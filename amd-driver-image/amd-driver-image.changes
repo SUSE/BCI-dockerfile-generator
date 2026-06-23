@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 23 15:14:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update README
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
