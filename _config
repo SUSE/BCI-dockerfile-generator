@@ -108,5 +108,7 @@ BuildFlags: excludebuild:rpm
 
 Prefer: -postgresql16-devel-mini -postgresql17-devel-mini -ALP-dummy-release -SLES_SAP-release
 
+FileProvides: /usr/bin/coreutils coreutils-single
+
 # prevent gdb from pulling in python 3.11 & 3.12 at the same time
 Substitute: obs:cli_debug_packages less
