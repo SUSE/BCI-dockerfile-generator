@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 
 import requests
+import zstandard as zstd
 from version_utils import rpm
 
 
@@ -76,16 +77,24 @@ class RepoMDParser:
             return None
 
         assert primary_xml_location.startswith(self.baserepo_url)
-        assert primary_xml_location.endswith(".gz")
+        assert primary_xml_location.endswith((".gz", ".zst"))
 
         primary_xml_response = requests.get(
             urllib.parse.urljoin(self.baserepo_url, primary_xml_location),
             headers=_REPOMD_REQ_HEADERS,
         )
         primary_xml_response.raise_for_status()
-        primary_xml: ET.Element[str] = ET.fromstring(
-            gzip.decompress(primary_xml_response.content)
-        )
+
+        if primary_xml_location.endswith(".gz"):
+            xml_data = gzip.decompress(primary_xml_response.content)
+        elif primary_xml_location.endswith(".zst"):
+            size = int(primary_xml_response.headers["Content-Length"])
+            dc = zstd.ZstdDecompressor()
+            xml_data = dc.decompress(primary_xml_response.content, max_output_size=size)
+        else:
+            raise ValueError(f"Unsupported compression: {primary_xml_location}")
+
+        primary_xml: ET.Element[str] = ET.fromstring(xml_data)
 
         pkgs = []
 

@@ -24,6 +24,7 @@ dependencies = [
     "requests >= 2.34.2",
     "urllib3 >= 2.7.0",
     "version-utils >= 0.3.2",
+    "zstandard (>=0.25.0,<0.26.0)",
 ]
 
 [tool.poetry.scripts]
