@@ -154,6 +154,12 @@
         },
         "version_format": "minor"
     },
+    "kubevirt1.8": {
+        "latest": {
+            "Tumbleweed": "1.8"
+        },
+        "version_format": "minor"
+    },
     "mariadb": {
         "latest": {
             "16.0": "11.8",

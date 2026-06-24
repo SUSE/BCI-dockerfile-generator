@@ -31,6 +31,16 @@ class KubeVirtRegistry(SUSERegistry):
         return "suse/sles/16.0"
 
 
+def _kubevirt_pkg(os_version: OsVersion) -> str:
+    """Get the KubeVirt package name for a given OS version."""
+    return "kubevirt" if os_version == OsVersion.SL16_0 else "kubevirt1.8"
+
+
+def _kubevirt_dir(os_version: OsVersion) -> str:
+    """Get the KubeVirt directory name for a given OS version."""
+    return "kube-virt" if os_version == OsVersion.SL16_0 else "kube-virt-1.8"
+
+
 def _get_kubevirt_kwargs(
     service: str,
     os_version: OsVersion,
@@ -44,25 +54,28 @@ def _get_kubevirt_kwargs(
     if user is None:
         user = "1001"
     service_pkg_name = (
-        f"kubevirt-virt-{service}"
+        f"{_kubevirt_pkg(os_version)}-virt-{service}"
         if custom_service_pkg_name is None
         else custom_service_pkg_name
     )
-    kubevirt_version = get_pkg_version("kubevirt", os_version)
+    kubevirt_version = get_pkg_version(_kubevirt_pkg(os_version), os_version)
     kubevirt_version_re = "%%kubevirt_ver%%"
-    tag_version = format_version(kubevirt_version, ParseVersion.MINOR)
     return {
         "name": f"virt-{service}",
         "pretty_name": f"KubeVirt virt-{service}",
-        "package_name": "kubevirt-image",
+        "package_name": (
+            "kubevirt-1.8-image"
+            if os_version == OsVersion.TUMBLEWEED
+            else "kubevirt-image"
+        ),
         "license": "Apache-2.0",
         "os_version": os_version,
-        "tag_version": tag_version,
+        "tag_version": format_version(kubevirt_version, ParseVersion.MINOR),
         "version": kubevirt_version_re,
         "replacements_via_service": [
             Replacement(
                 kubevirt_version_re,
-                package_name="kubevirt",
+                package_name=_kubevirt_pkg(os_version),
                 parse_version=ParseVersion.PATCH,
             )
         ],
@@ -112,7 +125,7 @@ KUBEVIRT_CONTAINERS = (
     [
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("api", os_version),
-            package_list=sorted(["kubevirt-virt-api", "shadow"]),
+            package_list=sorted([f"{_kubevirt_pkg(os_version)}-virt-api", "shadow"]),
             entrypoint=["/usr/bin/virt-api"],
         )
         for os_version in _KUBEVIRT_VERSIONS
@@ -120,7 +133,9 @@ KUBEVIRT_CONTAINERS = (
     + [
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("controller", os_version),
-            package_list=sorted(["kubevirt-virt-controller", "shadow"]),
+            package_list=sorted(
+                [f"{_kubevirt_pkg(os_version)}-virt-controller", "shadow"]
+            ),
             entrypoint=["/usr/bin/virt-controller"],
         )
         for os_version in _KUBEVIRT_VERSIONS
@@ -128,7 +143,9 @@ KUBEVIRT_CONTAINERS = (
     + [
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("exportproxy", os_version),
-            package_list=sorted(["kubevirt-virt-exportproxy", "shadow"]),
+            package_list=sorted(
+                [f"{_kubevirt_pkg(os_version)}-virt-exportproxy", "shadow"]
+            ),
             entrypoint=["/usr/bin/virt-exportproxy"],
         )
         for os_version in _KUBEVIRT_VERSIONS
@@ -137,7 +154,11 @@ KUBEVIRT_CONTAINERS = (
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("exportserver", os_version, user="107"),
             package_list=sorted(
-                ["kubevirt-virt-exportserver", "system-user-qemu", "tar"]
+                [
+                    f"{_kubevirt_pkg(os_version)}-virt-exportserver",
+                    "system-user-qemu",
+                    "tar",
+                ]
             ),
             entrypoint=["/usr/bin/virt-exportserver"],
         )
@@ -148,10 +169,10 @@ KUBEVIRT_CONTAINERS = (
             **_get_kubevirt_kwargs("handler", os_version, user="0", custom_end=False),
             package_list=sorted(
                 [
-                    "kubevirt-virt-handler",
+                    f"{_kubevirt_pkg(os_version)}-virt-handler",
                     "curl",
                     "iproute2",
-                    "kubevirt-container-disk",
+                    f"{_kubevirt_pkg(os_version)}-container-disk",
                     "nftables",
                     "qemu-img",
                     "system-user-qemu",
@@ -168,8 +189,8 @@ KUBEVIRT_CONTAINERS = (
             **_get_kubevirt_kwargs("launcher", os_version, user="0", custom_end=False),
             package_list=sorted(
                 [
-                    "kubevirt-virt-launcher",
-                    "kubevirt-container-disk",
+                    f"{_kubevirt_pkg(os_version)}-virt-launcher",
+                    f"{_kubevirt_pkg(os_version)}-container-disk",
                     "libvirt-daemon-driver-qemu",
                     "libvirt-client",
                     "qemu-hw-usb-host",
@@ -179,18 +200,18 @@ KUBEVIRT_CONTAINERS = (
                     "passt",
                     "nftables",
                     "tar",
-                    "ncat",
                     "xorriso",
                     "qemu-ovmf-x86_64",
                     "libcap-progs",
                     "shadow",
                 ]
+                + (["ncat"] if os_version != OsVersion.TUMBLEWEED else [])
             ),
             entrypoint=["/usr/bin/virt-launcher-monitor"],
             custom_end=textwrap.dedent(f"""
                 {DOCKERFILE_RUN} rm -f /var/run && ln -s ../run /var/run && \\
-                    install -m 0644 /usr/share/kube-virt/virt-launcher/virtqemud.conf /etc/libvirt/virtqemud.conf && \\
-                    install -m 0644 /usr/share/kube-virt/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \\
+                    install -m 0644 /usr/share/{_kubevirt_dir(os_version)}/virt-launcher/virtqemud.conf /etc/libvirt/virtqemud.conf && \\
+                    install -m 0644 /usr/share/{_kubevirt_dir(os_version)}/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \\
                     chmod 0755 /etc/libvirt && \\
                     setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor
                 {DOCKERFILE_RUN} install -d -m 0755 /usr/share/edk2/ovmf && \\
@@ -208,7 +229,9 @@ KUBEVIRT_CONTAINERS = (
     + [
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("operator", os_version),
-            package_list=sorted(["kubevirt-virt-operator", "shadow"]),
+            package_list=sorted(
+                [f"{_kubevirt_pkg(os_version)}-virt-operator", "shadow"]
+            ),
             entrypoint=["/usr/bin/virt-operator"],
         )
         for os_version in _KUBEVIRT_VERSIONS
@@ -216,7 +239,12 @@ KUBEVIRT_CONTAINERS = (
     + [
         ApplicationStackContainer(
             **_get_kubevirt_kwargs("synchronization-controller", os_version),
-            package_list=sorted(["kubevirt-virt-synchronization-controller", "shadow"]),
+            package_list=sorted(
+                [
+                    f"{_kubevirt_pkg(os_version)}-virt-synchronization-controller",
+                    "shadow",
+                ]
+            ),
             entrypoint=["/usr/bin/virt-synchronization-controller"],
         )
         for os_version in _KUBEVIRT_VERSIONS
@@ -228,11 +256,13 @@ KUBEVIRT_CONTAINERS = (
                 os_version,
                 user="0",
                 custom_end=False,
-                custom_service_pkg_name="kubevirt-pr-helper-conf",
+                custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-pr-helper-conf",
             ),
-            package_list=sorted(["kubevirt-pr-helper-conf", "qemu-pr-helper"]),
+            package_list=sorted(
+                [f"{_kubevirt_pkg(os_version)}-pr-helper-conf", "qemu-pr-helper"]
+            ),
             entrypoint=["/usr/bin/qemu-pr-helper"],
-            custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/kube-virt/pr-helper/multipath.conf /etc/",
+            custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(os_version)}/pr-helper/multipath.conf /etc/",
         )
         for os_version in _KUBEVIRT_VERSIONS
     ]
