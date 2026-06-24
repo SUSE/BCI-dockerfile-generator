@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 23 21:38:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- more packages in the launcher container to fix failing tests
+
+-------------------------------------------------------------------
 Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
