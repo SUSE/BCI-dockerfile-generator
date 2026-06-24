@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 24 16:15:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to coreutils-single for the minimal containers
+
+-------------------------------------------------------------------
 Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
