@@ -26,7 +26,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils libopenssl3 openSUSE-release openSUSE-release-appliance-docker patterns-base-fips
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash ca-certificates-mozilla-prebuilt coreutils-single libopenssl3 openSUSE-release openSUSE-release-appliance-docker patterns-base-fips
 
 RUN set -euo pipefail; zypper -n install jdupes crypto-policies-scripts update-bootloader \
     && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \
