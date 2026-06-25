@@ -1,4 +1,4 @@
-# NVIDIA Driver 580.159.04 Container Image
+# NVIDIA Driver 580.167.08 Container Image
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
 
@@ -7,7 +7,7 @@
 The NVIDIA Driver container image provides NVIDIA GPU drivers in a
 containerized environment. This image is based on
 SUSE Linux Enterprise Server and includes both the
-open-source and proprietary NVIDIA kernel modules 580.159.04, along with the necessary
+open-source and proprietary NVIDIA kernel modules 580.167.08, along with the necessary
 user-space tools.
 
 It provides [precompiled binaries](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html) for the NVIDIA GPU Operator or for manual
