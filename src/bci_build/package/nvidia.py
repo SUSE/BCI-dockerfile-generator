@@ -272,10 +272,9 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
 
         # ensure we do not ship versions that are not supported by NVIDIA datacenter
-        # TODO: The check fails because the URL is gone
-        # assert _is_datacenter_driver(self.version), (
-        #     f"Version '{self.version}' is not datacenter supported"
-        # )
+        assert _is_datacenter_driver(self.version), (
+            f"Version '{self.version}' is not datacenter supported"
+        )
 
         pkgs = self.fetch_rpm_packages()
 
@@ -792,7 +791,7 @@ _NVIDIA_DRIVER_VERSIONS: list[str] = [
     "595.71.05",
     "590.48.01",
     # G06
-    "580.159.04",
+    "580.167.08",
     "575.57.08",
     "570.211.01",
     "550.163.01",
