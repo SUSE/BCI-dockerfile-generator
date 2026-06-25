@@ -661,6 +661,10 @@ def _get_compute_packages(
     if driver_branch >= 575:
         packages += [
             ThirdPartyPackage("dkms"),
+        ]
+
+    if driver_branch >= 575 and driver_branch < 610:
+        packages += [
             ThirdPartyPackage("libnvidia-gpucomp", version=driver_version),
         ]
 
@@ -679,10 +683,14 @@ def _get_compute_packages(
                 ThirdPartyPackage("libOpenCL1"),
             ]
 
-    # since 580 nvidia-compute has these dependencies
-    if driver_branch >= 580:
+    if driver_branch >= 580 and driver_branch < 610:
         packages += [
             ThirdPartyPackage("libnvidia-cfg", version=driver_version),
+        ]
+
+    # since 580 nvidia-compute has these dependencies
+    if driver_branch >= 580 and driver_branch < 610:
+        packages += [
             ThirdPartyPackage("libnvidia-ml", version=driver_version),
         ]
 
@@ -789,6 +797,7 @@ def _is_datacenter_driver(version: str):
 # https://docs.nvidia.com/datacenter/tesla/index.html
 _NVIDIA_DRIVER_VERSIONS: list[str] = [
     # G07
+    "610.43.02",
     "595.71.05",
     "590.48.01",
     # G06
