@@ -506,15 +506,13 @@ def _get_compute_packages(
         raise ValueError(f"Unknown compute package for {driver_version}")
 
     # since 575 the drivers are dkms-based
-    # however, since 595 we use kmp drivers for the open driver,
-    # but we still use dkms for the proprietary driver
+    # and nvidia-compute has these dependencies
     if driver_branch >= 575:
         packages += [
             ThirdPartyPackage("dkms"),
         ]
 
-    # since 575 nvidia-compute has these dependencies
-    if driver_branch >= 575:
+    if driver_branch >= 575 and driver_branch < 610:
         packages += [
             ThirdPartyPackage("libnvidia-gpucomp", version=driver_version),
         ]
@@ -534,10 +532,14 @@ def _get_compute_packages(
                 ThirdPartyPackage("libOpenCL1"),
             ]
 
-    # since 580 nvidia-compute has these dependencies
-    if driver_branch >= 580:
+    if driver_branch >= 580 and driver_branch < 610:
         packages += [
             ThirdPartyPackage("libnvidia-cfg", version=driver_version),
+        ]
+
+    # since 580 nvidia-compute has these dependencies
+    if driver_branch >= 580 and driver_branch < 610:
+        packages += [
             ThirdPartyPackage("libnvidia-ml", version=driver_version),
         ]
 
@@ -639,6 +641,11 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "595.71.05_k6.12.0_160000.29"
                     release = "160000.1.1"
+                case "610.43.02":
+                    package = "patchinfo.20260624102342168846.90520737308617"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "610.43.02_k6.12.0_160000.35"
+                    release = "160000.1.2"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -653,6 +660,11 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "595.71.05_k6.4.0_150700.53.40"
                     release = "150700.16.8.1"
+                case "610.43.02":
+                    package = "nvidia-open-driver-G07-signed.44612:cuda"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "610.43.02_k6.4.0_150700.53.52"
+                    release = "150700.16.11.1"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -680,9 +692,16 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
 
 _SL16_0_KERNEL_PATCHINFO_MAP = {
     "6.12.0-160000.29": "patchinfo.20260501095726722273.187004354831441",
+    "6.12.0-160000.35": "patchinfo.20260611073803662552.187004354831441",
 }
 
 _SP7_KERNEL_PACKAGE_MAP = {
+    "6.4.0-150700.53.52": {
+        "kernel-default": "kernel-default.44324",
+        "kernel-syms": "kernel-syms.44324",
+        "kernel-source": "kernel-source.44324",
+        "kernel-64kb": "kernel-64kb.44324",
+    },
     "6.4.0-150700.53.40": {
         "kernel-default": "kernel-default.44023",
         "kernel-syms": "kernel-syms.44023",
