@@ -131,7 +131,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: kubevirt-image
+        source_package: kubevirt-1.8-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -412,7 +412,7 @@ refresh_devel_BCI:
         package: kubectl-1.36-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: kubevirt-image
+        package: kubevirt-1.8-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: mariadb-client-image
