@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 25 15:21:38 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rename to kubevirt-1.8-image
+
+-------------------------------------------------------------------
 Tue Jun 23 21:38:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - more packages in the launcher container to fix failing tests
