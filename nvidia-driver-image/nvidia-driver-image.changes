@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 26 18:36:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Switch to KMP driver for 595
+
+-------------------------------------------------------------------
 Thu Jun 25 14:15:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Update 580 driver to 580.167.08
