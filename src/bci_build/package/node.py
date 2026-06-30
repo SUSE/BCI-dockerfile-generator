@@ -17,6 +17,7 @@ _NODE_VERSIONS = Literal[16, 18, 20, 21, 22, 23, 24, 25]
 
 # see https://raw.githubusercontent.com/nodejs/Release/main/README.md
 _NODEJS_SUPPORT_ENDS = {
+    26: datetime.date(2029, 4, 30),
     25: datetime.date(2026, 6, 1),
     # upstream 2028/4/30 but we pick general support of SL16.1
     24: datetime.date(2028, 11, 30),
@@ -84,17 +85,28 @@ def _get_node_kwargs(
     } | ({"build_flavor": build_flavor} if build_flavor else {})
 
 
-NODE_CONTAINERS = [
-    DevelopmentContainer(**_get_node_kwargs(node_version, os_version))
-    for node_version, os_version in (
-        (22, OsVersion.SP7),
-        (22, OsVersion.SL16_0),
-    )
-] + [
-    DevelopmentContainer(**_get_node_kwargs(24, os_version, build_flavor))
-    for os_version, build_flavor in product(
-        (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED), ("base", "micro")
-    )
-]
+NODE_CONTAINERS = (
+    [
+        DevelopmentContainer(**_get_node_kwargs(node_version, os_version))
+        for node_version, os_version in (
+            (22, OsVersion.SP7),
+            (22, OsVersion.SL16_0),
+        )
+    ]
+    + [
+        DevelopmentContainer(**_get_node_kwargs(24, os_version, build_flavor))
+        for os_version, build_flavor in product(
+            (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED),
+            ("base", "micro"),
+        )
+    ]
+    + [
+        DevelopmentContainer(**_get_node_kwargs(26, os_version, build_flavor))
+        for os_version, build_flavor in product(
+            (OsVersion.TUMBLEWEED,), ("base", "micro")
+        )
+    ]
+)
+
 
 NODE_CRATE = ContainerCrate(NODE_CONTAINERS)
