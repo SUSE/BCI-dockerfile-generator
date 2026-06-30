@@ -98,18 +98,20 @@ for os_version in (
                     package_name="mariadb",
                 ),
             ],
-            package_list=[
-                "coreutils",
-                "findutils",
-                "gawk",
-                "mariadb",
-                "mariadb-tools",
-                "openssl",
-                "sed",
-                "timezone",
-                "util-linux",
-                "zstd",
-            ],
+            package_list=sorted(
+                [
+                    "findutils",
+                    "gawk",
+                    "mariadb",
+                    "mariadb-tools",
+                    "openssl",
+                    "sed",
+                    "timezone",
+                    "util-linux",
+                    "zstd",
+                ]
+                + (["coreutils-single"] if not os_version.is_sle15 else ["coreutils"])
+            ),
             entrypoint=[_ENTRYPOINT_FNAME],
             license="GPL-2.0-only",
             extra_files={
