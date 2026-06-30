@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 30 12:55:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- install coreutils-single
+
+-------------------------------------------------------------------
 Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
