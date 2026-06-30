@@ -51,7 +51,6 @@ POSTGRES_CONTAINERS = [
                 "libpq5",
                 f"postgresql{ver}-server",
                 "findutils",
-                "coreutils",
                 "grep",
                 "sed",
                 "tar",
@@ -59,6 +58,7 @@ POSTGRES_CONTAINERS = [
                 "zstd",
                 "util-linux",  # for setpriv :-(
             ]
+            + (["coreutils-single"] if not os_version.is_sle15 else ["coreutils"])
             + (
                 [
                     f"postgresql{ver}-pgvector",
