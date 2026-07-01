@@ -73,5 +73,8 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="sed"/>
     <package name="rpm"/>
   </packages>
+  <packages type="image">
+    <package name="coreutils-single"/>
+  </packages>
 
 </image>
