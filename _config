@@ -19,9 +19,6 @@ Type: spec
 Repotype: none
 Patterntype: none
 
-FileProvides: /usr/bin/coreutils coreutils-single
-FileProvides: /usr/bin/node26 nodejs26
-
 %endif
 %endif
 
