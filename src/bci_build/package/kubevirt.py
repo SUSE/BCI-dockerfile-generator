@@ -195,7 +195,6 @@ KUBEVIRT_CONTAINERS = (
                     "libvirt-client",
                     "qemu-hw-usb-host",
                     "qemu-hw-usb-redirect",
-                    "usbredir",
                     "virtiofsd",
                     "passt",
                     "nftables",
@@ -206,6 +205,7 @@ KUBEVIRT_CONTAINERS = (
                     "shadow",
                 ]
                 + (["ncat"] if os_version != OsVersion.TUMBLEWEED else [])
+                + (["usbredir"] if os_version == OsVersion.TUMBLEWEED else [])
             ),
             entrypoint=["/usr/bin/virt-launcher-monitor"],
             custom_end=textwrap.dedent(f"""
