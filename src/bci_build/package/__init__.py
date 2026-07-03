@@ -89,12 +89,12 @@ class StableUser:
 
     # name of the user
     user_name: str
-    # id of the user
-    user_id: int
     # name of the group
     group_name: str
+    # id of the user
+    user_id: int = 499
     # id of the group
-    group_id: int
+    group_id: int = 499
 
 
 def _build_tag_prefix(os_version: OsVersion) -> str:
