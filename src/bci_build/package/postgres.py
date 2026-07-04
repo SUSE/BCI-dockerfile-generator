@@ -61,14 +61,8 @@ POSTGRES_CONTAINERS = [
             + (["coreutils-single"] if not os_version.is_sle15 else ["coreutils"])
             + (
                 [
-                    f"postgresql{ver}-pgvector",
-                ]
-                if os_version.is_tumbleweed
-                else []
-            )
-            + (
-                [
                     f"postgresql{ver}-contrib",
+                    f"postgresql{ver}-pgvector",
                 ]
                 if flavor == "contrib"
                 else []
