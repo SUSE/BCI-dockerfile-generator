@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jul  5 08:38:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add pgvector to contrib container
+
+-------------------------------------------------------------------
 Tue Jun 30 12:55:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - install coreutils-single
