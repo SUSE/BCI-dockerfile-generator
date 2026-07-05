@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jul  5 08:37:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove pgvector from default container (it is in contrib)
+
+-------------------------------------------------------------------
 Tue Jun 30 12:55:25 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - install coreutils-single
