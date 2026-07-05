@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jul  5 08:39:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add pgvector to contrib container
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
