@@ -11,6 +11,7 @@ from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import StableUser
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import get_pkg_version
@@ -70,6 +71,12 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
         "exposes_ports": [TCP(80)],
+        "user_chown": (
+            StableUser(
+                user_name="nginx",
+                group_name="nginx",
+            )
+        ),
         "build_stage_custom_end": generate_package_version_check(
             "nginx", nginx_version, use_target=True
         ),
