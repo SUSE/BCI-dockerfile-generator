@@ -27,6 +27,11 @@ COPY --from=target / /target
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends curl gawk nginx findutils gettext-runtime sed grep
+# changing user id and group id created by package installation to stable values
+RUN set -euo pipefail; \
+    chroot /target chown -R --from=nginx:nginx 499:499 /; \
+    groupmod -R /target -g 499 nginx; \
+    usermod -R /target -u 499 nginx
 # sanity check that the version from the tag is equal to the version of nginx that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' nginx | \
