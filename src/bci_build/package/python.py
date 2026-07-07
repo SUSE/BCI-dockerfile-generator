@@ -242,14 +242,15 @@ BCI_CI_CONTAINERS = [
             "jq",
             "osc",
             "patch",
-            "python3-devel",
-            "python3-pipx",
-            "python3-poetry",
+            "python314-devel",
+            "python314-base",
+            "python314-pipx",
+            "python314-poetry",
         ),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description=python_ver,
-                package_name="python313-base",
+                package_name="python314-base",
                 parse_version=ParseVersion.PATCH,
             )
             for ver in (ParseVersion.MAJOR, ParseVersion.MINOR)
