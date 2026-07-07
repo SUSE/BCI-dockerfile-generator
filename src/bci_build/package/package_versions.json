@@ -10,7 +10,12 @@
     },
     "containerized-data-importer": {
         "latest": {
-            "16.0": "1.64.0",
+            "16.0": "1.64.0"
+        },
+        "version_format": "patch"
+    },
+    "containerized-data-importer1.65": {
+        "latest": {
             "Tumbleweed": "1.65.0"
         },
         "version_format": "patch"
