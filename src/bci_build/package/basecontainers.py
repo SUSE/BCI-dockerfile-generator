@@ -170,9 +170,16 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
             "libpython3_6m1_0",
             "perl-Bootloader",
         )
+    elif os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED):
+        crypto_policies_deps += (
+            "libpython3_13-1_0",
+            "python313-base",
+            "update-bootloader",
+        )
     else:
         crypto_policies_deps += (
             "libpython3_13-1_0",
+            "python3-base",
             "python313-base",
             "update-bootloader",
         )
