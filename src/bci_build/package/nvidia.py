@@ -6,10 +6,8 @@ NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 
 import json
 import textwrap
-from functools import lru_cache
 from pathlib import Path
 
-import requests
 from jinja2 import Template
 from version_utils import rpm
 
@@ -281,11 +279,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
         assert not self.build_stage_custom_end, (
             "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
-        )
-
-        # ensure we do not ship versions that are not supported by NVIDIA datacenter
-        assert _is_datacenter_driver(self.version), (
-            f"Version '{self.version}' is not datacenter supported"
         )
 
         # Find the kernel version used to build the nvidia-kmp driver for branches >= 595
@@ -840,32 +833,6 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     versions = get_all_pkg_version(f"kernel-{variant}", os_version)
     versions.reverse()
     return versions
-
-
-@lru_cache(maxsize=1)
-def _get_datacenter_driver_versions():
-    """
-    Return the datacenter driver versions supported by NVIDIA.
-    """
-    res = requests.get("https://docs.nvidia.com/datacenter/tesla/drivers/releases.json")
-    res.raise_for_status()
-
-    data = res.json()
-
-    versions = []
-
-    for branch, info in data.items():
-        versions += [release["release_version"] for release in info["driver_info"]]
-
-    return versions
-
-
-def _is_datacenter_driver(version: str):
-    """
-    Check if the version is a datacenter driver version supported by NVIDIA.
-    """
-    versions = _get_datacenter_driver_versions()
-    return version in versions
 
 
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
