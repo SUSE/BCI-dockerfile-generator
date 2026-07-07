@@ -870,17 +870,17 @@ def _is_datacenter_driver(version: str):
 
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 
+# we need to support all versions supported by the gpu operator
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
+# we should support versions only for data center
+# https://docs.nvidia.com/datacenter/tesla/index.html
+with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
+    _NVIDIA_DRIVER_VERSIONS = json.load(f)
+
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
     seen_versions = set()
 
-    # we need to support all versions supported by the gpu operator
-    # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-    # we should support versions only for data center
-    # https://docs.nvidia.com/datacenter/tesla/index.html
-    with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
-        _nvidia_driver_versions = json.load(f)
-
-    for ver in _nvidia_driver_versions:
+    for ver in _NVIDIA_DRIVER_VERSIONS:
         branch = _get_driver_branch(ver)
 
         if branch in seen_versions:
