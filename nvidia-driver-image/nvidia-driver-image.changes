@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  7 16:09:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to 580.173.02 release
+
+-------------------------------------------------------------------
 Tue Jul  7 10:35:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - no need to install coreutils, it comes from the base container
