@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  7 10:35:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- no need to install coreutils, it comes from the base container
+
+-------------------------------------------------------------------
 Tue Jul  7 09:34:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add new kernel tags
