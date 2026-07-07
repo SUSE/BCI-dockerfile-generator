@@ -17,7 +17,7 @@
 
 #!BuildTag: opensuse/cosign:%%cosign_version%%-%RELEASE%
 #!BuildTag: opensuse/cosign:%%cosign_version%%
-#!BuildTag: opensuse/cosign:3.0
+#!BuildTag: opensuse/cosign:3.1
 #!BuildTag: opensuse/cosign:3
 #!BuildTag: opensuse/cosign:latest
 
@@ -31,7 +31,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of cosign that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' cosign | \
-    cut -d '.' -f -2)" = "3.0" ]
+    cut -d '.' -f -2)" = "3.1" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
