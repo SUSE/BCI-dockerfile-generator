@@ -260,7 +260,7 @@ def _get_packages(os_version: OsVersion):
     return packages
 
 
-_AMD_DRIVER_VERSIONS: list[str] = ["31.30", "31.20", "31.10", "30.30.3", "30.20.1"]
+_AMD_DRIVER_VERSIONS: list[str] = ["31.30", "31.20", "31.10", "30.30.4", "30.20.1"]
 
 AMD_CONTAINERS: list[AMDDriverBCI] = []
 
