@@ -42,7 +42,7 @@ COPY --from=target / /target
 RUN set -euo pipefail; zypper -n install --no-recommends dwarves elfutils gcc libelf-devel pesign-obs-integration zstd dracut gcc-c++ make mokutil pciutils perl-Bootloader python3 systemd xz
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk coreutils findutils grep jq kmod rpm-ndb sed util-linux util-linux-systemd infiniband-diags
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk findutils grep jq kmod rpm-ndb sed util-linux util-linux-systemd infiniband-diags
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/kernel-firmware-nvidia-gspx-G06-550.163.01-1.x86_64.rpm sha256:b9403fd026b2c6e7ec44b19d17296771947acd7abf3202e8c1537d929902eae0
 COPY kernel-firmware-nvidia-gspx-G06-550.163.01-1.x86_64.rpm /tmp/

@@ -31,7 +31,7 @@ COPY --from=target / /target
 RUN set -euo pipefail; zypper -n install --no-recommends dwarves elfutils gcc libelf-devel pesign-obs-integration zstd dracut gcc-c++ make mokutil pciutils perl-Bootloader python3 systemd xz
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk coreutils findutils grep jq kmod rpm-ndb sed util-linux util-linux-systemd infiniband-diags
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk findutils grep jq kmod rpm-ndb sed util-linux util-linux-systemd infiniband-diags
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/dkms-3.4.1-2.noarch.rpm dkms-3.4.1-2.x86_64.rpm sha256:593e7d610332ee4298b27bbfd0213f986e775bd86e6a670091dd69ef4b2ab6ea
 COPY dkms-3.4.1-2.x86_64.rpm /tmp/
