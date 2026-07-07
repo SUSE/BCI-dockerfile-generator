@@ -301,15 +301,15 @@ def fetch_nvidia_drivers_versions() -> list[str]:
 
     all_driver_versions = response.json()
 
-    def version_key(v):
-        return tuple(map(int, v.split(".")))
-
     nvidia_driver_versions = {}
     for branch, info in all_driver_versions.items():
         if int(branch) < 550 or int(branch) in (560, 565):
             continue
+        if not (driver_info := info.get("driver_info")):
+            continue
         nvidia_driver_versions[branch] = max(
-            [d["release_version"] for d in info["driver_info"]], key=version_key
+            [d["release_version"] for d in driver_info],
+            key=lambda v: version.parse(v).release,
         )
     return sorted(nvidia_driver_versions.values(), reverse=True)
 

@@ -6,10 +6,8 @@ NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 
 import json
 import textwrap
-from functools import lru_cache
 from pathlib import Path
 
-import requests
 from jinja2 import Template
 from version_utils import rpm
 
@@ -281,11 +279,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
         assert not self.build_stage_custom_end, (
             "Can't use `build_stage_custom_end` for ThirdPartyRepoMixin."
-        )
-
-        # ensure we do not ship versions that are not supported by NVIDIA datacenter
-        assert _is_datacenter_driver(self.version), (
-            f"Version '{self.version}' is not datacenter supported"
         )
 
         # Find the kernel version used to build the nvidia-kmp driver for branches >= 595
@@ -842,45 +835,19 @@ def _get_kernel_versions(variant: str, os_version: OsVersion):
     return versions
 
 
-@lru_cache(maxsize=1)
-def _get_datacenter_driver_versions():
-    """
-    Return the datacenter driver versions supported by NVIDIA.
-    """
-    res = requests.get("https://docs.nvidia.com/datacenter/tesla/drivers/releases.json")
-    res.raise_for_status()
-
-    data = res.json()
-
-    versions = []
-
-    for branch, info in data.items():
-        versions += [release["release_version"] for release in info["driver_info"]]
-
-    return versions
-
-
-def _is_datacenter_driver(version: str):
-    """
-    Check if the version is a datacenter driver version supported by NVIDIA.
-    """
-    versions = _get_datacenter_driver_versions()
-    return version in versions
-
-
 NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
+
+# we need to support all versions supported by the gpu operator
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
+# we should support versions only for data center
+# https://docs.nvidia.com/datacenter/tesla/index.html
+with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
+    _NVIDIA_DRIVER_VERSIONS = json.load(f)
 
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
     seen_versions = set()
 
-    # we need to support all versions supported by the gpu operator
-    # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-    # we should support versions only for data center
-    # https://docs.nvidia.com/datacenter/tesla/index.html
-    with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
-        _nvidia_driver_versions = json.load(f)
-
-    for ver in _nvidia_driver_versions:
+    for ver in _NVIDIA_DRIVER_VERSIONS:
         branch = _get_driver_branch(ver)
 
         if branch in seen_versions:
