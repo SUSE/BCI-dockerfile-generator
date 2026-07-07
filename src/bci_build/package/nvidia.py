@@ -595,7 +595,6 @@ def _get_packages(os_version: OsVersion):
         Package("xz", PackageType.BOOTSTRAP),
         # needed by nvidia-driver script
         Package("awk", PackageType.IMAGE),
-        Package("coreutils", PackageType.IMAGE),
         Package("findutils", PackageType.IMAGE),
         Package("grep", PackageType.IMAGE),
         Package("jq", PackageType.IMAGE),
