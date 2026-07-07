@@ -32,7 +32,7 @@ COPY --from=target / /target
 RUN set -euo pipefail; zypper -n install --no-recommends dwarves elfutils gcc libelf-devel pesign-obs-integration zstd dracut gcc-c++ make mokutil pciutils perl-Bootloader python3 systemd xz gcc13 suse-kernel-rpm-scriptlets libOpenCL1 libtirpc3
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk coreutils findutils grep jq kmod rpm sed util-linux util-linux-systemd infiniband-diags libtirpc3
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk findutils grep jq kmod rpm sed util-linux util-linux-systemd infiniband-diags libtirpc3
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/dkms-3.4.1-1.noarch.rpm dkms-3.4.1-1.x86_64.rpm sha256:2c1bd824f84333ddb7178f8a4a63a8304dbcb406d2291b0c5a12a1caa672a510
 COPY dkms-3.4.1-1.x86_64.rpm /tmp/

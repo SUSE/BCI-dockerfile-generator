@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul  7 10:35:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- no need to install coreutils, it comes from the base container
+
+-------------------------------------------------------------------
 Mon Jul  6 10:59:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update README for secure boot
