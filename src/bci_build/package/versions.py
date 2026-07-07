@@ -88,6 +88,9 @@ PackageVersions = Dict[str, PackageInfo]
 #: Path to the json file where the package versions are stored
 PACKAGE_VERSIONS_JSON_PATH = Path(__file__).parent / "package_versions.json"
 
+#: Path to the json file where the NVIDIA driver versions are stored
+NVIDIA_DRIVER_JSON_PATH = Path(__file__).parent / "nvidia_driver_versions.json"
+
 
 def get_package_versions() -> PackageVersions:
     """Reads the package versions from the json file in
@@ -185,6 +188,7 @@ def fetch_package_version_from_obs(os_version: OsVersion, package: str) -> str:
             f"https://api.opensuse.org/public/source/{project}/{package}",
             params={"view": "info", "parse": "1"},
             headers={"User-Agent": "BCI update-versions"},
+            timeout=30,
         )
         res.raise_for_status()
 
@@ -204,6 +208,7 @@ def find_scc_product_id(os_version: OsVersion, arch: Arch):
     res = requests.get(
         "https://scc.suse.com/api/package_search/products",
         headers={"User-Agent": "BCI update-versions"},
+        timeout=30,
     )
 
     res.raise_for_status()
@@ -226,6 +231,7 @@ def fetch_package_versions_from_scc(
         res = requests.get(
             f"https://scc.suse.com/api/package_search/packages?product_id={product}&query={package}",
             headers={"User-Agent": "BCI update-versions"},
+            timeout=30,
         )
 
         res.raise_for_status()
@@ -283,12 +289,41 @@ def update_versions() -> dict[str, dict[str, str]]:
     return package_versions
 
 
+def fetch_nvidia_drivers_versions() -> list[str]:
+    """Fetch the latest NVIDIA driver versions from the NVIDIA website and return a list of versions."""
+
+    response = requests.get(
+        "https://docs.nvidia.com/datacenter/tesla/drivers/releases.json",
+        headers={"User-Agent": "BCI update-versions"},
+        timeout=30,
+    )
+    response.raise_for_status()
+
+    all_driver_versions = response.json()
+
+    def version_key(v):
+        return tuple(map(int, v.split(".")))
+
+    nvidia_driver_versions = {}
+    for branch, info in all_driver_versions.items():
+        if int(branch) < 550 or int(branch) in (560, 565):
+            continue
+        nvidia_driver_versions[branch] = max(
+            [d["release_version"] for d in info["driver_info"]], key=version_key
+        )
+    return sorted(nvidia_driver_versions.values(), reverse=True)
+
+
 def run_version_update() -> None:
     """Fetch the new package versions via :py:func:`update_versions` and write
     the result to the package versions json file.
 
     """
     data: PackageVersions = update_versions()
+    nvidia_driver_versions = fetch_nvidia_drivers_versions()
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4, sort_keys=True)
+
+    with open(NVIDIA_DRIVER_JSON_PATH, "w") as f:
+        json.dump(nvidia_driver_versions, f, indent=4, sort_keys=True)

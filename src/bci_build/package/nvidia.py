@@ -4,6 +4,7 @@ This module contains classes and functions related to updating and generating Do
 NVIDIA drivers are taken from CUDA repositories and use the GA kernel.
 """
 
+import json
 import textwrap
 from functools import lru_cache
 from pathlib import Path
@@ -29,6 +30,7 @@ from bci_build.package.thirdparty import ARCH_FILENAME_MAP
 from bci_build.package.thirdparty import ThirdPartyPackage
 from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.package.versions import NVIDIA_DRIVER_JSON_PATH
 from bci_build.package.versions import get_all_pkg_version
 from bci_build.repomdparser import RpmPackage
 
@@ -62,23 +64,6 @@ _NVIDIA_REPOS = {
         ),
     ],
 }
-
-# we need to support all versions supported by the gpu operator
-# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
-# we should support versions only for data center
-# https://docs.nvidia.com/datacenter/tesla/index.html
-_NVIDIA_DRIVER_VERSIONS: list[str] = [
-    # G07
-    "595.71.05",
-    "590.48.01",
-    # G06
-    "580.173.02",
-    "575.57.08",
-    "570.211.01",
-    "550.163.01",
-    # G05 - Legacy
-    # 535 and older are not planned
-]
 
 # we need to build a container for each kernel variant
 # azure is skipped for now because the kABI is not stable
@@ -888,7 +873,14 @@ NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
     seen_versions = set()
 
-    for ver in _NVIDIA_DRIVER_VERSIONS:
+    # we need to support all versions supported by the gpu operator
+    # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#gpu-operator-component-matrix
+    # we should support versions only for data center
+    # https://docs.nvidia.com/datacenter/tesla/index.html
+    with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
+        _nvidia_driver_versions = json.load(f)
+
+    for ver in _nvidia_driver_versions:
         branch = _get_driver_branch(ver)
 
         if branch in seen_versions:
