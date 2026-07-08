@@ -152,17 +152,6 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP7,)
 )
 
-
-PYTHON_TW_CONTAINERS = (
-    PythonDevelopmentContainer(
-        **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
-        is_latest=False,
-        package_name=f"python-{pyver}-image",
-        additional_versions=["3"],
-    )
-    for pyver in ("3.11", "3.13")
-)
-
 PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
@@ -176,11 +165,13 @@ PYTHON_3_13_CONTAINERS = [
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.13", os_version),
         package_name="python-3.13-image",
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(
+            os_version in CAN_BE_LATEST_OS_VERSION and not os_version.is_tumbleweed
+        ),
         additional_versions=["3"]
         + (["3.13-" + os_version.dist_id] if os_version.dist_id else []),
     )
-    for os_version in (OsVersion.SP7,)
+    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
 ] + [
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.13", os_version, build_flavor=flavor),
