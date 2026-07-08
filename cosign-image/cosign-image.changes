@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul  8 16:00:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to bci-nano image
+
+-------------------------------------------------------------------
 Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
