@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul  8 05:44:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Unset bootstrap credentials before exec-ing the server
+
+-------------------------------------------------------------------
 Sun Jul  5 08:39:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add pgvector to contrib container
