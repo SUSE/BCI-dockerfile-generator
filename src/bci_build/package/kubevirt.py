@@ -101,6 +101,9 @@ def _get_kubevirt_kwargs(
                 use_target=True,
             )
             + (
+                f"\n{DOCKERFILE_RUN} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi\n"
+            )
+            + (
                 textwrap.dedent(f"""
             {DOCKERFILE_RUN} useradd -u {user} --create-home -s /bin/bash virt-{service}
             """)
