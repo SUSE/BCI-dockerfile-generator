@@ -1637,7 +1637,9 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     loop.run_until_complete(
         ALL_CONTAINER_IMAGE_NAMES[args.image[0]].write_files_to_folder(
             args.destination[0]
