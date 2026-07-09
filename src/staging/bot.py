@@ -1696,7 +1696,9 @@ comma-separated list. The package list is taken from the environment variable
         help="Get the full urls to the containers built in the staging project",
     )
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     args = parser.parse_args()
 
     if args.load and args.from_stdin:
