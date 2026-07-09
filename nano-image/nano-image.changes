@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul  9 11:46:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- disable container support for scratch layers
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
