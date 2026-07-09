@@ -16,9 +16,9 @@
     },
     "containerized-data-importer1.65": {
         "latest": {
-            "Tumbleweed": "1.65.0"
+            "Tumbleweed": "1.65"
         },
-        "version_format": "patch"
+        "version_format": "minor"
     },
     "cosign": {
         "latest": {
