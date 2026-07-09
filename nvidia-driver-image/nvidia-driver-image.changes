@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul  9 10:36:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- temporarily revert README change until next operator release
+
+-------------------------------------------------------------------
 Tue Jul  7 10:35:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - no need to install coreutils, it comes from the base container
