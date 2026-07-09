@@ -19,7 +19,7 @@
 #!BuildTag: opensuse/cdi-operator:%%cdi_ver%%
 #!BuildTag: opensuse/cdi-operator:1.65
 #!BuildTag: opensuse/cdi-operator:latest
-#!BcntSyncTag: cdi-1.8-image
+#!BcntSyncTag: cdi-1.65-image
 
 FROM opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
@@ -32,7 +32,7 @@ RUN set -euo pipefail; rm -f /etc/blkid.conf
 # sanity check that the version from the tag is equal to the version of obs-service-cdi_containers_meta that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' obs-service-cdi_containers_meta | \
-    cut -d '.' -f -3)" = "1.65.0" ]
+    cut -d '.' -f -2)" = "1.65" ]
 RUN set -euo pipefail; useradd -u 1001 --create-home -s /bin/bash cdi-operator
 
 
