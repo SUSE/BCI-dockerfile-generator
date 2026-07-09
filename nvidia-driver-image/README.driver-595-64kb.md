@@ -19,7 +19,7 @@ To deploy this container image, use the NVIDIA GPU Operator Helm chart version 2
 
 Add the arguments `--set driver.repository=registry.suse.com/third-party/nvidia`, `--set driver.usePrecompiled=true`, and `--set driver.version=<driver-branch>` to the `helm install` command. Replace `<driver-branch>` with the major version of the GPU driver (such as `595`, `590`, or `580`).
 
-For K3s or RKE2, the [Node Resource Interface (NRI) plug-in](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/cdi.html#nri-plugin) should be enabled by using `--set cdi.nriPluginEnabled=true`.
+For k3s or RKE2, add `--set toolkit.env[0].name=CONTAINERD_SOCKET --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock` when [Node Resource Interface (NRI) plugin](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/cdi.html#nri-plugin) is not enabled.
 
 Example:
 ```ShellSession
@@ -27,10 +27,11 @@ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
      --version=v26.3.1 \
-     --set cdi.nriPluginEnabled=true \
      --set driver.repository=registry.suse.com/third-party/nvidia \
      --set driver.usePrecompiled=true \
-     --set driver.version=<driver-branch>
+     --set driver.version=<driver-branch> \
+     --set toolkit.env[0].name=CONTAINERD_SOCKET \
+     --set toolkit.env[0].value=/run/k3s/containerd/containerd.sock
 ```
 
 Secure Boot is only supported on SLES 16.x / SL Micro 6.2 / SLES 15 SP7 host and requires NVIDIA open driver. Add `--set driver.kernelModuleType=open` argument to the `helm install` command.

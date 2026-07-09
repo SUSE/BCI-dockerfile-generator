@@ -22,7 +22,7 @@
 #!BuildName: suse-cosign
 #!BuildVersion: 15.7.3.0
 #!BuildRelease: 10
-FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM registry.suse.com/bci/bci-nano:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target
 
@@ -46,7 +46,8 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
-FROM registry.suse.com/bci/bci-micro:15.7
+FROM registry.suse.com/bci/bci-nano:15.7
+#!DisableOBSContainerSupport
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.cosign
