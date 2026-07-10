@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 10 08:15:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust meta package name
+
+-------------------------------------------------------------------
 Thu Jul  9 11:48:55 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rename to cdi-1.65-image
