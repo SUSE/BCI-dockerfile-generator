@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 10 16:18:26 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add tar for "kubectl cp"
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
