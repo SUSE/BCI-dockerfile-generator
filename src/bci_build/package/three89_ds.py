@@ -37,8 +37,8 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         min_release_counter={OsVersion.TUMBLEWEED: 35},
         oci_authors="william.brown@suse.com",
         pretty_name="389 Directory Server",
-        package_list=(
-            ["389-ds", "timezone", "openssl", "nss_synth"]
+        package_list=sorted(
+            ["389-ds", "timezone", "openssl", "nss_synth", "tar"]
             + (["aaa_base"] if os_version.is_sle15 else [])
         ),
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
