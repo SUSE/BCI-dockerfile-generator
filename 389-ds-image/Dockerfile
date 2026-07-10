@@ -26,7 +26,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends 389-ds timezone openssl nss_synth
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends 389-ds nss_synth openssl tar timezone
 # sanity check that the version from the tag is equal to the version of 389-ds that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' 389-ds | \
