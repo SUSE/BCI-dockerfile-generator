@@ -29,6 +29,15 @@ def _cdi_pkg(os_version: OsVersion) -> str:
     )
 
 
+def _cdi_meta_pkg(os_version: OsVersion) -> str:
+    """Get the CDI meta package name for a given OS version."""
+    return (
+        "obs-service-cdi_containers_meta"
+        if os_version == OsVersion.SL16_0
+        else "obs-service-cdi1.65_containers_meta"
+    )
+
+
 def _cdi_dir(os_version: OsVersion) -> str:
     """Get the CDI directory name for a given OS version."""
     return "cdi" if os_version == OsVersion.SL16_0 else "cdi-1.65"
@@ -45,7 +54,7 @@ def _get_cdi_kwargs(
 
     if user is None:
         user = "1001"
-    service_pkg_name = "obs-service-cdi_containers_meta"
+    service_pkg_name = _cdi_meta_pkg(os_version)
     if package_list is None:
         package_list = []
     package_list.append(service_pkg_name)
