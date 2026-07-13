@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 13 07:17:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for new cosign version
+
+-------------------------------------------------------------------
 Wed Jul  8 16:00:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to bci-nano image
