@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 15 07:36:39 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- update to 8.0.29
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
