@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 15 11:52:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- strip unreproducible data from container
+
+-------------------------------------------------------------------
 Tue Jul  7 10:13:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix build of after the python3 packaging split
