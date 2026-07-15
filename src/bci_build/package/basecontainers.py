@@ -194,6 +194,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
             if bins
             else ""
         )
+        + f"{DOCKERFILE_RUN} zypper -n clean -a\n"
         + f"{DOCKERFILE_RUN} {LOG_CLEAN}"
     )
 
@@ -325,6 +326,7 @@ FIPS_MICRO_CONTAINERS = [
             f"""
             {DOCKERFILE_RUN} zypper -n install jdupes crypto-policies-scripts {("perl-Bootloader" if os_version.is_sle15 else "update-bootloader")} \\
                 && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \\
+                && zypper --root /target -n clean -a \\
                 && jdupes -1 -L -r /target/usr/"""
         ),
         custom_end=_get_fips_custom_env(),
