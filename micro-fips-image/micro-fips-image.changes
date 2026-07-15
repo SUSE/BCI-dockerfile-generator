@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 15 11:49:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- strip unreproducible data from container
+
+-------------------------------------------------------------------
 Thu Jul  9 11:46:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - disable container support for scratch layers
