@@ -30,6 +30,7 @@ RUN set -euo pipefail; \
 
 RUN set -euo pipefail; zypper -n install jdupes crypto-policies-scripts update-bootloader \
     && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \
+    && zypper --root /target -n clean -a \
     && jdupes -1 -L -r /target/usr/
 
 # cleanup logs and temporary files
