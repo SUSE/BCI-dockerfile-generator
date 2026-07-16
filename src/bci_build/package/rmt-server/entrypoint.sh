@@ -63,7 +63,7 @@ if [ "$1" = "/usr/share/rmt/bin/rails" ] && [ "$2" = "server" ]; then
     do
       rmt-cli products disable "$PRODUCT"
     done
-    rmt-cli repos clean
+    rmt-cli repos clean --no-confirmation
   fi
   echo "Executing: catatonit -- $@"
   exec catatonit -- "$@"
