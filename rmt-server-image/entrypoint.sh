@@ -9,12 +9,12 @@ install -d -m 0755 -o _rmt -g nginx /var/lib/rmt/regsharing
 install -d -m 0755 -o _rmt -g nginx /var/lib/rmt/tmp
 
 if [ -z "${MYSQL_HOST}" ]; then
-	echo "MYSQL_HOST not set!"
-	exit 1
+  echo "MYSQL_HOST not set!"
+  exit 1
 fi
 if [ -z "${MYSQL_PASSWORD}" ]; then
-        echo "MYSQL_PASSWORD not set!"
-        exit 1
+  echo "MYSQL_PASSWORD not set!"
+  exit 1
 fi
 
 MYSQL_DATABASE="${MYSQL_DATABASE:-rmt}"
@@ -44,13 +44,13 @@ log_level:
 EOF
 
 if [ $# -eq 0 ]; then
-	set -- /usr/share/rmt/bin/rails server -e production
+  set -- /usr/share/rmt/bin/rails server -e production
 fi
 
 if [ "$1" = "/usr/share/rmt/bin/rails" ] && [ "$2" = "server" ]; then
   echo "Create/migrate SUSE RMT database"
   pushd /usr/share/rmt > /dev/null
-	/usr/share/rmt/bin/rails db:create db:migrate RAILS_ENV=production
+  /usr/share/rmt/bin/rails db:create db:migrate RAILS_ENV=production
   popd > /dev/null
   if [ "${SCC_SYNC}" = "true" ]; then
     echo "Syncing product list"
@@ -63,11 +63,11 @@ if [ "$1" = "/usr/share/rmt/bin/rails" ] && [ "$2" = "server" ]; then
     do
       rmt-cli products disable "$PRODUCT"
     done
-    rmt-cli repos clean
+    rmt-cli repos clean --no-confirmation
   fi
   echo "Executing: catatonit -- $@"
   exec catatonit -- "$@"
 else
-	echo "Executing: $@"
-	exec "$@"
+  echo "Executing: $@"
+  exec "$@"
 fi
