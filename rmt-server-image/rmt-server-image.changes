@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 16 14:59:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Use --no-confirmation to avoid user interaction
+
+-------------------------------------------------------------------
 Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
