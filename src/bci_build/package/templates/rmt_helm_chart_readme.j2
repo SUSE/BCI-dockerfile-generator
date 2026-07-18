@@ -66,6 +66,8 @@ app:
     products_disable:
       - sle-module-legacy/15.3/x86_64
       - sle-module-cap-tools/15.3/x86_64
+front:
+  enabled: true
 ingress:
   enabled: true
   hosts:
@@ -91,7 +93,8 @@ The required values in the custom value file are as follows:
 - `app.scc.products_disable` list of products to exclude from mirroring.
 - `app.storage.class` Kubernetes storageclass.
 - `db.storage.class` Kubernetes storageclass.
-- `ingress.enabled` Enable or disable ingress.
+- `front.enabled` Enable or disable front.
+- `ingress.enabled` Enable or disable ingress. Also enable "front" if you want "ingress".
 - `ingress.hosts[0]` DNS name at which the RMT service is be accessible from clients.
 - `ingress.tls[0].hosts[0]` DNS name at which the RMT service is be accessible from clients.
 - `ingress.tls[0].secretName` TLS ingress certificate.
