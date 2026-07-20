@@ -65,7 +65,7 @@ def _get_kubevirt_kwargs(
         "pretty_name": f"KubeVirt virt-{service}",
         "package_name": (
             "kubevirt-1.8-image"
-            if os_version == OsVersion.TUMBLEWEED
+            if os_version in (OsVersion.SL16_1, OsVersion.TUMBLEWEED)
             else "kubevirt-image"
         ),
         "license": "Apache-2.0",
