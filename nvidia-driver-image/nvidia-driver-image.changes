@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 20 16:11:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add helm repo to README
+
+-------------------------------------------------------------------
 Thu Jul  9 10:36:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - temporarily revert README change until next operator release
