@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 20 07:47:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- extend README
+
+-------------------------------------------------------------------
 Thu Jul 16 14:58:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Use --no-confirmation to avoid user interaction
