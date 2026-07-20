@@ -67,7 +67,9 @@ def _get_cdi_kwargs(
         "name": f"cdi-{service}",
         "pretty_name": f"KubeVirt cdi-{service}",
         "package_name": (
-            "cdi-1.65-image" if os_version == OsVersion.TUMBLEWEED else "cdi-image"
+            "cdi-1.65-image"
+            if (os_version in (OsVersion.SL16_1, OsVersion.TUMBLEWEED))
+            else "cdi-image"
         ),
         "license": "Apache-2.0",
         "os_version": os_version,
