@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 20 16:11:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add helm repo to README
+
+-------------------------------------------------------------------
 Fri Jul 10 08:06:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - new kernel release
