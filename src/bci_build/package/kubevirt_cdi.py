@@ -11,13 +11,15 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
-from bci_build.package.kubevirt import KubeVirtRegistry
+from bci_build.package.kubevirt import KubeVirtRegistrySL160
+from bci_build.package.kubevirt import KubeVirtRegistrySL161
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 CDI_EXCLUSIVE_ARCH = [Arch.X86_64]
+_CDI_VERSIONS = (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED)
 
 
 def _cdi_pkg(os_version: OsVersion) -> str:
@@ -94,7 +96,11 @@ def _get_cdi_kwargs(
         "exclusive_arch": CDI_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
         "_publish_registry": (
-            KubeVirtRegistry() if os_version == OsVersion.SL16_0 else None
+            KubeVirtRegistrySL160()
+            if os_version == OsVersion.SL16_0
+            else KubeVirtRegistrySL161()
+            if os_version == OsVersion.SL16_1
+            else None
         ),
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (f"{DOCKERFILE_RUN} rm -f /etc/blkid.conf\n")
@@ -126,7 +132,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-apiserver", "-alsologtostderr"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -143,7 +149,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/cloner_startup.sh"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -154,7 +160,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-controller", "-alsologtostderr"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -176,7 +182,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-importer", "-alsologtostderr"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -187,7 +193,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-operator"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -198,7 +204,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadproxy", "-alsologtostderr"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
@@ -217,7 +223,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadserver", "-alsologtostderr"],
         )
-        for os_version in (OsVersion.SL16_0, OsVersion.TUMBLEWEED)
+        for os_version in _CDI_VERSIONS
     ]
 )
 
