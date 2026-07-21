@@ -19,7 +19,7 @@ dependencies = [
     "aiohttp >=3.14.2",
     "aiofiles >=22.1",
     "obs-package-update @git+https://github.com/dcermak/obs-package-update@main",
-    "GitPython >=3.1.52",
+    "GitPython >=3.1.53",
     "oras >=0.2.2",
     "requests >= 2.34.2",
     "urllib3 >= 2.7.0",
