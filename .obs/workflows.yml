@@ -23,6 +23,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: cdi-1.65-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: cosign-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -72,6 +76,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
         source_package: kiwi-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: kubevirt-1.8-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -235,6 +243,9 @@ refresh_devel_BCI:
         package: busybox-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: cdi-1.65-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: cosign-image
     - trigger_services:
         project: devel:BCI:16.1
@@ -272,6 +283,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: kiwi-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: kubevirt-1.8-image
     - trigger_services:
         project: devel:BCI:16.1
         package: mariadb-client-image
