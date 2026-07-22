@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 22 10:25:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.97 for stable, 1.96 to oldstable
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
