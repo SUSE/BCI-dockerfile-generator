@@ -52,7 +52,7 @@ COPY --from=target / /target
 {% if image.packages %}{{ DOCKERFILE_RUN }} \\
     {% if image.from_target_image -%}
       {%- if image.os_version.is_sle15 %}export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1;
-      {%- else %}export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1;
+      {%- else %}export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0;
       {%- endif %} \\
     {% endif -%} zypper -n {%- if image.from_target_image %} --installroot /target --gpg-auto-import-keys {%- endif %} install {% if image.no_recommends %}--no-recommends {% endif %}{{ image.packages }}{%- if image.packages_to_delete %}; \\
     zypper -n {%- if image.from_target_image %} --installroot /target {%- endif %} remove {{ image.packages_to_delete }}{%- endif %}
