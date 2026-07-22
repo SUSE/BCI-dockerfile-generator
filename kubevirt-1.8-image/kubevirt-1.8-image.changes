@@ -1,4 +1,101 @@
 -------------------------------------------------------------------
-Wed Jul 22 19:17:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+Wed Jul 22 19:20:11 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
-- First version of the KubeVirt virt-api BCI
+- rename to kubevirt-1.8-image
+
+-------------------------------------------------------------------
+Wed Jul  8 08:44:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- uninstall compat-usrmerge-tools
+
+-------------------------------------------------------------------
+Fri Jul  3 13:17:28 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove usbredir, not in SLES
+
+-------------------------------------------------------------------
+Tue Jun 23 21:38:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- more packages in the launcher container to fix failing tests
+
+-------------------------------------------------------------------
+Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- only clean specific files in /run
+
+-------------------------------------------------------------------
+Thu Jun 18 11:16:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add qemu-hw-usb-host
+
+-------------------------------------------------------------------
+Tue Jun 16 19:56:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fixes for 1.7 (better launcher config; adding synchronizer)
+
+-------------------------------------------------------------------
+Tue Jun 16 19:48:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
+Thu Jun 11 08:03:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
+Thu Mar 26 12:42:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rebuild rpm database to make it reproducible
+
+-------------------------------------------------------------------
+Tue Mar 10 21:55:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove move files that make containers unreproducible; fix name in README
+
+-------------------------------------------------------------------
+Sat Feb 28 19:05:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update for 1.7 update
+
+-------------------------------------------------------------------
+Thu Jan  1 14:16:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:39 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Tue Nov  4 22:50:12 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove duplicated word in description
+
+-------------------------------------------------------------------
+Fri Oct 31 08:02:14 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Mon Oct 20 20:11:58 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:00:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Wed Oct  1 09:07:16 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove buildflavor from tag suffix
+
+-------------------------------------------------------------------
+Wed Oct 01 08:25:26 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the KubeVirt virt-launcher container BCI
+
+CI
