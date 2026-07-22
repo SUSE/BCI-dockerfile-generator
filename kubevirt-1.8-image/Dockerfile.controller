@@ -17,21 +17,21 @@
 #!ExclusiveArch: x86_64
 #!BuildTag: suse/sles/16.0/virt-controller:%%kubevirt_ver%%-%RELEASE%
 #!BuildTag: suse/sles/16.0/virt-controller:%%kubevirt_ver%%
-#!BuildTag: suse/sles/16.0/virt-controller:1.7
-#!BcntSyncTag: kubevirt-image
+#!BuildTag: suse/sles/16.0/virt-controller:1.8
+#!BcntSyncTag: kubevirt-1.8-image
 #!BuildName: suse-sles-16.0-virt-controller
-#!BuildVersion: 16.0.1.7
+#!BuildVersion: 16.0.1.8
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubevirt-virt-controller shadow
-# sanity check that the version from the tag is equal to the version of kubevirt-virt-controller that we expect
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubevirt1.8-virt-controller shadow
+# sanity check that the version from the tag is equal to the version of kubevirt1.8-virt-controller that we expect
 RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' kubevirt-virt-controller | \
-    cut -d '.' -f -2)" = "1.7" ]
+    [ "$(rpm --root /target -q --qf '%{version}' kubevirt1.8-virt-controller | \
+    cut -d '.' -f -2)" = "1.8" ]
 RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
 
 RUN set -euo pipefail; useradd -u 1001 --create-home -s /bin/bash virt-controller
