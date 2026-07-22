@@ -43,12 +43,12 @@ class KubeVirtRegistrySL161(SUSERegistry):
 
 def _kubevirt_pkg(os_version: OsVersion) -> str:
     """Get the KubeVirt package name for a given OS version."""
-    return "kubevirt" if os_version == OsVersion.SL16_0 else "kubevirt1.8"
+    return "kubevirt" if os_version == OsVersion.SP7 else "kubevirt1.8"
 
 
 def _kubevirt_dir(os_version: OsVersion) -> str:
     """Get the KubeVirt directory name for a given OS version."""
-    return "kube-virt" if os_version == OsVersion.SL16_0 else "kube-virt-1.8"
+    return "kube-virt" if os_version == OsVersion.SP7 else "kube-virt-1.8"
 
 
 def _get_kubevirt_kwargs(
@@ -75,7 +75,7 @@ def _get_kubevirt_kwargs(
         "pretty_name": f"KubeVirt virt-{service}",
         "package_name": (
             "kubevirt-1.8-image"
-            if os_version in (OsVersion.SL16_1, OsVersion.TUMBLEWEED)
+            if os_version not in (OsVersion.SP7,)
             else "kubevirt-image"
         ),
         "license": "Apache-2.0",

@@ -26,7 +26,7 @@ def _cdi_pkg(os_version: OsVersion) -> str:
     """Get the CDI package name for a given OS version."""
     return (
         "containerized-data-importer"
-        if os_version == OsVersion.SL16_0
+        if os_version == OsVersion.SP7
         else "containerized-data-importer1.65"
     )
 
@@ -35,14 +35,14 @@ def _cdi_meta_pkg(os_version: OsVersion) -> str:
     """Get the CDI meta package name for a given OS version."""
     return (
         "obs-service-cdi_containers_meta"
-        if os_version == OsVersion.SL16_0
+        if os_version == OsVersion.SP7
         else "obs-service-cdi1.65_containers_meta"
     )
 
 
 def _cdi_dir(os_version: OsVersion) -> str:
     """Get the CDI directory name for a given OS version."""
-    return "cdi" if os_version == OsVersion.SL16_0 else "cdi-1.65"
+    return "cdi" if os_version == OsVersion.SP7 else "cdi-1.65"
 
 
 def _get_cdi_kwargs(
@@ -69,9 +69,7 @@ def _get_cdi_kwargs(
         "name": f"cdi-{service}",
         "pretty_name": f"KubeVirt cdi-{service}",
         "package_name": (
-            "cdi-1.65-image"
-            if (os_version in (OsVersion.SL16_1, OsVersion.TUMBLEWEED))
-            else "cdi-image"
+            "cdi-1.65-image" if os_version not in (OsVersion.SP7,) else "cdi-image"
         ),
         "license": "Apache-2.0",
         "os_version": os_version,
