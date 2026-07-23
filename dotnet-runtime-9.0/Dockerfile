@@ -25,7 +25,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends libicu libopenssl1_1
+    zypper -n install --no-recommends libicu libopenssl1_1 sles-release
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.18-1.aarch64.rpm sha256:86fd0d8cc25e5fce15c9df57ec39b875a85b06a4ec08134342c382d016d055bb
 COPY dotnet-host-9.0.18-1.aarch64.rpm /tmp/
@@ -103,9 +103,6 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
-
-# Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper -n install --no-recommends coreutils sles-release
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
 ENV DOTNET_VERSION=9.0.18
