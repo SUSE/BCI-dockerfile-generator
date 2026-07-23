@@ -45,6 +45,5 @@ curl -sf -o src/bci_build/package/postfix/entrypoint/ldap/virtual_uid_maps https
 
 patch src/bci_build/package/postfix/entrypoint/entrypoint.sh src/bci_build/package/postfix/entrypoint/sles-entrypoint.patch -o src/bci_build/package/postfix/entrypoint/entrypoint.sles.sh
 
-### nvidia-driver: Apache 2.0, GPL-2.0
-curl -sf -o src/bci_build/package/nvidia-driver/extract-vmlinux https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
+### nvidia-driver: NVIDIA DEEP LEARNING CONTAINER LICENSE
 curl -sf -o src/bci_build/package/nvidia-driver/NGC-DL-CONTAINER-LICENSE https://gitlab.com/nvidia/container-images/cuda/-/raw/master/NGC-DL-CONTAINER-LICENSE

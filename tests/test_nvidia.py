@@ -23,28 +23,39 @@ def test_nvidia_dkms_presence():
             )
 
 
+@pytest.mark.parametrize(
+    "driver_version,expected_closed",
+    [
+        ("595.71.05", "nvidia-driver-G07"),
+        ("575.57.04", "nvidia-driver-G06"),
+    ],
+)
 @patch("bci_build.package.nvidia.CUSTOM_END_TEMPLATE")
-def test_nvidia_kmp_exclusion(mock_template):
+def test_nvidia_kmp_exclusion(mock_template, driver_version, expected_closed):
     """Verify that SLES KMP packages are excluded from the closed driver builder layer."""
-    # Find a 595 container
+    # Find a container with a matching driver branch
+    branch = _get_driver_branch(driver_version)
     container = next(
-        c for c in NVIDIA_CONTAINERS if _get_driver_branch(c.version) >= 595
+        c for c in NVIDIA_CONTAINERS if _get_driver_branch(c.version) == branch
     )
 
-    # Mock fetch_rpm_packages to return a predefined set of packages
+    # Mock fetch_rpm_packages to return the closed driver package
     dummy_rpm = RpmPackage(
-        name="nvidia-driver-G07",
+        name=expected_closed,
         arch="x86_64",
-        evr=("", "595.71.05", "1.1"),
-        filename="nvidia-driver-G07-595.71.05-1.1.x86_64.rpm",
-        url="http://dummy/nvidia-driver-G07-595.71.05-1.1.x86_64.rpm",
+        evr=("", driver_version, "1.1"),
+        filename=f"{expected_closed}-{driver_version}-1.1.x86_64.rpm",
+        url=f"http://dummy/{expected_closed}-{driver_version}-1.1.x86_64.rpm",
     )
+
+    # G06 uses dkms, G07 uses kmp
+    is_g07 = branch >= 595
     kmp_rpm = RpmPackage(
         name="nvidia-open-driver-G07-signed-cuda-kmp-default",
         arch="x86_64",
-        evr=("", "595.71.05_k6.4.0", "1.1"),
-        filename="nvidia-open-driver-G07-signed-cuda-kmp-default-595.71.05_k6.4.0-1.1.x86_64.rpm",
-        url="http://dummy/nvidia-open-driver-G07-signed-cuda-kmp-default-595.71.05_k6.4.0-1.1.x86_64.rpm",
+        evr=("", f"{driver_version}_k6.4.0", "1.1"),
+        filename=f"{expected_closed}-kmp-default-{driver_version}_k6.4.0-1.1.x86_64.rpm",
+        url=f"http://dummy/{expected_closed}-kmp-default-{driver_version}_k6.4.0-1.1.x86_64.rpm",
     )
 
     with (
@@ -52,7 +63,8 @@ def test_nvidia_kmp_exclusion(mock_template):
             container, "fetch_rpm_packages", return_value=[dummy_rpm]
         ) as mock_fetch,
         patch(
-            "bci_build.package.nvidia._get_nvidia_kmp_rpms", return_value=[kmp_rpm]
+            "bci_build.package.nvidia._get_nvidia_kmp_rpms",
+            return_value=[kmp_rpm] if is_g07 else [],
         ) as mock_kmp,
         patch(
             "bci_build.package.nvidia._get_kernel_ga_rpms", return_value=[]
@@ -66,12 +78,14 @@ def test_nvidia_kmp_exclusion(mock_template):
 
             # Ensure expected mocks were called
             mock_fetch.assert_called_once()
-            assert mock_kmp.call_count == 2
+            # G07 calls _get_nvidia_kmp_rpms twice (in _get_built_kernel_version and prepare_template)
+            # G06 calls it once (only in prepare_template, since _get_built_kernel_version returns early)
+            assert mock_kmp.call_count == 2 if is_g07 else 1
             mock_kernel.assert_called_once_with(
                 container.os_version,
                 container.kernel_variant,
                 container.exclusive_arch,
-                built_kernel="6.4.0",
+                built_kernel="6.4.0" if is_g07 else None,
             )
 
             # Get the args passed to render
@@ -85,19 +99,37 @@ def test_nvidia_kmp_exclusion(mock_template):
             closed_packages = get_closed_packages_for_arch(Arch.X86_64)
             closed_pkg_names = [p.name for p in closed_packages]
 
-            # The closed driver list should contain nvidia-driver-G07 but NOT the KMP signed open driver
-            assert "nvidia-driver-G07" in closed_pkg_names
-            assert (
-                "nvidia-open-driver-G07-signed-cuda-kmp-default" not in closed_pkg_names
-            )
+            # The closed driver list should contain the expected closed driver
+            assert expected_closed in closed_pkg_names
+
+            # For G07, KMP packages should be excluded from closed
+            if is_g07:
+                assert (
+                    "nvidia-open-driver-G07-signed-cuda-kmp-default"
+                    not in closed_pkg_names
+                )
 
             # Evaluate get_open_packages_for_arch on x86_64
             open_packages = get_open_packages_for_arch(Arch.X86_64)
             open_pkg_names = [p.name for p in open_packages]
 
-            # SLES KMP signed open driver should be in open driver packages, but closed driver should not
-            assert "nvidia-open-driver-G07-signed-cuda-kmp-default" in open_pkg_names
-            assert "nvidia-driver-G07" not in open_pkg_names
+            # For G07, closed driver should not be in open packages
+            if is_g07:
+                assert "nvidia-driver-G07" not in open_pkg_names
+
+            # Evaluate get_justdb_packages_for_arch on x86_64
+            get_justdb_packages_for_arch = render_kwargs["get_justdb_packages_for_arch"]
+            justdb_packages = get_justdb_packages_for_arch(Arch.X86_64)
+            justdb_pkg_names = [p.name for p in justdb_packages]
+
+            # Closed driver should be registered via justdb
+            assert expected_closed in justdb_pkg_names
+
+            # For G07, KMP packages should also be registered via justdb
+            if is_g07:
+                assert (
+                    "nvidia-open-driver-G07-signed-cuda-kmp-default" in justdb_pkg_names
+                )
 
 
 def test_get_nvidia_kmp_rpms():
