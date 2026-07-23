@@ -25,7 +25,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends libicu libopenssl1_1
+    zypper -n install --no-recommends libicu libopenssl1_1 sles-release
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.29-1.aarch64.rpm sha256:1edab8e9dfa8f5fe44f7e2b67613d1b049e8254e7b887e5bae9938931e88d388
 COPY dotnet-host-8.0.29-1.aarch64.rpm /tmp/
@@ -139,7 +139,4 @@ COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 
 # telemetry opt out: https://docs.microsoft.com/en-us/dotnet/core/tools/telemetry#how-to-opt-out
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-# Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper -n install --no-recommends coreutils sles-release
 
