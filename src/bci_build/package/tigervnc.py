@@ -58,7 +58,10 @@ TIGERVNC_CONTAINERS = [
         entrypoint_user="user",
         cmd=["/usr/bin/x11vnc", "-forever", "-display", ":0", "-alwaysshared"],
         build_stage_custom_end=generate_package_version_check(
-            "tigervnc-x11vnc", tag_ver, ParseVersion.MAJOR, use_target=True
+            "tigervnc-x11vnc",
+            tag_ver,
+            parse_version=ParseVersion.MAJOR,
+            use_target=True,
         )
         + "\nRUN useradd -m -u 1000 -g 100 user",
         custom_end=textwrap.dedent("""
