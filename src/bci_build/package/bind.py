@@ -5,7 +5,7 @@ from pathlib import Path
 
 from bci_build.container_attributes import NetworkPort
 from bci_build.container_attributes import NetworkProtocol
-from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
+from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -98,5 +98,5 @@ BIND_CONTAINERS = [
             HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD dig +retry=0 +short @127.0.0.1 conncheck.opensuse.org >/dev/null && echo OK
         """),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in ALL_NONBASE_SLFO_OS_VERSIONS
 ]
