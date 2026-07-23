@@ -68,9 +68,6 @@ COPY dotnet-host.check /etc/zypp/systemCheck.d/dotnet-host.check
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 {%- endif %}
 
-# Workaround for https://github.com/openSUSE/obs-build/issues/487
-RUN zypper -n install --no-recommends coreutils sles-release
-
 {% if not image.is_sdk and image.use_nonprivileged_user -%}
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
 ENV DOTNET_VERSION={{ image.version }}
@@ -260,7 +257,8 @@ for os_version in (OsVersion.SP7,):
                 package_name=f"dotnet-{ver}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
-                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"])
+                + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
@@ -299,7 +297,8 @@ for os_version in (OsVersion.SP7,):
                     [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
                 ),
                 package_list=["libicu"]
-                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"])
+                + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
@@ -332,7 +331,8 @@ for os_version in (OsVersion.SP7,):
                 ),
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=["libicu"]
-                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"]),
+                + (["libopenssl1_1"] if os_version.is_sle15 else ["libopenssl3"])
+                + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
