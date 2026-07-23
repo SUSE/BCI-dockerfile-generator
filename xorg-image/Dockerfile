@@ -26,7 +26,7 @@ FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends hostname icewm-lite libglib-2_0-0 procps sysvinit-tools udev which xdm xf86-input-evdev xf86-input-libinput xhost xinit xinput xkeyboard-config xorg-x11 xorg-x11-essentials xorg-x11-server xrandr xsession
 # sanity check that the version from the tag is equal to the version of xorg-x11-server that we expect
 RUN set -euo pipefail; \
