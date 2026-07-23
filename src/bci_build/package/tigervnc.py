@@ -63,7 +63,7 @@ TIGERVNC_CONTAINERS = [
             parse_version=ParseVersion.MAJOR,
             use_target=True,
         )
-        + "\nRUN useradd -m -u 1000 -g 100 user",
+        + "\nRUN useradd -m -u 1000 -U user",
         custom_end=textwrap.dedent("""
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
