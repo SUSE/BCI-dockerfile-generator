@@ -109,10 +109,7 @@ def _get_kubevirt_kwargs(
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (
             generate_package_version_check(
-                service_pkg_name,
-                kubevirt_version,
-                ParseVersion.MINOR,
-                use_target=True,
+                service_pkg_name, kubevirt_version, use_target=True
             )
             + (
                 f"\n{DOCKERFILE_RUN} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi\n"

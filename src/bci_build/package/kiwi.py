@@ -83,9 +83,7 @@ KIWI_CONTAINERS = [
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        custom_end=(
-            f"{generate_package_version_check('python3-kiwi', kiwi_minor, ParseVersion.MINOR)}\n"
-        )
+        custom_end=(f"{generate_package_version_check('python3-kiwi', kiwi_minor)}\n")
         + generate_kiwi_10_config(),
         build_recipe_type=BuildType.DOCKER,
         logo_url="https://osinside.github.io/kiwi/_static/kiwi-logo.png",

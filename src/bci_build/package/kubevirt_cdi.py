@@ -104,10 +104,7 @@ def _get_cdi_kwargs(
         "build_stage_custom_end": (f"{DOCKERFILE_RUN} rm -f /etc/blkid.conf\n")
         + (
             generate_package_version_check(
-                service_pkg_name,
-                tag_version,
-                ParseVersion.MINOR,
-                use_target=True,
+                service_pkg_name, tag_version, use_target=True
             )
             + (
                 textwrap.dedent(f"""

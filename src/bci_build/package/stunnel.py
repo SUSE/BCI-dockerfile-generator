@@ -34,7 +34,7 @@ STUNNEL_CONTAINERS = [
             "stunnel.conf": (stunnel_dir / "stunnel.conf").read_bytes(),
         },
         build_stage_custom_end=generate_package_version_check(
-            "stunnel", tag_ver, ParseVersion.MAJOR, use_target=True
+            "stunnel", tag_ver, parse_version=ParseVersion.MAJOR, use_target=True
         ),
         custom_end=f"""COPY entrypoint.sh /usr/local/bin/
 COPY stunnel.conf /etc/stunnel/stunnel.conf

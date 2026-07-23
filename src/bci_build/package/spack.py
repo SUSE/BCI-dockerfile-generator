@@ -85,7 +85,7 @@ SPACK_CONTAINERS = [
        /root/.spack/modules.yaml \
     && rm -rf /root/*.* /run/nologin
 
-{generate_package_version_check("spack", spack_pkg_version, ParseVersion.MINOR)}
+{generate_package_version_check("spack", spack_pkg_version)}
 
 WORKDIR /root
 SHELL ["docker-shell"]

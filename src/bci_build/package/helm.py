@@ -30,7 +30,7 @@ HELM_CONTAINERS = [
         ],
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         build_stage_custom_end=generate_package_version_check(
-            "helm", helm_ver, ParseVersion.MINOR, use_target=True
+            "helm", helm_ver, use_target=True
         ),
         version_in_uid=False,
         min_release_counter={OsVersion.SL16_0: 70},

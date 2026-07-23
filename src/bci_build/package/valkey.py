@@ -52,9 +52,7 @@ VALKEY_CONTAINERS = [
         volumes=["/data"],
         build_stage_custom_end=(
             generate_systemd_tmpfiles_command("valkey.conf", use_target=True)
-            + generate_package_version_check(
-                "valkey", valkey_version, ParseVersion.MINOR, use_target=True
-            )
+            + generate_package_version_check("valkey", valkey_version, use_target=True)
         ),
         custom_end=textwrap.dedent(
             f"""

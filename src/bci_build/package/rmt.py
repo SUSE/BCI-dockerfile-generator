@@ -44,7 +44,7 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end=f"""{generate_package_version_check("rmt-server", rmt_major_version, ParseVersion.MAJOR)}
+        custom_end=f"""{generate_package_version_check("rmt-server", rmt_major_version, parse_version=ParseVersion.MAJOR)}
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
 """,
