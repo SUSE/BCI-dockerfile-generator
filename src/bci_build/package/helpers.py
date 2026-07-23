@@ -51,6 +51,15 @@ def generate_from_image_tag(os_version: OsVersion, container_name: str) -> str:
     return repo
 
 
+def generate_from_development_tag(
+    os_version: OsVersion, container_name: str, container_tag: str
+) -> str:
+    repo = f"{_build_tag_prefix(os_version)}/{container_name}:{container_tag}"
+    if not os_version.is_tumbleweed and os_version in RELEASED_OS_VERSIONS:
+        return f"registry.suse.com/{repo}"
+    return repo
+
+
 def generate_systemd_tmpfiles_command(
     tmpfiles_name: str | None, use_target: bool = False
 ) -> str:
