@@ -1524,7 +1524,6 @@ from .python import PYTHON_3_6_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_11_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_13_CONTAINERS  # noqa: E402
 from .python import PYTHON_3_14_CONTAINERS  # noqa: E402
-from .python import PYTHON_TW_CONTAINERS  # noqa: E402
 from .registry import REGISTRY_CONTAINERS  # noqa: E402
 from .rmt import RMT_CONTAINERS  # noqa: E402
 from .ruby import RUBY_CONTAINERS  # noqa: E402
@@ -1550,7 +1549,6 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *PYTHON_3_11_CONTAINERS,
         *PYTHON_3_13_CONTAINERS,
         *PYTHON_3_14_CONTAINERS,
-        *PYTHON_TW_CONTAINERS,
         *BCI_CI_CONTAINERS,
         *THREE_EIGHT_NINE_DS_CONTAINERS,
         *NGINX_CONTAINERS,
