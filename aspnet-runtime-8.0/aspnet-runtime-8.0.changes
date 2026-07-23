@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 23 19:13:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to openssl 3. prefer coreutils over busybox-coreutils
+
+-------------------------------------------------------------------
 Thu Jul 23 12:17:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - move sles-release installation earlier to avoid extra logfiles in the image
