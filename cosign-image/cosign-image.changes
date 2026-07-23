@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 23 11:05:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set SOURCE_DATE_EPOCH for reproducible package installation times
+
+-------------------------------------------------------------------
 Fri Jul 10 08:15:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust for cosign 3.1 version update

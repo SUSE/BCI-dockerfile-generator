@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 23 11:05:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set SOURCE_DATE_EPOCH for reproducible package installation times
+
+-------------------------------------------------------------------
 Wed Jul 15 11:52:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - strip unreproducible data from container
