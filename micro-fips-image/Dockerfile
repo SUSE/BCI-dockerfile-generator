@@ -24,7 +24,7 @@ FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends SLES-release bash ca-certificates-mozilla-prebuilt coreutils-single libopenssl3 patterns-base-fips skelcd-EULA-SLES
 
 RUN set -euo pipefail; zypper -n install jdupes crypto-policies-scripts update-bootloader \
