@@ -24,7 +24,7 @@ FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends busybox busybox-links ca-certificates-mozilla-prebuilt SLES-release skelcd-EULA-BCI
 
 # cleanup logs and temporary files

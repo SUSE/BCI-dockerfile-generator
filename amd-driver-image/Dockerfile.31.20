@@ -26,7 +26,7 @@ FROM registry.suse.com/bci/bci-base:16.0 AS builder
 COPY --from=target / /target
 RUN set -euo pipefail; zypper -n install --no-recommends awk dwarves elfutils gcc libelf-devel pesign-obs-integration zstd autoconf automake bc bison dracut flex gawk libzstd-devel make mokutil perl perl-Bootloader python3 python3-setuptools python3-wheel gcc13 suse-kernel-rpm-scriptlets
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rpm kmod SLES-release
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.20/sle/16.0/main/x86_64/amdgpu-dkms-6.19.0.31200000-2307534.noarch.rpm amdgpu-dkms-6.19.0.31200000-2307534.x86_64.rpm sha256:bf0d7284e53dca812d7308dc8dbf73f462375aed63bdb6a8819023b3712457d8
