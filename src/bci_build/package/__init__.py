@@ -1534,6 +1534,7 @@ from .samba import SAMBA_TOOLBOX_CONTAINERS  # noqa: E402
 from .spack import SPACK_CONTAINERS  # noqa: E402
 from .stunnel import STUNNEL_CONTAINERS  # noqa: E402
 from .three89_ds import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
+from .tigervnc import TIGERVNC_CONTAINERS  # noqa: E402
 from .trivy import TRIVY_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
 from .xorg import XORG_CLIENT_CONTAINERS  # noqa: E402
@@ -1603,6 +1604,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *FIREFOX_CONTAINERS,
         *PULSEAUDIO_CONTAINERS,
         *BIND_CONTAINERS,
+        *TIGERVNC_CONTAINERS,
     )
 }
 
