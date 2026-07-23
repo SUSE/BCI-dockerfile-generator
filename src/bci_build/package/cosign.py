@@ -26,7 +26,7 @@ COSIGN_CONTAINERS = [
             cosign_ver := get_pkg_version("cosign", os_version), ParseVersion.MINOR
         ),
         build_stage_custom_end=generate_package_version_check(
-            "cosign", cosign_ver, ParseVersion.MINOR, use_target=True
+            "cosign", cosign_ver, use_target=True
         ),
         version_in_uid=False,
         additional_versions=[format_version(cosign_ver, ParseVersion.MAJOR)],

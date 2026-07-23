@@ -45,7 +45,10 @@ GEMINI_CONTAINERS = [
             )
         ],
         build_stage_custom_end=generate_package_version_check(
-            "gemini-cli", gemini_tag_ver, ParseVersion.MAJOR, use_target=True
+            "gemini-cli",
+            gemini_tag_ver,
+            parse_version=ParseVersion.MAJOR,
+            use_target=True,
         )
         + textwrap.dedent(f"""
             {DOCKERFILE_RUN} useradd sandbox -m -u 499 && install -d -m 0750 /home/sandbox/tmp

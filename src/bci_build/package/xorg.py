@@ -85,7 +85,10 @@ XORG_CONTAINERS = [
         supported_until=KIOSK_SUPPORT_ENDS,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         build_stage_custom_end=generate_package_version_check(
-            "xorg-x11-server", tag_ver, ParseVersion.MAJOR, use_target=True
+            "xorg-x11-server",
+            tag_ver,
+            parse_version=ParseVersion.MAJOR,
+            use_target=True,
         )
         + "\nRUN useradd -m -u 1000 -g 100 user",
         custom_end=textwrap.dedent(f"""

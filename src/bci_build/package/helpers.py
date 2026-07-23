@@ -11,6 +11,7 @@ from bci_build.util import ParseVersion
 def generate_package_version_check(
     pkg_name: str,
     pkg_version: str,
+    *,
     parse_version: ParseVersion = ParseVersion.MINOR,
     use_target: bool = False,
 ) -> str:

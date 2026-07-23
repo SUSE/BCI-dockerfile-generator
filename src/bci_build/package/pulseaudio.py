@@ -58,7 +58,7 @@ PULSEAUDIO_CONTAINERS = [
         extra_files=_PULSE_FILES,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         custom_end=generate_package_version_check(
-            "pulseaudio", tag_ver, ParseVersion.MAJOR
+            "pulseaudio", tag_ver, parse_version=ParseVersion.MAJOR
         )
         + rf"""
 COPY daemon.conf /etc/pulse/

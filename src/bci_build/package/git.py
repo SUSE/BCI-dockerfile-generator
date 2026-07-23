@@ -54,7 +54,7 @@ WORKDIR /workspace
 ENV HOME=/workspace
 """,
         build_stage_custom_end=generate_package_version_check(
-            "git-core", git_version, ParseVersion.MINOR, use_target=True
+            "git-core", git_version, use_target=True
         ),
     )
     for os_version in ALL_NONBASE_OS_VERSIONS
