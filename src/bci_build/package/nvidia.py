@@ -186,9 +186,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             )
 
         self.custom_end = textwrap.dedent(f"""
-            COPY extract-vmlinux /usr/local/bin/
-            {DOCKERFILE_RUN} chmod +x /usr/local/bin/extract-vmlinux
-
             COPY nvidia-driver /usr/local/bin/
             {DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
 
@@ -215,7 +212,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                     nvidia_dir / "NGC-DL-CONTAINER-LICENSE"
                 ).read_bytes(),
                 "vGPU-README.md": (nvidia_dir / "vGPU-README.md").read_bytes(),
-                "extract-vmlinux": (nvidia_dir / "extract-vmlinux").read_bytes(),
                 "nvidia-driver": (nvidia_dir / "nvidia-driver").read_bytes(),
                 "nvidia-driver-selector.sh": (
                     nvidia_dir / "nvidia-driver-selector.sh"
