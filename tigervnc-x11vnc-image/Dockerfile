@@ -25,7 +25,7 @@ FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends grep gzip hostname procps sed tigervnc-x11vnc which xinput xkeyboard-config xsession xz
 # sanity check that the version from the tag is equal to the version of tigervnc-x11vnc that we expect
 RUN set -euo pipefail; \

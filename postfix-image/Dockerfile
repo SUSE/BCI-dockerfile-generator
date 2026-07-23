@@ -24,7 +24,7 @@ FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends ca-certificates-mozilla curl cyrus-sasl cyrus-sasl-plain ed findutils gawk grep netcfg postfix postfix-ldap postfix-lmdb sed timezone openldap2 openldap2-client mandoc spamassassin-spamc spamass-milter gzip tar
 
 RUN set -euo pipefail; zypper -n install --no-recommends systemd && \

@@ -24,7 +24,7 @@ FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.33-client diffutils helm3
 RUN set -euo pipefail; ln -s /usr/bin/helm3 /target/usr/local/bin/helm
 
