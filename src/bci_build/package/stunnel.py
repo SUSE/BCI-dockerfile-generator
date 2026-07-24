@@ -22,7 +22,7 @@ STUNNEL_CONTAINERS = [
         version=(stunnel_version_re := "%%stunnel_re%%"),
         is_singleton_image=True,
         pretty_name="Stunnel",
-        package_list=["stunnel"],
+        package_list=sorted(["stunnel"] + os_version.fips_compatibility_packages),
         support_level=SupportLevel.L3,
         replacements_via_service=[
             Replacement(stunnel_version_re, package_name="stunnel")
