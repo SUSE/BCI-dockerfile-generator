@@ -34,6 +34,7 @@ def _get_micro_package_list(os_version: OsVersion) -> list[Package]:
             # ca-certificates-mozilla-prebuilt requires /bin/cp, which is otherwise not resolved…
             "coreutils-single" if not os_version.is_sle15 else "coreutils",
         )
+        + (("patterns-base-fips",) if os_version.is_sl16 else ())
         + os_version.eula_package_names
         + os_version.release_package_names
     ]
@@ -55,7 +56,7 @@ MICRO_CONTAINERS = [
         custom_description="A micro environment for containers {based_on_container}.",
         from_target_image="scratch",
         cmd=["/bin/sh"],
-        package_list=[pkg.name for pkg in _get_micro_package_list(os_version)],
+        package_list=sorted([pkg.name for pkg in _get_micro_package_list(os_version)]),
         min_release_counter={
             OsVersion.SP7: 41,  # be newer than the newest kiwi based image on SP6
             OsVersion.SL16_0: 6,
