@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
+from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
@@ -45,5 +45,5 @@ CMD ["/usr/sbin/stunnel"]
 USER stunnel
 """,
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in ALL_NONBASE_SLFO_OS_VERSIONS
 ]
