@@ -39,10 +39,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: bugzilla-mcp-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: busybox-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -144,6 +140,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: mariadb-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: mcp-bugzilla-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -351,9 +351,6 @@ refresh_devel_BCI:
         package: blackbox_exporter-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: bugzilla-mcp-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: busybox-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
@@ -430,6 +427,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: mariadb-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: mcp-bugzilla-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: micro-fips-image
