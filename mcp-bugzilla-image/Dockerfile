@@ -15,10 +15,10 @@
 
 #!UseOBSRepositories
 
-#!BuildTag: opensuse/bugzilla-mcp:%%bugzilla_mcp_version%%-%RELEASE%
-#!BuildTag: opensuse/bugzilla-mcp:%%bugzilla_mcp_version%%
-#!BuildTag: opensuse/bugzilla-mcp:0
-#!BuildTag: opensuse/bugzilla-mcp:latest
+#!BuildTag: opensuse/mcp-bugzilla:%%bugzilla_mcp_version%%-%RELEASE%
+#!BuildTag: opensuse/mcp-bugzilla:%%bugzilla_mcp_version%%
+#!BuildTag: opensuse/mcp-bugzilla:0
+#!BuildTag: opensuse/mcp-bugzilla:latest
 
 FROM opensuse/bci/python:3.13 AS target
 FROM opensuse/bci/python:3.13 AS builder
@@ -49,7 +49,7 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/e
 FROM opensuse/bci/python:3.13
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.application.bugzilla-mcp
+# labelprefix=org.opensuse.application.mcp-bugzilla
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed MCP Host for Bugzilla"
 LABEL org.opencontainers.image.description="MCP Host for Bugzilla container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%bugzilla_mcp_version%%"
@@ -58,7 +58,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%bugzilla_mcp_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bugzilla-mcp:%%bugzilla_mcp_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/mcp-bugzilla:%%bugzilla_mcp_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
