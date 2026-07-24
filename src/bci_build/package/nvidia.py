@@ -151,6 +151,19 @@ COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 {%- endfor %}
 
 {{ DOCKERFILE_RUN }} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi
+
+{%- for arch in image.exclusive_arch %}
+{% with pkgs=get_justdb_packages_for_arch(arch) -%}
+{%- if pkgs %}
+{{ DOCKERFILE_RUN }} if [ "$(uname -m)" = "{{ arch }}" ]; then \\
+        rpm --root /target -ivh --force --nodeps --justdb --noscripts \\
+        {%- for pkg in pkgs %}
+            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+        {%- endfor %}
+    fi
+{%- endif %}
+{%- endwith %}
+{%- endfor %}
 """
 )
 
@@ -186,9 +199,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             )
 
         self.custom_end = textwrap.dedent(f"""
-            COPY extract-vmlinux /usr/local/bin/
-            {DOCKERFILE_RUN} chmod +x /usr/local/bin/extract-vmlinux
-
             COPY nvidia-driver /usr/local/bin/
             {DOCKERFILE_RUN} chmod +x /usr/local/bin/nvidia-driver
 
@@ -215,7 +225,6 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                     nvidia_dir / "NGC-DL-CONTAINER-LICENSE"
                 ).read_bytes(),
                 "vGPU-README.md": (nvidia_dir / "vGPU-README.md").read_bytes(),
-                "extract-vmlinux": (nvidia_dir / "extract-vmlinux").read_bytes(),
                 "nvidia-driver": (nvidia_dir / "nvidia-driver").read_bytes(),
                 "nvidia-driver-selector.sh": (
                     nvidia_dir / "nvidia-driver-selector.sh"
@@ -358,6 +367,16 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                 pkg
                 for pkg in pkgs
                 if pkg.name not in ignore_in_target_packages
+                and pkg.arch in ARCH_FILENAME_MAP[arch]
+            ],
+            get_justdb_packages_for_arch=lambda arch: [
+                pkg
+                for pkg in pkgs
+                if (
+                    pkg.name in kmp_packages
+                    or pkg.name in closed_packages
+                    or pkg.name in open_packages
+                )
                 and pkg.arch in ARCH_FILENAME_MAP[arch]
             ],
         )
