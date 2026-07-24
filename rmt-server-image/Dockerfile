@@ -22,13 +22,20 @@
 #!BuildName: suse-rmt-server
 #!BuildVersion: 15.7.2
 #!BuildRelease: 70
-FROM registry.suse.com/bci/bci-base:15.7
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM suse/sle15:15.7 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rmt-server catatonit bash
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rmt-server catatonit bash
+# sanity check that the version from the tag is equal to the version of rmt-server that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' rmt-server | \
+    cut -d '.' -f -1)" = "2" ]
 
 # cleanup logs and temporary files
-RUN set -euo pipefail; zypper -n clean -a; \
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/{zypp.pid,regenerate-initrd,systemd}; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
@@ -38,8 +45,9 @@ RUN set -euo pipefail; zypper -n clean -a; \
     rm -f {/target,}/var/cache/ldconfig/aux-cache
 
 # set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
-
+RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
+FROM registry.suse.com/bci/bci-micro:15.7
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-server
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -65,9 +73,6 @@ ENV LANG="en"
 ENV RAILS_ENV="production"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
-# sanity check that the version from the tag is equal to the version of rmt-server that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm -q --qf '%{version}' rmt-server | \
-    cut -d '.' -f -1)" = "2" ]
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
