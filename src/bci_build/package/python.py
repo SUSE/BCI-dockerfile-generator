@@ -11,6 +11,7 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
+from bci_build.package.helpers import generate_from_development_tag
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -152,24 +153,13 @@ PYTHON_3_6_CONTAINERS = (
     for os_version in (OsVersion.SP7,)
 )
 
-
-PYTHON_TW_CONTAINERS = (
-    PythonDevelopmentContainer(
-        **_get_python_kwargs(pyver, OsVersion.TUMBLEWEED),
-        is_latest=False,
-        package_name=f"python-{pyver}-image",
-        additional_versions=["3"],
-    )
-    for pyver in ("3.11", "3.13")
-)
-
 PYTHON_3_11_CONTAINERS = (
     PythonDevelopmentContainer(
         **_get_python_kwargs("3.11", os_version),
         package_name="python-3.11-image",
         additional_versions=["3"],
     )
-    for os_version in (OsVersion.SP7,)
+    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
 )
 
 PYTHON_3_13_CONTAINERS = [
@@ -186,13 +176,22 @@ PYTHON_3_13_CONTAINERS = [
         **_get_python_kwargs("3.13", os_version, build_flavor=flavor),
         package_name="python-3.13-image",
         build_flavor=flavor,
-        from_target_image=generate_from_image_tag(
-            os_version, "bci-micro" if flavor == "micro" else "bci-base"
+        from_target_image=(
+            None
+            if os_version.is_tumbleweed and flavor != "micro"
+            else generate_from_image_tag(
+                os_version,
+                "bci-micro" if flavor == "micro" else "bci-base",
+            )
         ),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=(
+            not os_version.is_tumbleweed
+            and flavor != "micro"
+            and os_version in CAN_BE_LATEST_OS_VERSION
+        ),
     )
     for os_version, flavor in product(
-        (OsVersion.SL16_0, OsVersion.SL16_1), ("base", "micro")
+        (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED), ("base", "micro")
     )
 ]
 
@@ -229,7 +228,7 @@ BCI_CI_CONTAINERS = [
         is_singleton_image=True,
         version_in_uid=False,
         os_version=os_version,
-        from_image=generate_from_image_tag(os_version, "python"),
+        from_image=generate_from_development_tag(os_version, "python", "3.14-base"),
         is_latest=True,
         support_level=SupportLevel.UNSUPPORTED,
         package_list=(
@@ -242,9 +241,7 @@ BCI_CI_CONTAINERS = [
             "jq",
             "osc",
             "patch",
-            "python314-devel",
             "python314-base",
-            "python314-pipx",
             "python314-poetry",
         ),
         replacements_via_service=[

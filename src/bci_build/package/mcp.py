@@ -16,8 +16,10 @@ BUGZILLA_MCP_CONTAINERS = [
     ApplicationStackContainer(
         name="mcp-bugzilla",
         pretty_name="MCP Host for Bugzilla",
-        from_image=generate_from_development_tag(os_version, "python", "3.13"),
-        from_target_image=generate_from_development_tag(os_version, "python", "3.13"),
+        from_image=generate_from_development_tag(os_version, "python", "3.13-base"),
+        from_target_image=generate_from_development_tag(
+            os_version, "python", "3.13-micro"
+        ),
         os_version=os_version,
         is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
         version="%%bugzilla_mcp_version%%",
