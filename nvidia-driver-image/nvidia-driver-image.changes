@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 24 15:02:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- install the open driver from rpm to have proper SBOMS
+
+-------------------------------------------------------------------
 Wed Jul 22 08:18:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add tag for new kernel release
