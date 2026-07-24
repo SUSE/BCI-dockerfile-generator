@@ -71,6 +71,7 @@ You can contact the BCI team via https://github.com/SUSE/bci/discussions
     <package name="bash"/>
     <package name="ca-certificates-mozilla-prebuilt"/>
     <package name="coreutils-single"/>
+    <package name="patterns-base-fips"/>
     <package name="skelcd-EULA-BCI"/>
     <package name="SLES-release"/>
     <package name="jdupes"/>
