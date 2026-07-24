@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 24 15:02:20 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- install the open driver from rpm to have proper SBOMS
+
+-------------------------------------------------------------------
 Thu Jul 23 11:05:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set SOURCE_DATE_EPOCH for reproducible package installation times
