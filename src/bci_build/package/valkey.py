@@ -44,7 +44,7 @@ VALKEY_CONTAINERS = [
             )
         ],
         license="BSD-3-Clause",
-        package_list=["valkey", "sed"],
+        package_list=sorted(["valkey", "sed"] + os_version.fips_compatibility_packages),
         entrypoint=["/usr/bin/valkey-server"],
         cmd=["/etc/valkey/valkey.conf"],
         entrypoint_user="valkey",
