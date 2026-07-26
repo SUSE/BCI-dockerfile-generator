@@ -359,6 +359,8 @@ def _get_minimal_kwargs(os_version: OsVersion):
         )
     else:
         package_list.append(Package("rpm", pkg_type=PackageType.BOOTSTRAP))
+        package_list.append(Package("coreutils-single", pkg_type=PackageType.IMAGE))
+
     kwargs = {
         "from_image": None,
         "pretty_name": f"{os_version.pretty_os_version_no_dash} Minimal",
