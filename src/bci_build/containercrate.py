@@ -1,5 +1,10 @@
 """Crate to handle multibuild containers in the generator."""
 
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+
+from bci_build.service import Service
+
 
 class ContainerCrate:
     """ContainerCrate combines container build flavors into a single OBS multibuild
@@ -48,3 +53,26 @@ class ContainerCrate:
             for pkg in self.all_build_flavors(container)
         )
         return f"<multibuild>\n{flavors}\n</multibuild>"
+
+    def service(self, container) -> str:
+        """Return the _service file string to write for this ContainerCrate."""
+        from bci_build.package import ALL_CONTAINER_IMAGE_NAMES
+
+        root = ET.Element("services")
+        root.append(
+            Service(name=f"{container.build_recipe_type}_label_helper").as_xml_element()
+        )
+        root.append(Service(name="kiwi_metainfo_helper").as_xml_element())
+        all_bcis = list(ALL_CONTAINER_IMAGE_NAMES.values())
+        all_bcis.sort(key=lambda bci: bci.uid)
+        for c in filter(
+            lambda bci: bci.crate == self and bci.os_version == container.os_version,
+            all_bcis,
+        ):
+            for r in c.replacements_via_service:
+                rtree = r.to_service(f"Dockerfile.{c.build_flavor}").as_xml_element()
+                root.append(rtree)
+
+        return minidom.parseString(ET.tostring(root, encoding="unicode")).toprettyxml(
+            indent="  "
+        )
