@@ -21,6 +21,7 @@
 #!BuildTag: suse/helm:4
 #!BuildName: suse-helm
 #!BuildVersion: 16.1.4.2
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

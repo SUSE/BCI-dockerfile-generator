@@ -21,6 +21,7 @@
 #!BcntSyncTag: cdi-1.65-image
 #!BuildName: suse-sles-16.1-cdi-uploadserver
 #!BuildVersion: 16.1.1.65
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

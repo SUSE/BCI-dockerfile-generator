@@ -20,6 +20,7 @@
 #!BuildTag: suse/rmt-server:3
 #!BuildName: suse-rmt-server
 #!BuildVersion: 16.1.3
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

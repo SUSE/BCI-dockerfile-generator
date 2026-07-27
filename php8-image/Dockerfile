@@ -20,6 +20,7 @@
 #!BuildTag: bci/php:8
 #!BuildName: bci-php-8
 #!BuildVersion: 16.1.8
+#!FilterBaseContainerPkgs
 FROM bci/bci-base:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

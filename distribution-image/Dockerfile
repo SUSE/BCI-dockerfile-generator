@@ -20,6 +20,7 @@
 #!BuildTag: suse/registry:3.1
 #!BuildName: suse-registry
 #!BuildVersion: 16.1.3.1
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
