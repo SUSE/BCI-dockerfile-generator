@@ -23,6 +23,7 @@
 #!BuildName: suse-git
 #!BuildVersion: 16.0.2.51
 #!BuildRelease: 80
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

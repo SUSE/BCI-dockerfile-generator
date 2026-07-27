@@ -21,6 +21,7 @@
 #!BcntSyncTag: python-3.13-image
 #!BuildName: bci-python-3.13-base
 #!BuildVersion: 16.0.3.13
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-base:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

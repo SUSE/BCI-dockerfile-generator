@@ -22,6 +22,7 @@
 #!BuildTag: suse/valkey:latest
 #!BuildName: suse-valkey
 #!BuildVersion: 16.0.8.0
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

@@ -21,6 +21,7 @@
 #!BcntSyncTag: kubevirt-1.8-image
 #!BuildName: suse-sles-16.0-virt-launcher
 #!BuildVersion: 16.0.1.8
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target
