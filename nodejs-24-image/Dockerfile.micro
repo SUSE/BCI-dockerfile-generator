@@ -24,6 +24,7 @@
 #!BcntSyncTag: nodejs-24-image
 #!BuildName: bci-nodejs-24-micro
 #!BuildVersion: 16.1.24
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

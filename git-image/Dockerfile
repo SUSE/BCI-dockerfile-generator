@@ -21,6 +21,7 @@
 #!BuildTag: suse/git:%%git_major_version%%
 #!BuildName: suse-git
 #!BuildVersion: 16.1.2.53
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

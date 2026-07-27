@@ -20,6 +20,7 @@
 #!BuildTag: suse/stunnel:5
 #!BuildName: suse-stunnel
 #!BuildVersion: 16.1.5
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target

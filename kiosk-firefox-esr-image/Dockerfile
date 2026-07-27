@@ -20,6 +20,7 @@
 #!BuildTag: suse/kiosk/firefox-esr:esr
 #!BuildName: suse-kiosk-firefox-esr
 #!BuildVersion: 16.1
+#!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
