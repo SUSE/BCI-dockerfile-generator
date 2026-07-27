@@ -27,7 +27,7 @@ BUGZILLA_MCP_CONTAINERS = [
         version_in_uid=False,
         exposes_ports=[TCP(8000)],
         build_stage_custom_end=generate_package_version_check(
-            "bugzilla-mcp",
+            "mcp-bugzilla",
             _MCP_TAG_VERSION,
             parse_version=ParseVersion.MAJOR,
             use_target=True,
@@ -35,14 +35,12 @@ BUGZILLA_MCP_CONTAINERS = [
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%bugzilla_mcp_version%%",
-                package_name="bugzilla-mcp",
+                package_name="mcp-bugzilla",
                 parse_version=ParseVersion.PATCH,
             )
         ],
         license="Apache-2.0",
-        package_list=[
-            "bugzilla-mcp",
-        ],
+        package_list=sorted(["mcp-bugzilla", "python3-httpx-retries"]),
         entrypoint=["/usr/bin/mcp-bugzilla"],
     )
     for os_version in (OsVersion.TUMBLEWEED,)
