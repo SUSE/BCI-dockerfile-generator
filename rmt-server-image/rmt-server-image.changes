@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 27 07:11:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- convert to multistage build
+
+-------------------------------------------------------------------
 Mon Jul 20 07:47:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - extend README
