@@ -22,6 +22,7 @@
 #!BuildTag: bci/php-apache:latest
 #!BuildName: bci-php-apache-8
 #!BuildVersion: 15.7.8
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-base:15.7 AS target
 FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target

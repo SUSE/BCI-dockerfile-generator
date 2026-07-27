@@ -22,6 +22,7 @@
 #!BuildName: suse-kiosk-tigervnc-x11vnc
 #!BuildVersion: 15.7.1
 #!BuildRelease: 60
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM suse/sle15:15.7 AS builder
 COPY --from=target / /target

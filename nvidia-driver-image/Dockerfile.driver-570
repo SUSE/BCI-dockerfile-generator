@@ -39,6 +39,7 @@
 #!BcntSyncTag: nvidia-driver-image
 #!BuildName: nvidia-driver-570
 #!BuildVersion: 15.7.570.211.01
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM registry.suse.com/bci/bci-base:15.7 AS nvidia-driver-builder
 COPY --from=target / /target
