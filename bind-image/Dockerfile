@@ -22,6 +22,7 @@
 #!BuildTag: suse/bind:latest
 #!BuildName: suse-bind
 #!BuildVersion: 16.0.9
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

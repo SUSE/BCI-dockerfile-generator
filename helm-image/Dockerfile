@@ -23,6 +23,7 @@
 #!BuildName: suse-helm
 #!BuildVersion: 16.0.3.21
 #!BuildRelease: 70
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

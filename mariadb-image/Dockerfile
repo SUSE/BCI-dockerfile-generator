@@ -20,6 +20,7 @@
 #!BuildTag: suse/mariadb:11.8
 #!BuildName: suse-mariadb-11.8
 #!BuildVersion: 16.0.11.8
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

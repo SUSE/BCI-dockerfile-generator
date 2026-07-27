@@ -21,6 +21,7 @@
 #!BuildTag: suse/prometheus:%%prometheus_major_version%%
 #!BuildName: suse-prometheus-%%prometheus_patch_version%%
 #!BuildVersion: 16.0
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

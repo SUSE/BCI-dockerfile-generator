@@ -24,6 +24,7 @@
 #!BcntSyncTag: nodejs-24-image
 #!BuildName: bci-nodejs-24-micro
 #!BuildVersion: 16.0.24
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

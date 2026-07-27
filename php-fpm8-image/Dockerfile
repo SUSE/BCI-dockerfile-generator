@@ -20,6 +20,7 @@
 #!BuildTag: bci/php-fpm:8
 #!BuildName: bci-php-fpm-8
 #!BuildVersion: 16.0.8
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-base:16.0 AS target
 FROM bci/bci-base:16.0 AS builder
 COPY --from=target / /target

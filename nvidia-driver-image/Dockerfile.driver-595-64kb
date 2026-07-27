@@ -26,6 +26,7 @@
 #!BcntSyncTag: nvidia-driver-image
 #!BuildName: nvidia-driver-595-64kb
 #!BuildVersion: 16.0.595.71.05
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM registry.suse.com/bci/bci-base:16.0 AS nvidia-driver-builder
 COPY --from=target / /target
