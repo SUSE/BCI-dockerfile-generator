@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 27 06:49:26 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include patterns-base-fips for host-in-FIPS mode compatibility
+
+-------------------------------------------------------------------
 Fri Jul 24 13:35:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - README update
