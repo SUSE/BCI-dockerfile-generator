@@ -20,13 +20,22 @@
 #!BuildTag: suse/rmt-server:3
 #!BuildName: suse-rmt-server
 #!BuildVersion: 16.1.3
-FROM bci/bci-base:16.1
+FROM bci/bci-micro:16.1 AS target
+FROM bci/bci-base:16.1 AS builder
+COPY --from=target / /target
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends rmt-server catatonit bash
+    export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rmt-server catatonit bash
+# sanity check that the version from the tag is equal to the version of rmt-server that we expect
+RUN set -euo pipefail; \
+    [ "$(rpm --root /target -q --qf '%{version}' rmt-server | \
+    cut -d '.' -f -1)" = "3" ]
 
 # cleanup logs and temporary files
-RUN set -euo pipefail; zypper -n clean -a; \
+RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
+    t=$(mktemp -d); mv /target/usr/lib/sysimage/rpm/Packages.db $t; rpmdb --rebuilddb --dbpath=$t; \
+    rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
     rm -rf {/target,}/run/{zypp.pid,regenerate-initrd,systemd}; \
     rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
@@ -36,8 +45,9 @@ RUN set -euo pipefail; zypper -n clean -a; \
     rm -f {/target,}/var/cache/ldconfig/aux-cache
 
 # set the day of last password change to empty
-RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
-
+RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
+FROM bci/bci-micro:16.1
+COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.rmt-server
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
@@ -61,9 +71,6 @@ ENV LANG="en"
 ENV RAILS_ENV="production"
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
-# sanity check that the version from the tag is equal to the version of rmt-server that we expect
-RUN set -euo pipefail; \
-    [ "$(rpm -q --qf '%{version}' rmt-server | \
-    cut -d '.' -f -1)" = "3" ]
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
