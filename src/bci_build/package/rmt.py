@@ -1,5 +1,6 @@
 """SUSE Repository Mirroring Tool (RMT) container definitions"""
 
+import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import BuildType
@@ -9,6 +10,7 @@ from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -24,6 +26,7 @@ RMT_CONTAINERS = [
         pretty_name="SUSE RMT server",
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
+        from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         tag_version=(
             rmt_major_version := "2" if os_version in (OsVersion.SP7,) else "3"
         ),
@@ -44,10 +47,16 @@ RMT_CONTAINERS = [
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
         extra_files={"entrypoint.sh": _RMT_ENTRYPOINT},
-        custom_end=f"""{generate_package_version_check("rmt-server", rmt_major_version, parse_version=ParseVersion.MAJOR)}
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-{DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
-""",
+        build_stage_custom_end=generate_package_version_check(
+            "rmt-server",
+            rmt_major_version,
+            parse_version=ParseVersion.MAJOR,
+            use_target=True,
+        ),
+        custom_end=textwrap.dedent(f"""
+            COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+            {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
+        """),
     )
     for os_version in set(ALL_NONBASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}
 ]
