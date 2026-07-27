@@ -304,6 +304,31 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
+            **(
+                _get_kubevirt_kwargs(
+                    "sidecar-shim",
+                    os_version,
+                    custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-sidecar-shim",
+                )
+                # virt-controller resolves the default hook-sidecar image as
+                # <registry>/sidecar-shim:<version> — no virt- prefix
+                | {"name": "sidecar-shim", "pretty_name": "KubeVirt sidecar-shim"}
+            ),
+            package_list=sorted(
+                [
+                    f"{_kubevirt_pkg(os_version)}-sidecar-shim",
+                    # user hook scripts run inside this image; upstream ships
+                    # python3 in it for them
+                    "python3",
+                    "shadow",
+                ]
+            ),
+            entrypoint=["/usr/bin/sidecar-shim"],
+        )
+        for os_version in _KUBEVIRT_VERSIONS
+    ]
+    + [
+        ApplicationStackContainer(
             **_get_libguestfs_kwargs(os_version),
             package_list=sorted(
                 [
