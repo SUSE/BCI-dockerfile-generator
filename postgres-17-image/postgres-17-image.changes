@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- filter basecontainer packages from installation for optimizing rebuilds
+
+-------------------------------------------------------------------
 Wed Jul  8 05:44:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Unset bootstrap credentials before exec-ing the server

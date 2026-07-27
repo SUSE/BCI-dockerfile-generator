@@ -21,6 +21,7 @@
 #!BcntSyncTag: amd-driver-image
 #!BuildName: amd-driver-30.30.4
 #!BuildVersion: 15.7.30.30.4
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM registry.suse.com/bci/bci-base:15.7 AS builder
 COPY --from=target / /target
