@@ -14,8 +14,9 @@ from bci_build.package import generate_disk_size_constraints
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-_GO_VER_T = Literal["1.23", "1.24", "1.25", "1.26"]
+_GO_VER_T = Literal["1.23", "1.24", "1.25", "1.26", "1.27"]
 _GOLANG_VERSIONS: list[_GO_VER_T] = ["1.25", "1.26"]
+_GOLANG_TW_VERSIONS: list[_GO_VER_T] = ["1.26", "1.27"]
 _GOLANG_OPENSSL_VERSIONS: list[_GO_VER_T] = ["1.25", "1.26"]
 _GOLANG_VARIANT_T = Literal["", "-openssl"]
 
@@ -126,6 +127,6 @@ GOLANG_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(**_get_golang_kwargs(ver, "", OsVersion.TUMBLEWEED))
-        for ver in _GOLANG_VERSIONS
+        for ver in _GOLANG_TW_VERSIONS
     ]
 )
