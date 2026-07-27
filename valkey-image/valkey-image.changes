@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 27 06:49:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- order installation packages alphabetically for stability
+
+-------------------------------------------------------------------
 Mon Jul 27 06:42:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust for new valkey version
