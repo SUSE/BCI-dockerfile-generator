@@ -650,6 +650,7 @@ def test_os_build_recipe_templates(kiwi_xml: str, image: OsContainer) -> None:
 #!BuildName: containers-test-42
 #!BuildVersion: %%emacs_version%%
 #!BuildRelease: 30
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target
@@ -717,6 +718,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 #!BuildName: containers-git-42
 #!BuildVersion: %%git_version%%
 #!BuildRelease: 60
+#!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
 FROM bci/bci-base:15.7 AS builder
 COPY --from=target / /target

@@ -42,6 +42,9 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {%- if image.build_release %}
 #!BuildRelease: {{ image.build_release }}
 {%- endif %}
+{%- if image.from_target_image and not "scratch" in image.dockerfile_from_target_ref and not "bci-nano" in image.dockerfile_from_target_ref %}
+#!FilterBaseContainerPkgs
+{%- endif %}
 {{ image.dockerfile_from_line }}
 {%- if image.from_target_image %}
 COPY --from=target / /target
