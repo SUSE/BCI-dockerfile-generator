@@ -27,10 +27,10 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bugzilla-mcp
-# sanity check that the version from the tag is equal to the version of bugzilla-mcp that we expect
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends mcp-bugzilla python3-httpx-retries
+# sanity check that the version from the tag is equal to the version of mcp-bugzilla that we expect
 RUN set -euo pipefail; \
-    [ "$(rpm --root /target -q --qf '%{version}' bugzilla-mcp | \
+    [ "$(rpm --root /target -q --qf '%{version}' mcp-bugzilla | \
     cut -d '.' -f -1)" = "0" ]
 
 # cleanup logs and temporary files
