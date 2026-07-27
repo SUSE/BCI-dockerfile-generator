@@ -52,7 +52,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 parse_version=ParseVersion.MINOR,
             )
         ],
-        "package_list": (
+        "package_list": sorted(
             [
                 "curl",
                 "gawk",
@@ -62,8 +62,9 @@ def _get_nginx_kwargs(os_version: OsVersion):
                 "sed",
                 "grep",
             ]
-        )
-        + (["libcurl-mini4"] if os_version.is_sl16 else []),
+            + os_version.fips_compatibility_packages
+            + (["libcurl-mini4"] if os_version.is_sl16 else [])
+        ),
         "entrypoint": ["/usr/local/bin/docker-entrypoint.sh"],
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "cmd": ["nginx", "-g", "daemon off;"],

@@ -40,6 +40,7 @@ THREE_EIGHT_NINE_DS_CONTAINERS = [
         package_list=sorted(
             ["389-ds", "timezone", "openssl", "nss_synth", "tar"]
             + (["aaa_base"] if os_version.is_sle15 else [])
+            + os_version.fips_compatibility_packages
         ),
         cmd=["/usr/lib/dirsrv/dscontainer", "-r"],
         version="%%389ds_version%%",

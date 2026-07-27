@@ -132,6 +132,15 @@ class OsVersion(enum.Enum):
         return sorted(list(r))
 
     @property
+    def fips_compatibility_packages(self) -> list[str]:
+        """Returns a list of packages to make the container FIPS ready"""
+        r = set()
+        if self.is_sl16:
+            r.add("patterns-base-fips")
+
+        return sorted(list(r))
+
+    @property
     def is_sle15(self) -> bool:
         return self.value in (
             OsVersion.SP4.value,
