@@ -21,6 +21,7 @@
 #!BuildTag: opensuse/valkey:9
 #!BuildTag: opensuse/valkey:latest
 
+#!FilterBaseContainerPkgs
 FROM opensuse/bci/bci-micro:latest AS target
 FROM opensuse/tumbleweed:latest AS builder
 COPY --from=target / /target
