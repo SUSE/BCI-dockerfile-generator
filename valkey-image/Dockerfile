@@ -17,7 +17,7 @@
 
 #!BuildTag: opensuse/valkey:%%valkey_version%%-%RELEASE%
 #!BuildTag: opensuse/valkey:%%valkey_version%%
-#!BuildTag: opensuse/valkey:9.0
+#!BuildTag: opensuse/valkey:9.1
 #!BuildTag: opensuse/valkey:9
 #!BuildTag: opensuse/valkey:latest
 
@@ -34,7 +34,7 @@ RUN set -euo pipefail; zypper -n install --no-recommends systemd && \
 # sanity check that the version from the tag is equal to the version of valkey that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' valkey | \
-    cut -d '.' -f -2)" = "9.0" ]
+    cut -d '.' -f -2)" = "9.1" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
