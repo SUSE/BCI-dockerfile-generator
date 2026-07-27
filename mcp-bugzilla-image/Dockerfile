@@ -20,6 +20,7 @@
 #!BuildTag: opensuse/mcp-bugzilla:0
 #!BuildTag: opensuse/mcp-bugzilla:latest
 
+#!FilterBaseContainerPkgs
 FROM opensuse/bci/python:3.13-micro AS target
 FROM opensuse/bci/python:3.13-base AS builder
 COPY --from=target / /target
