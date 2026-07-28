@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 12:31:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- enable build-time-attestations for the Appco base containers
+
+-------------------------------------------------------------------
 Wed Jul 15 11:53:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - strip unreproducible data from container
