@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 12:23:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include SLES-release for the `%OS_` macro substitution
+
+-------------------------------------------------------------------
 Tue Jul 28 06:51:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust tags for new kernel release
