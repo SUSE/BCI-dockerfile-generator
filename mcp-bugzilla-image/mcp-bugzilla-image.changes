@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 06:38:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust to new package naming
+
+-------------------------------------------------------------------
 Mon Jul 27 12:02:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
