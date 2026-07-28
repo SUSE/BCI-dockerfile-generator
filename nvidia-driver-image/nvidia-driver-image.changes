@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 06:51:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust tags for new kernel release
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
