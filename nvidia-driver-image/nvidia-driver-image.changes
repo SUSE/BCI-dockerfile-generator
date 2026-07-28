@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 12:23:01 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include SLES-release for the `%OS_` macro substitution
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
