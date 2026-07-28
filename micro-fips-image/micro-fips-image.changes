@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 28 12:31:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- enable build-time-attestations for the Appco base containers
+
+-------------------------------------------------------------------
 Thu Jul 23 11:05:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set SOURCE_DATE_EPOCH for reproducible package installation times
