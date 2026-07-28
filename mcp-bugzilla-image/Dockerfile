@@ -48,6 +48,7 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
 FROM opensuse/bci/python:3.13-micro
+#!DisableOBSContainerSupport
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.application.mcp-bugzilla
