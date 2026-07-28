@@ -569,7 +569,7 @@ def _get_compute_packages(
     return packages
 
 
-def _get_packages(os_version: OsVersion):
+def _get_packages(os_version: OsVersion) -> list[Package]:
     packages: list[Package] = [
         # needed by kernel GA packages
         # since kernel GA packages are using RemoteAssetUrl a few dependencies
@@ -605,7 +605,7 @@ def _get_packages(os_version: OsVersion):
         Package("util-linux", PackageType.IMAGE),
         Package("util-linux-systemd", PackageType.IMAGE),
         Package("infiniband-diags", PackageType.IMAGE),
-    ]
+    ] + [Package(name, PackageType.IMAGE) for name in os_version.release_package_names]
 
     if os_version == OsVersion.SL16_0:
         packages += [
