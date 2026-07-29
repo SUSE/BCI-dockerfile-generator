@@ -9,6 +9,7 @@ from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
+from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
@@ -42,7 +43,10 @@ RMT_CONTAINERS = [
         min_release_counter={
             OsVersion.SP7: 70,
         },
-        package_list=["rmt-server", "catatonit", "bash"],
+        package_list=sorted(
+            ["rmt-server", "catatonit", "bash"]
+            + (["sed"] if os_version.is_sle15 else [])
+        ),
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
         env={"RAILS_ENV": "production", "LANG": "en"},
@@ -56,7 +60,8 @@ RMT_CONTAINERS = [
         custom_end=textwrap.dedent(f"""
             COPY entrypoint.sh /usr/local/bin/entrypoint.sh
             {DOCKERFILE_RUN} chmod +x /usr/local/bin/entrypoint.sh
-        """),
+        """)
+        + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
     for os_version in set(ALL_NONBASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}
 ]
