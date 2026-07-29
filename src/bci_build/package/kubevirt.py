@@ -140,20 +140,41 @@ def _get_libguestfs_kwargs(os_version: OsVersion) -> dict:
 
     It deviates from the virt-* services in two ways: it is published without
     the ``virt-`` prefix (matching :file:`suse/sles/15.7/libguestfs-tools`),
-    and it is a single-stage build on the full base image — supermin composes
-    the guest appliance from the installed system, which the bci-micro target
-    of the two-stage pattern cannot provide.
+    and its builder stage does double duty: supermin can only compose the
+    guest appliance from a fully installed system, so the appliance is baked
+    in the builder's own root — the kernel, the devel tools and the harvested
+    userland never reach the bci-micro based target, which receives only the
+    finished appliance and the runtime closure of the content package.
     """
     kwargs = _get_kubevirt_kwargs(
         "libguestfs-tools",
         os_version,
-        custom_end=False,
         custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-libguestfs-tools",
     )
     kwargs["name"] = "libguestfs-tools"
     kwargs["pretty_name"] = "KubeVirt libguestfs-tools"
-    del kwargs["from_target_image"]
-    del kwargs["build_stage_custom_end"]
+    kwargs["build_stage_custom_end"] += textwrap.dedent(f"""
+        # everything supermin harvests must be installed here, not in /target
+        {DOCKERFILE_RUN} zypper -n install --no-recommends btrfsprogs cpio cryptsetup \\
+        dosfstools e2fsprogs gptfdisk guestfs-tools jfsutils kernel-kvmsmall ldmtool \\
+        libguestfs libguestfs-appliance libguestfs-devel libguestfs-winsupport mdadm \\
+        parted qemu-tools qemu-x86 supermin xfsprogs xorriso zstd
+
+        # build once at image build so pods do not run supermin at startup;
+        # store the root as compressed qcow2 because image layers do not
+        # preserve sparseness
+        {DOCKERFILE_RUN} mkdir -p /usr/local/lib/guestfs/appliance && \\
+            cd /usr/local/lib/guestfs/appliance && \\
+            LIBGUESTFS_BACKEND=direct LIBGUESTFS_DEBUG=1 libguestfs-make-fixed-appliance . && \\
+            qemu-img convert -c -O qcow2 root root.qcow2 && \\
+            mv root.qcow2 root && \\
+            rm -rf /var/tmp/.guestfs-*
+        """)
+
+    kwargs["custom_end"] += textwrap.dedent(f"""
+        COPY --from=builder /usr/local/lib/guestfs/appliance /usr/local/lib/guestfs/appliance
+        {DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(os_version)}/libguestfs-tools/entrypoint.sh /entrypoint.sh
+        """)
     return kwargs
 
 
@@ -333,43 +354,17 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(
                 [
                     # the content package: entrypoint + the runtime closure of
-                    # the image as Requires (mirrors upstream's rpm tree)
+                    # the image as Requires (mirrors upstream's rpm tree) —
+                    # everything else the image needs at runtime is pulled in
+                    # by RPM dependency resolution
                     f"{_kubevirt_pkg(os_version)}-libguestfs-tools",
-                    # the rest only feeds the appliance bake: kernel and
-                    # appliance builder (removed again below), cpio and zstd
-                    # for supermin's initrd packing, shadow for useradd
+                    # the entrypoint drops the user into an interactive shell;
+                    # bci-micro ships neither bash nor login tooling
                     "bash",
-                    "cpio",
-                    "kernel-kvmsmall",
-                    "libguestfs-devel",
                     "shadow",
-                    "zstd",
                 ]
             ),
             entrypoint=["/entrypoint.sh"],
-            custom_end=(
-                generate_package_version_check(
-                    f"{_kubevirt_pkg(os_version)}-libguestfs-tools",
-                    get_pkg_version(_kubevirt_pkg(os_version), os_version),
-                )
-                + textwrap.dedent(f"""
-                # build the appliance once at image build so pods do not run
-                # supermin at startup; store the root as compressed qcow2
-                # because image layers do not preserve sparseness
-                {DOCKERFILE_RUN} mkdir -p /usr/local/lib/guestfs/appliance && \\
-                    cd /usr/local/lib/guestfs/appliance && \\
-                    LIBGUESTFS_BACKEND=direct LIBGUESTFS_DEBUG=1 libguestfs-make-fixed-appliance . && \\
-                    qemu-img convert -c -O qcow2 root root.qcow2 && \\
-                    mv root.qcow2 root && \\
-                    rm -rf /var/tmp/.guestfs-*
-                # kernel-kvmsmall and libguestfs-devel (which ships
-                # libguestfs-make-fixed-appliance) only feed the appliance build
-                {DOCKERFILE_RUN} zypper -n remove --clean-deps kernel-kvmsmall libguestfs-devel && \\
-                    zypper clean -a && \\
-                    useradd -u 1001 --create-home -s /bin/bash virt-libguestfs-tools
-                {DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(os_version)}/libguestfs-tools/entrypoint.sh /entrypoint.sh
-                """)
-            ),
         )
         for os_version in _KUBEVIRT_VERSIONS
     ]
