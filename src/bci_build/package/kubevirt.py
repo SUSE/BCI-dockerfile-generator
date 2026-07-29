@@ -174,6 +174,9 @@ def _get_libguestfs_kwargs(os_version: OsVersion) -> dict:
     kwargs["custom_end"] += textwrap.dedent(f"""
         COPY --from=builder /usr/local/lib/guestfs/appliance /usr/local/lib/guestfs/appliance
         {DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(os_version)}/libguestfs-tools/entrypoint.sh /entrypoint.sh
+
+        # cross-stage COPY leaves the home dir root-owned
+        {DOCKERFILE_RUN} chown -R 1001:users /home/virt-libguestfs-tools
         """)
     return kwargs
 
