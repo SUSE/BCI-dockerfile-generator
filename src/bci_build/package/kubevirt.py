@@ -361,7 +361,6 @@ KUBEVIRT_CONTAINERS = (
                     LIBGUESTFS_BACKEND=direct LIBGUESTFS_DEBUG=1 libguestfs-make-fixed-appliance . && \\
                     qemu-img convert -c -O qcow2 root root.qcow2 && \\
                     mv root.qcow2 root && \\
-                    touch done && \\
                     rm -rf /var/tmp/.guestfs-*
                 # kernel-kvmsmall and libguestfs-devel (which ships
                 # libguestfs-make-fixed-appliance) only feed the appliance build
