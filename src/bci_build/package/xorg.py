@@ -130,6 +130,19 @@ XORG_CLIENT_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
+                # needed by electron at runtime
+                "libgobject-2_0-0",
+                "libglib-2_0-0",
+                "libgio-2_0-0",
+                "mozilla-nspr",
+                "mozilla-nss",
+                "libatk-1_0-0",
+                "libatk-bridge-2_0-0",
+                "libcups2",
+                "libcairo2",
+                "libgtk-3-0",
+                "libgbm1",
+                "libasound2",
                 # Provides necessary codecs for video/audio playback
                 "libavcodec58_134",
             ]
