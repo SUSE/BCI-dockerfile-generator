@@ -135,6 +135,52 @@ def _get_kubevirt_kwargs(
     )
 
 
+def _get_libguestfs_kwargs(os_version: OsVersion) -> dict:
+    """Generate kwargs for the libguestfs-tools container.
+
+    It deviates from the virt-* services in two ways: it is published without
+    the ``virt-`` prefix (matching :file:`suse/sles/15.7/libguestfs-tools`),
+    and its builder stage does double duty: supermin can only compose the
+    guest appliance from a fully installed system, so the appliance is baked
+    in the builder's own root — the kernel, the devel tools and the harvested
+    userland never reach the bci-micro based target, which receives only the
+    finished appliance and the runtime closure of the content package.
+    """
+    kwargs = _get_kubevirt_kwargs(
+        "libguestfs-tools",
+        os_version,
+        custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-libguestfs-tools",
+    )
+    kwargs["name"] = "libguestfs-tools"
+    kwargs["pretty_name"] = "KubeVirt libguestfs-tools"
+    kwargs["build_stage_custom_end"] += textwrap.dedent(f"""
+        # everything supermin harvests must be installed here, not in /target
+        {DOCKERFILE_RUN} zypper -n install --no-recommends btrfsprogs cpio cryptsetup \\
+        dosfstools e2fsprogs gptfdisk guestfs-tools jfsutils kernel-kvmsmall ldmtool \\
+        libguestfs libguestfs-appliance libguestfs-devel libguestfs-winsupport mdadm \\
+        parted qemu-tools qemu-x86 supermin xfsprogs xorriso zstd
+
+        # build once at image build so pods do not run supermin at startup;
+        # store the root as compressed qcow2 because image layers do not
+        # preserve sparseness
+        {DOCKERFILE_RUN} mkdir -p /usr/local/lib/guestfs/appliance && \\
+            cd /usr/local/lib/guestfs/appliance && \\
+            LIBGUESTFS_BACKEND=direct LIBGUESTFS_DEBUG=1 libguestfs-make-fixed-appliance . && \\
+            qemu-img convert -c -O qcow2 root root.qcow2 && \\
+            mv root.qcow2 root && \\
+            rm -rf /var/tmp/.guestfs-*
+        """)
+
+    kwargs["custom_end"] += textwrap.dedent(f"""
+        COPY --from=builder /usr/local/lib/guestfs/appliance /usr/local/lib/guestfs/appliance
+        {DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(os_version)}/libguestfs-tools/entrypoint.sh /entrypoint.sh
+
+        # cross-stage COPY leaves the home dir root-owned
+        {DOCKERFILE_RUN} chown -R 1001:users /home/virt-libguestfs-tools
+        """)
+    return kwargs
+
+
 KUBEVIRT_CONTAINERS = (
     [
         ApplicationStackContainer(
@@ -277,6 +323,51 @@ KUBEVIRT_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/qemu-pr-helper"],
             custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(os_version)}/pr-helper/multipath.conf /etc/",
+        )
+        for os_version in _KUBEVIRT_VERSIONS
+    ]
+    + [
+        ApplicationStackContainer(
+            **(
+                _get_kubevirt_kwargs(
+                    "sidecar-shim",
+                    os_version,
+                    custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-sidecar-shim",
+                )
+                # virt-controller resolves the default hook-sidecar image as
+                # <registry>/sidecar-shim:<version> — no virt- prefix
+                | {"name": "sidecar-shim", "pretty_name": "KubeVirt sidecar-shim"}
+            ),
+            package_list=sorted(
+                [
+                    f"{_kubevirt_pkg(os_version)}-sidecar-shim",
+                    # user hook scripts run inside this image; upstream ships
+                    # python3 in it for them
+                    "python3",
+                    "shadow",
+                ]
+            ),
+            entrypoint=["/usr/bin/sidecar-shim"],
+        )
+        for os_version in _KUBEVIRT_VERSIONS
+    ]
+    + [
+        ApplicationStackContainer(
+            **_get_libguestfs_kwargs(os_version),
+            package_list=sorted(
+                [
+                    # the content package: entrypoint + the runtime closure of
+                    # the image as Requires (mirrors upstream's rpm tree) —
+                    # everything else the image needs at runtime is pulled in
+                    # by RPM dependency resolution
+                    f"{_kubevirt_pkg(os_version)}-libguestfs-tools",
+                    # the entrypoint drops the user into an interactive shell;
+                    # bci-micro ships neither bash nor login tooling
+                    "bash",
+                    "shadow",
+                ]
+            ),
+            entrypoint=["/entrypoint.sh"],
         )
         for os_version in _KUBEVIRT_VERSIONS
     ]
