@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 30 07:54:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add libguestfs-tools and sidecar-shim
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
