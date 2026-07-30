@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 30 07:44:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Avoid blkid waiting on udev (bsc#1247914)
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds

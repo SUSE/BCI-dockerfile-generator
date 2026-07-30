@@ -29,7 +29,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rmt-server catatonit bash
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash catatonit rmt-server sed
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' rmt-server | \
@@ -77,3 +77,5 @@ CMD ["/usr/share/rmt/bin/rails", "server", "-e", "production"]
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN set -euo pipefail; chmod +x /usr/local/bin/entrypoint.sh
+# Avoid blkid waiting on udev (bsc#1247914)
+RUN set -euo pipefail; sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
