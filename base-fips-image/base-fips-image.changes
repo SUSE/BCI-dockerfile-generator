@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 30 06:09:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- uninstall python3-base as well
+
+-------------------------------------------------------------------
 Tue Jul 28 12:31:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - enable build-time-attestations for the Appco base containers
