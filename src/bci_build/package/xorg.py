@@ -130,6 +130,8 @@ XORG_CLIENT_CONTAINERS = [
                 "libpulse0",
                 # for cjk fonts
                 "noto-sans-cjk-fonts",
+                # needed by codecs
+                "libglib-2_0-0",
                 # Provides necessary codecs for video/audio playback
                 "libavcodec58_134",
             ]
