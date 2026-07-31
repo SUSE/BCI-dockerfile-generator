@@ -29,7 +29,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash catatonit rmt-server sed
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bash catatonit libcurl4 rmt-server sed
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' rmt-server | \
