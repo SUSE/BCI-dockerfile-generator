@@ -16,6 +16,8 @@ curl -sf -o src/bci_build/package/nginx/docker-entrypoint.sh https://raw.githubu
 curl -sf -o src/bci_build/package/nginx/20-envsubst-on-templates.sh https://raw.githubusercontent.com/nginxinc/docker-nginx/master/entrypoint/20-envsubst-on-templates.sh
 curl -sf -o src/bci_build/package/nginx/30-tune-worker-processes.sh https://raw.githubusercontent.com/nginxinc/docker-nginx/master/entrypoint/30-tune-worker-processes.sh
 
+patch src/bci_build/package/nginx/docker-entrypoint.sh src/bci_build/package/nginx/sles-entrypoint.patch -o src/bci_build/package/nginx/docker-entrypoint.sles.sh
+
 ### grafana: AGPL
 curl -sf -o src/bci_build/package/grafana/LICENSE https://raw.githubusercontent.com/grafana/grafana/main/LICENSE
 curl -sf -o src/bci_build/package/grafana/run.sh https://raw.githubusercontent.com/grafana/grafana/main/packaging/docker/run.sh

@@ -25,7 +25,7 @@ def _envsubst_pkg_name(os_version: OsVersion) -> str:
 
 _NGINX_FILES = {}
 for filename in (
-    "docker-entrypoint.sh",
+    "docker-entrypoint.sles.sh",
     "LICENSE",
     "20-envsubst-on-templates.sh",
     "30-tune-worker-processes.sh",
@@ -81,17 +81,29 @@ def _get_nginx_kwargs(os_version: OsVersion):
         ),
         "build_stage_custom_end": generate_package_version_check(
             "nginx", nginx_version, use_target=True
-        ),
+        )
+        + textwrap.dedent(f"""
+            {DOCKERFILE_RUN} mkdir /target/docker-entrypoint.d
+            COPY [1-4]0-*.sh /target/docker-entrypoint.d/
+            COPY docker-entrypoint.sles.sh /target/usr/local/bin/docker-entrypoint.sh
+            COPY index.html /target/srv/www/htdocs/
+            {DOCKERFILE_RUN} \\
+                chmod +x /target/docker-entrypoint.d/*.sh \\
+                         /target/usr/local/bin/docker-entrypoint.sh
+            {DOCKERFILE_RUN} cp /target/etc/nginx/nginx.conf.default /target/etc/nginx/nginx.conf.non-root
+            {DOCKERFILE_RUN} \\
+                sed -i 's/listen\\s*80;/listen 8080;/g' /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i -e 's,^#\\?\\s*pid\\s\\+.*;$,pid /tmp/nginx.pid;,' /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    client_body_temp_path /tmp/client_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    proxy_temp_path /tmp/proxy_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    fastcgi_temp_path /tmp/fastcgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    uwsgi_temp_path /tmp/uwsgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    scgi_temp_path /tmp/scgi_temp;" /target/etc/nginx/nginx.conf.non-root
+            {DOCKERFILE_RUN} chmod o+rx /target/var/log/nginx"""),
         "custom_end": textwrap.dedent(f"""
-            {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-            COPY [1-4]0-*.sh /docker-entrypoint.d/
-            COPY docker-entrypoint.sh /usr/local/bin
-            COPY index.html /srv/www/htdocs/
-            {DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-            {DOCKERFILE_RUN} set -euo pipefail; mkdir -p /var/cache/nginx /var/run/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;\
-                ln -sf /dev/stdout /var/log/nginx/access.log;\
-                ln -sf /dev/stderr /var/log/nginx/error.log;\
-                chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/run/nginx /var/log/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;
+            {DOCKERFILE_RUN} \\
+                ln -sf /dev/stdout /var/log/nginx/access.log; \\
+                ln -sf /dev/stderr /var/log/nginx/error.log
             STOPSIGNAL SIGQUIT"""),
     }
 
