@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 31 11:38:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add driver 31.40
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
