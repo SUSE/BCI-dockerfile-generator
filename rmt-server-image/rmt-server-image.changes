@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 31 12:52:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- resurrect more packages
+
+-------------------------------------------------------------------
 Thu Jul 30 07:44:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Avoid blkid waiting on udev (bsc#1247914)
