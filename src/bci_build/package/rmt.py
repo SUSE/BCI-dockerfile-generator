@@ -46,6 +46,8 @@ RMT_CONTAINERS = [
         package_list=sorted(
             ["rmt-server", "catatonit", "bash"]
             + (["sed"] if os_version.is_sle15 else [])
+            + (["libcurl-mini4"] if os_version.is_sl16 else ["libcurl4"])
+            + os_version.fips_compatibility_packages
         ),
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["/usr/share/rmt/bin/rails", "server", "-e", "production"],
