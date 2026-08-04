@@ -74,10 +74,10 @@ COPY nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm /tmp/
 COPY nvidia-driver-G06-kmp-default-570.211.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm sha256:5512bd9a9e08deb14b171eca67d150f79c3d8927cf584adaaf4da0614efb3dd6
 COPY nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.53.44-1.noarch.rpm nvidia-driver-assistant-0.53.44-1.x86_64.rpm sha256:09fde73472952866684ceeb068a2f922d0d5b4807c7dddef4e87930a82471024
-COPY nvidia-driver-assistant-0.53.44-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.53.44-1.noarch.rpm nvidia-driver-assistant-0.53.44-1.aarch64.rpm sha256:09fde73472952866684ceeb068a2f922d0d5b4807c7dddef4e87930a82471024
-COPY nvidia-driver-assistant-0.53.44-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.59.91.07-1.noarch.rpm nvidia-driver-assistant-0.59.91.07-1.x86_64.rpm sha256:a0c38aaf76ed1edea2b17922e083c1e4625bfb82c0659974a7deaeffb7d8ddf6
+COPY nvidia-driver-assistant-0.59.91.07-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.59.91.07-1.noarch.rpm nvidia-driver-assistant-0.59.91.07-1.aarch64.rpm sha256:a0c38aaf76ed1edea2b17922e083c1e4625bfb82c0659974a7deaeffb7d8ddf6
+COPY nvidia-driver-assistant-0.59.91.07-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-imex-570-570.211.01-1.x86_64.rpm sha256:f115a94912b2939751844026abf143a8c668a6b75ea2d5b40d0c67673bc36839
 COPY nvidia-imex-570-570.211.01-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-imex-570-570.211.01-1.aarch64.rpm sha256:ea3c5f6c58dc6f5d0770cff98c3359e532eb63b7b6d6c94bf661ab06651441f3
@@ -139,7 +139,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.x86_64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-open-driver-G06-kmp-default-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm \
@@ -158,7 +158,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-open-driver-G06-kmp-default-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.aarch64.rpm \
@@ -188,7 +188,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-driver-G06-kmp-default-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.x86_64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm \
             /tmp/kernel-default-6.4.0-150700.51.1.x86_64.rpm \
@@ -207,7 +207,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-compute-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-driver-G06-kmp-default-570.211.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.aarch64.rpm \
             /tmp/kernel-default-6.4.0-150700.51.1.aarch64.rpm \
@@ -238,7 +238,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-compute-G06-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.x86_64.rpm \
             /tmp/nvidia-imex-570-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.x86_64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.x86_64.rpm \
@@ -251,7 +251,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-G06-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G06-570.211.01-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.53.44-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.59.91.07-1.aarch64.rpm \
             /tmp/nvidia-imex-570-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-modprobe-570.211.01-1.aarch64.rpm \
             /tmp/nvidia-persistenced-570.211.01-1.aarch64.rpm \
