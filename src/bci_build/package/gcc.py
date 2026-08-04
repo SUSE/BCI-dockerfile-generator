@@ -28,7 +28,7 @@ _GCC_SL16_SUPPORTED_UNTIL: dict[_GCC_VERSIONS, datetime.date | None] = {
 
 def _is_latest_gcc(os_version: OsVersion, gcc_version: _GCC_VERSIONS) -> bool:
     if os_version == OsVersion.TUMBLEWEED:
-        return gcc_version == 15
+        return gcc_version == 16
     if os_version.is_sle15:
         return gcc_version == 14
     if os_version.is_sl16:
@@ -104,6 +104,7 @@ GCC_CONTAINERS = [
         (14, OsVersion.SP7),
         (15, OsVersion.SL16_0),
         (15, OsVersion.SL16_1),
+        (16, OsVersion.SL16_1),
         (13, OsVersion.TUMBLEWEED),
         (14, OsVersion.TUMBLEWEED),
         (15, OsVersion.TUMBLEWEED),
