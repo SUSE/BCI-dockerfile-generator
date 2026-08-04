@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug  4 16:04:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to new nvidia-driver-assistant and dkms releases
+
+-------------------------------------------------------------------
 Tue Jul 28 12:23:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - include SLES-release for the `%OS_` macro substitution
