@@ -261,7 +261,7 @@ def _get_packages(os_version: OsVersion):
 
 
 _AMD_DRIVER_VERSIONS: list[str] = [
-    "31.40",
+    "31.40.1",
     "31.30",
     "31.20",
     "31.10",
