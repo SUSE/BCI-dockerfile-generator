@@ -2,7 +2,6 @@ from jinja2 import Template
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import PackageType
-from bci_build.container_attributes import ReleaseStage
 from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
@@ -67,11 +66,6 @@ class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         if self.os_version.is_tumbleweed:
             labelprefix = "org.opensuse"
         return f"{labelprefix}.third-party.{(self.custom_labelprefix_end or self.name)}"
-
-    @property
-    def release_stage(self) -> ReleaseStage:
-        # TODO: Remove once the image is completed with all driver versions
-        return ReleaseStage.BETA
 
     @property
     def registry_prefix(self):
