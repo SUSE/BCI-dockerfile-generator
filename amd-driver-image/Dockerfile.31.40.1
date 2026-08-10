@@ -15,12 +15,12 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: x86_64
-#!BuildTag: third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40-%RELEASE%
-#!BuildTag: third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40
-#!BuildTag: third-party/amd/amdgpu-driver:sles-16.0-6.12.0-160000.5-default-31.40
+#!BuildTag: third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40.1-%RELEASE%
+#!BuildTag: third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40.1
+#!BuildTag: third-party/amd/amdgpu-driver:sles-16.0-6.12.0-160000.5-default-31.40.1
 #!BcntSyncTag: amd-driver-image
-#!BuildName: amd-driver-31.40
-#!BuildVersion: 16.0.31.40
+#!BuildName: amd-driver-31.40.1
+#!BuildVersion: 16.0.31.40.1
 #!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
 FROM registry.suse.com/bci/bci-base:16.0 AS builder
@@ -30,11 +30,11 @@ RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rpm kmod SLES-release
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40/sle/16.0/main/x86_64/amdgpu-dkms-6.19.14.31400000-2364437.noarch.rpm amdgpu-dkms-6.19.14.31400000-2364437.x86_64.rpm sha256:469578a8ecaf8f549d3c286dfe893426e7e5375cbad6f56d1381493b8f47a758
-COPY amdgpu-dkms-6.19.14.31400000-2364437.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40/sle/16.0/main/x86_64/amdgpu-dkms-firmware-31.40.0.0.31400000-2364437.noarch.rpm amdgpu-dkms-firmware-31.40.0.0.31400000-2364437.x86_64.rpm sha256:60f2479f12959bfbea3c18dc38cfba1336cadcb70c0a4217aac9af34f1c50212
-COPY amdgpu-dkms-firmware-31.40.0.0.31400000-2364437.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40/sle/16.0/main/x86_64/dkms-3.1.7-bp160.1.3.noarch.rpm dkms-3.1.7-bp160.1.3.x86_64.rpm sha256:4a0b586ab16b614611ff3a65c6708f844512d77b6d7db8c7c52b2c87be6c7ec1
+#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40.1/sle/16.0/main/x86_64/amdgpu-dkms-6.19.14.31400100-2377056.noarch.rpm amdgpu-dkms-6.19.14.31400100-2377056.x86_64.rpm sha256:a1287d539fae9bb2e68bd548b40df0d3c36d7bb75b82996db3fb488fb705c912
+COPY amdgpu-dkms-6.19.14.31400100-2377056.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40.1/sle/16.0/main/x86_64/amdgpu-dkms-firmware-31.40.1.0.31400100-2377056.noarch.rpm amdgpu-dkms-firmware-31.40.1.0.31400100-2377056.x86_64.rpm sha256:3d603f6069e0dd12d93582b45c8fe611f1b3e24d26d650849c51c54688877b57
+COPY amdgpu-dkms-firmware-31.40.1.0.31400100-2377056.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.40.1/sle/16.0/main/x86_64/dkms-3.1.7-bp160.1.3.noarch.rpm dkms-3.1.7-bp160.1.3.x86_64.rpm sha256:d58602abb31d710786fdaa37ff59731dc701213004255e483c11b1a94f47cc9a
 COPY dkms-3.1.7-bp160.1.3.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-default-6.12.0-160000.5.1.x86_64.rpm
 COPY kernel-default-6.12.0-160000.5.1.x86_64.rpm /tmp/
@@ -47,14 +47,14 @@ COPY kernel-devel-6.12.0-160000.5.1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-macros-6.12.0-160000.5.1.noarch.rpm kernel-macros-6.12.0-160000.5.1.x86_64.rpm
 COPY kernel-macros-6.12.0-160000.5.1.x86_64.rpm /tmp/
 
-COPY radeon-31.40-x86_64.gpg.key /tmp/radeon-31.40-x86_64.gpg.key
-RUN rpm --import /tmp/radeon-31.40-x86_64.gpg.key
+COPY radeon-31.40.1-x86_64.gpg.key /tmp/radeon-31.40.1-x86_64.gpg.key
+RUN rpm --import /tmp/radeon-31.40.1-x86_64.gpg.key
 
 
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
-            /tmp/amdgpu-dkms-6.19.14.31400000-2364437.x86_64.rpm \
-            /tmp/amdgpu-dkms-firmware-31.40.0.0.31400000-2364437.x86_64.rpm \
+            /tmp/amdgpu-dkms-6.19.14.31400100-2377056.x86_64.rpm \
+            /tmp/amdgpu-dkms-firmware-31.40.1.0.31400100-2377056.x86_64.rpm \
             /tmp/dkms-3.1.7-bp160.1.3.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
             /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
@@ -63,7 +63,7 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/kernel-macros-6.12.0-160000.5.1.x86_64.rpm; \
     fi
 
-COPY radeon-31.40-x86_64.repo /etc/zypp/repos.d/radeon-31.40-x86_64.repo
+COPY radeon-31.40.1-x86_64.repo /etc/zypp/repos.d/radeon-31.40.1-x86_64.repo
 
 RUN rm -rf /tmp/*
 
@@ -109,20 +109,20 @@ COPY --from=builder /target /
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="AMD GPU Driver for SUSE Linux Enterprise Server 16.0"
 LABEL org.opencontainers.image.description="AMD GPU Driver container based on the SUSE Linux Base Container Image."
-LABEL org.opencontainers.image.version="31.40"
+LABEL org.opencontainers.image.version="31.40.1"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="sles-%OS_VERSION_ID_SP%-31.40"
-LABEL org.opensuse.reference="registry.suse.com/third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="sles-%OS_VERSION_ID_SP%-31.40.1"
+LABEL org.opensuse.reference="registry.suse.com/third-party/amd/amdgpu-driver:sles-%OS_VERSION_ID_SP%-31.40.1-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until=""
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
-LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.31.40.md)%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.31.40.1.md)%"

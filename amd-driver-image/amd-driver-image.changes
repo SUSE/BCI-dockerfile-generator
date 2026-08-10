@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 10 15:41:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Change support level to L3 and bump the driver to 31.40.1.
+
+-------------------------------------------------------------------
 Fri Jul 31 11:37:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add driver 31.40
