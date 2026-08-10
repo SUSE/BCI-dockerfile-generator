@@ -261,7 +261,7 @@ def _get_packages(os_version: OsVersion):
 
 
 _AMD_DRIVER_VERSIONS: list[str] = [
-    "31.40",
+    "31.40.1",
     "31.30",
     "31.20",
     "31.10",
@@ -300,7 +300,7 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
                 is_latest=False,
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-                support_level=SupportLevel.TECHPREVIEW,
+                support_level=SupportLevel.L3,
                 supported_until="",
                 exclusive_arch=[Arch.X86_64],
                 package_list=_get_packages(os_version),
