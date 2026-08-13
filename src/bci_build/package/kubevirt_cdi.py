@@ -18,7 +18,7 @@ from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-CDI_EXCLUSIVE_ARCH = [Arch.X86_64]
+CDI_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 _CDI_VERSIONS = (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED)
 
 
