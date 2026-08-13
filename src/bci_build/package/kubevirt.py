@@ -17,7 +17,7 @@ from bci_build.registry import SUSERegistry
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
-KUBEVIRT_EXCLUSIVE_ARCH = [Arch.X86_64]
+KUBEVIRT_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 _KUBEVIRT_VERSIONS = (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED)
 
 
