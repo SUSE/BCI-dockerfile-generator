@@ -14,7 +14,7 @@
 # You can contact the BCI team via https://github.com/SUSE/bci/discussions
 
 #!UseOBSRepositories
-#!ExclusiveArch: x86_64
+#!ExclusiveArch: aarch64 x86_64
 #!BuildTag: suse/sles/16.0/virt-controller:%%kubevirt_ver%%-%RELEASE%
 #!BuildTag: suse/sles/16.0/virt-controller:%%kubevirt_ver%%
 #!BuildTag: suse/sles/16.0/virt-controller:1.8
