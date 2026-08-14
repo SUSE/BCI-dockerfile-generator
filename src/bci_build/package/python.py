@@ -85,6 +85,7 @@ def _get_python_kwargs(
         (["lifecycle-data-sle-module-python3"] if os_version.is_sle15 else [])
         + os_version.lifecycle_data_pkg
         + [py3]
+        + (["python3-base"] if is_system_py else [])
         + [pip3]
     )
     if build_flavor != "micro":
