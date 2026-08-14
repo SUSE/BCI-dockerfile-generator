@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 14 08:47:05 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add aarch64
+
+-------------------------------------------------------------------
 Thu Jul 30 07:54:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add libguestfs-tools and sidecar-shim
