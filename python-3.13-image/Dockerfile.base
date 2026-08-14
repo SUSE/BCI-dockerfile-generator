@@ -23,7 +23,7 @@
 FROM opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends curl findutils gawk git-core procps python313 python313-devel python313-pip python313-pipx python313-wheel util-linux
+    zypper -n install --no-recommends curl findutils gawk git-core procps python3-base python313 python313-devel python313-pip python313-pipx python313-wheel util-linux
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
