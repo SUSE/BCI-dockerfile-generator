@@ -90,6 +90,7 @@ def _get_python_kwargs(
     if build_flavor != "micro":
         package_list = (
             *package_list,
+            f"{py3}-base",
             f"{py3}-devel",
             *os_version.common_devel_packages,
             *([f"{py3}-wheel"] if has_wheel else []),
