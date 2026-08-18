@@ -326,12 +326,18 @@ FIPS_MICRO_CONTAINERS = [
             [pkg.name for pkg in _get_micro_package_list(os_version)]
             + ["patterns-base-fips", "libopenssl3"]
         ),
-        build_stage_custom_end=textwrap.dedent(
-            f"""
+        build_stage_custom_end=(
+            textwrap.dedent(
+                f"""
+            {DOCKERFILE_RUN} cp /etc/ssl/*.cnf /target/etc/ssl/"""
+                if os_version == OsVersion.SP7
+                else ""
+            )
+            + textwrap.dedent(f"""
             {DOCKERFILE_RUN} zypper -n install jdupes crypto-policies-scripts {("perl-Bootloader" if os_version.is_sle15 else "update-bootloader")} \\
                 && env base_dir=/target/etc/crypto-policies fips-mode-setup --enable --no-bootcfg \\
                 && zypper --root /target -n clean -a \\
-                && jdupes -1 -L -r /target/usr/"""
+                && jdupes -1 -L -r /target/usr/""")
         ),
         custom_end=_get_fips_custom_env(),
         min_release_counter={
