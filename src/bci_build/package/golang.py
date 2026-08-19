@@ -33,6 +33,8 @@ def _get_golang_kwargs(
 
     if variant == "":
         is_stable = ver == _GOLANG_VERSIONS[-1]
+        if os_version.is_tumbleweed:
+            is_stable = ver == _GOLANG_TW_VERSIONS[-1]
     elif variant == "-openssl":
         is_stable = ver == _GOLANG_OPENSSL_VERSIONS[-1]
 
