@@ -1,7 +1,9 @@
 import enum
+import textwrap
 from itertools import product
 from typing import Literal
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
@@ -53,11 +55,12 @@ _LATEST_PHP_VERSION = sorted(_PHP_VERSIONS, reverse=True)[0]
 def _create_php_bci(
     os_version: OsVersion, php_variant: PhpVariant, php_version: _PHP_VERSION_T
 ) -> DevelopmentContainer:
-    common_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-php-*
+    common_build_end = """COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /target/usr/local/bin/
+RUN chmod +x /target/usr/local/bin/docker-php-*
 """
     assert php_version in _PHP_VERSIONS, f"PHP version {php_version} is not supported"
     build_stage_custom_end = None
+    exposes_ports = None
 
     if php_variant == PhpVariant.apache:
         extra_pkgs = [f"apache2-mod_php{php_version}"]
@@ -67,41 +70,41 @@ RUN chmod +x /usr/local/bin/docker-php-*
         # Tumbleweed apache has dropped envvars
         if os_version != OsVersion.TUMBLEWEED:
             extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
+        exposes_ports = [TCP(80)]
         cmd = ["apache2-foreground"]
         build_stage_custom_end = (
-            generate_systemd_tmpfiles_command("apache2.conf", use_target=True)
-            if os_version == OsVersion.TUMBLEWEED
-            else None
+            common_build_end
+            + (
+                generate_systemd_tmpfiles_command("apache2.conf", use_target=True)
+                if os_version == OsVersion.TUMBLEWEED
+                else ""
+            )
+            + textwrap.dedent(
+                f"""
+            # create our own apache2-foreground from the systemd startup script
+            {DOCKERFILE_RUN} sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /target/usr/sbin/start_apache2 > /target/usr/local/bin/apache2-foreground
+            {DOCKERFILE_RUN} chmod +x /target/usr/local/bin/apache2-foreground
+
+            # apache fails to start without its log folder
+            {DOCKERFILE_RUN} mkdir -p /target/var/log/apache2
+            """
+            )
         )
-        custom_end = (
-            common_end
-            + """
-STOPSIGNAL SIGWINCH
-
-# create our own apache2-foreground from the systemd startup script
-RUN sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /usr/sbin/start_apache2 > /usr/local/bin/apache2-foreground
-RUN chmod +x /usr/local/bin/apache2-foreground
-
-# apache fails to start without its log folder
-RUN mkdir -p /var/log/apache2
-
-WORKDIR /srv/www/htdocs
-
-EXPOSE 80
-"""
+        custom_end = textwrap.dedent(
+            """
+            STOPSIGNAL SIGWINCH
+            WORKDIR /srv/www/htdocs
+            """
         )
     elif php_variant == PhpVariant.fpm:
         extra_pkgs = [f"php{php_version}-fpm"]
         extra_env = {}
         cmd = ["php-fpm"]
-        custom_end = (
-            common_end
-            + """WORKDIR /srv/www/htdocs
-
-"""
+        exposes_ports = [TCP(9000)]
+        build_stage_custom_end = (
+            common_build_end
             + DOCKERFILE_RUN
-            + rf""" \
-	cd /etc/php{php_version}/fpm/; \ """
+            + rf"""    cd /target/etc/php{php_version}/fpm/; \ """
             + r"""
         test -e php-fpm.d/www.conf.default && cp -p php-fpm.d/www.conf.default php-fpm.d/www.conf; \
         test -e php-fpm.conf.default && cp -p php-fpm.conf.default php-fpm.conf; \
@@ -124,20 +127,21 @@ EXPOSE 80
 		echo '[global]'; \
 		echo 'daemonize = no'; \
 	} | tee php-fpm.d/zz-docker.conf
-
-# Override stop signal to stop process gracefully
-# https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
-STOPSIGNAL SIGQUIT
-
-EXPOSE 9000
 """
         )
+        custom_end = textwrap.dedent("""
+            WORKDIR /srv/www/htdocs
+            # Override stop signal to stop process gracefully
+            # https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
+            STOPSIGNAL SIGQUIT
+            """)
     else:
         # required for the interactive shell to work
         extra_pkgs = [f"php{php_version}-readline"]
         extra_env = {}
         cmd = ["php", "-a"]
-        custom_end = common_end
+        build_stage_custom_end = common_build_end
+        custom_end = None
 
     return DevelopmentContainer(
         name=str(php_variant).lower(),
@@ -178,6 +182,7 @@ EXPOSE 9000
         cmd=cmd,
         support_level=SupportLevel.L3,
         entrypoint=["docker-php-entrypoint"],
+        exposes_ports=exposes_ports,
         env={
             "PHP_VERSION": "%%php_version%%",
             "PHP_INI_DIR": f"/etc/php{php_version}/",
