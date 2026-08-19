@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 19 07:46:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include openssl configuration in bci-micro-fips
+
+-------------------------------------------------------------------
 Wed Jul 15 11:53:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - strip unreproducible data from container
