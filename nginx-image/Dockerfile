@@ -37,6 +37,20 @@ RUN set -euo pipefail; \
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' nginx | \
     cut -d '.' -f -2)" = "1.27" ]
+RUN set -euo pipefail; mkdir /target/docker-entrypoint.d
+COPY [1-4]0-*.sh /target/docker-entrypoint.d/
+COPY docker-entrypoint.sh /target/usr/local/bin
+COPY index.html /target/srv/www/htdocs/
+RUN set -euo pipefail; chmod +x /target/docker-entrypoint.d/*.sh /target/usr/local/bin/docker-entrypoint.sh
+RUN set -euo pipefail; \
+    mkdir -p /target/tmp/nginx/client_body_temp \
+             /target/tmp/nginx/proxy_temp \
+             /target/tmp/nginx/fastcgi_temp \
+             /target/tmp/nginx/uwsgi_temp \
+             /target/tmp/nginx/scgi_temp; \
+    chmod -R 777 /target/etc/nginx \
+                 /target/var/log/nginx \
+                 /target/tmp/nginx;
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -79,10 +93,5 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80/tcp
 
-RUN set -euo pipefail; mkdir /docker-entrypoint.d
-COPY [1-4]0-*.sh /docker-entrypoint.d/
-COPY docker-entrypoint.sh /usr/local/bin
-COPY index.html /srv/www/htdocs/
-RUN set -euo pipefail; chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-RUN set -euo pipefail; set -euo pipefail; mkdir -p /var/cache/nginx /var/run/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;                ln -sf /dev/stdout /var/log/nginx/access.log;                ln -sf /dev/stderr /var/log/nginx/error.log;                chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/run/nginx /var/log/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;
+RUN set -euo pipefail; ln -sf /dev/stdout /var/log/nginx/access.log; ln -sf /dev/stderr /var/log/nginx/error.log
 STOPSIGNAL SIGQUIT
