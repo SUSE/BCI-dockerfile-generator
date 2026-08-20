@@ -303,7 +303,7 @@ def fetch_nvidia_drivers_versions() -> list[str]:
 
     nvidia_driver_versions = {}
     for branch, info in all_driver_versions.items():
-        if int(branch) < 550 or int(branch) in (560, 565):
+        if int(branch) < 550:
             continue
         if not (driver_info := info.get("driver_info")):
             continue
@@ -314,13 +314,20 @@ def fetch_nvidia_drivers_versions() -> list[str]:
     return sorted(nvidia_driver_versions.values(), reverse=True)
 
 
+def update_nvidia_versions() -> dict[str, list[str]]:
+    with open(NVIDIA_DRIVER_JSON_PATH) as f:
+        data = json.load(f)
+        data["releases"] = fetch_nvidia_drivers_versions()
+        return data
+
+
 def run_version_update() -> None:
     """Fetch the new package versions via :py:func:`update_versions` and write
     the result to the package versions json file.
 
     """
     data: PackageVersions = update_versions()
-    nvidia_driver_versions = fetch_nvidia_drivers_versions()
+    nvidia_driver_versions = update_nvidia_versions()
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4, sort_keys=True)

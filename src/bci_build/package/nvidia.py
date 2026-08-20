@@ -861,7 +861,7 @@ NVIDIA_CONTAINERS: list[NvidiaDriverBCI] = []
 # we should support versions only for data center
 # https://docs.nvidia.com/datacenter/tesla/index.html
 with open(NVIDIA_DRIVER_JSON_PATH, "r") as f:
-    _NVIDIA_DRIVER_VERSIONS = json.load(f)
+    _NVIDIA_DRIVER_VERSIONS = json.load(f)["supported"]
 
 for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
     seen_versions = set()
