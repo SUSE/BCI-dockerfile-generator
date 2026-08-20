@@ -234,6 +234,12 @@ KUBEVIRT_CONTAINERS = (
                     "iproute2",
                     f"{_kubevirt_pkg(os_version)}-container-disk",
                     "nftables",
+                    # sysctl: node-labeller probes it to decide whether the node
+                    # can run realtime workloads; without it every virt-handler
+                    # logs "failed to identify if a node is capable of running
+                    # realtime workloads" and the label is never set. procps
+                    # also provides the pgrep the e2e reporter execs here.
+                    "procps",
                     "qemu-img",
                     "system-user-qemu",
                     "tar",
@@ -321,8 +327,15 @@ KUBEVIRT_CONTAINERS = (
             package_list=sorted(
                 [f"{_kubevirt_pkg(os_version)}-pr-helper-conf", "qemu-pr-helper"]
             ),
-            entrypoint=["/usr/bin/qemu-pr-helper"],
-            custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(os_version)}/pr-helper/multipath.conf /etc/",
+            # virt-operator runs this container as `/entrypoint.sh` (see
+            # RenderPrHelperContainer): the script symlinks the multipath
+            # socket, then execs qemu-pr-helper. Shipping only the binary
+            # leaves the container unable to start at all.
+            entrypoint=["/entrypoint.sh"],
+            custom_end=(
+                f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(os_version)}/pr-helper/multipath.conf /etc/\n"
+                f"{DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(os_version)}/pr-helper/entrypoint.sh /entrypoint.sh"
+            ),
         )
         for os_version in _KUBEVIRT_VERSIONS
     ]
