@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug 20 14:07:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Update to Go 1.27
+
+-------------------------------------------------------------------
 Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
