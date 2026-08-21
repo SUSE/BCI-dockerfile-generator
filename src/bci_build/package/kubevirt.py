@@ -317,12 +317,22 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_kubevirt_kwargs(
-                "pr-helper",
-                os_version,
-                user="0",
-                custom_end=False,
-                custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-pr-helper-conf",
+            **(
+                _get_kubevirt_kwargs(
+                    "pr-helper",
+                    os_version,
+                    user="0",
+                    custom_end=False,
+                    custom_service_pkg_name=f"{_kubevirt_pkg(os_version)}-pr-helper-conf",
+                )
+                # virt-operator resolves the pr-helper image as
+                # <registry>/<prefix>pr-helper:<version> — no virt- prefix
+                # (PrHelperName in virt-operator's daemonsets.go); SLE 15
+                # publishes it un-prefixed too
+                | {
+                    "name": "pr-helper",
+                    "pretty_name": "KubeVirt pr-helper",
+                }
             ),
             package_list=sorted(
                 [f"{_kubevirt_pkg(os_version)}-pr-helper-conf", "qemu-pr-helper"]
