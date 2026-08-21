@@ -55,9 +55,12 @@ LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,
     rm -f {/target,}/var/cache/ldconfig/aux-cache
 """)
 
-#: Rebuild the rpm database to make it reproducible
+#: Rebuild the rpm database to make it reproducible. The rebuilt Packages.db
+#: comes back mode 0600 (created inside the private mktemp dir); restore the
+#: stock 0644 so rpm keeps working for non-root users of the image.
 TARGET_REBUILDDB: str = """t=$(mktemp -d); mv /target/usr/lib/sysimage/rpm/Packages.db $t; rpmdb --rebuilddb --dbpath=$t; \\
-    rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/"""
+    rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/ && \\
+    chmod 0644 /target/usr/lib/sysimage/rpm/Packages.db"""
 
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
