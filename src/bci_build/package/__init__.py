@@ -1514,6 +1514,7 @@ from .nano import NANO_CONTAINERS  # noqa: E402
 from .nginx import NGINX_CONTAINERS  # noqa: E402
 from .node import NODE_CONTAINERS  # noqa: E402
 from .nvidia import NVIDIA_CONTAINERS  # noqa: E402
+from .opencode import OPENCODE_CONTAINERS  # noqa: E402
 from .openjdk import OPENJDK_CONTAINERS  # noqa: E402
 from .php import PHP_CONTAINERS  # noqa: E402
 from .postfix import POSTFIX_CONTAINERS  # noqa: E402
@@ -1562,6 +1563,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *RMT_CONTAINERS,
         *RUST_CONTAINERS,
         *GEMINI_CONTAINERS,
+        *OPENCODE_CONTAINERS,
         *GIT_CONTAINERS,
         *GOLANG_CONTAINERS,
         *KIWI_CONTAINERS,
