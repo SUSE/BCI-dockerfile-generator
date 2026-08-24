@@ -16,6 +16,7 @@ from bci_build.util import ParseVersion
 
 _GO_VER_T = Literal["1.23", "1.24", "1.25", "1.26", "1.27"]
 _GOLANG_VERSIONS: list[_GO_VER_T] = ["1.26", "1.27"]
+_GOLANG_OLDOLDSTABLE_VERSION = "1.25"
 _GOLANG_TW_VERSIONS: list[_GO_VER_T] = ["1.26", "1.27"]
 _GOLANG_OPENSSL_VERSIONS: list[_GO_VER_T] = ["1.25", "1.26"]
 _GOLANG_VARIANT_T = Literal["", "-openssl"]
@@ -41,6 +42,8 @@ def _get_golang_kwargs(
     stability_tag = f"oldstable{variant}"
     if is_stable:
         stability_tag = f"stable{variant}"
+    if ver == _GOLANG_OLDOLDSTABLE_VERSION:
+        stability_tag = f"oldoldstable{variant}"
 
     go = f"go{ver}{variant}"
     go_packages = (
@@ -105,6 +108,12 @@ GOLANG_CONTAINERS = (
         )
         for ver, govariant, sle15sp in product(
             _GOLANG_VERSIONS, ("",), (OsVersion.SP7,)
+        )
+    ]
+    + [
+        DevelopmentContainer(
+            **_get_golang_kwargs(_GOLANG_OLDOLDSTABLE_VERSION, "", OsVersion.SP7),
+            support_level=SupportLevel.L3,
         )
     ]
     + [

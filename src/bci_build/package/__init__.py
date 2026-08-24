@@ -1192,7 +1192,7 @@ class DevelopmentContainer(BaseContainerImage):
     #: a stable buildname
     tag_version: str | None = None
 
-    # a rolling stability tag like 'stable' or 'oldstable' that will be added first
+    # a rolling stability tag like 'stable', 'oldstable' or 'oldoldstable' that will be added first
     stability_tag: str | None = None
 
     #: versions that to include as tags to this container
@@ -1302,7 +1302,7 @@ class DevelopmentContainer(BaseContainerImage):
         #   lang-stable: 1.71-1.1.1
 
         # To avoid conflicts, the tags are deconflicted based on the stability ordering.
-        _STABILITY_TAG_ORDERING = (None, "stable", "oldstable")
+        _STABILITY_TAG_ORDERING = (None, "stable", "oldstable", "oldoldstable")
         if self.stability_tag and self.stability_tag in _STABILITY_TAG_ORDERING:
             return f"{_STABILITY_TAG_ORDERING.index(self.stability_tag)}"
         return ""
