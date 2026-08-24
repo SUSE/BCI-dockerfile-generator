@@ -76,7 +76,7 @@ def _get_golang_kwargs(
             textwrap.dedent(
                 f"""
             # only available on go's tsan_arch architectures
-            #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le
+            #!ArchExclusiveLine: x86_64 aarch64 s390x ppc64le riscv64
             {DOCKERFILE_RUN} if zypper -n install {go}-race; then zypper -n clean -a; fi
             WORKDIR /go
             {DOCKERFILE_RUN} install -m 755 -d /go/bin /go/src
