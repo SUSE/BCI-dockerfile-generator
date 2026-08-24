@@ -39,11 +39,13 @@ def _get_golang_kwargs(
     elif variant == "-openssl":
         is_stable = ver == _GOLANG_OPENSSL_VERSIONS[-1]
 
-    stability_tag = f"oldstable{variant}"
+    stability_tag = (
+        f"oldoldstable{variant}"
+        if variant == "" and ver == _GOLANG_OLDOLDSTABLE_VERSION
+        else f"oldstable{variant}"
+    )
     if is_stable:
         stability_tag = f"stable{variant}"
-    if ver == _GOLANG_OLDOLDSTABLE_VERSION:
-        stability_tag = f"oldoldstable{variant}"
 
     go = f"go{ver}{variant}"
     go_packages = (
