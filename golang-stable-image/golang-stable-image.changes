@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 24 15:03:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- install race also for riscv64
+
+-------------------------------------------------------------------
 Thu Aug 20 14:07:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Update to Go 1.27
