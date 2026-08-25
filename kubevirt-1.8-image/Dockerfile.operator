@@ -19,7 +19,7 @@
 #!BuildTag: suse/sles/16.0/virt-operator:%%kubevirt_ver%%
 #!BuildTag: suse/sles/16.0/virt-operator:1.8
 #!BcntSyncTag: kubevirt-1.8-image
-#!BuildName: suse-sles-16.0-virt-operator
+#!BuildName: suse-sles-16.0-virt-operator-1.8
 #!BuildVersion: 16.0.1.8
 #!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
