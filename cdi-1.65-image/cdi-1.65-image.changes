@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 25 09:20:19 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add version suffix to buildnames to allow parallel aggregation of new version
+
+-------------------------------------------------------------------
 Fri Aug 14 08:47:05 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add aarch64
