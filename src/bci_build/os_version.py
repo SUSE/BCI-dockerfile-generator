@@ -20,6 +20,8 @@ class OsVersion(enum.Enum):
     SL16_0 = "16.0"
     #: SUSE Linux 16.1
     SL16_1 = "16.1"
+    #: SUSE Linux 16.2
+    SL16_2 = "16.2"
 
     #: openSUSE Tumbleweed
     TUMBLEWEED = "Tumbleweed"
