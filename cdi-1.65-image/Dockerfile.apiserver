@@ -19,7 +19,7 @@
 #!BuildTag: suse/sles/16.1/cdi-apiserver:%%cdi_ver%%
 #!BuildTag: suse/sles/16.1/cdi-apiserver:1.65
 #!BcntSyncTag: cdi-1.65-image
-#!BuildName: suse-sles-16.1-cdi-apiserver
+#!BuildName: suse-sles-16.1-cdi-apiserver-1.65
 #!BuildVersion: 16.1.1.65
 #!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
