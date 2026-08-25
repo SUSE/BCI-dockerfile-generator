@@ -19,34 +19,27 @@ from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 CDI_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
-_CDI_VERSIONS = (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED)
+_CDI_VERSIONS = (
+    ("1.65", OsVersion.SL16_0),
+    ("1.65", OsVersion.SL16_1),
+    ("1.65", OsVersion.TUMBLEWEED),
+    ("1.66", OsVersion.TUMBLEWEED),
+)
 
 
-def _cdi_pkg(os_version: OsVersion) -> str:
-    """Get the CDI package name for a given OS version."""
-    return (
-        "containerized-data-importer"
-        if os_version == OsVersion.SP7
-        else "containerized-data-importer1.65"
-    )
+def _cdi_pkg(cdi_version: str) -> str:
+    """Get the CDI package name for a given CDI version."""
+    return f"containerized-data-importer{cdi_version}"
 
 
-def _cdi_meta_pkg(os_version: OsVersion) -> str:
-    """Get the CDI meta package name for a given OS version."""
-    return (
-        "obs-service-cdi_containers_meta"
-        if os_version == OsVersion.SP7
-        else "obs-service-cdi1.65_containers_meta"
-    )
-
-
-def _cdi_dir(os_version: OsVersion) -> str:
-    """Get the CDI directory name for a given OS version."""
-    return "cdi" if os_version == OsVersion.SP7 else "cdi-1.65"
+def _cdi_meta_pkg(cdi_version: str) -> str:
+    """Get the CDI meta package name for a given CDI version."""
+    return f"obs-service-cdi{cdi_version}_containers_meta"
 
 
 def _get_cdi_kwargs(
     service: str,
+    cdi_version: str,
     os_version: OsVersion,
     *,
     user=None,
@@ -56,21 +49,19 @@ def _get_cdi_kwargs(
 
     if user is None:
         user = "1001"
-    service_pkg_name = _cdi_meta_pkg(os_version)
+    service_pkg_name = _cdi_meta_pkg(cdi_version)
     if package_list is None:
         package_list = []
     package_list.append(service_pkg_name)
     package_list.sort()
 
-    cdi_version = get_pkg_version(_cdi_pkg(os_version), os_version)
+    cdi_pkg_version = get_pkg_version(_cdi_pkg(cdi_version), os_version)
     cdi_version_re = "%%cdi_ver%%"
-    tag_version = format_version(cdi_version, ParseVersion.MINOR)
+    tag_version = format_version(cdi_pkg_version, ParseVersion.MINOR)
     return {
         "name": f"cdi-{service}",
         "pretty_name": f"KubeVirt cdi-{service}",
-        "package_name": (
-            "cdi-1.65-image" if os_version not in (OsVersion.SP7,) else "cdi-image"
-        ),
+        "package_name": f"cdi-{cdi_version}-image",
         "license": "Apache-2.0",
         "os_version": os_version,
         "tag_version": tag_version,
@@ -82,12 +73,11 @@ def _get_cdi_kwargs(
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        "is_singleton_image": True,
         "is_latest": (
             os_version in CAN_BE_LATEST_OS_VERSION and os_version.is_tumbleweed
         ),
         "build_flavor": service,
-        "version_in_uid": False,
+        "version_in_uid": True,
         "package_list": package_list,
         "use_build_flavor_in_tag": False,
         "entrypoint_user": user if user != "0" else None,
@@ -122,20 +112,22 @@ KUBEVIRT_CDI_CONTAINERS = (
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "apiserver",
+                cdi_version,
                 os_version,
-                package_list=[f"{_cdi_pkg(os_version)}-api", "shadow"],
+                package_list=[f"{_cdi_pkg(cdi_version)}-api", "shadow"],
             ),
             entrypoint=["/usr/bin/virt-cdi-apiserver", "-alsologtostderr"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "cloner",
+                cdi_version,
                 os_version,
                 package_list=[
-                    f"{_cdi_pkg(os_version)}-cloner",
+                    f"{_cdi_pkg(cdi_version)}-cloner",
                     "curl",
                     "tar",
                     "util-linux",
@@ -144,26 +136,28 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/cloner_startup.sh"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "controller",
+                cdi_version,
                 os_version,
-                package_list=[f"{_cdi_pkg(os_version)}-controller", "shadow"],
+                package_list=[f"{_cdi_pkg(cdi_version)}-controller", "shadow"],
             ),
             entrypoint=["/usr/bin/virt-cdi-controller", "-alsologtostderr"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "importer",
+                cdi_version,
                 os_version,
                 package_list=[
-                    f"{_cdi_pkg(os_version)}-importer",
+                    f"{_cdi_pkg(cdi_version)}-importer",
                     "curl",
                     "nbdkit-server",
                     "nbdkit-basic-filters",
@@ -177,37 +171,40 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-importer", "-alsologtostderr"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "operator",
+                cdi_version,
                 os_version,
-                package_list=[f"{_cdi_pkg(os_version)}-operator", "shadow"],
+                package_list=[f"{_cdi_pkg(cdi_version)}-operator", "shadow"],
             ),
             entrypoint=["/usr/bin/virt-cdi-operator"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "uploadproxy",
+                cdi_version,
                 os_version,
-                package_list=[f"{_cdi_pkg(os_version)}-uploadproxy", "shadow"],
+                package_list=[f"{_cdi_pkg(cdi_version)}-uploadproxy", "shadow"],
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadproxy", "-alsologtostderr"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
     + [
         ApplicationStackContainer(
             **_get_cdi_kwargs(
                 "uploadserver",
+                cdi_version,
                 os_version,
                 package_list=[
-                    f"{_cdi_pkg(os_version)}-uploadserver",
+                    f"{_cdi_pkg(cdi_version)}-uploadserver",
                     "curl",
                     "libnbd",
                     "qemu-img",
@@ -218,7 +215,7 @@ KUBEVIRT_CDI_CONTAINERS = (
             ),
             entrypoint=["/usr/bin/virt-cdi-uploadserver", "-alsologtostderr"],
         )
-        for os_version in _CDI_VERSIONS
+        for cdi_version, os_version in _CDI_VERSIONS
     ]
 )
 

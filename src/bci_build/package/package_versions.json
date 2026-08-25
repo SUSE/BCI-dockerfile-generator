@@ -8,19 +8,19 @@
         },
         "version_format": "minor"
     },
-    "containerized-data-importer": {
+    "containerized-data-importer1.65": {
         "latest": {
-            "16.0": "1.64.0"
+            "16.0": "1.65.0",
+            "16.1": "1.65.0",
+            "Tumbleweed": "1.65.0"
         },
         "version_format": "patch"
     },
-    "containerized-data-importer1.65": {
+    "containerized-data-importer1.66": {
         "latest": {
-            "16.0": "1.65",
-            "16.1": "1.65",
-            "Tumbleweed": "1.65"
+            "Tumbleweed": "1.66.0"
         },
-        "version_format": "minor"
+        "version_format": "patch"
     },
     "cosign": {
         "latest": {
@@ -162,17 +162,17 @@
         },
         "version_format": "release"
     },
-    "kubevirt": {
-        "latest": {
-            "16.0": "1.7"
-        },
-        "version_format": "minor"
-    },
     "kubevirt1.8": {
         "latest": {
             "16.0": "1.8",
             "16.1": "1.8",
             "Tumbleweed": "1.8"
+        },
+        "version_format": "minor"
+    },
+    "kubevirt1.9": {
+        "latest": {
+            "Tumbleweed": "1.9"
         },
         "version_format": "minor"
     },
