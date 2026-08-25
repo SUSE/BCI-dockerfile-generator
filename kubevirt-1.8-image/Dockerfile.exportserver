@@ -19,7 +19,7 @@
 #!BuildTag: suse/sles/16.1/virt-exportserver:%%kubevirt_ver%%
 #!BuildTag: suse/sles/16.1/virt-exportserver:1.8
 #!BcntSyncTag: kubevirt-1.8-image
-#!BuildName: suse-sles-16.1-virt-exportserver
+#!BuildName: suse-sles-16.1-virt-exportserver-1.8
 #!BuildVersion: 16.1.1.8
 #!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target

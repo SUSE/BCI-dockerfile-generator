@@ -19,7 +19,7 @@
 #!BuildTag: suse/sles/16.1/virt-pr-helper:%%kubevirt_ver%%
 #!BuildTag: suse/sles/16.1/virt-pr-helper:1.8
 #!BcntSyncTag: kubevirt-1.8-image
-#!BuildName: suse-sles-16.1-virt-pr-helper
+#!BuildName: suse-sles-16.1-virt-pr-helper-1.8
 #!BuildVersion: 16.1.1.8
 #!FilterBaseContainerPkgs
 FROM bci/bci-micro:16.1 AS target
