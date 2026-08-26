@@ -223,6 +223,64 @@ This project is automatically updated from git. Please do **not** send submit re
 </project>""",
         ),
         (
+            OsVersion.SL16_1,
+            ProjectType.STAGING,
+            (branch := "pr-161"),
+            (prj_name := f"home:{_OSC_USERNAME}:BCI:Staging:16.1:{branch}"),
+            f"""<project name="{prj_name}">
+  <title>Staging project for SUSE Linux 16.1</title>
+  <description>Staging project for https://github.com/SUSE/BCI-dockerfile-generator/tree/{branch} for SUSE Linux 16.1</description>
+  <person userid="avicenzi" role="maintainer"/>
+  <person userid="{_OSC_USERNAME}" role="maintainer"/>
+
+  <build>
+    <enable/>
+  </build>
+  <publish>
+    <enable/>
+  </publish>
+  <debuginfo>
+    <enable/>
+  </debuginfo>
+  <repository name="standard">
+    <path project="SUSE:SLFO:Products:SLES:16.1" repository="standard"/>
+    <path project="devel:BCI:16.1" repository="containerfile"/>
+    <path project="devel:BCI:16.1" repository="containerkiwi"/>
+    <path project="devel:BCI:16.1" repository="standard"/>
+    <path project="SUSE:SLFO:Products:SLES:16.1" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="containerkiwi">
+    <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="product">
+    <path project="{prj_name}" repository="containerfile"/>
+    <path project="{prj_name}" repository="containerkiwi"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+  <repository name="containerfile">
+    <path project="{prj_name}" repository="containerkiwi"/>
+    <path project="{prj_name}" repository="standard"/>
+    <arch>x86_64</arch>
+    <arch>aarch64</arch>
+    <arch>s390x</arch>
+    <arch>ppc64le</arch>
+  </repository>
+</project>""",
+        ),
+        (
             OsVersion.SP7,
             ProjectType.STAGING,
             (branch := "7-400"),

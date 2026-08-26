@@ -155,11 +155,17 @@ def generate_meta(
             last_prj = f"SUSE:SLE-15-SP{str(os_version)}:Update"
         else:
             assert os_version.is_sl16
-            first_prj = "SUSE:SLFO:Products:SLES:16.0"
+            first_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
             last_prj = "SUSE:SLFO:Main"
-            if os_version == OsVersion.SL16_0:
+            if os_version in (OsVersion.SL16_0,):
                 first_prj = "SUSE:Registry"
-                last_prj = "SUSE:SLFO:Products:SLES:16.0"
+            match os_version:
+                case OsVersion.SL16_0 | OsVersion.SL16_1:
+                    last_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
+                case OsVersion.SL16_2:
+                    last_prj = "SUSE:SLFO:Main"
+                case _:
+                    raise ValueError(f"Unknown SL16 version: {os_version}")
 
         repository_paths: tuple[tuple[str, str], ...] = ((first_prj, "standard"),)
         if (os_version.is_sl16 or os_version.is_sle15) and (
