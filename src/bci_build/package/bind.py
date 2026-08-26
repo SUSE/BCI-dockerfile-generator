@@ -34,7 +34,7 @@ BIND_CONTAINERS = [
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         version_in_uid=False,
         # dig: used by the health check
-        package_list=["bind", "bind-utils"],
+        package_list=["bind", "bind-utils"] + os_version.fips_compatibility_packages,
         exposes_ports=[
             NetworkPort(53),
             NetworkPort(53, NetworkProtocol.UDP),
