@@ -243,7 +243,7 @@ This project is automatically updated from git. Please do **not** send submit re
     <enable/>
   </debuginfo>
   <repository name="standard">
-    <path project="SUSE:SLFO:Products:SLES:16.1" repository="standard"/>
+    <path project="SUSE:Registry" repository="standard"/>
     <path project="devel:BCI:16.1" repository="containerfile"/>
     <path project="devel:BCI:16.1" repository="containerkiwi"/>
     <path project="devel:BCI:16.1" repository="standard"/>
