@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 28 18:40:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include deps for nokogiri (rails)
+
+-------------------------------------------------------------------
 Thu Jun 18 17:23:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
