@@ -156,12 +156,12 @@ def generate_meta(
         else:
             assert os_version.is_sl16
             first_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
-            last_prj = "SUSE:SLFO:Main"
-            if os_version in (OsVersion.SL16_0,):
-                first_prj = "SUSE:Registry"
             match os_version:
-                case OsVersion.SL16_0 | OsVersion.SL16_1:
+                case OsVersion.SL16_0:
+                    first_prj = "SUSE:Registry"
                     last_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
+                case OsVersion.SL16_1:
+                    last_prj = "SUSE:SLFO:1.3"
                 case OsVersion.SL16_2:
                     last_prj = "SUSE:SLFO:Main"
                 case _:
