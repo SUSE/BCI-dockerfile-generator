@@ -28,7 +28,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bind bind-utils
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends bind bind-utils patterns-base-fips
 
 RUN set -euo pipefail; zypper -n install --no-recommends systemd && \
     systemd-tmpfiles --create --root /target bind.conf
