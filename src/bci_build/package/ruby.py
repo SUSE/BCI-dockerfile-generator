@@ -72,6 +72,16 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsV
             "timezone",
             "xz",
         ]
+        + (
+            # additional dependencies to build nokogiri gem (for rails)
+            # nokogiri requires also libxml2 and libyaml
+            # but these are already in the image
+            ["libxslt1"]
+            if os_version.is_sle15
+            else [
+                "libexslt0",
+            ]
+        )
         + os_version.common_devel_packages,
         "extra_files": {
             # avoid ftbfs on workers with a root partition with 4GB
