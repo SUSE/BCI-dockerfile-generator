@@ -247,7 +247,7 @@ This project is automatically updated from git. Please do **not** send submit re
     <path project="devel:BCI:16.1" repository="containerfile"/>
     <path project="devel:BCI:16.1" repository="containerkiwi"/>
     <path project="devel:BCI:16.1" repository="standard"/>
-    <path project="SUSE:SLFO:Products:SLES:16.1" repository="standard"/>
+    <path project="SUSE:SLFO:1.3" repository="standard"/>
     <arch>x86_64</arch>
     <arch>aarch64</arch>
     <arch>s390x</arch>
