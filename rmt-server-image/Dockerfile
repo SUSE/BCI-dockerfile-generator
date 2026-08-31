@@ -17,10 +17,10 @@
 
 #!BuildTag: suse/rmt-server:%%rmt_version%%-%RELEASE%
 #!BuildTag: suse/rmt-server:%%rmt_version%%
-#!BuildTag: suse/rmt-server:2
+#!BuildTag: suse/rmt-server:3
 #!BuildTag: suse/rmt-server:latest
 #!BuildName: suse-rmt-server
-#!BuildVersion: 15.7.2
+#!BuildVersion: 15.7.3
 #!BuildRelease: 70
 #!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:15.7 AS target
@@ -33,7 +33,7 @@ RUN set -euo pipefail; \
 # sanity check that the version from the tag is equal to the version of rmt-server that we expect
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' rmt-server | \
-    cut -d '.' -f -1)" = "2" ]
+    cut -d '.' -f -1)" = "3" ]
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
