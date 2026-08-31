@@ -47,3 +47,8 @@ patch src/bci_build/package/postfix/entrypoint/entrypoint.sh src/bci_build/packa
 
 ### nvidia-driver: NVIDIA DEEP LEARNING CONTAINER LICENSE
 curl -sf -o src/bci_build/package/nvidia-driver/NGC-DL-CONTAINER-LICENSE https://gitlab.com/nvidia/container-images/cuda/-/raw/master/NGC-DL-CONTAINER-LICENSE
+
+### rabbitmq: MIT
+curl -sf -o src/bci_build/package/rabbitmq-server/entrypoint.sh  https://raw.githubusercontent.com/docker-library/rabbitmq/refs/heads/master/docker-entrypoint.sh
+curl -sf -o src/bci_build/package/rabbitmq-server/10-defaults.conf https://raw.githubusercontent.com/docker-library/rabbitmq/refs/heads/master/4.2/alpine/10-defaults.conf
+curl -sf -o src/bci_build/package/rabbitmq-server/20-management_agent.disable_metrics_collector.conf https://raw.githubusercontent.com/docker-library/rabbitmq/refs/heads/master/4.2/ubuntu/20-management_agent.disable_metrics_collector.conf
