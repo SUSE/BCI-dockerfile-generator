@@ -57,7 +57,7 @@ LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,
 
 #: Rebuild the rpm database to make it reproducible
 TARGET_REBUILDDB: str = """t=$(mktemp -d); mv /target/usr/lib/sysimage/rpm/Packages.db $t; rpmdb --rebuilddb --dbpath=$t; \\
-    rm /target/usr/lib/sysimage/rpm/*.db && mv $t/Packages.db /target/usr/lib/sysimage/rpm/"""
+    rm /target/usr/lib/sysimage/rpm/*.db && install -m 0644 $t/Packages.db /target/usr/lib/sysimage/rpm/"""
 
 #: The string to use as a placeholder for the build source services to put in the release number
 _RELEASE_PLACEHOLDER = "%RELEASE%"
