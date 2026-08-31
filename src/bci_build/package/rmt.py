@@ -28,9 +28,7 @@ RMT_CONTAINERS = [
         build_recipe_type=BuildType.DOCKER,
         version="%%rmt_version%%",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-        tag_version=(
-            rmt_major_version := "2" if os_version in (OsVersion.SP7,) else "3"
-        ),
+        tag_version=(rmt_major_version := "3"),
         replacements_via_service=[
             Replacement(
                 regex_in_build_description="%%rmt_version%%",
