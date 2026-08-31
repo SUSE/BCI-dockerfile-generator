@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 16:26:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
 Wed Aug 26 08:56:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add fips compatibility to the bind container
