@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 16:26:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
 Wed Aug 26 07:53:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust tags for new kernel release

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 16:26:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
 Mon Aug 10 15:41:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Change support level to L3 and bump the driver to 31.40.1.
