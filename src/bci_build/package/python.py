@@ -49,7 +49,11 @@ def _get_python_kwargs(
     is_system_py: bool = py3_ver == _system_python(os_version)
     py3_ver_nodots = py3_ver.replace(".", "")
 
-    py3 = "python3" if is_system_py else f"python{py3_ver_nodots}"
+    py3 = (
+        "python3"
+        if (is_system_py and not os_version.is_tumbleweed)
+        else f"python{py3_ver_nodots}"
+    )
     py3_ver_replacement = f"%%py{py3_ver_nodots}_ver%%"
     pip3 = f"{py3}-pip"
     pip3_replacement = "%%pip_ver%%"
