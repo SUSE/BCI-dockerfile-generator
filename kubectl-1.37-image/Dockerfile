@@ -17,7 +17,8 @@
 #!ExclusiveArch: aarch64 ppc64le s390x riscv64 x86_64
 #!BuildTag: opensuse/kubectl:%%kubectl_version%%-%RELEASE%
 #!BuildTag: opensuse/kubectl:%%kubectl_version%%
-#!BuildTag: opensuse/kubectl:1.33
+#!BuildTag: opensuse/kubectl:1.37
+#!BuildTag: opensuse/kubectl:latest
 
 #!FilterBaseContainerPkgs
 FROM opensuse/bci/bci-micro:latest AS target
@@ -26,7 +27,7 @@ COPY --from=target / /target
 
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
-    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.33-client diffutils helm3
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends kubernetes1.37-client diffutils helm3
 RUN set -euo pipefail; ln -s /usr/bin/helm3 /target/usr/local/bin/helm
 
 # cleanup logs and temporary files
