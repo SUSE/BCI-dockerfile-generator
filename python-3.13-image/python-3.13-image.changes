@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 09:34:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- install python3 wrapper package if it is the primary python version
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
