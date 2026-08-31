@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 16:26:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
 Fri Aug 28 18:30:44 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - compatibility with FIPS enforcing hosts
