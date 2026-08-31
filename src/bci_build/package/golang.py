@@ -135,7 +135,7 @@ GOLANG_CONTAINERS = (
         for ver, govariant, os_version in product(
             _GOLANG_OPENSSL_VERSIONS,
             ("-openssl",),
-            (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1),
+            (OsVersion.SP7,),
         )
     ]
     + [
