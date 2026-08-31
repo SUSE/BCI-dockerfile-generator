@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 31 10:57:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for RMT server 3.1 version update
+
+-------------------------------------------------------------------
 Fri Jul 31 12:52:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - resurrect more packages
