@@ -248,6 +248,12 @@ KUBEVIRT_CONTAINERS = (
                     "iproute2",
                     f"{_kubevirt_pkg(kubevirt_version)}-container-disk",
                     "nftables",
+                    # sysctl: node-labeller probes it to decide whether the node
+                    # can run realtime workloads; without it every virt-handler
+                    # logs "failed to identify if a node is capable of running
+                    # realtime workloads" and the label is never set. procps
+                    # also provides the pgrep the e2e reporter execs here.
+                    "procps",
                     "qemu-img",
                     "system-user-qemu",
                     "tar",
@@ -332,13 +338,23 @@ KUBEVIRT_CONTAINERS = (
     ]
     + [
         ApplicationStackContainer(
-            **_get_kubevirt_kwargs(
-                "pr-helper",
-                kubevirt_version,
-                os_version,
-                user="0",
-                custom_end=False,
-                custom_service_pkg_name=f"{_kubevirt_pkg(kubevirt_version)}-pr-helper-conf",
+            **(
+                _get_kubevirt_kwargs(
+                    "pr-helper",
+                    kubevirt_version,
+                    os_version,
+                    user="0",
+                    custom_end=False,
+                    custom_service_pkg_name=f"{_kubevirt_pkg(kubevirt_version)}-pr-helper-conf",
+                )
+                # virt-operator resolves the pr-helper image as
+                # <registry>/<prefix>pr-helper:<version> — no virt- prefix
+                # (PrHelperName in virt-operator's daemonsets.go); SLE 15
+                # publishes it un-prefixed too
+                | {
+                    "name": "pr-helper",
+                    "pretty_name": "KubeVirt pr-helper",
+                }
             ),
             package_list=sorted(
                 [
@@ -346,8 +362,15 @@ KUBEVIRT_CONTAINERS = (
                     "qemu-pr-helper",
                 ]
             ),
-            entrypoint=["/usr/bin/qemu-pr-helper"],
-            custom_end=f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(kubevirt_version)}/pr-helper/multipath.conf /etc/",
+            # virt-operator runs this container as `/entrypoint.sh` (see
+            # RenderPrHelperContainer): the script symlinks the multipath
+            # socket, then execs qemu-pr-helper. Shipping only the binary
+            # leaves the container unable to start at all.
+            entrypoint=["/entrypoint.sh"],
+            custom_end=(
+                f"{DOCKERFILE_RUN} cp -f /usr/share/{_kubevirt_dir(kubevirt_version)}/pr-helper/multipath.conf /etc/\n"
+                f"{DOCKERFILE_RUN} install -p -m 0755 /usr/share/{_kubevirt_dir(kubevirt_version)}/pr-helper/entrypoint.sh /entrypoint.sh"
+            ),
         )
         for kubevirt_version, os_version in _KUBEVIRT_VERSIONS
     ]
