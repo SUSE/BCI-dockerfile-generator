@@ -24,7 +24,6 @@ def _common_args() -> dict[str, Any]:
         "use_build_flavor_in_tag": False,
         "no_recommends": False,
         "os_version": OsVersion.TUMBLEWEED,
-        "is_latest": True,
         "support_level": SupportLevel.UNSUPPORTED,
         "replacements_via_service": [
             Replacement(
@@ -58,6 +57,7 @@ OPENCODE_CONTAINERS = [
         pretty_name="Opencode sandbox",
         tag_version="base",
         from_target_image=generate_from_image_tag(OsVersion.TUMBLEWEED, "bci-micro"),
+        is_latest=True,
         package_list=[
             "aaa_base",
             "findutils",
