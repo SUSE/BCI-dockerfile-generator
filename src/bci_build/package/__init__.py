@@ -287,6 +287,9 @@ class BaseContainerImage(abc.ABC):
     #: present
     logo_url: str = ""
 
+    #: Set OBS flag to disable filelist generation in SBOMs to avoid upload limits
+    obs_disable_sbom_filelists: bool = False
+
     #: Optional release counter that will be used in ``#!BuildRelease``
     #: magic comment to ensure that versions are sequentially increasing.
     #: In cases where containers switch the base OS the counter resets and
