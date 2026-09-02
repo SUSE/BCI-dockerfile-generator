@@ -107,8 +107,12 @@ FROM nvidia-driver-builder AS open-driver-builder
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
         dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
-{{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/open
-{{ DOCKERFILE_RUN }} mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
+{{ DOCKERFILE_RUN }} mkdir -p /opt/open && cp -rvfx /lib/modules/*/updates/*.ko* /opt/open/
+{%- if image.os_version.is_sle15 %}
+{{ DOCKERFILE_RUN }} mkdir -p /opt/lib/firmware && cp -rvfx /lib/firmware/* /opt/lib/firmware/
+{% else %}
+{{ DOCKERFILE_RUN }} mkdir -p /opt/lib/firmware && cp -rvfx /usr/lib/firmware/* /opt/lib/firmware/
+{%- endif %}
 
 FROM nvidia-driver-builder AS closed-driver-builder
 
@@ -130,7 +134,7 @@ FROM nvidia-driver-builder AS closed-driver-builder
         printf 'compress="zstd"\\n' > /etc/dkms/framework.conf.d/module-compress.conf; \\
         dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
-{{ DOCKERFILE_RUN }} cp -rfx /lib/modules/*/updates /opt/proprietary
+{{ DOCKERFILE_RUN }} mkdir -p /opt/proprietary && cp -rvfx /lib/modules/*/updates/*.ko* /opt/proprietary/
 
 FROM nvidia-driver-builder AS builder
 
