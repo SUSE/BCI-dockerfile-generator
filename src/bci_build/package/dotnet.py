@@ -256,13 +256,7 @@ for os_version in (OsVersion.SP7,):
                 ),
                 package_name=f"dotnet-{ver}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
+                package_list=["libicu"] + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
@@ -300,13 +294,7 @@ for os_version in (OsVersion.SP7,):
                 additional_versions=(
                     [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
                 ),
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
+                package_list=["libicu"] + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
@@ -338,13 +326,7 @@ for os_version in (OsVersion.SP7,):
                     [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
                 ),
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
+                package_list=["libicu"] + [*os_version.release_package_names],
                 third_party_repos=MS_REPOS,
                 third_party_package_list=[
                     "dotnet-host",
