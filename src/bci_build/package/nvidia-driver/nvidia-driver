@@ -17,6 +17,7 @@ NVIDIA_UVM_MODULE_PARAMS=()
 NVIDIA_MODESET_MODULE_PARAMS=()
 NVIDIA_PEERMEM_MODULE_PARAMS=()
 KERNEL_MODULE_TYPE=${KERNEL_MODULE_TYPE:-auto}
+MODPROBE_CONFIG_DIR="/etc/modprobe.d"
 
 TARGETARCH=${TARGETARCH:-$(uname -m)}
 DRIVER_ARCH=${TARGETARCH/amd64/x86_64}
@@ -27,6 +28,18 @@ _update_ca_certificates() {
     if [ -d /etc/pki/trust/anchors ] && [ -n "$(ls -A /etc/pki/trust/anchors)" ]; then
         update-ca-certificates
     fi
+}
+
+# Requires the pod to run with hostPID: true.
+_host_selinux_enabled() {
+    [ -r /proc/1/mounts ] &&
+        grep -qsw "selinuxfs" /proc/1/mounts &&
+        [ -f /proc/1/root/sys/fs/selinux/enforce ]
+}
+
+_set_daemons_status() {
+    mkdir -p /run/nvidia/validations
+    echo "${1}" > /run/nvidia/validations/.driver-daemons-status
 }
 
 _assert_nvswitch_system() {
@@ -79,9 +92,7 @@ _get_module_params() {
     # Starting from R580, we need to enable the CDMM (Coherent Driver Memory Management) module parameter.
     # This prevents the GPU memory for coherent systems (GH200, GB200 etc) from being exposed as a NUMA node
     # and thereby preventing over-reporting of a Kubernetes node's memory. This is needed for Kubernetes use-cases
-    if [[ "${DRIVER_BRANCH}" -ge 580 ]]; then
-        NVIDIA_MODULE_PARAMS+=("NVreg_CoherentGPUMemoryMode=driver")
-    fi
+    NVIDIA_MODULE_PARAMS+=("NVreg_CoherentGPUMemoryMode=driver")
 
     # nvidia
     if [ -f "${base_path}/nvidia.conf" ]; then
@@ -113,52 +124,30 @@ _get_module_params() {
     fi
 }
 
-_start_daemons() {
-    echo "Starting NVIDIA persistence daemon..."
-    nvidia-persistenced --persistence-mode
+_create_module_params_conf() {
+    echo "Parsing kernel module parameters..."
+    _get_module_params
 
-    if [ "${DRIVER_TYPE}" = "vgpu" ]; then
-        echo "Copying gridd.conf..."
-        cp /drivers/gridd.conf /etc/nvidia/gridd.conf
-        if [ "${VGPU_LICENSE_SERVER_TYPE}" = "NLS" ]; then
-            echo "Copying ClientConfigToken..."
-            mkdir -p  /etc/nvidia/ClientConfigToken/
-            cp /drivers/ClientConfigToken/* /etc/nvidia/ClientConfigToken/
-        fi
-
-        echo "Starting nvidia-gridd.."
-        LD_LIBRARY_PATH=/usr/lib64/nvidia/gridd nvidia-gridd
-
-        # Start virtual topology daemon
-        _start_vgpu_topology_daemon
+    if [ ${#NVIDIA_MODULE_PARAMS[@]} -gt 0 ]; then
+        echo "Configuring nvidia module parameters in ${MODPROBE_CONFIG_DIR}/nvidia.conf"
+        echo "options nvidia ${NVIDIA_MODULE_PARAMS[@]}" > ${MODPROBE_CONFIG_DIR}/nvidia.conf
     fi
-
-    if _assert_nvlink5_system; then
-        _ensure_nvlink5_prerequisites || return 1
-        echo "Starting NVIDIA fabric manager daemon for NVLink5+..."
-
-        fm_config_file=/usr/share/nvidia/nvswitch/fabricmanager.cfg
-        fm_pid_file=/var/run/nvidia-fabricmanager/nv-fabricmanager.pid
-        nvlsm_config_file=/usr/share/nvidia/nvlsm/nvlsm.conf
-        nvlsm_pid_file=/var/run/nvidia-fabricmanager/nvlsm.pid
-        /usr/bin/nvidia-fabricmanager-start.sh --mode start \
-                                               --fm-config-file $fm_config_file \
-                                               --fm-pid-file $fm_pid_file \
-                                               --nvlsm-config-file $nvlsm_config_file \
-                                               --nvlsm-pid-file $nvlsm_pid_file
-
-    # If not a NVLink5+ switch, check for the presence of NVLink4 (or below) switches
-    elif _assert_nvswitch_system; then
-        echo "Starting NVIDIA fabric manager daemon..."
-        nv-fabricmanager -c /usr/share/nvidia/nvswitch/fabricmanager.cfg
+    if [ ${#NVIDIA_UVM_MODULE_PARAMS[@]} -gt 0 ]; then
+        echo "Configuring nvidia-uvm module parameters in ${MODPROBE_CONFIG_DIR}/nvidia-uvm.conf"
+        echo "options nvidia-uvm ${NVIDIA_UVM_MODULE_PARAMS[@]}" > ${MODPROBE_CONFIG_DIR}/nvidia-uvm.conf
+    fi
+    if [ ${#NVIDIA_MODESET_MODULE_PARAMS[@]} -gt 0 ]; then
+        echo "Configuring nvidia-modeset module parameters in ${MODPROBE_CONFIG_DIR}/nvidia-modeset.conf"
+        echo "options nvidia-modeset ${NVIDIA_MODESET_MODULE_PARAMS[@]}" > ${MODPROBE_CONFIG_DIR}/nvidia-modeset.conf
+    fi
+    if [ ${#NVIDIA_PEERMEM_MODULE_PARAMS[@]} -gt 0 ]; then
+        echo "Configuring nvidia-peermem module parameters in ${MODPROBE_CONFIG_DIR}/nvidia-peermem.conf"
+        echo "options nvidia-peermem ${NVIDIA_PEERMEM_MODULE_PARAMS[@]}" > ${MODPROBE_CONFIG_DIR}/nvidia-peermem.conf
     fi
 }
 
 # Load the kernel modules and start persistenced.
 _load_driver() {
-    echo "Parsing kernel module parameters..."
-    _get_module_params
-
     local nv_fw_search_path="$RUN_DIR/driver/lib/firmware"
     local set_fw_path="true"
     local fw_path_config_file="/sys/module/firmware_class/parameters/path"
@@ -197,12 +186,12 @@ _load_driver() {
 
     echo "Loading NVIDIA driver kernel modules..."
     set -o xtrace +o nounset
-    modprobe nvidia "${NVIDIA_MODULE_PARAMS[@]}"
-    modprobe nvidia-uvm "${NVIDIA_UVM_MODULE_PARAMS[@]}"
-    modprobe nvidia-modeset "${NVIDIA_MODESET_MODULE_PARAMS[@]}"
+    modprobe nvidia
+    modprobe nvidia-uvm
+    modprobe nvidia-modeset
     set +o xtrace -o nounset
 
-    _start_daemons
+    _start_daemons || return 1
 }
 
 # Stop a daemon by sending SIGTERM and waiting for it to exit.
@@ -279,13 +268,13 @@ _mount_rootfs() {
     mkdir -p "${RUN_DIR}/driver"
     mount --rbind / "${RUN_DIR}/driver"
 
-    echo "Check SELinux status"
-    if [ -e /sys/fs/selinux ]; then
-        echo "SELinux is enabled"
+    echo "Check host SELinux status"
+    if _host_selinux_enabled; then
+        echo "Host SELinux is enabled"
         echo "Change device files security context for selinux compatibility"
         chcon -R -t container_file_t "${RUN_DIR}/driver/dev"
     else
-        echo "SELinux is disabled, skipping..."
+        echo "Host SELinux is disabled, skipping..."
     fi
 }
 
@@ -378,10 +367,96 @@ _start_vgpu_topology_daemon() {
     nvidia-topologyd
 }
 
+_configure_fabric_manager() {
+    local fm_config_file=/usr/share/nvidia/nvswitch/fabricmanager.cfg
+
+    local nvfm_env_vars
+    nvfm_env_vars=$(env | grep '^NVFM_CONFIG_' || true)
+    [ -z "${nvfm_env_vars}" ] && return 0
+
+    if [ ! -f "${fm_config_file}" ]; then
+        echo "WARNING: ${fm_config_file} not found; cannot configure Fabric Manager"
+        return 0
+    fi
+
+    while IFS='=' read -r name value; do
+        local field="${name#NVFM_CONFIG_}"
+        if [ -z "${field}" ]; then
+            echo "WARNING: ignoring environment variable '${name}=' with an empty config field name"
+            continue
+        fi
+        echo "Setting Fabric Manager config ${field}=${value} in ${fm_config_file}"
+        if grep -q "^${field}=" "${fm_config_file}"; then
+            # Escape characters that are special in the replacement half of a sed
+            # s||| command (backslash, ampersand and the '|' delimiter) so that a
+            # value cannot corrupt the substitution or inject extra sed commands.
+            local sed_escaped_value
+            sed_escaped_value=$(printf '%s' "${value}" | sed -e 's/[\\&|]/\\&/g')
+            sed -i "s|^${field}=.*|${field}=${sed_escaped_value}|" "${fm_config_file}"
+        else
+            printf '\n%s=%s\n' "${field}" "${value}" >> "${fm_config_file}"
+        fi
+    done <<< "${nvfm_env_vars}"
+}
+
+_start_daemons() {
+    echo "Starting NVIDIA persistence daemon..."
+    nvidia-persistenced --persistence-mode
+
+    if [ "${DRIVER_TYPE}" = "vgpu" ]; then
+        echo "Copying gridd.conf..."
+        cp /drivers/gridd.conf /etc/nvidia/gridd.conf
+        if [ "${VGPU_LICENSE_SERVER_TYPE}" = "NLS" ]; then
+            echo "Copying ClientConfigToken..."
+            mkdir -p  /etc/nvidia/ClientConfigToken/
+            cp /drivers/ClientConfigToken/* /etc/nvidia/ClientConfigToken/
+        fi
+
+        echo "Starting nvidia-gridd.."
+        LD_LIBRARY_PATH=/usr/lib64/nvidia/gridd nvidia-gridd
+
+        # Start virtual topology daemon
+        _start_vgpu_topology_daemon
+    fi
+
+    if _assert_nvlink5_system; then
+        _ensure_nvlink5_prerequisites || return 1
+        _configure_fabric_manager
+        echo "Starting NVIDIA fabric manager daemon for NVLink5+..."
+
+        fm_config_file=/usr/share/nvidia/nvswitch/fabricmanager.cfg
+        fm_pid_file=/var/run/nvidia-fabricmanager/nv-fabricmanager.pid
+        nvlsm_config_file=/usr/share/nvidia/nvlsm/nvlsm.conf
+        nvlsm_pid_file=/var/run/nvidia-fabricmanager/nvlsm.pid
+        /usr/bin/nvidia-fabricmanager-start.sh --mode start \
+                                               --fm-config-file $fm_config_file \
+                                               --fm-pid-file $fm_pid_file \
+                                               --nvlsm-config-file $nvlsm_config_file \
+                                               --nvlsm-pid-file $nvlsm_pid_file || return 1
+        if [ ! -z "${NVFM_CONFIG_FABRIC_MODE:-}" ] && [ "${NVFM_CONFIG_FABRIC_MODE}" == "1" ]; then
+            # We reset the GPU devices after Fabric Manager startup to clear stale FM
+            # partition data after setting FABRIC_MODE=1
+            echo "Resetting GPUs to clear stale fabric partition states..."
+            nvidia-smi -r
+        fi
+
+    # If not a NVLink5+ switch, check for the presence of NVLink4 (or below) switches
+    elif _assert_nvswitch_system; then
+        _configure_fabric_manager
+        echo "Starting NVIDIA fabric manager daemon..."
+        nv-fabricmanager -c /usr/share/nvidia/nvswitch/fabricmanager.cfg || return 1
+    fi
+    _set_daemons_status "Ready"
+}
+
+
 _prepare() {
     if [ "${DRIVER_TYPE}" = "vgpu" ]; then
         _find_vgpu_driver_version || exit 1
     fi
+
+    _create_module_params_conf
+
     # Determine the kernel module type
     _resolve_kernel_type || exit 1
 }
@@ -418,6 +493,7 @@ _load() {
 }
 
 init() {
+    _set_daemons_status "NotReady"
     _prepare_exclusive
     _update_ca_certificates
     _load
