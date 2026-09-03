@@ -28,6 +28,9 @@ DOCKERFILE_TEMPLATE = jinja2.Template(
 {{ INFOHEADER }}
 
 #!UseOBSRepositories
+{%- if image.obs_disable_sbom_filelists %}
+#!SbomNoFilesGeneration
+{%- endif %}
 {% if image.exclusive_arch %}#!ExclusiveArch: {% for arch in image.exclusive_arch %}{{ arch }}{{ " " if not loop.last }}{% endfor %}{%- endif %}
 {% for tag in image.build_tags -%}
 #!BuildTag: {{ tag }}

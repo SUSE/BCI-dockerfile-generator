@@ -468,6 +468,7 @@ for os_version in set(ALL_BASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}:
                 OsVersion.SL16_0: 17,
             },
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
+            obs_disable_sbom_filelists=True,
             is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
             package_list=(
                 [
