@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  4 09:15:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update nvidia-driver script for newer driver versions
+
+-------------------------------------------------------------------
 Mon Aug 31 16:26:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix access permissions of rpmdb
