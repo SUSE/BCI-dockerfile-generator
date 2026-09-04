@@ -203,8 +203,9 @@ RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
         dkms autoinstall -k $(basename /lib/modules/*-default); \
     fi
-RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/open
-RUN set -euo pipefail; mkdir /opt/lib && cp -rfx /lib/firmware /opt/lib/firmware
+RUN set -euo pipefail; mkdir -p /opt/open && cp -rvfx /lib/modules/*/updates/*.ko* /opt/open/
+RUN set -euo pipefail; mkdir -p /opt/lib/firmware && cp -rvfx /lib/firmware/* /opt/lib/firmware/
+
 
 FROM nvidia-driver-builder AS closed-driver-builder
 RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
@@ -259,7 +260,7 @@ RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
         printf 'compress="zstd"\n' > /etc/dkms/framework.conf.d/module-compress.conf; \
         dkms autoinstall -k $(basename /lib/modules/*-default); \
     fi
-RUN set -euo pipefail; cp -rfx /lib/modules/*/updates /opt/proprietary
+RUN set -euo pipefail; mkdir -p /opt/proprietary && cp -rvfx /lib/modules/*/updates/*.ko* /opt/proprietary/
 
 FROM nvidia-driver-builder AS builder
 
