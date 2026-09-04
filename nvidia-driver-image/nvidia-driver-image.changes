@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep  4 12:47:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update nvidia-driver script for newer driver versions
+
+-------------------------------------------------------------------
 Wed Aug 26 07:54:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust tags for new kernel release
