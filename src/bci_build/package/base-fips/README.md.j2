@@ -53,7 +53,7 @@ Below is a list of other environment variables that can be used to configure the
 * `OPENSSL_ENFORCE_MODULUS_BITS=1`: Restrict the OpenSSL module to only generate
 the acceptable key sizes of RSA.
 
-{%- if image.os_version.is_ltss %}
+{% if image.os_version.is_ltss -%}
 {% include 'access_protected_images.j2' %}
 {%- endif %}
 {% include 'licensing_and_eula.j2' %}
