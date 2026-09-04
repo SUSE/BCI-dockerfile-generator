@@ -1,7 +1,12 @@
 #! /bin/bash -x
+# SPDX-License-Identifier: Apache-2.0
+
 # Copyright (c) 2018-2020, NVIDIA CORPORATION. All rights reserved.
-# Copyright (c) 2025-2026, SUSE LLC. All rights reserved.
-# Adaptation for SUSE Linux Enterprise of NVIDIA script
+# Copyright (c) 2025-2026, SUSE LLC
+
+# originally taken from https://github.com/NVIDIA/gpu-driver-container/blob/main/rhel9/nvidia-driver
+# and https://github.com/NVIDIA/gpu-driver-container/blob/main/ubuntu24.04/nvidia-driver
+# Adjusted for SUSE Linux Enterprise
 
 
 set -eu
