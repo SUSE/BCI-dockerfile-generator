@@ -4,7 +4,7 @@ from bci_build.service import Service
 from bci_build.util import ParseVersion
 
 
-@dataclass
+@dataclass(frozen=True)
 class Replacement:
     """Represents a replacement via the `obs-service-replace_using_package_version
     <https://github.com/openSUSE/obs-service-replace_using_package_version>`_.

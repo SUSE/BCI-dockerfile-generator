@@ -29,7 +29,6 @@ echo "Configure image: [$kiwi_iname]..."
 #--------------------------------------
 suseSetupProduct
 
-{% if os_version | string != "3" -%}
 # don't have duplicate licenses of the same type
 jdupes -1 -L -r /usr/share/licenses
 
@@ -41,7 +40,6 @@ add-yast-repos
 zypper --non-interactive rm -u live-add-yast-repos jdupes
 {% else -%}
 zypper --non-interactive rm -u jdupes
-{%- endif %}
 {%- endif %}
 
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
@@ -186,11 +184,8 @@ class Sles15Image(OsContainer):
 
     @property
     def registry_prefix(self) -> str:
-        if self.os_version.is_ltss:
-            if self.os_version == OsVersion.SP4:
-                return "suse/ltss/sle15.4"
-            if self.os_version == OsVersion.SP5:
-                return "suse/ltss/sle15.5"
+        if self.os_version.is_sle15 and self.os_version.is_ltss:
+            return f"suse/ltss/sle15.{self.os_version}"
         return super().registry_prefix
 
 
