@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  7 12:14:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- cargo/rust 1.98 for stable, 1.97 for oldstable
+
+-------------------------------------------------------------------
 Wed Jul 22 10:25:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.97 for stable, 1.96 to oldstable
