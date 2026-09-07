@@ -64,6 +64,7 @@ VALKEY_CONTAINERS = [
             textwrap.dedent(
                 f"""
                 {DOCKERFILE_RUN} install -m 0640 -o root -g valkey /etc/valkey/valkey.default.conf.template /etc/valkey/valkey.conf
+                {DOCKERFILE_RUN} sed -i -e 's,^logfile,#logfile,' /etc/valkey/valkey.conf
                 {DOCKERFILE_RUN} printf 'protected-mode no\\nbind * -::*\\n' >> /etc/valkey/valkey.conf && chmod 0640 /etc/valkey/valkey.conf && chown root:valkey /etc/valkey/valkey.conf
                 """
             )
