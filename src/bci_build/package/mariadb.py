@@ -110,6 +110,7 @@ for os_version in (
                     "util-linux",
                     "zstd",
                 ]
+                + os_version.fips_compatibility_packages
                 + (["coreutils-single"] if not os_version.is_sle15 else ["coreutils"])
             ),
             entrypoint=[_ENTRYPOINT_FNAME],

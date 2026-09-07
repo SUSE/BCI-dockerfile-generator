@@ -58,6 +58,7 @@ POSTGRES_CONTAINERS = [
                 "zstd",
                 "util-linux",  # for setpriv :-(
             ]
+            + os_version.fips_compatibility_packages
             + (["coreutils-single"] if not os_version.is_sle15 else ["coreutils"])
             + (
                 [
