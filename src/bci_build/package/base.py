@@ -29,7 +29,6 @@ echo "Configure image: [$kiwi_iname]..."
 #--------------------------------------
 suseSetupProduct
 
-{% if os_version | string != "3" -%}
 # don't have duplicate licenses of the same type
 jdupes -1 -L -r /usr/share/licenses
 
@@ -41,7 +40,6 @@ add-yast-repos
 zypper --non-interactive rm -u live-add-yast-repos jdupes
 {% else -%}
 zypper --non-interactive rm -u jdupes
-{%- endif %}
 {%- endif %}
 
 # Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
