@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  7 10:03:25 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- 1.37 for stable, 1.35 for oldstable
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
