@@ -75,6 +75,7 @@ KIWI_CONTAINERS = [
             "xz",
             *os_version.release_package_names,
         ]
+        + os_version.fips_compatibility_packages
         + os_version.common_devel_packages,
         replacements_via_service=[
             Replacement(
