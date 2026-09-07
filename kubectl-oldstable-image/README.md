@@ -11,7 +11,7 @@ To run commands inside the container for the current cluster for which the kubec
 
 ```ShellSession
 podman run --rm --name kubectl \
-      registry.suse.com/suse/kubectl:1.33 get nodes
+      registry.suse.com/suse/kubectl:1.35 get nodes
 ```
 
 To pass configuration of a remote cluster to the container:
@@ -19,7 +19,7 @@ To pass configuration of a remote cluster to the container:
 ```ShellSession
 podman run --rm --name kubectl \
       -v /localpath/to/kubeconfig:/root/.kube/config:Z
-      registry.suse.com/suse/kubectl:1.33 get nodes
+      registry.suse.com/suse/kubectl:1.35 get nodes
 ```
 
 This container also includes Helm, the package manager for Kubernetes and Helm charts.
@@ -28,7 +28,7 @@ You can use `kubectl customize --enable-helm` for charts:
 ```ShellSession
 podman run --rm --name kubectl \
       -v /localpath/to/customize:/home/user:Z
-      registry.suse.com/suse/kubectl:1.33 kustomize --enable-helm
+      registry.suse.com/suse/kubectl:1.35 kustomize --enable-helm
 ```
 ## Running as a regular user
 
@@ -39,7 +39,7 @@ The container provides a preconfigured user called "user" which can be explicitl
 podman run --rm --name kubectl \
       --user user \
       -v /localpath/to/kubeconfig:/home/user/.kube/config:Z \
-      registry.suse.com/suse/kubectl:1.33 version
+      registry.suse.com/suse/kubectl:1.35 version
 
 ## Licensing
 
