@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  7 21:07:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add fips compatibility
+
+-------------------------------------------------------------------
 Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
