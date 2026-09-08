@@ -1541,6 +1541,7 @@ from .three89_ds import THREE_EIGHT_NINE_DS_CONTAINERS  # noqa: E402
 from .tigervnc import TIGERVNC_CONTAINERS  # noqa: E402
 from .trivy import TRIVY_CONTAINERS  # noqa: E402
 from .valkey import VALKEY_CONTAINERS  # noqa: E402
+from .virt_template import VIRT_TEMPLATE_CONTAINERS  # noqa: E402
 from .xorg import XORG_CLIENT_CONTAINERS  # noqa: E402
 from .xorg import XORG_CONTAINERS  # noqa: E402
 
@@ -1602,6 +1603,7 @@ ALL_CONTAINER_IMAGE_NAMES: dict[str, BaseContainerImage] = {
         *KUBECTL_CONTAINERS,
         *KUBEVIRT_CONTAINERS,
         *KUBEVIRT_CDI_CONTAINERS,
+        *VIRT_TEMPLATE_CONTAINERS,
         *STUNNEL_CONTAINERS,
         *XORG_CONTAINERS,
         *XORG_CLIENT_CONTAINERS,
