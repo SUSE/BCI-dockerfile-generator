@@ -62,7 +62,7 @@ MICRO_CONTAINERS = [
         },
         build_stage_custom_end=(
             (
-                f"{DOCKERFILE_RUN} rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
+                f"{DOCKERFILE_RUN} env SOURCE_DATE_EPOCH=0 rpm --root /target --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc"
                 if not os_version.is_tumbleweed
                 else ""
             )
