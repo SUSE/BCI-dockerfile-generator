@@ -84,7 +84,7 @@ COPY {{ pkg.filename }} /tmp/
 COPY {{ repo.name }}.repo /etc/zypp/repos.d/{{ repo.repo_filename }}
 COPY {{ repo.name }}.gpg.key /tmp/{{ repo.key_filename }}
 RUN rpm --import /tmp/{{ repo.key_filename }}
-RUN rpm --root /target --import /tmp/{{ repo.key_filename }}
+RUN env SOURCE_DATE_EPOCH=0 rpm --root /target --import /tmp/{{ repo.key_filename }}
 {% endfor -%}
 
 FROM nvidia-driver-builder AS open-driver-builder
