@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  8 17:19:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- reproducability fixes
+
+-------------------------------------------------------------------
 Mon Aug 31 16:26:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix access permissions of rpmdb
