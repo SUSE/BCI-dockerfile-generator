@@ -269,6 +269,9 @@ KUBEVIRT_CONTAINERS = (
                     f"{_kubevirt_pkg(kubevirt_version)}-container-disk",
                     "libvirt-daemon-driver-qemu",
                     "libvirt-client",
+                    # KubeVirt gives arm64 guests a virtio video device; the
+                    # module is a hard dependency on x86_64 only, so name it
+                    "qemu-hw-display-virtio-gpu-pci",
                     "qemu-hw-usb-host",
                     "qemu-hw-usb-redirect",
                     "virtiofsd",
