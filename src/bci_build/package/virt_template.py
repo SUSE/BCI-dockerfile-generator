@@ -31,6 +31,10 @@ VIRT_TEMPLATE_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 # but keep the number for parity.
 _VIRT_TEMPLATE_UID = "65532"
 
+# where upstream's images place the binaries; the deployments virt-operator
+# creates use these as the container command
+_UPSTREAM_BINARY = {"apiserver": "/apiserver", "controller": "/manager"}
+
 
 class VirtTemplateVariant(NamedTuple):
     os_version: OsVersion
@@ -88,10 +92,13 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
             {DOCKERFILE_RUN} useradd -u {_VIRT_TEMPLATE_UID} --create-home -s /bin/bash virt-template
             """)
         ),
-        "custom_end": textwrap.dedent("""
+        "custom_end": textwrap.dedent(f"""
             COPY --from=builder /etc/passwd /etc/passwd
             COPY --from=builder /etc/group /etc/group
             COPY --from=builder /home/virt-template /home/virt-template
+            # the manifest virt-operator ships starts the container with
+            # upstream's distroless path ({_UPSTREAM_BINARY[service]}); keep it valid
+            {DOCKERFILE_RUN} ln -s /usr/bin/virt-template-{service} {_UPSTREAM_BINARY[service]}
             """),
     }
 
