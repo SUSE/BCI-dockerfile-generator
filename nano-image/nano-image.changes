@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  8 17:19:18 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- reproducability fixes
+
+-------------------------------------------------------------------
 Thu Jul  9 10:37:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - disable container support for scratch layers
