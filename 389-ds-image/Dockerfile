@@ -44,7 +44,8 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
     rm -f {/target,}/var/lib/zypp/AutoInstalled; \
-    rm -f {/target,}/var/cache/ldconfig/aux-cache
+    rm -f {/target,}/var/cache/ldconfig/aux-cache \
+    rm -f {/target,}/dev/null
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
