@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: bci/dotnet-aspnet:9.0.19-%RELEASE%
-#!BuildTag: bci/dotnet-aspnet:9.0.19
+#!BuildTag: bci/dotnet-aspnet:9.0.20-%RELEASE%
+#!BuildTag: bci/dotnet-aspnet:9.0.20
 #!BuildTag: bci/dotnet-aspnet:9.0
 #!BuildTag: bci/dotnet-aspnet:9.0-sles15
 #!BuildName: bci-dotnet-aspnet-9.0
@@ -27,26 +27,26 @@ FROM registry.suse.com/bci/bci-base:15.7
 RUN set -euo pipefail; \
     zypper -n install --no-recommends libicu libopenssl3 coreutils sles-release
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.19-1.aarch64.rpm sha256:8f97e615b6872274e142a025d0368084da335d07a997f2b7169a7b9ecf0c0155
-COPY dotnet-host-9.0.19-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.19-1.x86_64.rpm sha256:6cdc606c0de087fcd17417fa94df949b66d7f20695abf360ffe9715052cebd96
-COPY dotnet-host-9.0.19-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.19-1.aarch64.rpm sha256:71cf4b776c6c78ceada7af274751fd8e1762fd3b15acc38d5c31fba17afa15e2
-COPY dotnet-hostfxr-9.0-9.0.19-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.19-1.x86_64.rpm sha256:a02ce223c38d1b51132b76befeae1dce695c38c9eb7025f2950ba3b4c616ffb0
-COPY dotnet-hostfxr-9.0-9.0.19-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.19-1.aarch64.rpm sha256:388a76b23d4a15427ba99167c3d80fb121a04f6229cbfa1bf36ae240cba0e017
-COPY dotnet-runtime-deps-9.0-9.0.19-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.19-1.x86_64.rpm sha256:4e530b76006a6d3dc63b8bbab0a527bcab36b0196986fd5bc74b14759644195c
-COPY dotnet-runtime-deps-9.0-9.0.19-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.19-1.aarch64.rpm sha256:90e936c72ae58972b8bb92956c009727fe5351f8cd3be0850dbb4d8db758ab26
-COPY dotnet-runtime-9.0-9.0.19-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.19-1.x86_64.rpm sha256:63a517a39113015c863f3c8470719c9cd656858c5dd2c221e9743b905e77f0db
-COPY dotnet-runtime-9.0-9.0.19-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.19-1.aarch64.rpm sha256:b7ab0193a86125df9ab590e089ae4c2530971cfd27f7ec7ec9fa03ee33821582
-COPY aspnetcore-runtime-9.0-9.0.19-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.19-1.x86_64.rpm sha256:058da877ddd6506e57c7d564ef44ff6b8139f751d825d5861ba39e7520274ff8
-COPY aspnetcore-runtime-9.0-9.0.19-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.20-1.aarch64.rpm sha256:40e71d5b242bbd48edb2127aacc1d17cfefece965fef9aad897d698e77d66211
+COPY dotnet-host-9.0.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-9.0.20-1.x86_64.rpm sha256:5f73c3c1b63dbd90202789197b66042c1a49f7367076c047c67768eed9c48874
+COPY dotnet-host-9.0.20-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.20-1.aarch64.rpm sha256:b56bf6988a738c1c939e58b162411715b0aef5300e91fea02b0ae10bd2f5aa1c
+COPY dotnet-hostfxr-9.0-9.0.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.20-1.x86_64.rpm sha256:83fe7a86a1e5a2204019f7d07ab94595736e79b066e03ba1b9ddee455e2dc154
+COPY dotnet-hostfxr-9.0-9.0.20-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.20-1.aarch64.rpm sha256:e8154a211bc9fc288bddd07f0a470ba1618f3f52c79f5c00213698f39eb48947
+COPY dotnet-runtime-deps-9.0-9.0.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.20-1.x86_64.rpm sha256:2af2a6f87fa7a2ba8a79c8933a5f269062a08333d57cd9cdcaf645f129a12741
+COPY dotnet-runtime-deps-9.0-9.0.20-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.20-1.aarch64.rpm sha256:34fcc8f0a6c76c397af20896ea5c232dc9c3744dc2ab353f8431534410e6f822
+COPY dotnet-runtime-9.0-9.0.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.20-1.x86_64.rpm sha256:5e49de5a3a1e4deb0998e15d9762a7d8b14d626fd5b185bc43f37d6e23d245fc
+COPY dotnet-runtime-9.0-9.0.20-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.20-1.aarch64.rpm sha256:efdcd3ae5ffa7aa968977f70076e14cbb82e537bd855127d014628624fdc4eca
+COPY aspnetcore-runtime-9.0-9.0.20-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/a/aspnetcore-runtime-9.0-9.0.20-1.x86_64.rpm sha256:2e191673eb1cd17a514ad96c9f652639c2e34cb696918817d0236b627cc8dd88
+COPY aspnetcore-runtime-9.0-9.0.20-1.x86_64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
 RUN rpm --import /tmp/microsoft.asc
@@ -54,19 +54,19 @@ RUN rpm --import /tmp/microsoft.asc
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-9.0.19-1.aarch64.rpm \
-            /tmp/dotnet-hostfxr-9.0-9.0.19-1.aarch64.rpm \
-            /tmp/dotnet-runtime-deps-9.0-9.0.19-1.aarch64.rpm \
-            /tmp/dotnet-runtime-9.0-9.0.19-1.aarch64.rpm \
-            /tmp/aspnetcore-runtime-9.0-9.0.19-1.aarch64.rpm; \
+            /tmp/dotnet-host-9.0.20-1.aarch64.rpm \
+            /tmp/dotnet-hostfxr-9.0-9.0.20-1.aarch64.rpm \
+            /tmp/dotnet-runtime-deps-9.0-9.0.20-1.aarch64.rpm \
+            /tmp/dotnet-runtime-9.0-9.0.20-1.aarch64.rpm \
+            /tmp/aspnetcore-runtime-9.0-9.0.20-1.aarch64.rpm; \
     fi
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-9.0.19-1.x86_64.rpm \
-            /tmp/dotnet-hostfxr-9.0-9.0.19-1.x86_64.rpm \
-            /tmp/dotnet-runtime-deps-9.0-9.0.19-1.x86_64.rpm \
-            /tmp/dotnet-runtime-9.0-9.0.19-1.x86_64.rpm \
-            /tmp/aspnetcore-runtime-9.0-9.0.19-1.x86_64.rpm; \
+            /tmp/dotnet-host-9.0.20-1.x86_64.rpm \
+            /tmp/dotnet-hostfxr-9.0-9.0.20-1.x86_64.rpm \
+            /tmp/dotnet-runtime-deps-9.0-9.0.20-1.x86_64.rpm \
+            /tmp/dotnet-runtime-9.0-9.0.20-1.x86_64.rpm \
+            /tmp/aspnetcore-runtime-9.0-9.0.20-1.x86_64.rpm; \
     fi
 
 COPY third-party.repo /etc/zypp/repos.d/packages-microsoft-com-prod.repo
@@ -91,13 +91,13 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title="ASP.NET Core Runtime 9.0 for SUSE Linux Enterprise Server 15 SP7"
 LABEL org.opencontainers.image.description="The ASP.NET Core Runtime 9.0 based on the SUSE Linux Enterprise Base Container Image. The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
-LABEL org.opencontainers.image.version="9.0.19"
+LABEL org.opencontainers.image.version="9.0.20"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="9.0.19-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.19-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="9.0.20-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.20-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-11-10"
@@ -111,7 +111,7 @@ LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_VERSION=9.0.19
+ENV DOTNET_VERSION=9.0.20
 RUN useradd --uid=$APP_UID -U -d /app -G '' -ms /bin/bash app
 WORKDIR /app
 EXPOSE 8080
