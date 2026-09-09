@@ -52,7 +52,7 @@ def supported_until(os_version: OsVersion, jre_major: int) -> datetime.date | No
 def _get_openjdk_kwargs(
     os_version: Literal[OsVersion.TUMBLEWEED, OsVersion.SL16_0, OsVersion.SP7],
     devel: bool,
-    java_version: Literal[11, 17, 21, 25],
+    java_version: Literal[11, 17, 21, 25, 26],
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -123,6 +123,16 @@ OPENJDK_CONTAINERS = (
     [
         DevelopmentContainer(
             **_get_openjdk_kwargs(os_version, devel, java_version=11),
+            support_level=SupportLevel.L3,
+        )
+        for os_version, devel in product(
+            (OsVersion.TUMBLEWEED,),
+            (True, False),
+        )
+    ]
+    + [
+        DevelopmentContainer(
+            **_get_openjdk_kwargs(os_version, devel, java_version=26),
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
