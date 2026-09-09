@@ -29,7 +29,7 @@ KEA_DHCP_CONTAINERS = [
         version_in_uid=False,
         support_level=SupportLevel.L3,
         pretty_name="Kea DHCP Server",
-        package_list=sorted(["kea", "sed", "util-linux"]),
+        package_list=sorted(["kea", "grep", "sed", "util-linux"]),
         build_stage_custom_end=generate_systemd_tmpfiles_command(None, use_target=True),
         custom_end=(SET_BLKID_SCAN if os_version.is_sle15 else "")
         + textwrap.dedent(f"""
