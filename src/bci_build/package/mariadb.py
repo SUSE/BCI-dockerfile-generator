@@ -13,25 +13,13 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import IDEXEC_SCRIPT
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.helpers import generate_systemd_tmpfiles_command
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
-
-_MARIADB_IDEXEC = b"""#!/bin/bash
-
-u=$1
-shift
-
-if ! id -u "$u" > /dev/null 2>&1; then
-    echo "Invalid user: $u"
-    exit 1
-fi
-
-exec setpriv --pdeathsig=keep --reuid="$u" --regid="$u" --clear-groups -- "$@"
-"""
 
 MARIADB_CONTAINERS = []
 MARIADB_CLIENT_CONTAINERS = []
@@ -121,7 +109,7 @@ for os_version in (
                     Path(__file__).parent / "mariadb" / str(mariadb_version) / "LICENSE"
                 ).read_bytes(),
                 "healthcheck.sh": healthcheck,
-                "idexec": _MARIADB_IDEXEC,
+                "idexec": IDEXEC_SCRIPT,
                 "_constraints": generate_disk_size_constraints(11),
             },
             support_level=SupportLevel.L3,

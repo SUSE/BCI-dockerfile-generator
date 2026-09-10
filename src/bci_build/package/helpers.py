@@ -7,6 +7,19 @@ from bci_build.package import OsContainer
 from bci_build.package import _build_tag_prefix
 from bci_build.util import ParseVersion
 
+IDEXEC_SCRIPT = b"""#!/bin/bash
+
+u=$1
+shift
+
+if ! id -u "$u" > /dev/null 2>&1; then
+    echo "Invalid user: $u"
+    exit 1
+fi
+
+exec setpriv --pdeathsig=keep --reuid="$u" --regid="$u" --clear-groups -- "$@"
+"""
+
 
 def generate_package_version_check(
     pkg_name: str,
