@@ -18,7 +18,7 @@
     },
     "containerized-data-importer1.66": {
         "latest": {
-            "Tumbleweed": "1.66.0"
+            "Tumbleweed": "1.66.1"
         },
         "version_format": "patch"
     },
