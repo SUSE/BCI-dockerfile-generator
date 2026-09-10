@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 10 08:34:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- explicitly install grep to workaround missing dependencies on the post-install script of kea
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
