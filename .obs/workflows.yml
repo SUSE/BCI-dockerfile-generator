@@ -287,6 +287,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: rabbitmq-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: ruby-4.0-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
@@ -555,6 +559,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: python-3.14-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: rabbitmq-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: ruby-4.0-image
