@@ -80,6 +80,7 @@ RUN set -euo pipefail; rm -f /var/run && ln -s ../run /var/run && \
     install -m 0644 /usr/share/kube-virt-1.8/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \
     chmod 0755 /etc/libvirt && \
     setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor
+
 # virt-launcher probes the firmware under the paths KubeVirt
 # hardcodes per architecture, see:
 # https://github.com/kubevirt/kubevirt/blob/v1.8.0/pkg/virt-config/virt-config.go
