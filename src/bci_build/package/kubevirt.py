@@ -56,27 +56,6 @@ def _kubevirt_dir(kubevirt_version: str) -> str:
     return f"kube-virt-{kubevirt_version}"
 
 
-def _libvirt_hooks_dir(kubevirt_version: str) -> str:
-    """Create /etc/libvirt/hooks for the 1.9 launcher (bsc#1272604).
-
-    virt-launcher symlinks its qemu hook there on start-up as uid 107 and
-    panics if it cannot. libvirt >= 12.6 ships the directory only in
-    libvirt-daemon-hooks, which this image does not install, so it is missing
-    on Tumbleweed; on SLE 16.0 (libvirt 11.4) it exists but is root-only.
-    Only 1.9 symlinks at run time: 1.8 keeps the gate off and 1.10 ships the
-    binary at the hook path instead.
-    """
-    version = tuple(int(part) for part in kubevirt_version.split("."))
-    if not (1, 9) <= version < (1, 10):
-        return ""
-    # Whole lines, indented like the block they land in: the caller dedents the
-    # rendered string, so a flush-left snippet would flatten it.
-    return (
-        "                # virt-launcher needs this to exist and be writable by 107\n"
-        f"                {DOCKERFILE_RUN} install -d -m 0755 -o 107 -g 107 /etc/libvirt/hooks"
-    )
-
-
 def _get_kubevirt_kwargs(
     service: str,
     kubevirt_version: str,
@@ -313,8 +292,15 @@ KUBEVIRT_CONTAINERS = (
                     install -m 0644 /usr/share/{_kubevirt_dir(kubevirt_version)}/virt-launcher/virtqemud.conf /etc/libvirt/virtqemud.conf && \\
                     install -m 0644 /usr/share/{_kubevirt_dir(kubevirt_version)}/virt-launcher/qemu.conf /etc/libvirt/qemu.conf && \\
                     chmod 0755 /etc/libvirt && \\
-                    setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor
-{_libvirt_hooks_dir(kubevirt_version)}
+                    setcap 'cap_net_bind_service=+ep' /usr/bin/virt-launcher-monitor""")
+            + (
+                textwrap.dedent(f"""
+                # virt-launcher needs this to exist and be writable by 107
+                {DOCKERFILE_RUN} install -d -m 0755 -o 107 -g 107 /etc/libvirt/hooks""")
+                if kubevirt_version in ("1.9",)
+                else ""
+            )
+            + textwrap.dedent(f"""
                 # virt-launcher probes the firmware under the paths KubeVirt
                 # hardcodes per architecture, see:
                 # https://github.com/kubevirt/kubevirt/blob/v1.8.0/pkg/virt-config/virt-config.go
