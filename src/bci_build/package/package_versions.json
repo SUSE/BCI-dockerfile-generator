@@ -241,5 +241,11 @@
             "Tumbleweed": "9.1"
         },
         "version_format": "minor"
+    },
+    "virt-template0.2": {
+        "latest": {
+            "Tumbleweed": "0.2"
+        },
+        "version_format": "minor"
     }
 }
