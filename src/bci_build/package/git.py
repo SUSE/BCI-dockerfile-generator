@@ -46,7 +46,8 @@ GIT_CONTAINERS = [
             "git-core",
             "openssh-clients",
             "shadow",
-        ],
+        ]
+        + os_version.fips_compatibility_packages,
         volumes=["/workspace"],
         custom_end=rf"""{DOCKERFILE_RUN} useradd -U -u 1000 -d /workspace -s /bin/bash git
 {DOCKERFILE_RUN} mkdir -p /workspace && chown git: /workspace && chmod 755 /workspace
