@@ -1,36 +1,95 @@
 """Ruby Development BCI containers"""
 
 import datetime
+from itertools import product
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
 _RUBY_SUPPORT_ENDS = {"2.5": None, "3.4": datetime.date(2028, 3, 31)}
 
 
-def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsVersion):
+def _get_ruby_kwargs(
+    ruby_version: Literal["2.5", "3.4", "4.0"],
+    os_version: OsVersion,
+    build_flavor: str | None = None,
+):
     ruby = f"ruby{ruby_version}"
     ruby_major = ruby_version.split(".")[0]
+    is_micro = build_flavor == "micro"
+
+    package_list = (
+        [
+            ruby,
+            # force the correct gem2rpm version to avoid system ruby being pulled
+            f"{ruby}-rubygem-gem2rpm",
+            # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
+            "util-linux",
+            # additional dependencies supplementing rails
+            "timezone",
+            "xz",
+            # required by config_sh_script section
+            "sed",
+        ]
+        # additional dependencies for nokogiri gem (for rails)
+        # nokogiri requires also libxml2 and libyaml
+        # but these are already in the image
+        + (["libxslt1"] if os_version.is_sle15 else ["libexslt0"])
+    )
+
+    if not is_micro:
+        package_list += [
+            f"{ruby}-devel",
+            *os_version.common_devel_packages,
+            # additional dependencies to build rails, ffi, sqlite3 gems -->
+            "gcc-c++",
+            "sqlite3-devel",
+            "make",
+        ]
+
+        # bundler is part of ruby itself as of Ruby 3.4,
+        # it exists as a standalone gem only in Tumbleweed
+        package_list += (
+            []
+            if ruby_version == "3.4" and os_version.is_sle15
+            else [f"{ruby}-rubygem-bundler"]
+        )
 
     return {
         "name": "ruby",
         "package_name": f"ruby-{ruby_version}-image",
-        "pretty_name": f"Ruby {ruby_version}",
+        "pretty_name": (
+            f"Ruby {ruby_version} {build_flavor} runtime"
+            if is_micro
+            else f"Ruby {ruby_version} development"
+        ),
         "version": ruby_version,
+        "build_flavor": build_flavor,
+        "tag_version": ruby_version,
         "additional_versions": (
-            [ruby_major]
+            []
+            if is_micro
+            else [ruby_major]
             + ([f"{ruby_version}-{os_version.dist_id}"] if os_version.dist_id else [])
         ),
-        "is_latest": os_version in CAN_BE_LATEST_OS_VERSION
-        and (
-            (ruby_version == "3.4" and not os_version.is_tumbleweed)
-            or (ruby_version == "4.0" and os_version.is_tumbleweed)
+        "is_latest": (
+            not is_micro
+            and os_version in CAN_BE_LATEST_OS_VERSION
+            and (
+                (ruby_version == "3.4" and not os_version.is_tumbleweed)
+                or (ruby_version == "4.0" and os_version.is_tumbleweed)
+            )
+        ),
+        "from_target_image": (
+            generate_from_image_tag(os_version, "bci-micro") if is_micro else None
         ),
         "os_version": os_version,
         "supported_until": (
@@ -50,39 +109,7 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsV
                 parse_version=ParseVersion.MINOR,
             ),
         ],
-        "package_list": [ruby]
-        # bundler is part of ruby itself as of Ruby 3.4,
-        # it exists as a standalone gem only in Tumbleweed
-        + (
-            []
-            if ruby_version == "3.4" and os_version.is_sle15
-            else [f"{ruby}-rubygem-bundler"]
-        )
-        + [
-            f"{ruby}-devel",
-            # force the correct gem2rpm version to avoid system ruby being pulled
-            f"{ruby}-rubygem-gem2rpm",
-            # provides getopt, which is required by ruby-common, but OBS doesn't resolve that
-            "util-linux",
-            # additional dependencies to build rails, ffi, sqlite3 gems -->
-            "gcc-c++",
-            "sqlite3-devel",
-            "make",
-            # additional dependencies supplementing rails
-            "timezone",
-            "xz",
-        ]
-        + (
-            # additional dependencies to build nokogiri gem (for rails)
-            # nokogiri requires also libxml2 and libyaml
-            # but these are already in the image
-            ["libxslt1"]
-            if os_version.is_sle15
-            else [
-                "libexslt0",
-            ]
-        )
-        + os_version.common_devel_packages,
+        "package_list": sorted(package_list),
         "extra_files": {
             # avoid ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
@@ -106,22 +133,33 @@ def _get_ruby_kwargs(ruby_version: Literal["2.5", "3.4", "4.0"], os_version: OsV
     }
 
 
-RUBY_CONTAINERS = [
+RUBY_2_5_CONTAINERS = [
     DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP7),
         support_level=SupportLevel.L3,
     ),
+]
+
+RUBY_3_4_CONTAINERS = [
     DevelopmentContainer(
         **_get_ruby_kwargs("3.4", OsVersion.SP7),
         support_level=SupportLevel.L3,
-    ),
+    )
+] + [
     DevelopmentContainer(
-        **_get_ruby_kwargs("3.4", OsVersion.SL16_0),
+        **_get_ruby_kwargs("3.4", os_version, flavor),
         support_level=SupportLevel.L3,
-    ),
-    DevelopmentContainer(
-        **_get_ruby_kwargs("3.4", OsVersion.SL16_1),
-        support_level=SupportLevel.L3,
-    ),
-    DevelopmentContainer(**_get_ruby_kwargs("4.0", OsVersion.TUMBLEWEED)),
+    )
+    for os_version, flavor in product(
+        (OsVersion.SL16_0, OsVersion.SL16_1), ("base", "micro")
+    )
 ]
+
+RUBY_4_0_CONTAINERS = [
+    DevelopmentContainer(**_get_ruby_kwargs("4.0", os_version, flavor))
+    for os_version, flavor in product((OsVersion.TUMBLEWEED,), ("base", "micro"))
+]
+
+RUBY_CONTAINERS = RUBY_2_5_CONTAINERS + RUBY_3_4_CONTAINERS + RUBY_4_0_CONTAINERS
+
+RUBY_CRATE = ContainerCrate(RUBY_CONTAINERS)
