@@ -52,7 +52,8 @@ LOG_CLEAN: str = textwrap.dedent("""rm -rf {/target,}/var/log/{alternatives.log,
     rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \\
     rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \\
     rm -f {/target,}/var/lib/zypp/AutoInstalled; \\
-    rm -f {/target,}/var/cache/ldconfig/aux-cache
+    rm -f {/target,}/var/cache/ldconfig/aux-cache \\
+    rm -f {/target,}/dev/null
 """)
 
 #: Rebuild the rpm database to make it reproducible
