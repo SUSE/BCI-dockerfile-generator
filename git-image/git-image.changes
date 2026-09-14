@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 14 19:56:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include fips support packages
+
+-------------------------------------------------------------------
 Mon Aug 31 16:26:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - fix access permissions of rpmdb
