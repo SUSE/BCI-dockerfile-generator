@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 15 17:41:06 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Sort packages and update description
+
+-------------------------------------------------------------------
 Fri Aug 28 18:40:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - include deps for nokogiri (rails)
