@@ -16,7 +16,7 @@ To deploy an application, copy its sources into the htdocs folder
 `/srv/www/htdocs` (this directory is the `WORKDIR` of the container image):
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-apache:8
+FROM registry.suse.com/bci/php-apache:8-base
 
 RUN set -eux; \
     zypper -n install $my_dependencies; \
@@ -37,7 +37,7 @@ Alternatively, you can mount the application's source code directly into the
 container:
 
 ```ShellSession
-$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z registry.suse.com/bci/php-apache:8
+$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z registry.suse.com/bci/php-apache:8-base
 ```
 
 ## How to install PHP extensions
@@ -47,7 +47,7 @@ extensions are named using the `php8-$extension_name` scheme,
 and they can be installed as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-apache:8
+FROM registry.suse.com/bci/php-apache:8-base
 
 RUN zypper -n install php8-gd php8-intl
 ```
@@ -59,7 +59,7 @@ compatibility reasons and can be used similar to the script from PHP DockerHub
 image:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-apache:8
+FROM registry.suse.com/bci/php-apache:8-base
 
 RUN docker-php-ext-install gd intl
 ```
@@ -73,7 +73,7 @@ guarantee of interoperability with this image and without any official support.
 Install PECL extensions as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-apache:8
+FROM registry.suse.com/bci/php-apache:8-base
 
 RUN set -euo pipefail; \
     zypper -n install $PHPIZE_DEPS php8-pecl; \
