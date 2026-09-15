@@ -4,7 +4,9 @@ from itertools import product
 from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
@@ -52,7 +54,10 @@ _LATEST_PHP_VERSION = sorted(_PHP_VERSIONS, reverse=True)[0]
 
 
 def _create_php_bci(
-    os_version: OsVersion, php_variant: PhpVariant, php_version: _PHP_VERSION_T
+    os_version: OsVersion,
+    php_variant: PhpVariant,
+    php_version: _PHP_VERSION_T,
+    build_flavor: str = None,
 ) -> DevelopmentContainer:
 
     assert php_version in _PHP_VERSIONS, f"PHP version {php_version} is not supported"
@@ -136,25 +141,40 @@ def _create_php_bci(
         custom_end = ""
         build_stage_custom_end = common_end
 
+    is_micro = build_flavor == "micro"
+
     return DevelopmentContainer(
         name=str(php_variant).lower(),
+        build_flavor=build_flavor,
         no_recommends=False,
         version="%%php_version%%",
         tag_version=php_version,
         from_target_image=(
             "opensuse/tumbleweed:latest"
-            if os_version.is_tumbleweed
-            else generate_from_image_tag(os_version, "bci-base")
+            if os_version.is_tumbleweed and not is_micro
+            else generate_from_image_tag(
+                os_version, "bci-micro" if is_micro else "bci-base"
+            )
         ),
-        pretty_name=f"{str(php_variant)} {php_version}",
+        pretty_name=(
+            f"{str(php_variant)} {php_version} runtime"
+            if is_micro
+            else f"{str(php_variant)} {php_version} development"
+        ),
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         additional_versions=(
-            [f"{php_version}-{os_version.dist_id}"] if os_version.dist_id else []
+            (
+                [str(php_version)]
+                if not is_micro and os_version in CAN_BE_LATEST_SLFO_OS_VERSION
+                else []
+            )
+            + ([f"{php_version}-{os_version.dist_id}"] if os_version.dist_id else [])
         ),
         os_version=os_version,
         is_latest=(
             php_version == _LATEST_PHP_VERSION
             and os_version in CAN_BE_LATEST_OS_VERSION
+            and not is_micro
         ),
         package_list=[
             f"php{php_version}",
@@ -207,7 +227,17 @@ zypper -n install ${{extensions[*]}}
 PHP_CONTAINERS = [
     _create_php_bci(os_version, variant, 8)
     for os_version, variant in product(
-        (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED),
+        (OsVersion.SP7,),
         (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
     )
+] + [
+    _create_php_bci(os_version, variant, 8, flavor)
+    for os_version, variant, flavor in product(
+        (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED),
+        (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
+        ("base", "micro"),
+    )
 ]
+
+
+PHP_CRATE = ContainerCrate(PHP_CONTAINERS)
