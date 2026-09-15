@@ -178,6 +178,9 @@ PYTHON_3_13_CONTAINERS = [
         **_get_python_kwargs("3.13", os_version, build_flavor=flavor),
         package_name="python-3.13-image",
         build_flavor=flavor,
+        additional_versions=(
+            ["3.13"] if os_version.is_tumbleweed and flavor != "micro" else []
+        ),
         from_target_image=(
             None
             if os_version.is_tumbleweed and flavor != "micro"
