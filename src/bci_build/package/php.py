@@ -156,6 +156,7 @@ def _create_php_bci(
             php_version == _LATEST_PHP_VERSION
             and os_version in CAN_BE_LATEST_OS_VERSION
         ),
+        obs_disable_container_support=True,
         package_list=[
             f"php{php_version}",
             f"php{php_version}-cli",
