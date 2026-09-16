@@ -23,6 +23,7 @@ _CDI_VERSIONS = (
     ("1.65", OsVersion.SL16_0),
     ("1.65", OsVersion.SL16_1),
     ("1.65", OsVersion.TUMBLEWEED),
+    ("1.66", OsVersion.SL16_0),
     ("1.66", OsVersion.TUMBLEWEED),
 )
 
