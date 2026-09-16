@@ -19,6 +19,7 @@ from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
+from bci_build.package.kubevirt import KubeVirtRegistrySL160
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
@@ -45,6 +46,9 @@ class VirtTemplateVariant(NamedTuple):
 
 
 _VIRT_TEMPLATE_VARIANTS = (
+    VirtTemplateVariant(
+        OsVersion.SL16_0, "virt-template0.2", "virt-template-0.2-image"
+    ),
     VirtTemplateVariant(
         OsVersion.TUMBLEWEED, "virt-template0.2", "virt-template-0.2-image"
     ),
@@ -83,6 +87,11 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
         "entrypoint_user": _VIRT_TEMPLATE_UID,
         "exclusive_arch": VIRT_TEMPLATE_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
+        # same registry path as the KubeVirt images: virt-operator derives the
+        # virt-template image names from its own
+        "_publish_registry": (
+            KubeVirtRegistrySL160() if variant.os_version == OsVersion.SL16_0 else None
+        ),
         "from_target_image": generate_from_image_tag(variant.os_version, "bci-micro"),
         "package_list": sorted([service_pkg_name, "shadow"]),
         "entrypoint": [f"/usr/bin/virt-template-{service}"],

@@ -22,6 +22,7 @@ _KUBEVIRT_VERSIONS = (
     ("1.8", OsVersion.SL16_0),
     ("1.8", OsVersion.SL16_1),
     ("1.8", OsVersion.TUMBLEWEED),
+    ("1.9", OsVersion.SL16_0),
     ("1.9", OsVersion.TUMBLEWEED),
 )
 
