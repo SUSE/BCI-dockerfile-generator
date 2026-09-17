@@ -143,6 +143,8 @@ XORG_CLIENT_CONTAINERS = [
                 "libgtk-3-0",
                 "libgbm1",
                 "libasound2",
+                "libX11-xcb1",
+                "libxshmfence1",
                 # Provides necessary codecs for video/audio playback
                 "libavcodec58_134",
             ]
