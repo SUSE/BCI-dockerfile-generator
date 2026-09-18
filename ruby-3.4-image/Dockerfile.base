@@ -24,7 +24,7 @@
 FROM registry.suse.com/bci/bci-base:16.0
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends curl findutils gawk gcc-c++ git-core libexslt0 make procps ruby3.4 ruby3.4-devel ruby3.4-rubygem-bundler ruby3.4-rubygem-gem2rpm sed sqlite3-devel timezone util-linux util-linux xz
+    zypper -n install --no-recommends curl findutils gawk gcc-c++ git-core libexslt0 make procps ruby3.4 ruby3.4-devel ruby3.4-rubygem-gem2rpm sed sqlite3-devel timezone util-linux util-linux xz
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n clean -a; \
