@@ -60,6 +60,7 @@ the current version for every code stream that is present in the dictionary.
 """
 
 import json
+import re
 import xml.etree.ElementTree as ET
 from functools import cmp_to_key
 from pathlib import Path
@@ -90,6 +91,9 @@ PACKAGE_VERSIONS_JSON_PATH = Path(__file__).parent / "package_versions.json"
 
 #: Path to the json file where the NVIDIA driver versions are stored
 NVIDIA_DRIVER_JSON_PATH = Path(__file__).parent / "nvidia_driver_versions.json"
+
+#: Path to the json file where the AMD driver versions are stored
+AMD_DRIVER_JSON_PATH = Path(__file__).parent / "amd_driver_versions.json"
 
 
 def get_package_versions() -> PackageVersions:
@@ -291,7 +295,10 @@ def update_versions() -> dict[str, dict[str, str]]:
 
 
 def fetch_nvidia_drivers_versions() -> list[str]:
-    """Fetch the latest NVIDIA driver versions from the NVIDIA website and return a list of versions."""
+    """
+    Fetch the latest NVIDIA driver versions from the NVIDIA website and return
+    a list of versions.
+    """
 
     response = requests.get(
         "https://docs.nvidia.com/datacenter/tesla/drivers/releases.json",
@@ -322,6 +329,55 @@ def update_nvidia_versions() -> dict[str, list[str]]:
         return data
 
 
+def fetch_amd_drivers_versions() -> list[str]:
+    """
+    Fetch the latest AMD driver versions from the AMD repository and return a
+    list of versions.
+    """
+
+    response = requests.get(
+        "https://repo.radeon.com/amdgpu/",
+        headers={"User-Agent": "BCI update-versions"},
+        timeout=30,
+    )
+    response.raise_for_status()
+
+    matches = re.finditer(
+        r"\"(?P<major>[\d]+)\.(?P<minor>[\d]+)(\.(?P<patch>[\d]+))?(\.(?P<rel>[\d]+))?/\"",
+        response.text,
+    )
+    amd_driver_versions = []
+
+    for m in matches:
+        v = m.groupdict()
+
+        major = v["major"]
+        minor = v["minor"]
+        patch = v["patch"]
+        rel = v["rel"]
+
+        if int(major) < 30:
+            continue
+
+        if rel:
+            version = f"{major}.{minor}.{patch}.{rel}"
+        elif patch:
+            version = f"{major}.{minor}.{patch}"
+        else:
+            version = f"{major}.{minor}"
+
+        amd_driver_versions.append(version)
+
+    return sorted(amd_driver_versions, reverse=True)
+
+
+def update_amd_versions() -> dict[str, list[str]]:
+    with open(AMD_DRIVER_JSON_PATH) as f:
+        data = json.load(f)
+        data["releases"] = fetch_amd_drivers_versions()
+        return data
+
+
 def run_version_update() -> None:
     """Fetch the new package versions via :py:func:`update_versions` and write
     the result to the package versions json file.
@@ -329,9 +385,13 @@ def run_version_update() -> None:
     """
     data: PackageVersions = update_versions()
     nvidia_driver_versions = update_nvidia_versions()
+    amd_driver_versions = update_amd_versions()
 
     with open(PACKAGE_VERSIONS_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4, sort_keys=True)
 
     with open(NVIDIA_DRIVER_JSON_PATH, "w") as f:
         json.dump(nvidia_driver_versions, f, indent=4, sort_keys=True)
+
+    with open(AMD_DRIVER_JSON_PATH, "w") as f:
+        json.dump(amd_driver_versions, f, indent=4, sort_keys=True)
