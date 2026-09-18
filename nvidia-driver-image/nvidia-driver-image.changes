@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 18 16:25:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add buildtag for new kernel release
+
+-------------------------------------------------------------------
 Thu Sep 10 08:34:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adopt newest component releases
