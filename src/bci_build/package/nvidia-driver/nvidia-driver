@@ -22,6 +22,10 @@ NVIDIA_UVM_MODULE_PARAMS=()
 NVIDIA_MODESET_MODULE_PARAMS=()
 NVIDIA_PEERMEM_MODULE_PARAMS=()
 KERNEL_MODULE_TYPE=${KERNEL_MODULE_TYPE:-auto}
+if [ "${DRIVER_BRANCH}" -ge 615 ] && [ "${KERNEL_MODULE_TYPE}" = "proprietary" ]; then
+    echo "IMPORTANT: KERNEL_MODULE_TYPE=proprietary is not supported for driver branches R615 and later; using open instead"
+    KERNEL_MODULE_TYPE=open
+fi
 MODPROBE_CONFIG_DIR="/etc/modprobe.d"
 
 TARGETARCH=${TARGETARCH:-$(uname -m)}
