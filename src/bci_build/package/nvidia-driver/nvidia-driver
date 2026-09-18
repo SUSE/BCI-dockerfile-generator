@@ -308,6 +308,13 @@ _shutdown() {
 # to install. Valid values for KERNEL_MODULE_TYPE are 'auto' (default), 'open', and 'proprietary'.
 # When 'auto' is configured, we use the nvidia-installer to recommend the module type to install.
 _resolve_kernel_type() {
+  # R615 dropped the proprietary kernel modules we must fall back to "open"
+  # or the module copy in _load_driver fails on a missing /opt/proprietary.
+  if [[ "${DRIVER_BRANCH}" -ge 615 && "${KERNEL_MODULE_TYPE}" != "open" ]]; then
+    echo "IMPORTANT: Using open instead for driver branches R615 and later because the proprietary kernel modules is deprecated"
+    KERNEL_MODULE_TYPE=open
+  fi
+
   if [ "${KERNEL_MODULE_TYPE}" == "proprietary" ]; then
     KERNEL_TYPE=proprietary
   elif [ "${KERNEL_MODULE_TYPE}" == "open" ]; then

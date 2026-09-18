@@ -5,9 +5,13 @@
 
 The {{ image.pretty_name }} container image provides NVIDIA GPU drivers in a
 containerized environment. This image is based on
-{{ image.os_version.pretty_distribution_base_name }} and includes both the
-open-source and proprietary NVIDIA kernel modules {{ image.version }}, along with the necessary
-user-space tools.
+{{ image.os_version.pretty_distribution_base_name }} and includes
+{%- if image.branch < 615 %}
+both the open-source and proprietary NVIDIA kernel modules {{ image.version }},
+{%- else %}
+the open-source NVIDIA kernel modules {{ image.version }},
+{%- endif %}
+along with the necessary user-space tools.
 
 It provides [precompiled binaries](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html) for the NVIDIA GPU Operator or for manual
 driver deployment on container hosts, allowing for faster deployment.
