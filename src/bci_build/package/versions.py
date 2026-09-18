@@ -349,22 +349,16 @@ def fetch_amd_drivers_versions() -> list[str]:
     amd_driver_versions = []
 
     for m in matches:
-        v = m.groupdict()
-
-        major = v["major"]
-        minor = v["minor"]
-        patch = v["patch"]
-        rel = v["rel"]
-
-        if int(major) < 30:
+        if int(m.group("major")) < 30:
             continue
 
-        if rel:
-            version = f"{major}.{minor}.{patch}.{rel}"
-        elif patch:
-            version = f"{major}.{minor}.{patch}"
-        else:
-            version = f"{major}.{minor}"
+        match m.group("major", "minor", "patch", "rel"):
+            case major, minor, patch, rel if patch and rel:
+                version = f"{major}.{minor}.{patch}.{rel}"
+            case major, minor, patch, _ if patch:
+                version = f"{major}.{minor}.{patch}"
+            case major, minor, _, _:
+                version = f"{major}.{minor}"
 
         amd_driver_versions.append(version)
 
