@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 18 17:37:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove virt- prefix from pr-helper
+
+-------------------------------------------------------------------
 Fri Sep 18 14:51:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the KubeVirt libguestfs-tools 1.9 BCI
