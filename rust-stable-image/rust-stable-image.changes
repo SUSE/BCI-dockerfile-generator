@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 18 16:44:07 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rust 1.98 for stable, 1.97 to oldstable
+
+-------------------------------------------------------------------
 Thu Jul 23 19:07:29 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - rust 1.97 for stable, 1.96 for oldstable
