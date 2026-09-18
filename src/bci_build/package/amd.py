@@ -1,3 +1,5 @@
+import json
+
 from jinja2 import Template
 
 from bci_build.container_attributes import Arch
@@ -14,6 +16,7 @@ from bci_build.package import generate_disk_size_constraints
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
+from bci_build.package.versions import AMD_DRIVER_JSON_PATH
 from bci_build.repomdparser import RpmPackage
 
 CUSTOM_END_TEMPLATE = Template(
@@ -254,14 +257,9 @@ def _get_packages(os_version: OsVersion):
     return packages
 
 
-_AMD_DRIVER_VERSIONS: list[str] = [
-    "31.40.1",
-    "31.30",
-    "31.20",
-    "31.10",
-    "30.30.4",
-    "30.20.1",
-]
+with open(AMD_DRIVER_JSON_PATH, "r") as f:
+    _AMD_DRIVER_VERSIONS = json.load(f)["supported"]
+
 
 AMD_CONTAINERS: list[AMDDriverBCI] = []
 
