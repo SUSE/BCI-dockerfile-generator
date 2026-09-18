@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 18 16:25:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove bashisms from entrypoint script
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
