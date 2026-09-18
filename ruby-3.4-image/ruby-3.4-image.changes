@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 18 17:00:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid bundler conflict
+
+-------------------------------------------------------------------
 Fri Sep 18 09:55:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - split into base/micro variants
