@@ -12,7 +12,6 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.versions import format_version
-from bci_build.package.versions import get_pkg_version
 from bci_build.registry import SUSERegistry
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
@@ -22,6 +21,8 @@ _KUBEVIRT_VERSIONS = (
     ("1.8", OsVersion.SL16_0),
     ("1.8", OsVersion.SL16_1),
     ("1.8", OsVersion.TUMBLEWEED),
+    ("1.9", OsVersion.SL16_0),
+    ("1.9", OsVersion.SL16_1),
     ("1.9", OsVersion.TUMBLEWEED),
 )
 
@@ -74,7 +75,6 @@ def _get_kubevirt_kwargs(
         if custom_service_pkg_name is None
         else custom_service_pkg_name
     )
-    kubevirt_pkg_version = get_pkg_version(_kubevirt_pkg(kubevirt_version), os_version)
     kubevirt_version_re = "%%kubevirt_ver%%"
     return {
         "name": f"virt-{service}",
@@ -82,7 +82,7 @@ def _get_kubevirt_kwargs(
         "package_name": f"kubevirt-{kubevirt_version}-image",
         "license": "Apache-2.0",
         "os_version": os_version,
-        "tag_version": format_version(kubevirt_pkg_version, ParseVersion.MINOR),
+        "tag_version": format_version(kubevirt_version, ParseVersion.MINOR),
         "version": kubevirt_version_re,
         "replacements_via_service": [
             Replacement(

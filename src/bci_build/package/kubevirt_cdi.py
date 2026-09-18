@@ -14,7 +14,6 @@ from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kubevirt import KubeVirtRegistrySL160
 from bci_build.package.kubevirt import KubeVirtRegistrySL161
 from bci_build.package.versions import format_version
-from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
@@ -23,6 +22,8 @@ _CDI_VERSIONS = (
     ("1.65", OsVersion.SL16_0),
     ("1.65", OsVersion.SL16_1),
     ("1.65", OsVersion.TUMBLEWEED),
+    ("1.66", OsVersion.SL16_0),
+    ("1.66", OsVersion.SL16_1),
     ("1.66", OsVersion.TUMBLEWEED),
 )
 
@@ -55,9 +56,8 @@ def _get_cdi_kwargs(
     package_list.append(service_pkg_name)
     package_list.sort()
 
-    cdi_pkg_version = get_pkg_version(_cdi_pkg(cdi_version), os_version)
     cdi_version_re = "%%cdi_ver%%"
-    tag_version = format_version(cdi_pkg_version, ParseVersion.MINOR)
+    tag_version = format_version(cdi_version, ParseVersion.MINOR)
     return {
         "name": f"cdi-{service}",
         "pretty_name": f"KubeVirt cdi-{service}",

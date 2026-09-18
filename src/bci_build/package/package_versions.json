@@ -8,20 +8,6 @@
         },
         "version_format": "minor"
     },
-    "containerized-data-importer1.65": {
-        "latest": {
-            "16.0": "1.65.0",
-            "16.1": "1.65.0",
-            "Tumbleweed": "1.65.0"
-        },
-        "version_format": "patch"
-    },
-    "containerized-data-importer1.66": {
-        "latest": {
-            "Tumbleweed": "1.66.1"
-        },
-        "version_format": "patch"
-    },
     "cosign": {
         "latest": {
             "16.0": "3.1",
@@ -166,20 +152,6 @@
         },
         "version_format": "release"
     },
-    "kubevirt1.8": {
-        "latest": {
-            "16.0": "1.8",
-            "16.1": "1.8",
-            "Tumbleweed": "1.8"
-        },
-        "version_format": "minor"
-    },
-    "kubevirt1.9": {
-        "latest": {
-            "Tumbleweed": "1.9"
-        },
-        "version_format": "minor"
-    },
     "mariadb": {
         "latest": {
             "16.0": "11.8",
@@ -239,12 +211,6 @@
             "16.1": "8.0",
             "7": "8.0",
             "Tumbleweed": "9.1"
-        },
-        "version_format": "minor"
-    },
-    "virt-template0.2": {
-        "latest": {
-            "Tumbleweed": "0.2"
         },
         "version_format": "minor"
     }
