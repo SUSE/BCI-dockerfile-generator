@@ -1,4 +1,4 @@
-# Ruby 3.4 Container Image
+# Ruby 3.4 development Container Image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -13,7 +13,7 @@
 To deploy an application, install dependencies, copy the sources, and configure the application's main script:
 
 ```Dockerfile
-FROM registry.suse.com/bci/ruby:3.4
+FROM registry.suse.com/bci/ruby:3.4-base
 
 # displays an error message if Gemfile and Gemfile.lock are not in sync
 RUN bundle config --global frozen 1
@@ -39,13 +39,13 @@ The example above assumes that there is a `Gemfile.lock` file in the application
 To generate a `Gemfile.lock` file, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/ruby:3.4 bundle lock
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/ruby:3.4-base bundle lock
 ```
 
 To run a single script inside a container, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/ruby:3.4 ruby script.rb
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/ruby:3.4-base ruby script.rb
 ```
 
 ## Encoding
