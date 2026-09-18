@@ -103,7 +103,6 @@ VIRT_TEMPLATE_CONTAINERS = [
     ApplicationStackContainer(**_get_virt_template_kwargs(service, variant))
     for variant in (
         VirtTemplateVariant("0.2", OsVersion.SL16_0),
-        VirtTemplateVariant("0.2", OsVersion.SL16_1),
         VirtTemplateVariant("0.2", OsVersion.TUMBLEWEED),
     )
     for service in ("apiserver", "controller")

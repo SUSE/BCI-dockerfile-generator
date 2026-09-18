@@ -19,10 +19,8 @@ from bci_build.util import ParseVersion
 KUBEVIRT_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 _KUBEVIRT_VERSIONS = (
     ("1.8", OsVersion.SL16_0),
-    ("1.8", OsVersion.SL16_1),
-    ("1.8", OsVersion.TUMBLEWEED),
     ("1.9", OsVersion.SL16_0),
-    ("1.9", OsVersion.SL16_1),
+    ("1.8", OsVersion.TUMBLEWEED),
     ("1.9", OsVersion.TUMBLEWEED),
 )
 
