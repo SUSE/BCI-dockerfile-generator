@@ -21,7 +21,6 @@ from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kubevirt import KubeVirtRegistrySL160
 from bci_build.package.versions import format_version
-from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
 
@@ -38,47 +37,33 @@ _UPSTREAM_BINARY = {"apiserver": "/apiserver", "controller": "/manager"}
 
 
 class VirtTemplateVariant(NamedTuple):
+    template_ver: str
     os_version: OsVersion
-    pkg: str  # RPM prefix, e.g. "virt-template0.2"
-    image: str  # OBS image package, e.g. "virt-template-0.2-image"
-    # only ONE minor per registry may claim :latest; older minors set False
-    latest: bool = True
-
-
-_VIRT_TEMPLATE_VARIANTS = (
-    VirtTemplateVariant(
-        OsVersion.SL16_0, "virt-template0.2", "virt-template-0.2-image"
-    ),
-    VirtTemplateVariant(
-        OsVersion.TUMBLEWEED, "virt-template0.2", "virt-template-0.2-image"
-    ),
-)
 
 
 def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dict:
     """Generate common kwargs for the virt-template containers."""
-    service_pkg_name = f"{variant.pkg}-{service}"
-    version = get_pkg_version(variant.pkg, variant.os_version)
+    pkg_name = f"virt-template{variant.template_ver}"
+    service_pkg_name = f"{pkg_name}-{service}"
     version_re = "%%virt_template_ver%%"
     return {
         "name": f"virt-template-{service}",
         "pretty_name": f"KubeVirt virt-template {service}",
-        "package_name": variant.image,
+        "package_name": f"virt-template-{variant.template_ver}-image",
         "license": "Apache-2.0",
         "os_version": variant.os_version,
-        "tag_version": format_version(version, ParseVersion.MINOR),
+        "tag_version": format_version(variant.template_ver, ParseVersion.MINOR),
         "version": version_re,
         "replacements_via_service": [
             Replacement(
                 version_re,
-                package_name=variant.pkg,
+                package_name=pkg_name,
                 parse_version=ParseVersion.PATCH,
             )
         ],
         "is_singleton_image": True,
         "is_latest": (
-            variant.latest
-            and variant.os_version in CAN_BE_LATEST_OS_VERSION
+            variant.os_version in CAN_BE_LATEST_OS_VERSION
             and variant.os_version.is_tumbleweed
         ),
         "build_flavor": service,
@@ -96,7 +81,9 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
         "package_list": sorted([service_pkg_name, "shadow"]),
         "entrypoint": [f"/usr/bin/virt-template-{service}"],
         "build_stage_custom_end": (
-            generate_package_version_check(service_pkg_name, version, use_target=True)
+            generate_package_version_check(
+                service_pkg_name, variant.template_ver, use_target=True
+            )
             + textwrap.dedent(f"""
             {DOCKERFILE_RUN} useradd -u {_VIRT_TEMPLATE_UID} --create-home -s /bin/bash virt-template
             """)
@@ -114,7 +101,11 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
 
 VIRT_TEMPLATE_CONTAINERS = [
     ApplicationStackContainer(**_get_virt_template_kwargs(service, variant))
-    for variant in _VIRT_TEMPLATE_VARIANTS
+    for variant in (
+        VirtTemplateVariant("0.2", OsVersion.SL16_0),
+        VirtTemplateVariant("0.2", OsVersion.SL16_1),
+        VirtTemplateVariant("0.2", OsVersion.TUMBLEWEED),
+    )
     for service in ("apiserver", "controller")
 ]
 
