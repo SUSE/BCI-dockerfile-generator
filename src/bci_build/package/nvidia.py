@@ -61,6 +61,21 @@ _NVIDIA_REPOS = {
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
         ),
     ],
+    # TODO: There are no 16.1 repos yet, but 16.0 is compatible.
+    OsVersion.SL16_1: [
+        ThirdPartyRepo(
+            name="cuda-sles15-x86_64",
+            arch=Arch.X86_64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
+        ),
+        ThirdPartyRepo(
+            name="cuda-sles15-sbsa",
+            arch=Arch.AARCH64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
+        ),
+    ],
 }
 
 # we need to build a container for each kernel variant
@@ -70,6 +85,8 @@ _NVIDIA_OS_VERSIONS: list[tuple] = [
     (OsVersion.SP7, "64kb", [Arch.AARCH64]),
     (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
     (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_1, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_1, "64kb", [Arch.AARCH64]),
 ]
 
 CUSTOM_END_TEMPLATE = Template(
@@ -652,7 +669,7 @@ def _get_built_kernel_version(
 
 def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_arch):
     match os_version:
-        case OsVersion.SL16_0:
+        case OsVersion.SL16_0 | OsVersion.SL16_1:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
 
@@ -740,7 +757,7 @@ def _get_kernel_ga_rpms(
     built_kernel: str | None = None,
 ):
     match os_version:
-        case OsVersion.SL16_0:
+        case OsVersion.SL16_0 | OsVersion.SL16_1:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
             if built_kernel:
@@ -901,6 +918,10 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         if os_version == OsVersion.SL16_0 and branch < 595:
             continue
 
+        # TODO: SLE 16.1 has only 610 for now
+        if os_version == OsVersion.SL16_1 and branch != 610:
+            continue
+
         if os_version not in _NVIDIA_REPOS:
             raise ValueError(f"Missing CUDA repositories for {os_version}")
 
@@ -911,10 +932,18 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
             ver, os_version, kernel_variant, exclusive_arch
         )
 
+        # HACK: Remove this once 16.1 is GA
+        # We currently use the packages from 16.0
+        # Kernel version must be picked from 16.0
+        if os_version == OsVersion.SL16_1:
+            os_version_kernel = OsVersion.SL16_0
+        else:
+            os_version_kernel = os_version
+
         # these tags are expected when the container image is precompiled
         # the tag is <driver-branch>-<kernel-version>-<kernel-variant>-<os-tag>
         # e.g. 590-6.4.0-150700.53.6-default-sles15.7
-        for kernel_version in _get_kernel_versions(kernel_variant, os_version):
+        for kernel_version in _get_kernel_versions(kernel_variant, os_version_kernel):
             if built_kernel and rpm.compare_versions(kernel_version, built_kernel) < 0:
                 continue
 
