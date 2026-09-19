@@ -8,7 +8,6 @@ from typing import Literal
 from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import _BASH_SET
@@ -173,11 +172,8 @@ def _create_php_bci(
         ),
         package_name=f"{str(php_variant).lower()}{php_version}-image",
         additional_versions=(
-            (
-                [str(php_version)]
-                if not is_micro and os_version in CAN_BE_LATEST_SLFO_OS_VERSION
-                else []
-            )
+            # plain version tag only on SP7 or tumbleweed
+            ([str(php_version)] if not is_micro and os_version.is_tumbleweed else [])
             + ([f"{php_version}-{os_version.dist_id}"] if os_version.dist_id else [])
         ),
         os_version=os_version,
