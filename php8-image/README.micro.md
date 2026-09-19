@@ -15,7 +15,7 @@ intended to be used to execute PHP scripts or PHP commands directly.
 
 To launch an interactive shell in a container, use the following command:
 ```ShellSession
-$ podman run --rm -it registry.suse.com/bci/php:8
+$ podman run --rm -it registry.suse.com/bci/php:8-micro
 Interactive mode enabled
 
 php > echo 5+8;
@@ -29,7 +29,7 @@ $ cat /tmp/test.php
 <?php
 echo 5+8
 $ podman run --rm -it -v /tmp/test.php:/src/test.php:Z \
-    registry.suse.com/bci/php:8 -f /src/test.php
+    registry.suse.com/bci/php:8-micro -f /src/test.php
 13
 ```
 
@@ -40,7 +40,7 @@ extensions are named using the `php8-$extension_name` scheme,
 and they can be installed as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php:8
+FROM registry.suse.com/bci/php:8-micro
 
 RUN zypper -n install php8-gd php8-intl
 ```
@@ -52,7 +52,7 @@ compatibility reasons and can be used similar to the script from PHP DockerHub
 image:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php:8
+FROM registry.suse.com/bci/php:8-micro
 
 RUN docker-php-ext-install gd intl
 ```
@@ -66,7 +66,7 @@ guarantee of interoperability with this image and without any official support.
 Install PECL extensions as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php:8
+FROM registry.suse.com/bci/php:8-micro
 
 RUN set -euo pipefail; \
     zypper -n install $PHPIZE_DEPS php8-pecl; \
