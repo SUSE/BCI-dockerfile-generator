@@ -61,7 +61,6 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
                 parse_version=ParseVersion.PATCH,
             )
         ],
-        "is_singleton_image": True,
         "is_latest": (
             variant.os_version in CAN_BE_LATEST_OS_VERSION
             and variant.os_version.is_tumbleweed
