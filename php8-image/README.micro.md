@@ -1,4 +1,4 @@
-# The PHP Apache 8 container image
+# The PHP 8 container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
@@ -8,34 +8,27 @@ server-side Apache2 module or CGI scripts.
 
 ## How to use the image
 
-The image ships with the Apache web server and the `mod_php` module.
+This image ships with the PHP interpreter as the entrypoint. The image is
+intended to be used to execute PHP scripts or PHP commands directly.
 
-To deploy an application, copy its sources into the htdocs folder
-`/srv/www/htdocs` (this directory is the `WORKDIR` of the container image):
+To launch an interactive shell in a container, use the following command:
+```ShellSession
+$ podman run --rm -it registry.opensuse.org/opensuse/bci/php:8-micro
+Interactive mode enabled
 
-```Dockerfile
-FROM registry.opensuse.org/opensuse/bci/php-apache:8
-
-RUN set -eux; \
-    zypper -n install $my_dependencies; \
-    # additional setup steps
-
-# Copy the app into the Apache2 document root
-COPY app/ .
+php > echo 5+8;
+13
 ```
 
-Build the image and run the resulting container:
-
+You can also use the container instead of the PHP
+interpreter to execute PHP scripts:
 ```ShellSession
-$ buildah bud -t my-app .
-$ podman run -d -p 8080:80 my-app
-```
-
-Alternatively, you can mount the application's source code directly into the
-container:
-
-```ShellSession
-$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z registry.opensuse.org/opensuse/bci/php-apache:8
+$ cat /tmp/test.php
+<?php
+echo 5+8
+$ podman run --rm -it -v /tmp/test.php:/src/test.php:Z \
+    registry.opensuse.org/opensuse/bci/php:8-micro -f /src/test.php
+13
 ```
 
 ## How to install PHP extensions
@@ -45,7 +38,7 @@ extensions are named using the `php8-$extension_name` scheme,
 and they can be installed as follows:
 
 ```Dockerfile
-FROM registry.opensuse.org/opensuse/bci/php-apache:8
+FROM registry.opensuse.org/opensuse/bci/php:8-micro
 
 RUN zypper -n install php8-gd php8-intl
 ```
@@ -57,7 +50,7 @@ compatibility reasons and can be used similar to the script from PHP DockerHub
 image:
 
 ```Dockerfile
-FROM registry.opensuse.org/opensuse/bci/php-apache:8
+FROM registry.opensuse.org/opensuse/bci/php:8-micro
 
 RUN docker-php-ext-install gd intl
 ```
@@ -71,7 +64,7 @@ guarantee of interoperability with this image and without any official support.
 Install PECL extensions as follows:
 
 ```Dockerfile
-FROM registry.opensuse.org/opensuse/bci/php-apache:8
+FROM registry.opensuse.org/opensuse/bci/php:8-micro
 
 RUN set -euo pipefail; \
     zypper -n install $PHPIZE_DEPS php8-pecl; \
