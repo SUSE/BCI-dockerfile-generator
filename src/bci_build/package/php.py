@@ -5,6 +5,7 @@ import textwrap
 from itertools import product
 from typing import Literal
 
+from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
@@ -74,6 +75,8 @@ def _create_php_bci(
         COPY docker-php-source docker-php-entrypoint docker-php-ext-configure docker-php-ext-enable docker-php-ext-install /target/usr/local/bin/
         RUN chmod +x /target/usr/local/bin/docker-php-*
     """)
+    build_stage_custom_end = None
+    exposes_ports = None
 
     if php_variant == PhpVariant.apache:
         extra_pkgs = [f"apache2-mod_php{php_version}"]
@@ -83,6 +86,7 @@ def _create_php_bci(
         # Tumbleweed apache has dropped envvars
         if os_version != OsVersion.TUMBLEWEED:
             extra_env["APACHE_ENVVARS"] = "/usr/sbin/envvars"
+        exposes_ports = [TCP(80)]
         cmd = ["apache2-foreground"]
         build_stage_custom_end = (
             common_end
@@ -91,23 +95,23 @@ def _create_php_bci(
                 if os_version == OsVersion.TUMBLEWEED
                 else ""
             )
-            + textwrap.dedent("""
+            + textwrap.dedent(f"""
             # create our own apache2-foreground from the systemd startup script
-            RUN sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /target/usr/sbin/start_apache2 > /target/usr/local/bin/apache2-foreground
-            RUN chmod +x /target/usr/local/bin/apache2-foreground
+            {DOCKERFILE_RUN} sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /target/usr/sbin/start_apache2 > /target/usr/local/bin/apache2-foreground
+            {DOCKERFILE_RUN} chmod +x /target/usr/local/bin/apache2-foreground
 
             # apache fails to start without its log folder
-            RUN mkdir -p /target/var/log/apache2""")
+            {DOCKERFILE_RUN} install -d -m 0755 /target/var/log/apache2""")
         )
 
         custom_end = textwrap.dedent("""
             STOPSIGNAL SIGWINCH
-            WORKDIR /srv/www/htdocs
-            EXPOSE 80""")
+            WORKDIR /srv/www/htdocs""")
     elif php_variant == PhpVariant.fpm:
         extra_pkgs = [f"php{php_version}-fpm"]
         extra_env = {}
         cmd = ["php-fpm"]
+        exposes_ports = [TCP(9000)]
 
         build_stage_custom_end = common_end + textwrap.dedent(rf"""
             {DOCKERFILE_RUN} cd /target/etc/php{php_version}/fpm/; \
@@ -139,8 +143,6 @@ def _create_php_bci(
             # Override stop signal to stop process gracefully
             # https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
             STOPSIGNAL SIGQUIT
-
-            EXPOSE 9000
             """)
     else:
         # required for the interactive shell to work
@@ -201,6 +203,7 @@ def _create_php_bci(
         cmd=cmd,
         support_level=SupportLevel.L3,
         entrypoint=["docker-php-entrypoint"],
+        exposes_ports=exposes_ports,
         env={
             "PHP_VERSION": "%%php_version%%",
             "PHP_INI_DIR": f"/etc/php{php_version}/",
