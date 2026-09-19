@@ -1,4 +1,4 @@
-# The PHP FPM 8 container image
+# The PHP Apache 8 container image
 
 ![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -10,80 +10,35 @@ server-side Apache2 module or CGI scripts.
 
 ## How to use the image
 
-The image contains [PHP-FPM](https://php-fpm.org/), a FastCGI implementation
-for PHP that serves content via the FastCGI protocol and not via HTTP(S). This
-requires a reverse proxy that can handle FastCGI and can serve content via
-HTTP(s).
+The image ships with the Apache web server and the `mod_php` module.
 
-**Caution:** FastCGI does not offer any protection or access control, so the
-open socket must be protected via network separation. This means that the
-PHP-FPM container must run in a separate private network or a pod, and its
-socket must be exposed to the reverse proxy only.
-
-To deploy an application in the PHP-FPM container, copy the application into
+To deploy an application, copy its sources into the htdocs folder
 `/srv/www/htdocs` (this directory is the `WORKDIR` of the container image):
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-fpm:8
+FROM registry.suse.com/bci/php-apache:8-micro
 
 RUN set -eux; \
     zypper -n install $my_dependencies; \
     # additional setup steps
 
-# Copy the app into the PHP-FPM document root
+# Copy the app into the Apache2 document root
 COPY app/ .
 ```
 
-To configure NGINX as a reverse proxy, add the following to the
-`server` section in `/etc/nginx/nginx.conf`:
-```
-        location ~ \.php$ {
-           include                   fastcgi_params;
-           fastcgi_index             index.php;
-           root           /srv/www/htdocs/;
-           fastcgi_pass   127.0.0.1:9000;
-           fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-        }
-```
+Build the image and run the resulting container:
 
-Additionally, create `/etc/nginx/fastcgi_params` with the following contents:
-```
-fastcgi_param  QUERY_STRING       $query_string;
-fastcgi_param  REQUEST_METHOD     $request_method;
-fastcgi_param  CONTENT_TYPE       $content_type;
-fastcgi_param  CONTENT_LENGTH     $content_length;
-
-fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-fastcgi_param  REQUEST_URI        $request_uri;
-fastcgi_param  DOCUMENT_URI       $document_uri;
-fastcgi_param  DOCUMENT_ROOT      $document_root;
-fastcgi_param  SERVER_PROTOCOL    $server_protocol;
-fastcgi_param  REQUEST_SCHEME     $scheme;
-fastcgi_param  HTTPS              $https if_not_empty;
-
-fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
-fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
-
-fastcgi_param  REMOTE_ADDR        $remote_addr;
-fastcgi_param  REMOTE_PORT        $remote_port;
-fastcgi_param  SERVER_ADDR        $server_addr;
-fastcgi_param  SERVER_PORT        $server_port;
-fastcgi_param  SERVER_NAME        $server_name;
-
-# PHP only, required if PHP was built with --enable-force-cgi-redirect
-fastcgi_param  REDIRECT_STATUS    200;
-```
-
-If you are using a NGINX container with the above changes, you can
-use a Podman pod to deploy the application:
 ```ShellSession
-$ podman pod create --name fpm -p 80:8080
-$ podman run -d --pod fpm name-of-my-fpm-container
-$ podman run -d --pod fpm name-of-my-nginx-container
+$ buildah bud -t my-app .
+$ podman run -d -p 8080:80 my-app
 ```
 
-The website is served on port 8080, and the FastCGI application is not
-accessible from outside of the `fpm` pod.
+Alternatively, you can mount the application's source code directly into the
+container:
+
+```ShellSession
+$ podman run -d -p 8080:80 -v ./app/:/srv/www/htdocs:Z registry.suse.com/bci/php-apache:8-micro
+```
 
 ## How to install PHP extensions
 
@@ -92,7 +47,7 @@ extensions are named using the `php8-$extension_name` scheme,
 and they can be installed as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-fpm:8
+FROM registry.suse.com/bci/php-apache:8-micro
 
 RUN zypper -n install php8-gd php8-intl
 ```
@@ -104,7 +59,7 @@ compatibility reasons and can be used similar to the script from PHP DockerHub
 image:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-fpm:8
+FROM registry.suse.com/bci/php-apache:8-micro
 
 RUN docker-php-ext-install gd intl
 ```
@@ -118,7 +73,7 @@ guarantee of interoperability with this image and without any official support.
 Install PECL extensions as follows:
 
 ```Dockerfile
-FROM registry.suse.com/bci/php-fpm:8
+FROM registry.suse.com/bci/php-apache:8-micro
 
 RUN set -euo pipefail; \
     zypper -n install $PHPIZE_DEPS php8-pecl; \
