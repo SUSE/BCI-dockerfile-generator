@@ -19,7 +19,7 @@
 #!BuildTag: suse/sles/16.0/virt-template-controller:%%virt_template_ver%%
 #!BuildTag: suse/sles/16.0/virt-template-controller:0.2
 #!BcntSyncTag: virt-template-0.2-image
-#!BuildName: suse-sles-16.0-virt-template-controller
+#!BuildName: suse-sles-16.0-virt-template-controller-0.2
 #!BuildVersion: 16.0.0.2
 #!FilterBaseContainerPkgs
 FROM registry.suse.com/bci/bci-micro:16.0 AS target
