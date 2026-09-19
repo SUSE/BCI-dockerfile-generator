@@ -1,3 +1,5 @@
+"""PHP BCI containers"""
+
 import enum
 import textwrap
 from itertools import product
@@ -18,6 +20,8 @@ from bci_build.replacement import Replacement
 
 @enum.unique
 class PhpVariant(enum.Enum):
+    """Supported PHP variant configurations."""
+
     cli = "PHP"
     apache = "PHP-Apache"
     fpm = "PHP-FPM"
@@ -27,6 +31,9 @@ class PhpVariant(enum.Enum):
 
 
 def _php_entrypoint(variant: PhpVariant) -> str:
+    """Generate the contents of the `docker-php-entrypoint` script for the
+    given PHP variant.
+    """
     cmd: str = {
         PhpVariant.cli: "php",
         PhpVariant.apache: "apache2-foreground",
@@ -57,8 +64,11 @@ def _create_php_bci(
     os_version: OsVersion,
     php_variant: PhpVariant,
     php_version: _PHP_VERSION_T,
-    build_flavor: str = None,
+    build_flavor: str | None = None,
 ) -> DevelopmentContainer:
+    """Create a PHP DevelopmentContainer with the specified variant, version,
+    and optional build flavor (such as "base" or "micro").
+    """
 
     assert php_version in _PHP_VERSIONS, f"PHP version {php_version} is not supported"
     common_end = textwrap.dedent("""
