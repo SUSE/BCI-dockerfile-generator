@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Sep 19 11:31:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add version to buildname
+
+-------------------------------------------------------------------
 Fri Sep 18 14:51:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the KubeVirt virt-template apiserver 0.2 BCI
