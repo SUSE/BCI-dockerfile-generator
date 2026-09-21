@@ -51,7 +51,11 @@ def _get_node_kwargs(
         ),
         "supported_until": _NODEJS_SUPPORT_ENDS.get(ver),
         "package_name": f"nodejs-{ver}-image",
-        "pretty_name": f"Node.js {ver} development",
+        "pretty_name": (
+            f"Node.js {ver} {build_flavor} runtime"
+            if build_flavor == "micro"
+            else f"Node.js {ver} development"
+        ),
         "from_target_image": (
             generate_from_image_tag(os_version, "bci-micro")
             if build_flavor == "micro"

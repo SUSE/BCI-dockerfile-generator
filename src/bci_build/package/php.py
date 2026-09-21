@@ -218,11 +218,11 @@ def _create_php_bci(
 
 extensions=()
 
-for ext in $@; do
+for ext in "$@"; do
     [[ "$ext" =~ ^- ]] || extensions+=("php{php_version}-$ext")
 done
 
-zypper -n install ${{extensions[*]}}
+zypper -n install "${{extensions[@]}}"
 """,
         },
         custom_end=custom_end,
