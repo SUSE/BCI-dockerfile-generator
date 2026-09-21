@@ -169,6 +169,8 @@ def _get_libguestfs_kwargs(kubevirt_version: str, os_version: OsVersion) -> dict
             qemu-img convert -c -O qcow2 root root.qcow2 && \\
             mv root.qcow2 root && \\
             rm -rf /var/tmp/.guestfs-*
+        # uninstall supermin and dependencies
+        {DOCKERFILE_RUN} rpm --root /target --nodeps -e zypper rpm libzypp libsolv-tools-base supermin
         """)
 
     kwargs["custom_end"] += textwrap.dedent(f"""
