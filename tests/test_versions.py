@@ -220,3 +220,20 @@ def test_format_version():
     assert format_version(v, ParseVersion.PATCH_UPDATE) == "6.4.0.0"
     assert format_version(v, ParseVersion.RELEASE) == "6.4.0-150700.53.31"
     assert format_version(v, ParseVersion.RELEASE_INCREMENT) == "6.4.0-150700.53.31.1"
+
+
+@patch("bci_build.package.versions.requests.get")
+def test_fetch_amd_drivers_versions(mock_get):
+    from bci_build.package.versions import fetch_amd_drivers_versions
+
+    mock_get.return_value.text = """
+    <a href="22.20/">22.20/</a>
+    <a href="30.10/">30.10/</a>
+    <a href="31.40.1/">31.40.1/</a>
+    <a href="31.50/">31.50/</a>
+    <a href="31.50.2.3/">31.50.2.3/</a>
+    """
+    mock_get.return_value.status_code = 200
+
+    versions = fetch_amd_drivers_versions()
+    assert versions == ["31.50.2.3", "31.50", "31.40.1", "30.10"]
