@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 21 16:10:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- quote arguments
+
+-------------------------------------------------------------------
 Sat Sep 19 12:33:52 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - introduce base and micro flavors for php
