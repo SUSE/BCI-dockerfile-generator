@@ -23,7 +23,6 @@ def _get_ruby_kwargs(
     build_flavor: str | None = None,
 ):
     ruby = f"ruby{ruby_version}"
-    ruby_major = ruby_version.split(".")[0]
     is_micro = build_flavor == "micro"
 
     package_list = (
@@ -75,12 +74,6 @@ def _get_ruby_kwargs(
         "version": ruby_version,
         "build_flavor": build_flavor,
         "tag_version": ruby_version,
-        "additional_versions": (
-            []
-            if is_micro
-            else [ruby_major]
-            + ([f"{ruby_version}-{os_version.dist_id}"] if os_version.dist_id else [])
-        ),
         "is_latest": (
             not is_micro
             and os_version in CAN_BE_LATEST_OS_VERSION
@@ -137,6 +130,7 @@ def _get_ruby_kwargs(
 RUBY_2_5_CONTAINERS = [
     DevelopmentContainer(
         **_get_ruby_kwargs("2.5", OsVersion.SP7),
+        additional_versions=["2", f"2.5-{OsVersion.SP7.dist_id}"],
         support_level=SupportLevel.L3,
     ),
 ]
@@ -144,6 +138,7 @@ RUBY_2_5_CONTAINERS = [
 RUBY_3_4_CONTAINERS = [
     DevelopmentContainer(
         **_get_ruby_kwargs("3.4", OsVersion.SP7),
+        additional_versions=["3", f"3.4-{OsVersion.SP7.dist_id}"],
         support_level=SupportLevel.L3,
     )
 ] + [
@@ -157,7 +152,10 @@ RUBY_3_4_CONTAINERS = [
 ]
 
 RUBY_4_0_CONTAINERS = [
-    DevelopmentContainer(**_get_ruby_kwargs("4.0", os_version, flavor))
+    DevelopmentContainer(
+        **_get_ruby_kwargs("4.0", os_version, flavor),
+        additional_versions=["4"],
+    )
     for os_version, flavor in product((OsVersion.TUMBLEWEED,), ("base", "micro"))
 ]
 
