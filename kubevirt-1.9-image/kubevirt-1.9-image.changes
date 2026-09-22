@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 22 10:24:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove supermin and dependencies
+
+-------------------------------------------------------------------
 Fri Sep 18 17:37:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - remove virt- prefix from pr-helper
