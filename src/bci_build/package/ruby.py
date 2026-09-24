@@ -26,6 +26,15 @@ def _get_ruby_kwargs(
     ruby_major = ruby_version.split(".")[0]
     is_micro = build_flavor == "micro"
 
+    is_latest = (
+        not is_micro
+        and (os_version in CAN_BE_LATEST_OS_VERSION or os_version.is_tumbleweed)
+        and (
+            (ruby_version == "3.4" and not os_version.is_tumbleweed)
+            or (ruby_version == "4.0" and os_version.is_tumbleweed)
+        )
+    )
+
     package_list = (
         [
             ruby,
@@ -76,19 +85,14 @@ def _get_ruby_kwargs(
         "build_flavor": build_flavor,
         "tag_version": ruby_version,
         "additional_versions": (
-            []
-            if is_micro
-            else [ruby_major]
+            (
+                [ruby_major]
+                if is_latest or (ruby_major == "2" and os_version.is_sle15)
+                else []
+            )
             + ([f"{ruby_version}-{os_version.dist_id}"] if os_version.dist_id else [])
         ),
-        "is_latest": (
-            not is_micro
-            and os_version in CAN_BE_LATEST_OS_VERSION
-            and (
-                (ruby_version == "3.4" and not os_version.is_tumbleweed)
-                or (ruby_version == "4.0" and os_version.is_tumbleweed)
-            )
-        ),
+        "is_latest": is_latest,
         "from_target_image": (
             generate_from_image_tag(os_version, "bci-micro") if is_micro else None
         ),
@@ -136,8 +140,7 @@ def _get_ruby_kwargs(
 
 RUBY_2_5_CONTAINERS = [
     DevelopmentContainer(
-        **_get_ruby_kwargs("2.5", OsVersion.SP7),
-        support_level=SupportLevel.L3,
+        **_get_ruby_kwargs("2.5", OsVersion.SP7), support_level=SupportLevel.L3
     ),
 ]
 
