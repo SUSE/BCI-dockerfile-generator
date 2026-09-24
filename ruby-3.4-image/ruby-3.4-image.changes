@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 24 08:17:29 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove major version tag (this is on sp7 atm)
+
+-------------------------------------------------------------------
 Tue Sep 15 17:40:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Split the image into base and micro variants
