@@ -18,6 +18,17 @@ for cryptographic operations, if available at runtime.
 Therefore, you can use FIPS 140-2/140-3 validated routines, provided by the OpenSSL
 library, for cryptographic operations in the container environment.
 
+### Migrating from Go-openssl to the native Go FIPS 140-3 cryptographic module
+
+Go binaries can natively operate in a mode that facilitates
+[FIPS 140-3 compliance](https://go.dev/doc/security/fips140).
+
+Starting with Go 1.27, the Go-openssl variant—which routes cryptographic
+operations through OpenSSL—will no longer be supported in SLE BCI.
+
+To maintain compatibility with Go-openssl, use the Go container image and during
+build time set `GOFIPS140` to `certified` or set `fips140=on` during runtime in `GODEBUG`.
+
 
 ## Usage
 We recommend using the Go image as a build environment. Thus,
