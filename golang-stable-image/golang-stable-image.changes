@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 24 14:44:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add migration instructions
+
+-------------------------------------------------------------------
 Thu Sep  3 11:23:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - README update explaining native FIPS mode settings

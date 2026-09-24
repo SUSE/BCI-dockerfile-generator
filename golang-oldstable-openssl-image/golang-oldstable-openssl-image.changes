@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 24 14:44:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add migration instructions
+
+-------------------------------------------------------------------
 Mon Aug 24 15:03:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - install race also for riscv64
