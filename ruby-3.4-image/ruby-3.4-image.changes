@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 24 08:17:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove major version tag (this is on sp7 atm)
+
+-------------------------------------------------------------------
 Fri Sep 18 17:00:12 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - avoid bundler conflict
