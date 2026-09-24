@@ -290,6 +290,9 @@ class BaseContainerImage(abc.ABC):
     #: Set OBS flag to disable filelist generation in SBOMs to avoid upload limits
     obs_disable_sbom_filelists: bool = False
 
+    #: Flag to disable the container support installation
+    obs_disable_container_support: bool = False
+
     #: Optional release counter that will be used in ``#!BuildRelease``
     #: magic comment to ensure that versions are sequentially increasing.
     #: In cases where containers switch the base OS the counter resets and
@@ -658,6 +661,14 @@ exit 0
             return f"FROM {self.dockerfile_from_target_ref} AS target\nFROM {self._from_image} AS builder"
 
         return f"FROM {self._from_image}"
+
+    @property
+    def disable_obs_container_support(self) -> bool:
+        return (
+            self.obs_disable_container_support
+            or "bci-nano" in self.dockerfile_from_target_ref
+            or "scratch" in self.dockerfile_from_target_ref
+        )
 
     @property
     def kiwi_derived_from_entry(self) -> str:
