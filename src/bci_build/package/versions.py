@@ -159,6 +159,9 @@ def format_version(package_version: str, version_format: ParseVersion) -> str:
     1.2.0
 
     """
+    if version_format == ParseVersion.AS_IS:
+        return package_version
+
     if "-" in package_version:
         base, rel = package_version.rsplit("-", 1)
         release, build = rel.rsplit(".", 1)
