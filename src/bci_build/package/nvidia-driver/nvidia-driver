@@ -177,7 +177,7 @@ _load_driver() {
         if [ -d "/opt/lib/firmware/nvidia/${DRIVER_VERSION}" ]; then
             rm -rf "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
             mkdir -p "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
-            cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/gsp_*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
+            cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
         fi
     fi
 
