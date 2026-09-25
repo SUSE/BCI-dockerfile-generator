@@ -1,0 +1,16 @@
+<services>
+  <service mode="buildtime" name="docker_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
+  <service mode="buildtime" name="replace_using_package_version">
+    <param name="file">Dockerfile.driver-615</param>
+    <param name="regex">%%bind_major_minor_patch%%</param>
+    <param name="package">kernel-64kb</param>
+    <param name="parse-version">release</param>
+  </service>
+  <service mode="buildtime" name="replace_using_package_version">
+    <param name="file">Dockerfile.driver-615-64kb</param>
+    <param name="regex">%%bind_major_minor_patch%%</param>
+    <param name="package">kernel-64kb</param>
+    <param name="parse-version">release</param>
+  </service>
+</services>
