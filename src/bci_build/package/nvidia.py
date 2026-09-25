@@ -113,7 +113,7 @@ FROM nvidia-driver-builder AS open-driver-builder
 {% else %}
 {{ DOCKERFILE_RUN }} mkdir -p /opt/lib/firmware && cp -rvfx /usr/lib/firmware/* /opt/lib/firmware/
 {%- endif %}
-
+{% if not skip_closed_driver_stage %}
 FROM nvidia-driver-builder AS closed-driver-builder
 
 {%- for arch in image.exclusive_arch %}
@@ -135,13 +135,15 @@ FROM nvidia-driver-builder AS closed-driver-builder
         dkms autoinstall -k $(basename /lib/modules/*-{{ image.kernel_variant }}); \\
     fi
 {{ DOCKERFILE_RUN }} mkdir -p /opt/proprietary && cp -rvfx /lib/modules/*/updates/*.ko* /opt/proprietary/
-
+{% endif %}
 FROM nvidia-driver-builder AS builder
 
 COPY --from=open-driver-builder /usr/share/nvidia-driver-assistant/supported-gpus/supported-gpus.json /target/usr/share/nvidia-driver-assistant/supported-gpus/supported-gpus.json
 COPY --from=open-driver-builder /opt/lib /target/opt/lib
 COPY --from=open-driver-builder /opt/open /target/opt/open
+{%- if not skip_closed_driver_stage %}
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
+{%- endif %}
 
 {%- for arch in image.exclusive_arch %}
 {% with pkgs=get_target_packages_for_arch(arch) -%}
@@ -177,12 +179,19 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         self,
         open_drivers_package_list: list[ThirdPartyPackage],
         closed_drivers_package_list: list[ThirdPartyPackage],
+        branch: int,
         kernel_variant: str,
         **kwargs,
     ):
         self.open_drivers_package_list = open_drivers_package_list
         self.closed_drivers_package_list = closed_drivers_package_list
+        self.branch = branch
         self.kernel_variant = kernel_variant
+
+        if self.branch >= 615 and len(self.closed_drivers_package_list) > 0:
+            raise ValueError(
+                f"The proprietary driver does not exists for this version ({self.branch})"
+            )
 
         third_party_package_list = kwargs.pop("third_party_package_list", [])
         third_party_package_list = sorted(
@@ -352,6 +361,7 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             image=self,
             packages=pkgs,
             DOCKERFILE_RUN=DOCKERFILE_RUN,
+            skip_closed_driver_stage=self.branch >= 615,
             get_open_packages_for_arch=lambda arch: [
                 pkg
                 for pkg in pkgs
@@ -442,6 +452,10 @@ def _get_closed_drivers_packages(
 ) -> list[ThirdPartyPackage]:
     """Select the correct closed driver package for each version."""
     driver_branch = _get_driver_branch(driver_version)
+
+    # 615 dropped support for the proprietary driver
+    if driver_branch >= 615:
+        return []
 
     if driver_branch >= 590:
         return [
@@ -667,6 +681,11 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "610.57.04_k6.12.0_160000.37"
                     release = "160000.1.1"
+                case "615.71.09":
+                    package = "patchinfo.20260918055222633062.90520737308617"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "615.71.09_k6.12.0_160000.37"
+                    release = "160000.2.1"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -686,6 +705,11 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "610.57.04_k6.4.0_150700.53.78"
                     release = "150700.16.19.1"
+                case "615.71.09":
+                    package = "nvidia-open-driver-G07-signed.46601:cuda"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "615.71.09_k6.4.0_150700.53.78"
+                    release = "150700.16.22.1"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -929,6 +953,7 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
             NvidiaDriverBCI(
                 os_version=os_version,
                 version=ver,
+                branch=branch,
                 kernel_variant=kernel_variant,
                 tag_version=branch if is_default else f"{branch}-{kernel_variant}",
                 additional_versions=kernel_versions,
