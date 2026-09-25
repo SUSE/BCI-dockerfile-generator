@@ -30,7 +30,9 @@ from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.package.versions import NVIDIA_DRIVER_JSON_PATH
 from bci_build.package.versions import get_all_pkg_version
+from bci_build.replacement import Replacement
 from bci_build.repomdparser import RpmPackage
+from bci_build.util import ParseVersion
 
 _NVIDIA_REPOS = {
     OsVersion.SP7: [
@@ -49,19 +51,40 @@ _NVIDIA_REPOS = {
     ],
     OsVersion.SL16_0: [
         ThirdPartyRepo(
-            name="cuda-sles15-x86_64",
+            name="cuda-sles16-x86_64",
             arch=Arch.X86_64,
             url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
         ),
         ThirdPartyRepo(
-            name="cuda-sles15-sbsa",
+            name="cuda-sles16-sbsa",
+            arch=Arch.AARCH64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
+        ),
+    ],
+    # TODO: Use 16.0 repository as 16.1 is not yet available
+    # This works as longs as the KMP driver is from 16.1
+    OsVersion.SL16_1: [
+        ThirdPartyRepo(
+            name="cuda-sles16-x86_64",
+            arch=Arch.X86_64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
+        ),
+        ThirdPartyRepo(
+            name="cuda-sles16-sbsa",
             arch=Arch.AARCH64,
             url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
         ),
     ],
 }
+
+_NVIDIA_ROLLING_OS_VERSIONS: list[tuple] = [
+    (OsVersion.SL16_1, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_1, "64kb", [Arch.AARCH64]),
+]
 
 # we need to build a container for each kernel variant
 # azure is skipped for now because the kABI is not stable
@@ -648,7 +671,13 @@ def _get_built_kernel_version(
     exclusive_arch: list[Arch],
 ) -> str | None:
     """Find the kernel version used to build the nvidia-kmp driver for branches >= 595."""
+    # TODO: 16.1 is using the latest kmp
+    # With GA we can use GA packages
+    if os_version == OsVersion.SL16_1:
+        return None
+
     driver_branch = _get_driver_branch(driver_version)
+
     if driver_branch < 595:
         return None
 
@@ -666,6 +695,8 @@ def _get_built_kernel_version(
 
 def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_arch):
     match os_version:
+        case OsVersion.SL16_1:
+            return []
         case OsVersion.SL16_0:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
@@ -764,6 +795,8 @@ def _get_kernel_ga_rpms(
     built_kernel: str | None = None,
 ):
     match os_version:
+        case OsVersion.SL16_1:
+            return []
         case OsVersion.SL16_0:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
@@ -986,7 +1019,7 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 env={
                     "DRIVER_VERSION": ver,
                     "DRIVER_TYPE": "passthrough",
-                    "DRIVER_BRANCH": str(_get_driver_branch(ver)),
+                    "DRIVER_BRANCH": str(branch),
                     "VGPU_LICENSE_SERVER_TYPE": "NLS",
                     "DISABLE_VGPU_VERSION_CHECK": "true",
                     "NVIDIA_VISIBLE_DEVICES": "void",
@@ -994,6 +1027,82 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 },
             )
         )
+
+
+for os_version, kernel_variant, exclusive_arch in _NVIDIA_ROLLING_OS_VERSIONS:
+    if os_version not in _NVIDIA_REPOS:
+        raise ValueError(f"Missing CUDA repositories for {os_version}")
+
+    driver_version = _NVIDIA_DRIVER_VERSIONS[0]
+    branch = _get_driver_branch(driver_version)
+    is_default = kernel_variant == "default"
+
+    _kernel_var = "%%bind_major_minor_patch%%"
+
+    kernel_packages = [
+        Package(f"kernel-{kernel_variant}", PackageType.BOOTSTRAP),
+        Package(f"kernel-{kernel_variant}-devel", PackageType.BOOTSTRAP),
+        Package("kernel-syms", PackageType.BOOTSTRAP),
+        Package("kernel-devel", PackageType.BOOTSTRAP),
+        Package("kernel-macros", PackageType.BOOTSTRAP),
+        Package(
+            f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}",
+            PackageType.BOOTSTRAP,
+        ),
+    ]
+
+    NVIDIA_CONTAINERS.append(
+        NvidiaDriverBCI(
+            os_version=os_version,
+            version=driver_version,
+            branch=branch,
+            kernel_variant=kernel_variant,
+            tag_version=branch if is_default else f"{branch}-{kernel_variant}",
+            additional_versions=[
+                f"{branch}-{_kernel_var}-{kernel_variant}-sles{os_version.os_version}"
+            ],
+            replacements_via_service=[
+                Replacement(
+                    _kernel_var,
+                    f"kernel-{kernel_variant}",
+                    parse_version=ParseVersion.RELEASE,
+                ),
+            ],
+            version_in_uid=True,
+            use_build_flavor_in_tag=False,
+            build_flavor=(
+                f"driver-{branch}"
+                if is_default
+                else f"driver-{branch}-{kernel_variant}"
+            ),
+            name="nvidia-driver",
+            pretty_name="NVIDIA Driver",
+            license="NVIDIA DEEP LEARNING CONTAINER LICENSE",
+            is_latest=False,
+            from_image=generate_from_image_tag(os_version, "bci-base"),
+            from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+            package_list=_get_packages(os_version) + kernel_packages,
+            support_level=SupportLevel.TECHPREVIEW,
+            supported_until="",
+            exclusive_arch=exclusive_arch,
+            third_party_repos=_NVIDIA_REPOS[os_version],
+            open_drivers_package_list=_get_open_drivers_packages(
+                driver_version, kernel_variant
+            ),
+            closed_drivers_package_list=[],
+            third_party_package_list=_get_compute_packages(driver_version, os_version),
+            entrypoint=["nvidia-driver", "load"],
+            env={
+                "DRIVER_VERSION": driver_version,
+                "DRIVER_TYPE": "passthrough",
+                "DRIVER_BRANCH": str(branch),
+                "VGPU_LICENSE_SERVER_TYPE": "NLS",
+                "DISABLE_VGPU_VERSION_CHECK": "true",
+                "NVIDIA_VISIBLE_DEVICES": "void",
+                "KERNEL_VERSION": "latest",
+            },
+        )
+    )
 
 
 NVIDIA_CRATE = ContainerCrate(NVIDIA_CONTAINERS)
