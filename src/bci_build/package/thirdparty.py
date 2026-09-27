@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 
 import requests
@@ -45,6 +46,12 @@ enabled=1
 gpgcheck=1
 gpgkey={gpg_key}
 """
+
+#: allow-list for RPM filenames taken from remote repository metadata. The value
+#: is embedded verbatim into the generated ``Dockerfile`` (``COPY``/``RUN``
+#: lines), so it must not contain any shell metacharacters, whitespace or path
+#: separators.
+_RPM_FILENAME_RE = re.compile(r"^[A-Za-z0-9._+~:@-]+\.rpm$")
 
 ARCH_FILENAME_MAP = {
     Arch.X86_64: ["x86_64", "noarch"],
@@ -189,6 +196,9 @@ class ThirdPartyRepoMixin:
             for pkg in self._rpms:
                 assert "/" not in pkg.name, (
                     f"Bad package name in repository: {pkg.name}"
+                )
+                assert _RPM_FILENAME_RE.match(pkg.filename), (
+                    f"Invalid package filename in repository: {pkg.filename}"
                 )
                 assert pkg.url.startswith(repo_urls), (
                     f"Package download URL does not match repository: {pkg.name}"
