@@ -79,6 +79,12 @@ jobs:
         run: |
           set -euo pipefail
 
+          if ! git ls-remote --exit-code --heads origin "refs/heads/${BRANCH_NAME}" >/dev/null 2>&1; then
+              echo "Branch ${BRANCH_NAME} does not exist"
+              echo "no_change=true" >> "$GITHUB_ENV"
+              exit 0
+          fi
+
           git fetch origin "${BRANCH_NAME}" "${DEPLOYMENT_BRANCH_NAME}"
 
           if git diff --quiet "origin/${DEPLOYMENT_BRANCH_NAME}...origin/${BRANCH_NAME}"; then
