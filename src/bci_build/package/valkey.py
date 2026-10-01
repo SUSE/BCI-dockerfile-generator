@@ -9,6 +9,7 @@ from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
+from bci_build.package import StableUser
 from bci_build.package import _build_tag_prefix
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.helpers import generate_systemd_tmpfiles_command
@@ -16,6 +17,10 @@ from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
 from bci_build.util import ParseVersion
+
+# valkey support for stable uid/gid starting from this version
+# upstream valkey uid/gid is 999 however on SLE it was 499
+_STABLE_USER_GROUP_ID_SUPPORTED_SINCE = 9
 
 VALKEY_CONTAINERS = [
     ApplicationStackContainer(
@@ -47,6 +52,19 @@ VALKEY_CONTAINERS = [
         package_list=sorted(["valkey", "sed"] + os_version.fips_compatibility_packages),
         entrypoint=["/usr/bin/valkey-server"],
         cmd=["/etc/valkey/valkey.conf"],
+        user_chown=(
+            StableUser(
+                user_name="valkey",
+                user_id=999,
+                group_name="valkey",
+                group_id=999,
+            )
+            if (
+                int(format_version(valkey_version, ParseVersion.MAJOR))
+                >= _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
+            )
+            else None
+        ),
         entrypoint_user="valkey",
         exposes_ports=[TCP(6379)],
         volumes=["/data"],
