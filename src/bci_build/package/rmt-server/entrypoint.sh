@@ -63,6 +63,14 @@ if [ "$1" = "/usr/share/rmt/bin/rails" ] && [ "$2" = "server" ]; then
     do
       rmt-cli products disable "$PRODUCT"
     done
+    for REPO in $SCC_REPO_ENABLE
+    do
+      rmt-cli repos enable "$REPO"
+    done
+    for REPO in $SCC_REPO_DISABLE
+    do
+      rmt-cli repos disable "$REPO"
+    done
     rmt-cli repos clean --no-confirmation
   fi
   echo "Executing: catatonit -- $@"
