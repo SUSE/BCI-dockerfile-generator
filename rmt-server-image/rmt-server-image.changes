@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct  1 09:40:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Add option to enable/disable repos
+
+-------------------------------------------------------------------
 Mon Aug 31 10:57:58 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - adjust for RMT server 3.1 version update

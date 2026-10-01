@@ -6,9 +6,9 @@
 
 The NVIDIA Driver container image provides NVIDIA GPU drivers in a
 containerized environment. This image is based on
-SUSE Linux Enterprise Server and includes both the
-open-source and proprietary NVIDIA kernel modules 590.48.01, along with the necessary
-user-space tools.
+SUSE Linux Enterprise Server and includes
+both the open-source and proprietary NVIDIA kernel modules 590.48.01,
+along with the necessary user-space tools.
 
 It provides [precompiled binaries](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/precompiled-drivers.html) for the NVIDIA GPU Operator or for manual
 driver deployment on container hosts, allowing for faster deployment.
