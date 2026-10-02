@@ -84,7 +84,7 @@ COPY --from=target / /target
 # set the day of last password change to empty
 {{ DOCKERFILE_RUN }} sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' {% if image.from_target_image %}/target{% endif %}/etc/shadow
 {% if image.from_target_image %}FROM {{ image.dockerfile_from_target_ref }}
-{%- if "bci-nano" in image.dockerfile_from_target_ref or "scratch" in image.dockerfile_from_target_ref %}
+{%- if image.disable_obs_container_support %}
 #!DisableOBSContainerSupport
 {%- endif %}
 COPY --from=builder /target /
