@@ -80,17 +80,24 @@ def _get_nginx_kwargs(os_version: OsVersion):
         ),
         "build_stage_custom_end": generate_package_version_check(
             "nginx", nginx_version, use_target=True
-        ),
+        )
+        + textwrap.dedent(f"""
+            {DOCKERFILE_RUN} mkdir /target/docker-entrypoint.d
+            COPY [1-4]0-*.sh /target/docker-entrypoint.d/
+            COPY docker-entrypoint.sh /target/usr/local/bin
+            COPY index.html /target/srv/www/htdocs/
+            {DOCKERFILE_RUN} chmod +x /target/docker-entrypoint.d/*.sh /target/usr/local/bin/docker-entrypoint.sh
+            {DOCKERFILE_RUN} \\
+                mkdir -p /target/tmp/nginx/client_body_temp \\
+                         /target/tmp/nginx/proxy_temp \\
+                         /target/tmp/nginx/fastcgi_temp \\
+                         /target/tmp/nginx/uwsgi_temp \\
+                         /target/tmp/nginx/scgi_temp; \\
+                chmod -R 777 /target/etc/nginx \\
+                             /target/var/log/nginx \\
+                             /target/tmp/nginx;"""),
         "custom_end": textwrap.dedent(f"""
-            {DOCKERFILE_RUN} mkdir /docker-entrypoint.d
-            COPY [1-4]0-*.sh /docker-entrypoint.d/
-            COPY docker-entrypoint.sh /usr/local/bin
-            COPY index.html /srv/www/htdocs/
-            {DOCKERFILE_RUN} chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-            {DOCKERFILE_RUN} set -euo pipefail; mkdir -p /var/cache/nginx /var/run/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;\
-                ln -sf /dev/stdout /var/log/nginx/access.log;\
-                ln -sf /dev/stderr /var/log/nginx/error.log;\
-                chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/run/nginx /var/log/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;
+            {DOCKERFILE_RUN} ln -sf /dev/stdout /var/log/nginx/access.log; ln -sf /dev/stderr /var/log/nginx/error.log
             STOPSIGNAL SIGQUIT"""),
     }
 
