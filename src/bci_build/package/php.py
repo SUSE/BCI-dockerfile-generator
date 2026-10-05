@@ -193,6 +193,7 @@ def _create_php_bci(
             f"php{php_version}-mbstring",
         ]
         + os_version.lifecycle_data_pkg
+        + os_version.fips_compatibility_packages
         + extra_pkgs,
         replacements_via_service=[
             Replacement("%%composer_version%%", package_name="php-composer2"),
