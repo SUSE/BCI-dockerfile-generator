@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct  5 10:03:05 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- include FIPS compatibility
+
+-------------------------------------------------------------------
 Mon Sep 21 16:10:10 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - quote arguments
