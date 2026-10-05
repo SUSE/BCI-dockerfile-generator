@@ -20,7 +20,7 @@ from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.repomdparser import RpmPackage
 
-MS_REPO_KEY_FILE = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+MS_REPO_15_KEY_FILE = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.7 (GNU/Linux)
 
 mQENBFYxWIwBCADAKoZhZlJxGNGWzqV+1OG1xiQeoowKhssGAKvd+buXCGISZJwT
@@ -38,6 +38,37 @@ KJt3bp3Ngn1vEYXwijGTa+FXz6GLHueJwF0I7ug34DgUkAFvAs8Hacr2DRYxL5RJ
 XdNgj4Jd2/g6T9InmWT0hASljur+dJnzNiNCkbn9KbX7J/qK1IbR8y560yRmFsU+
 NdCFTW7wY0Fb1fWJ+/KTsC4=
 =J6gs
+-----END PGP PUBLIC KEY BLOCK-----
+"""
+
+MS_REPO_16_KEY_FILE = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGVUhiwBEADF3TWX0HMi2+BdQfJrSdQkZTE4qk4vV2ooAMn8vWA2DGI88JOl
+k1LwhZGEqJv5TsKTyNEMWb3NXhR1ZZ5uQPvf6iN0806cq83s096F85GUtjzfGLQj
+Zo3FhDSKeHz3mhthQ4QP4bwYUmSpWs6e+/ZSFYYc3yU8mInDM4SNzrqr4x2ltmf+
+3RWkoYYo1SpG521A9+1zi7xzz6IHpAk6MdIcTj7mHxXd6ovmXkvHUhKbXGkybHPn
+iupWokDaJZgV4+q6kc7zVgTVnwmXV7NHQhWSyOm/BmYVcpmrkCSgSH18SArFjR6Q
+KyJ9VuUo1mJEUGnEakQSaOn1UAYtO8Mh4cXXD4833G0BLjiFNOL0XRUNh35pKvcT
+my/HnXvRXtpzAzTtANPxIbjli/veagU+JRWhtjtfONz0wQ5Bv1zFjnM9ewxFNPPo
+7Jp9WCVeUKFZcZJo8r/k7Y4d0Y1WINOPniSCNhKcD0pva3gXLcxfdnZjdMSj++ba
+XlAstjw0Oyty0EXoHXCMpelMoa+DQ7KSDGKrOtm5YFAP6Ki4go1Tt2q8nmul36cZ
+Zot6eoPG/qKxW+dvmSrWhQCcfd74VbhECbzXiCFLHadq85C1K5rrLM6oVr1u7K6O
+jlc1aitGgZECi6fvu61QhpUvHjCegRWzMIhah9qrv4lvxFFcA+a1jwXlnwARAQAB
+tEJNaWNyb3NvZnQgQ29ycG9yYXRpb24gLSBHZW5lcmFsIEdQRyBTaWduZXIgPGdw
+Z3NpZ25AbWljcm9zb2Z0LmNvbT6JAjgEEwEIACIFAmVUhiwCGwMGCwkIBwMCBhUI
+AgkKCwQWAgMBAh4BAheAAAoJEO5Nd5L3SBgrDc0P/0Ubx0vqD/DgyhiP0bIs8euO
+iA5BQvOCiroIkhSkFbAw8rT9a/XtRTRM2l4I8c2M1ZX9i/0wWihmFUJhiVHyRxkl
+ZcEFv+ieBuhvD1gPOVLZg3To8yOTrcOnHe+FuKqA6u+3xBn2AmAWeck9o0NKhtnm
+5ckweos+Qj9NoxaZX8UeGFstOiTBJeyhuJjthQ+3M0BvTxEaRcLXGSXSGSgZ00ii
+YSLNgOMPF+C22bXBL/erClEYkIGCctqPvyrhV/GVNnGk2ALyJqdK+BaJeGh9mBJa
+ZrP3l6vFxsAI0RNCNU1s5QaFzfFzFkiUnG/aoyuwh4xmsB+uyVkR+KigPK9gfF3S
+nU7AqcdhSbUA6A0DGDRkHauHM5Wtc7730LdjiNDXbYwG/yXmDYNasoszmItZzh77
+HiQxYA5dNB9r9QJS2rHV/qe+heAJ5Rub5kxcu33DGL30qG7Q9+HRTu0oSEOIUFyT
+aOJJnNUiB2D4hoKKnr5U8FYOZ7KvDcG7cDvInqYtGpNfrnIf94VeB9WJY6DbDQSA
+F5yHb6X8FS0x3lMT2H1l6RRyr0278kyO18VBudtlnonC+Y1UT7eqAk6WjS5CitPX
+T3Hc7jCURugXrc51igKa+p67yAaybEIuVyWF6JaINKRqiUqEPVXnHELXPbBmiHW5
+1HwdbKTMzgF8bu1JI+tQ
+=lIzW
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
@@ -78,17 +109,41 @@ EXPOSE 8080
 """)
 
 
-MS_REPOS = [
-    ThirdPartyRepo(
-        name="third-party",
-        url="https://packages.microsoft.com/sles/15/prod/",
-        key=MS_REPO_KEY_FILE,
-        key_url="https://packages.microsoft.com/keys/microsoft.asc",
-        repo_name="packages-microsoft-com-prod",
-        repo_filename="packages-microsoft-com-prod.repo",
-        key_filename="microsoft.asc",
-    ),
-]
+MS_REPOS = {
+    OsVersion.SP7: [
+        ThirdPartyRepo(
+            name="third-party",
+            url="https://packages.microsoft.com/sles/15/prod/",
+            key=MS_REPO_15_KEY_FILE,
+            key_url="https://packages.microsoft.com/sles/15/prod/repodata/repomd.xml.key",
+            repo_name="packages-microsoft-com-prod",
+            repo_filename="packages-microsoft-com-prod.repo",
+            key_filename="microsoft.asc",
+        ),
+    ],
+    OsVersion.SL16_0: [
+        ThirdPartyRepo(
+            name="third-party",
+            url="https://packages.microsoft.com/sles/16/prod/",
+            key=MS_REPO_16_KEY_FILE,
+            key_url="https://packages.microsoft.com/sles/16/prod/repodata/repomd.xml.key",
+            repo_name="packages-microsoft-com-prod",
+            repo_filename="packages-microsoft-com-prod.repo",
+            key_filename="microsoft.asc",
+        ),
+    ],
+    OsVersion.SL16_1: [
+        ThirdPartyRepo(
+            name="third-party",
+            url="https://packages.microsoft.com/sles/16/prod/",
+            key=MS_REPO_16_KEY_FILE,
+            key_url="https://packages.microsoft.com/sles/16/prod/repodata/repomd.xml.key",
+            repo_name="packages-microsoft-com-prod",
+            repo_filename="packages-microsoft-com-prod.repo",
+            key_filename="microsoft.asc",
+        ),
+    ],
+}
 
 
 class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
@@ -241,8 +296,13 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
 
 DOTNET_CONTAINERS: list[DotNetBCI] = []
 
-for os_version in (OsVersion.SP7,):
+for os_version in (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1):
     for ver in _DOTNET_VERSIONS:
+        package_list = sorted(
+            [*os_version.release_package_names, "libopenssl3", "libicu"]
+            + (["coreutils"] if os_version.is_sle15 else ["krb5"])
+        )
+
         DOTNET_CONTAINERS.append(
             DotNetBCI(
                 os_version=os_version,
@@ -256,14 +316,8 @@ for os_version in (OsVersion.SP7,):
                 ),
                 package_name=f"dotnet-{ver}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
-                third_party_repos=MS_REPOS,
+                package_list=package_list,
+                third_party_repos=MS_REPOS[os_version],
                 third_party_package_list=[
                     "dotnet-host",
                     ThirdPartyPackage(
@@ -300,14 +354,8 @@ for os_version in (OsVersion.SP7,):
                 additional_versions=(
                     [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
                 ),
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
-                third_party_repos=MS_REPOS,
+                package_list=package_list,
+                third_party_repos=MS_REPOS[os_version],
                 third_party_package_list=[
                     "dotnet-host",
                 ]
@@ -338,14 +386,8 @@ for os_version in (OsVersion.SP7,):
                     [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
                 ),
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
-                package_list=["libicu"]
-                + (
-                    ["libopenssl3", "coreutils"]
-                    if os_version.is_sle15
-                    else ["libopenssl3"]
-                )
-                + [*os_version.release_package_names],
-                third_party_repos=MS_REPOS,
+                package_list=package_list,
+                third_party_repos=MS_REPOS[os_version],
                 third_party_package_list=[
                     "dotnet-host",
                 ]
