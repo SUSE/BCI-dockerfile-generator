@@ -25,7 +25,7 @@
 FROM registry.suse.com/bci/bci-base:15.7
 
 RUN set -euo pipefail; \
-    zypper -n install --no-recommends libicu libopenssl3 coreutils sles-release
+    zypper -n install --no-recommends coreutils libicu libopenssl3 sles-release
 RUN mkdir -p /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-host-8.0.31-1.aarch64.rpm sha256:965d42fd43443938c33913766bdbf794f10efd4e512f29f9ff84a11f34e10b4f
 COPY dotnet-host-8.0.31-1.aarch64.rpm /tmp/
