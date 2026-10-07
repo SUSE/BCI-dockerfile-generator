@@ -69,6 +69,14 @@ VALKEY_CONTAINERS = [
         exposes_ports=[TCP(6379)],
         volumes=["/data"],
         build_stage_custom_end=(
+            f"{DOCKERFILE_RUN} chown -R 999:999 /target/etc/valkey/"
+            if (
+                int(format_version(valkey_version, ParseVersion.MAJOR))
+                >= _STABLE_USER_GROUP_ID_SUPPORTED_SINCE
+            )
+            else ""
+        )
+        + (
             generate_systemd_tmpfiles_command("valkey.conf", use_target=True)
             + generate_package_version_check("valkey", valkey_version, use_target=True)
         ),
