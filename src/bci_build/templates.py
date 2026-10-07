@@ -66,7 +66,8 @@ COPY --from=target / /target
 {%- if image.user_chown %}
 # changing user id and group id created by package installation to stable values
 {{ DOCKERFILE_RUN }} \\
-    {% if image.from_target_image %}chroot /target {% endif %}chown -R --from={{ image.user_chown.user_name }}:{{ image.user_chown.group_name }} {{ image.user_chown.user_id }}:{{ image.user_chown.group_id }} /; \\
+    {% if image.from_target_image %}chroot /target {% endif %}chown -R --from={{ image.user_chown.user_name }} {{ image.user_chown.user_id }} /; \\
+    {% if image.from_target_image %}chroot /target {% endif %}chown -R --from=:{{ image.user_chown.group_name }} :{{ image.user_chown.group_id }} /; \\
     groupmod {% if image.from_target_image %}-R /target {% endif %}-g {{ image.user_chown.group_id }} {{ image.user_chown.group_name }}; \\
     usermod {% if image.from_target_image %}-R /target {% endif %}-u {{ image.user_chown.user_id }} {{ image.user_chown.user_name }}
 {%- endif %}
