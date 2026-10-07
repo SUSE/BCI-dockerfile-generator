@@ -41,6 +41,8 @@ Certain values of the chart do not have any defaults:
 - SCC mirroring credentials (refer to [more information](https://documentation.suse.com/sles/html/SLES-all/cha-rmt-mirroring.html#sec-rmt-mirroring-credentials) for more information)
 - list of products to mirror
 - list of products not to mirror
+- list of repos to mirror
+- list of repos not to mirror
 - DNS name used to reach the RMT server
 - configured [storage](https://kubernetes.io/docs/concepts/storage/)
 
@@ -66,6 +68,12 @@ app:
     products_disable:
       - sle-module-legacy/15.3/x86_64
       - sle-module-cap-tools/15.3/x86_64
+    repos_enable:
+      - 1743 # SLE-Live-Patching12-Pool for sle-12-x86_64
+      - 7434
+      - 7437
+    repos_disable:
+      - 7940
 front:
   enabled: true
 ingress:
@@ -91,6 +99,8 @@ The required values in the custom value file are as follows:
 - `app.scc.username` SUSE Customer Center proxy user name. The user name string must be quotes. If the quote character `"` is part of the string, it has to be escaped with `\`.
 - `app.scc.products_enable` List of products to enable for mirroring.
 - `app.scc.products_disable` list of products to exclude from mirroring.
+- `app.scc.repos_enable` List of repos to enable for mirroring.
+- `app.scc.repos_disable` List of repos to exclude from mirroring.
 - `app.storage.class` Kubernetes storageclass.
 - `db.storage.class` Kubernetes storageclass.
 - `front.enabled` Enable or disable front.
