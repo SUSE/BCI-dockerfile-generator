@@ -198,7 +198,7 @@
     "samba": {
         "latest": {
             "7": "4.21",
-            "Tumbleweed": "4.24"
+            "Tumbleweed": "4.25"
         },
         "version_format": "minor"
     },
