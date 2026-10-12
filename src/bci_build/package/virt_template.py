@@ -71,6 +71,7 @@ def _get_virt_template_kwargs(service: str, variant: VirtTemplateVariant) -> dic
         "entrypoint_user": _VIRT_TEMPLATE_UID,
         "exclusive_arch": VIRT_TEMPLATE_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
+        "support_level_overrides": {Arch.AARCH64: SupportLevel.TECHPREVIEW},
         # same registry path as the KubeVirt images: virt-operator derives the
         # virt-template image names from its own
         "_publish_registry": (
