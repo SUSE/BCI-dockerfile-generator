@@ -15,8 +15,8 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 x86_64
-#!BuildTag: bci/dotnet-sdk:10.0.12-%RELEASE%
-#!BuildTag: bci/dotnet-sdk:10.0.12
+#!BuildTag: bci/dotnet-sdk:10.0.13-%RELEASE%
+#!BuildTag: bci/dotnet-sdk:10.0.13
 #!BuildTag: bci/dotnet-sdk:10.0
 #!BuildName: bci-dotnet-sdk-10.0
 #!BuildVersion: 16.0.10.0
@@ -25,44 +25,44 @@ FROM registry.suse.com/bci/bci-base:16.0
 RUN set -euo pipefail; \
     zypper -n install --no-recommends SLES-release krb5 libicu libopenssl3
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-host-10.0.12-1.aarch64.rpm sha256:844d2c14b101fe51916df884d098d01cd9dcbf6780ba00cd7e4d2f3e345a0c81
-COPY dotnet-host-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-host-10.0.12-1.x86_64.rpm sha256:22329cbeb43fda77c79712265284dfacf1fbcf73887f85813895c73f7ee2962b
-COPY dotnet-host-10.0.12-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-host-10.0.13-1.aarch64.rpm sha256:dc6dc93f30bacb0209bcc1796ee2d2b9d29f1fd536f62181fb4e9a804844b087
+COPY dotnet-host-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-host-10.0.13-1.x86_64.rpm sha256:191fe3852169676d73e30247f03df3ee7ac1e3459fe51ac400b5770b9f97abfb
+COPY dotnet-host-10.0.13-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/n/netstandard-targeting-pack-2.1-8.0.8-1.x86_64.rpm sha256:4e24c4b67838c7fdaecf33e29a8247491f3188480fa9f05e166c72c262711748
 COPY netstandard-targeting-pack-2.1-8.0.8-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-targeting-pack-10.0-10.0.12-1.aarch64.rpm sha256:1d42759042a620e26354be5b056fd8b9c2df6f2fb979bc3e5e18081094ac6a7f
-COPY dotnet-targeting-pack-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-targeting-pack-10.0-10.0.12-1.x86_64.rpm sha256:c5115aff70b86f9246f3a14e878f69e932940f3ecc59edb84e0898abbfac9de9
-COPY dotnet-targeting-pack-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-hostfxr-10.0-10.0.12-1.aarch64.rpm sha256:bfb19daff9c2c1d4cd6609bab42a2da39ca89335fe40f10e603e812bf372300a
-COPY dotnet-hostfxr-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-hostfxr-10.0-10.0.12-1.x86_64.rpm sha256:d2c0f4301be0c1b04b6a0f637025ec9d2e9dc9bffa538f268c54ed693237bf68
-COPY dotnet-hostfxr-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.12-1.aarch64.rpm sha256:83547df8eb1c08ad10f9c9a884f42d9c73db55475646916ef4677955a81ceb6d
-COPY dotnet-runtime-deps-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.12-1.x86_64.rpm sha256:5f296ffacd454ccde4d07de6d8ccc3b66edb18885b2f834073c0689e460043fb
-COPY dotnet-runtime-deps-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-10.0-10.0.12-1.aarch64.rpm sha256:d90a448924cb82ffa9cd6caf2f81fb55837db71db46fc95d8c31c269f511b47f
-COPY dotnet-runtime-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-10.0-10.0.12-1.x86_64.rpm sha256:7359b097bcb4900f3c7936642b32ec6612ec45b95bb3848b5cc011d1495cbb19
-COPY dotnet-runtime-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-apphost-pack-10.0-10.0.12-1.aarch64.rpm sha256:2155bc04e1e5db108a6dcac0189ab2cbbc41fabccd9c7392e8c3ba6f15408b6d
-COPY dotnet-apphost-pack-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-apphost-pack-10.0-10.0.12-1.x86_64.rpm sha256:91316579960b0078fb3455736499334e5d3b9f4201c1b9e13561fce966dbb6f0
-COPY dotnet-apphost-pack-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-targeting-pack-10.0-10.0.12-1.aarch64.rpm sha256:961eaf62e6e19680ba177a5bbd18fbca7ce724c53e290a9e2ba649ce976f0ff8
-COPY aspnetcore-targeting-pack-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-targeting-pack-10.0-10.0.12-1.x86_64.rpm sha256:3ed6a8fd8732bcdde4a2af5cc473619814765fd50d8209f3f47d1efcef9f57d6
-COPY aspnetcore-targeting-pack-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-runtime-10.0-10.0.12-1.aarch64.rpm sha256:698f9ff424b5a2623eef9e40928ed33ede6cf4a2eba3d93bcb455c8c0a993f0d
-COPY aspnetcore-runtime-10.0-10.0.12-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-runtime-10.0-10.0.12-1.x86_64.rpm sha256:3b9ee2cfee317b1e4f9d1b79e342af5739f657e633a2960b60737983d73dea99
-COPY aspnetcore-runtime-10.0-10.0.12-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-sdk-10.0-10.0.401-1.aarch64.rpm sha256:f9729c845214cbe5acbf18130974885b60c4021bc4bcf4c4446aa3c5e0a43c39
-COPY dotnet-sdk-10.0-10.0.401-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-sdk-10.0-10.0.401-1.x86_64.rpm sha256:0ea67fa5c95e6f782affd2d29e504b14840aebf07b1531ccfec8f757f8bee6e3
-COPY dotnet-sdk-10.0-10.0.401-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-targeting-pack-10.0-10.0.13-1.aarch64.rpm sha256:b2a8dfa92582db4bbcc6fa3dd5a1c40727c4a0ccdb88aa134651acddf8eeeb31
+COPY dotnet-targeting-pack-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-targeting-pack-10.0-10.0.13-1.x86_64.rpm sha256:f89f7f99b20519a8d21ca3db1357790794d41c9b864008c5a4fe2dde4ffe9d02
+COPY dotnet-targeting-pack-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-hostfxr-10.0-10.0.13-1.aarch64.rpm sha256:91c9723ac997ac33555fe040e1781e03d4b4687eecbebf46c4bb63ed6429725c
+COPY dotnet-hostfxr-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-hostfxr-10.0-10.0.13-1.x86_64.rpm sha256:4be1039a9ee04f00e1f416e8f7c26ea24f9a7a379c7bab09daa6f26da4eadd66
+COPY dotnet-hostfxr-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.13-1.aarch64.rpm sha256:f556a26179934764c0c12db2892c655012b750476c662898464c67ec4a6aafaf
+COPY dotnet-runtime-deps-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-deps-10.0-10.0.13-1.x86_64.rpm sha256:7f895fc0c8fe4ef0ead137e5fbef44451e0a3233d633765bb17d702d600634e7
+COPY dotnet-runtime-deps-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-10.0-10.0.13-1.aarch64.rpm sha256:d5d70b7e2e27f3ff9091e51fb3c9b5ce451e80da554385896229199717ec19a7
+COPY dotnet-runtime-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-runtime-10.0-10.0.13-1.x86_64.rpm sha256:3d08a9f408cb30a486d56abb7d8f0774898c3d9ee7e0fa4191ffc8496c50eadd
+COPY dotnet-runtime-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-apphost-pack-10.0-10.0.13-1.aarch64.rpm sha256:b0594cc37309e1e6e42331af374dcacb2aefe9af785bdb86b246d08cf5894405
+COPY dotnet-apphost-pack-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-apphost-pack-10.0-10.0.13-1.x86_64.rpm sha256:1225e447092b3a5ee6bf19bc66560761cfdfad2d81b69c7a8efe251e9b464e45
+COPY dotnet-apphost-pack-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-targeting-pack-10.0-10.0.13-1.aarch64.rpm sha256:ffd618120be936e89864da6d4be606f538ae3907866ce14d8123bf27a3bff517
+COPY aspnetcore-targeting-pack-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-targeting-pack-10.0-10.0.13-1.x86_64.rpm sha256:9ee23a0d137c648da0bb9f6a4fe4532d451d23ce1de6d79758163f7cc56b6880
+COPY aspnetcore-targeting-pack-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-runtime-10.0-10.0.13-1.aarch64.rpm sha256:2fb417da140ea834e481f760d5f9207138b0f829f318f5ee3d0f44ca986d089d
+COPY aspnetcore-runtime-10.0-10.0.13-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/a/aspnetcore-runtime-10.0-10.0.13-1.x86_64.rpm sha256:b5933f9e3a9ebf087cb26be8361e7f6db2f6ee4bfc03be7a8872dc1e7be67e3d
+COPY aspnetcore-runtime-10.0-10.0.13-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-sdk-10.0-10.0.402-1.aarch64.rpm sha256:a01cc8c3771ce4ca714323648dd48b1188bba3e1bd9db11fcda6cd4cd70b46f8
+COPY dotnet-sdk-10.0-10.0.402-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/16/prod/Packages/d/dotnet-sdk-10.0-10.0.402-1.x86_64.rpm sha256:0d43cfc5dbac333f8ac62ece362da020ffc3007543d71fc089ba3139e52fe657
+COPY dotnet-sdk-10.0-10.0.402-1.x86_64.rpm /tmp/
 
 COPY third-party.gpg.key /tmp/microsoft.asc
 RUN rpm --import /tmp/microsoft.asc
@@ -70,28 +70,28 @@ RUN rpm --import /tmp/microsoft.asc
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-targeting-pack-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-hostfxr-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-runtime-deps-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-runtime-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-apphost-pack-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/aspnetcore-targeting-pack-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/aspnetcore-runtime-10.0-10.0.12-1.aarch64.rpm \
-            /tmp/dotnet-sdk-10.0-10.0.401-1.aarch64.rpm; \
+            /tmp/dotnet-host-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-targeting-pack-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-apphost-pack-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/aspnetcore-targeting-pack-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/aspnetcore-runtime-10.0-10.0.13-1.aarch64.rpm \
+            /tmp/dotnet-sdk-10.0-10.0.402-1.aarch64.rpm; \
     fi
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
-            /tmp/dotnet-host-10.0.12-1.x86_64.rpm \
+            /tmp/dotnet-host-10.0.13-1.x86_64.rpm \
             /tmp/netstandard-targeting-pack-2.1-8.0.8-1.x86_64.rpm \
-            /tmp/dotnet-targeting-pack-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/dotnet-hostfxr-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/dotnet-runtime-deps-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/dotnet-runtime-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/dotnet-apphost-pack-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/aspnetcore-targeting-pack-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/aspnetcore-runtime-10.0-10.0.12-1.x86_64.rpm \
-            /tmp/dotnet-sdk-10.0-10.0.401-1.x86_64.rpm; \
+            /tmp/dotnet-targeting-pack-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/dotnet-hostfxr-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/dotnet-runtime-deps-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/dotnet-runtime-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/dotnet-apphost-pack-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/aspnetcore-targeting-pack-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/aspnetcore-runtime-10.0-10.0.13-1.x86_64.rpm \
+            /tmp/dotnet-sdk-10.0-10.0.402-1.x86_64.rpm; \
     fi
 
 COPY third-party.repo /etc/zypp/repos.d/packages-microsoft-com-prod.repo
@@ -116,13 +116,13 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
 LABEL org.opencontainers.image.title=".NET SDK 10.0 for SUSE Linux Enterprise Server 16.0"
 LABEL org.opencontainers.image.description="The .NET SDK 10.0 based on the SUSE Linux Base Container Image. The .NET packages contained in this image come from a 3rd-party repository https://packages.microsoft.com/. You can find the respective source code in https://github.com/dotnet. SUSE does not provide any support or warranties."
-LABEL org.opencontainers.image.version="10.0.12"
+LABEL org.opencontainers.image.version="10.0.13"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
-LABEL org.opencontainers.image.ref.name="10.0.12-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:10.0.12-%RELEASE%"
+LABEL org.opencontainers.image.ref.name="10.0.13-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-sdk:10.0.13-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2028-11-12"
