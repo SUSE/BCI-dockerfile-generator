@@ -153,7 +153,11 @@ class OsVersion(enum.Enum):
 
     @property
     def is_sl16(self) -> bool:
-        return self.value in (OsVersion.SL16_0.value, OsVersion.SL16_1.value)
+        return self.value in (
+            OsVersion.SL16_0.value,
+            OsVersion.SL16_1.value,
+            OsVersion.SL16_2.value,
+        )
 
     @property
     def is_tumbleweed(self) -> bool:
@@ -171,10 +175,10 @@ class OsVersion(enum.Enum):
         """
         if self.is_sle15 and not self.is_ltss:
             return f"15.{str(self.value)}"
-        if self.value == OsVersion.SL16_0.value:
-            return "16.0"
-        if self.value == OsVersion.SL16_1.value:
-            return "16.1"
+        if self.value == OsVersion.SL16_2.value:
+            return "16.2beta"
+        if self.is_sl16:
+            return str(self)
 
         # Tumbleweed rolls too fast, just use latest
         return "latest"
@@ -223,6 +227,7 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP6,
     OsVersion.SP7,
     OsVersion.SL16_0,
+    OsVersion.SL16_1,
     OsVersion.TUMBLEWEED,
 ]
 
@@ -230,7 +235,6 @@ RELEASED_OS_VERSIONS: list[OsVersion] = [
 ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.SP7,
     OsVersion.TUMBLEWEED,
-    OsVersion.SL16_0,
     OsVersion.SL16_1,
 ]
 
@@ -268,7 +272,7 @@ CAN_BE_LATEST_OS_VERSION: list[OsVersion] = [
 ]
 
 CAN_BE_LATEST_SLFO_OS_VERSION: list[OsVersion] = [
-    OsVersion.SL16_0,
+    OsVersion.SL16_1,
     OsVersion.TUMBLEWEED,
 ]
 

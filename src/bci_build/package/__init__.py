@@ -1410,6 +1410,8 @@ class OsContainer(BaseContainerImage):
     def version_to_container_os_version(os_version: OsVersion) -> str:
         if os_version == OsVersion.TUMBLEWEED:
             return "latest"
+        if os_version == OsVersion.SL16_2:
+            return f"{os_version}beta"
         if os_version.is_sl16:
             return str(os_version)
         return f"15.{os_version}"
@@ -1427,6 +1429,9 @@ class OsContainer(BaseContainerImage):
             OsVersion.SP6,
         ):
             return f"%OS_VERSION_ID_SP%-{_RELEASE_PLACEHOLDER}"
+
+        if self.os_version == OsVersion.SL16_2:
+            return f"%OS_VERSION_ID_SP%beta.{_RELEASE_PLACEHOLDER}"
 
         return f"%OS_VERSION_ID_SP%.{_RELEASE_PLACEHOLDER}"
 

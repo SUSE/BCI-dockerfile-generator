@@ -7,6 +7,7 @@ from bci_build.container_attributes import NetworkPort
 from bci_build.container_attributes import NetworkProtocol
 from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -32,6 +33,7 @@ BIND_CONTAINERS = [
         tag_version="9",
         pretty_name="ISC BIND 9",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
+        min_release_counter={OsVersion.SL16_1: 25},
         version_in_uid=False,
         # dig: used by the health check
         package_list=["bind", "bind-utils"] + os_version.fips_compatibility_packages,

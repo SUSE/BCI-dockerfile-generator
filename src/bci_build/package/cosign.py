@@ -45,6 +45,7 @@ COSIGN_CONTAINERS = [
         logo_url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg",
         min_release_counter={
             OsVersion.SP7: 10,
+            OsVersion.SL16_1: 10,
         },
     )
     for os_version in ALL_NONBASE_OS_VERSIONS

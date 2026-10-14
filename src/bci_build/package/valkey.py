@@ -6,6 +6,7 @@ from bci_build.container_attributes import TCP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package import OsContainer
@@ -34,6 +35,7 @@ VALKEY_CONTAINERS = [
         ),
         from_target_image=f"{_build_tag_prefix(os_version)}/bci-micro:{OsContainer.version_to_container_os_version(os_version)}",
         os_version=os_version,
+        min_release_counter={OsVersion.SL16_1: 20},
         is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=True,
         version="%%valkey_version%%",

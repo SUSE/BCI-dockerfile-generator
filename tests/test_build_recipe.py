@@ -150,9 +150,9 @@ RUN emacs -Q --batch test.el
 #!BuildTag: bci/test:%%emacs_ver%%
 #!BuildTag: bci/test:stable
 #!BuildName: bci-test-stable
-#!BuildVersion: 16.1
+#!BuildVersion: 16.2
 #!BuildRelease: 10
-FROM bci/bci-base:16.1
+FROM bci/bci-base:16.2beta
 
 RUN \\
     zypper -n install --no-recommends gcc emacs
@@ -198,7 +198,7 @@ Copyright header
     <specification>SUSE Linux BCI DevelopmentContainer Test Container Image</specification>
   </description>
   <preferences>
-    <type image="docker" derived_from="obsrepositories:/bci/bci-base#16.1">
+    <type image="docker" derived_from="obsrepositories:/bci/bci-base#16.2beta">
       <containerconfig
           name="bci/test"
           tag="stable-1.%RELEASE%"
@@ -225,7 +225,7 @@ Copyright header
         </labels>
       </containerconfig>
     </type>
-    <version>16.1</version>
+    <version>16.2</version>
     <packagemanager>zypper</packagemanager>
     <rpm-excludedocs>true</rpm-excludedocs>
   </preferences>
@@ -244,9 +244,9 @@ Copyright header
                 package_list=["gcc", "emacs"],
                 package_name="test-image",
                 stability_tag="stable",
-                os_version=OsVersion.SL16_1,
+                os_version=OsVersion.SL16_2,
                 version="%%emacs_ver%%",
-                min_release_counter={OsVersion.SL16_1: 10},
+                min_release_counter={OsVersion.SL16_2: 10},
             ),
         ),
         (

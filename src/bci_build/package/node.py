@@ -69,6 +69,7 @@ def _get_node_kwargs(
         "version": node_version_replacement,
         "support_level": SupportLevel.L3,
         "tag_version": str(ver),
+        "min_release_counter": {OsVersion.SL16_1: 20},
         "package_list": sorted(
             [
                 f"nodejs{ver}",

@@ -72,6 +72,7 @@ def _get_nginx_kwargs(os_version: OsVersion):
         "extra_files": _NGINX_FILES,
         "support_level": SupportLevel.L3,
         "exposes_ports": [TCP(80)],
+        "min_release_counter": {OsVersion.SL16_1: 30},
         "user_chown": (
             StableUser(
                 user_name="nginx",
