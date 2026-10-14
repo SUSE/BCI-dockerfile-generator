@@ -7,6 +7,7 @@ from bci_build.container_attributes import UDP
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
@@ -31,6 +32,7 @@ KEA_DHCP_CONTAINERS = [
         pretty_name="Kea DHCP Server",
         package_list=sorted(["kea", "grep", "sed", "util-linux"]),
         build_stage_custom_end=generate_systemd_tmpfiles_command(None, use_target=True),
+        min_release_counter={OsVersion.SL16_1: 30},
         custom_end=(SET_BLKID_SCAN if os_version.is_sle15 else "")
         + textwrap.dedent(f"""
             ENV KEA_PIDFILE_DIR="/var/run/kea"

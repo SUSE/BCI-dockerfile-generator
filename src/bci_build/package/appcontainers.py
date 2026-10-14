@@ -47,6 +47,7 @@ PCP_CONTAINERS = [
         version=(pcp_ver := get_pkg_version("pcp", os_version)),
         version_in_uid=False,
         is_singleton_image=True,
+        min_release_counter={OsVersion.SL16_1: 20},
         additional_versions=[
             format_version(pcp_ver, ParseVersion.MINOR),
             format_version(pcp_ver, ParseVersion.MAJOR),

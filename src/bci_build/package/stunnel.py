@@ -5,6 +5,7 @@ from pathlib import Path
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
+from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -24,6 +25,7 @@ STUNNEL_CONTAINERS = [
         pretty_name="Stunnel",
         package_list=sorted(["stunnel"] + os_version.fips_compatibility_packages),
         support_level=SupportLevel.L3,
+        min_release_counter={OsVersion.SL16_1: 25},
         replacements_via_service=[
             Replacement(stunnel_version_re, package_name="stunnel")
         ],
