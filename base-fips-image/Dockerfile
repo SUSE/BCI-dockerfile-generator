@@ -19,7 +19,7 @@
 #!BuildTag: bci/bci-base-fips:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-base-fips
 #!BuildVersion: 16.1.0
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends SLES-release coreutils crypto-policies-scripts patterns-base-fips update-bootloader
@@ -50,12 +50,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/bci-base-fips:%OS_VERSION_ID_SP%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2028-11-30"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL usage="This container should only be used on a FIPS-140-3-enabled host (fips=1 on kernel cmdline)."
 

@@ -21,7 +21,7 @@
 #!BuildTag: bci/openjdk:latest
 #!BuildName: bci-openjdk-25
 #!BuildVersion: 16.1.25
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-25-openjdk mozilla-nss-sysinit curl findutils gawk git-core procps util-linux
@@ -52,11 +52,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/openjdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.supportlevel="l3"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV JAVA_BINDIR="/usr/lib64/jvm/java-25-openjdk-25/bin"
 ENV JAVA_HOME="/usr/lib64/jvm/java-25-openjdk-25"

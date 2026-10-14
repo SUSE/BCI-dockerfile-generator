@@ -19,9 +19,11 @@
 #!BuildTag: suse/cosign:%%cosign_version%%
 #!BuildTag: suse/cosign:3.1
 #!BuildTag: suse/cosign:3
+#!BuildTag: suse/cosign:latest
 #!BuildName: suse-cosign
 #!BuildVersion: 16.1.3.1
-FROM bci/bci-nano:16.1 AS target
+#!BuildRelease: 10
+FROM registry.suse.com/bci/bci-nano:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
 
@@ -47,7 +49,7 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
-FROM bci/bci-nano:16.1
+FROM registry.suse.com/bci/bci-nano:16.1
 #!DisableOBSContainerSupport
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
@@ -63,11 +65,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%cosign_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/cosign:%%cosign_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/sigstore/community/main/artwork/cosign/horizontal/color/sigstore_cosign-horizontal-color.svg"
 ENTRYPOINT ["/usr/bin/cosign"]

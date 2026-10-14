@@ -20,7 +20,7 @@
 #!BcntSyncTag: ruby-3.4-image
 #!BuildName: bci-ruby-3.4-base
 #!BuildVersion: 16.1.3.4
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends curl findutils gawk gcc-c++ git-core libexslt0 make procps ruby3.4 ruby3.4-devel ruby3.4-rubygem-bundler ruby3.4-rubygem-gem2rpm sed sqlite3-devel timezone util-linux util-linux xz
@@ -51,11 +51,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="3.4-base-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/ruby:3.4-base-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.supportlevel="l3"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.base.md)%"
 ENV LANG="C.UTF-8"
 ENV RUBY_MAJOR="%%rb_maj%%"

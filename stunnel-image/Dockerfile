@@ -18,10 +18,12 @@
 #!BuildTag: suse/stunnel:%%stunnel_re%%-%RELEASE%
 #!BuildTag: suse/stunnel:%%stunnel_re%%
 #!BuildTag: suse/stunnel:5
+#!BuildTag: suse/stunnel:latest
 #!BuildName: suse-stunnel
 #!BuildVersion: 16.1.5
+#!BuildRelease: 25
 #!FilterBaseContainerPkgs
-FROM bci/bci-micro:16.1 AS target
+FROM registry.suse.com/bci/bci-micro:16.1 AS target
 FROM bci/bci-base:16.1 AS builder
 COPY --from=target / /target
 
@@ -47,7 +49,7 @@ RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
 
 # set the day of last password change to empty
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /target/etc/shadow
-FROM bci/bci-micro:16.1
+FROM registry.suse.com/bci/bci-micro:16.1
 COPY --from=builder /target /
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=com.suse.application.stunnel
@@ -62,11 +64,13 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%stunnel_re%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/stunnel:%%stunnel_re%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 COPY entrypoint.sh /usr/local/bin/
 COPY stunnel.conf /etc/stunnel/stunnel.conf

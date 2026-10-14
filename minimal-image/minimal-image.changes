@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
 Wed Jun 24 16:14:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to coreutils-single for the minimal containers
