@@ -21,7 +21,7 @@
 #!BuildTag: bci/rust:1.97
 #!BuildName: bci-rust-oldstable
 #!BuildVersion: 16.1.1.97.2
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends rust1.97 cargo1.97
@@ -52,12 +52,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%RUST_VERSION%%-2.%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/rust:%%RUST_VERSION%%-2.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2026-10-22"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENV CARGO_VERSION="%%CARGO_VERSION%%"
 ENV RUST_VERSION="%%RUST_VERSION%%"

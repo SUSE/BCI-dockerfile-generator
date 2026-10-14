@@ -20,7 +20,7 @@
 #!BuildTag: bci/bci-sle16-kernel-module-devel:%OS_VERSION_ID_SP%
 #!BuildName: bci-bci-sle16-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.1.0
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends kernel-devel kernel-default-devel gcc git-core kmod make patch gawk rpm-build SLES-release suse-module-tools-scriptlets
@@ -53,10 +53,12 @@ LABEL org.opensuse.reference="registry.suse.com/bci/bci-sle16-kernel-module-deve
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2028-11-30"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg"
 

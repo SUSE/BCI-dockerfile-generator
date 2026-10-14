@@ -21,7 +21,7 @@
 #!BuildName: bci-dotnet-aspnet-9.0
 #!BuildVersion: 16.1.9.0
 #!BuildRelease: 20
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends SLES-release krb5 libicu libopenssl3
@@ -100,10 +100,12 @@ LABEL org.opensuse.reference="registry.suse.com/bci/dotnet-aspnet:9.0.21-%RELEAS
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="techpreview"
 LABEL com.suse.supportlevel.until="2026-11-10"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 
 

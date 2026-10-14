@@ -20,7 +20,7 @@
 #!BuildTag: bci/gcc:16
 #!BuildName: bci-gcc-16
 #!BuildVersion: 16.1.16
-FROM bci/bci-base:16.1
+FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends gcc16 gcc16-c++ gcc16-fortran make curl findutils gawk git-core procps util-linux
@@ -51,12 +51,14 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%gcc_minor_version%%-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/bci/gcc:%%gcc_minor_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.supportlevel.until="2028-10-31"
-LABEL com.suse.eula="sle-beta"
+LABEL com.suse.eula="sle-bci"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL io.artifacthub.package.logo-url="https://gcc.gnu.org/img/gccegg-65.png"
 ENV GCC_VERSION="%%gcc_minor_version%%"

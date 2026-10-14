@@ -19,8 +19,10 @@
 #!BuildTag: suse/pcp:6.3.8
 #!BuildTag: suse/pcp:6.3
 #!BuildTag: suse/pcp:6
+#!BuildTag: suse/pcp:latest
 #!BuildName: suse-pcp
 #!BuildVersion: 16.1.6.3.8
+#!BuildRelease: 20
 FROM bci/bci-init:16.1
 
 RUN set -euo pipefail; \
@@ -52,10 +54,10 @@ LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="6.3.8-%RELEASE%"
 LABEL org.opensuse.reference="registry.suse.com/suse/pcp:6.3.8-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-eula"
 LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-16"
-LABEL com.suse.release-stage="beta"
+LABEL com.suse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["/usr/local/bin/container-entrypoint"]
