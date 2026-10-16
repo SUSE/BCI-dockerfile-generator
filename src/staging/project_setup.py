@@ -161,7 +161,8 @@ def generate_meta(
                     first_prj = "SUSE:Registry"
                     last_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
                 case OsVersion.SL16_1:
-                    last_prj = "SUSE:SLFO:1.3"
+                    first_prj = "SUSE:Registry"
+                    last_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
                 case OsVersion.SL16_2:
                     last_prj = "SUSE:SLFO:Main"
                 case _:
