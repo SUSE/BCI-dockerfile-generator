@@ -165,6 +165,7 @@ def _get_fips_base_custom_end(os_version: OsVersion) -> str:
     crypto_policies_deps = ("crypto-policies-scripts",)
     if os_version.is_sle15:
         crypto_policies_deps += (
+            "libexpat1",
             "libopenssl1_1",
             "python3-base",
             "libpython3_6m1_0",
