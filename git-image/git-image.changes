@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 16 13:51:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag (moved to 16.1 variant)
+
+-------------------------------------------------------------------
 Mon Sep 14 19:56:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - include fips support packages
