@@ -73,7 +73,7 @@ Conflict: !libgccjit-devel
 Conflict: !libstdc++-devel
 
 # Avoid the unreleased containers
-Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init
+Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init -container:bci-bci-nano
 BuildFlags: container-timestamp:0
 
 # available in IBS via SUSE:Products:SLES:16.1 defaults
