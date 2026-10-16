@@ -139,6 +139,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: nvidia-driver-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: openjdk-17-devel-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -236,6 +240,10 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
         source_package: valkey-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: xorg-client-image
         target_project: home:pushman:BCI:CR:16.1:Staging
   filters:
     event: pull_request
@@ -358,6 +366,9 @@ refresh_devel_BCI:
         package: nodejs-24-image
     - trigger_services:
         project: devel:BCI:16.1
+        package: nvidia-driver-image
+    - trigger_services:
+        project: devel:BCI:16.1
         package: openjdk-17-devel-image
     - trigger_services:
         project: devel:BCI:16.1
@@ -431,6 +442,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: valkey-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: xorg-client-image
   filters:
     event: push
     branches:

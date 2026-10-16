@@ -1,0 +1,4 @@
+<multibuild>
+    <package>driver-615</package>
+    <package>driver-615-64kb</package>
+</multibuild>
