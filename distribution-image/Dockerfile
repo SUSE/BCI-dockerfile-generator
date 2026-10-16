@@ -18,7 +18,6 @@
 #!BuildTag: suse/registry:%%registry_version%%-%RELEASE%
 #!BuildTag: suse/registry:%%registry_version%%
 #!BuildTag: suse/registry:3.1
-#!BuildTag: suse/registry:latest
 #!BuildName: suse-registry
 #!BuildVersion: 16.0.3.1
 #!FilterBaseContainerPkgs

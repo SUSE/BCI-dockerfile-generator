@@ -17,7 +17,6 @@
 
 #!BuildTag: suse/nginx:1.27-%RELEASE%
 #!BuildTag: suse/nginx:1.27
-#!BuildTag: suse/nginx:latest
 #!BuildName: suse-nginx
 #!BuildVersion: 16.0.1.27
 #!FilterBaseContainerPkgs
@@ -38,6 +37,32 @@ RUN set -euo pipefail; \
 RUN set -euo pipefail; \
     [ "$(rpm --root /target -q --qf '%{version}' nginx | \
     cut -d '.' -f -2)" = "1.27" ]
+RUN set -euo pipefail; mkdir /target/docker-entrypoint.d
+COPY [1-4]0-*.sh /target/docker-entrypoint.d/
+COPY docker-entrypoint.sh /target/usr/local/bin
+COPY nginx-wrapper.sh /target/usr/local/bin
+COPY index.html /target/srv/www/htdocs/
+RUN set -euo pipefail; \
+    chmod +x /target/docker-entrypoint.d/*.sh \
+             /target/usr/local/bin/docker-entrypoint.sh \
+             /target/usr/local/bin/nginx-wrapper.sh
+RUN set -euo pipefail; cp /target/etc/nginx/nginx.conf.default /target/etc/nginx/nginx.conf.non-root
+RUN set -euo pipefail; \
+    sed -i 's/listen\s*80;/listen 8080;/g' /target/etc/nginx/nginx.conf.non-root; \
+    sed -i -e 's,^#\?\s*pid\s\+.*;$,pid /tmp/nginx.pid;,' /target/etc/nginx/nginx.conf.non-root; \
+    sed -i "/http {/a\    client_body_temp_path /tmp/client_temp;" /target/etc/nginx/nginx.conf.non-root; \
+    sed -i "/http {/a\    proxy_temp_path /tmp/proxy_temp;" /target/etc/nginx/nginx.conf.non-root; \
+    sed -i "/http {/a\    fastcgi_temp_path /tmp/fastcgi_temp;" /target/etc/nginx/nginx.conf.non-root; \
+    sed -i "/http {/a\    uwsgi_temp_path /tmp/uwsgi_temp;" /target/etc/nginx/nginx.conf.non-root; \
+    sed -i "/http {/a\    scgi_temp_path /tmp/scgi_temp;" /target/etc/nginx/nginx.conf.non-root
+RUN set -euo pipefail; \
+    mkdir -p /target/tmp/nginx/client_temp \
+             /target/tmp/nginx/proxy_temp \
+             /target/tmp/nginx/fastcgi_temp \
+             /target/tmp/nginx/uwsgi_temp \
+             /target/tmp/nginx/scgi_temp; \
+    chmod o+rx /target/var/log/nginx; \
+    chown -R 499:499 /target/tmp/nginx;
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \
@@ -77,13 +102,10 @@ LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
 LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx-wrapper.sh"]
 EXPOSE 80/tcp
 
-RUN set -euo pipefail; mkdir /docker-entrypoint.d
-COPY [1-4]0-*.sh /docker-entrypoint.d/
-COPY docker-entrypoint.sh /usr/local/bin
-COPY index.html /srv/www/htdocs/
-RUN set -euo pipefail; chmod +x /docker-entrypoint.d/*.sh /usr/local/bin/docker-entrypoint.sh
-RUN set -euo pipefail; set -euo pipefail; mkdir -p /var/cache/nginx /var/run/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;                ln -sf /dev/stdout /var/log/nginx/access.log;                ln -sf /dev/stderr /var/log/nginx/error.log;                chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/run/nginx /var/log/nginx /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp /tmp/uwsgi_temp /tmp/scgi_temp;
+RUN set -euo pipefail; \
+    ln -sf /dev/stdout /var/log/nginx/access.log; \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 STOPSIGNAL SIGQUIT

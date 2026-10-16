@@ -18,7 +18,6 @@
 #!BuildTag: suse/389-ds:%%389ds_version%%-%RELEASE%
 #!BuildTag: suse/389-ds:%%389ds_version%%
 #!BuildTag: suse/389-ds:3.0
-#!BuildTag: suse/389-ds:latest
 #!BuildName: suse-389-ds
 #!BuildVersion: 16.0.3.0
 #!FilterBaseContainerPkgs

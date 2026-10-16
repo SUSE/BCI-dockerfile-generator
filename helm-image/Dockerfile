@@ -19,7 +19,6 @@
 #!BuildTag: suse/helm:%%helm_version%%
 #!BuildTag: suse/helm:4.3
 #!BuildTag: suse/helm:4
-#!BuildTag: suse/helm:latest
 #!BuildName: suse-helm
 #!BuildVersion: 16.0.4.3
 #!BuildRelease: 70
