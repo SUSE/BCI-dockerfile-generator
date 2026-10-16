@@ -5,6 +5,7 @@ import textwrap
 from pathlib import Path
 
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -145,9 +146,10 @@ XORG_CLIENT_CONTAINERS = [
                 "libasound2",
                 "libX11-xcb1",
                 "libxshmfence1",
-                # Provides necessary codecs for video/audio playback
-                "libavcodec58_134",
             ]
+            +
+            # Provides necessary codecs for video/audio playback
+            (["libavcodec58_134"] if os_version.is_sle15 else ["libavcodec61"])
         ),
         support_level=SupportLevel.L3,
         supported_until=KIOSK_SUPPORT_ENDS,
@@ -163,5 +165,5 @@ XORG_CLIENT_CONTAINERS = [
         """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]

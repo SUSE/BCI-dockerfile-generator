@@ -7,7 +7,6 @@ import textwrap
 from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
@@ -45,16 +44,12 @@ FIREFOX_CONTAINERS = [
             + (
                 [
                     "gconf2",
-                    # Provides necessary codecs for video/audio playback
-                    "libavcodec58_134",
                 ]
                 if os_version.is_sle15
                 else []
             )
             + (
                 [
-                    # Provides necessary codecs for video/audio playback
-                    "libavcodec58_134",
                     "MozillaFirefox-branding-openSUSE",
                 ]
                 if os_version.is_tumbleweed
@@ -62,6 +57,9 @@ FIREFOX_CONTAINERS = [
                     "MozillaFirefox-branding-SLE",
                 ]
             )
+            +
+            # Provides necessary codecs for video/audio playback
+            (["libavcodec58_134"] if os_version.is_sle15 else ["libavcodec61"])
         ),
         replacements_via_service=[
             Replacement(
@@ -88,5 +86,5 @@ FIREFOX_CONTAINERS = [
         """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in {v for v in ALL_NONBASE_OS_VERSIONS if v != OsVersion.SL16_0}
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
