@@ -19,12 +19,10 @@
 #!BuildTag: bci/nodejs:%%nodejs_version%%-base
 #!BuildTag: bci/nodejs:24-base
 #!BuildTag: bci/nodejs:24
-#!BuildTag: bci/nodejs:latest
 #!BuildTag: bci/node:%%nodejs_version%%-base-%RELEASE%
 #!BuildTag: bci/node:%%nodejs_version%%-base
 #!BuildTag: bci/node:24-base
 #!BuildTag: bci/node:24
-#!BuildTag: bci/node:latest
 #!BcntSyncTag: nodejs-24-image
 #!BuildName: bci-nodejs-24-base
 #!BuildVersion: 16.0.24

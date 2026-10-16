@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 16 13:51:50 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove latest tag (moved to 16.1 variant)
+
+-------------------------------------------------------------------
 Wed Oct  7 16:33:19 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - split the ownership change into two operations to catch all cases
