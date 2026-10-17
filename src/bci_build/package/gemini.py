@@ -26,14 +26,15 @@ GEMINI_CONTAINERS = [
         support_level=SupportLevel.UNSUPPORTED,
         package_list=sorted(
             (
+                "build",
+                "diffutils",
                 "gemini-cli",
                 "git-core",
                 "gzip",
                 "hostname",
-                "which",
-                "build",
                 "quilt",
                 "rpm-build",
+                "which",
                 "zstd",
             )
         ),
