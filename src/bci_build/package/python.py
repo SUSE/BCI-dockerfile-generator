@@ -108,6 +108,7 @@ def _get_python_kwargs(
         "version": py3_ver_replacement,
         "tag_version": py3_ver,
         "env": py_env,
+        "obs_disable_container_support": True,
         "package_list": sorted(package_list),
         "replacements_via_service": [
             Replacement(
