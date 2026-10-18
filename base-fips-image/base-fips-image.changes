@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Oct 18 15:54:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- also uninstall libexpat1
+
+-------------------------------------------------------------------
 Fri Sep  4 17:56:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Fix README formatting
