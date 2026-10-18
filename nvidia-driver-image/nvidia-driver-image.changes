@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Oct 18 15:59:40 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for new kernel release
+
+-------------------------------------------------------------------
 Thu Oct  1 09:33:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Add 615 driver branch
