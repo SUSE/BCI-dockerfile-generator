@@ -49,13 +49,27 @@ _NVIDIA_REPOS = {
     ],
     OsVersion.SL16_0: [
         ThirdPartyRepo(
-            name="cuda-sles15-x86_64",
+            name="cuda-sles16-x86_64",
             arch=Arch.X86_64,
             url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
         ),
         ThirdPartyRepo(
-            name="cuda-sles15-sbsa",
+            name="cuda-sles16-sbsa",
+            arch=Arch.AARCH64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
+        ),
+    ],
+    OsVersion.SL16_1: [
+        ThirdPartyRepo(
+            name="cuda-sles16-x86_64",
+            arch=Arch.X86_64,
+            url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/",
+            key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/3A8B5622.pub",
+        ),
+        ThirdPartyRepo(
+            name="cuda-sles16-sbsa",
             arch=Arch.AARCH64,
             url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/",
             key_url="https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/3A8B5622.pub",
@@ -70,6 +84,8 @@ _NVIDIA_OS_VERSIONS: list[tuple] = [
     (OsVersion.SP7, "64kb", [Arch.AARCH64]),
     (OsVersion.SL16_0, "default", [Arch.X86_64, Arch.AARCH64]),
     (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_1, "default", [Arch.X86_64, Arch.AARCH64]),
+    (OsVersion.SL16_1, "64kb", [Arch.AARCH64]),
 ]
 
 CUSTOM_END_TEMPLATE = Template(
@@ -624,7 +640,7 @@ def _get_packages(os_version: OsVersion) -> list[Package]:
         Package("infiniband-diags", PackageType.IMAGE),
     ] + [Package(name, PackageType.IMAGE) for name in os_version.release_package_names]
 
-    if os_version == OsVersion.SL16_0:
+    if os_version in (OsVersion.SL16_0, OsVersion.SL16_1):
         packages += [
             # GA kernel explicitly requires gcc13
             Package("gcc13", PackageType.BOOTSTRAP),
@@ -635,6 +651,12 @@ def _get_packages(os_version: OsVersion) -> list[Package]:
             # required by nvidia-persistenced
             Package("libtirpc3", PackageType.BOOTSTRAP),
             Package("libtirpc3", PackageType.IMAGE),
+        ]
+
+    if os_version in (OsVersion.SL16_1,):
+        packages += [
+            # required by cuda-kmp
+            Package("update-alternatives", PackageType.BOOTSTRAP),
         ]
 
     return packages
@@ -665,6 +687,20 @@ def _get_built_kernel_version(
 
 def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_arch):
     match os_version:
+        case OsVersion.SL16_1:
+            project = "SUSE:SLFO:1.3"
+            repo = "standard"
+
+            match driver_version:
+                case "615.71.09":
+                    package = "patchinfo.ga"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "615.71.09_k6.12.0_160100.7"
+                    release = "160100.2.4"
+                case _:
+                    raise ValueError(
+                        f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
+                    )
         case OsVersion.SL16_0:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
@@ -763,48 +799,75 @@ def _get_kernel_ga_rpms(
     built_kernel: str | None = None,
 ):
     match os_version:
+        case OsVersion.SL16_1:
+            project = "SUSE:SLFO:1.3"
+            repo = "standard"
+
+            match kernel_variant:
+                case "default":
+                    # fmt: off
+                    packages = [
+                        ("patchinfo.ga", "kernel-default", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-default-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-syms", "6.12.0", "160100.7.1", []),
+                        ("patchinfo.ga", "kernel-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
+                        # always needed on aarch64 for default
+                        ("patchinfo.ga", "kernel-64kb-devel", "6.12.0", "160100.7.2", [Arch.AARCH64]),
+                    ]
+                    # fmt: on
+                case "64kb":
+                    # fmt: off
+                    packages = [
+                        ("patchinfo.ga", "kernel-64kb", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-64kb-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-default-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-syms", "6.12.0", "160100.7.1", []),
+                        ("patchinfo.ga", "kernel-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
+                    ]
+                    # fmt: on
+                case _:
+                    raise ValueError(
+                        f"Kernel variant '{kernel_variant}' not found for '{os_version.os_version}'"
+                    )
+
         case OsVersion.SL16_0:
             project = "SUSE:SLFO:1.2"
             repo = "standard"
             if built_kernel:
-                version, release_raw = built_kernel.split("-", 1)
-                release = f"{release_raw}.1"
-                obs_pkg = _SL16_0_KERNEL_PATCHINFO_MAP.get(built_kernel)
-                if not obs_pkg:
+                ver, rel_raw = built_kernel.split("-", 1)
+                rel = f"{rel_raw}.1"
+                pi_pkg = _SL16_0_KERNEL_PATCHINFO_MAP.get(built_kernel)
+
+                if not pi_pkg:
                     raise ValueError(
                         f"Kernel patchinfo not found for built_kernel '{built_kernel}' in SL16_0"
                     )
-                obs_pkg_default = obs_pkg
-                obs_pkg_syms = obs_pkg
-                obs_pkg_source = obs_pkg
-                obs_pkg_64kb = obs_pkg
             else:
-                version = "6.12.0"
-                release = "160000.5.1"
-                obs_pkg_default = "patchinfo.ga"
-                obs_pkg_syms = "patchinfo.ga"
-                obs_pkg_source = "patchinfo.ga"
-                obs_pkg_64kb = "patchinfo.ga"
+                ver = "6.12.0"
+                rel = "160000.5.1"
+                pi_pkg = "patchinfo.ga"
 
             match kernel_variant:
                 case "default":
                     packages = [
-                        (obs_pkg_default, "kernel-default", []),
-                        (obs_pkg_default, "kernel-default-devel", []),
-                        (obs_pkg_syms, "kernel-syms", []),
-                        (obs_pkg_source, "kernel-devel", []),
-                        (obs_pkg_source, "kernel-macros", []),
+                        (pi_pkg, "kernel-default", ver, rel, []),
+                        (pi_pkg, "kernel-default-devel", ver, rel, []),
+                        (pi_pkg, "kernel-syms", ver, rel, []),
+                        (pi_pkg, "kernel-devel", ver, rel, []),
+                        (pi_pkg, "kernel-macros", ver, rel, []),
                         # always needed on aarch64 for default
-                        (obs_pkg_64kb, "kernel-64kb-devel", [Arch.AARCH64]),
+                        (pi_pkg, "kernel-64kb-devel", ver, rel, [Arch.AARCH64]),
                     ]
                 case "64kb":
                     packages = [
-                        (obs_pkg_64kb, "kernel-64kb", []),
-                        (obs_pkg_64kb, "kernel-64kb-devel", []),
-                        (obs_pkg_default, "kernel-default-devel", []),
-                        (obs_pkg_syms, "kernel-syms", []),
-                        (obs_pkg_source, "kernel-devel", []),
-                        (obs_pkg_source, "kernel-macros", []),
+                        (pi_pkg, "kernel-64kb", ver, rel, []),
+                        (pi_pkg, "kernel-64kb-devel", ver, rel, []),
+                        (pi_pkg, "kernel-default-devel", ver, rel, []),
+                        (pi_pkg, "kernel-syms", ver, rel, []),
+                        (pi_pkg, "kernel-devel", ver, rel, []),
+                        (pi_pkg, "kernel-macros", ver, rel, []),
                     ]
                 case _:
                     raise ValueError(
@@ -815,58 +878,59 @@ def _get_kernel_ga_rpms(
             if built_kernel:
                 project = "SUSE:SLE-15-SP7:Update"
                 repo = "pool"
-                version, release_raw = built_kernel.split("-", 1)
-                release = f"{release_raw}.1"
+                ver, rel_raw = built_kernel.split("-", 1)
+                rel = f"{rel_raw}.1"
                 obs_pkg_map = _SP7_KERNEL_PACKAGE_MAP.get(built_kernel)
+
                 if not obs_pkg_map:
                     raise ValueError(
                         f"Kernel package not found for built_kernel '{built_kernel}' in SP7"
                     )
-                obs_pkg_default = obs_pkg_map["kernel-default"]
-                obs_pkg_syms = obs_pkg_map["kernel-syms"]
-                obs_pkg_source = obs_pkg_map["kernel-source"]
-                obs_pkg_64kb = obs_pkg_map["kernel-64kb"]
+
+                pkg_default = obs_pkg_map["kernel-default"]
+                pkg_syms = obs_pkg_map["kernel-syms"]
+                pkg_source = obs_pkg_map["kernel-source"]
+                pkg_64kb = obs_pkg_map["kernel-64kb"]
             else:
                 project = "SUSE:SLE-15-SP7:GA"
                 repo = "pool"
-                version = "6.4.0"
-                release = "150700.51.1"
-                obs_pkg_default = "kernel-default"
-                obs_pkg_syms = "kernel-syms"
-                obs_pkg_source = "kernel-source"
-                obs_pkg_64kb = "kernel-64kb"
+                ver = "6.4.0"
+                rel = "150700.51.1"
+                pkg_default = "kernel-default"
+                pkg_syms = "kernel-syms"
+                pkg_source = "kernel-source"
+                pkg_64kb = "kernel-64kb"
 
             match kernel_variant:
                 case "default":
                     packages = [
-                        (obs_pkg_default, "kernel-default", []),
-                        (obs_pkg_default, "kernel-default-devel", []),
-                        (obs_pkg_syms, "kernel-syms", []),
-                        (obs_pkg_source, "kernel-devel", []),
-                        (obs_pkg_source, "kernel-macros", []),
+                        (pkg_default, "kernel-default", ver, rel, []),
+                        (pkg_default, "kernel-default-devel", ver, rel, []),
+                        (pkg_syms, "kernel-syms", ver, rel, []),
+                        (pkg_source, "kernel-devel", ver, rel, []),
+                        (pkg_source, "kernel-macros", ver, rel, []),
                         # always needed on aarch64 for default
-                        (obs_pkg_64kb, "kernel-64kb-devel", [Arch.AARCH64]),
+                        (pkg_64kb, "kernel-64kb-devel", ver, rel, [Arch.AARCH64]),
                     ]
                 case "64kb":
                     packages = [
-                        (obs_pkg_64kb, "kernel-64kb", []),
-                        (obs_pkg_64kb, "kernel-64kb-devel", []),
-                        (obs_pkg_default, "kernel-default-devel", []),
-                        (obs_pkg_syms, "kernel-syms", []),
-                        (obs_pkg_source, "kernel-devel", []),
-                        (obs_pkg_source, "kernel-macros", []),
+                        (pkg_64kb, "kernel-64kb", ver, rel, []),
+                        (pkg_64kb, "kernel-64kb-devel", ver, rel, []),
+                        (pkg_default, "kernel-default-devel", ver, rel, []),
+                        (pkg_syms, "kernel-syms", ver, rel, []),
+                        (pkg_source, "kernel-devel", ver, rel, []),
+                        (pkg_source, "kernel-macros", ver, rel, []),
                     ]
                 case _:
                     raise ValueError(
                         f"Kernel variant '{kernel_variant}' not found for '{os_version.os_version}'"
                     )
-
         case _:
             raise ValueError(f"Kernel GA not found for '{os_version.os_version}'")
 
     pkgs = []
 
-    for package, subpackage, arches in packages:
+    for package, subpackage, version, release, arches in packages:
         if not arches:
             arches = exclusive_arch
 
@@ -919,6 +983,11 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         else:
             seen_versions.add(branch)
 
+        # older drivers are not available for SLE 16.1
+        # skip the image in this case
+        if os_version == OsVersion.SL16_1 and branch < 615:
+            continue
+
         # older drivers are not available for SLE 16
         # skip the image in this case
         if os_version == OsVersion.SL16_0 and branch < 595:
@@ -970,7 +1039,11 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
                 package_list=_get_packages(os_version),
-                support_level=SupportLevel.L3,
+                support_level=(
+                    SupportLevel.TECHPREVIEW
+                    if os_version == OsVersion.SL16_1
+                    else SupportLevel.L3
+                ),
                 supported_until="",
                 exclusive_arch=exclusive_arch,
                 third_party_repos=_NVIDIA_REPOS[os_version],
