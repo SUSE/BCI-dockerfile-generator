@@ -58,10 +58,10 @@ COPY nvidia-compute-G07-615.71.09-1.aarch64.rpm /tmp/
 COPY nvidia-compute-utils-G07-615.71.09-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-compute-utils-G07-615.71.09-1.aarch64.rpm sha256:34dd8ce9b27b18ab28583e5a799eecb673b1db74d14203a5dc87e850e84770d4
 COPY nvidia-compute-utils-G07-615.71.09-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.62.71.09-1.noarch.rpm nvidia-driver-assistant-0.62.71.09-1.x86_64.rpm sha256:080179075fee4853a041c5ff23df1baa226bff73e1aa5599911493a195975bb4
-COPY nvidia-driver-assistant-0.62.71.09-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.62.71.09-1.noarch.rpm nvidia-driver-assistant-0.62.71.09-1.aarch64.rpm sha256:080179075fee4853a041c5ff23df1baa226bff73e1aa5599911493a195975bb4
-COPY nvidia-driver-assistant-0.62.71.09-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-driver-assistant-0.62.71.10-1.noarch.rpm nvidia-driver-assistant-0.62.71.10-1.x86_64.rpm sha256:d0255285cc65a0f071935b2bbad037a7a4bec59aaa8d3a1cfd8498431a4ef54a
+COPY nvidia-driver-assistant-0.62.71.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-driver-assistant-0.62.71.10-1.noarch.rpm nvidia-driver-assistant-0.62.71.10-1.aarch64.rpm sha256:d0255285cc65a0f071935b2bbad037a7a4bec59aaa8d3a1cfd8498431a4ef54a
+COPY nvidia-driver-assistant-0.62.71.10-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/x86_64/nvidia-fabricmanager-615.71.09-1.x86_64.rpm sha256:1f7b8549632b91f9138b875adbbee1435eea89445b022f4127697b6b63855772
 COPY nvidia-fabricmanager-615.71.09-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/nvidia-fabricmanager-615.71.09-1.aarch64.rpm sha256:f8ce2fac4e88f86bb26c90ff86687d76b567bcb161ae013a4288323ed5f97ef3
@@ -128,7 +128,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G07-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-615.71.09-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.62.71.09-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.62.71.10-1.x86_64.rpm \
             /tmp/nvidia-modprobe-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-persistenced-615.71.09-1.x86_64.rpm \
             /tmp/kernel-default-6.4.0-150700.53.78.1.x86_64.rpm \
@@ -148,7 +148,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G07-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-615.71.09-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.62.71.09-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.62.71.10-1.aarch64.rpm \
             /tmp/nvidia-modprobe-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-persistenced-615.71.09-1.aarch64.rpm \
             /tmp/kernel-default-6.4.0-150700.53.78.1.aarch64.rpm \
@@ -182,7 +182,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G07-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-615.71.09-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.62.71.09-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.62.71.10-1.x86_64.rpm \
             /tmp/nvidia-fabricmanager-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-imex-615.71.09-1.x86_64.rpm \
             /tmp/nvidia-modprobe-615.71.09-1.x86_64.rpm \
@@ -197,7 +197,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G07-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-615.71.09-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.62.71.09-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.62.71.10-1.aarch64.rpm \
             /tmp/nvidia-fabricmanager-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-imex-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-modprobe-615.71.09-1.aarch64.rpm \
