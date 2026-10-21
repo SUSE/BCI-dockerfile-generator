@@ -74,6 +74,7 @@ GCC_CONTAINERS = [
             + os_version.common_devel_packages
             + os_version.lifecycle_data_pkg
         ),
+        min_release_counter={OsVersion.SL16_1: 20},
         pretty_name="GNU Compiler Collection",
         logo_url="https://gcc.gnu.org/img/gccegg-65.png",
         is_latest=(
@@ -101,7 +102,6 @@ GCC_CONTAINERS = [
         ),
     )
     for (gcc_version, os_version) in (
-        (15, OsVersion.SL16_0),
         (15, OsVersion.SL16_1),
         (16, OsVersion.SL16_1),
         (13, OsVersion.TUMBLEWEED),

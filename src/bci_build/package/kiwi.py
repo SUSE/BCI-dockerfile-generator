@@ -90,6 +90,7 @@ KIWI_CONTAINERS = [
         logo_url="https://osinside.github.io/kiwi/_static/kiwi-logo.png",
         min_release_counter={
             OsVersion.SL16_0: 9,
+            OsVersion.SL16_1: 30,
         },
         extra_labels={
             "usage": "This container requires an openSUSE/SUSE host kernel for full functionality.",
