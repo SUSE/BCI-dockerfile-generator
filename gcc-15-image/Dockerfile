@@ -20,6 +20,7 @@
 #!BuildTag: bci/gcc:15
 #!BuildName: bci-gcc-15
 #!BuildVersion: 16.1.15
+#!BuildRelease: 20
 FROM registry.suse.com/bci/bci-base:16.1
 
 RUN set -euo pipefail; \
