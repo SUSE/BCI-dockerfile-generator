@@ -124,7 +124,7 @@ GOLANG_CONTAINERS = (
             support_level=SupportLevel.L3,
         )
         for ver, govariant, sl16ver in product(
-            _GOLANG_VERSIONS, ("",), (OsVersion.SL16_0, OsVersion.SL16_1)
+            _GOLANG_VERSIONS, ("",), (OsVersion.SL16_1, OsVersion.SL16_2)
         )
     ]
     + [

@@ -136,7 +136,6 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             (16, variant)
             for variant in (
                 OsVersion.SP7,
-                OsVersion.SL16_0,
                 OsVersion.SL16_1,
                 OsVersion.TUMBLEWEED,
             )
@@ -145,7 +144,6 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             (17, variant)
             for variant in (
                 OsVersion.SP7,
-                OsVersion.SL16_0,
                 OsVersion.SL16_1,
                 OsVersion.TUMBLEWEED,
             )
@@ -154,8 +152,8 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             (18, variant)
             for variant in (
                 OsVersion.SP7,
-                OsVersion.SL16_0,
                 OsVersion.SL16_1,
+                OsVersion.SL16_2,
                 OsVersion.TUMBLEWEED,
             )
         ]
