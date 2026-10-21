@@ -101,7 +101,7 @@ NODE_CONTAINERS = (
     + [
         DevelopmentContainer(**_get_node_kwargs(24, os_version, build_flavor))
         for os_version, build_flavor in product(
-            (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED),
+            (OsVersion.SL16_1, OsVersion.TUMBLEWEED),
             ("base", "micro"),
         )
     ]
