@@ -3,10 +3,6 @@ staging_build:
   steps:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: 389-ds-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: amd-driver-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -31,10 +27,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: bind-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: busybox-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -44,10 +36,6 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: cdi-1.66-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: distribution-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -75,23 +63,11 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: gcc-15-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: git-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: golang-oldstable-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: golang-stable-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: helm-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -131,15 +107,7 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: nginx-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: nodejs-22-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: nodejs-24-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -175,10 +143,6 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
-        source_package: rabbitmq-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
         source_package: ruby-3.4-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
@@ -192,14 +156,6 @@ staging_build:
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
         source_package: sle16-kernel-module-devel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: stunnel-image
-        target_project: home:pushman:BCI:CR:16.0:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:16.0
-        source_package: valkey-image
         target_project: home:pushman:BCI:CR:16.0:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.0
@@ -224,9 +180,6 @@ refresh_devel_BCI:
   steps:
     - trigger_services:
         project: devel:BCI:16.0
-        package: 389-ds-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: amd-driver-image
     - trigger_services:
         project: devel:BCI:16.0
@@ -245,9 +198,6 @@ refresh_devel_BCI:
         package: base-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: bind-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: busybox-image
     - trigger_services:
         project: devel:BCI:16.0
@@ -255,9 +205,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: cdi-1.66-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: distribution-image
     - trigger_services:
         project: devel:BCI:16.0
         package: dotnet-10.0
@@ -278,19 +225,10 @@ refresh_devel_BCI:
         package: dotnet-runtime-9.0
     - trigger_services:
         project: devel:BCI:16.0
-        package: gcc-15-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: git-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: golang-oldstable-image
     - trigger_services:
         project: devel:BCI:16.0
         package: golang-stable-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: helm-image
     - trigger_services:
         project: devel:BCI:16.0
         package: init-image
@@ -320,13 +258,7 @@ refresh_devel_BCI:
         package: nano-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: nginx-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: nodejs-22-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: nodejs-24-image
     - trigger_services:
         project: devel:BCI:16.0
         package: nvidia-driver-image
@@ -353,9 +285,6 @@ refresh_devel_BCI:
         package: python-3.13-image
     - trigger_services:
         project: devel:BCI:16.0
-        package: rabbitmq-image
-    - trigger_services:
-        project: devel:BCI:16.0
         package: ruby-3.4-image
     - trigger_services:
         project: devel:BCI:16.0
@@ -366,12 +295,6 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.0
         package: sle16-kernel-module-devel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: stunnel-image
-    - trigger_services:
-        project: devel:BCI:16.0
-        package: valkey-image
     - trigger_services:
         project: devel:BCI:16.0
         package: virt-template-0.2-image
