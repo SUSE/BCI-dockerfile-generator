@@ -93,18 +93,18 @@ def _get_nginx_kwargs(os_version: OsVersion):
             {DOCKERFILE_RUN} cp /target/etc/nginx/nginx.conf.default /target/etc/nginx/nginx.conf.non-root
             {DOCKERFILE_RUN} \\
                 sed -i 's/listen\\s*80;/listen 8080;/g' /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i -e '/^[[:space:]]*user[[:space:]]/d' /target/etc/nginx/nginx.conf.non-root; \\
                 sed -i -e 's,^#\\?\\s*pid\\s\\+.*;$,pid /tmp/nginx.pid;,' /target/etc/nginx/nginx.conf.non-root; \\
-                sed -i "/http {{/a\\    client_body_temp_path /tmp/client_temp;" /target/etc/nginx/nginx.conf.non-root; \\
-                sed -i "/http {{/a\\    proxy_temp_path /tmp/proxy_temp;" /target/etc/nginx/nginx.conf.non-root; \\
-                sed -i "/http {{/a\\    fastcgi_temp_path /tmp/fastcgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
-                sed -i "/http {{/a\\    uwsgi_temp_path /tmp/uwsgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
-                sed -i "/http {{/a\\    scgi_temp_path /tmp/scgi_temp;" /target/etc/nginx/nginx.conf.non-root
-            {DOCKERFILE_RUN} chmod o+rx /target/var/log/nginx"""),
-        "custom_end": textwrap.dedent(f"""
+                sed -i "/http {{/a\\    client_body_temp_path /tmp/nginx/client_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    proxy_temp_path /tmp/nginx/proxy_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    fastcgi_temp_path /tmp/nginx/fastcgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    uwsgi_temp_path /tmp/nginx/uwsgi_temp;" /target/etc/nginx/nginx.conf.non-root; \\
+                sed -i "/http {{/a\\    scgi_temp_path /tmp/nginx/scgi_temp;" /target/etc/nginx/nginx.conf.non-root
+            {DOCKERFILE_RUN} chmod o+rx /target/var/log/nginx
             {DOCKERFILE_RUN} \\
-                ln -sf /dev/stdout /var/log/nginx/access.log; \\
-                ln -sf /dev/stderr /var/log/nginx/error.log
-            STOPSIGNAL SIGQUIT"""),
+                ln -sf /dev/stdout /target/var/log/nginx/access.log; \\
+                ln -sf /dev/stderr /target/var/log/nginx/error.log"""),
+        "custom_end": "STOPSIGNAL SIGQUIT",
     }
 
     return kwargs
