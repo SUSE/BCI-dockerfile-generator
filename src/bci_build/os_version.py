@@ -241,7 +241,6 @@ ALL_NONBASE_OS_VERSIONS: list[OsVersion] = [
 # For which versions to create Application and Language Containers - only SLFO+
 ALL_NONBASE_SLFO_OS_VERSIONS: list[OsVersion] = [
     OsVersion.TUMBLEWEED,
-    OsVersion.SL16_0,
     OsVersion.SL16_1,
 ]
 
