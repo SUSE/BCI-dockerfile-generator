@@ -155,7 +155,7 @@ RUBY_3_4_CONTAINERS = [
         support_level=SupportLevel.L3,
     )
     for os_version, flavor in product(
-        (OsVersion.SL16_0, OsVersion.SL16_1), ("base", "micro")
+        (OsVersion.SL16_1, OsVersion.SL16_2), ("base", "micro")
     )
 ]
 

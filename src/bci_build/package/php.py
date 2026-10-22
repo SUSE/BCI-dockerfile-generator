@@ -7,6 +7,7 @@ from typing import Literal
 
 from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
+from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DOCKERFILE_RUN
@@ -240,7 +241,7 @@ PHP_CONTAINERS = [
 ] + [
     _create_php_bci(os_version, variant, 8, flavor)
     for os_version, variant, flavor in product(
-        (OsVersion.SL16_0, OsVersion.SL16_1, OsVersion.TUMBLEWEED),
+        ALL_NONBASE_SLFO_OS_VERSIONS,
         (PhpVariant.cli, PhpVariant.apache, PhpVariant.fpm),
         ("base", "micro"),
     )
