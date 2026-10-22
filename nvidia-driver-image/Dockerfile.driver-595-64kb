@@ -38,10 +38,10 @@ RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk findutils grep jq kmod rpm sed util-linux util-linux-systemd infiniband-diags SLES-release libtirpc3
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/dkms-3.4.3-1.noarch.rpm dkms-3.4.3-1.x86_64.rpm sha256:d6a7aab8ef5a607e29361eb5067578f51ab7cf980313ca879f56ee032fb0ec76
-COPY dkms-3.4.3-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/dkms-3.4.3-1.noarch.rpm dkms-3.4.3-1.aarch64.rpm sha256:d6a7aab8ef5a607e29361eb5067578f51ab7cf980313ca879f56ee032fb0ec76
-COPY dkms-3.4.3-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/dkms-3.4.4-1.noarch.rpm dkms-3.4.4-1.x86_64.rpm sha256:02e38496c81f36aa11b5f52d7cd8e8809cacb1126b7277a4b753ddf30c3f94ec
+COPY dkms-3.4.4-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/dkms-3.4.4-1.noarch.rpm dkms-3.4.4-1.aarch64.rpm sha256:02e38496c81f36aa11b5f52d7cd8e8809cacb1126b7277a4b753ddf30c3f94ec
+COPY dkms-3.4.4-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-cfg-595.71.05-1.x86_64.rpm sha256:a89dd2b5dc6c6320e01fbaad06720317ddf9066d50255a95448cb8240bf5b267
 COPY libnvidia-cfg-595.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-cfg-595.71.05-1.aarch64.rpm sha256:89b2410bff58433424eb4e68b2fba07d6aeb60c3e5b52d472a0d65db472c9b9c
@@ -129,7 +129,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.3-1.aarch64.rpm \
+            /tmp/dkms-3.4.4-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
@@ -161,7 +161,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.3-1.aarch64.rpm \
+            /tmp/dkms-3.4.4-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
@@ -194,7 +194,7 @@ COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
-            /tmp/dkms-3.4.3-1.aarch64.rpm \
+            /tmp/dkms-3.4.4-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
