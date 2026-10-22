@@ -1,4 +1,4 @@
-# ASP.NET Core Runtime 9.0 container image
+# ASP.NET Core Runtime 10.0 container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -27,7 +27,7 @@ SUSE does not provide any support or warranties for the third-party components i
 To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:9.0 AS build
+FROM registry.suse.com/bci/dotnet-sdk:10.0 AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
@@ -39,7 +39,7 @@ COPY aspnetapp/. .
 RUN dotnet publish --no-restore -o /app
 
 # final image
-FROM registry.suse.com/bci/dotnet-aspnet:9.0
+FROM registry.suse.com/bci/dotnet-aspnet:10.0-base
 
 WORKDIR /app
 COPY --from=build /app .
@@ -68,7 +68,7 @@ To create a self-signed certificate for testing, use the following command:
 
 ```ShellSession
 podman run --rm -it -v "$PWD/https":/https:Z \
-    registry.suse.com/bci/dotnet-sdk:9.0 \
+    registry.suse.com/bci/dotnet-sdk:10.0 \
     dotnet dev-certs https -ep /https/aspnetapp.pfx -p <PASSWORD>
 ```
 

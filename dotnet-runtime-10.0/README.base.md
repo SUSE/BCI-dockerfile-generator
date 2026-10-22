@@ -1,4 +1,4 @@
-# ASP.NET Core Runtime 8.0 container image
+# .NET Runtime 10.0 container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -10,8 +10,7 @@
 It is cross-platform, and can be used in devices, cloud, and embedded/IoT scenarios.
 You can use C# or F# to write .NET applications.
 
-This image contains the ASP.NET Core and .NET runtimes and libraries,
-and it is optimized for running ASP.NET Core applications in production.
+This image contains the .NET runtimes and libraries, and it is optimized for running .NET applications in production.
 
 ## Notice
 
@@ -24,62 +23,38 @@ SUSE does not provide any support or warranties for the third-party components i
 
 ## Usage
 
-To compile and deploy an application, copy the sources and build the binary:
+To deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:8.0 AS build
+FROM registry.suse.com/bci/dotnet-sdk:10.0 AS build
+
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-COPY aspnetapp/*.csproj .
+COPY *.csproj .
 RUN dotnet restore
 
 # copy and publish app and libraries
-COPY aspnetapp/. .
-RUN dotnet publish --no-restore -o /app
+COPY . .
+RUN dotnet publish --no-restore -c Release -o /app
 
 # final image
-FROM registry.suse.com/bci/dotnet-aspnet:8.0
+FROM registry.suse.com/bci/dotnet-runtime:10.0-base
 
 WORKDIR /app
 COPY --from=build /app .
 
-EXPOSE 8080
-
 # uncomment to run as non-root user
 # USER $APP_UID
 
-ENTRYPOINT ["./aspnetapp"]
+ENTRYPOINT ["./dotnetapp"]
 ```
 
 Build and run the container image:
 
 ```ShellSession
-podman build -t my-aspnet-app .
-podman run -it --rm -p 8080:8080 my-aspnet-app
-```
-
-## HTTPS and certificates
-
-ASP.NET Core uses [HTTPS by default](https://docs.microsoft.com/aspnet/core/security/enforcing-ssl).
-You need a valid certificate for production deployments.
-
-To create a self-signed certificate for testing, use the following command:
-
-```ShellSession
-podman run --rm -it -v "$PWD/https":/https:Z \
-    registry.suse.com/bci/dotnet-sdk:8.0 \
-    dotnet dev-certs https -ep /https/aspnetapp.pfx -p <PASSWORD>
-```
-
-To use a certificate and run the container image with ASP.NET Core configured for HTTPS in development or production, use the following command:
-
-```ShellSession
-podman run --rm -it -p 8081:8081 \
-    -e ASPNETCORE_HTTPS_PORTS=8081 \
-    -e ASPNETCORE_Kestrel__Certificates__Default__Password="<PASSWORD>" \
-    -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx \
-    -v "$PWD/https":/https:Z my-aspnet-app
+podman build -t my-dotnet-app .
+podman run -it --rm my-dotnet-app
 ```
 
 ## Globalization
