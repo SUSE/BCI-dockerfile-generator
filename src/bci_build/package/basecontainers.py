@@ -12,6 +12,7 @@ from bci_build.os_version import ALL_BASE_OS_VERSIONS
 from bci_build.os_version import ALL_OS_LTSS_VERSIONS
 from bci_build.os_version import ALL_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import CAN_BE_SAC_VERSION
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -470,7 +471,10 @@ for os_version in set(ALL_BASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}:
             },
             supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
             obs_disable_sbom_filelists=True,
-            is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+            is_latest=(
+                os_version in CAN_BE_LATEST_BASE_OS_VERSION
+                or os_version in CAN_BE_LATEST_SLFO_OS_VERSION
+            ),
             package_list=(
                 [
                     "kernel-devel",
