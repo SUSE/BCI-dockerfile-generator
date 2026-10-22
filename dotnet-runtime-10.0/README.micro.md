@@ -1,4 +1,4 @@
-# .NET Runtime 8.0 container image
+# .NET Runtime 10.0 Micro container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)![Support Level](https://img.shields.io/badge/Support_Level-techpreview-blue)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -26,7 +26,7 @@ SUSE does not provide any support or warranties for the third-party components i
 To deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
-FROM registry.suse.com/bci/dotnet-sdk:8.0 AS build
+FROM registry.suse.com/bci/dotnet-sdk:10.0 AS build
 
 WORKDIR /source
 
@@ -39,7 +39,7 @@ COPY . .
 RUN dotnet publish --no-restore -c Release -o /app
 
 # final image
-FROM registry.suse.com/bci/dotnet-runtime:8.0
+FROM registry.suse.com/bci/dotnet-runtime:10.0-micro
 
 WORKDIR /app
 COPY --from=build /app .
