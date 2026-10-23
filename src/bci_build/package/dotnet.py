@@ -4,6 +4,7 @@ This module contains classes and functions related to updating and generating Do
 
 import datetime
 import functools
+from itertools import product
 from typing import Literal
 
 from jinja2 import Template
@@ -11,10 +12,12 @@ from packaging import version
 from version_utils import rpm
 
 from bci_build.container_attributes import Arch
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.thirdparty import ThirdPartyPackage
 from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
@@ -296,94 +299,136 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
 
 DOTNET_CONTAINERS: list[DotNetBCI] = []
 
-for os_version in (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1):
-    for ver in _DOTNET_VERSIONS:
-        package_list = sorted(
-            [*os_version.release_package_names, "libopenssl3", "libicu"]
-            + (["coreutils"] if os_version.is_sle15 else ["krb5"])
+
+for dotnet_version, os_version in (
+    *product(["8.0", "9.0", "10.0"], (OsVersion.SP7,)),
+    *product(["10.0"], (OsVersion.SL16_0, OsVersion.SL16_1)),
+):
+    if dotnet_version not in _DOTNET_VERSIONS:
+        raise ValueError(f"Version {dotnet_version} not in _DOTNET_VERSIONS")
+
+    flavors = ("base",) if os_version.is_sle15 else ("base", "micro")
+
+    package_list = sorted(
+        [*os_version.release_package_names, "libopenssl3", "libicu"]
+        + (["coreutils"] if os_version.is_sle15 else ["krb5"])
+    )
+
+    DOTNET_CONTAINERS.append(
+        DotNetBCI(
+            os_version=os_version,
+            tag_version=dotnet_version,
+            name="dotnet-sdk",
+            pretty_name=f".NET SDK {dotnet_version}",
+            is_sdk=True,
+            is_latest=_is_latest_dotnet(dotnet_version, os_version),
+            additional_versions=(
+                [f"{dotnet_version}-{os_version.dist_id}"] if os_version.dist_id else []
+            ),
+            package_name=f"dotnet-{dotnet_version}",
+            exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+            package_list=package_list,
+            third_party_repos=MS_REPOS[os_version],
+            third_party_package_list=[
+                "dotnet-host",
+                ThirdPartyPackage(
+                    name="netstandard-targeting-pack-2.1", arch=Arch.X86_64
+                ),
+            ]
+            + [
+                f"{pkg}-{dotnet_version}"
+                for pkg in (
+                    "dotnet-targeting-pack",
+                    "dotnet-hostfxr",
+                    "dotnet-runtime-deps",
+                    "dotnet-runtime",
+                    "dotnet-apphost-pack",
+                    "aspnetcore-targeting-pack",
+                    "aspnetcore-runtime",
+                    "dotnet-sdk",
+                )
+            ],
         )
+    )
+
+    for flavor in flavors:
+        if flavor == "micro":
+            # required for useradd in CUSTOM_END_TEMPLATE
+            package_list.append("shadow")
+            package_list = sorted(package_list)
 
         DOTNET_CONTAINERS.append(
             DotNetBCI(
                 os_version=os_version,
-                tag_version=ver,
-                name="dotnet-sdk",
-                pretty_name=f".NET SDK {ver}",
-                is_sdk=True,
-                is_latest=_is_latest_dotnet(ver, os_version),
-                additional_versions=(
-                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+                tag_version=dotnet_version,
+                name="dotnet-runtime",
+                is_sdk=False,
+                build_flavor=None if os_version.is_sle15 else flavor,
+                pretty_name=(
+                    f".NET Runtime {dotnet_version} Micro"
+                    if flavor == "micro"
+                    else f".NET Runtime {dotnet_version}"
                 ),
-                package_name=f"dotnet-{ver}",
+                is_latest=(
+                    _is_latest_dotnet(dotnet_version, os_version) and flavor != "micro"
+                ),
+                from_target_image=(
+                    None
+                    if os_version.is_sle15
+                    else generate_from_image_tag(
+                        os_version, "bci-micro" if flavor == "micro" else "bci-base"
+                    )
+                ),
+                package_name=f"dotnet-runtime-{dotnet_version}",
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
+                additional_versions=(
+                    [f"{dotnet_version}-{os_version.dist_id}"]
+                    if os_version.dist_id
+                    else []
+                ),
                 package_list=package_list,
                 third_party_repos=MS_REPOS[os_version],
                 third_party_package_list=[
                     "dotnet-host",
-                    ThirdPartyPackage(
-                        name="netstandard-targeting-pack-2.1", arch=Arch.X86_64
-                    ),
                 ]
                 + [
-                    f"{pkg}-{ver}"
+                    f"{pkg}-{dotnet_version}"
                     for pkg in (
-                        "dotnet-targeting-pack",
                         "dotnet-hostfxr",
                         "dotnet-runtime-deps",
                         "dotnet-runtime",
-                        "dotnet-apphost-pack",
-                        "aspnetcore-targeting-pack",
-                        "aspnetcore-runtime",
-                        "dotnet-sdk",
                     )
                 ],
             )
         )
 
-    DOTNET_CONTAINERS.extend(
-        [
+        DOTNET_CONTAINERS.append(
             DotNetBCI(
-                os_version=os_version,
-                tag_version=ver,
-                name="dotnet-runtime",
-                is_sdk=False,
-                pretty_name=f".NET Runtime {ver}",
-                is_latest=_is_latest_dotnet(ver, os_version),
-                package_name=f"dotnet-runtime-{ver}",
-                exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
-                additional_versions=(
-                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
-                ),
-                package_list=package_list,
-                third_party_repos=MS_REPOS[os_version],
-                third_party_package_list=[
-                    "dotnet-host",
-                ]
-                + [
-                    f"{pkg}-{ver}"
-                    for pkg in (
-                        "dotnet-hostfxr",
-                        "dotnet-runtime-deps",
-                        "dotnet-runtime",
-                    )
-                ],
-            )
-            for ver in _DOTNET_VERSIONS
-        ]
-    )
-
-    DOTNET_CONTAINERS.extend(
-        [
-            DotNetBCI(
-                tag_version=ver,
+                tag_version=dotnet_version,
                 os_version=os_version,
                 name="dotnet-aspnet",
                 is_sdk=False,
-                pretty_name=f"ASP.NET Core Runtime {ver}",
-                is_latest=_is_latest_dotnet(ver, os_version),
-                package_name=f"aspnet-runtime-{ver}",
+                build_flavor=None if os_version.is_sle15 else flavor,
+                pretty_name=(
+                    f"ASP.NET Core Runtime {dotnet_version} Micro"
+                    if flavor == "micro"
+                    else f"ASP.NET Core Runtime {dotnet_version}"
+                ),
+                is_latest=(
+                    _is_latest_dotnet(dotnet_version, os_version) and flavor != "micro"
+                ),
+                from_target_image=(
+                    None
+                    if os_version.is_sle15
+                    else generate_from_image_tag(
+                        os_version, "bci-micro" if flavor == "micro" else "bci-base"
+                    )
+                ),
+                package_name=f"aspnet-runtime-{dotnet_version}",
                 additional_versions=(
-                    [f"{ver}-{os_version.dist_id}"] if os_version.dist_id else []
+                    [f"{dotnet_version}-{os_version.dist_id}"]
+                    if os_version.dist_id
+                    else []
                 ),
                 exclusive_arch=_DOTNET_EXCLUSIVE_ARCH,
                 package_list=package_list,
@@ -392,7 +437,7 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1):
                     "dotnet-host",
                 ]
                 + [
-                    f"{pkg}-{ver}"
+                    f"{pkg}-{dotnet_version}"
                     for pkg in (
                         "dotnet-hostfxr",
                         "dotnet-runtime-deps",
@@ -401,6 +446,6 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1):
                     )
                 ],
             )
-            for ver in _DOTNET_VERSIONS
-        ]
-    )
+        )
+
+DOTNET_CRATE = ContainerCrate(DOTNET_CONTAINERS)
