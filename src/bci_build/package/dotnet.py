@@ -308,6 +308,7 @@ for dotnet_version, os_version in (
     package_list = sorted(
         [*os_version.release_package_names, "libopenssl3", "libicu"]
         + (["coreutils"] if os_version.is_sle15 else ["krb5"])
+        + os_version.fips_compatibility_packages
     )
 
     DOTNET_CONTAINERS.append(
