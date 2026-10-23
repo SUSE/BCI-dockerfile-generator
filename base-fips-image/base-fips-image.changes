@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 23 14:29:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- stop uninstalling python3-base - it is no longer required
+
+-------------------------------------------------------------------
 Fri Sep  4 17:59:34 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - Fix README formatting
