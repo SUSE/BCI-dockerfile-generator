@@ -128,7 +128,7 @@ PROMETHEUS_CONTAINERS = [
         exposes_ports=[TCP(_PROMETHEUS_PORT)],
         custom_end=_generate_prometheus_family_healthcheck(_PROMETHEUS_PORT),
     )
-    for os_version in ALL_NONBASE_OS_VERSIONS
+    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
 ]
 
 _ALERTMANAGER_PACKAGE_NAME = "golang-github-prometheus-alertmanager"
