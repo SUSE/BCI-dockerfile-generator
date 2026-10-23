@@ -48,6 +48,7 @@ CUSTOM_END_TEMPLATE = Template(
 KERNEL_GA_VERSIONS = {
     OsVersion.SP7: "6.4.0-150700.51",
     OsVersion.SL16_0: "6.12.0-160000.5",
+    OsVersion.SL16_1: "6.12.0-160100.7",
 }
 
 
@@ -173,6 +174,33 @@ class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
                     "no_arch": True,
                 },
             ]
+        elif self.os_version == OsVersion.SL16_1:
+            project = "SUSE:SLFO:1.3"
+            repo = "standard"
+            package = "patchinfo.ga"
+            version = "6.12.0"
+            release = "160100.7.2"
+            arches = self.exclusive_arch
+            subpackages = [
+                {
+                    "name": "kernel-default",
+                },
+                {
+                    "name": "kernel-default-devel",
+                },
+                {
+                    "name": "kernel-syms",
+                    "release": "160100.7.1",
+                },
+                {
+                    "name": "kernel-devel",
+                    "no_arch": True,
+                },
+                {
+                    "name": "kernel-macros",
+                    "no_arch": True,
+                },
+            ]
         else:
             raise ValueError(f"Unsupported OS version {self.os_version.os_version}")
 
@@ -180,20 +208,21 @@ class AMDDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             subpkg_name = subpkg["name"]
             pkg_name = subpkg.get("package", package)
             no_arch = subpkg.get("no_arch", False)
+            rel = subpkg.get("release", release)
 
             for arch in arches:
-                filename_in_image = f"{subpkg_name}-{version}-{release}.{arch}.rpm"
+                filename_in_image = f"{subpkg_name}-{version}-{rel}.{arch}.rpm"
 
                 if no_arch:
-                    filename_in_repo = f"{subpkg_name}-{version}-{release}.noarch.rpm"
+                    filename_in_repo = f"{subpkg_name}-{version}-{rel}.noarch.rpm"
                 else:
-                    filename_in_repo = f"{subpkg_name}-{version}-{release}.{arch}.rpm"
+                    filename_in_repo = f"{subpkg_name}-{version}-{rel}.{arch}.rpm"
 
                 self._rpms.append(
                     RpmPackage(
                         name=subpkg_name,
                         arch=str(arch),
-                        evr=("", version, release),
+                        evr=("", version, rel),
                         filename=filename_in_image,
                         url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{pkg_name}/{filename_in_repo}",
                     )
@@ -247,7 +276,7 @@ def _get_packages(os_version: OsVersion):
         *os_version.release_package_names,
     ]
 
-    if os_version == OsVersion.SL16_0:
+    if os_version in [OsVersion.SL16_0, OsVersion.SL16_1]:
         packages += [
             # GA kernel explicitly requires gcc13
             Package("gcc13", PackageType.BOOTSTRAP),
@@ -263,17 +292,25 @@ with open(AMD_DRIVER_JSON_PATH, "r") as f:
 
 AMD_CONTAINERS: list[AMDDriverBCI] = []
 
-for os_version in (OsVersion.SP7, OsVersion.SL16_0):
+for os_version in (OsVersion.SP7, OsVersion.SL16_0, OsVersion.SL16_1):
     for ver in _AMD_DRIVER_VERSIONS:
         branch = int(ver.partition(".")[0])
 
         if branch < 31 and os_version not in (OsVersion.SP7,):
             continue
 
+        # 16.1 repo is not yet available
+        # Use 16.0 instead
+        repo_os = (
+            OsVersion.SL16_0
+            if os_version == OsVersion.SL16_1
+            else os_version.os_version
+        )
+
         amd_repo = ThirdPartyRepo(
             name=f"radeon-{ver}-x86_64",
             arch=Arch.X86_64,
-            url=f"https://repo.radeon.com/amdgpu/{ver}/sle/{os_version.os_version}/main/x86_64/",
+            url=f"https://repo.radeon.com/amdgpu/{ver}/sle/{repo_os}/main/x86_64/",
             key_url="https://repo.radeon.com/rocm/rocm.gpg.key",
         )
 
@@ -292,7 +329,11 @@ for os_version in (OsVersion.SP7, OsVersion.SL16_0):
                 is_latest=False,
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
-                support_level=SupportLevel.L3,
+                support_level=(
+                    SupportLevel.TECHPREVIEW
+                    if os_version == OsVersion.SL16_1
+                    else SupportLevel.L3
+                ),
                 supported_until="",
                 exclusive_arch=[Arch.X86_64],
                 package_list=_get_packages(os_version),
