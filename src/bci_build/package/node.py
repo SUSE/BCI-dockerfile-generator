@@ -93,10 +93,7 @@ def _get_node_kwargs(
 NODE_CONTAINERS = (
     [
         DevelopmentContainer(**_get_node_kwargs(node_version, os_version))
-        for node_version, os_version in (
-            (22, OsVersion.SP7),
-            (22, OsVersion.SL16_0),
-        )
+        for node_version, os_version in ((22, OsVersion.SP7),)
     ]
     + [
         DevelopmentContainer(**_get_node_kwargs(24, os_version, build_flavor))

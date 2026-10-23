@@ -50,7 +50,9 @@ def supported_until(os_version: OsVersion, jre_major: int) -> datetime.date | No
 
 
 def _get_openjdk_kwargs(
-    os_version: Literal[OsVersion.TUMBLEWEED, OsVersion.SL16_0, OsVersion.SP7],
+    os_version: Literal[
+        OsVersion.TUMBLEWEED, OsVersion.SL16_1, OsVersion.SL16_2, OsVersion.SP7
+    ],
     devel: bool,
     java_version: Literal[11, 17, 21, 25, 26],
 ):
