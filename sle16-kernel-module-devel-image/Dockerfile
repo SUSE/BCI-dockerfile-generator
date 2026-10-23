@@ -18,6 +18,7 @@
 
 #!BuildTag: bci/bci-sle16-kernel-module-devel:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-sle16-kernel-module-devel:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-sle16-kernel-module-devel:latest
 #!BuildName: bci-bci-sle16-kernel-module-devel-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.1.0
 FROM registry.suse.com/bci/bci-base:16.1
