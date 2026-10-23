@@ -122,7 +122,7 @@ MS_REPOS = {
             key_filename="microsoft.asc",
         ),
     ],
-    OsVersion.SL16_0: [
+    OsVersion.SL16_1: [
         ThirdPartyRepo(
             name="third-party",
             url="https://packages.microsoft.com/sles/16/prod/",
@@ -133,7 +133,7 @@ MS_REPOS = {
             key_filename="microsoft.asc",
         ),
     ],
-    OsVersion.SL16_1: [
+    OsVersion.SL16_2: [
         ThirdPartyRepo(
             name="third-party",
             url="https://packages.microsoft.com/sles/16/prod/",
@@ -299,8 +299,8 @@ DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 
 for dotnet_version, os_version in (
-    *product(["8.0", "9.0", "10.0"], (OsVersion.SP7,)),
-    *product(["10.0"], (OsVersion.SL16_1,)),
+    *product(_DOTNET_VERSIONS, (OsVersion.SP7,)),
+    *product(["10.0"], (OsVersion.SL16_1, OsVersion.SL16_2)),
 ):
     if dotnet_version not in _DOTNET_VERSIONS:
         raise ValueError(f"Version {dotnet_version} not in _DOTNET_VERSIONS")
