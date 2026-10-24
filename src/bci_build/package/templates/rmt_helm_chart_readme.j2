@@ -17,7 +17,9 @@ A containerized version of the SUSE RMT application that can pass its configurat
 The database back-end for SUSE RMT.
 If needed, RMT creates the database and tables at startup, so no specific
 post-installation task is required for it to be usable. Passwords are
-self-generated, unless explicitly specified in the values file.
+self-generated, unless explicitly specified in the values file, or
+provided via externally-managed Secrets (see
+[Externally-managed Secrets](#externally-managed-secrets)).
 
 ### NGINX
 
@@ -38,7 +40,7 @@ The Helm chart can be obtained using the following command:
 ## Custom mandatory values
 
 Certain values of the chart do not have any defaults:
-- SCC mirroring credentials (refer to [more information](https://documentation.suse.com/sles/html/SLES-all/cha-rmt-mirroring.html#sec-rmt-mirroring-credentials) for more information)
+- SCC mirroring credentials (refer to [more information](https://documentation.suse.com/sles/html/SLES-all/cha-rmt-mirroring.html#sec-rmt-mirroring-credentials) for more information) — required only when `secrets.create` is `true` (the default). When Secrets are managed externally, see [Externally-managed Secrets](#externally-managed-secrets).
 - list of products to mirror
 - list of products not to mirror
 - list of repos to mirror
@@ -95,8 +97,8 @@ EOF
 
 The required values in the custom value file are as follows:
 
-- `app.scc.password` SUSE Customer Center proxy password. The password string must be in quotes. If the quote character `"` is part of the string, it has to be escaped with `\`.
-- `app.scc.username` SUSE Customer Center proxy user name. The user name string must be quotes. If the quote character `"` is part of the string, it has to be escaped with `\`.
+- `app.scc.password` SUSE Customer Center proxy password. Required only when `secrets.create` is `true` (the default). The password string must be in quotes. If the quote character `"` is part of the string, it has to be escaped with `\`.
+- `app.scc.username` SUSE Customer Center proxy user name. Required only when `secrets.create` is `true` (the default). The user name string must be quotes. If the quote character `"` is part of the string, it has to be escaped with `\`.
 - `app.scc.products_enable` List of products to enable for mirroring.
 - `app.scc.products_disable` list of products to exclude from mirroring.
 - `app.scc.repos_enable` List of repos to enable for mirroring.
@@ -108,6 +110,48 @@ The required values in the custom value file are as follows:
 - `ingress.hosts[0]` DNS name at which the RMT service is be accessible from clients.
 - `ingress.tls[0].hosts[0]` DNS name at which the RMT service is be accessible from clients.
 - `ingress.tls[0].secretName` TLS ingress certificate.
+
+## Secret names and external Secret management
+
+By default (`secrets.create: true`) this chart renders two Kubernetes Secrets.
+Their names come from `{{ include "rmt.fullname" . }}` (defined in
+`templates/_helpers.tpl`), suffixed with `-db` and `-app`:
+
+- `<fullname>-db` — keys: `password`, `rootPassword` (MariaDB credentials)
+- `<fullname>-app` — keys: `username`, `password` (SCC credentials)
+
+For the common case `helm install rmt ./rmt-helm`, the names resolve to
+`rmt-db` and `rmt-app` — the same names referenced by the Deployment and
+CronJob templates. When the chart creates the Secrets itself
+(`secrets.create: true`), these default names are always used.
+
+### Externally-managed Secrets
+
+To let another component (for example, HashiCorp Vault Secrets Operator managed
+by a separate Helm chart) own those Secrets, set `secrets.create: false`. In
+that mode you may point the chart at pre-existing Secrets that use self-defining
+names via `secrets.existingDbSecret` and `secrets.existingAppSecret`:
+
+```yaml
+secrets:
+  create: false
+  existingDbSecret: rmt-vault-db
+  existingAppSecret: rmt-vault-scc
+```
+
+When `secrets.create` is `false`:
+
+- This chart no longer renders `10-db-secrets.yaml` / `20-app-secrets.yaml`.
+- `app.scc.username` and `app.scc.password` are no longer required in your
+  values file — they must be present in the externally-created Secret instead.
+- You must ensure the required Secrets already exist in the target namespace
+  **before** installing this chart, with these keys:
+
+  | Secret name | Keys |
+  |---|---|
+  | `existingDbSecret` (default `<fullname>-db`) | `password`, `rootPassword` |
+  | `existingAppSecret` (default `<fullname>-app`) | `username`, `password` |
+
 
 ## Deploying
 
