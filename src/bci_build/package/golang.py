@@ -60,6 +60,7 @@ def _get_golang_kwargs(
         "stability_tag": stability_tag,
         "is_latest": (is_stable and (os_version in CAN_BE_LATEST_OS_VERSION)),
         "tag_version": f"{ver}{variant}",
+        "supported_until": "",
         "version": f"{golang_version_regex}{variant}",
         "additional_versions": (
             [f"{ver}-{os_version.dist_id}{variant}"] if os_version.dist_id else []
