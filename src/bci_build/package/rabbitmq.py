@@ -5,9 +5,10 @@ from pathlib import Path
 
 from bci_build.container_attributes import TCP
 from bci_build.os_version import ALL_NONBASE_SLFO_OS_VERSIONS
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import DOCKERFILE_RUN
 from bci_build.package import ApplicationStackContainer
+from bci_build.package import StableUser
 from bci_build.package.helpers import IDEXEC_SCRIPT
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
@@ -34,7 +35,7 @@ RABBITMQ_CONTAINERS = [
         pretty_name="RabbitMQ message broker supporting AMQP, STOMP and MQTT",
         from_target_image=generate_from_image_tag(os_version, "bci-micro"),
         os_version=os_version,
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         version=_RABBITMQ_VER_RE,
         tag_version=(rabbitmq_major := "4"),
         is_singleton_image=True,
@@ -68,18 +69,20 @@ RABBITMQ_CONTAINERS = [
                 {DOCKERFILE_RUN} chmod +x /target{_entrypoint}
 
                 # replace gosu calls with idexec
-                {DOCKERFILE_RUN} sed -i 's/exec gosu /exec idexec /g' /target/{_entrypoint}
+                {DOCKERFILE_RUN} sed -i 's/exec gosu /exec idexec /g' /target{_entrypoint}
                 {DOCKERFILE_RUN} install -d -m 0755 /target/etc/rabbitmq/conf.d/
             """)
         ),
         volumes=["/var/lib/rabbitmq"],
         exposes_ports=[
+            TCP(1883),
             TCP(4369),
             TCP(5671),
             TCP(5672),
-            TCP(15691),
-            TCP(15692),
+            TCP(15672),
             TCP(25672),
+            TCP(61613),
+            TCP(61614),
         ],
         custom_end=textwrap.dedent("""
             ENV HOME=/var/lib/rabbitmq
@@ -94,7 +97,9 @@ RABBITMQ_CONTAINERS = [
         entrypoint=["/usr/local/bin/entrypoint.sh"],
         cmd=["rabbitmq-server"],
         entrypoint_user="rabbitmq",
-        # user_chown=StableUser(user_name="rabbitmq", group_name="rabbitmq"),
+        user_chown=StableUser(
+            user_name="rabbitmq", user_id=497, group_name="rabbitmq", group_id=497
+        ),
     )
     for os_version in ALL_NONBASE_SLFO_OS_VERSIONS
 ]
