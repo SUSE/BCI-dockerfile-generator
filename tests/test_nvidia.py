@@ -201,3 +201,84 @@ def test_get_kernel_ga_rpms_sl16_0():
     assert len(rpms_ga) > 0
     for r in rpms_ga:
         assert "patchinfo.ga" in r.url
+
+
+def test_package_versions_kernel_nvidia64kb():
+    """Verify package version tracking for kernel-nvidia64kb."""
+    from bci_build.os_version import OsVersion
+    from bci_build.package.versions import get_all_pkg_version
+    from bci_build.package.versions import get_pkg_version
+
+    assert get_pkg_version("kernel-nvidia64kb", OsVersion.SL16_1) == "6.12.0-160100.7"
+    assert get_all_pkg_version("kernel-nvidia64kb", OsVersion.SL16_1) == [
+        "6.12.0-160100.7"
+    ]
+
+
+def test_nvidia_container_sl16_1():
+    """Verify NVIDIA container properties for SLES for NVIDIA 16.1."""
+    from bci_build.os_version import OsVersion
+
+    sl16_1_containers = [
+        c for c in NVIDIA_CONTAINERS if c.os_version == OsVersion.SL16_1
+    ]
+    variants = {c.kernel_variant for c in sl16_1_containers}
+    assert variants == {"default", "64kb", "nvidia64kb"}
+
+    nvidia64kb_containers = [
+        c for c in sl16_1_containers if c.kernel_variant == "nvidia64kb"
+    ]
+    assert len(nvidia64kb_containers) >= 1
+
+    c = nvidia64kb_containers[0]
+    assert c.exclusive_arch == [Arch.AARCH64]
+    assert c.tag_version == "615-nvidia64kb"
+    assert c.build_flavor == "driver-615-nvidia64kb"
+    assert c.image_ref_name == "615-nvidia64kb-sles%OS_VERSION_ID_SP%"
+    assert any(
+        tag.endswith("615-6.12.0-160100.7-nvidia64kb-sles16.1")
+        for tag in c.additional_versions
+    )
+
+    pkg_names = {p.name for p in c.package_list}
+    assert "gcc13" in pkg_names
+    assert "suse-kernel-rpm-scriptlets" in pkg_names
+    assert "libOpenCL1" in pkg_names
+    assert "libtirpc3" in pkg_names
+    assert "update-alternatives" in pkg_names
+
+
+def test_get_nvidia_kmp_rpms_sl16_1():
+    """Verify _get_nvidia_kmp_rpms for SL16_1 nvidia64kb returns packages from SUSE:SLFO:1.3."""
+    from bci_build.os_version import OsVersion
+    from bci_build.package.nvidia import _get_nvidia_kmp_rpms
+
+    rpms = _get_nvidia_kmp_rpms(
+        "615.71.09", OsVersion.SL16_1, "nvidia64kb", [Arch.AARCH64]
+    )
+    assert len(rpms) == 1
+    assert rpms[0].name == "nvidia-open-driver-G07-signed-cuda-kmp-nvidia64kb"
+    assert "SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga" in rpms[0].url
+
+
+def test_get_kernel_ga_rpms_sl16_1():
+    """Verify _get_kernel_ga_rpms for SL16_1 nvidia64kb returns correct kernel packages."""
+    from bci_build.os_version import OsVersion
+    from bci_build.package.nvidia import _get_kernel_ga_rpms
+
+    rpms = _get_kernel_ga_rpms(OsVersion.SL16_1, "nvidia64kb", [Arch.AARCH64])
+    pkg_names = {r.name for r in rpms}
+    assert pkg_names == {
+        "kernel-nvidia64kb",
+        "kernel-nvidia64kb-devel",
+        "kernel-syms-nvidia",
+        "kernel-devel-nvidia",
+        "kernel-macros",
+    }
+    for r in rpms:
+        assert "SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga" in r.url
+        if r.name in ["kernel-devel-nvidia", "kernel-macros"]:
+            assert r.url.endswith(".noarch.rpm")
+        else:
+            assert r.url.endswith(".aarch64.rpm")
+
