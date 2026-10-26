@@ -39,7 +39,7 @@ helm install --wait gpu-operator \
 
 Secure Boot is only supported on SLES 16.x / SL Micro 6.2 / SLES 15 SP7 host and requires NVIDIA open driver. Add `--set driver.kernelModuleType=open` argument to the `helm install` command.
 
-This driver container image requires the full `kernel-default` or `kernel-default-64kb` RPM package to be installed on the host. Using the `kernel-default-base` RPM package is not supported, and will cause the driver container to fail to initialize properly.
+This driver container image requires the full `kernel-default`, `kernel-default-64kb` or `kernel-nvidia64kb` RPM package to be installed on the host. Using the `kernel-default-base` RPM package is not supported, and will cause the driver container to fail to initialize properly.
 
 ## Licensing
 

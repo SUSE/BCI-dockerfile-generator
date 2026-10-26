@@ -1,4 +1,5 @@
 <multibuild>
     <package>driver-615</package>
     <package>driver-615-64kb</package>
+    <package>driver-615-nvidia64kb</package>
 </multibuild>
