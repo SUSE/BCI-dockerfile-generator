@@ -35,6 +35,7 @@ done
 
 # TODO add license to upstream helm chart repo and fetch it here
 curl -sf -o src/bci_build/package/templates/rmt_helm_chart_readme.j2 https://raw.githubusercontent.com/SUSE/helm-charts/main/rmt-helm/README.md
+patch src/bci_build/package/templates/rmt_helm_chart_readme.j2 < src/bci_build/package/templates/rmt_helm_chart_readme.patch
 
 ### postfix: MIT
 curl -sf -o src/bci_build/package/postfix/entrypoint/entrypoint.sh https://raw.githubusercontent.com/thkukuk/containers-mailserver/master/postfix/entrypoint.sh
