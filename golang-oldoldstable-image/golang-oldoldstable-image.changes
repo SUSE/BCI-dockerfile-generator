@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 27 08:35:25 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve migration instructions in the README.md; hide base image support end date
+
+-------------------------------------------------------------------
 Thu Sep 24 14:44:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add migration instructions
