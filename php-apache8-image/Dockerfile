@@ -37,9 +37,7 @@ RUN chmod +x /target/usr/local/bin/docker-php-*
 # create our own apache2-foreground from the systemd startup script
 RUN set -euo pipefail; sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /target/usr/sbin/start_apache2 > /target/usr/local/bin/apache2-foreground
 RUN set -euo pipefail; chmod +x /target/usr/local/bin/apache2-foreground
-
-# apache fails to start without its log folder
-RUN set -euo pipefail; install -d -m 0755 /target/var/log/apache2
+RUN set -euo pipefail; install -d -m 0750 /target/var/log/apache2
 
 # cleanup logs and temporary files
 RUN set -euo pipefail; zypper -n --installroot /target clean -a; \

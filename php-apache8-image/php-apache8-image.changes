@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 29 17:15:33 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix permissions on var/log/apache2 folder
+
+-------------------------------------------------------------------
 Mon Oct 26 12:33:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - set pipefail in case we need it
