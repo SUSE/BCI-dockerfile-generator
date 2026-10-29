@@ -78,6 +78,7 @@ def _create_php_bci(
     """)
     build_stage_custom_end = None
     exposes_ports = None
+    use_systemd_tmpfiles = os_version == OsVersion.TUMBLEWEED
 
     if php_variant == PhpVariant.apache:
         extra_pkgs = [f"apache2-mod_php{php_version}"]
@@ -93,16 +94,20 @@ def _create_php_bci(
             common_end
             + (
                 generate_systemd_tmpfiles_command("apache2.conf", use_target=True)
-                if os_version == OsVersion.TUMBLEWEED
+                if use_systemd_tmpfiles
                 else ""
             )
             + textwrap.dedent(f"""
             # create our own apache2-foreground from the systemd startup script
             {DOCKERFILE_RUN} sed 's|^exec $apache_bin|exec $apache_bin -DFOREGROUND|' /target/usr/sbin/start_apache2 > /target/usr/local/bin/apache2-foreground
             {DOCKERFILE_RUN} chmod +x /target/usr/local/bin/apache2-foreground
-
+            """)
             # apache fails to start without its log folder
-            {DOCKERFILE_RUN} install -d -m 0755 /target/var/log/apache2""")
+            + (
+                ""
+                if use_systemd_tmpfiles
+                else f"{DOCKERFILE_RUN} install -d -m 0750 /target/var/log/apache2"
+            )
         )
 
         custom_end = textwrap.dedent("""
