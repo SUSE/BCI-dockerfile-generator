@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 30 14:55:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to coreutils-single for smaller footprint
+
+-------------------------------------------------------------------
 Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to released mode
