@@ -1,4 +1,4 @@
-# OpenJDK 17 runtime container image
+# OpenJDK 17 Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -17,7 +17,7 @@ To run a jar or war application inside a container instance, use the following c
 $ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk:17 java -jar hello.jar
 ```
 
-Or create a new contained based on OpenJDK 17 runtime image:
+Or create a new contained based on OpenJDK 17 Runtime Environment image:
 
 ```Dockerfile
 FROM registry.suse.com/bci/openjdk:17

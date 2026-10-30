@@ -1,4 +1,4 @@
-# OpenJDK 25 development container image
+# OpenJDK 25 Development Kit container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)[![SLSA](https://img.shields.io/badge/SLSA_(v1.0)-Build_L3-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
 [![Provenance: Available](https://img.shields.io/badge/Provenance-Available-Green)](https://documentation.suse.com/container/all/html/Container-guide/index.html#container-verify)
@@ -50,7 +50,7 @@ $ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk-devel:2
 
 ## Additional tools
 
-The OpenJDK 25 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
+The OpenJDK 25 Development Kit image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
 
 ## Licensing
 
