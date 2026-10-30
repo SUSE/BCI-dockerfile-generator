@@ -1,4 +1,4 @@
-# OpenJDK 25 runtime container image
+# OpenJDK 25 Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -15,13 +15,13 @@ The OpenJDK runtime image is intended to be used as a runtime environment. For d
 To run a jar or war application inside a container instance, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk:25 java -jar hello.jar
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk:25-base java -jar hello.jar
 ```
 
-Or create a new contained based on OpenJDK 25 runtime image:
+Or create a new contained based on OpenJDK 25 Runtime Environment image:
 
 ```Dockerfile
-FROM registry.suse.com/bci/openjdk:25
+FROM registry.suse.com/bci/openjdk:25-base
 
 WORKDIR /app
 
@@ -43,7 +43,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.suse.com/bci/openjdk:25
+FROM registry.suse.com/bci/openjdk:25-base
 
 WORKDIR /app
 

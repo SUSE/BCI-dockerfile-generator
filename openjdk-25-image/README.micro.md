@@ -1,4 +1,4 @@
-# OpenJDK 25 development container image
+# OpenJDK 25 Micro Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -8,15 +8,33 @@
 
 [OpenJDK](https://openjdk.org/) (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition (Java SE). OpenJDK is the official reference implementation of Java SE starting with version 7.
 
-The OpenJDK development image is intended to be used as a build environment. For runtime, use the OpenJDK runtime image.
+The OpenJDK runtime image is intended to be used as a runtime environment. For development, use the OpenJDK development image.
 
 ## Usage
 
-To compile and deploy an application, copy the sources and build the binary:
+To run a jar or war application inside a container instance, use the following command:
+
+```ShellSession
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk:25-micro java -jar hello.jar
+```
+
+Or create a new contained based on OpenJDK 25 Micro Runtime Environment image:
+
+```Dockerfile
+FROM registry.suse.com/bci/openjdk:25-micro
+
+WORKDIR /app
+
+COPY . ./
+
+CMD ["java", "-jar", "hello.jar"]
+```
+
+To compile and deploy an application, copy the sources and build the application:
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.suse.com/bci/openjdk-devel:25 as build
+FROM registry.suse.com/bci/openjdk-devel:25  as build
 
 WORKDIR /app
 
@@ -25,7 +43,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.suse.com/bci/openjdk:25
+FROM registry.suse.com/bci/openjdk:25-micro
 
 WORKDIR /app
 
@@ -40,18 +58,6 @@ Build and run the container image:
 $ podman build -t my-java-app .
 $ podman run -it --rm my-java-app
 ```
-
-There are situations, where you don't want to run an application inside a container.
-
-To compile the application, without running it inside a container instance, use the following command:
-
-```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk-devel:25 javac Hello.java
-```
-
-## Additional tools
-
-The OpenJDK 25 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
 
 ## Licensing
 

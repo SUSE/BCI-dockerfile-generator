@@ -1,4 +1,4 @@
-# OpenJDK 21 runtime container image
+# OpenJDK 21 Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 [![SLSA](https://img.shields.io/badge/SLSA_(v0.1)-Level_4-Green)](https://documentation.suse.com/sbp/security/html/SBP-SLSA4/)
@@ -18,7 +18,7 @@ To run a jar or war application inside a container instance, use the following c
 $ podman run --rm -v "$PWD":/app:Z -w /app registry.suse.com/bci/openjdk:21 java -jar hello.jar
 ```
 
-Or create a new contained based on OpenJDK 21 runtime image:
+Or create a new contained based on OpenJDK 21 Runtime Environment image:
 
 ```Dockerfile
 FROM registry.suse.com/bci/openjdk:21

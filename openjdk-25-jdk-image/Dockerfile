@@ -15,13 +15,13 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x riscv64 x86_64
-#!BuildTag: bci/openjdk-devel:%%java_version%%-%RELEASE%
-#!BuildTag: bci/openjdk-devel:%%java_version%%
-#!BuildTag: bci/openjdk-devel:25
-#!BuildTag: bci/openjdk-devel:latest
-#!BuildName: bci-openjdk-devel-25
+#!BuildTag: bci/openjdk-jdk:%%java_version%%-%RELEASE%
+#!BuildTag: bci/openjdk-jdk:%%java_version%%
+#!BuildTag: bci/openjdk-jdk:25
+#!BuildTag: bci/openjdk-jdk:latest
+#!BuildName: bci-openjdk-jdk-25
 #!BuildVersion: 16.1.25
-FROM bci/openjdk:25
+FROM bci/openjdk:25-base
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-25-openjdk-devel maven
@@ -40,17 +40,17 @@ RUN set -euo pipefail; zypper -n clean -a; \
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=com.suse.bci.openjdk.devel
+# labelprefix=com.suse.bci.openjdk.devkit
 LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
-LABEL org.opencontainers.image.title="SUSE Linux BCI OpenJDK 25 development"
-LABEL org.opencontainers.image.description="OpenJDK 25 development container based on the SUSE Linux Base Container Image."
+LABEL org.opencontainers.image.title="SUSE Linux BCI OpenJDK 25 Development Kit"
+LABEL org.opencontainers.image.description="OpenJDK 25 Development Kit container based on the SUSE Linux Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="SUSE LLC"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.suse.com/bci/openjdk-devel:%%java_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/openjdk-jdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL com.suse.supportlevel="l3"
 LABEL com.suse.eula="sle-bci"
