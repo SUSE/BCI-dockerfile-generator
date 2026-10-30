@@ -18,7 +18,6 @@
 #!BuildTag: suse/kiosk/tigervnc-x11vnc:%%tigervnc_ver%%-%RELEASE%
 #!BuildTag: suse/kiosk/tigervnc-x11vnc:%%tigervnc_ver%%
 #!BuildTag: suse/kiosk/tigervnc-x11vnc:1
-#!BuildTag: suse/kiosk/tigervnc-x11vnc:latest
 #!BuildName: suse-kiosk-tigervnc-x11vnc
 #!BuildVersion: 15.7.1
 #!BuildRelease: 60
