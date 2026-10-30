@@ -211,6 +211,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: tigervnc-x11vnc-image
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: valkey-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -390,6 +394,9 @@ refresh_devel_BCI:
     - trigger_services:
         project: devel:BCI:16.1
         package: stunnel-image
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: tigervnc-x11vnc-image
     - trigger_services:
         project: devel:BCI:16.1
         package: valkey-image
