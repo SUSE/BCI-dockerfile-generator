@@ -1,4 +1,4 @@
-# OpenJDK 26 development container image
+# OpenJDK 26 Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
@@ -6,15 +6,33 @@
 
 [OpenJDK](https://openjdk.org/) (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition (Java SE). OpenJDK is the official reference implementation of Java SE starting with version 7.
 
-The OpenJDK development image is intended to be used as a build environment. For runtime, use the OpenJDK runtime image.
+The OpenJDK runtime image is intended to be used as a runtime environment. For development, use the OpenJDK development image.
 
 ## Usage
 
-To compile and deploy an application, copy the sources and build the binary:
+To run a jar or war application inside a container instance, use the following command:
+
+```ShellSession
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk:26-base java -jar hello.jar
+```
+
+Or create a new contained based on OpenJDK 26 Runtime Environment image:
+
+```Dockerfile
+FROM registry.opensuse.org/opensuse/bci/openjdk:26-base
+
+WORKDIR /app
+
+COPY . ./
+
+CMD ["java", "-jar", "hello.jar"]
+```
+
+To compile and deploy an application, copy the sources and build the application:
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.opensuse.org/opensuse/bci/openjdk-devel:26 as build
+FROM registry.opensuse.org/opensuse/bci/openjdk-devel:26  as build
 
 WORKDIR /app
 
@@ -23,7 +41,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.opensuse.org/opensuse/bci/openjdk:26
+FROM registry.opensuse.org/opensuse/bci/openjdk:26-base
 
 WORKDIR /app
 
@@ -38,18 +56,6 @@ Build and run the container image:
 $ podman build -t my-java-app .
 $ podman run -it --rm my-java-app
 ```
-
-There are situations, where you don't want to run an application inside a container.
-
-To compile the application, without running it inside a container instance, use the following command:
-
-```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk-devel:26 javac Hello.java
-```
-
-## Additional tools
-
-The OpenJDK 26 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
 
 ## Licensing
 

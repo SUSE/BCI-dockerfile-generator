@@ -39,8 +39,8 @@ RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shad
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.bci.openjdk.devel
-LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 11 development"
-LABEL org.opencontainers.image.description="OpenJDK 11 development container based on the openSUSE Tumbleweed Base Container Image."
+LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 11 Development Kit"
+LABEL org.opencontainers.image.description="OpenJDK 11 Development Kit container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
 LABEL org.opencontainers.image.url="https://www.opensuse.org"
 LABEL org.opencontainers.image.created="%BUILDTIME%"

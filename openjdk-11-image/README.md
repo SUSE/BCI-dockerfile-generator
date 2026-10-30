@@ -1,4 +1,4 @@
-# OpenJDK 11 runtime container image
+# OpenJDK 11 Runtime Environment container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
@@ -16,7 +16,7 @@ To run a jar or war application inside a container instance, use the following c
 $ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk:11 java -jar hello.jar
 ```
 
-Or create a new contained based on OpenJDK 11 runtime image:
+Or create a new contained based on OpenJDK 11 Runtime Environment image:
 
 ```Dockerfile
 FROM registry.opensuse.org/opensuse/bci/openjdk:11

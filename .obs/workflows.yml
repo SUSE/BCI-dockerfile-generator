@@ -211,19 +211,19 @@ staging_build:
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-25-devel-image
-        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
-    - branch_package:
-        source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: openjdk-25-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
-        source_package: openjdk-26-devel-image
+        source_package: openjdk-25-jdk-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
         source_package: openjdk-26-image
+        target_project: home:pushman:BCI:CR:Tumbleweed:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:Tumbleweed
+        source_package: openjdk-26-jdk-image
         target_project: home:pushman:BCI:CR:Tumbleweed:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:Tumbleweed
@@ -508,16 +508,16 @@ refresh_devel_BCI:
         package: openjdk-21-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: openjdk-25-devel-image
-    - trigger_services:
-        project: devel:BCI:Tumbleweed
         package: openjdk-25-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
-        package: openjdk-26-devel-image
+        package: openjdk-25-jdk-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: openjdk-26-image
+    - trigger_services:
+        project: devel:BCI:Tumbleweed
+        package: openjdk-26-jdk-image
     - trigger_services:
         project: devel:BCI:Tumbleweed
         package: pcp-image

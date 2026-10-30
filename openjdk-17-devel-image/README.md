@@ -1,4 +1,4 @@
-# OpenJDK 17 development container image
+# OpenJDK 17 Development Kit container image
 
 ![Redistributable](https://img.shields.io/badge/Redistributable-Yes-green)
 
@@ -49,7 +49,7 @@ $ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/op
 
 ## Additional tools
 
-The OpenJDK 17 development image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
+The OpenJDK 17 Development Kit image includes [Git](https://git-scm.com/) and [Apache Maven](https://maven.apache.org/). [Apache Ant](https://ant.apache.org/) is available in the repositories.
 
 ## Licensing
 
