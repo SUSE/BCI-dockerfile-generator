@@ -4,8 +4,8 @@ SUSE containerized kiosk solution."""
 import textwrap
 
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
-from bci_build.os_version import OsVersion
+from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.package import SET_BLKID_SCAN
 from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
@@ -23,7 +23,7 @@ TIGERVNC_CONTAINERS = [
         exclusive_arch=KIOSK_EXCLUSIVE_ARCH,
         version_in_uid=False,
         tag_version=(tag_ver := "1"),
-        is_latest=os_version in CAN_BE_LATEST_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=True,
         version=(tigervnc_re := "%%tigervnc_ver%%"),
         _publish_registry=(KioskRegistry() if not os_version.is_tumbleweed else None),
@@ -71,5 +71,5 @@ TIGERVNC_CONTAINERS = [
             """)
         + (f"{SET_BLKID_SCAN}\n" if os_version.is_sle15 else ""),
     )
-    for os_version in (OsVersion.SP7, OsVersion.TUMBLEWEED)
+    for os_version in ALL_NONBASE_OS_VERSIONS
 ]
