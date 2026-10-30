@@ -12,6 +12,7 @@ from packaging import version
 from version_utils import rpm
 
 from bci_build.container_attributes import Arch
+from bci_build.container_attributes import SupportLevel
 from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
@@ -188,6 +189,7 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             "9.0": datetime.date(2026, 11, 10),
             "10.0": datetime.date(2028, 11, 12),
         }.get(str(self.tag_version))
+        self.support_level = SupportLevel.L2
         assert self.supported_until, (
             f".NET version missing in lifecycle information: {self.tag_version}"
         )
