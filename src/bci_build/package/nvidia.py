@@ -86,6 +86,7 @@ _NVIDIA_OS_VERSIONS: list[tuple] = [
     (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
     (OsVersion.SL16_1, "default", [Arch.X86_64, Arch.AARCH64]),
     (OsVersion.SL16_1, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_1, "nvidia64kb", [Arch.AARCH64]),
 ]
 
 CUSTOM_END_TEMPLATE = Template(
@@ -827,6 +828,16 @@ def _get_kernel_ga_rpms(
                         ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
                     ]
                     # fmt: on
+                case "nvidia64kb":
+                    # fmt: off
+                    packages = [
+                        ("patchinfo.ga", "kernel-nvidia64kb", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-nvidia64kb-devel", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-syms-nvidia", "6.12.0", "160100.7.1", []),
+                        ("patchinfo.ga", "kernel-devel-nvidia", "6.12.0", "160100.7.2", []),
+                        ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
+                    ]
+                    # fmt: on
                 case _:
                     raise ValueError(
                         f"Kernel variant '{kernel_variant}' not found for '{os_version.os_version}'"
@@ -936,7 +947,11 @@ def _get_kernel_ga_rpms(
 
         for arch in arches:
             filename_in_image = f"{subpackage}-{version}-{release}.{arch}.rpm"
-            is_no_arch = subpackage in ["kernel-devel", "kernel-macros"]
+            is_no_arch = subpackage in [
+                "kernel-devel",
+                "kernel-macros",
+                "kernel-devel-nvidia",
+            ]
 
             if is_no_arch:
                 filename_in_repo = f"{subpackage}-{version}-{release}.noarch.rpm"
