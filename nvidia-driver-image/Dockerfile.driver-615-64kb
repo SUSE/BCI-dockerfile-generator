@@ -18,7 +18,6 @@
 #!BuildTag: third-party/nvidia/driver:615-64kb-sles%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: third-party/nvidia/driver:615-64kb-sles%OS_VERSION_ID_SP%
 #!BuildTag: third-party/nvidia/driver:615-6.12.0-160100.8-64kb-sles16.1
-#!BuildTag: third-party/nvidia/driver:615-6.12.0-160100.7-64kb-sles16.1
 #!BcntSyncTag: nvidia-driver-image
 #!BuildName: nvidia-driver-615-64kb
 #!BuildVersion: 16.1.615.71.09
@@ -77,20 +76,20 @@ COPY nvidia-persistenced-615.71.09-1.aarch64.rpm /tmp/
 COPY nvlsm-2025.12.211-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvlsm-2025.12.211-1.aarch64.rpm sha256:5634a676de78b63ecdde10b92e4351da79155303488a7b897d9198dcc30844f4
 COPY nvlsm-2025.12.211-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-64kb-6.12.0-160100.7.2.aarch64.rpm
-COPY kernel-64kb-6.12.0-160100.7.2.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-64kb-devel-6.12.0-160100.7.2.aarch64.rpm
-COPY kernel-64kb-devel-6.12.0-160100.7.2.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-default-devel-6.12.0-160100.7.2.aarch64.rpm
-COPY kernel-default-devel-6.12.0-160100.7.2.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-syms-6.12.0-160100.7.1.aarch64.rpm
-COPY kernel-syms-6.12.0-160100.7.1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-devel-6.12.0-160100.7.2.noarch.rpm kernel-devel-6.12.0-160100.7.2.aarch64.rpm
-COPY kernel-devel-6.12.0-160100.7.2.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-macros-6.12.0-160100.7.2.noarch.rpm kernel-macros-6.12.0-160100.7.2.aarch64.rpm
-COPY kernel-macros-6.12.0-160100.7.2.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.7-160100.2.4.aarch64.rpm
-COPY nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.7-160100.2.4.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-64kb-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-64kb-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-64kb-devel-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-64kb-devel-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-default-devel-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-default-devel-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-syms-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-syms-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-devel-6.12.0-160100.8.1.noarch.rpm kernel-devel-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-devel-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.ga/kernel-macros-6.12.0-160100.8.1.noarch.rpm kernel-macros-6.12.0-160100.8.1.aarch64.rpm
+COPY kernel-macros-6.12.0-160100.8.1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.3/standard/aarch64/patchinfo.20261023100712975545.bd1ccbcbaa50/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.8-160100.1.1.aarch64.rpm
+COPY nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.8-160100.1.1.aarch64.rpm /tmp/
 
 COPY cuda-sles16-x86_64.repo /etc/zypp/repos.d/cuda-sles16-x86_64.repo
 COPY cuda-sles16-x86_64.gpg.key /tmp/cuda-sles16-x86_64.gpg.key
@@ -113,13 +112,13 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm \
             /tmp/nvidia-modprobe-615.71.09-1.aarch64.rpm \
             /tmp/nvidia-persistenced-615.71.09-1.aarch64.rpm \
-            /tmp/kernel-64kb-6.12.0-160100.7.2.aarch64.rpm \
-            /tmp/kernel-64kb-devel-6.12.0-160100.7.2.aarch64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160100.7.2.aarch64.rpm \
-            /tmp/kernel-syms-6.12.0-160100.7.1.aarch64.rpm \
-            /tmp/kernel-devel-6.12.0-160100.7.2.aarch64.rpm \
-            /tmp/kernel-macros-6.12.0-160100.7.2.aarch64.rpm \
-            /tmp/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.7-160100.2.4.aarch64.rpm; \
+            /tmp/kernel-64kb-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/kernel-64kb-devel-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/kernel-default-devel-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/kernel-syms-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/kernel-devel-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/kernel-macros-6.12.0-160100.8.1.aarch64.rpm \
+            /tmp/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.8-160100.1.1.aarch64.rpm; \
     fi
 
 RUN set -euo pipefail; if rpm -q dkms >/dev/null 2>&1; then \
@@ -153,7 +152,7 @@ RUN set -euo pipefail; if rpm --root /target -q compat-usrmerge-tools; then rpm 
 
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -ivh --force --nodeps --justdb --noscripts \
-            /tmp/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.7-160100.2.4.aarch64.rpm; \
+            /tmp/nvidia-open-driver-G07-signed-cuda-kmp-64kb-615.71.09_k6.12.0_160100.8-160100.1.1.aarch64.rpm; \
     fi
 
 # cleanup logs and temporary files
