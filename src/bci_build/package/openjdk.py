@@ -7,6 +7,7 @@ from typing import Literal
 
 from bci_build.container_attributes import ARCH_ONLY_64BIT
 from bci_build.container_attributes import SupportLevel
+from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import ALL_NONBASE_OS_VERSIONS
 from bci_build.os_version import _SUPPORTED_UNTIL_SLE
 from bci_build.os_version import OsVersion
@@ -55,6 +56,7 @@ def _get_openjdk_kwargs(
     ],
     devel: bool,
     java_version: Literal[11, 17, 21, 25, 26],
+    flavor: str | None = None,
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -78,9 +80,6 @@ def _get_openjdk_kwargs(
         ),
         "is_latest": is_latest,
         "supported_until": supported_until(os_version, java_version),
-        "package_name": (
-            f"openjdk-{java_version}" + ("-devel" if devel else "") + "-image"
-        ),
         "extra_files": {
             # prevent ftbfs on workers with a root partition with 4GB
             "_constraints": generate_disk_size_constraints(6)
@@ -105,16 +104,39 @@ def _get_openjdk_kwargs(
         if os_version in (OsVersion.SP5, OsVersion.SP6):
             common |= {"cmd": ["/usr/bin/jshell"]}
 
+        new_name = java_version >= 25 and not os_version.is_sle15
+
         return common | {
-            "name": "openjdk-devel",
-            "custom_labelprefix_end": "openjdk.devel",
-            "pretty_name": f"OpenJDK {java_version} development",
+            "name": ("openjdk-jdk" if new_name else "openjdk-devel"),
+            "package_name": (
+                f"openjdk-{java_version}-jdk-image"
+                if new_name
+                else f"openjdk-{java_version}-devel-image"
+            ),
+            "custom_labelprefix_end": (
+                "openjdk.devkit" if new_name else "openjdk.devel"
+            ),
+            "pretty_name": f"OpenJDK {java_version} Development Kit",
             "package_list": [f"java-{java_version}-openjdk-devel", "maven"],
-            "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}",
+            "from_image": f"{_build_tag_prefix(os_version)}/openjdk:{java_version}{'-base' if new_name else ''}",
         }
+
+    if flavor == "micro":
+        return common | {
+            "name": "openjdk",
+            "package_name": f"openjdk-{java_version}-image",
+            "pretty_name": f"OpenJDK {java_version} Micro Runtime Environment",
+            "build_flavor": flavor,
+            # adding nss-sysinit for /etc/pki/nssdb which is needed for NSS
+            "package_list": [f"java-{java_version}-openjdk", "mozilla-nss-sysinit"]
+            + os_version.common_devel_packages,
+        }
+
     return common | {
         "name": "openjdk",
-        "pretty_name": f"OpenJDK {java_version} runtime",
+        "package_name": f"openjdk-{java_version}-image",
+        "pretty_name": f"OpenJDK {java_version} Runtime Environment",
+        "build_flavor": flavor,
         # adding nss-sysinit for /etc/pki/nssdb which is needed for NSS
         "package_list": [f"java-{java_version}-openjdk", "mozilla-nss-sysinit"]
         + os_version.common_devel_packages,
@@ -134,12 +156,13 @@ OPENJDK_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_openjdk_kwargs(os_version, devel, java_version=26),
+            **_get_openjdk_kwargs(os_version, devel, java_version=26, flavor=flavor),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(
+        for os_version, devel, flavor in product(
             (OsVersion.TUMBLEWEED,),
             (True, False),
+            ("base", "micro"),
         )
     ]
     + [
@@ -158,9 +181,20 @@ OPENJDK_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_openjdk_kwargs(os_version=os_version, devel=devel, java_version=25),
+            **_get_openjdk_kwargs(
+                os_version=os_version,
+                devel=devel,
+                java_version=25,
+                flavor=None if os_version.is_sle15 else flavor,
+            ),
             support_level=SupportLevel.L3,
         )
-        for os_version, devel in product(ALL_NONBASE_OS_VERSIONS, (True, False))
+        for os_version, devel, flavor in product(
+            ALL_NONBASE_OS_VERSIONS,
+            (True, False),
+            ("base", "micro"),
+        )
     ]
 )
+
+OPENJDK_CONTAINERS_CRATE = ContainerCrate(OPENJDK_CONTAINERS)
