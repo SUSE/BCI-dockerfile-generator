@@ -137,7 +137,7 @@ sed -i -e 's/^EVALUATE=.*/EVALUATE=scan/g' /etc/blkid.conf
 """
     ).render(
         os_version=os_version,
-        SUSE_SIGNING_PGP_PUBKEY="gpg-pubkey-3fa1d6ce-67c856ee.asc",
+        SUSE_SIGNING_PGP_PUBKEY=os_version.suse_signing_key,
     )
 
 
