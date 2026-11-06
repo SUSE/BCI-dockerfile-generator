@@ -98,6 +98,7 @@ def _get_kubevirt_kwargs(
         "entrypoint_user": user if user != "0" else None,
         "exclusive_arch": KUBEVIRT_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
+        "support_level_overrides": {Arch.AARCH64: SupportLevel.TECHPREVIEW},
         "_publish_registry": (
             KubeVirtRegistrySL160()
             if os_version == OsVersion.SL16_0

@@ -1,11 +1,15 @@
 import pytest
 
+from bci_build.container_attributes import Arch
 from bci_build.container_attributes import BuildType
+from bci_build.container_attributes import ReleaseStage
+from bci_build.container_attributes import SupportLevel
 from bci_build.containercrate import ContainerCrate
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.replacement import Replacement
 from bci_build.service import Service
+from bci_build.templates import DOCKERFILE_TEMPLATE
 from bci_build.templates import SERVICE_TEMPLATE
 from bci_build.util import ParseVersion
 
@@ -202,3 +206,59 @@ def test_service_with_multi_flavor_docker():
   </service>
 </services>"""
     )
+
+
+def test_support_level_overrides_docker():
+    image = DevelopmentContainer(
+        **_BASE_KWARGS,
+        build_recipe_type=BuildType.DOCKER,
+        exclusive_arch=[Arch.AARCH64, Arch.X86_64],
+        support_level=SupportLevel.L3,
+        support_level_overrides={Arch.AARCH64: SupportLevel.TECHPREVIEW},
+    )
+    assert (
+        SERVICE_TEMPLATE.render(image=image)
+        == """<services>
+  <service mode="buildtime" name="docker_label_helper"/>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
+</services>"""
+    )
+    assert """ARG SUPPORT_LEVEL_ARCH_%ARCH%=1
+LABEL com.suse.supportlevel="${SUPPORT_LEVEL_ARCH_aarch64:+techpreview}${SUPPORT_LEVEL_ARCH_x86_64:+l3}"
+""" in DOCKERFILE_TEMPLATE.render(DOCKERFILE_RUN="RUN", image=image)
+
+
+def test_support_level_overrides_beta():
+    image = DevelopmentContainer(
+        **(_BASE_KWARGS | {"os_version": OsVersion.SL16_2}),
+        support_level=SupportLevel.L3,
+        support_level_overrides={
+            Arch.AARCH64: SupportLevel.L3,
+            Arch.S390X: SupportLevel.UNSUPPORTED,
+        },
+    )
+    assert image.release_stage == ReleaseStage.BETA
+    assert image.support_level_overrides == {
+        Arch.AARCH64: SupportLevel.TECHPREVIEW,
+        Arch.S390X: SupportLevel.UNSUPPORTED,
+    }
+
+
+def test_support_level_overrides_tumbleweed():
+    image = DevelopmentContainer(
+        **(_BASE_KWARGS | {"os_version": OsVersion.TUMBLEWEED}),
+        support_level_overrides={Arch.AARCH64: SupportLevel.TECHPREVIEW},
+    )
+    assert not image.support_level_overrides
+    assert "SUPPORT_LEVEL_ARCH" not in DOCKERFILE_TEMPLATE.render(
+        DOCKERFILE_RUN="RUN", image=image
+    )
+
+
+def test_support_level_overrides_kiwi():
+    with pytest.raises(ValueError, match="needs a Dockerfile build"):
+        DevelopmentContainer(
+            **_BASE_KWARGS,
+            build_recipe_type=BuildType.KIWI,
+            support_level_overrides={Arch.AARCH64: SupportLevel.TECHPREVIEW},
+        )
