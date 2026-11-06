@@ -8,6 +8,7 @@ import json
 import textwrap
 from pathlib import Path
 
+import requests
 from jinja2 import Template
 from version_utils import rpm
 
@@ -86,6 +87,7 @@ _NVIDIA_OS_VERSIONS: list[tuple] = [
     (OsVersion.SL16_0, "64kb", [Arch.AARCH64]),
     (OsVersion.SL16_1, "default", [Arch.X86_64, Arch.AARCH64]),
     (OsVersion.SL16_1, "64kb", [Arch.AARCH64]),
+    (OsVersion.SL16_1, "nvidia64kb", [Arch.AARCH64]),
 ]
 
 CUSTOM_END_TEMPLATE = Template(
@@ -693,10 +695,14 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
 
             match driver_version:
                 case "615.71.09":
-                    package = "patchinfo.ga"
+                    package = "patchinfo.20261023100712975545.bd1ccbcbaa50"
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
-                    version = "615.71.09_k6.12.0_160100.7"
-                    release = "160100.2.4"
+                    release = "160100.1.1"
+
+                    if kernel_variant == "nvidia64kb":
+                        version = "615.71.09_k6.12.0_160100.6"
+                    else:
+                        version = "615.71.09_k6.12.0_160100.8"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -767,7 +773,19 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
             )
         )
 
+    # ensure packages exist, otherwise the build will fail
+    for pkg in pkgs:
+        requests.head(
+            pkg.url, headers={"User-Agent": "BCI Generator"}
+        ).raise_for_status()
+
     return pkgs
+
+
+_SL16_1_KERNEL_PATCHINFO_MAP = {
+    "6.12.0-160100.6": "patchinfo.20261023152715452711.5c55e90dc27c",
+    "6.12.0-160100.8": "patchinfo.ga",
+}
 
 
 _SL16_0_KERNEL_PATCHINFO_MAP = {
@@ -803,28 +821,67 @@ def _get_kernel_ga_rpms(
             project = "SUSE:SLFO:1.3"
             repo = "standard"
 
+            if built_kernel:
+                ver, rel_raw = built_kernel.split("-", 1)
+                rel = f"{rel_raw}.1"
+                pi_pkg = _SL16_1_KERNEL_PATCHINFO_MAP.get(built_kernel)
+
+                if not pi_pkg:
+                    raise ValueError(
+                        f"Kernel patchinfo not found for built_kernel '{built_kernel}' in SL16_1"
+                    )
+            else:
+                ver = "6.12.0"
+                rel = "160100.8.1"
+                pi_pkg = "patchinfo.ga"
+
             match kernel_variant:
                 case "default":
                     # fmt: off
                     packages = [
-                        ("patchinfo.ga", "kernel-default", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-default-devel", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-syms", "6.12.0", "160100.7.1", []),
-                        ("patchinfo.ga", "kernel-devel", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
+                        (pi_pkg, "kernel-default", ver, rel, []),
+                        (pi_pkg, "kernel-default-devel", ver, rel, []),
+                        (pi_pkg, "kernel-syms", ver, rel, []),
+                        (pi_pkg, "kernel-devel", ver, rel, []),
+                        (pi_pkg, "kernel-macros", ver, rel, []),
                         # always needed on aarch64 for default
-                        ("patchinfo.ga", "kernel-64kb-devel", "6.12.0", "160100.7.2", [Arch.AARCH64]),
+                        (pi_pkg, "kernel-64kb-devel", ver, rel, [Arch.AARCH64]),
                     ]
                     # fmt: on
                 case "64kb":
                     # fmt: off
                     packages = [
-                        ("patchinfo.ga", "kernel-64kb", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-64kb-devel", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-default-devel", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-syms", "6.12.0", "160100.7.1", []),
-                        ("patchinfo.ga", "kernel-devel", "6.12.0", "160100.7.2", []),
-                        ("patchinfo.ga", "kernel-macros", "6.12.0", "160100.7.2", []),
+                        (pi_pkg, "kernel-64kb", ver, rel, []),
+                        (pi_pkg, "kernel-64kb-devel", ver, rel, []),
+                        (pi_pkg, "kernel-default-devel", ver, rel, []),
+                        (pi_pkg, "kernel-syms", ver, rel, []),
+                        (pi_pkg, "kernel-devel", ver, rel, []),
+                        (pi_pkg, "kernel-macros", ver, rel, []),
+                    ]
+                    # fmt: on
+                case "nvidia64kb":
+                    # the first release of kernel-nvidia64kb came after GA
+                    # the versions and patchinfo are not the same
+                    if pi_pkg == "patchinfo.20261023152715452711.5c55e90dc27c":
+                        ver_default = "6.12.0"
+                        rel_default = "160100.8.1"
+                        pi_pkg_default = "patchinfo.ga"
+                    else:
+                        ver_default = ver
+                        rel_default = rel
+                        pi_pkg_default = pi_pkg
+
+                    # fmt: off
+                    packages = [
+                        (pi_pkg, "kernel-nvidia64kb", ver, rel, []),
+                        (pi_pkg, "kernel-nvidia64kb-devel", ver, rel, []),
+                        (pi_pkg, "kernel-syms-nvidia", ver, rel, []),
+                        (pi_pkg, "kernel-devel-nvidia", ver, rel, []),
+                        (pi_pkg_default, "kernel-syms", ver_default, rel_default, []),
+                        (pi_pkg_default, "kernel-devel", ver_default, rel_default, []),
+                        (pi_pkg_default, "kernel-macros", ver_default, rel_default, []),
+                        (pi_pkg_default, "kernel-64kb-devel", ver_default, rel_default, []),
+                        (pi_pkg_default, "kernel-default-devel", ver_default, rel_default, []),
                     ]
                     # fmt: on
                 case _:
@@ -936,7 +993,11 @@ def _get_kernel_ga_rpms(
 
         for arch in arches:
             filename_in_image = f"{subpackage}-{version}-{release}.{arch}.rpm"
-            is_no_arch = subpackage in ["kernel-devel", "kernel-macros"]
+            is_no_arch = subpackage in [
+                "kernel-devel",
+                "kernel-devel-nvidia",
+                "kernel-macros",
+            ]
 
             if is_no_arch:
                 filename_in_repo = f"{subpackage}-{version}-{release}.noarch.rpm"
@@ -952,6 +1013,12 @@ def _get_kernel_ga_rpms(
                     url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
                 )
             )
+
+    # ensure packages exist, otherwise the build will fail
+    for pkg in pkgs:
+        requests.head(
+            pkg.url, headers={"User-Agent": "BCI Generator"}
+        ).raise_for_status()
 
     return pkgs
 
