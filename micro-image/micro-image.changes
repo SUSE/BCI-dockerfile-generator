@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov  9 12:44:03 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- import the SL16 key
+
+-------------------------------------------------------------------
 Tue Sep  8 17:19:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - reproducability fixes
