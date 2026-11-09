@@ -65,7 +65,7 @@ GEMINI_CONTAINERS = [
             ENTRYPOINT ["/usr/bin/gemini"]
             CMD [""]"""),
         extra_labels={
-            "run": r"podman run --rm --userns=keep-id:uid=499 -it -v \${HOME}/.gemini:/home/sandbox/.gemini:Z -v \$PWD:/home/sandbox/tmp:Z \${IMAGE}",
+            "run": r"podman run --rm --userns=keep-id:uid=499 -it -v \${HOME}/.agents:/home/sandbox/.agents:Z -v \${HOME}/.gemini:/home/sandbox/.gemini:Z -v \$PWD:/home/sandbox/tmp:Z \${IMAGE}",
         },
     )
     for os_version in (OsVersion.TUMBLEWEED,)
