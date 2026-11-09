@@ -43,9 +43,9 @@ zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.sus
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
 zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_source/' SLE_BCI_source
 for repo in /etc/zypp/repos.d/SLE_BCI*.repo; do
-    printf 'gpgkey=file:/usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc\n' >> "$repo"
+    printf 'gpgkey=file:/usr/lib/rpm/gnupg/keys/gpg-pubkey-09d9ea69-68595a8c.asc\n' >> "$repo"
 done
-test -f /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc || { echo "ERROR: SUSE signing key not found!"; exit 1; }
+test -f /usr/lib/rpm/gnupg/keys/gpg-pubkey-09d9ea69-68595a8c.asc || { echo "ERROR: SUSE signing key not found!"; exit 1; }
 
 
 #======================================
