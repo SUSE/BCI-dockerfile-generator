@@ -67,7 +67,7 @@ LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"
 # endlabelprefix
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
-LABEL run="podman run --rm --userns=keep-id:uid=499 -it -v \${HOME}/.gemini:/home/sandbox/.gemini:Z -v \$PWD:/home/sandbox/tmp:Z \${IMAGE}"
+LABEL run="podman run --rm --userns=keep-id:uid=499 -it -v \${HOME}/.agents:/home/sandbox/.agents:Z -v \${HOME}/.gemini:/home/sandbox/.gemini:Z -v \$PWD:/home/sandbox/tmp:Z \${IMAGE}"
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
