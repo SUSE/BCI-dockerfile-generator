@@ -188,6 +188,15 @@ class OsVersion(enum.Enum):
         return self.is_sle15 or self.is_sl16
 
     @property
+    def suse_signing_key(self) -> str:
+        if self.is_sle15:
+            return "gpg-pubkey-3fa1d6ce-67c856ee.asc"
+        if self.is_sl16:
+            return "gpg-pubkey-09d9ea69-68595a8c.asc"
+        assert self.is_tumbleweed
+        return "gpg-pubkey-29b700a4-6a17fa38.asc"
+
+    @property
     def eula_package_names(self) -> tuple[str, ...]:
         if self.is_ltss:
             return ("skelcd-EULA-sles",)
