@@ -47,7 +47,7 @@ MICRO_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
@@ -88,7 +88,7 @@ INIT_CONTAINERS = [
         os_version=os_version,
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         pretty_name=f"{os_version.pretty_os_version_no_dash} Init",
         custom_description="Systemd environment for containers {based_on_container}. {podman_only}",
         package_list=[
@@ -281,7 +281,7 @@ def _get_fips_base_kwargs(os_version: OsVersion) -> dict:
         ),
         "supported_until": get_supported_until_ltss(os_version),
         "is_latest": (
-            os_version in CAN_BE_LATEST_BASE_OS_VERSION
+            os_version in CAN_BE_LATEST_SLFO_OS_VERSION
             or os_version in ALL_OS_LTSS_VERSIONS
         ),
         "pretty_name": _get_fips_pretty_name(os_version),
@@ -321,7 +321,7 @@ FIPS_MICRO_CONTAINERS = [
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         is_singleton_image=(
             # preserve backwards compatibility on already released distributions
             not os_version.is_sle15
@@ -388,7 +388,7 @@ MINIMAL_CONTAINERS = [
         **_get_minimal_kwargs(os_version),
         support_level=SupportLevel.L3,
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
         os_version=os_version,
         build_recipe_type=BuildType.KIWI,
@@ -432,7 +432,7 @@ BUSYBOX_CONTAINERS = [
         supported_until=_SUPPORTED_UNTIL_SLE.get(os_version),
         pretty_name=f"{os_version.pretty_os_version_no_dash} BusyBox",
         logo_url="https://opensource.suse.com/bci/SLE_BCI_logomark_green.svg",
-        is_latest=os_version in CAN_BE_LATEST_BASE_OS_VERSION,
+        is_latest=os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
         cmd=["/bin/sh"],
         package_list=[
             "busybox",
