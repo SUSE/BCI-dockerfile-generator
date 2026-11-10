@@ -17,6 +17,7 @@
 
 #!BuildTag: bci/bci-micro:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-micro:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-micro:latest
 #!BuildName: bci-bci-micro
 #!BuildVersion: 16.1.0
 FROM scratch AS target
