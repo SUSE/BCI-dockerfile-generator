@@ -185,9 +185,8 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         # Set the lifecycle information taken from
         # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
         self.supported_until = {
-            "8.0": datetime.date(2026, 11, 10),
-            "9.0": datetime.date(2026, 11, 10),
-            "10.0": datetime.date(2028, 11, 12),
+            "10.0": datetime.date(2028, 11, 14),
+            "11.0": datetime.date(2027, 11, 10),
         }.get(str(self.tag_version))
         self.support_level = SupportLevel.L2
         assert self.supported_until, (
@@ -203,7 +202,7 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
         )
 
         self.custom_labelprefix_end = self.name.replace("-", ".")
-        min_release_counter = {"8.0": 60, "9.0": 20, "10.0": 0}[str(self.tag_version)]
+        min_release_counter = {"10.0": 0, "11.0": 0}[str(self.tag_version)]
         self.min_release_counter = {
             self.os_version: min_release_counter,
         }
@@ -282,11 +281,11 @@ class DotNetBCI(ThirdPartyRepoMixin, DevelopmentContainer):
 
 _DOTNET_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 
-_DOTNET_VERSION_T = Literal["8.0", "9.0", "10.0"]
+_DOTNET_VERSION_T = Literal["10.0", "11.0"]
 
-_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["8.0", "9.0", "10.0"]
+_DOTNET_VERSIONS: list[_DOTNET_VERSION_T] = ["10.0", "11.0"]
 
-_LATEST_DOTNET_VERSION = "10.0"
+_LATEST_DOTNET_VERSION = "11.0"
 
 assert _LATEST_DOTNET_VERSION in _DOTNET_VERSIONS
 assert _DOTNET_VERSIONS == sorted(_DOTNET_VERSIONS, key=version.parse)
@@ -301,8 +300,7 @@ DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 
 for dotnet_version, os_version in (
-    *product(_DOTNET_VERSIONS, (OsVersion.SP7,)),
-    *product(["10.0"], (OsVersion.SL16_1, OsVersion.SL16_2)),
+    *product(_DOTNET_VERSIONS, (OsVersion.SL16_1, OsVersion.SL16_2)),
 ):
     if dotnet_version not in _DOTNET_VERSIONS:
         raise ValueError(f"Version {dotnet_version} not in _DOTNET_VERSIONS")
