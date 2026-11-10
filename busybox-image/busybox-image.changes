@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 10 14:14:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remote latest tag
+
+-------------------------------------------------------------------
 Thu Jul  9 10:37:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - disable container support for scratch layers

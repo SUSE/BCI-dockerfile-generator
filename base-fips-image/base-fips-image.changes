@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 10 14:14:31 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remote latest tag
+
+-------------------------------------------------------------------
 Sun Oct 18 15:54:41 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - also uninstall libexpat1
