@@ -17,6 +17,7 @@
 
 #!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-micro-fips:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-micro-fips:latest
 #!BuildName: bci-bci-micro-fips
 #!BuildVersion: 16.1.0
 FROM scratch AS target

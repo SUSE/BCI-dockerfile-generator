@@ -17,6 +17,7 @@
 
 #!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%-%RELEASE%
 #!BuildTag: bci/bci-busybox:%OS_VERSION_ID_SP%
+#!BuildTag: bci/bci-busybox:latest
 #!BuildName: bci-bci-busybox-%OS_VERSION_ID_SP%
 #!BuildVersion: 16.1.0
 FROM scratch AS target
