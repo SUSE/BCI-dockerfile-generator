@@ -41,7 +41,8 @@ def _get_nginx_kwargs(os_version: OsVersion):
     kwargs = {
         "os_version": os_version,
         "is_latest": os_version in CAN_BE_LATEST_SLFO_OS_VERSION,
-        "version": nginx_version,
+        "version": "%%nginx_version%%",
+        "tag_version": nginx_version,
         "version_in_uid": False,
         # backward compatibility with SL15
         "is_singleton_image": (os_version not in (OsVersion.SP7,)),
