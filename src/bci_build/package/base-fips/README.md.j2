@@ -1,7 +1,11 @@
-{% if image.build_version == '15.4' %}
+{% if image.os_version | string == '4' %}
 # The SUSE Linux Enterprise 15 SP4 LTSS FIPS-140-3 container image
-{% else %}
+{% elif image.os_version | string in ['5', '6', '7'] %}
 # The SUSE Linux Enterprise FIPS-140-3 container image
+{% elif image.is_opensuse %}
+# The openSUSE BCI Base in FIPS-140-3 mode
+{% else %}
+# The SUSE Linux BCI Base in FIPS-140-3 mode
 {% endif %}
 {% include 'badges.j2' %}
 
