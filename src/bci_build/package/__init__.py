@@ -929,8 +929,8 @@ exit 0
             "based_on_container": (
                 f"based on the {self.os_version.pretty_product_name[:-1]}"
             ),
-            "podman_only": "This container is only supported with podman.",
-            "privileged_only": "This container is only supported in privileged mode.",
+            "podman_only": "Only supported in podman.",
+            "privileged_only": "Only supported in privileged mode.",
         }
         description = "{pretty_name} container {based_on_container}."
         if self.custom_description:
