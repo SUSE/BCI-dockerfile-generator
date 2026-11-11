@@ -35,10 +35,10 @@ COPY dotnet-host-9.0.23-1.x86_64.rpm /tmp/
 COPY dotnet-hostfxr-9.0-9.0.23-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-hostfxr-9.0-9.0.23-1.x86_64.rpm sha256:3fb0bf7979c825e02125f218716da3caf4953db05d75be4126eb80dbb03f2751
 COPY dotnet-hostfxr-9.0-9.0.23-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.22-1.aarch64.rpm sha256:fa0e524cb9bf5410a78d2874c561cf960be155cbdf294bcb329b4313e0d5bfb4
-COPY dotnet-runtime-deps-9.0-9.0.22-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.22-1.x86_64.rpm sha256:044b363f9e280c85591a79edb22f207dd2f9e8a013d9dfb0ee7bdeb16c8f9112
-COPY dotnet-runtime-deps-9.0-9.0.22-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.23-1.aarch64.rpm sha256:9ec0c5daaff13f2f2ef6ee48a9203506c38aaebf6ad27c734b4be4589f50222e
+COPY dotnet-runtime-deps-9.0-9.0.23-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-deps-9.0-9.0.23-1.x86_64.rpm sha256:78e46ef417f0d7f5106992465c4f9ad724c071e421fa5a3a22c2feb6343a94a3
+COPY dotnet-runtime-deps-9.0-9.0.23-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.23-1.aarch64.rpm sha256:3d69780b2c43b006b2ecdfdc7c4842b31f7a4ea92532e4675ce128aaae1db241
 COPY dotnet-runtime-9.0-9.0.23-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://packages.microsoft.com/sles/15/prod/Packages/d/dotnet-runtime-9.0-9.0.23-1.x86_64.rpm sha256:79a278a1ae2266c4192816c58160907eba023f8d6cda335cce5318cd1c375926
@@ -56,7 +56,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
         zypper -n install \
             /tmp/dotnet-host-9.0.23-1.aarch64.rpm \
             /tmp/dotnet-hostfxr-9.0-9.0.23-1.aarch64.rpm \
-            /tmp/dotnet-runtime-deps-9.0-9.0.22-1.aarch64.rpm \
+            /tmp/dotnet-runtime-deps-9.0-9.0.23-1.aarch64.rpm \
             /tmp/dotnet-runtime-9.0-9.0.23-1.aarch64.rpm \
             /tmp/aspnetcore-runtime-9.0-9.0.23-1.aarch64.rpm; \
     fi
@@ -64,7 +64,7 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
             /tmp/dotnet-host-9.0.23-1.x86_64.rpm \
             /tmp/dotnet-hostfxr-9.0-9.0.23-1.x86_64.rpm \
-            /tmp/dotnet-runtime-deps-9.0-9.0.22-1.x86_64.rpm \
+            /tmp/dotnet-runtime-deps-9.0-9.0.23-1.x86_64.rpm \
             /tmp/dotnet-runtime-9.0-9.0.23-1.x86_64.rpm \
             /tmp/aspnetcore-runtime-9.0-9.0.23-1.x86_64.rpm; \
     fi
