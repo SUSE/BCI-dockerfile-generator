@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 11 15:58:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve wording for tech preview
+
+-------------------------------------------------------------------
 Mon Oct 26 13:51:33 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - stableuid for the rabbitmq user
