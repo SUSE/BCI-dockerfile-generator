@@ -31,10 +31,12 @@ TOMCAT_CONTAINERS = [
         pretty_name="Apache Tomcat",
         os_version=os_version,
         is_latest=(
-            (os_version in CAN_BE_LATEST_OS_VERSION)
-            and tomcat_ver == _TOMCAT_VERSIONS[-1]
-            and jre_version == 25
-            and os_version.is_tumbleweed
+            (
+                not os_version.is_tumbleweed
+                and os_version in CAN_BE_LATEST_OS_VERSION
+                and tomcat_ver == _TOMCAT_VERSIONS[-1]
+            )
+            or (tomcat_ver == "11" and jre_version == 25 and os_version.is_tumbleweed)
         ),
         build_flavor=f"openjdk{jre_version}",
         version="%%tomcat_version%%",
