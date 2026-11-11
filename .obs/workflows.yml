@@ -11,6 +11,10 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: aspnet-runtime-11.0
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: base-fips-image
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
@@ -39,7 +43,15 @@ staging_build:
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
+        source_package: dotnet-11.0
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
         source_package: dotnet-runtime-10.0
+        target_project: home:pushman:BCI:CR:16.1:Staging
+    - branch_package:
+        source_project: home:pushman:BCI:CR:16.1
+        source_package: dotnet-runtime-11.0
         target_project: home:pushman:BCI:CR:16.1:Staging
     - branch_package:
         source_project: home:pushman:BCI:CR:16.1
@@ -246,6 +258,9 @@ refresh_devel_BCI:
         package: aspnet-runtime-10.0
     - trigger_services:
         project: devel:BCI:16.1
+        package: aspnet-runtime-11.0
+    - trigger_services:
+        project: devel:BCI:16.1
         package: base-fips-image
     - trigger_services:
         project: devel:BCI:16.1
@@ -267,7 +282,13 @@ refresh_devel_BCI:
         package: dotnet-10.0
     - trigger_services:
         project: devel:BCI:16.1
+        package: dotnet-11.0
+    - trigger_services:
+        project: devel:BCI:16.1
         package: dotnet-runtime-10.0
+    - trigger_services:
+        project: devel:BCI:16.1
+        package: dotnet-runtime-11.0
     - trigger_services:
         project: devel:BCI:16.1
         package: gcc-15-image
