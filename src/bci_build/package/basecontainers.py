@@ -461,7 +461,7 @@ KERNEL_MODULE_CONTAINERS = []
 for os_version in set(ALL_BASE_OS_VERSIONS) - {OsVersion.TUMBLEWEED}:
     if os_version.is_sl16:
         prefix = "sle16"
-        pretty_prefix = "SLES 16"
+        pretty_prefix = f"SLES {os_version}"
     else:
         assert os_version.is_sle15
         prefix = "sle15"
