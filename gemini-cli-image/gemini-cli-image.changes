@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 12 20:49:37 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add npm and python3
+
+-------------------------------------------------------------------
 Mon Nov  9 08:33:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - mount agents dir into the sandbox
