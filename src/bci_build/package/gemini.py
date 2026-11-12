@@ -32,6 +32,8 @@ GEMINI_CONTAINERS = [
                 "git-core",
                 "gzip",
                 "hostname",
+                "npm",
+                "python3",
                 "quilt",
                 "rpm-build",
                 "which",
