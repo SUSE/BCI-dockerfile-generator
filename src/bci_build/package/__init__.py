@@ -275,6 +275,11 @@ class BaseContainerImage(abc.ABC):
     #: The support level for this image, defaults to :py:attr:`SupportLevel.TECHPREVIEW`
     support_level: SupportLevel = SupportLevel.TECHPREVIEW
 
+    #: Support levels of architectures that differ from :py:attr:`support_level`.
+    #: The build sets the ``com.suse.supportlevel`` label on each architecture's
+    #: builder, as the image is built from one :file:`Dockerfile` for all of them.
+    support_level_overrides: dict[Arch, SupportLevel] = field(default_factory=dict)
+
     #: The support level end date
     supported_until: datetime.date | None = None
 
@@ -335,11 +340,19 @@ class BaseContainerImage(abc.ABC):
             self.oci_authors = "https://github.com/SUSE/bci/discussions"
 
         # limit to tech preview for beta releases
-        if (
-            self.release_stage == ReleaseStage.BETA
-            and self.support_level == SupportLevel.L3
-        ):
-            self.support_level = SupportLevel.TECHPREVIEW
+        if self.release_stage == ReleaseStage.BETA:
+            if self.support_level == SupportLevel.L3:
+                self.support_level = SupportLevel.TECHPREVIEW
+            self.support_level_overrides = {
+                arch: SupportLevel.TECHPREVIEW if level == SupportLevel.L3 else level
+                for arch, level in self.support_level_overrides.items()
+            }
+
+        # Tumbleweed images carry no support level
+        if self.os_version.is_tumbleweed:
+            self.support_level_overrides = {}
+        if self.support_level_overrides and self.build_recipe_type != BuildType.DOCKER:
+            raise ValueError("support_level_overrides needs a Dockerfile build")
 
         # set buildcounter to the package name if not set
         if not self.buildcounter_synctag and self.package_name and self.build_flavor:
@@ -994,6 +1007,34 @@ exit 0
             pretty_bci=self.os_version.pretty_product_name,
             image=self,
         )
+
+    @property
+    def support_level_label(self) -> str:
+        """The value of the ``com.suse.supportlevel`` label in the build recipe:
+        the support level, or with :py:attr:`support_level_overrides`, one
+        conditional expansion per architecture of which only the builder's
+        is set (see :py:attr:`support_level_arch_arg`).
+
+        """
+        if not self.support_level_overrides:
+            return str(self.support_level)
+        archs = self.exclusive_arch or [
+            arch for arch in Arch if arch not in (Arch.LOCAL, Arch.NOARCH)
+        ]
+        return "".join(
+            f"${{SUPPORT_LEVEL_ARCH_{arch}:+"
+            f"{self.support_level_overrides.get(arch, self.support_level)}}}"
+            for arch in archs
+        )
+
+    @property
+    def support_level_arch_arg(self) -> str:
+        """Build argument that marks the builder's architecture for
+        :py:attr:`support_level_label`. ``kiwi_metainfo_helper`` replaces
+        ``%ARCH%`` with it at build time.
+
+        """
+        return "SUPPORT_LEVEL_ARCH_%ARCH%"
 
     @property
     def extra_label_lines(self) -> str:
