@@ -512,7 +512,16 @@ def _get_compute_packages(
         ThirdPartyPackage("nvlsm"),
     ]
 
-    if driver_branch >= 580:
+    if driver_branch >= 620:
+        packages += [
+            ThirdPartyPackage("libnvidia-nscq", version=driver_version),
+            ThirdPartyPackage("libnvsdm", version=driver_version, arch=Arch.X86_64),
+            ThirdPartyPackage("nvidia-imex-direct"),
+            ThirdPartyPackage("libnvidia-imex-G07", version=driver_version),
+            ThirdPartyPackage("nvidia-fabricmanager-direct"),
+            ThirdPartyPackage("libnvidia-fmdrv-G07", version=driver_version),
+        ]
+    elif driver_branch >= 580:
         packages += [
             ThirdPartyPackage("libnvidia-nscq", version=driver_version),
             ThirdPartyPackage("libnvsdm", version=driver_version, arch=Arch.X86_64),
@@ -703,6 +712,15 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                         version = "615.71.09_k6.12.0_160100.6"
                     else:
                         version = "615.71.09_k6.12.0_160100.8"
+                case "620.70.06":
+                    package = "patchinfo.20261105073214320065.90520737308617"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    release = "160100.1.1"
+
+                    if kernel_variant == "nvidia64kb":
+                        version = "620.70.06_k6.12.0_160100.7"
+                    else:
+                        version = "620.70.06_k6.12.0_160100.9"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -727,6 +745,11 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "615.71.09_k6.12.0_160000.37"
                     release = "160000.2.1"
+                case "620.70.06":
+                    package = "patchinfo.20261105075254549920.90520737308617"
+                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
+                    version = "620.70.06_k6.12.0_160000.41"
+                    release = "160000.1.1"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -783,14 +806,24 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
 
 
 _SL16_1_KERNEL_PATCHINFO_MAP = {
+    # kernel-nvidia64kb
     "6.12.0-160100.6": "patchinfo.20261023152715452711.5c55e90dc27c",
+    "6.12.0-160100.7": "patchinfo.20261103170021677913.2eeaac6c84a9",
+    # kernel-default
     "6.12.0-160100.8": "patchinfo.ga",
+    "6.12.0-160100.9": "patchinfo.20261103105712149103.0ce6258ae29a",
 }
 
+# kernel-nvidia64kb requires kernel-default but their versions do not match
+_SL16_1_KERNEL_NVIDIA_PATCHINFO_MAP = {
+    "6.12.0-160100.6": "6.12.0-160100.8",
+    "6.12.0-160100.7": "6.12.0-160100.9",
+}
 
 _SL16_0_KERNEL_PATCHINFO_MAP = {
     "6.12.0-160000.29": "patchinfo.20260501095726722273.187004354831441",
     "6.12.0-160000.37": "patchinfo.20260805134440218044.43258077523675",
+    "6.12.0-160000.41": "patchinfo.20261103164237474120.dd4ed258cb8b",
 }
 
 
@@ -860,16 +893,21 @@ def _get_kernel_ga_rpms(
                     ]
                     # fmt: on
                 case "nvidia64kb":
-                    # the first release of kernel-nvidia64kb came after GA
-                    # the versions and patchinfo are not the same
-                    if pi_pkg == "patchinfo.20261023152715452711.5c55e90dc27c":
-                        ver_default = "6.12.0"
-                        rel_default = "160100.8.1"
-                        pi_pkg_default = "patchinfo.ga"
-                    else:
-                        ver_default = ver
-                        rel_default = rel
-                        pi_pkg_default = pi_pkg
+                    default_kernel = _SL16_1_KERNEL_NVIDIA_PATCHINFO_MAP.get(
+                        built_kernel, None
+                    )
+
+                    if not default_kernel:
+                        raise ValueError(f"Missing version match for '{built_kernel}'")
+
+                    default_pi = _SL16_1_KERNEL_PATCHINFO_MAP.get(default_kernel, None)
+
+                    if not default_pi:
+                        raise ValueError(f"Missing patchinfo for '{default_kernel}'")
+
+                    ver_default, rel_default = default_kernel.split("-")
+                    rel_default = f"{rel_default}.1"
+                    pi_pkg_default = default_pi
 
                     # fmt: off
                     packages = [
@@ -1058,6 +1096,11 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         # older drivers are not available for SLE 16
         # skip the image in this case
         if os_version == OsVersion.SL16_0 and branch < 595:
+            continue
+
+        # newer drivers are not yet available for SLE 15.7
+        # skip the image in this case
+        if os_version == OsVersion.SP7 and branch > 615:
             continue
 
         if os_version not in _NVIDIA_REPOS:
