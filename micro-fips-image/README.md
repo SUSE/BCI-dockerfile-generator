@@ -28,7 +28,7 @@ WORKDIR /app
 RUN go install github.com/go-training/helloworld@latest
 
 # Create an image to bundle the app
-FROM registry.suse.com/bci/bci-micro-fips:15.7
+FROM registry.suse.com/bci/bci-micro-fips:latest
 
 COPY --from=build /go/bin/helloworld /usr/local/bin/helloworld
 
