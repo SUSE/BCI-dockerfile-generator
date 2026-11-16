@@ -1,4 +1,3 @@
-
 %if "%_repository" == "containerkiwi"
 Type: kiwi
 Repotype: none
@@ -76,7 +75,7 @@ Conflict: !libstdc++-devel
 Prefer: -container:base-image -container:bci-micro -container:bci-bci-micro -container:bci-bci-init -container:bci-bci-nano
 BuildFlags: container-timestamp:0
 
-# available in IBS via SUSE:Products:SLES:16.2 defaults
+# available in IBS via SUSE:Products:SLES:16.1 defaults
 Substitute: system-packages:docker kmod docker createrepo_c container-build-checks-vendor-SUSE container-build-checks-strict skopeo umoci
 Substitute: system-packages:podman podman buildah createrepo_c release-compare container-build-checks-vendor-SUSE container-build-checks-strict skopeo umoci
 
