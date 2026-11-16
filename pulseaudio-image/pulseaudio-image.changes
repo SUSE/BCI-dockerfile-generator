@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 16 10:02:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- deinstall compat-usrmerge-utils
+
+-------------------------------------------------------------------
 Mon Jul 27 12:03:30 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - filter basecontainer packages from installation for optimizing rebuilds
