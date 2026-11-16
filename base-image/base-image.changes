@@ -1,4 +1,269 @@
 -------------------------------------------------------------------
-Mon Nov 16 20:41:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+Mon Nov 16 20:57:24 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.2
+
+-------------------------------------------------------------------
+Tue Nov 10 14:04:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tag
+
+-------------------------------------------------------------------
+Mon Nov  9 12:43:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- import the SL16 key
+
+-------------------------------------------------------------------
+Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- only clean specific files in /run
+
+-------------------------------------------------------------------
+Tue Jun 16 19:46:48 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
+Thu Jun 11 08:03:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
+Thu Apr 30 10:40:02 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- create zypp.conf.d droplets instead of modifying zypp.conf
+
+-------------------------------------------------------------------
+Tue Mar 10 21:55:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove move files that make containers unreproducible
+
+-------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
+Tue Feb 10 17:30:55 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- configure gpgkey
+
+-------------------------------------------------------------------
+Mon Jan 12 21:24:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to SLES eula for Beta phase
+
+-------------------------------------------------------------------
+Thu Jan  1 14:15:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Fri Dec 19 14:38:45 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- rerender README
+
+-------------------------------------------------------------------
+Sat Dec 13 11:30:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add minor version to metadata
+
+-------------------------------------------------------------------
+Wed Nov 26 18:30:08 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README updates
+
+-------------------------------------------------------------------
+Fri Nov 21 23:06:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use long form commands
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Thu Oct 30 14:57:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Mon Oct 20 20:10:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:01:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Wed Oct 15 11:21:48 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- move patterns to image section rather than bootstrap, small README fixes
+
+-------------------------------------------------------------------
+Wed Oct 15 10:58:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix bugzilla link in README
+
+-------------------------------------------------------------------
+Mon Oct 13 09:46:34 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove whitespace
+
+-------------------------------------------------------------------
+Mon Sep 29 09:35:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Thu Sep 11 11:07:13 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Fri Aug  1 14:26:06 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- zypper clean all the files
+
+-------------------------------------------------------------------
+Thu Jul 31 11:24:47 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- simplify wording about SLE_BCI repo
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Tue Jul 22 12:21:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- include BCI EULA and trademark
+
+-------------------------------------------------------------------
+Tue Jul  8 17:05:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- drop /var/cache/ldconfig/aux-cache from the containers
+
+-------------------------------------------------------------------
+Tue Jul  8 11:09:02 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove autoinstalled from zypper-free base container
+
+-------------------------------------------------------------------
+Tue Jun  3 09:48:12 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add the bci repo
+
+-------------------------------------------------------------------
+Fri May 23 11:26:22 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Thu May 15 12:20:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set 16.0.0 as base container version
+
+-------------------------------------------------------------------
+Tue May  6 11:22:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Fri May  2 13:53:10 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- build with signature checks
+
+-------------------------------------------------------------------
+Thu Mar 27 08:35:43 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- Remove prereq only packages
+
+-------------------------------------------------------------------
+Tue Jan 14 09:55:08 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add nobody user/group to the base container
+
+-------------------------------------------------------------------
+Wed Jan  1 14:14:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Wed Dec  4 11:54:14 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- add libopenssl-3-fips-provider
+
+-------------------------------------------------------------------
+Fri Nov 29 12:39:00 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix typo in README
+
+-------------------------------------------------------------------
+Thu Nov 28 13:42:17 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- Drop patterns-base-fips, it's meaning changed from SLES 15 -> 16 and now it pulls in too many unnecessary packages
+
+-------------------------------------------------------------------
+Wed Oct 30 15:34:46 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- point to a contact location for SLE BCI
+
+-------------------------------------------------------------------
+Mon Oct 28 12:14:13 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- prefer libcurl-mini for the base container
+
+-------------------------------------------------------------------
+Fri Oct 11 15:13:21 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- make the tag with -%RELEASE% the first tag listed
+
+-------------------------------------------------------------------
+Fri Oct 11 14:59:37 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to the more standard - separator also for OsContainers
+
+-------------------------------------------------------------------
+Wed Sep 25 17:12:38 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- improved log cleaning
+
+-------------------------------------------------------------------
+Mon Sep 23 17:22:39 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- explicitly install openssl cli package
+
+-------------------------------------------------------------------
+Mon Sep 16 08:37:25 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Add SLES EULA into the container image
+
+-------------------------------------------------------------------
+Fri Sep 13 09:56:50 UTC 2024 - Dirk Mueller <dmueller@suse.com>
+
+- Remove trailing whitespace
+
+-------------------------------------------------------------------
+Fri Sep  6 09:29:16 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- update / extend README
+
+-------------------------------------------------------------------
+Fri Aug 23 10:39:00 UTC 2024 - Dan Čermák <dcermak@suse.com>
+
+- Correct distribution name
+
+-------------------------------------------------------------------
+Tue Aug 20 09:12:12 UTC 2024 - SUSE Update Bot <bci-internal@suse.de>
 
 - First version of the Base BCI
