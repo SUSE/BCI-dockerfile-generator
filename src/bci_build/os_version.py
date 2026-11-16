@@ -259,6 +259,7 @@ ALL_BASE_OS_VERSIONS: list[OsVersion] = [
     OsVersion.TUMBLEWEED,
     OsVersion.SL16_0,
     OsVersion.SL16_1,
+    OsVersion.SL16_2,
 ]
 
 # List of SPs that are already under LTSS
