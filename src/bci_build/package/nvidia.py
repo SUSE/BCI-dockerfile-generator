@@ -1149,11 +1149,7 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
                 from_image=generate_from_image_tag(os_version, "bci-base"),
                 from_target_image=generate_from_image_tag(os_version, "bci-micro"),
                 package_list=_get_packages(os_version),
-                support_level=(
-                    SupportLevel.TECHPREVIEW
-                    if os_version == OsVersion.SL16_1
-                    else SupportLevel.L3
-                ),
+                support_level=SupportLevel.L3,
                 supported_until="",
                 exclusive_arch=exclusive_arch,
                 third_party_repos=_NVIDIA_REPOS[os_version],
