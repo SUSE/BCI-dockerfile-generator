@@ -1422,6 +1422,9 @@ class OsContainer(BaseContainerImage):
 
     @property
     def oci_version(self) -> str:
+        if self.os_version.is_sl16 and self.os_version not in RELEASED_OS_VERSIONS:
+            return f"%OS_VERSION_ID_SP%beta-{_RELEASE_PLACEHOLDER}"
+
         # use the more standard VERSION-RELEASE scheme we use everywhere else for new containers
         if self.os_version.is_ltss or self.os_version not in (
             OsVersion.SP4,
@@ -1429,9 +1432,6 @@ class OsContainer(BaseContainerImage):
             OsVersion.SP6,
         ):
             return f"%OS_VERSION_ID_SP%-{_RELEASE_PLACEHOLDER}"
-
-        if self.os_version == OsVersion.SL16_2:
-            return f"%OS_VERSION_ID_SP%beta.{_RELEASE_PLACEHOLDER}"
 
         return f"%OS_VERSION_ID_SP%.{_RELEASE_PLACEHOLDER}"
 
@@ -1448,7 +1448,11 @@ class OsContainer(BaseContainerImage):
 
         for name in [self.name] + self.additional_names:
             tags.append(f"{self.registry_prefix}/bci-{name}:{self.image_ref_name}")
-            tags.append(f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%")
+            if self.os_version not in RELEASED_OS_VERSIONS:
+                tags.append(f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%beta")
+            else:
+                tags.append(f"{self.registry_prefix}/bci-{name}:%OS_VERSION_ID_SP%")
+
             if self.is_latest:
                 tags.append(f"{self.registry_prefix}/bci-{name}:latest")
         return tags

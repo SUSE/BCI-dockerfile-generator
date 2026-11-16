@@ -10,6 +10,7 @@ from bci_build.container_attributes import BuildType
 from bci_build.container_attributes import ImageType
 from bci_build.container_attributes import PackageType
 from bci_build.container_attributes import SupportLevel
+from bci_build.os_version import ALL_BASE_OS_VERSIONS
 from bci_build.os_version import CAN_BE_LATEST_BASE_OS_VERSION
 from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import CAN_BE_SAC_VERSION
@@ -314,5 +315,9 @@ BASE_CONTAINERS = [
     )
 ] + [
     OsContainer(**_get_base_kwargs(os_version=os_ver))
-    for os_ver in (OsVersion.SL16_0, OsVersion.SL16_1)
+    for os_ver in (
+        v
+        for v in ALL_BASE_OS_VERSIONS
+        if v not in (OsVersion.SP7, OsVersion.TUMBLEWEED)
+    )
 ]
