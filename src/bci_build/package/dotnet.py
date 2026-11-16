@@ -13,7 +13,7 @@ from version_utils import rpm
 
 from bci_build.container_attributes import Arch
 from bci_build.container_attributes import SupportLevel
-from bci_build.os_version import CAN_BE_LATEST_OS_VERSION
+from bci_build.os_version import CAN_BE_LATEST_SLFO_OS_VERSION
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
 from bci_build.package import generate_disk_size_constraints
@@ -293,7 +293,10 @@ assert _DOTNET_VERSIONS[-1] == _LATEST_DOTNET_VERSION
 
 
 def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool:
-    return version == _LATEST_DOTNET_VERSION and os_version in CAN_BE_LATEST_OS_VERSION
+    return (
+        version == _LATEST_DOTNET_VERSION
+        and os_version in CAN_BE_LATEST_SLFO_OS_VERSION
+    )
 
 
 DOTNET_CONTAINERS: list[DotNetBCI] = []
