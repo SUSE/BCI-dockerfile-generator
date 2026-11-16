@@ -1,4 +1,189 @@
 -------------------------------------------------------------------
-Mon Nov 16 19:57:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+Mon Nov 16 20:05:45 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
-- First version of the Micro 16.2 FIPS-140-3 mode BCI
+- rerender for 16.2
+
+-------------------------------------------------------------------
+Fri Nov 13 15:36:16 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- README fixes
+
+-------------------------------------------------------------------
+Tue Nov 10 14:04:11 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add latest tag
+
+-------------------------------------------------------------------
+Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Mon Aug 31 16:26:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
+Thu Jul 23 11:05:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set SOURCE_DATE_EPOCH for reproducible package installation times
+
+-------------------------------------------------------------------
+Wed Jul 15 11:52:53 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- strip unreproducible data from container
+
+-------------------------------------------------------------------
+Wed Jul  8 15:59:33 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- disable container support for scratch layers
+
+-------------------------------------------------------------------
+Wed Jun 24 16:14:54 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to coreutils-single for the minimal containers
+
+-------------------------------------------------------------------
+Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- only clean specific files in /run
+
+-------------------------------------------------------------------
+Tue Jun 16 19:46:48 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
+Thu Jun 11 08:03:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
+Wed Apr 29 08:53:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove duplicated removal of Index.db
+
+-------------------------------------------------------------------
+Thu Mar 26 15:09:22 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- rebuild rpm database to make it reproducible
+
+-------------------------------------------------------------------
+Tue Mar 10 21:55:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove move files that make containers unreproducible
+
+-------------------------------------------------------------------
+Mon Feb 16 21:58:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- mark containers as beta eula
+
+-------------------------------------------------------------------
+Fri Jan 30 09:19:57 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- Set the crypto-policies to FIPS
+
+-------------------------------------------------------------------
+Tue Jan 27 17:06:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- reorder packages alphabetically
+
+-------------------------------------------------------------------
+Mon Jan 12 21:24:39 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to SLES eula for Beta phase
+
+-------------------------------------------------------------------
+Thu Jan  1 14:15:46 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update copyright year
+
+-------------------------------------------------------------------
+Tue Dec 16 15:28:55 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- README.md language cleanups
+
+-------------------------------------------------------------------
+Sat Dec 13 11:30:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add minor version to metadata
+
+-------------------------------------------------------------------
+Thu Nov  6 08:20:07 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use marketing-approved naming
+
+-------------------------------------------------------------------
+Thu Oct 30 14:57:52 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- add lifecycle information
+
+-------------------------------------------------------------------
+Mon Oct 20 20:10:51 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove password change date from /etc/shadow to make the file reproducible
+
+-------------------------------------------------------------------
+Fri Oct 17 11:01:20 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix link in README
+
+-------------------------------------------------------------------
+Wed Oct 15 10:58:15 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix bugzilla link in README
+
+-------------------------------------------------------------------
+Mon Oct  6 20:37:37 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- clarify title/description
+
+-------------------------------------------------------------------
+Mon Sep 29 09:35:01 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove non-reproducible files from container
+
+-------------------------------------------------------------------
+Thu Sep 11 11:07:14 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- rerender for 16.1
+
+-------------------------------------------------------------------
+Thu Jul 31 11:18:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove shadow backup from container
+
+-------------------------------------------------------------------
+Wed Jul 30 09:50:59 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC to allow operation without accessible /proc filesystem
+
+-------------------------------------------------------------------
+Tue Jul 22 12:21:56 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- include BCI EULA and trademark
+
+-------------------------------------------------------------------
+Fri May 23 11:26:23 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use SOURCEURL_WITH to generate proper artifacthub urls
+
+-------------------------------------------------------------------
+Thu May 15 12:20:44 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- set 16.0.0 as base container version
+
+-------------------------------------------------------------------
+Wed May 14 13:33:11 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- use singleton buildnames to have stable aggregate names
+
+-------------------------------------------------------------------
+Tue May  6 11:22:57 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- avoid double slash in readme url
+
+-------------------------------------------------------------------
+Fri May 02 16:37:23 UTC 2025 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the 16 FIPS-140-3 Micro BCI

@@ -1,4 +1,79 @@
 -------------------------------------------------------------------
-Mon Nov 16 19:57:00 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+Mon Nov 16 20:06:20 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
-- First version of the 16.2 Nano BCI
+- rerender for 16.2
+
+-------------------------------------------------------------------
+Mon Nov  9 12:43:51 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- import the SL16 key
+
+-------------------------------------------------------------------
+Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to released mode
+
+-------------------------------------------------------------------
+Tue Sep  8 17:19:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- reproducability fixes
+
+-------------------------------------------------------------------
+Mon Aug 31 16:26:09 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- fix access permissions of rpmdb
+
+-------------------------------------------------------------------
+Thu Jul 23 11:05:35 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- set SOURCE_DATE_EPOCH for reproducible package installation times
+
+-------------------------------------------------------------------
+Wed Jul  8 15:59:33 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- disable container support for scratch layers
+
+-------------------------------------------------------------------
+Tue Jun 23 12:19:13 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- only clean specific files in /run
+
+-------------------------------------------------------------------
+Tue Jun 16 19:46:48 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not rm /run in the build stage
+
+-------------------------------------------------------------------
+Thu Jun 11 08:03:42 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve image cleaning
+
+-------------------------------------------------------------------
+Wed May 20 16:35:49 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve pause.c handling
+
+-------------------------------------------------------------------
+Mon May 18 16:02:45 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove bash-sh from SBOM list
+
+-------------------------------------------------------------------
+Thu May 14 13:43:17 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add licensing information
+
+-------------------------------------------------------------------
+Wed May 13 20:12:15 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add a pause binary
+
+-------------------------------------------------------------------
+Wed Apr 29 08:53:08 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- remove duplicated removal of Index.db
+
+-------------------------------------------------------------------
+Wed Apr 29 08:50:24 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- First version of the 16.1 Nano BCI
