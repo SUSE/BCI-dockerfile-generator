@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 16 20:59:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- switch to beta suffix in the version
+
+-------------------------------------------------------------------
 Mon Nov 16 20:06:20 UTC 2026 - Dirk Müller <dmueller@suse.com>
 
 - rerender for 16.2
