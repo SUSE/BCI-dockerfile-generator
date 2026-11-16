@@ -56,6 +56,7 @@ PULSEAUDIO_CONTAINERS = [
         supported_until=KIOSK_SUPPORT_ENDS,
         extra_files=_PULSE_FILES,
         entrypoint=["/usr/local/bin/entrypoint.sh"],
+        build_stage_custom_end=f"{DOCKERFILE_RUN} if rpm --root /target -q compat-usrmerge-tools; then rpm --root /target -e compat-usrmerge-tools; fi\n",
         custom_end=generate_package_version_check(
             "pulseaudio", tag_ver, parse_version=ParseVersion.MAJOR
         )
