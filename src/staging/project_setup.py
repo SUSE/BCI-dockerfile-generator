@@ -164,6 +164,8 @@ def generate_meta(
                     first_prj = "SUSE:Registry"
                     last_prj = f"SUSE:SLFO:Products:SLES:{os_version}"
                 case OsVersion.SL16_2:
+                    # TODO: remove when the setup is fixed
+                    first_prj = "devel:BCI:16.2:SLES"
                     last_prj = "SUSE:SLFO:Main"
                 case _:
                     raise ValueError(f"Unknown SL16 version: {os_version}")
