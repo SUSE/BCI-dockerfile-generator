@@ -18,6 +18,7 @@
 #!BuildTag: bci/dotnet-sdk:11.0.0-%RELEASE%
 #!BuildTag: bci/dotnet-sdk:11.0.0
 #!BuildTag: bci/dotnet-sdk:11.0
+#!BuildTag: bci/dotnet-sdk:latest
 #!BuildName: bci-dotnet-sdk-11.0
 #!BuildVersion: 16.1.11.0
 FROM registry.suse.com/bci/bci-base:16.1
