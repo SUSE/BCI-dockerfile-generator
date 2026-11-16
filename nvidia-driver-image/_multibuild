@@ -5,4 +5,6 @@
     <package>driver-610-64kb</package>
     <package>driver-615</package>
     <package>driver-615-64kb</package>
+    <package>driver-620</package>
+    <package>driver-620-64kb</package>
 </multibuild>
