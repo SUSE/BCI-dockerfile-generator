@@ -20,6 +20,7 @@ jobs:
           - 7
           - "16.0"
           - "16.1"
+          - "16.2"
           - Tumbleweed
 
     steps:
