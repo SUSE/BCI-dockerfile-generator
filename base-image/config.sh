@@ -1,0 +1,107 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: (c) 2022-2026 SUSE LLC
+
+set -euo pipefail
+
+test -f /.kconfig && . /.kconfig
+test -f /.profile && . /.profile
+
+echo "Configure image: [$kiwi_iname]..."
+
+#============================================
+# Import repositories' keys if rpm is present
+#--------------------------------------------
+if command -v rpm > /dev/null; then
+    suseImportBuildKey
+fi
+
+
+echo "Configure image: [$kiwi_iname]..."
+
+#======================================
+# Setup baseproduct link
+#--------------------------------------
+suseSetupProduct
+
+# don't have duplicate licenses of the same type
+jdupes -1 -L -r /usr/share/licenses
+
+zypper --non-interactive rm -u jdupes
+
+# Not needed, but neither rpm nor libzypp handle rpmlib(X-CheckUnifiedSystemdir) yet
+# which would avoid it being installed by filesystem package
+rpm -q compat-usrmerge-tools && rpm -e compat-usrmerge-tools
+
+printf "[main]\\nsolver.onlyRequires = true\\nrpm.install.excludedocs = yes\\n" > /etc/zypp/zypp.conf.d/10-bci.conf
+
+
+#======================================
+# Configure SLE BCI repositories
+#--------------------------------------
+zypper -n ar --refresh --gpgcheck --priority 100 --enable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product/' SLE_BCI
+zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_debug/' SLE_BCI_debug
+zypper -n ar --refresh --gpgcheck --priority 100 --disable 'https://public-dl.suse.com/SUSE/Products/SLE-BCI/$releasever_major.$releasever_minor/$basearch/product_source/' SLE_BCI_source
+for repo in /etc/zypp/repos.d/SLE_BCI*.repo; do
+    printf 'gpgkey=file:/usr/lib/rpm/gnupg/keys/gpg-pubkey-09d9ea69-68595a8c.asc\n' >> "$repo"
+done
+test -f /usr/lib/rpm/gnupg/keys/gpg-pubkey-09d9ea69-68595a8c.asc || { echo "ERROR: SUSE signing key not found!"; exit 1; }
+
+
+#======================================
+# Remove zypp uuid (bsc#1098535)
+#--------------------------------------
+rm -f /var/lib/zypp/AnonymousUniqueId
+
+# Remove the entire zypper cache content (not the dir itself, owned by libzypp)
+rm -rf /var/cache/zypp/*
+
+# drop timestamp
+tail -n +2 /var/lib/zypp/AutoInstalled > /var/lib/zypp/AutoInstalled.new && mv /var/lib/zypp/AutoInstalled.new /var/lib/zypp/AutoInstalled
+
+# drop useless device/inode specific cache file (see https://github.com/docker-library/official-images/issues/16044)
+rm -vf /var/cache/ldconfig/aux-cache
+
+# remove backup of /etc/{shadow,group,passwd} and lock file
+rm -vf /etc/{shadow-,group-,passwd-,.pwd.lock}
+
+# drop pid and lock files
+rm -vrf /run/*
+rm -vf /usr/lib/sysimage/rpm/.rpm.lock
+
+# set the day of last password change to empty
+sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
+
+#==========================================
+# Hack! The go container management tools can't handle sparse files:
+# https://github.com/golang/go/issues/13548
+# If lastlog doesn't exist, useradd doesn't attempt to reserve space,
+# also in derived containers.
+#------------------------------------------
+rm -f /var/log/lastlog
+
+#======================================
+# Remove locale files
+#--------------------------------------
+(shopt -s globstar; rm -f /usr/share/locale/**/*.mo)
+
+#=======================================
+# Clean up after zypper if it is present
+#---------------------------------------
+if command -v zypper > /dev/null; then
+    zypper -n clean -a
+fi
+
+#=============================================
+# Clean up logs and temporary files if present
+#---------------------------------------------
+rm -rf {/target,}/var/log/{alternatives.log,lastlog,suseconnect.log,tallylog,zypper.log,zypp/history,YaST2}; \
+    rm -rf {/target,}/run/{zypp.pid,regenerate-initrd,systemd}; \
+    rm -f {/target,}/etc/{shadow-,group-,passwd-,.pwd.lock}; \
+    rm -f {/target,}/usr/lib/sysimage/rpm/.rpm.lock; \
+    rm -f {/target,}/var/lib/zypp/AnonymousUniqueId; \
+    rm -f {/target,}/var/lib/zypp/AutoInstalled; \
+    rm -f {/target,}/var/cache/ldconfig/aux-cache
+
+
+exit 0
