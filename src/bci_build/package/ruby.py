@@ -154,9 +154,7 @@ RUBY_3_4_CONTAINERS = [
         **_get_ruby_kwargs("3.4", os_version, flavor),
         support_level=SupportLevel.L3,
     )
-    for os_version, flavor in product(
-        (OsVersion.SL16_1, OsVersion.SL16_2), ("base", "micro")
-    )
+    for os_version, flavor in product((OsVersion.SL16_1,), ("base", "micro"))
 ]
 
 RUBY_4_0_CONTAINERS = [

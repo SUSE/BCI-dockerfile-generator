@@ -302,9 +302,7 @@ def _is_latest_dotnet(version: _DOTNET_VERSION_T, os_version: OsVersion) -> bool
 DOTNET_CONTAINERS: list[DotNetBCI] = []
 
 
-for dotnet_version, os_version in (
-    *product(_DOTNET_VERSIONS, (OsVersion.SL16_1, OsVersion.SL16_2)),
-):
+for dotnet_version, os_version in (*product(_DOTNET_VERSIONS, (OsVersion.SL16_1,)),):
     if dotnet_version not in _DOTNET_VERSIONS:
         raise ValueError(f"Version {dotnet_version} not in _DOTNET_VERSIONS")
 

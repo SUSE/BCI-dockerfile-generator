@@ -153,7 +153,6 @@ HEALTHCHECK --interval=10s --start-period=10s --timeout=5s \
             for variant in (
                 OsVersion.SP7,
                 OsVersion.SL16_1,
-                OsVersion.SL16_2,
                 OsVersion.TUMBLEWEED,
             )
         ]

@@ -134,6 +134,11 @@ requires:rust{rust_version}
             ),
         ),
         *product(_RUST_TW_VERSIONS, [OsVersion.TUMBLEWEED]),
-        *product(_RUST_SL16_VERSIONS, [OsVersion.SL16_1, OsVersion.SL16_2]),
+        *product(
+            _RUST_SL16_VERSIONS,
+            [
+                OsVersion.SL16_1,
+            ],
+        ),
     )
 ]
