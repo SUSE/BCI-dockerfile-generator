@@ -232,6 +232,7 @@ _unload_driver() {
 
     _stop_daemon "NVIDIA persistence daemon" /var/run/nvidia-persistenced/nvidia-persistenced.pid || return 1
     _stop_daemon "NVIDIA grid daemon" /var/run/nvidia-gridd/nvidia-gridd.pid || return 1
+    _stop_daemon "NVIDIA topology daemon" /var/run/nvidia-topologyd/nvidia-topologyd.pid || return 1
     _stop_daemon "NVIDIA fabric manager daemon" /var/run/nvidia-fabricmanager/nv-fabricmanager.pid || return 1
     _stop_daemon "NVLink Subnet Manager daemon" /var/run/nvidia-fabricmanager/nvlsm.pid || return 1
 
