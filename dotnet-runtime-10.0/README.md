@@ -14,12 +14,11 @@ This image contains the .NET runtimes and libraries, and it is optimized for run
 
 ## Notice
 
-The .NET packages in the image come from a third-party repository 
-[packages.microsoft.com](https://packages.microsoft.com).
+The .NET packages are included from Microsofts third-party repository
+at [packages.microsoft.com](https://packages.microsoft.com).  Their source code
+is available on [github.com/dotnet](https://github.com/dotnet).
 
-The source code is available on [github.com/dotnet](https://github.com/dotnet).
-
-SUSE does not provide any support or warranties for the third-party components in the image.
+SUSE does not provide support for the third-party components in the image.
 
 ## Usage
 
