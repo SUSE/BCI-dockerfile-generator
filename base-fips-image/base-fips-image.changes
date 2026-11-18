@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 18 12:33:21 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- do not uninstall python3-base (not being pulled in)
+
+-------------------------------------------------------------------
 Mon Nov 16 20:59:04 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to beta suffix in the version
