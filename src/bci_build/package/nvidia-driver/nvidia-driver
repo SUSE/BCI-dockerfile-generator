@@ -23,6 +23,7 @@ NVIDIA_MODESET_MODULE_PARAMS=()
 NVIDIA_PEERMEM_MODULE_PARAMS=()
 KERNEL_MODULE_TYPE=${KERNEL_MODULE_TYPE:-auto}
 MODPROBE_CONFIG_DIR="/etc/modprobe.d"
+USE_HOST_MOFED="${USE_HOST_MOFED:-false}"
 
 TARGETARCH=${TARGETARCH:-$(uname -m)}
 DRIVER_ARCH=${TARGETARCH/amd64/x86_64}
@@ -48,9 +49,8 @@ _set_daemons_status() {
 }
 
 _assert_nvswitch_system() {
-    [ -d /proc/driver/nvidia-nvswitch ] || return 1
-    entries=$(ls -1 /proc/driver/nvidia-nvswitch/devices/* 2>/dev/null)
-    if [ -z "${entries}" ]; then
+    [ -d /proc/driver/nvidia-nvswitch/devices ] || return 1
+    if [ -z "$(ls -A /proc/driver/nvidia-nvswitch/devices)" ]; then
         return 1
     fi
     return 0
@@ -151,8 +151,9 @@ _create_module_params_conf() {
     fi
 }
 
-# Load the kernel modules and start persistenced.
-_load_driver() {
+# Configure the kernel firmware search path and install the GSP firmware there.
+# Requires the driver rootfs to be mounted.
+_setup_firmware() {
     local nv_fw_search_path="$RUN_DIR/driver/lib/firmware"
     local set_fw_path="true"
     local fw_path_config_file="/sys/module/firmware_class/parameters/path"
@@ -175,7 +176,16 @@ _load_driver() {
             mkdir -p "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
             cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
         fi
+        if [ -d "${nv_fw_search_path}" ] && _host_selinux_enabled; then
+            echo "Change firmware files security context for selinux compatibility"
+            chcon -R -t container_file_t "${nv_fw_search_path}"
+        fi
     fi
+}
+
+# Load the kernel modules and start persistenced.
+_load_driver() {
+    _setup_firmware
 
     local current_kernel=$(uname -r)
     cp -rfx "/run/host/lib/modules/${current_kernel}" /lib/modules
@@ -231,6 +241,7 @@ _unload_driver() {
 
     _stop_daemon "NVIDIA persistence daemon" /var/run/nvidia-persistenced/nvidia-persistenced.pid || return 1
     _stop_daemon "NVIDIA grid daemon" /var/run/nvidia-gridd/nvidia-gridd.pid || return 1
+    _stop_daemon "NVIDIA topology daemon" /var/run/nvidia-topologyd/nvidia-topologyd.pid || return 1
     _stop_daemon "NVIDIA fabric manager daemon" /var/run/nvidia-fabricmanager/nv-fabricmanager.pid || return 1
     _stop_daemon "NVLink Subnet Manager daemon" /var/run/nvidia-fabricmanager/nvlsm.pid || return 1
 
@@ -255,6 +266,8 @@ _unload_driver() {
         rmmod_args+=("nvidia")
     fi
     if [ ${nvidia_refs} -gt ${nvidia_deps} ] || [ ${nvidia_uvm_refs} -gt 0 ] || [ ${nvidia_modeset_refs} -gt 0 ] || [ ${nvidia_peermem_refs} -gt 0 ]; then
+        # run lsmod to debug module usage
+        lsmod | grep nvidia || true
         echo "Could not unload NVIDIA driver kernel modules, driver is in use" >&2
         return 1
     fi
@@ -449,7 +462,7 @@ _start_daemons() {
             # We reset the GPU devices after Fabric Manager startup to clear stale FM
             # partition data after setting FABRIC_MODE=1
             echo "Resetting GPUs to clear stale fabric partition states..."
-            nvidia-smi -r
+            nvidia-smi -r || return 1
         fi
 
     # If not a NVLink5+ switch, check for the presence of NVLink4 (or below) switches
@@ -485,17 +498,29 @@ _prepare_exclusive() {
 
     trap "echo 'Caught signal'; exit 1" HUP INT QUIT PIPE TERM
     trap "_shutdown" EXIT
-
-    _unload_driver || exit 1
-    _unmount_rootfs
 }
 
+# Check if fast path should be used (driver already loaded with matching config)
+# Compares current digest from DRIVER_CONFIG_DIGEST env var with stored digest
+_should_skip_kernel_module_reload() {
+    [ -f /sys/module/nvidia/refcnt ] && [ -f "${RUN_DIR}/nvidia-driver.state" ] || return 1
+    [ -f /sys/module/nvidia_uvm/refcnt ] && [ -f /sys/module/nvidia_modeset/refcnt ] || return 1
+    local current_digest="${DRIVER_CONFIG_DIGEST:-}"
+    [ -z "${current_digest}" ] && return 1
+    local stored_digest
+    stored_digest=$(cat "${RUN_DIR}/nvidia-driver.state" 2>/dev/null || echo "")
+    [ "${current_digest}" = "${stored_digest}" ]
+}
 
+_store_driver_digest() {
+    local digest_file="${RUN_DIR}/nvidia-driver.state"
+    local current_digest="${DRIVER_CONFIG_DIGEST:-}"
+    echo "Storing driver configuration digest..."
+    echo "${current_digest}" > "$digest_file"
+    echo "Driver configuration digest stored at $digest_file"
+}
 
-_load() {
-    _mount_rootfs
-    _load_driver
-
+_wait_for_signal() {
     echo "Done, now waiting for signal"
     sleep infinity &
     trap "echo 'Caught signal'; _shutdown && { kill $!; exit 0; }" HUP INT QUIT PIPE TERM
@@ -504,10 +529,40 @@ _load() {
     exit 0
 }
 
+# The kernel modules are already loaded with the desired configuration: only
+# restart the userspace daemons and export the driver rootfs again.
+_userspace_install() {
+    echo "The NVIDIA driver is already loaded with the desired configuration, performing userspace-only install"
+    _unmount_rootfs
+    # Mount the rootfs before starting the daemons: persistenced initializes the GPUs on
+    # startup, and a GPU that deinitialized across the restart needs its GSP firmware,
+    # which the kernel reads through the exported rootfs.
+    _mount_rootfs
+    _setup_firmware
+    _start_daemons || return 1
+    _store_driver_digest
+    echo "Userspace-only install complete"
+}
+
+_load() {
+    _mount_rootfs
+    _load_driver
+    _store_driver_digest
+    _wait_for_signal
+}
+
 init() {
     _set_daemons_status "NotReady"
     _prepare_exclusive
     _update_ca_certificates
+
+    if _should_skip_kernel_module_reload; then
+        _userspace_install
+        _wait_for_signal
+    fi
+
+    _unload_driver || exit 1
+    _unmount_rootfs
     _load
 }
 
