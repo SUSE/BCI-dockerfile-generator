@@ -176,6 +176,10 @@ _load_driver() {
             mkdir -p "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
             cp /opt/lib/firmware/nvidia/${DRIVER_VERSION}/*.bin "${nv_fw_search_path:?}/nvidia/${DRIVER_VERSION:?}"
         fi
+        if [ -d "${nv_fw_search_path}" ] && _host_selinux_enabled; then
+            echo "Change firmware files security context for selinux compatibility"
+            chcon -R -t container_file_t "${nv_fw_search_path}"
+        fi
     fi
 
     local current_kernel=$(uname -r)
