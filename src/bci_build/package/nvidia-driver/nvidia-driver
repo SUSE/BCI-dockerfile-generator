@@ -151,8 +151,9 @@ _create_module_params_conf() {
     fi
 }
 
-# Load the kernel modules and start persistenced.
-_load_driver() {
+# Configure the kernel firmware search path and install the GSP firmware there.
+# Requires the driver rootfs to be mounted.
+_setup_firmware() {
     local nv_fw_search_path="$RUN_DIR/driver/lib/firmware"
     local set_fw_path="true"
     local fw_path_config_file="/sys/module/firmware_class/parameters/path"
@@ -180,6 +181,11 @@ _load_driver() {
             chcon -R -t container_file_t "${nv_fw_search_path}"
         fi
     fi
+}
+
+# Load the kernel modules and start persistenced.
+_load_driver() {
+    _setup_firmware
 
     local current_kernel=$(uname -r)
     cp -rfx "/run/host/lib/modules/${current_kernel}" /lib/modules
