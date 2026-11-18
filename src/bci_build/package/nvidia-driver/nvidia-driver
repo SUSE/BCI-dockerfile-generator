@@ -498,17 +498,29 @@ _prepare_exclusive() {
 
     trap "echo 'Caught signal'; exit 1" HUP INT QUIT PIPE TERM
     trap "_shutdown" EXIT
-
-    _unload_driver || exit 1
-    _unmount_rootfs
 }
 
+# Check if fast path should be used (driver already loaded with matching config)
+# Compares current digest from DRIVER_CONFIG_DIGEST env var with stored digest
+_should_skip_kernel_module_reload() {
+    [ -f /sys/module/nvidia/refcnt ] && [ -f "${RUN_DIR}/nvidia-driver.state" ] || return 1
+    [ -f /sys/module/nvidia_uvm/refcnt ] && [ -f /sys/module/nvidia_modeset/refcnt ] || return 1
+    local current_digest="${DRIVER_CONFIG_DIGEST:-}"
+    [ -z "${current_digest}" ] && return 1
+    local stored_digest
+    stored_digest=$(cat "${RUN_DIR}/nvidia-driver.state" 2>/dev/null || echo "")
+    [ "${current_digest}" = "${stored_digest}" ]
+}
 
+_store_driver_digest() {
+    local digest_file="${RUN_DIR}/nvidia-driver.state"
+    local current_digest="${DRIVER_CONFIG_DIGEST:-}"
+    echo "Storing driver configuration digest..."
+    echo "${current_digest}" > "$digest_file"
+    echo "Driver configuration digest stored at $digest_file"
+}
 
-_load() {
-    _mount_rootfs
-    _load_driver
-
+_wait_for_signal() {
     echo "Done, now waiting for signal"
     sleep infinity &
     trap "echo 'Caught signal'; _shutdown && { kill $!; exit 0; }" HUP INT QUIT PIPE TERM
@@ -517,10 +529,40 @@ _load() {
     exit 0
 }
 
+# The kernel modules are already loaded with the desired configuration: only
+# restart the userspace daemons and export the driver rootfs again.
+_userspace_install() {
+    echo "The NVIDIA driver is already loaded with the desired configuration, performing userspace-only install"
+    _unmount_rootfs
+    # Mount the rootfs before starting the daemons: persistenced initializes the GPUs on
+    # startup, and a GPU that deinitialized across the restart needs its GSP firmware,
+    # which the kernel reads through the exported rootfs.
+    _mount_rootfs
+    _setup_firmware
+    _start_daemons || return 1
+    _store_driver_digest
+    echo "Userspace-only install complete"
+}
+
+_load() {
+    _mount_rootfs
+    _load_driver
+    _store_driver_digest
+    _wait_for_signal
+}
+
 init() {
     _set_daemons_status "NotReady"
     _prepare_exclusive
     _update_ca_certificates
+
+    if _should_skip_kernel_module_reload; then
+        _userspace_install
+        _wait_for_signal
+    fi
+
+    _unload_driver || exit 1
+    _unmount_rootfs
     _load
 }
 
