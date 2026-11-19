@@ -10,32 +10,35 @@ from bci_build.repomdparser import RepoMDParser
 from bci_build.repomdparser import RpmPackage
 
 CUSTOM_END_TEMPLATE = Template(
-    """RUN mkdir -p /tmp/
+    """RUN mkdir -p {% if image.from_target_image %}/target{% endif %}/tmp/
 
 {%- for pkg in packages %}
 #!RemoteAssetUrl: {{ pkg.url }}{% if not pkg.url.endswith(pkg.filename) %} {{ pkg.filename }}{% endif %}{% if pkg.checksum %} sha256:{{ pkg.checksum }}{% endif %}
-COPY {{ pkg.filename }} /tmp/
+COPY {{ pkg.filename }} {% if image.from_target_image %}/target{% endif %}/tmp/
 {%- endfor %}
 
 {% for repo in image.third_party_repos -%}
-COPY {{ repo.name }}.gpg.key /tmp/{{ repo.key_filename }}
-RUN rpm --import /tmp/{{ repo.key_filename }}
+COPY {{ repo.name }}.gpg.key {% if image.from_target_image %}/target{% endif %}/tmp/{{ repo.key_filename }}
+RUN rpm --import {% if image.from_target_image %}--root /target {% endif %}{% if image.from_target_image %}/target{% endif %}/tmp/{{ repo.key_filename }}
 {% endfor %}
 {% for arch in image.exclusive_arch %}
 {%- with pkgs=get_packages_for_arch(arch) %}
 RUN if [ "$(uname -m)" = "{{ arch }}" ]; then \\
         zypper -n install \\
+        {%- if image.from_target_image %}
+            --installroot /target --gpg-auto-import-keys \\
+        {%- endif %}
         {%- for pkg in pkgs %}
-            /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
+            {% if image.from_target_image %}/target{% endif %}/tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
         {%- endfor %}
     fi
 {%- endwith %}
 {%- endfor %}
 
 {% for repo in image.third_party_repos -%}
-COPY {{ repo.name }}.repo /etc/zypp/repos.d/{{ repo.repo_filename }}
+COPY {{ repo.name }}.repo {% if image.from_target_image %}/target{% endif %}/etc/zypp/repos.d/{{ repo.repo_filename }}
 {% endfor %}
-RUN rm -rf /tmp/*
+RUN rm -rf {% if image.from_target_image %}/target{% endif %}/tmp/*
 """
 )
 
