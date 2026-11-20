@@ -29,43 +29,44 @@ RUN set -euo pipefail; zypper -n install --no-recommends awk dwarves elfutils gc
 RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends rpm kmod SLES-release
-RUN mkdir -p /tmp/
+RUN mkdir -p /target/tmp/
 #!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.50/sle/16.0/main/x86_64/amdgpu-dkms-7.1.3.31500000-2390945.noarch.rpm amdgpu-dkms-7.1.3.31500000-2390945.x86_64.rpm sha256:9150c9368e79b82ce1997de26064874f59b00676a194e9e5545a3e17a2e8cdb9
-COPY amdgpu-dkms-7.1.3.31500000-2390945.x86_64.rpm /tmp/
+COPY amdgpu-dkms-7.1.3.31500000-2390945.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.50/sle/16.0/main/x86_64/amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.noarch.rpm amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.x86_64.rpm sha256:05a986caf952494a863c6ad196780e48918303e84b804e5c58caede1faa43194
-COPY amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.x86_64.rpm /tmp/
+COPY amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://repo.radeon.com/amdgpu/31.50/sle/16.0/main/x86_64/dkms-3.1.7-bp160.1.3.noarch.rpm dkms-3.1.7-bp160.1.3.x86_64.rpm sha256:07b3756d00607912734ec69ec3d7fad95386c807ea9b5d43d51a0256b8b0604a
-COPY dkms-3.1.7-bp160.1.3.x86_64.rpm /tmp/
+COPY dkms-3.1.7-bp160.1.3.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-default-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-default-6.12.0-160000.5.1.x86_64.rpm /tmp/
+COPY kernel-default-6.12.0-160000.5.1.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm /tmp/
+COPY kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-syms-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-syms-6.12.0-160000.5.1.x86_64.rpm /tmp/
+COPY kernel-syms-6.12.0-160000.5.1.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-devel-6.12.0-160000.5.1.noarch.rpm kernel-devel-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-devel-6.12.0-160000.5.1.x86_64.rpm /tmp/
+COPY kernel-devel-6.12.0-160000.5.1.x86_64.rpm /target/tmp/
 #!RemoteAssetUrl: https://api.opensuse.org/public/build/SUSE:SLFO:1.2/standard/x86_64/patchinfo.ga/kernel-macros-6.12.0-160000.5.1.noarch.rpm kernel-macros-6.12.0-160000.5.1.x86_64.rpm
-COPY kernel-macros-6.12.0-160000.5.1.x86_64.rpm /tmp/
+COPY kernel-macros-6.12.0-160000.5.1.x86_64.rpm /target/tmp/
 
-COPY radeon-31.50-x86_64.gpg.key /tmp/radeon-31.50-x86_64.gpg.key
-RUN rpm --import /tmp/radeon-31.50-x86_64.gpg.key
+COPY radeon-31.50-x86_64.gpg.key /target/tmp/radeon-31.50-x86_64.gpg.key
+RUN rpm --import --root /target /target/tmp/radeon-31.50-x86_64.gpg.key
 
 
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         zypper -n install \
-            /tmp/amdgpu-dkms-7.1.3.31500000-2390945.x86_64.rpm \
-            /tmp/amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.x86_64.rpm \
-            /tmp/dkms-3.1.7-bp160.1.3.x86_64.rpm \
-            /tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-devel-6.12.0-160000.5.1.x86_64.rpm \
-            /tmp/kernel-macros-6.12.0-160000.5.1.x86_64.rpm; \
+            --installroot /target --gpg-auto-import-keys \
+            /target/tmp/amdgpu-dkms-7.1.3.31500000-2390945.x86_64.rpm \
+            /target/tmp/amdgpu-dkms-firmware-31.50.0.0.31500000-2390945.x86_64.rpm \
+            /target/tmp/dkms-3.1.7-bp160.1.3.x86_64.rpm \
+            /target/tmp/kernel-default-6.12.0-160000.5.1.x86_64.rpm \
+            /target/tmp/kernel-default-devel-6.12.0-160000.5.1.x86_64.rpm \
+            /target/tmp/kernel-syms-6.12.0-160000.5.1.x86_64.rpm \
+            /target/tmp/kernel-devel-6.12.0-160000.5.1.x86_64.rpm \
+            /target/tmp/kernel-macros-6.12.0-160000.5.1.x86_64.rpm; \
     fi
 
-COPY radeon-31.50-x86_64.repo /etc/zypp/repos.d/radeon-31.50-x86_64.repo
+COPY radeon-31.50-x86_64.repo /target/etc/zypp/repos.d/radeon-31.50-x86_64.repo
 
-RUN rm -rf /tmp/*
+RUN rm -rf /target/tmp/*
 
 # decompress modules for getKmodsToSign (kmmmodule.go) since it expects uncompressed files
 RUN set -euo pipefail; \
