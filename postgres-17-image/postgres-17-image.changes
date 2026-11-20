@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 20 18:35:56 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- adjust for /run
+
+-------------------------------------------------------------------
 Wed Oct 14 16:03:47 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - switch to released mode
