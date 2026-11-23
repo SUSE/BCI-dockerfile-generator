@@ -1068,14 +1068,14 @@ resolved_reference = "759ad76ab9a4d35171680dac0667023bceae8064"
 
 [[package]]
 name = "oras"
-version = "0.2.43"
+version = "0.2.44"
 description = "OCI Registry as Storage Python SDK"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "oras-0.2.43-py3-none-any.whl", hash = "sha256:bf295b1cfb5017f579c35c3394c7a71707f6aff463cb6699d5d191a6d8b56ea6"},
-    {file = "oras-0.2.43.tar.gz", hash = "sha256:761f2b518fce50e5e9482975363ff0230f63fc65f84c09510fbcc301782a047c"},
+    {file = "oras-0.2.44-py3-none-any.whl", hash = "sha256:7bfbfa166d2874a26b2ff87d5a95262686ba12e0ae8623f20dc0cdc1bd20d26b"},
+    {file = "oras-0.2.44.tar.gz", hash = "sha256:4bc8ebf56f324f5ca8e2278e4ceaa906ffb5e5030d198b80c073e8338e54acf5"},
 ]
 
 [package.dependencies]
@@ -1973,4 +1973,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "f9efc3818cbf57a457bedd6e59c7f7a35988ff4dd467ff74d6cee8603caf8482"
+content-hash = "8b0da6164ddc39025af3b5af7a6e41dae7ed6b963b679b21ea7fc83f2e186d07"
