@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 23 22:15:18 UTC 2026 - Dirk Müller <dmueller@suse.com>
+
+- rename to openjdk-25-jdk-image
+
+-------------------------------------------------------------------
 Thu Jun 18 17:22:43 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - only clean specific files in /run
