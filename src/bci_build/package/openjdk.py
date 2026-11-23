@@ -54,7 +54,7 @@ def _get_openjdk_kwargs(
         OsVersion.TUMBLEWEED, OsVersion.SL16_1, OsVersion.SL16_2, OsVersion.SP7
     ],
     devel: bool,
-    java_version: Literal[11, 17, 21, 25, 26],
+    java_version: Literal[11, 17, 21, 25, 27],
 ):
     JAVA_HOME = f"/usr/lib64/jvm/java-{java_version}-openjdk-{java_version}"
     JAVA_ENV = {
@@ -134,7 +134,7 @@ OPENJDK_CONTAINERS = (
     ]
     + [
         DevelopmentContainer(
-            **_get_openjdk_kwargs(os_version, devel, java_version=26),
+            **_get_openjdk_kwargs(os_version, devel, java_version=27),
             support_level=SupportLevel.L3,
         )
         for os_version, devel in product(
