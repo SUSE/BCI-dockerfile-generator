@@ -13,13 +13,13 @@ The OpenJDK runtime image is intended to be used as a runtime environment. For d
 To run a jar or war application inside a container instance, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk:27 java -jar hello.jar
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk:27-base java -jar hello.jar
 ```
 
 Or create a new contained based on OpenJDK 27 runtime image:
 
 ```Dockerfile
-FROM registry.opensuse.org/opensuse/bci/openjdk:27
+FROM registry.opensuse.org/opensuse/bci/openjdk:27-base
 
 WORKDIR /app
 
@@ -32,7 +32,7 @@ To compile and deploy an application, copy the sources and build the application
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.opensuse.org/opensuse/bci/openjdk-devel:27  as build
+FROM registry.opensuse.org/opensuse/bci/openjdk-jdk:27  as build
 
 WORKDIR /app
 
@@ -41,7 +41,7 @@ COPY . ./
 RUN javac Hello.java
 
 # Bundle the application into OpenJDK runtime image
-FROM registry.opensuse.org/opensuse/bci/openjdk:27
+FROM registry.opensuse.org/opensuse/bci/openjdk:27-base
 
 WORKDIR /app
 

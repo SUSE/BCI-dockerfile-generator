@@ -15,11 +15,11 @@
 
 #!UseOBSRepositories
 #!ExclusiveArch: aarch64 ppc64le s390x riscv64 x86_64
-#!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%-%RELEASE%
-#!BuildTag: opensuse/bci/openjdk-devel:%%java_version%%
-#!BuildTag: opensuse/bci/openjdk-devel:27
+#!BuildTag: opensuse/bci/openjdk-jdk:%%java_version%%-%RELEASE%
+#!BuildTag: opensuse/bci/openjdk-jdk:%%java_version%%
+#!BuildTag: opensuse/bci/openjdk-jdk:27
 
-FROM opensuse/bci/openjdk:27
+FROM opensuse/bci/openjdk:27-base
 
 RUN set -euo pipefail; \
     zypper -n install --no-recommends java-27-openjdk-devel maven
@@ -38,7 +38,7 @@ RUN set -euo pipefail; zypper -n clean -a; \
 RUN set -euo pipefail; sed -i 's/^\([^:]*:[^:]*:\)[^:]*\(:.*\)$/\1\2/' /etc/shadow
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.bci.openjdk.devel
+# labelprefix=org.opensuse.bci.openjdk.jdk
 LABEL org.opencontainers.image.title="openSUSE Tumbleweed BCI OpenJDK 27 development"
 LABEL org.opencontainers.image.description="OpenJDK 27 development container based on the openSUSE Tumbleweed Base Container Image."
 LABEL org.opencontainers.image.version="%%java_version%%"
@@ -47,7 +47,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="openSUSE Project"
 LABEL org.opencontainers.image.source="%SOURCEURL%"
 LABEL org.opencontainers.image.ref.name="%%java_version%%-%RELEASE%"
-LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/openjdk-devel:%%java_version%%-%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/opensuse/bci/openjdk-jdk:%%java_version%%-%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.lifecycle-url="https://en.opensuse.org/Lifetime#openSUSE_BCI"
 LABEL org.opensuse.release-stage="released"

@@ -14,7 +14,7 @@ To compile and deploy an application, copy the sources and build the binary:
 
 ```Dockerfile
 # Build the application using the OpenJDK development image
-FROM registry.opensuse.org/opensuse/bci/openjdk-devel:25 as build
+FROM registry.opensuse.org/opensuse/bci/openjdk-jdk:25 as build
 
 WORKDIR /app
 
@@ -44,7 +44,7 @@ There are situations, where you don't want to run an application inside a contai
 To compile the application, without running it inside a container instance, use the following command:
 
 ```ShellSession
-$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk-devel:25 javac Hello.java
+$ podman run --rm -v "$PWD":/app:Z -w /app registry.opensuse.org/opensuse/bci/openjdk-jdk:25 javac Hello.java
 ```
 
 ## Additional tools
