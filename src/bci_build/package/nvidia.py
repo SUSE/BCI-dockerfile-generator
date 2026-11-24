@@ -335,6 +335,13 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             self.exclusive_arch,
             built_kernel=built_kernel,
         )
+
+        # ensure Kernel packages exist, otherwise the build will fail
+        for pkg in kernel_ga_rpms:
+            requests.head(
+                pkg.url, headers={"User-Agent": "BCI Generator"}
+            ).raise_for_status()
+
         pkgs.extend(kernel_ga_rpms)
         kernel_packages += [rpm.name for rpm in kernel_ga_rpms]
 
@@ -344,6 +351,13 @@ class NvidiaDriverBCI(ThirdPartyRepoMixin, DevelopmentContainer):
             nvidia_kmp_rpms = _get_nvidia_kmp_rpms(
                 self.version, self.os_version, self.kernel_variant, self.exclusive_arch
             )
+
+            # ensure KMP packages exist, otherwise the build will fail
+            for pkg in nvidia_kmp_rpms:
+                requests.head(
+                    pkg.url, headers={"User-Agent": "BCI Generator"}
+                ).raise_for_status()
+
             pkgs.extend(nvidia_kmp_rpms)
             kernel_packages += [rpm.name for rpm in nvidia_kmp_rpms]
             kmp_packages += [rpm.name for rpm in nvidia_kmp_rpms]
@@ -796,12 +810,6 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
             )
         )
 
-    # ensure packages exist, otherwise the build will fail
-    for pkg in pkgs:
-        requests.head(
-            pkg.url, headers={"User-Agent": "BCI Generator"}
-        ).raise_for_status()
-
     return pkgs
 
 
@@ -1051,12 +1059,6 @@ def _get_kernel_ga_rpms(
                     url=f"https://api.opensuse.org/public/build/{project}/{repo}/{arch}/{package}/{filename_in_repo}",
                 )
             )
-
-    # ensure packages exist, otherwise the build will fail
-    for pkg in pkgs:
-        requests.head(
-            pkg.url, headers={"User-Agent": "BCI Generator"}
-        ).raise_for_status()
 
     return pkgs
 
