@@ -35,6 +35,7 @@ POSTGRES_CONTAINERS = [
         is_latest=(
             ver == _POSTGRES_MAJOR_VERSIONS[0]
             and os_version in CAN_BE_LATEST_OS_VERSION
+            and flavor == "default"
         ),
         pretty_name=f"PostgreSQL {ver}",
         build_flavor=flavor,
@@ -74,7 +75,11 @@ POSTGRES_CONTAINERS = [
         min_release_counter={
             OsVersion.SP7: 70 if ver == 16 else 60,
         },
-        additional_versions=["%%pg_minor_version%%"],
+        additional_versions=[
+            "%%pg_minor_version%%"
+            if flavor == "default"
+            else f"%%pg_minor_version%%-{flavor}"
+        ],
         entrypoint=["/usr/local/bin/docker-entrypoint.sh"],
         cmd=["postgres"],
         env={
