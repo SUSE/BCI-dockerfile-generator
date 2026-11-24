@@ -18,7 +18,7 @@
 #!BuildTag: suse/postgres:%%pg_patch_version%%-contrib-%RELEASE%
 #!BuildTag: suse/postgres:%%pg_patch_version%%-contrib
 #!BuildTag: suse/postgres:16-contrib
-#!BuildTag: suse/postgres:%%pg_minor_version%%
+#!BuildTag: suse/postgres:%%pg_minor_version%%-contrib
 #!BcntSyncTag: postgres-16-image
 #!BuildName: suse-postgres-16-contrib
 #!BuildVersion: 15.7.16
