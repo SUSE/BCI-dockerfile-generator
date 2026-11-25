@@ -41,10 +41,10 @@ RUN set -euo pipefail; \
     export PERMCTL_ALLOW_INSECURE_MODE_IF_NO_PROC=1 SOURCE_DATE_EPOCH=0; \
     zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends awk findutils grep jq kmod rpm sed util-linux util-linux-systemd infiniband-diags SLES-release libtirpc3
 RUN mkdir -p /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/dkms-3.4.4-1.noarch.rpm dkms-3.4.4-1.x86_64.rpm sha256:02e38496c81f36aa11b5f52d7cd8e8809cacb1126b7277a4b753ddf30c3f94ec
-COPY dkms-3.4.4-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/dkms-3.4.4-1.noarch.rpm dkms-3.4.4-1.aarch64.rpm sha256:02e38496c81f36aa11b5f52d7cd8e8809cacb1126b7277a4b753ddf30c3f94ec
-COPY dkms-3.4.4-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/dkms-3.4.5-1.noarch.rpm dkms-3.4.5-1.x86_64.rpm sha256:61119d95d7a96f1053c1e8a8c05a3eb7696b1815c8279e15727c7ff733dca2cd
+COPY dkms-3.4.5-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/dkms-3.4.5-1.noarch.rpm dkms-3.4.5-1.aarch64.rpm sha256:61119d95d7a96f1053c1e8a8c05a3eb7696b1815c8279e15727c7ff733dca2cd
+COPY dkms-3.4.5-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/libnvidia-cfg-595.71.05-1.x86_64.rpm sha256:a89dd2b5dc6c6320e01fbaad06720317ddf9066d50255a95448cb8240bf5b267
 COPY libnvidia-cfg-595.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/libnvidia-cfg-595.71.05-1.aarch64.rpm sha256:89b2410bff58433424eb4e68b2fba07d6aeb60c3e5b52d472a0d65db472c9b9c
@@ -79,10 +79,10 @@ COPY nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm /tmp/
 COPY nvidia-driver-G07-595.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-G07-595.71.05-1.aarch64.rpm sha256:2aa325a64e8bec096bdd6ec8739b6e25161fe2f8014ed1889d7bfd238474b3db
 COPY nvidia-driver-G07-595.71.05-1.aarch64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-assistant-0.68.70.06-1.noarch.rpm nvidia-driver-assistant-0.68.70.06-1.x86_64.rpm sha256:0b9891cf2468e57d11e780de85459caf37c3d2a2b110bd6ed65cab631c93ac70
-COPY nvidia-driver-assistant-0.68.70.06-1.x86_64.rpm /tmp/
-#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-assistant-0.68.70.06-1.noarch.rpm nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm sha256:0b9891cf2468e57d11e780de85459caf37c3d2a2b110bd6ed65cab631c93ac70
-COPY nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-driver-assistant-0.68.70.10-1.noarch.rpm nvidia-driver-assistant-0.68.70.10-1.x86_64.rpm sha256:c015dec613703a51c03323085a5fe08e1aa59be8c0e2e8b69001d0f88e387685
+COPY nvidia-driver-assistant-0.68.70.10-1.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-driver-assistant-0.68.70.10-1.noarch.rpm nvidia-driver-assistant-0.68.70.10-1.aarch64.rpm sha256:c015dec613703a51c03323085a5fe08e1aa59be8c0e2e8b69001d0f88e387685
+COPY nvidia-driver-assistant-0.68.70.10-1.aarch64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/x86_64/nvidia-fabricmanager-595.71.05-1.x86_64.rpm sha256:4af31419fd5fc0a7b62676de75c73f6226e82ee299f513d6b0ce95381bd44ac5
 COPY nvidia-fabricmanager-595.71.05-1.x86_64.rpm /tmp/
 #!RemoteAssetUrl: https://developer.download.nvidia.com/compute/cuda/repos/suse16/sbsa/nvidia-fabricmanager-595.71.05-1.aarch64.rpm sha256:43612bff8e1d782c0d1a3ec9dc6438f93165a736719917809fbf893c7c694d04
@@ -144,14 +144,14 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.4-1.x86_64.rpm \
+            /tmp/dkms-3.4.5-1.x86_64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-common-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.71.05-1.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.29.1.x86_64.rpm \
@@ -166,14 +166,14 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.4-1.aarch64.rpm \
+            /tmp/dkms-3.4.5-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-common-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.71.05-1.aarch64.rpm \
             /tmp/kernel-default-6.12.0-160000.29.1.aarch64.rpm \
@@ -198,7 +198,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.4-1.x86_64.rpm \
+            /tmp/dkms-3.4.5-1.x86_64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
@@ -206,7 +206,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-driver-G07-595.71.05-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-persistenced-595.71.05-1.x86_64.rpm \
             /tmp/kernel-default-6.12.0-160000.29.1.x86_64.rpm \
@@ -220,7 +220,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             --capability \
             --no-recommends \
             --auto-agree-with-licenses \
-            /tmp/dkms-3.4.4-1.aarch64.rpm \
+            /tmp/dkms-3.4.5-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
@@ -228,7 +228,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-driver-G07-595.71.05-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-persistenced-595.71.05-1.aarch64.rpm \
             /tmp/kernel-default-6.12.0-160000.29.1.aarch64.rpm \
@@ -253,7 +253,7 @@ COPY --from=open-driver-builder /opt/open /target/opt/open
 COPY --from=closed-driver-builder /opt/proprietary /target/opt/proprietary
 RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
         rpm --root /target -Uvh --nodeps \
-            /tmp/dkms-3.4.4-1.x86_64.rpm \
+            /tmp/dkms-3.4.5-1.x86_64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.x86_64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.x86_64.rpm \
@@ -262,7 +262,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
             /tmp/nvidia-common-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-compute-G07-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.x86_64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.x86_64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.x86_64.rpm \
             /tmp/nvidia-fabricmanager-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-imex-595.71.05-1.x86_64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.x86_64.rpm \
@@ -271,7 +271,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "x86_64" ]; then \
     fi
 RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
         rpm --root /target -Uvh --nodeps \
-            /tmp/dkms-3.4.4-1.aarch64.rpm \
+            /tmp/dkms-3.4.5-1.aarch64.rpm \
             /tmp/libnvidia-cfg-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-gpucomp-595.71.05-1.aarch64.rpm \
             /tmp/libnvidia-ml-595.71.05-1.aarch64.rpm \
@@ -279,7 +279,7 @@ RUN set -euo pipefail; if [ "$(uname -m)" = "aarch64" ]; then \
             /tmp/nvidia-common-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-compute-G07-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-compute-utils-G07-595.71.05-1.aarch64.rpm \
-            /tmp/nvidia-driver-assistant-0.68.70.06-1.aarch64.rpm \
+            /tmp/nvidia-driver-assistant-0.68.70.10-1.aarch64.rpm \
             /tmp/nvidia-fabricmanager-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-imex-595.71.05-1.aarch64.rpm \
             /tmp/nvidia-modprobe-595.71.05-1.aarch64.rpm \
