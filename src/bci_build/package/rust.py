@@ -33,7 +33,7 @@ _RUST_SUPPORT_ENDS = {
 }
 
 # ensure that the **latest** rust version is the last one!
-_RUST_VERSIONS: list[str] = ["1.98", "1.99"]
+_RUST_VERSIONS: list[str] = ["1.99", "1.100"]
 
 _RUST_SL16_VERSIONS: list[str] = ["1.97", "1.98"]
 
