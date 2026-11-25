@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 25 08:06:33 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- update to new dkms and nvidia-driver-assistant releases
+
+-------------------------------------------------------------------
 Mon Nov 16 10:11:36 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - add multibuild for the 620 driver
