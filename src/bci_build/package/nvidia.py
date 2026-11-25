@@ -788,11 +788,6 @@ def _get_nvidia_kmp_rpms(driver_version, os_version, kernel_variant, exclusive_a
                     name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
                     version = "615.71.09_k6.4.0_150700.53.78"
                     release = "150700.16.22.1"
-                case "620.70.06":
-                    package = "nvidia-open-driver-G07-signed.47750:cuda"
-                    name = f"nvidia-open-driver-G07-signed-cuda-kmp-{kernel_variant}"
-                    version = "620.70.06_k6.4.0_150700.53.90"
-                    release = "150700.16.30.1"
                 case _:
                     raise ValueError(
                         f"KMP driver not found for '{os_version.os_version}' and '{driver_version}'"
@@ -852,12 +847,6 @@ _SP7_KERNEL_PACKAGE_MAP = {
         "kernel-syms": "kernel-syms.45831",
         "kernel-source": "kernel-source.45831",
         "kernel-64kb": "kernel-64kb.45831",
-    },
-    "6.4.0-150700.53.90": {
-        "kernel-default": "kernel-default.47570",
-        "kernel-syms": "kernel-syms.47570",
-        "kernel-source": "kernel-source.47570",
-        "kernel-64kb": "kernel-64kb.47570",
     },
 }
 
@@ -1109,6 +1098,11 @@ for os_version, kernel_variant, exclusive_arch in _NVIDIA_OS_VERSIONS:
         # older drivers are not available for SLE 16
         # skip the image in this case
         if os_version == OsVersion.SL16_0 and branch < 595:
+            continue
+
+        # newer drivers are not yet available for SLE 15.7
+        # skip the image in this case
+        if os_version == OsVersion.SP7 and branch > 615:
             continue
 
         if os_version not in _NVIDIA_REPOS:
