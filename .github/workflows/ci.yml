@@ -53,13 +53,16 @@ jobs:
       - name: fix the file permissions of the repository
         run: chown -R $(id -un):$(id -gn) .
 
-      - run: |
+      - name: run pytest
+        run: |
           poetry install
           poetry run pytest -vv
 
-      - run: |
+      - name: render packages
+        run: |
           mkdir -p pkg_dest
           for pkg in $(poetry run package --help|grep '{'|head -1|sed -e 's|{||' -e 's|}||' -e 's|,| |g' -e 's|\s+||'); do
+              echo "Exporting $pkg..."
               poetry run package $pkg pkg_dest
           done
 

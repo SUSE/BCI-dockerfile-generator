@@ -73,7 +73,10 @@ def test_nvidia_kmp_exclusion(mock_template, driver_version, expected_closed):
     ):
         # We also need to mock super(DevelopmentContainer, container).prepare_template()
         # so it doesn't try to build the whole Dockerfile which requires other side-effects.
-        with patch("bci_build.package.DevelopmentContainer.prepare_template"):
+        with (
+            patch("bci_build.package.DevelopmentContainer.prepare_template"),
+            patch("requests.head"),
+        ):
             container.prepare_template()
 
             # Ensure expected mocks were called
