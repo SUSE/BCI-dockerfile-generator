@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 25 16:57:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- improve unloading handling
+
+-------------------------------------------------------------------
 Wed Nov 25 08:06:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - update to new dkms and nvidia-driver-assistant releases
