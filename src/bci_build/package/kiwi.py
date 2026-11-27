@@ -37,6 +37,7 @@ KIWI_CONTAINERS = [
                 get_pkg_version("python-kiwi", os_version), ParseVersion.MINOR
             )
         ),
+        cmd=["/usr/bin/kiwi"],
         pretty_name=f"KIWI Appliance Builder {kiwi_minor} (kiwi)",
         version_in_uid=False,
         additional_versions=[
