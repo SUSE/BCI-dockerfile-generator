@@ -16,6 +16,14 @@ Please report any issues to the [SUSE Bugzilla](https://bugzilla.suse.com/enter_
 {% elif image.support_level|string == 'unsupported' -%}
 This image is unsupported and provided as-is.
 {% else -%}
+{% for arch, level in image.support_level_overrides.items() -%}
+On {{ arch }}, this image is
+{%- if level|string == "techpreview" %} a tech preview. Do not use it for production there.
+{%- elif level|string == "unsupported" %} unsupported and provided as-is.
+{%- else %} supported at level {{ level }}.
+{%- endif %}
+
+{% endfor -%}
 {% if image.eula|string == 'sle-bci' -%}
 {% if image.os_version | string in ("7",) -%}
 This image is based on [SLE BCI](https://opensource.suse.com/bci/), a stable and redistributable foundation for software innovation. SLE BCI is enterprise-ready, and it comes with an option for support.
