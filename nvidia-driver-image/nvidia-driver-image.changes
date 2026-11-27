@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 27 09:03:32 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
+
+- add 620 driver
+
+-------------------------------------------------------------------
 Wed Nov 25 16:57:14 UTC 2026 - SUSE Update Bot <bci-internal@suse.de>
 
 - improve unloading handling
