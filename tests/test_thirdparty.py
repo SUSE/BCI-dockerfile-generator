@@ -4,6 +4,7 @@ from unittest.mock import patch
 from bci_build.container_attributes import Arch
 from bci_build.os_version import OsVersion
 from bci_build.package import DevelopmentContainer
+from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.thirdparty import ThirdPartyRepo
 from bci_build.package.thirdparty import ThirdPartyRepoMixin
 from bci_build.templates import DOCKERFILE_TEMPLATE
@@ -304,6 +305,198 @@ LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
 LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 """
 
+DOCKERFILE_RENDERED_MULTIBUILD = """# SPDX-License-Identifier: MIT
+
+# Copyright
+
+#!UseOBSRepositories
+#!ExclusiveArch: x86_64 aarch64
+#!BuildTag: bci/dummy-sle-repo:1-%RELEASE%
+#!BuildTag: bci/dummy-sle-repo:1
+#!BuildTag: bci/dummy-sle-repo:latest
+#!BuildName: bci-dummy-sle-repo-1
+#!BuildVersion: 15.7.1
+#!FilterBaseContainerPkgs
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM bci/bci-base:15.7 AS builder
+COPY --from=target / /target
+
+RUN \\
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends wget
+RUN mkdir -p /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-1-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-1-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-1-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-1-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-3-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-3-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-3-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-3-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-2-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-2-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-2-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-2-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-5-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-5-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-5-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-5-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-4-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-4-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-4-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-4-1.0.2.x86_64.rpm /tmp/
+
+COPY sle.gpg.key /tmp/dummy-sle-repo.gpg.key
+RUN rpm --import /tmp/dummy-sle-repo.gpg.key
+
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then \\
+        zypper -n install \\
+            /tmp/dummy-sle-pkg-1-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-3-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-2-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-5-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-4-1.0.2.x86_64.rpm; \\
+    fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then \\
+        zypper -n install \\
+            /tmp/dummy-sle-pkg-1-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-3-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-2-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-5-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-4-1.0.2.aarch64.rpm; \\
+    fi
+
+COPY sle.repo /etc/zypp/repos.d/dummy-sle-repo.repo
+
+RUN rm -rf /tmp/*
+
+# cleanup logs and temporary files
+RUN zypper -n --installroot /target clean -a; \\
+    # LOGCLEAN #
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /target/etc/shadow
+FROM registry.suse.com/bci/bci-micro:15.7
+COPY --from=builder /target /
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=com.suse.bci.dummy-sle-repo
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
+LABEL org.opencontainers.image.title="Dummy Third Party Image for SUSE Linux Enterprise Server 15 SP7"
+LABEL org.opencontainers.image.description="Dummy Third Party Image container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.version="1"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="1-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dummy-sle-repo:1-%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.eula="sle-bci"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+LABEL com.suse.release-stage="released"
+# endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+"""
+
+DOCKERFILE_RENDERED_MULTIBUILD_INSTALL_TARGET = """# SPDX-License-Identifier: MIT
+
+# Copyright
+
+#!UseOBSRepositories
+#!ExclusiveArch: x86_64 aarch64
+#!BuildTag: bci/dummy-sle-repo:1-%RELEASE%
+#!BuildTag: bci/dummy-sle-repo:1
+#!BuildTag: bci/dummy-sle-repo:latest
+#!BuildName: bci-dummy-sle-repo-1
+#!BuildVersion: 15.7.1
+#!FilterBaseContainerPkgs
+FROM registry.suse.com/bci/bci-micro:15.7 AS target
+FROM bci/bci-base:15.7 AS builder
+COPY --from=target / /target
+
+RUN \\
+    export CHKSTAT_ALLOW_INSECURE_MODE_IF_NO_PROC=1; \\
+    zypper -n --installroot /target --gpg-auto-import-keys install --no-recommends wget
+RUN mkdir -p /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-1-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-1-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-1-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-1-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-3-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-3-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-3-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-3-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-2-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-2-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-2-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-2-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-5-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-5-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-5-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-5-1.0.2.x86_64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-4-1.0.2.aarch64.rpm sha256:value
+COPY dummy-sle-pkg-4-1.0.2.aarch64.rpm /tmp/
+#!RemoteAssetUrl: https://packages.example.com/sles/15.7/Packages/dummy-sle-pkg-4-1.0.2.x86_64.rpm sha256:value
+COPY dummy-sle-pkg-4-1.0.2.x86_64.rpm /tmp/
+
+COPY sle.gpg.key /tmp/dummy-sle-repo.gpg.key
+RUN rpm --root /target --import /tmp/dummy-sle-repo.gpg.key
+
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then \\
+        zypper --installroot /target -n install \\
+            /tmp/dummy-sle-pkg-1-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-3-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-2-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-5-1.0.2.x86_64.rpm \\
+            /tmp/dummy-sle-pkg-4-1.0.2.x86_64.rpm; \\
+    fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then \\
+        zypper --installroot /target -n install \\
+            /tmp/dummy-sle-pkg-1-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-3-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-2-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-5-1.0.2.aarch64.rpm \\
+            /tmp/dummy-sle-pkg-4-1.0.2.aarch64.rpm; \\
+    fi
+
+COPY sle.repo /target/etc/zypp/repos.d/dummy-sle-repo.repo
+
+RUN rm -rf /tmp/*
+
+# cleanup logs and temporary files
+RUN zypper -n --installroot /target clean -a; \\
+    # LOGCLEAN #
+# set the day of last password change to empty
+RUN sed -i 's/^\\([^:]*:[^:]*:\\)[^:]*\\(:.*\\)$/\\1\\2/' /target/etc/shadow
+FROM registry.suse.com/bci/bci-micro:15.7
+COPY --from=builder /target /
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=com.suse.bci.dummy-sle-repo
+LABEL org.opencontainers.image.authors="https://github.com/SUSE/bci/discussions"
+LABEL org.opencontainers.image.title="Dummy Third Party Image for SUSE Linux Enterprise Server 15 SP7"
+LABEL org.opencontainers.image.description="Dummy Third Party Image container based on the SUSE Linux Enterprise Base Container Image."
+LABEL org.opencontainers.image.version="1"
+LABEL org.opencontainers.image.url="https://www.suse.com/products/base-container-images/"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="SUSE LLC"
+LABEL org.opencontainers.image.source="%SOURCEURL%"
+LABEL org.opencontainers.image.ref.name="1-%RELEASE%"
+LABEL org.opensuse.reference="registry.suse.com/bci/dummy-sle-repo:1-%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL com.suse.supportlevel="techpreview"
+LABEL com.suse.eula="sle-bci"
+LABEL com.suse.lifecycle-url="https://www.suse.com/lifecycle#suse-linux-enterprise-server-15"
+LABEL com.suse.release-stage="released"
+# endlabelprefix
+LABEL org.opencontainers.image.base.name="%BASE_REFNAME%"
+LABEL org.opencontainers.image.base.digest="%BASE_DIGEST%"
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
+"""
+
 SLE_REPO_RENDERED = """[dummy-sle-repo]
 name=dummy-sle-repo
 baseurl=https://packages.example.com/sles/15.7/
@@ -528,3 +721,128 @@ def test_third_party_key_fetch():
 
     assert image.extra_files.get("sle.gpg.key") == "GPGKEY"
     assert image.extra_files.get("sle.repo") == KEY_FETCH_REPO_RENDERED
+
+
+def test_single_third_party_repo_template_multibuild():
+    """Test a single third party repositories."""
+    image = DummyThirdPartyImage(
+        tag_version="1",
+        version="1",
+        os_version=OsVersion.SP7,
+        from_target_image=generate_from_image_tag(OsVersion.SP7, "bci-micro"),
+        name="dummy-sle-repo",
+        pretty_name="Dummy Third Party Image",
+        is_latest=True,
+        package_name="dummy-sle-repo",
+        exclusive_arch=[Arch.X86_64, Arch.AARCH64],
+        package_list=["wget"],
+        third_party_repos=[
+            ThirdPartyRepo(
+                name="sle",
+                url="https://packages.example.com/sles/15.7/",
+                key="GPGKEY",
+                key_url="https://packages.example.com/keys/repo.asc",
+                repo_name="dummy-sle-repo",
+                repo_filename="dummy-sle-repo.repo",
+                key_filename="dummy-sle-repo.gpg.key",
+            ),
+        ],
+        third_party_package_list=[
+            "dummy-sle-pkg-1",
+            "dummy-sle-pkg-3",
+            "dummy-sle-pkg-2",
+            "dummy-sle-pkg-5",
+            "dummy-sle-pkg-4",
+        ],
+    )
+
+    with patch(
+        "bci_build.repomdparser.requests.get", side_effect=fake_repo_and_key_get
+    ):
+        image.prepare_template()
+
+    rendered = DOCKERFILE_TEMPLATE.render(
+        image=image,
+        INFOHEADER="# Copyright",
+        DOCKERFILE_RUN="RUN",
+        LOG_CLEAN="# LOGCLEAN #",
+        BUILD_FLAVOR=image.build_flavor,
+    )
+
+    repo = image.third_party_repos[0]
+    assert repo.name == "sle"
+    assert repo.url == "https://packages.example.com/sles/15.7/"
+    assert repo.key == "GPGKEY"
+    assert repo.key_url == "https://packages.example.com/keys/repo.asc"
+    assert repo.arch is None
+    assert repo.repo_name == "dummy-sle-repo"
+    assert repo.repo_filename == "dummy-sle-repo.repo"
+    assert repo.key_filename == "dummy-sle-repo.gpg.key"
+
+    assert rendered == DOCKERFILE_RENDERED_MULTIBUILD
+
+    assert image.extra_files.get("sle.gpg.key") == "GPGKEY"
+    assert image.extra_files.get("sle.repo") == SLE_REPO_RENDERED
+
+
+def test_single_third_party_repo_template_multibuild_install_target():
+    """Test a single third party repositories."""
+    image = DummyThirdPartyImage(
+        tag_version="1",
+        version="1",
+        os_version=OsVersion.SP7,
+        from_target_image=generate_from_image_tag(OsVersion.SP7, "bci-micro"),
+        name="dummy-sle-repo",
+        pretty_name="Dummy Third Party Image",
+        is_latest=True,
+        package_name="dummy-sle-repo",
+        exclusive_arch=[Arch.X86_64, Arch.AARCH64],
+        package_list=["wget"],
+        third_party_package_install_in_target=True,
+        third_party_repos=[
+            ThirdPartyRepo(
+                name="sle",
+                url="https://packages.example.com/sles/15.7/",
+                key="GPGKEY",
+                key_url="https://packages.example.com/keys/repo.asc",
+                repo_name="dummy-sle-repo",
+                repo_filename="dummy-sle-repo.repo",
+                key_filename="dummy-sle-repo.gpg.key",
+            ),
+        ],
+        third_party_package_list=[
+            "dummy-sle-pkg-1",
+            "dummy-sle-pkg-3",
+            "dummy-sle-pkg-2",
+            "dummy-sle-pkg-5",
+            "dummy-sle-pkg-4",
+        ],
+    )
+
+    with patch(
+        "bci_build.repomdparser.requests.get", side_effect=fake_repo_and_key_get
+    ):
+        image.prepare_template()
+
+    rendered = DOCKERFILE_TEMPLATE.render(
+        image=image,
+        INFOHEADER="# Copyright",
+        DOCKERFILE_RUN="RUN",
+        LOG_CLEAN="# LOGCLEAN #",
+        BUILD_FLAVOR=image.build_flavor,
+    )
+
+    repo = image.third_party_repos[0]
+    assert repo.name == "sle"
+    assert repo.url == "https://packages.example.com/sles/15.7/"
+    assert repo.key == "GPGKEY"
+    assert repo.key_url == "https://packages.example.com/keys/repo.asc"
+    assert repo.arch is None
+    assert repo.repo_name == "dummy-sle-repo"
+    assert repo.repo_filename == "dummy-sle-repo.repo"
+    assert repo.key_filename == "dummy-sle-repo.gpg.key"
+
+    assert rendered == DOCKERFILE_RENDERED_MULTIBUILD_INSTALL_TARGET
+
+    assert image.extra_files.get("sle.gpg.key") == "GPGKEY"
+    assert image.extra_files.get("sle.repo") == SLE_REPO_RENDERED

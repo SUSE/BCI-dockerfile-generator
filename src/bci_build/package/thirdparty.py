@@ -19,12 +19,12 @@ COPY {{ pkg.filename }} /tmp/
 
 {% for repo in image.third_party_repos -%}
 COPY {{ repo.name }}.gpg.key /tmp/{{ repo.key_filename }}
-RUN rpm --import /tmp/{{ repo.key_filename }}
+RUN rpm {% if image.third_party_package_in_target %}--root /target {% endif %}--import /tmp/{{ repo.key_filename }}
 {% endfor %}
 {% for arch in image.exclusive_arch %}
 {%- with pkgs=get_packages_for_arch(arch) %}
 RUN if [ "$(uname -m)" = "{{ arch }}" ]; then \\
-        zypper -n install \\
+        zypper {% if image.third_party_package_in_target %}--installroot /target {% endif %}-n install \\
         {%- for pkg in pkgs %}
             /tmp/{{ pkg.filename }}{% if loop.last %};{% endif %} \\
         {%- endfor %}
@@ -33,7 +33,7 @@ RUN if [ "$(uname -m)" = "{{ arch }}" ]; then \\
 {%- endfor %}
 
 {% for repo in image.third_party_repos -%}
-COPY {{ repo.name }}.repo /etc/zypp/repos.d/{{ repo.repo_filename }}
+COPY {{ repo.name }}.repo {% if image.third_party_package_in_target %}/target{% endif %}/etc/zypp/repos.d/{{ repo.repo_filename }}
 {% endfor %}
 RUN rm -rf /tmp/*
 """
@@ -127,12 +127,14 @@ class ThirdPartyRepoMixin:
         self,
         third_party_repos: list[ThirdPartyRepo],
         third_party_package_list: list[str | RpmPackage],
+        third_party_package_install_in_target: bool = False,
         **kwargs,
     ):
         super().__init__(**kwargs)
 
         self.third_party_repos = third_party_repos
         self.third_party_package_list = third_party_package_list
+        self.third_party_package_in_target = third_party_package_install_in_target
 
         self._repo = ThirdPartyRepoParser(self.third_party_repos)
         self._rpms: list[RpmPackage] = []
